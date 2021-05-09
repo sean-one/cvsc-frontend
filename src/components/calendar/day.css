@@ -1,0 +1,28 @@
+.date-digit {
+    color: red;
+}
+
+.days {
+  width: 14vw;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.noevents {
+    display: none;
+}
+
+/* this is the styling to help visualize the current and/or selected date */
+.before {
+    color: lightgray;
+    border: 1px solid lightgray;
+    /* background: rgba(0, 0, 0, 0.7); */
+}
+
+.selected {
+    background: #38b000;
+}
+
+.today {
+    background: #008000;
+}

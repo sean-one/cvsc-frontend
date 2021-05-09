@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { startOfToday } from 'date-fns';
+import { Route } from 'react-router-dom';
+
+// components
+import { takeMonth } from './components/calendar/getCalendar';
+import Calendar from './components/calendar/calendar';
+import EventCard from './components/events/eventCard.jsx';
+import MobileView from './components/mobile/mobileView';
+
+import CalendarContext from './context/calendarContext';
+
 import './App.css';
 
-function App() {
+const App = () => {
+  const [selectedDay, setSelectedDay] = useState(startOfToday());
+  const calendarDates = takeMonth(selectedDay)();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates}}>
+        <Route
+          exact
+          path='/calendar'
+          render={(props) => (
+            <Calendar {...props} range={calendarDates} />
+          )}
+        />
+        <Route
+          path='/calendar/:id'
+          render={(props) => (
+            <EventCard {...props} />
+          )}
+        />
+      </CalendarContext.Provider>
+      <Route path='/mobile' render={MobileView} />
     </div>
   );
 }
