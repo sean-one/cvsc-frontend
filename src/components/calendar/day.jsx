@@ -15,25 +15,26 @@ const Day = (props) => {
 
     return (
         <>
-            <div className={`days ${dayStyles(props.day, selectedDay)}`} onClick={() => setSelectedDay(props.day)} >
-                <p className='date-digit'>{format(props.day, 'd')}</p>
-                {daysEvents.length > 0 ?
-                    daysEvents.map(event => (
-                            <div key={event['id']}>
-                                <Link to={{
-                                    pathname: `calendar/${event.id}`,
-                                    state: {
-                                        event,
-                                        from: props.location.pathname
-                                    }
-                                }}>
-                                    <p>{event.eventName}</p>
-                                </Link>
-                            </div>
-                    )) :
-                    null
-                    }
-            </div>
+            {/* {console.log(daysEvents)} */}
+            {daysEvents.length > 0 ?
+                daysEvents.map(event => (
+                    <div key={event['id']} className={`days ${dayStyles(props.day, selectedDay)}`} onClick={() => setSelectedDay(props.day)} >
+                        <p className='date-digit'>{format(props.day, 'd')}</p>
+                        <div>
+                            <Link to={{
+                                pathname: `calendar/${event.id}`,
+                                state: {
+                                    event,
+                                    from: props.location.pathname
+                                }
+                            }}>
+                                <p>{event.eventName}</p>
+                            </Link>
+                        </div>
+                    </div>
+                )) :
+                null
+                }
         </>
     )
 }
