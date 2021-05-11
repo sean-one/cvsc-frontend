@@ -53,6 +53,17 @@ const fakeEvents = [
         "eventDetails": "Duis amet dolor consequat enim ea occaecat adipisicing id id. Amet qui nisi nisi consectetur minim. In occaecat est dolore mollit aliquip. Pariatur magna cillum voluptate proident consectetur ullamco amet mollit id in fugiat laborum est.",
         "brands": 4,
         "createdBy": 1
+    },
+    {
+        "id": 6,
+        "eventName": "double the fun",
+        "eventStart": new Date('May 12, 2021 21:00'),
+        "eventEnd": new Date('May 12, 2021 23:00'),
+        "eventImage": 'https://picsum.photos/350/200',
+        "eventLocation": '123 north west, palm springs, ca 92262',
+        "eventDetails": "Duis amet dolor consequat enim ea occaecat adipisicing id id. Amet qui nisi nisi consectetur minim. In occaecat est dolore mollit aliquip. Pariatur magna cillum voluptate proident consectetur ullamco amet mollit id in fugiat laborum est.",
+        "brands": 4,
+        "createdBy": 1
     }
 ]
 
