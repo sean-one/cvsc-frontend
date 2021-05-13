@@ -17,6 +17,8 @@ const App = () => {
   const calendarDates = takeMonth(selectedDay)();
   const dailyEventList = getDaysEvents()
 
+  console.log(calendarDates)
+
   return (
     <div className="App">
       <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList}}>

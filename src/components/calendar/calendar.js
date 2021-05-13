@@ -12,20 +12,29 @@ const Calendar = () => {
     const { selectedDay, dailyEventList } = useContext(CalendarContext);
     // const { selectedDay, calendarDates, dailyEventList } = useContext(CalendarContext);
     // const weekCount = calendarDates.length
+    
+    console.log(dailyEventList)
 
-    // console.log(dailyEventList)
     return (
         <div>
             <div className='calendar'>
                 <h1>{format(selectedDay, 'MMMM yyyy')}</h1>
                 {
-                    dailyEventList.map((marker, i) => (
-                        <div key={i}>
-                            <span>event</span>
-                        </div>
-                    ))
+                    Object.keys(dailyEventList).map((key) => {
+                        const eventDate = new Date(key)
+                        console.log(eventDate)
+                        return (
+                            <div>
+                                <h1>{key}</h1>
+                                {dailyEventList[key].map((dataItem) => {
+                                        return (
+                                            <p>{dataItem.eventName}</p>
+                                        )
+                                })}
+                            </div>
+                        )
+                    })
                 }
-                <p>{dailyEventList[1620543600000][0].eventName}</p>
                 {/* {
                     calendarDates.map((week, i) => (
                         <div className='weeks' key={i}>

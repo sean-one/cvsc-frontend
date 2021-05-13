@@ -52,7 +52,7 @@ export function getDaysEvents(calendarDay) {
     // return a new list of events sorted by day
     return fakeEvents.reduce((obj, event) => {
         // get the day of the event
-        const eventDate = format(startOfDay(event.eventStart), 'T');
+        const eventDate = format(startOfDay(event.eventStart), 'PP');
 
         // check to see if that day has any other events
         if(!obj.hasOwnProperty(eventDate)) {
@@ -64,7 +64,7 @@ export function getDaysEvents(calendarDay) {
         obj[eventDate].push(event);
 
         return obj;
-    }, []);
+    }, {});
     // console.log(calendarDay)
     // return fakeEvents.filter(event => isEqual(startOfDay(event.eventStart), calendarDay))
 }

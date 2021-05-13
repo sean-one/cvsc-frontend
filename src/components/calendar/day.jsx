@@ -11,11 +11,11 @@ const Day = (props) => {
     const { selectedDay, setSelectedDay } = useContext(CalendarContext);
     const daysEvents = props.schedule
 
-    // console.log(props)
+    console.log(props)
 
     return (
         <>
-            {/* {console.log(daysEvents)} */}
+            {/* {console.log(props.schedule)} */}
             {daysEvents.length > 0 ?
                 daysEvents.map(event => (
                     <div key={event['id']} className={`days ${dayStyles(props.day, selectedDay)}`} onClick={() => setSelectedDay(props.day)} >
