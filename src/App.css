@@ -1,8 +1,11 @@
 .App {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
+  padding: 1.5rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-self: flex-start;
   text-align: center;
+  background-color: green;
 }

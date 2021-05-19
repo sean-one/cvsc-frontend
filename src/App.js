@@ -7,6 +7,7 @@ import { takeMonth, getDaysEvents } from './components/calendar/getCalendar';
 import Calendar from './components/calendar/calendar';
 import EventCard from './components/events/eventCard.jsx';
 import MobileView from './components/mobile/mobileView';
+import Header from './components/header/header.jsx';
 
 import CalendarContext from './context/calendarContext';
 
@@ -15,13 +16,13 @@ import './App.css';
 const App = () => {
   const [selectedDay, setSelectedDay] = useState(startOfToday());
   const calendarDates = takeMonth(selectedDay)();
-  const dailyEventList = getDaysEvents()
+  const [ dailyEventList, setDailyEventList ] = useState(getDaysEvents());
 
-  console.log(calendarDates)
-
+  
   return (
     <div className="App">
-      <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList}}>
+      <Header />
+      <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList, setDailyEventList}}>
         <Route
           exact
           path='/calendar'

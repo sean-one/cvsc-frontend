@@ -1,0 +1,18 @@
+.header {
+    height: 7rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: yellow; */
+}
+
+.branding {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.5rem;
+}
+
+.menu {
+    transform: rotate(90deg);
+}

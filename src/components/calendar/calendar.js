@@ -1,53 +1,31 @@
 import React, { useContext } from 'react'
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
 
-// import Day from './day.jsx';
+import Day from './day.jsx';
 
 import './calendar.css';
-// import { adjustHeight } from './calendarStyleLogic'
-// import { getDaysEvents } from './getCalendar';
 import CalendarContext from '../../context/calendarContext';
 
 const Calendar = () => {
-    const { selectedDay, dailyEventList } = useContext(CalendarContext);
-    // const { selectedDay, calendarDates, dailyEventList } = useContext(CalendarContext);
-    // const weekCount = calendarDates.length
+    const { dailyEventList } = useContext(CalendarContext);
     
-    console.log(dailyEventList)
-
     return (
         <div>
             <div className='calendar'>
-                <h1>{format(selectedDay, 'MMMM yyyy')}</h1>
                 {
-                    Object.keys(dailyEventList).map((key) => {
+                    Object.keys(dailyEventList).sort(
+                        // sort event list by date
+                        (a,b) => new Date(a) - new Date(b)
+                    ).map(key => {
                         const eventDate = new Date(key)
-                        console.log(eventDate)
-                        return (
-                            <div>
-                                <h1>{key}</h1>
-                                {dailyEventList[key].map((dataItem) => {
-                                        return (
-                                            <p>{dataItem.eventName}</p>
-                                        )
-                                })}
-                            </div>
-                        )
+                        // exclude any events that have already passed
+                        if (!isPast(eventDate)) {
+                            return (
+                                <Day key={format(eventDate, 't')} date={eventDate} schedule={dailyEventList[key]} />
+                            )
+                        }
                     })
                 }
-                {/* {
-                    calendarDates.map((week, i) => (
-                        <div className='weeks' key={i}>
-                            {
-                                week.map((day, i) => (
-                                    <div className={`daywrapper ${adjustHeight(weekCount)}`} key={i}>
-                                        <Day day={day} schedule={getDaysEvents(day) }/>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    ))
-                } */}
             </div>
         </div>
 

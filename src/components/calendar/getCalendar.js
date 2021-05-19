@@ -48,9 +48,9 @@ export function takeMonth(start = new Date()) {
 }
 
 // get the events for each specific day
-export function getDaysEvents(calendarDay) {
+export function getDaysEvents(calendarDay, filter) {
     // return a new list of events sorted by day
-    return fakeEvents.reduce((obj, event) => {
+    return fakeEvents.reduce((obj, event, filter) => {
         // get the day of the event
         const eventDate = format(startOfDay(event.eventStart), 'PP');
 
