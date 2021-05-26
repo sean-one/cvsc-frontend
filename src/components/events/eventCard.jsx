@@ -8,11 +8,22 @@ import EventPreview from './eventPreview';
 
 const EventCard = (props) => {
     const singleEvent = props.location.state.event;
-    const eventStartTime = new Date(singleEvent.start);
-    const eventEndTime = new Date(singleEvent.start);
+    const eventDate = new Date(singleEvent.eventdate);
 
     const [ locationEvents, setLocationEvents ] = useState([])
     const [ brandEvents, setBrandEvents ] = useState([])
+
+    const formatTime = (eventtime) => {
+        if (eventtime > 1200) {
+            eventtime = eventtime - 1200;
+            eventtime = eventtime.toString().concat('p')
+            eventtime =  eventtime.substring(0, 1) + ':' + eventtime.substring(1, eventtime.length);
+        } else {
+            eventtime = eventtime.toString().concat('a')
+            eventtime =  eventtime.substring(0, 1) + ':' + eventtime.substring(1, eventtime.length);
+        }
+        return eventtime
+    }
 
     const getPageData = async () => {
         let atLocation = await AxiosInstance.get(`/events/location/${singleEvent.location_id}`)
@@ -37,8 +48,9 @@ const EventCard = (props) => {
             <div className='singleEvent'>
                 <h2>{singleEvent.eventname}</h2>
                 <div className='datetimeInfo'>
-                    <div>{format(eventStartTime, 'MMMM d, Y')}</div>
-                    <div>{`${format(eventStartTime, 'h:mmaaa')} - ${format(eventEndTime, 'h:mmaaa')}`}</div>
+                    <div>{format(eventDate, 'MMMM d, Y')}</div>
+                    <div>{`${formatTime(singleEvent.start)} - ${formatTime(singleEvent.end)}`}</div>
+                    {/* <div>{`${format(eventStartTime, 'h:mmaaa')} - ${format(eventEndTime, 'h:mmaaa')}`}</div> */}
                 </div>
                 <div className='imageWrapper'>
                     <img src={singleEvent.media} alt='temp for display help'/>
