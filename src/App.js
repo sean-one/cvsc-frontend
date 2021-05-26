@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { startOfToday } from 'date-fns';
 import { Route } from 'react-router-dom';
 
+import AxiosInstance from './helpers/axios';
+
 // components
-import { takeMonth, getDaysEvents } from './components/calendar/getCalendar';
+// import { takeMonth, getDaysEvents } from './components/calendar/getCalendar';
+import { takeMonth } from './components/calendar/getCalendar';
 import Calendar from './components/calendar/calendar';
 import EventCard from './components/events/eventCard.jsx';
-import MobileView from './components/mobile/mobileView';
 import Header from './components/header/header.jsx';
 
 import CalendarContext from './context/calendarContext';
@@ -16,13 +18,22 @@ import './App.css';
 const App = () => {
   const [selectedDay, setSelectedDay] = useState(startOfToday());
   const calendarDates = takeMonth(selectedDay)();
-  const [ dailyEventList, setDailyEventList ] = useState(getDaysEvents());
+  const [ dailyEventList, setDailyEventList ] = useState([]);
 
-  
+  const getEventData = async () => {
+    const events = await AxiosInstance.get('/events');
+    console.log(events.data)
+    setDailyEventList(events.data);
+  }
+
+  useEffect(() => {
+    getEventData()
+  }, [])
+
   return (
     <div className="App">
       <Header />
-      <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList, setDailyEventList}}>
+      <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList, setDailyEventList }}>
         <Route
           exact
           path='/calendar'
@@ -37,7 +48,6 @@ const App = () => {
           )}
         />
       </CalendarContext.Provider>
-      <Route path='/mobile' render={MobileView} />
     </div>
   );
 }

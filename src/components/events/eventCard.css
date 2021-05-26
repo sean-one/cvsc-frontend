@@ -1,4 +1,27 @@
 .eventWrapper {
-    max-width: 65%;
-    background-color: red;
+    max-width: 100%;
+    /* background-color: red; */
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    text-transform: uppercase;
+}
+
+.datetimeInfo {
+    padding: 0 0 0.75rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.eventWrapper {
+    width: 100vw;
+    height: auto;
+}
+
+.eventWrapper img {
+    width: 100%;
 }

@@ -7,7 +7,6 @@ import {
     startOfDay,
     addDays
 } from 'date-fns';
-import fakeEvents from '../../fakeData/fakeEvents';
 
 // generator function to create an array of days into a week
 export function takeWeek(start = new Date()) {
@@ -48,11 +47,15 @@ export function takeMonth(start = new Date()) {
 }
 
 // get the events for each specific day
-export function getDaysEvents(calendarDay, filter) {
-    // return a new list of events sorted by day
-    return fakeEvents.reduce((obj, event, filter) => {
+export function sortDaysEvents(events, filter = null) {
+    if (filter) {
+        events = events.filter(event => event.brand_id === filter)
+        // console.log(`passed a filter: ${filter}`)
+    }
+    return events.reduce((obj, event) => {
+        let eventDate = new Date(event.start);
         // get the day of the event
-        const eventDate = format(startOfDay(event.eventStart), 'PP');
+        eventDate = format(startOfDay(eventDate), 'PP');
 
         // check to see if that day has any other events
         if(!obj.hasOwnProperty(eventDate)) {
@@ -65,6 +68,8 @@ export function getDaysEvents(calendarDay, filter) {
 
         return obj;
     }, {});
+    // console.log(events)
+    // return a new list of events sorted by day
     // console.log(calendarDay)
     // return fakeEvents.filter(event => isEqual(startOfDay(event.eventStart), calendarDay))
 }
