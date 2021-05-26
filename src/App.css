@@ -9,3 +9,20 @@
   text-align: center;
   background-color: green;
 }
+
+h1 {
+  font-size: 3.6rem;
+}
+
+h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    text-transform: uppercase;
+}
+
+h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 0.5rem;
+}

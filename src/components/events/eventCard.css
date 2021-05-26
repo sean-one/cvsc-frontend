@@ -3,11 +3,8 @@
     /* background-color: red; */
 }
 
-h1 {
-    font-size: 2.2rem;
-    font-weight: bold;
-    padding: 0.5rem;
-    text-transform: uppercase;
+.singleEvent {
+    padding: 1.5rem 0;
 }
 
 .datetimeInfo {
@@ -24,4 +21,11 @@ h1 {
 
 .eventWrapper img {
     width: 100%;
+}
+
+.upcomingHeader {
+    padding: 0.75rem 0;
+    width: 100%;
+    border-top: 1px dotted black;
+    /* background: coral; */
 }

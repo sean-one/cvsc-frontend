@@ -2,6 +2,8 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
+import './eventPreview.css';
+
 const EventPreview = (props) => {
     const event = props.event;
 
@@ -13,7 +15,7 @@ const EventPreview = (props) => {
         <div className='eventCard' key={event.id}>
             <div className='cardImg'>
                 <Link to={{
-                    pathname: `calendar/${event.id}`,
+                    pathname: `/calendar/${event.id}`,
                     state: {
                         event,
                         from: props.location.pathname
@@ -25,7 +27,7 @@ const EventPreview = (props) => {
             <div className='cardInfo'>
                 <div className='cardTitle'>
                     <Link to={{
-                        pathname: `calendar/${event.id}`,
+                        pathname: `/calendar/${event.id}`,
                         state: {
                             event,
                             from: props.location.pathname
@@ -39,7 +41,7 @@ const EventPreview = (props) => {
                 </div>
                 <div className='cardDetails'>
                     <Link to={{
-                        pathname: `calendar/${event.id}`,
+                        pathname: `/calendar/${event.id}`,
                         state: {
                             event,
                             from: props.location.pathname

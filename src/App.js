@@ -22,7 +22,6 @@ const App = () => {
 
   const getEventData = async () => {
     const events = await AxiosInstance.get('/events');
-    console.log(events.data)
     setDailyEventList(events.data);
   }
 

@@ -53,7 +53,7 @@ export function sortDaysEvents(events, filter = null) {
         // console.log(`passed a filter: ${filter}`)
     }
     return events.reduce((obj, event) => {
-        let eventDate = new Date(event.start);
+        let eventDate = new Date(event.eventdate);
         // get the day of the event
         eventDate = format(startOfDay(eventDate), 'PP');
 

@@ -1,0 +1,47 @@
+.eventCard {
+    margin: 0.75rem 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    border-bottom: 1px dotted darkgreen;
+}
+
+.cardImg {
+    padding: 0.5rem;
+    width: 35%;
+}
+
+.cardImg img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+.cardInfo {
+    width: 65%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.5rem;
+    font-size: 1.1rem;
+    /* background-color: darkkhaki; */
+}
+
+.cardTitle {
+    padding: 0.2rem 0;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.cardLocation {
+    font-size: 0.8rem;
+}
+
+.cardDetails {
+    cursor: pointer;
+    height: 100%;
+    margin-top: 0.75rem;
+    /* height: 2.5rem; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+}
