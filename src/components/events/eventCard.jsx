@@ -17,11 +17,12 @@ const EventCard = (props) => {
         if (eventtime > 1200) {
             eventtime = eventtime - 1200;
             eventtime = eventtime.toString().concat('p')
-            eventtime =  eventtime.substring(0, 1) + ':' + eventtime.substring(1, eventtime.length);
-        } else {
+        } else if (eventtime > 1200 && eventtime < 1260) {
+            eventtime = eventtime.toString().concat('p')
+        }else {
             eventtime = eventtime.toString().concat('a')
-            eventtime =  eventtime.substring(0, 1) + ':' + eventtime.substring(1, eventtime.length);
         }
+        eventtime =  eventtime.slice(0, -3) + ':' + eventtime.slice(-3)
         return eventtime
     }
 

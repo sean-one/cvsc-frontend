@@ -1,6 +1,8 @@
 .header {
-    height: 5rem;
-    padding: 0.5rem;
+    position: relative;
+    width: 100%;
+    height: var(--headerHeight);
+    padding: 0.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,4 +17,26 @@
 
 .menu {
     transform: rotate(90deg);
+}
+
+@keyframes slidedown {
+    from {height: 0;}
+    to {height: 30rem;}
+}
+
+.menubar {
+    position: absolute;
+    height: 0;
+    top: var(--headerHeight);
+    left: 0;
+    right: 0;
+    animation-name: slidedown;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    /* bottom:0; */
+    background: white;
+}
+
+.inactive {
+    display: none;
 }
