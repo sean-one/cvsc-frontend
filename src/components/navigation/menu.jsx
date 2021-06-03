@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 
 import './menu.css';
 
-const Menu = () => {
+const Menu = (props) => {
     return (
         <ul className='menuListWrapper'>
             <Link to={{
                 pathname: '/calendar'
             }}>
-                <li>Calendar</li>
+                <li onClick={props.toggle}>Calendar</li>
             </Link>
             <Link to={{
                 pathname: '/login'
             }}>
-                <li>Login</li>
+                <li onClick={props.toggle}>Login</li>
             </Link>
         </ul>
     )

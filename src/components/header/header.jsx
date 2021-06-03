@@ -14,7 +14,7 @@ const Header = () => {
             <div className='branding'>CVSC</div>
             <div className='menu' onClick={toggleMenu}>|||</div>
             <div className={activeMenu ? 'menubar' : 'inactive'}>
-                <Menu />
+                <Menu toggle={toggleMenu}/>
             </div>
         </div>
     )
