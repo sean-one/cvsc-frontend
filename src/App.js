@@ -10,6 +10,7 @@ import { takeMonth } from './components/calendar/getCalendar';
 import Calendar from './components/calendar/calendar';
 import EventCard from './components/events/eventCard.jsx';
 import Header from './components/header/header.jsx';
+import Login from './components/login/login.jsx';
 
 import CalendarContext from './context/calendarContext';
 
@@ -47,6 +48,10 @@ const App = () => {
           )}
         />
       </CalendarContext.Provider>
+      <Route 
+        path='/login'
+        component={Login}
+      />
     </div>
   );
 }
