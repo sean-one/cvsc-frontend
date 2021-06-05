@@ -9,12 +9,18 @@ const Header = () => {
     const toggleMenu = () => {
         setActiveMenu(!activeMenu);
     }
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        localStorage.setItem('isLoggedIn', false);
+        setActiveMenu(!activeMenu);
+    }
     return (
         <div className='header'>
             <div className='branding'>CVSC</div>
             <div className='menu' onClick={toggleMenu}>|||</div>
             <div className={activeMenu ? 'menubar' : 'inactive'}>
-                <Menu toggle={toggleMenu}/>
+                <Menu toggle={toggleMenu} logout={logout}/>
             </div>
         </div>
     )

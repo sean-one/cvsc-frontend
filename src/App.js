@@ -58,10 +58,6 @@ const App = () => {
           component={Login}
         />
         <AuthRoute exact path='/profile' component={Profile} />
-        {/* <Route
-          path='/profile'
-          component={Profile}
-        /> */}
       </UserContext.Provider>
     </div>
   );

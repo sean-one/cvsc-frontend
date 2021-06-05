@@ -25,6 +25,7 @@ const Login = () => {
                     if(response.status === 200) {
                         localStorage.setItem('token', response.data.token);
                         setUserProfile(response.data)
+                        localStorage.setItem('isLoggedIn', true)
                         history.push('/profile');
                     } else {
                         throw new Error();
