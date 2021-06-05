@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
-// import AxiosInstance from '../../helpers/axios';
+import AxiosInstance from '../../helpers/axios';
 import './login.css';
 
+import UserContext from '../../context/userContext';
+
 const Login = () => {
+    const { setUserProfile } = useContext(UserContext);
+    let history = useHistory();
+
     const sendLogin = (e) => {
         e.preventDefault();
         if(!e.target.username.value || !e.target.password.value) {
@@ -11,10 +17,22 @@ const Login = () => {
             console.log('fill in inputs!')
         } else {
             const userDetails = {
-                name: e.target.username.value,
+                username: e.target.username.value,
                 password: e.target.password.value
             }
-            console.log(userDetails)
+            AxiosInstance.post('/users/login', userDetails)
+                .then(response => {
+                    if(response.status === 200) {
+                        localStorage.setItem('token', response.data.token);
+                        setUserProfile(response.data)
+                        history.push('/profile');
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
     return (
