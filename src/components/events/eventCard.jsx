@@ -50,11 +50,11 @@ const EventCard = (props) => {
                 <h2>{singleEvent.eventname}</h2>
                 <div className='datetimeInfo'>
                     <div>{format(eventDate, 'MMMM d, Y')}</div>
-                    <div>{`${formatTime(singleEvent.start)} - ${formatTime(singleEvent.end)}`}</div>
+                    <div>{`${formatTime(singleEvent.eventstart)} - ${formatTime(singleEvent.eventend)}`}</div>
                     {/* <div>{`${format(eventStartTime, 'h:mmaaa')} - ${format(eventEndTime, 'h:mmaaa')}`}</div> */}
                 </div>
                 <div className='imageWrapper'>
-                    <img src={singleEvent.media} alt='temp for display help'/>
+                    <img src={singleEvent.eventmedia} alt='temp for display help'/>
                 </div>
                 <div className='addressInfo'>
                     <p>{singleEvent.formatted}</p>

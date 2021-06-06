@@ -19,7 +19,7 @@
     text-align: left;
 }
 
-.createForm label, .createForm input, .createForm select {
+.createForm label, .createForm input, .createForm select, .createForm textarea {
     width: 100%;
 }
 

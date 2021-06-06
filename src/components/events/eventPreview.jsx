@@ -36,7 +36,7 @@ const EventPreview = (props) => {
                         from: props.location.pathname
                     }
                 }}>
-                    <img src={event.media} alt={`upcoming event - ${event.eventname}`} />
+                    <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} />
                 </Link>
             </div>
             <div className='cardInfo'>

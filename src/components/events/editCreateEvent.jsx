@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
 import './editCreateEvent.css';
@@ -6,6 +7,7 @@ import './editCreateEvent.css';
 const EditCreateEvent = () => {
     const [ venueList, setVenueList ] = useState([])
     const [ brandList, setBrandList ] = useState([])
+    let history = useHistory();
 
     const getBusinessInfo = async () => {
         const brands = await AxiosInstance.get('/business/brands');
@@ -18,34 +20,61 @@ const EditCreateEvent = () => {
         getBusinessInfo()
     }, []);
 
+    const sendEvent = (e) => {
+        e.preventDefault();
+        const eventDetails = {
+            eventname: e.target.eventname.value,
+            eventdate: e.target.eventdate.value,
+            eventstart: parseInt(e.target.eventstart.value.replace(":", "")),
+            eventend: parseInt(e.target.eventend.value.replace(":", "")),
+            eventmedia: e.target.eventmedia.value,
+            location_id: parseInt(e.target.location.value),
+            details: e.target.details.value,
+            brand_id: parseInt(e.target.brands.value),
+            created_by: 1
+        }
+        AxiosInstance.post('/events', eventDetails)
+            .then(response => {
+                if(response.status === 200) {
+                    history.push('/calendar');
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        // console.log(eventDetails)
+    }
+
     return (
         <div className='createEvent'>
-            <form className='createForm'>
+            <form className='createForm' onSubmit={sendEvent}>
                 <label htmlFor='eventname'>Event Name:</label>
                 <input type='text' id='eventname' name='eventname' />
                 <label htmlFor='eventdate'>Event Date:</label>
-                <input type='text' id='eventdate' name='eventdate' />
-                <label htmlFor='start'>Start Time:</label>
-                <input type='text' id='start' name='start' />
-                <label htmlFor='end'>End Time:</label>
-                <input type='text' id='end' name='end' />
-                <label htmlFor='media'>Image Link:</label>
-                <input type='text' id='media' name='media' />
+                <input type='date' id='eventdate' name='eventdate' />
+                <label htmlFor='eventstart'>Start Time:</label>
+                <input type='time' id='eventstart' name='eventstart' />
+                <label htmlFor='eventend'>End Time:</label>
+                <input type='time' id='eventend' name='eventend' />
+                <label htmlFor='eventmedia'>Image Link:</label>
+                <input type='url' id='eventmedia' name='eventmedia' />
                 <label htmlFor='location'>Location:</label>
                 <select id='location' name='location'>
                     {
                         venueList.map(venue => (
-                            <option key={venue.id} value={venue.name} location={venue.location}>{venue.name}</option>
+                            <option key={venue.id} value={venue.location}>{venue.name}</option>
                         ))
                     }
                 </select>
                 <label htmlFor='details'>Event Details:</label>
-                <input type='text' id='details' name='details' />
+                <textarea type='text' id='details' name='details' rows='10' />
                 <label htmlFor='brands'>Brand(s):</label>
                 <select id='brands' name='brands'>
                     {
                         brandList.map(brand => (
-                            <option key={brand.id} value={brand.name}>{brand.name}</option>
+                            <option key={brand.id} value={brand.id}>{brand.name}</option>
                         ))
                     }
                 </select>
