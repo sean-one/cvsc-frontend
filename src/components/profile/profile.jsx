@@ -8,27 +8,47 @@ import UserContext from '../../context/userContext';
 import { isPast } from 'date-fns';
 import format from 'date-fns/format';
 
-const Profile = () => {
-    const { userProfile } = useContext(UserContext);
+const Profile = (props) => {
+    const { userProfile, setUserProfile } = useContext(UserContext);
     const [ userEvents, setUserEvents ] = useState([]);
     const sortedEvents = sortDaysEvents(userEvents);
-    console.log(userProfile)
+    // console.log(userProfile)
 
     const getUserEvents = async () => {
-        const events = await AxiosInstance.get(`events/user/${userProfile.id}`);
-        setUserEvents(events.data);
+        const userId = localStorage.getItem('userId')
+        if (userId) {
+            const events = await AxiosInstance.get(`events/user/${parseInt(userId)}`);
+            setUserEvents(events.data);
+        } else {
+            const events = await AxiosInstance.get(`events/user/${userProfile.id}`);
+            setUserEvents(events.data)
+        }
     }
 
     useEffect(() => {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            setUserProfile(JSON.parse(userData));
+        }
         getUserEvents()
+        // eslint-disable-next-line
     }, []);
 
-    console.log(sortedEvents);
+    useEffect(() => {
+        localStorage.setItem('userId', JSON.stringify(userProfile.id))
+        localStorage.setItem('user', JSON.stringify(userProfile));
+        // eslint-disable-next-line
+    });
+
+    // console.log(sortedEvents);
     return (
         <div className='userProfile'>
             <div className='account'>
                 <img src={userProfile.avatar} alt='account avatar' />
                 <h1>{`Welcome ${userProfile.username}`}</h1>
+            </div>
+            <div className='createNewEvent'>
+                <p>+ CREATE A NEW EVENT</p>
             </div>
             <div className='userEvents'>
                 {

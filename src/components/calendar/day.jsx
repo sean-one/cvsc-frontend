@@ -8,8 +8,6 @@ import EventPreview from '../events/eventPreview';
 const Day = (props) => {
     const daysEvents = props.schedule
 
-    
-
     return (
         <div className={`days`}>
             <div className='dateHeader'>{format(props.date, 'MMMM d')}</div>

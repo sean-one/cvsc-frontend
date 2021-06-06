@@ -13,7 +13,17 @@ const Menu = (props) => {
             }}>
                 <li onClick={props.toggle}>Calendar</li>
             </Link>
-            {(isLoggedIn === 'true') && <Link to={{ pathname: '/profile' }}><li onClick={props.toggle}>Profile</li></Link>}
+            {
+                (isLoggedIn === 'true')
+                    && <Link to={{
+                            pathname: '/profile',
+                            // state: {
+                            //     state
+                            // }
+                        }}>
+                            <li onClick={props.toggle}>Profile</li>
+                        </Link>
+            }
             {
                 (isLoggedIn === 'true')
                     ? <Link to={{
