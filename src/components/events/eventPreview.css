@@ -1,4 +1,5 @@
 .eventCard {
+    position: relative;
     margin: 0.75rem 0;
     display: flex;
     align-items: center;
@@ -44,4 +45,15 @@
     /* height: 2.5rem; */
     /* overflow: hidden; */
     /* text-overflow: ellipsis; */
+}
+
+.eventAdmin {
+    padding: 0.75rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.adminIcon {
+    padding: 0.5rem;
 }

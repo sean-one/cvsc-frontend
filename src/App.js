@@ -11,8 +11,9 @@ import Calendar from './components/calendar/calendar';
 import EventCard from './components/events/eventCard.jsx';
 import Header from './components/header/header.jsx';
 import Login from './components/login/login.jsx';
-import Profile from './components/profile/profile.jsx';
 import AuthRoute from './components/auth/auth.jsx';
+import Profile from './components/profile/profile.jsx';
+import EditCreateEvent from './components/events/editCreateEvent.jsx';
 
 import CalendarContext from './context/calendarContext';
 import UserContext from './context/userContext';
@@ -58,6 +59,7 @@ const App = () => {
           component={Login}
         />
         <AuthRoute exact path='/profile' component={Profile} />
+        <AuthRoute path='/events/create' component={EditCreateEvent} />
       </UserContext.Provider>
     </div>
   );

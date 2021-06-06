@@ -1,6 +1,8 @@
 // import React, { useState, useEffect } from 'react';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import './eventPreview.css';
 
@@ -9,6 +11,19 @@ const EventPreview = (props) => {
 
     const detailPreview = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
+    }
+
+    const user = JSON.parse(localStorage.getItem('user'))
+    let adminControls = null;
+    if (user && user.id === event.created_by) {
+        adminControls = <div className='eventAdmin'>
+                            <span className='adminIcon'>
+                                <FontAwesomeIcon icon={faPencilAlt} size="lg" />
+                            </span>
+                            <span className='adminIcon'>
+                                <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+                            </span>
+                        </div>
     }
 
     return (
@@ -53,6 +68,7 @@ const EventPreview = (props) => {
                 <div className='brand'>
                     <p>{event.name}</p>
                 </div>
+                {adminControls}
             </div>
         </div>
     )

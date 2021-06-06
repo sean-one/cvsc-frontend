@@ -6,7 +6,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: yellow; */
 }
 
 .branding {
@@ -35,6 +34,7 @@
     animation-fill-mode: forwards;
     /* bottom:0; */
     background: white;
+    z-index: 55;
 }
 
 .inactive {

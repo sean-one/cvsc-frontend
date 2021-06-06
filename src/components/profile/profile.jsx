@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
 import { sortDaysEvents } from '../calendar/getCalendar';
@@ -48,7 +49,14 @@ const Profile = (props) => {
                 <h1>{`Welcome ${userProfile.username}`}</h1>
             </div>
             <div className='createNewEvent'>
-                <p>+ CREATE A NEW EVENT</p>
+                <Link to={{
+                    pathname: '/events/create',
+                    state: {
+                        from: props.location.pathname
+                    }
+                }}>
+                    <p>+ CREATE A NEW EVENT</p>
+                </Link>
             </div>
             <div className='userEvents'>
                 {
