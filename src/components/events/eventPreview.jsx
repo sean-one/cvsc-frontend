@@ -13,6 +13,10 @@ const EventPreview = (props) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
     }
 
+    const removeEvent = (e) => {
+        console.log(e)
+    }
+
     const user = JSON.parse(localStorage.getItem('user'))
     let adminControls = null;
     if (user && user.id === event.created_by) {
@@ -21,7 +25,7 @@ const EventPreview = (props) => {
                                 <FontAwesomeIcon icon={faPencilAlt} size="lg" />
                             </span>
                             <span className='adminIcon'>
-                                <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+                                <FontAwesomeIcon onClick={removeEvent} icon={faTrashAlt} size="lg" />
                             </span>
                         </div>
     }

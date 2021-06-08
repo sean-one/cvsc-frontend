@@ -45,7 +45,7 @@ const Profile = (props) => {
     return (
         <div className='userProfile'>
             <div className='account'>
-                <img src={userProfile.avatar} alt='account avatar' />
+                <img src={userProfile.avatar || 'https://picsum.photos/100/100'} alt='account avatar' />
                 <h1>{`Welcome ${userProfile.username}`}</h1>
             </div>
             <div className='createNewEvent'>

@@ -37,7 +37,7 @@ const Login = () => {
         }
     }
     return (
-        <div className='loginWrapper'>
+        <div className='formWrapper'>
             <h2>Please Login</h2>
             <form className='loginform' onSubmit={sendLogin}>
                 <label htmlFor='username'>Username:</label>

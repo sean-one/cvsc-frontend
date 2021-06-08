@@ -14,6 +14,14 @@ const Menu = (props) => {
                 <li onClick={props.toggle}>Calendar</li>
             </Link>
             {
+                (isLoggedIn === 'false' || isLoggedIn === null)
+                    && <Link to={{
+                            pathname: '/register'
+                        }}>
+                            <li onClick={props.toggle}>Register</li>
+                        </Link>
+            }
+            {
                 (isLoggedIn === 'true')
                     && <Link to={{
                             pathname: '/profile',

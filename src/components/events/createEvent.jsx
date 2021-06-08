@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
-import './editCreateEvent.css';
+import './createEvent.css';
 
-const EditCreateEvent = () => {
+const CreateEvent = () => {
     const [ venueList, setVenueList ] = useState([])
     const [ brandList, setBrandList ] = useState([])
     let history = useHistory();
@@ -22,6 +22,7 @@ const EditCreateEvent = () => {
 
     const sendEvent = (e) => {
         e.preventDefault();
+        const userId = localStorage.getItem('userId')
         const eventDetails = {
             eventname: e.target.eventname.value,
             eventdate: e.target.eventdate.value,
@@ -31,7 +32,7 @@ const EditCreateEvent = () => {
             location_id: parseInt(e.target.location.value),
             details: e.target.details.value,
             brand_id: parseInt(e.target.brands.value),
-            created_by: 1
+            created_by: userId
         }
         AxiosInstance.post('/events', eventDetails)
             .then(response => {
@@ -48,7 +49,7 @@ const EditCreateEvent = () => {
     }
 
     return (
-        <div className='createEvent'>
+        <div className='formWrapper'>
             <form className='createForm' onSubmit={sendEvent}>
                 <label htmlFor='eventname'>Event Name:</label>
                 <input type='text' id='eventname' name='eventname' />
@@ -84,4 +85,4 @@ const EditCreateEvent = () => {
     )
 }
 
-export default EditCreateEvent;
+export default CreateEvent;
