@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
 import { sortDaysEvents } from '../calendar/getCalendar';
@@ -13,16 +13,17 @@ const Profile = (props) => {
     const { userProfile, setUserProfile } = useContext(UserContext);
     const [ userEvents, setUserEvents ] = useState([]);
     const sortedEvents = sortDaysEvents(userEvents);
-    // console.log(userProfile)
+    let history = useHistory();
 
     const getUserEvents = async () => {
-        const userId = localStorage.getItem('userId')
-        if (userId) {
+        try {
+            const userId = localStorage.getItem('userId')
             const events = await AxiosInstance.get(`events/user/${parseInt(userId)}`);
             setUserEvents(events.data);
-        } else {
-            const events = await AxiosInstance.get(`events/user/${userProfile.id}`);
-            setUserEvents(events.data)
+        } catch (error) {
+            localStorage.clear()
+            history.push('/login')
+            console.log(error)
         }
     }
 
@@ -34,12 +35,6 @@ const Profile = (props) => {
         getUserEvents()
         // eslint-disable-next-line
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem('userId', JSON.stringify(userProfile.id))
-        localStorage.setItem('user', JSON.stringify(userProfile));
-        // eslint-disable-next-line
-    });
 
     // console.log(sortedEvents);
     return (

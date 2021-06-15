@@ -21,7 +21,6 @@ const Register = () => {
         AxiosInstance.post('/users/register', userDetails)
             .then(response => {
                 if(response.status === 200) {
-                    console.log(response.data)
                     localStorage.setItem('token', response.data.token);
                     setUserProfile(response.data)
                     localStorage.setItem('isLoggedIn', true)

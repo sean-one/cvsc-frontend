@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
 import './createEvent.css';
 
-const CreateEvent = () => {
+const CreateEvent = (props) => {
     const [ venueList, setVenueList ] = useState([])
     const [ brandList, setBrandList ] = useState([])
     let history = useHistory();
@@ -32,17 +32,25 @@ const CreateEvent = () => {
             location_id: parseInt(e.target.location.value),
             details: e.target.details.value,
             brand_id: parseInt(e.target.brands.value),
-            created_by: userId
+            created_by: parseInt(userId)
         }
         AxiosInstance.post('/events', eventDetails)
             .then(response => {
+                // console.log(response.data.id)
                 if(response.status === 200) {
-                    history.push('/calendar');
+                    console.log(response)
+                    history.push({
+                        pathname: `/calendar/${response.data.id}`,
+                        state: {
+                            event: response.data
+                        }
+                    });
                 } else {
                     throw new Error();
                 }
             })
             .catch(err => {
+                console.log('inside catch')
                 console.log(err)
             })
         // console.log(eventDetails)
@@ -85,4 +93,4 @@ const CreateEvent = () => {
     )
 }
 
-export default CreateEvent;
+export default withRouter(CreateEvent);

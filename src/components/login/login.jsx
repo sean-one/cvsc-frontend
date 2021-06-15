@@ -12,38 +12,35 @@ const Login = () => {
 
     const sendLogin = (e) => {
         e.preventDefault();
-        if(!e.target.username.value || !e.target.password.value) {
-            // need to put together and error that can be displayed on screen
-            console.log('fill in inputs!')
-        } else {
-            const userDetails = {
-                username: e.target.username.value,
-                password: e.target.password.value
-            }
-            AxiosInstance.post('/users/login', userDetails)
-                .then(response => {
-                    if(response.status === 200) {
-                        localStorage.setItem('token', response.data.token);
-                        setUserProfile(response.data)
-                        localStorage.setItem('isLoggedIn', true)
-                        history.push('/profile');
-                    } else {
-                        throw new Error();
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        const userDetails = {
+            username: e.target.username.value,
+            password: e.target.password.value
         }
+        AxiosInstance.post('/users/login', userDetails)
+            .then(response => {
+                if(response.status === 200) {
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('userId', response.data.id)
+                    localStorage.setItem('user', JSON.stringify(response.data))
+                    setUserProfile(response.data)
+                    localStorage.setItem('isLoggedIn', true)
+                    history.push('/profile');
+                } else {
+                    throw new Error('invalid stuffs');
+                }
+            })
+            .catch(err => {
+                console.log(err.name + ': ' + err.message)
+            })
     }
     return (
         <div className='formWrapper'>
             <h2>Please Login</h2>
             <form className='loginform' onSubmit={sendLogin}>
                 <label htmlFor='username'>Username:</label>
-                <input type='text' id='username' name='username' />
+                <input type='text' id='username' name='username' required/>
                 <label htmlFor='password'>Password:</label>
-                <input type='password' id='password' name='password' />
+                <input type='password' id='password' name='password' required/>
                 <input type='submit' value='submit' />
             </form>
         </div>
