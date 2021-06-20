@@ -32,7 +32,6 @@ const EventCard = (props) => {
         // eslint-disable-next-line
     }, [singleEvent]);
 
-    console.log(brandEvents)
     return (
         <div className='eventWrapper'>
             <div className='singleEvent'>
