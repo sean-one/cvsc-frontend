@@ -13,7 +13,7 @@ const Day = (props) => {
             <div className='dateHeader'>{format(props.date, 'MMMM d')}</div>
             {/* need to sort right here so that events list by time */}
             {daysEvents.map(event => (
-                <EventPreview key={event.id} event={event}/>
+                <EventPreview key={event.event_id} event={event}/>
             ))}
         </div>
     )

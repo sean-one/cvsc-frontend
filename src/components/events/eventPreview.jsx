@@ -1,5 +1,5 @@
 // import React, { useState, useEffect } from 'react';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, withRouter, useHistory } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +20,7 @@ const EventPreview = (props) => {
     const removeEvent = (e) => {
         // e.preventDefault()
         try {
-            AxiosInstance.delete(`/events/remove/${event.id}`)
+            AxiosInstance.delete(`/events/remove/${event.event_id}`)
                 .then(response => {
                     if(response.status === 204) {
                         history.push('/profile')
@@ -29,7 +29,7 @@ const EventPreview = (props) => {
         } catch (error) {
             
         }
-        console.log(event.id)
+        console.log(event.event_id)
     }
 
     const user = JSON.parse(localStorage.getItem('user'))
@@ -39,17 +39,17 @@ const EventPreview = (props) => {
                             <div className='adminIcon'>
                                 <FontAwesomeIcon icon={faPencilAlt} size="lg" />
                             </div>
-                            <div id={event.id} className='adminIcon' onClick={removeEvent} >
+                            <div id={event.event_id} className='adminIcon' onClick={removeEvent} >
                                 <FontAwesomeIcon icon={faTrashAlt} size="lg" />
                             </div>
                         </div>
     }
 
     return (
-        <div className='eventCard' key={event.id}>
+        <div className='eventCard' key={event.event_id}>
             <div className='cardImg'>
                 <Link to={{
-                    pathname: `/calendar/${event.id}`,
+                    pathname: `/calendar/${event.event_id}`,
                     state: {
                         event,
                         from: props.location.pathname
@@ -61,7 +61,7 @@ const EventPreview = (props) => {
             <div className='cardInfo'>
                 <div className='cardTitle'>
                     <Link to={{
-                        pathname: `/calendar/${event.id}`,
+                        pathname: `/calendar/${event.event_id}`,
                         state: {
                             event,
                             from: props.location.pathname
@@ -75,7 +75,7 @@ const EventPreview = (props) => {
                 </div>
                 <div className='cardDetails'>
                     <Link to={{
-                        pathname: `/calendar/${event.id}`,
+                        pathname: `/calendar/${event.event_id}`,
                         state: {
                             event,
                             from: props.location.pathname
@@ -85,7 +85,7 @@ const EventPreview = (props) => {
                     </Link>
                 </div>
                 <div className='brand'>
-                    <p>{event.name}</p>
+                    <p>{event.brand_name}</p>
                 </div>
                 {adminControls}
             </div>

@@ -6,7 +6,7 @@ import './login.css';
 
 import UserContext from '../../context/userContext';
 
-const Login = () => {
+const Login = (props) => {
     const { setUserProfile } = useContext(UserContext);
     const [ passwordError, setPasswordError ] = useState(false); 
     const [ userError, setUserError ] = useState(false);
@@ -24,7 +24,6 @@ const Login = () => {
         }
         AxiosInstance.post('/users/login', userDetails)
             .then(response => {
-                console.log(response)
                 if(response.status === 200) {
                     setUserProfile(response.data)
                     localStorage.setItem('token', response.data.token);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { format } from 'date-fns';
 
 import AxiosInstance from '../../helpers/axios';
+import formatTime from '../../helpers/formatTime.js';
 
 import './eventCard.css';
 import EventPreview from './eventPreview';
@@ -13,26 +14,13 @@ const EventCard = (props) => {
     const [ locationEvents, setLocationEvents ] = useState([])
     const [ brandEvents, setBrandEvents ] = useState([])
 
-    const formatTime = (eventtime) => {
-        if (eventtime > 1200) {
-            eventtime = eventtime - 1200;
-            eventtime = eventtime.toString().concat('p')
-        } else if (eventtime > 1200 && eventtime < 1260) {
-            eventtime = eventtime.toString().concat('p')
-        }else {
-            eventtime = eventtime.toString().concat('a')
-        }
-        eventtime =  eventtime.slice(0, -3) + ':' + eventtime.slice(-3)
-        return eventtime
-    }
-
     const getPageData = async () => {
-        let atLocation = await AxiosInstance.get(`/events/location/${singleEvent.location_id}`)
+        let atLocation = await AxiosInstance.get(`/events/location/${singleEvent.venue_id}`)
         let withBrand = await AxiosInstance.get(`/events/brand/${singleEvent.brand_id}`)
         
         // remove current selected event from the event lists
-        atLocation = atLocation.data.filter(event => event.id !== singleEvent.id)
-        withBrand = withBrand.data.filter(event => singleEvent.id !== event.id)
+        atLocation = atLocation.data.filter(event => event.event_id !== singleEvent.event_id)
+        withBrand = withBrand.data.filter(event => singleEvent.event_id !== event.event_id)
         
         setLocationEvents(atLocation)
         setBrandEvents(withBrand)
@@ -44,6 +32,7 @@ const EventCard = (props) => {
         // eslint-disable-next-line
     }, [singleEvent]);
 
+    console.log(brandEvents)
     return (
         <div className='eventWrapper'>
             <div className='singleEvent'>
@@ -66,17 +55,17 @@ const EventCard = (props) => {
                     <h3 className='upcomingHeader'>{`more at ${singleEvent.venue_name}...`}</h3>
                     {
                         locationEvents.map(event => (
-                            <EventPreview key={event.id} event={event} />
+                            <EventPreview key={event.event_id} event={event} />
                         ))
                     }
                 </div>
             }
             {brandEvents.length > 0 &&
                 <div className='upcomingBrand'>
-                    <h3 className='upcomingHeader'>{`more featuring ${singleEvent.name}...`}</h3>
+                    <h3 className='upcomingHeader'>{`more featuring ${singleEvent.brand_name}...`}</h3>
                     {
                         brandEvents.map(event => (
-                            <EventPreview key={event.id} event={event} />
+                            <EventPreview key={event.event_id} event={event} />
                         ))
                     }
                 </div>

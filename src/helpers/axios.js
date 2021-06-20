@@ -6,7 +6,7 @@ const token = localStorage.getItem('token');
 const axiosInstance = Axios.create({
     baseURL: baseUrl,
     withCredentials: true,
-    headers: {'Authorization': 'Bearer '+token}
+    headers: {'Authorization': 'Bearer '+ token}
 });
 
 

@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
 
 import './createEvent.css';
 
 const CreateEvent = (props) => {
+    const { register, handleSubmit } = useForm();
+    // console.log(props.location.pathname)
     const [ venueList, setVenueList ] = useState([])
     const [ brandList, setBrandList ] = useState([])
+    // creates variable to for date input constraint
+    const earliestEventDate = format(new Date(), 'yyyy-MM-dd');
     let history = useHistory();
 
     const getBusinessInfo = async () => {
@@ -20,67 +26,61 @@ const CreateEvent = (props) => {
         getBusinessInfo()
     }, []);
 
-    const sendEvent = (e) => {
-        e.preventDefault();
-        const userId = localStorage.getItem('userId')
-        const eventDetails = {
-            eventname: e.target.eventname.value,
-            eventdate: e.target.eventdate.value,
-            eventstart: parseInt(e.target.eventstart.value.replace(":", "")),
-            eventend: parseInt(e.target.eventend.value.replace(":", "")),
-            eventmedia: e.target.eventmedia.value,
-            location_id: parseInt(e.target.location.value),
-            details: e.target.details.value,
-            brand_id: parseInt(e.target.brands.value),
-            created_by: parseInt(userId)
-        }
-        AxiosInstance.post('/events', eventDetails)
+    const sendEvent = (event) => {
+        AxiosInstance.post('/events', event)
             .then(response => {
-                // console.log(response.data.id)
                 if(response.status === 200) {
                     console.log(response)
                     history.push({
-                        pathname: `/calendar/${response.data.id}`,
+                        pathname: `/calendar/${response.data.event_id}`,
                         state: {
                             event: response.data
                         }
                     });
                 } else {
-                    throw new Error();
+                    console.log(response)
+                    // throw new Error();
                 }
             })
             .catch(err => {
-                console.log('inside catch')
-                console.log(err)
+                if(!err.response) {
+                    console.log('network error')
+                } else if(err.response.status === 400) {
+                    localStorage.clear()
+                    history.push('/login');
+                }
             })
-        // console.log(eventDetails)
     }
 
     return (
         <div className='formWrapper'>
-            <form className='createForm' onSubmit={sendEvent}>
+            {/* <form className='createForm' onSubmit={sendEvent}> */}
+            <form className='createForm' onSubmit={handleSubmit((eventdata) => sendEvent(eventdata))}>
                 <label htmlFor='eventname'>Event Name:</label>
-                <input type='text' id='eventname' name='eventname' />
+                <input type='text' id='eventname' {...register('eventname')} required />
                 <label htmlFor='eventdate'>Event Date:</label>
-                <input type='date' id='eventdate' name='eventdate' />
+                <input type='date' id='eventdate' {...register('eventdate')} min={earliestEventDate} required />
                 <label htmlFor='eventstart'>Start Time:</label>
-                <input type='time' id='eventstart' name='eventstart' />
+                {/* <input type='time' id='eventstart' {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required /> */}
+                <input type='time' id='eventstart' {...register('eventstart')} required />
                 <label htmlFor='eventend'>End Time:</label>
-                <input type='time' id='eventend' name='eventend' />
+                <input type='time' id='eventend' {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })} required />
                 <label htmlFor='eventmedia'>Image Link:</label>
-                <input type='url' id='eventmedia' name='eventmedia' />
+                <input type='url' id='eventmedia' {...register('eventmedia')} />
                 <label htmlFor='location'>Location:</label>
-                <select id='location' name='location'>
+                <select id='location_id' {...register('location_id', { valueAsNumber: true })} required >
+                    <option value="">Select...</option>
                     {
                         venueList.map(venue => (
-                            <option key={venue.id} value={venue.location}>{venue.name}</option>
+                            <option key={venue.id} value={venue.id}>{venue.name}</option>
                         ))
                     }
                 </select>
                 <label htmlFor='details'>Event Details:</label>
-                <textarea type='text' id='details' name='details' rows='10' />
+                <textarea type='text' id='details' {...register('details')} rows='10' />
                 <label htmlFor='brands'>Brand(s):</label>
-                <select id='brands' name='brands'>
+                <select id='brand_id' {...register('brand_id', { valueAsNumber: true })} required >
+                    <option value="">Select...</option>
                     {
                         brandList.map(brand => (
                             <option key={brand.id} value={brand.id}>{brand.name}</option>
