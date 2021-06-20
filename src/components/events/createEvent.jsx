@@ -8,7 +8,7 @@ import './createEvent.css';
 
 const CreateEvent = (props) => {
     const { register, handleSubmit } = useForm();
-    // console.log(props.location.pathname)
+    const [ adminRoleError, setAdminRoleError ] = useState(false);
     const [ venueList, setVenueList ] = useState([])
     const [ brandList, setBrandList ] = useState([])
     // creates variable to for date input constraint
@@ -30,7 +30,6 @@ const CreateEvent = (props) => {
         AxiosInstance.post('/events', event)
             .then(response => {
                 if(response.status === 200) {
-                    console.log(response)
                     history.push({
                         pathname: `/calendar/${response.data.event_id}`,
                         state: {
@@ -48,6 +47,8 @@ const CreateEvent = (props) => {
                 } else if(err.response.status === 400) {
                     localStorage.clear()
                     history.push('/login');
+                } else if(err.response.status === 403) {
+                    setAdminRoleError(true);
                 }
             })
     }
@@ -62,13 +63,13 @@ const CreateEvent = (props) => {
                 <input type='date' id='eventdate' {...register('eventdate')} min={earliestEventDate} required />
                 <label htmlFor='eventstart'>Start Time:</label>
                 {/* <input type='time' id='eventstart' {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required /> */}
-                <input type='time' id='eventstart' {...register('eventstart')} required />
+                <input type='time' id='eventstart' {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required />
                 <label htmlFor='eventend'>End Time:</label>
                 <input type='time' id='eventend' {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })} required />
                 <label htmlFor='eventmedia'>Image Link:</label>
                 <input type='url' id='eventmedia' {...register('eventmedia')} />
-                <label htmlFor='location'>Location:</label>
-                <select id='location_id' {...register('location_id', { valueAsNumber: true })} required >
+                <label htmlFor='venue_id'>Location:</label>
+                <select id='venue_id' {...register('venue_id', { valueAsNumber: true })} required >
                     <option value="">Select...</option>
                     {
                         venueList.map(venue => (
@@ -76,6 +77,7 @@ const CreateEvent = (props) => {
                         ))
                     }
                 </select>
+                {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
                 <label htmlFor='details'>Event Details:</label>
                 <textarea type='text' id='details' {...register('details')} rows='10' />
                 <label htmlFor='brands'>Brand(s):</label>
@@ -87,6 +89,7 @@ const CreateEvent = (props) => {
                         ))
                     }
                 </select>
+                {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
                 <input type='submit' value='submit' />
             </form>
         </div>
