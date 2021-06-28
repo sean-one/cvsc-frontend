@@ -34,6 +34,14 @@ const Menu = (props) => {
             }
             {
                 (isLoggedIn === 'true')
+                    && <Link to={{
+                            pathname: '/events/create'
+                        }}>
+                            <li onClick={props.toggle}>Create Event</li>
+                        </Link>
+            }
+            {
+                (isLoggedIn === 'true')
                     ? <Link to={{
                         pathname: '/calendar'
                     }}>

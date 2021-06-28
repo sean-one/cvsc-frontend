@@ -26,23 +26,21 @@ const App = () => {
   const calendarDates = takeMonth(selectedDay)();
   const [ dailyEventList, setDailyEventList ] = useState([]);
   const [ userProfile, setUserProfile ] = useState({})
-
-  const getEventData = async () => {
-    const events = await AxiosInstance.get('/events');
-    setDailyEventList(events.data);
-  }
+  const [ userEvents, setUserEvents ] = useState([])
 
   useEffect(() => {
-    getEventData()
-  }, [])
+    AxiosInstance.get('/events')
+      .then(events => setDailyEventList(events.data));
+  }, [userEvents])
 
+  console.log(dailyEventList)
   return (
     <div className="App">
       <Header />
       <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList, setDailyEventList }}>
         <Route
           exact
-          path='/calendar'
+          path='/'
           render={(props) => (
             <Calendar {...props} range={calendarDates} />
           )}
@@ -54,7 +52,7 @@ const App = () => {
           )}
         />
       </CalendarContext.Provider>
-      <UserContext.Provider value={{userProfile, setUserProfile}}>
+      <UserContext.Provider value={{userProfile, setUserProfile, userEvents, setUserEvents}}>
         <Route 
           path='/login'
           component={Login}

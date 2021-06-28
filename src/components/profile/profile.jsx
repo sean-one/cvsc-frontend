@@ -1,17 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
 import { sortDaysEvents } from '../calendar/getCalendar';
 import Day from '../calendar/day';
+import AdminEventPreview from '../admin/adminEventPreview';
 
 import UserContext from '../../context/userContext';
 import { isPast } from 'date-fns';
 import format from 'date-fns/format';
 
 const Profile = (props) => {
-    const { userProfile, setUserProfile } = useContext(UserContext);
-    const [ userEvents, setUserEvents ] = useState([]);
+    const { userProfile, setUserProfile, userEvents, setUserEvents } = useContext(UserContext);
     const sortedEvents = sortDaysEvents(userEvents);
     let history = useHistory();
 
@@ -27,6 +27,16 @@ const Profile = (props) => {
         }
     }
 
+    const removeEvent = async (e) => {
+        console.log(e.currentTarget.id)
+        e.preventDefault()
+        const deletedEvent = await AxiosInstance.delete(`/events/remove/${e.currentTarget.id}`)
+        if(deletedEvent.status === 204) {
+            getUserEvents()
+        }
+        // console.log(deletedEvent)
+    }
+
     useEffect(() => {
         const userData = localStorage.getItem('user');
         if (userData) {
@@ -36,7 +46,6 @@ const Profile = (props) => {
         // eslint-disable-next-line
     }, []);
 
-    // console.log(sortedEvents);
     return (
         <div className='userProfile'>
             <div className='account'>
@@ -55,6 +64,13 @@ const Profile = (props) => {
             </div>
             <div className='userEvents'>
                 {
+                    userEvents.map(event => {
+                        return (
+                            <AdminEventPreview key={event.event_id} event={event} delEvent={removeEvent} />
+                        )
+                    })
+                }
+                {/* {
                     Object.keys(sortedEvents).sort(
                         (a,b) => new Date(a) - new Date(b)
                     ).map(key => {
@@ -66,7 +82,7 @@ const Profile = (props) => {
                         }
                         return null;
                     })
-                }
+                } */}
             </div>
         </div>
     )
