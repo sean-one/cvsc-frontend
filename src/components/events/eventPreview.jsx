@@ -14,49 +14,35 @@ const EventPreview = (props) => {
     const user = JSON.parse(localStorage.getItem('user'))
 
     return (
-        <div className='eventCard' key={event.event_id}>
-            <div className='cardImg'>
-                <Link to={{
-                    pathname: `/calendar/${event.event_id}`,
-                    state: {
-                        event,
-                        from: props.location.pathname
-                    }
-                }}>
-                    <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} />
-                </Link>
-            </div>
-            <div className='cardInfo'>
-                <div className='cardTitle'>
-                    <Link to={{
-                        pathname: `/calendar/${event.event_id}`,
-                        state: {
-                            event,
-                            from: props.location.pathname
-                        }
-                    }}>
-                        <p>{event.eventname}</p>
-                    </Link>
+        <>
+            <Link to={{
+                pathname: `/calendar/${event.event_id}`,
+                state: {
+                    event,
+                    from: props.location.pathname
+                }
+            }}>
+                <div className='eventCard' key={event.event_id}>
+                    <div className='cardImg'>
+                        <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} />
+                    </div>
+                    <div className='cardInfo'>
+                        <div className='cardTitle'>
+                            <p>{event.eventname}</p>
+                        </div>
+                        <div className='cardLocation'>
+                            <p>{`${event.venue_name}`}</p>
+                        </div>
+                        <div className='cardDetails'>
+                            <p>{detailPreview(event.details, 100)}</p>
+                        </div>
+                        <div className='brand'>
+                            <p>{event.brand_name}</p>
+                        </div>
+                    </div>
                 </div>
-                <div className='cardLocation'>
-                    <p>{`${event.venue_name}`}</p>
-                </div>
-                <div className='cardDetails'>
-                    <Link to={{
-                        pathname: `/calendar/${event.event_id}`,
-                        state: {
-                            event,
-                            from: props.location.pathname
-                        }
-                    }}>
-                        <p>{detailPreview(event.details, 100)}</p>
-                    </Link>
-                </div>
-                <div className='brand'>
-                    <p>{event.brand_name}</p>
-                </div>
-            </div>
-        </div>
+            </Link>
+        </>
     )
 }
 
