@@ -1,17 +1,14 @@
 import React from 'react';
-import { Link, withRouter, useHistory } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import './eventPreview.css';
 
 const EventPreview = (props) => {
     const event = props.event;
-    let history = useHistory();
 
     const detailPreview = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
     }
-
-    const user = JSON.parse(localStorage.getItem('user'))
 
     return (
         <>
@@ -24,6 +21,7 @@ const EventPreview = (props) => {
             }}>
                 <div className='eventCard' key={event.event_id}>
                     <div className='cardImg'>
+                        {/* add the time of the event somewhere on one of the image corners */}
                         <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} />
                     </div>
                     <div className='cardInfo'>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { format } from 'date-fns';
 
 import AxiosInstance from '../../helpers/axios';
@@ -7,7 +7,10 @@ import formatTime from '../../helpers/formatTime.js';
 import './eventCard.css';
 import EventPreview from './eventPreview';
 
+import CalendarContext from '../../context/calendarContext';
+
 const EventCard = (props) => {
+    const { dailyEventList } = useContext(CalendarContext);
     const singleEvent = props.location.state.event;
     const eventDate = new Date(singleEvent.eventdate);
 
@@ -32,6 +35,11 @@ const EventCard = (props) => {
         // eslint-disable-next-line
     }, [singleEvent]);
 
+    const venueEvents = dailyEventList.filter(event => event.venue_id === singleEvent.venue_id);
+    const filteredBrand = dailyEventList.filter(event => event.brand_id === singleEvent.brand_id);
+
+    console.log(venueEvents)
+    console.log(filteredBrand)
     return (
         <div className='eventWrapper'>
             <div className='singleEvent'>
@@ -39,7 +47,6 @@ const EventCard = (props) => {
                 <div className='datetimeInfo'>
                     <div>{format(eventDate, 'MMMM d, Y')}</div>
                     <div>{`${formatTime(singleEvent.eventstart)} - ${formatTime(singleEvent.eventend)}`}</div>
-                    {/* <div>{`${format(eventStartTime, 'h:mmaaa')} - ${format(eventEndTime, 'h:mmaaa')}`}</div> */}
                 </div>
                 <div className='imageWrapper'>
                     <img src={singleEvent.eventmedia} alt='temp for display help'/>

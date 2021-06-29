@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { format, isPast, isToday } from 'date-fns';
+import { format } from 'date-fns';
 
 import Day from './day.jsx';
 
@@ -21,13 +21,9 @@ const Calendar = () => {
                         (a,b) => new Date(a) - new Date(b)
                     ).map(key => {
                         const eventDate = new Date(key)
-                        // exclude any events that have already passed
-                        if (!isPast(eventDate) || isToday(eventDate)) {
-                            return (
-                                <Day key={format(eventDate, 't')} date={eventDate} schedule={sortedEvents[key]} />
-                            )
-                        }
-                        return null;
+                        return (
+                            <Day key={format(eventDate, 't')} date={eventDate} schedule={sortedEvents[key]} />
+                        )
                     })
                 }
             </div>

@@ -33,7 +33,7 @@ const App = () => {
       .then(events => setDailyEventList(events.data));
   }, [userEvents])
 
-  console.log(dailyEventList)
+  // console.log(dailyEventList)
   return (
     <div className="App">
       <Header />
