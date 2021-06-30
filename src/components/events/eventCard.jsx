@@ -14,8 +14,8 @@ const EventCard = (props) => {
     const singleEvent = props.location.state.event;
     const eventDate = new Date(singleEvent.eventdate);
 
-    const [ locationEvents, setLocationEvents ] = useState([])
-    const [ brandEvents, setBrandEvents ] = useState([])
+    const [locationEvents, setLocationEvents] = useState(dailyEventList.filter(event => event.venue_id === singleEvent.venue_id))
+    const [brandEvents, setBrandEvents] = useState(dailyEventList.filter(event => event.brand_id === singleEvent.brand_id))
 
     const getPageData = async () => {
         let atLocation = await AxiosInstance.get(`/events/location/${singleEvent.venue_id}`)
@@ -25,8 +25,10 @@ const EventCard = (props) => {
         atLocation = atLocation.data.filter(event => event.event_id !== singleEvent.event_id)
         withBrand = withBrand.data.filter(event => singleEvent.event_id !== event.event_id)
         
-        setLocationEvents(atLocation)
-        setBrandEvents(withBrand)
+        // ;
+        // const filteredBrand = await ;
+        // setLocationEvents(venueEvents)
+        // setBrandEvents(filteredBrand)
     }
 
     useEffect(() => {
@@ -35,11 +37,10 @@ const EventCard = (props) => {
         // eslint-disable-next-line
     }, [singleEvent]);
 
-    const venueEvents = dailyEventList.filter(event => event.venue_id === singleEvent.venue_id);
-    const filteredBrand = dailyEventList.filter(event => event.brand_id === singleEvent.brand_id);
 
-    console.log(venueEvents)
-    console.log(filteredBrand)
+    console.log(locationEvents)
+    console.log(brandEvents)
+    console.log(dailyEventList)
     return (
         <div className='eventWrapper'>
             <div className='singleEvent'>
