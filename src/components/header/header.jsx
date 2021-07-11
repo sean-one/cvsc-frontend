@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+// import React, { useState, useContext } from 'react';
 
 import Menu from '../navigation/menu';
 import './header.css';
 
-import UserContext from '../../context/userContext';
+// import UserContext from '../../context/userContext';
 
 const Header = () => {
     const [ activeMenu, setActiveMenu ] = useState(false)

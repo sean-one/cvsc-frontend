@@ -1,46 +1,53 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+// import React, { useState, useContext, useEffect } from 'react'
 import { format } from 'date-fns';
 
+import EventCardUpcoming from './eventCardUpcoming/eventCardUpcoming.js';
 import AxiosInstance from '../../helpers/axios';
 import formatTime from '../../helpers/formatTime.js';
 
 import './eventCard.css';
-import EventPreview from './eventPreview';
+// import EventPreview from './eventPreview';
 
-import CalendarContext from '../../context/calendarContext';
+// import CalendarContext from '../../context/calendarContext';
 
 const EventCard = (props) => {
-    const { dailyEventList } = useContext(CalendarContext);
-    const singleEvent = props.location.state.event;
+    const [ singleEvent, setSingleEvent ] = useState(() => {
+        if (props.location.state === undefined) {
+            const eventId = props.match.params.id
+            AxiosInstance.get(`/events/${eventId}`)
+                .then(event => {
+                    return event.data;
+                })
+        } else {
+            return props.location.state.event;
+        }
+    })
+    // console.log(props.match.params.id)
+    // const { dailyEventList } = useContext(CalendarContext);
+    // const singleEvent = props.location.state.event || props.match.params.id;
     const eventDate = new Date(singleEvent.eventdate);
 
-    const [locationEvents, setLocationEvents] = useState(dailyEventList.filter(event => event.venue_id === singleEvent.venue_id))
-    const [brandEvents, setBrandEvents] = useState(dailyEventList.filter(event => event.brand_id === singleEvent.brand_id))
-
-    const getPageData = async () => {
-        let atLocation = await AxiosInstance.get(`/events/location/${singleEvent.venue_id}`)
-        let withBrand = await AxiosInstance.get(`/events/brand/${singleEvent.brand_id}`)
+    // const getPageData = async () => {
+    //     let atLocation = await AxiosInstance.get(`/events/location/${singleEvent.venue_id}`)
+    //     let withBrand = await AxiosInstance.get(`/events/brand/${singleEvent.brand_id}`)
         
-        // remove current selected event from the event lists
-        atLocation = atLocation.data.filter(event => event.event_id !== singleEvent.event_id)
-        withBrand = withBrand.data.filter(event => singleEvent.event_id !== event.event_id)
+    //     // remove current selected event from the event lists
+    //     atLocation = atLocation.data.filter(event => event.event_id !== singleEvent.event_id)
+    //     withBrand = withBrand.data.filter(event => singleEvent.event_id !== event.event_id)
         
-        // ;
-        // const filteredBrand = await ;
-        // setLocationEvents(venueEvents)
-        // setBrandEvents(filteredBrand)
-    }
+    //     // ;
+    //     // const filteredBrand = await ;
+    //     // setLocationEvents(venueEvents)
+    //     // setBrandEvents(filteredBrand)
+    // }
 
     useEffect(() => {
-        getPageData()
+        // getPageData()
         window.scrollTo(0,0);
         // eslint-disable-next-line
     }, [singleEvent]);
 
-
-    console.log(locationEvents)
-    console.log(brandEvents)
-    console.log(dailyEventList)
     return (
         <div className='eventWrapper'>
             <div className='singleEvent'>
@@ -57,7 +64,8 @@ const EventCard = (props) => {
                 </div>
                 <div>{singleEvent.details}</div>
             </div>
-            {locationEvents.length > 0 &&
+            <EventCardUpcoming event={singleEvent} />
+            {/* {locationEvents.length > 0 &&
                 <div className='upcomingLocation'>
                     <h3 className='upcomingHeader'>{`more at ${singleEvent.venue_name}...`}</h3>
                     {
@@ -76,7 +84,7 @@ const EventCard = (props) => {
                         ))
                     }
                 </div>
-            }
+            } */}
         </div>
 
     )

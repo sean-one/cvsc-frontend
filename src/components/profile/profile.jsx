@@ -2,17 +2,17 @@ import React, { useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
-import { sortDaysEvents } from '../calendar/getCalendar';
-import Day from '../calendar/day';
+// import { sortDaysEvents } from '../calendar/getCalendar';
+// import Day from '../calendar/day';
 import AdminEventPreview from '../admin/adminEventPreview';
 
 import UserContext from '../../context/userContext';
-import { isPast } from 'date-fns';
-import format from 'date-fns/format';
+// import { isPast } from 'date-fns';
+// import format from 'date-fns/format';
 
 const Profile = (props) => {
     const { userProfile, setUserProfile, userEvents, setUserEvents } = useContext(UserContext);
-    const sortedEvents = sortDaysEvents(userEvents);
+    // const sortedEvents = sortDaysEvents(userEvents);
     let history = useHistory();
 
     const getUserEvents = async () => {
