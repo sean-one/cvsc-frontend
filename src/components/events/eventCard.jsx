@@ -12,17 +12,18 @@ import './eventCard.css';
 // import CalendarContext from '../../context/calendarContext';
 
 const EventCard = (props) => {
-    const [ singleEvent, setSingleEvent ] = useState(() => {
-        if (props.location.state === undefined) {
-            const eventId = props.match.params.id
-            AxiosInstance.get(`/events/${eventId}`)
-                .then(event => {
-                    return event.data;
-                })
-        } else {
-            return props.location.state.event;
-        }
-    })
+    const [singleEvent, setSingleEvent] = useState(props.location.state.event);
+    // const [singleEvent, setSingleEvent] = useState(() => {
+    //     if (props.location.state === undefined) {
+    //         const eventId = props.match.params.id
+    //         AxiosInstance.get(`/events/${eventId}`)
+    //             .then(event => {
+    //                 return event.data;
+    //             })
+    //     } else {
+    //         return props.location.state.event;
+    //     }
+    // })
     // console.log(props.match.params.id)
     // const { dailyEventList } = useContext(CalendarContext);
     // const singleEvent = props.location.state.event || props.match.params.id;
@@ -43,11 +44,13 @@ const EventCard = (props) => {
     // }
 
     useEffect(() => {
+        AxiosInstance.get(`/events/${props.match.params.id}`)
+            .then(event => setSingleEvent(event.data))
         // getPageData()
         window.scrollTo(0,0);
         // eslint-disable-next-line
-    }, [singleEvent]);
-
+    }, [props.match.params.id]);
+    console.log(singleEvent)
     return (
         <div className='eventWrapper'>
             <div className='singleEvent'>
