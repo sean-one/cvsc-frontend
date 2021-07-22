@@ -29,7 +29,7 @@ const EventPreview = (props) => {
                             <p>{event.eventname}</p>
                         </div>
                         <div className='cardLocation'>
-                            <p>{`${event.venue_name}`}</p>
+                            <p>{`${event.brand_name} at ${event.venue_name}`}</p>
                         </div>
                         <div className='cardDetails'>
                             <p>{detailPreview(event.details, 100)}</p>

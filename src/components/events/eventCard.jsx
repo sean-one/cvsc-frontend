@@ -50,7 +50,7 @@ const EventCard = (props) => {
         window.scrollTo(0,0);
         // eslint-disable-next-line
     }, [props.match.params.id]);
-    console.log(singleEvent)
+    
     return (
         <div className='eventWrapper'>
             <div className='singleEvent'>
