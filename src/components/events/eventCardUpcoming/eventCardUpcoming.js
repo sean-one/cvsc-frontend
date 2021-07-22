@@ -11,20 +11,17 @@ const EventCardUpcoming = (props) => {
     let upcomingWithBrand = []
     if (props.event.brand_id === props.event.venue_id) {
         upcomingEvents = dailyEventList.filter(event => ((event.venue_id === props.event.brand_id || event.brand_id === props.event.brand_id) && event.event_id !== props.event.event_id))
-        // console.log(upcomingEvents)
     } else  {
         upcomingAtLocation = dailyEventList.filter(event => (event.venue_id === props.event.venue_id && event.event_id !== props.event.event_id))
         upcomingWithBrand = dailyEventList.filter(event => (event.brand_id === props.event.brand_id && event.event_id !== props.event.event_id))
-        // console.log(upcomingAtLocation)
-        // console.log(upcomingWithBrand)
     }
-    console.log(upcomingEvents)
+    
     return (
         <div>
             {
                 (upcomingEvents.length > 0) &&
                     <div>
-                        <h2>more upcoming events</h2>
+                        <h3>more upcoming events</h3>
                         {upcomingEvents.map(event => {
                             return (
                                 <EventPreview key={event.event_id} event={event}/>
@@ -35,7 +32,7 @@ const EventCardUpcoming = (props) => {
             {
                 (upcomingAtLocation.length > 0) && 
                     <div>
-                        <h2>{`more events at ${props.event.venue_name}`}</h2>
+                        <h3>{`more events at ${props.event.venue_name}`}</h3>
                         {upcomingAtLocation.map(event => {
                             return (
                                 <EventPreview key={event.event_id} event={event}/>
@@ -46,7 +43,7 @@ const EventCardUpcoming = (props) => {
             {
                 (upcomingWithBrand.length > 0) && 
                     <div>
-                        <h2>{`more events with ${props.event.brand_name}`}</h2>
+                        <h3>{`more events with ${props.event.brand_name}`}</h3>
                         {upcomingWithBrand.map(event => {
                             return (
                                 <EventPreview key={event.event_id} event={event}/>
