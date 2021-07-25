@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../../helpers/axios';
@@ -27,7 +27,7 @@ const Profile = (props) => {
                 console.log('something went wrong', err)
             })
     }
-    
+
     useEffect(() => {
         const userData = localStorage.getItem('user');
         if (userData) {
