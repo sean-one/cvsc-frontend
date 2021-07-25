@@ -1,50 +1,45 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../../helpers/axios';
 
-// import { sortDaysEvents } from '../calendar/getCalendar';
-// import Day from '../calendar/day';
-import AdminEventPreview from '../admin/adminEventPreview';
+import EventPreview from '../events/eventPreview';
 
 import UserContext from '../../context/userContext';
-// import { isPast } from 'date-fns';
-// import format from 'date-fns/format';
+
+import './profile.css';
 
 const Profile = (props) => {
     const { userProfile, setUserProfile, userEvents, setUserEvents } = useContext(UserContext);
-    // const sortedEvents = sortDaysEvents(userEvents);
-    let history = useHistory();
-
-    const getUserEvents = async () => {
-        try {
-            const userId = localStorage.getItem('userId')
-            const events = await AxiosInstance.get(`events/user/${parseInt(userId)}`);
-            setUserEvents(events.data);
-        } catch (error) {
-            localStorage.clear()
-            history.push('/login')
-            console.log(error)
-        }
-    }
+    const [ refresher, setRefresher ] = useState(false);
 
     const removeEvent = async (e) => {
-        console.log(e.currentTarget.id)
-        e.preventDefault()
-        const deletedEvent = await AxiosInstance.delete(`/events/remove/${e.currentTarget.id}`)
-        if(deletedEvent.status === 204) {
-            getUserEvents()
-        }
-        // console.log(deletedEvent)
+        const token = localStorage.getItem('token')
+        AxiosInstance.delete(`/events/remove/${e.currentTarget.id}`, {
+            headers: {'Authorization': 'Bearer ' + token}
+        })
+            .then(response => {
+                setRefresher(!refresher)
+                return
+            })
+            .catch(err => {
+                console.log('something went wrong', err)
+            })
     }
-
+    
     useEffect(() => {
         const userData = localStorage.getItem('user');
         if (userData) {
             setUserProfile(JSON.parse(userData));
         }
-        getUserEvents()
-        // eslint-disable-next-line
-    }, []);
+        async function getData() {
+            const events = await AxiosInstance.get(`events/user/${userData.id || parseInt(localStorage.getItem('userId'))}`)
+            setUserEvents(events.data)
+            return
+        }
+        getData()
+    }, [refresher, setUserProfile, setUserEvents]);
 
     return (
         <div className='userProfile'>
@@ -66,23 +61,16 @@ const Profile = (props) => {
                 {
                     userEvents.map(event => {
                         return (
-                            <AdminEventPreview key={event.event_id} event={event} delEvent={removeEvent} />
+                            <div key={event.event_id} className='adminWrapper'>
+                                <div className='adminControls'>
+                                    <div><FontAwesomeIcon icon={faPencilAlt} size='1x' /></div>
+                                    <div><FontAwesomeIcon id={event.event_id} icon={faTrashAlt} size='1x' onClick={removeEvent} /></div>
+                                </div>
+                                <EventPreview key={event.event_id} event={event} />
+                            </div>
                         )
                     })
                 }
-                {/* {
-                    Object.keys(sortedEvents).sort(
-                        (a,b) => new Date(a) - new Date(b)
-                    ).map(key => {
-                        const eventDate = new Date(key)
-                        if(!isPast(eventDate)) {
-                            return (
-                                <Day key={format(eventDate, 't')} date={eventDate} schedule={sortedEvents[key]} />
-                            )
-                        }
-                        return null;
-                    })
-                } */}
             </div>
         </div>
     )

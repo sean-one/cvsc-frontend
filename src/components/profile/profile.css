@@ -1,0 +1,17 @@
+.adminWrapper {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.adminControls {
+    display: flex;
+    z-index: 99;
+    padding: 1rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.adminControls div {
+    margin: 0 0.75rem;
+}
