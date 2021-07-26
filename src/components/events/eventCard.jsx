@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 
 import EventCardUpcoming from './eventCardUpcoming/eventCardUpcoming.js';
 import AxiosInstance from '../../helpers/axios';
-import formatTime from '../../helpers/formatTime.js';
+import { formatTime } from '../../helpers/formatTime.js';
 
 import './eventCard.css';
 

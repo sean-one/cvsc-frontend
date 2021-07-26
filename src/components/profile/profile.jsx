@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../../helpers/axios';
@@ -63,7 +63,15 @@ const Profile = (props) => {
                         return (
                             <div key={event.event_id} className='adminWrapper'>
                                 <div className='adminControls'>
-                                    <div><FontAwesomeIcon icon={faPencilAlt} size='1x' /></div>
+                                    <Link to={{
+                                        pathname: `/events/edit/${event.event_id}`,
+                                        state: {
+                                            event,
+                                            from: props.location.pathname
+                                        }
+                                    }}>
+                                        <div><FontAwesomeIcon id={event.event_id} icon={faPencilAlt} size='1x' /></div>
+                                    </Link>
                                     <div><FontAwesomeIcon id={event.event_id} icon={faTrashAlt} size='1x' onClick={removeEvent} /></div>
                                 </div>
                                 <EventPreview key={event.event_id} event={event} />
@@ -76,4 +84,4 @@ const Profile = (props) => {
     )
 }
 
-export default Profile;
+export default withRouter(Profile);

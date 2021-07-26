@@ -1,5 +1,5 @@
 
-const formatTime = (eventtime) => {
+export const formatTime = (eventtime) => {
     if (eventtime > 1200) {
         eventtime = eventtime - 1200;
         eventtime = eventtime.toString().concat('p')
@@ -12,4 +12,11 @@ const formatTime = (eventtime) => {
     return eventtime
 }
 
-export default formatTime;
+export const reformatTime = (eventtime) => {
+    eventtime = eventtime.toString()
+    eventtime = eventtime.slice(0, -2) + ':' + eventtime.slice(-2)
+    if (eventtime.length === 4) {
+        eventtime = `0${eventtime}`;
+    }
+    return eventtime;
+}

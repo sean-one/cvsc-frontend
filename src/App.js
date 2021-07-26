@@ -15,6 +15,7 @@ import Login from './components/login/login.jsx';
 import AuthRoute from './components/auth/auth.jsx';
 import Profile from './components/profile/profile.jsx';
 import CreateEvent from './components/events/createEvent.jsx';
+import EditEvent from './components/events/editEvent';
 
 import CalendarContext from './context/calendarContext';
 import UserContext from './context/userContext';
@@ -63,6 +64,7 @@ const App = () => {
         />
         <AuthRoute exact path='/profile' component={Profile} />
         <AuthRoute path='/events/create' component={CreateEvent} />
+        <AuthRoute path='/events/edit/:id' component={EditEvent} />
       </UserContext.Provider>
     </div>
   );

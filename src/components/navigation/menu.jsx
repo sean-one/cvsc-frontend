@@ -9,7 +9,7 @@ const Menu = (props) => {
     return (
         <ul className='menuListWrapper'>
             <Link to={{
-                pathname: '/calendar'
+                pathname: '/'
             }}>
                 <li onClick={props.toggle}>Calendar</li>
             </Link>
