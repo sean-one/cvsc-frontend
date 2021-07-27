@@ -10,21 +10,43 @@ const Register = () => {
     const { setUserProfile } = useContext(UserContext);
     let history = useHistory();
 
-    const createUser =(e) =>{
+    const createUser = async (e) =>{
         e.preventDefault();
+        const file = e.target.avatar.files[0]
+        
+        // get s3 url from server
+        const url = await AxiosInstance.get('/s3')
+            .then(response => {
+                return response.data.url
+                // console.log(response)
+            })
+            .catch(err => console.log(err))
+
+        // post the image directly to the s3 bucket
+        await AxiosInstance.put(url, file, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+
+        const imageUrl = url.split('?')[0]
+        
         const userDetails = {
             username: e.target.username.value,
             email: e.target.email.value,
-            avatar: e.target.avatar.value,
+            avatar: imageUrl,
             password: e.target.password.value
         }
+
         AxiosInstance.post('/users/register', userDetails)
             .then(response => {
                 if(response.status === 200) {
-                    localStorage.setItem('token', response.data.token);
                     setUserProfile(response.data)
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('userId', response.data.id);
+                    localStorage.setItem('user', JSON.stringify(response.data))
                     localStorage.setItem('isLoggedIn', true)
-                    history.push('/calendar');
+                    history.push('/profile');
                 } else {
                     throw new Error()
                 }
@@ -42,7 +64,7 @@ const Register = () => {
                 <label htmlFor='email'>Email:</label>
                 <input type='email' id='email' name='email' />
                 <label htmlFor='avatar'>Profile Image:</label>
-                <input type='url' id='avatar' name='avatar' />
+                <input type='file' id='avatar' name='avatar' accept="image/*" />
                 <label htmlFor='password'>Password:</label>
                 <input type='password' id='password' name='password' />
                 <label htmlFor='confirmaiton'>Confirm Password:</label>

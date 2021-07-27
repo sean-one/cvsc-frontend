@@ -1,3 +1,18 @@
+.account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar {
+    width: 100%;
+    background: blue;
+}
+
+.avatar img {
+    max-width: 50%;
+}
+
 .adminWrapper {
     position: relative;
     margin-bottom: 0.5rem;
@@ -5,7 +20,7 @@
 
 .adminControls {
     display: flex;
-    z-index: 99;
+    z-index: 45;
     padding: 1rem;
     position: absolute;
     right: 0;

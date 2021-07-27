@@ -43,7 +43,7 @@ const Menu = (props) => {
             {
                 (isLoggedIn === 'true')
                     ? <Link to={{
-                        pathname: '/calendar'
+                        pathname: '/'
                     }}>
                         <li onClick={props.logout}>Logout</li>
                     </Link>

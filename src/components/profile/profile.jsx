@@ -34,7 +34,7 @@ const Profile = (props) => {
             setUserProfile(JSON.parse(userData));
         }
         async function getData() {
-            const events = await AxiosInstance.get(`events/user/${userData.id || parseInt(localStorage.getItem('userId'))}`)
+            const events = await AxiosInstance.get(`events/user/${parseInt(localStorage.getItem('userId'))}`)
             setUserEvents(events.data)
             return
         }
@@ -44,7 +44,10 @@ const Profile = (props) => {
     return (
         <div className='userProfile'>
             <div className='account'>
-                <img src={userProfile.avatar || 'https://picsum.photos/100/100'} alt='account avatar' />
+                <div className='avatar'>
+                    {/* <img src={'https://picsum.photos/100/100'} alt='account avatar' /> */}
+                    <img src={userProfile.avatar || 'https://picsum.photos/100/100'} alt='account avatar' />
+                </div>
                 <h1>{`Welcome ${userProfile.username}`}</h1>
             </div>
             <div className='createNewEvent'>
