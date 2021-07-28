@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { loginSchema } from '../../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import AxiosInstance from '../../helpers/axios';
@@ -9,21 +9,10 @@ import './login.css';
 
 import UserContext from '../../context/userContext';
 
-const schema = yup.object().shape({
-    username: yup
-        .string()
-        .required("username is a required field."),
-    
-    password: yup
-        .string()
-        .required("password is a required field.")
-})
-
-
 const Login = (props) => {
     const { register, handleSubmit, setError, formState:{ errors } } = useForm({
         mode: "onBlur",
-        resolver: yupResolver(schema)
+        resolver: yupResolver(loginSchema)
     });
     const { setUserProfile } = useContext(UserContext);
     const [ serverError, setServerError ] = useState(false);
