@@ -1,4 +1,5 @@
 .header {
+    /* background-color: aqua; */
     position: relative;
     width: 100%;
     height: var(--headerHeight);
@@ -6,12 +7,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 60;
 }
 
 .branding {
     font-size: 2rem;
     font-weight: bold;
-    letter-spacing: 0.5rem;
+    letter-spacing: 0.2rem;
+}
+
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.profile img {
+    border-radius: 50%;
+    max-height: 80%;
 }
 
 .menu {
@@ -34,7 +48,7 @@
     animation-fill-mode: forwards;
     /* bottom:0; */
     background: white;
-    z-index: 55;
+    /* z-index: 55; */
 }
 
 .inactive {

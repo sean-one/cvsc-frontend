@@ -1,28 +1,37 @@
 import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import AxiosInstance from '../../helpers/axios';
 import './login.css';
 
 import UserContext from '../../context/userContext';
 
+const schema = yup.object().shape({
+    username: yup
+        .string()
+        .required("username is a required field."),
+    
+    password: yup
+        .string()
+        .required("password is a required field.")
+})
+
+
 const Login = (props) => {
+    const { register, handleSubmit, setError, formState:{ errors } } = useForm({
+        mode: "onBlur",
+        resolver: yupResolver(schema)
+    });
     const { setUserProfile } = useContext(UserContext);
-    const [ passwordError, setPasswordError ] = useState(false); 
-    const [ userError, setUserError ] = useState(false);
-    const [ netError, setNetError ] = useState(false);
+    const [ serverError, setServerError ] = useState(false);
     let history = useHistory();
 
-    const sendLogin = (e) => {
-        e.preventDefault();
-        setPasswordError(false)
-        setUserError(false)
-        setNetError(false)
-        const userDetails = {
-            username: e.target.username.value,
-            password: e.target.password.value
-        }
-        AxiosInstance.post('/users/login', userDetails)
+    const sendLogin = (data) => {
+        
+        AxiosInstance.post('/users/login', data)
             .then(response => {
                 if(response.status === 200) {
                     setUserProfile(response.data)
@@ -37,31 +46,48 @@ const Login = (props) => {
                 }
             })
             .catch(err => {
-                if(!err.respopnse) {
-                    setNetError(true)
-                    console.log('network error')
-                } else if(err.response.status === 401) {
-                    setPasswordError(true)
-                    console.log('invalid credentials')
-                } else if(err.response.status === 404) {
-                    setUserError(true)
-                    console.log('user not found')
+                if (!err.response) {
+                    setServerError(true)
+
+                } else if (err.response.status === 401) {
+                    setError('password', {
+                        type: 'server',
+                        message: 'password or username is incorrect'
+                    })
+                } else if (err.response.status === 404) {
+                    setError('username', {
+                        type: 'server',
+                        message: 'username is incorrect'
+                    })
                 } else {
                     console.log(err.name + ': ' + err.message)
                 }
             })
     }
+
     return (
         <div className='formWrapper'>
             <h2>Please Login</h2>
-            <form className='loginform' onSubmit={sendLogin}>
+            <form className='loginform' onSubmit={handleSubmit(sendLogin)}>
                 <label htmlFor='username'>Username:</label>
-                <input type='text' id='username' name='username' required/>
-                {userError && <p className='errormessage'>user not found!</p>}
+                <input
+                    {...register('username')}
+                    type='text'
+                    id='username'
+                    name='username'
+                    required
+                />
+                <p className='errormessage'>{errors.username?.message}</p>
                 <label htmlFor='password'>Password:</label>
-                <input type='password' id='password' name='password' required />
-                {netError && <p className='errormessage'>network error, please wait a moment then try again</p>}
-                {passwordError && <p className='errormessage'>wrong password!</p>}
+                <input
+                    {...register('password')}
+                    type='password'
+                    id='password'
+                    name='password'
+                    required
+                />
+                <p className='errormessage'>{errors.password?.message}</p>
+                { serverError && <p className='errormessage'>network error, please wait a moment and try again</p> }
                 <input type='submit' value='submit' />
             </form>
             <div className='registernew'>

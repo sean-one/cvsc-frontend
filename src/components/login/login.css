@@ -1,7 +1,7 @@
 .errormessage {
-    padding: 0.75rem;
-    color: white;
-    text-transform: uppercase;
+    width: 100%;
+    text-align: left;
+    padding: 0.25rem;
+    color: lightcoral;
     font-weight: bold;
-    font-size: 1.1rem;
 }

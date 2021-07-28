@@ -37,6 +37,7 @@ const App = () => {
   // console.log(dailyEventList)
   return (
     <div className="App">
+      <UserContext.Provider value={{userProfile, setUserProfile, userEvents, setUserEvents}}>
       <Header />
       <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList, setDailyEventList }}>
         <Route
@@ -53,7 +54,6 @@ const App = () => {
           )}
         />
       </CalendarContext.Provider>
-      <UserContext.Provider value={{userProfile, setUserProfile, userEvents, setUserEvents}}>
         <Route 
           path='/login'
           component={Login}

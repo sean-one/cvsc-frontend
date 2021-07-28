@@ -14,6 +14,10 @@ const Register = () => {
         e.preventDefault();
         const file = e.target.avatar.files[0]
         
+        {/* need to check for the file.  if there is no file selected I dont want to hit the s3 for a url
+            right now if nothing is selected it will upload a zero kb file and send back the url to be added to the
+            server */}
+
         // get s3 url from server
         const url = await AxiosInstance.get('/s3')
             .then(response => {
