@@ -60,6 +60,7 @@ const Login = (props) => {
             <form className='loginform' onSubmit={handleSubmit(sendLogin)}>
                 <label htmlFor='username'>Username:</label>
                 <input
+                    autoFocus
                     {...register('username')}
                     type='text'
                     id='username'

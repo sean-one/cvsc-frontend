@@ -19,6 +19,7 @@ import EditEvent from './components/events/editEvent';
 
 import CalendarContext from './context/calendarContext';
 import UserContext from './context/userContext';
+import EventsProvider from './context/events/events.provider';
 
 import './App.css';
 
@@ -40,13 +41,15 @@ const App = () => {
       <UserContext.Provider value={{userProfile, setUserProfile, userEvents, setUserEvents}}>
       <Header />
       <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList, setDailyEventList }}>
-        <Route
-          exact
-          path='/'
-          render={(props) => (
-            <Calendar {...props} range={calendarDates} />
-          )}
-        />
+        <EventsProvider>
+          <Route
+            exact
+            path='/'
+            render={(props) => (
+              <Calendar {...props} range={calendarDates} />
+            )}
+          />
+        </EventsProvider>
         <Route
           path='/calendar/:id'
           render={(props) => (

@@ -13,6 +13,7 @@ const EventCard = (props) => {
     const eventDate = new Date(singleEvent.eventdate);
 
     useEffect(() => {
+        localStorage.removeItem('editEvent');
         AxiosInstance.get(`/events/${props.match.params.id}`)
             .then(event => setSingleEvent(event.data))
         window.scrollTo(0,0);

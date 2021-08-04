@@ -1,35 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { format } from 'date-fns';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createEventSchema } from '../../helpers/validationSchemas';
+// import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
+
+import UserContext from '../../context/userContext';
 
 import './createEvent.css';
 
 const CreateEvent = (props) => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState:{ errors } } = useForm({
+        mode: 'onBlur',
+        resolver: yupResolver(createEventSchema)
+    });
+    const { userEvents, setUserEvents } = useContext(UserContext)
     const [ adminRoleError, setAdminRoleError ] = useState(false);
+    const [ networkError, setNetworkError ] = useState(false);
     const [ venueList, setVenueList ] = useState([])
     const [ brandList, setBrandList ] = useState([])
-    // creates variable to for date input constraint
-    const earliestEventDate = format(new Date(), 'yyyy-MM-dd');
     let history = useHistory();
 
-    const getBusinessInfo = async () => {
-        const brands = await AxiosInstance.get('/business/brands');
-        setBrandList(brands.data)
-        const venues = await AxiosInstance.get('/business/venues');
-        setVenueList(venues.data)
-    }
-
     useEffect(() => {
+        async function getBusinessInfo() {
+            try {
+                const venues = await AxiosInstance.get('/business/venues')
+                const brands = await AxiosInstance.get('/business/brands')
+                setVenueList(venues.data)
+                setBrandList(brands.data)
+                return
+            } catch (error) {
+                setNetworkError(true);
+            }
+        }
         getBusinessInfo()
-    }, []);
+    }, [setVenueList, setBrandList]);
 
-    const sendEvent = (event) => {
-        AxiosInstance.post('/events', event)
+    const sendEvent = async (data) => {
+        // console.log(data.eventmedia[0])
+        const token = localStorage.getItem('token')
+        const file = data.eventmedia[0]
+
+        if (file === undefined) {
+            // this needs to create an error and stop the post.  this file is required
+            const imageUrl = 'https://picsum.photos/300/400'
+            data.eventmedia = imageUrl
+
+        } else {
+
+            // get s3 url from server
+            const url = await AxiosInstance.get('/s3')
+                .then(response => {
+                    return response.data.url
+                })
+                .catch(err => console.log(err))
+            
+            await AxiosInstance.put(url, file, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+
+            const imageUrl = url.split('?')[0]
+            data.eventmedia = imageUrl
+        }
+
+        AxiosInstance.post('/events', data, {
+            headers: {'Authorization': 'Bearer ' + token}
+        })
             .then(response => {
                 if(response.status === 200) {
+                    setUserEvents([...userEvents], response.data)
                     history.push({
                         pathname: `/calendar/${response.data.event_id}`,
                         state: {
@@ -56,40 +98,79 @@ const CreateEvent = (props) => {
     return (
         <div className='formWrapper'>
             {/* <form className='createForm' onSubmit={sendEvent}> */}
-            <form className='createForm' onSubmit={handleSubmit((eventdata) => sendEvent(eventdata))}>
+            <form className='createForm' onSubmit={handleSubmit(sendEvent)}>
                 <label htmlFor='eventname'>Event Name:</label>
-                <input type='text' id='eventname' {...register('eventname')} required />
+                <input
+                    {...register('eventname')}
+                    type='text'
+                    id='eventname'
+                    required
+                />
+                <p className='errormessage'>{errors.eventname?.message}</p>
                 <label htmlFor='eventdate'>Event Date:</label>
-                <input type='date' id='eventdate' {...register('eventdate')} min={earliestEventDate} required />
+                <input
+                    type='date'
+                    id='eventdate'
+                    {...register('eventdate')}
+                    required
+                />
+                <p className='errormessage'>{errors.eventdate?.message}</p>
                 <label htmlFor='eventstart'>Start Time:</label>
                 {/* <input type='time' id='eventstart' {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required /> */}
-                <input type='time' id='eventstart' {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required />
+                <input
+                    {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                    type='time'
+                    id='eventstart'
+                    required
+                />
+                <p className='errormessage'>{errors.eventstart?.message}</p>
                 <label htmlFor='eventend'>End Time:</label>
-                <input type='time' id='eventend' {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })} required />
+                <input
+                    {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                    type='time'
+                    id='eventend'
+                    required
+                />
+                <p className='errormessage'>{errors.eventend?.message}</p>
                 <label htmlFor='eventmedia'>Image Link:</label>
-                <input type='url' id='eventmedia' {...register('eventmedia')} />
+                <input
+                    {...register('eventmedia')}
+                    type='file'
+                    id='eventmedia'
+                    accept='image/*'
+                />
+                <p className='errormessage'>{errors.eventmedia?.message}</p>
                 <label htmlFor='venue_id'>Location:</label>
                 <select id='venue_id' {...register('venue_id', { valueAsNumber: true })} required >
-                    <option value="">Select...</option>
+                    <option value="0">Select...</option>
                     {
                         venueList.map(venue => (
                             <option key={venue.id} value={venue.id}>{venue.name}</option>
-                        ))
-                    }
+                            ))
+                        }
                 </select>
+                <p className='errormessage'>{errors.venue_id?.message}</p>
                 {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
                 <label htmlFor='details'>Event Details:</label>
-                <textarea type='text' id='details' {...register('details')} rows='10' />
+                <textarea
+                    {...register('details')}
+                    type='text'
+                    id='details'
+                    rows='10'
+                />
+                <p className='errormessage'>{errors.details?.message}</p>
                 <label htmlFor='brands'>Brand(s):</label>
                 <select id='brand_id' {...register('brand_id', { valueAsNumber: true })} required >
-                    <option value="">Select...</option>
+                    <option value="0">Select...</option>
                     {
                         brandList.map(brand => (
                             <option key={brand.id} value={brand.id}>{brand.name}</option>
-                        ))
-                    }
+                            ))
+                        }
                 </select>
+                <p className='errormessage'>{errors.brand_id?.message}</p>
                 {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
+                {networkError && <p className='errormessage networkerror'>must be online to create a new event</p>}
                 <input type='submit' value='submit' />
             </form>
         </div>

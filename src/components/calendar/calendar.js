@@ -4,13 +4,13 @@ import { format } from 'date-fns';
 import Day from './day.jsx';
 
 import './calendar.css';
-import { sortDaysEvents } from './getCalendar';
-import CalendarContext from '../../context/calendarContext';
+import { EventsContext } from '../../context/events/events.provider.js';
 
 const Calendar = () => {
-    const { dailyEventList } = useContext(CalendarContext);
-    const sortedEvents = sortDaysEvents(dailyEventList);
+    const { events, sortByDay } = useContext(EventsContext);
+    const sortedEvents = sortByDay(events);
 
+    console.log(sortedEvents)
     return (
         <div>
             <div className='calendar'>
