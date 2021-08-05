@@ -2,24 +2,16 @@ import React, { useContext } from 'react';
 
 import EventPreview from '../eventPreview';
 
-import CalendarContext from '../../../context/calendarContext';
+import { EventsContext } from '../../../context/events/events.provider';
 
 const EventCardUpcoming = (props) => {
-    const { dailyEventList } = useContext(CalendarContext);
-    let upcomingEvents = []
-    let upcomingAtLocation = []
-    let upcomingWithBrand = []
-    if (props.event.brand_id === props.event.venue_id) {
-        upcomingEvents = dailyEventList.filter(event => ((event.venue_id === props.event.brand_id || event.brand_id === props.event.brand_id) && event.event_id !== props.event.event_id))
-    } else  {
-        upcomingAtLocation = dailyEventList.filter(event => (event.venue_id === props.event.venue_id && event.event_id !== props.event.event_id))
-        upcomingWithBrand = dailyEventList.filter(event => (event.brand_id === props.event.brand_id && event.event_id !== props.event.event_id))
-    }
+    const { events, getUpcomingEvents } = useContext(EventsContext);
+    const { upcomingEvents, upcomingAtLocation, upcomingWithBrand } = getUpcomingEvents(events, props.event.venue_id, props.event.brand_id, props.event.event_id);
     
     return (
         <div>
             {
-                (upcomingEvents.length > 0) &&
+                (upcomingEvents) &&
                     <div>
                         <h3>more upcoming events</h3>
                         {upcomingEvents.map(event => {
@@ -30,7 +22,7 @@ const EventCardUpcoming = (props) => {
                     </div> 
             }
             {
-                (upcomingAtLocation.length > 0) && 
+                (upcomingAtLocation) && 
                     <div>
                         <h3>{`more events at ${props.event.venue_name}`}</h3>
                         {upcomingAtLocation.map(event => {
@@ -41,7 +33,7 @@ const EventCardUpcoming = (props) => {
                     </div>    
             }
             {
-                (upcomingWithBrand.length > 0) && 
+                (upcomingWithBrand) && 
                     <div>
                         <h3>{`more events with ${props.event.brand_name}`}</h3>
                         {upcomingWithBrand.map(event => {

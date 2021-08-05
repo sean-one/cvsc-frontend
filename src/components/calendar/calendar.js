@@ -10,7 +10,6 @@ const Calendar = () => {
     const { events, sortByDay } = useContext(EventsContext);
     const sortedEvents = sortByDay(events);
 
-    console.log(sortedEvents)
     return (
         <div>
             <div className='calendar'>

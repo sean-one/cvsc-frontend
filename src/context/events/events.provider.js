@@ -32,6 +32,19 @@ const EventsProvider = ({ children }) => {
         }, {});
     }
 
+    const getUpcomingEvents = (listOfEvents, venueId, brandId, currentId) => {
+        let results = {}
+        if (venueId === brandId) {
+            let upcomingEvents = listOfEvents.filter(event => ((event.venue_id === brandId || event.brand_id === brandId) && event.event_id !== currentId))
+            results = {...results, upcomingEvents }
+        } else {
+            let upcomingAtLocation = listOfEvents.filter(event => (event.venue_id === venueId && event.event_id !== currentId))
+            let upcomingWithBrand = listOfEvents.filter(event => (event.brand_id === brandId && event.event_id !== currentId))
+            results = {...results, upcomingAtLocation, upcomingWithBrand }
+        }
+        return results;
+    }
+
     
     useEffect(() => {
         AxiosInstance.get('/events')
@@ -47,7 +60,7 @@ const EventsProvider = ({ children }) => {
     }, [])
 
     return (
-        <EventsContext.Provider value={{ events, sortByDay }}>
+        <EventsContext.Provider value={{ events, sortByDay, getUpcomingEvents }}>
             {children}
         </EventsContext.Provider>
     )

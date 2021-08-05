@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { startOfToday } from 'date-fns';
+import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 
-import AxiosInstance from './helpers/axios';
-
 // components
-// import { takeMonth, getDaysEvents } from './components/calendar/getCalendar';
-import { takeMonth } from './components/calendar/getCalendar';
 import Calendar from './components/calendar/calendar';
 import EventCard from './components/events/eventCard.jsx';
 import Header from './components/header/header.jsx';
@@ -17,46 +12,34 @@ import Profile from './components/profile/profile.jsx';
 import CreateEvent from './components/events/createEvent.jsx';
 import EditEvent from './components/events/editEvent';
 
-import CalendarContext from './context/calendarContext';
 import UserContext from './context/userContext';
 import EventsProvider from './context/events/events.provider';
 
 import './App.css';
 
 const App = () => {
-  const [selectedDay, setSelectedDay] = useState(startOfToday());
-  const calendarDates = takeMonth(selectedDay)();
-  const [ dailyEventList, setDailyEventList ] = useState([]);
   const [ userProfile, setUserProfile ] = useState({})
   const [ userEvents, setUserEvents ] = useState([])
 
-  useEffect(() => {
-    AxiosInstance.get('/events')
-      .then(events => setDailyEventList(events.data));
-  }, [userEvents])
-
-  // console.log(dailyEventList)
   return (
     <div className="App">
       <UserContext.Provider value={{userProfile, setUserProfile, userEvents, setUserEvents}}>
-      <Header />
-      <CalendarContext.Provider value={{selectedDay, setSelectedDay, calendarDates, dailyEventList, setDailyEventList }}>
+        <Header />
         <EventsProvider>
           <Route
             exact
             path='/'
             render={(props) => (
-              <Calendar {...props} range={calendarDates} />
+              <Calendar {...props} />
+            )}
+          />
+          <Route
+            path='/calendar/:id'
+            render={(props) => (
+              <EventCard {...props} />
             )}
           />
         </EventsProvider>
-        <Route
-          path='/calendar/:id'
-          render={(props) => (
-            <EventCard {...props} />
-          )}
-        />
-      </CalendarContext.Provider>
         <Route 
           path='/login'
           component={Login}
