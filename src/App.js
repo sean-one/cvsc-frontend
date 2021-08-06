@@ -14,6 +14,7 @@ import EditEvent from './components/events/editEvent';
 
 import UserContext from './context/userContext';
 import EventsProvider from './context/events/events.provider';
+import UsersProvider from './context/users/users.provider';
 
 import './App.css';
 
@@ -48,7 +49,9 @@ const App = () => {
           path='/register'
           component={Register}
         />
-        <AuthRoute exact path='/profile' component={Profile} />
+        <UsersProvider>
+          <AuthRoute exact path='/profile' component={Profile} />
+        </UsersProvider>
         <AuthRoute path='/events/create' component={CreateEvent} />
         <AuthRoute path='/events/edit/:id' component={EditEvent} />
       </UserContext.Provider>

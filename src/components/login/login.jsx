@@ -8,12 +8,15 @@ import AxiosInstance from '../../helpers/axios';
 import './login.css';
 
 import UserContext from '../../context/userContext';
+import { UsersContext } from '../../context/users/users.provider';
+import userTypes from '../../context/users/users.types';
 
 const Login = (props) => {
     const { register, handleSubmit, setError, formState:{ errors } } = useForm({
         mode: "onBlur",
         resolver: yupResolver(loginSchema)
     });
+    const { userProfile, dispatch } = useContext(UsersContext);
     const { setUserProfile } = useContext(UserContext);
     const [ serverError, setServerError ] = useState(false);
     let history = useHistory();
@@ -24,6 +27,10 @@ const Login = (props) => {
             .then(response => {
                 if(response.status === 200) {
                     setUserProfile(response.data)
+                    // dispatch({
+                    //     type: userTypes.SIGNIN_SUCCESS,
+                    //     payload: response.data
+                    // })
                     localStorage.setItem('token', response.data.token);
                     localStorage.setItem('userId', response.data.id)
                     localStorage.setItem('user', JSON.stringify(response.data))
@@ -54,6 +61,7 @@ const Login = (props) => {
             })
     }
 
+    console.log(userProfile)
     return (
         <div className='formWrapper'>
             <h2>Please Login</h2>
