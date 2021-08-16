@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 
 // components
@@ -12,49 +12,27 @@ import Profile from './components/profile/profile.jsx';
 import CreateEvent from './components/events/createEvent.jsx';
 import EditEvent from './components/events/editEvent';
 
-import UserContext from './context/userContext';
 import EventsProvider from './context/events/events.provider';
 import UsersProvider from './context/users/users.provider';
 
 import './App.css';
 
 const App = () => {
-  const [ userProfile, setUserProfile ] = useState({})
-  const [ userEvents, setUserEvents ] = useState([])
 
   return (
     <div className="App">
-      <UserContext.Provider value={{userProfile, setUserProfile, userEvents, setUserEvents}}>
+      <EventsProvider>
+      <UsersProvider>
         <Header />
-        <EventsProvider>
-          <Route
-            exact
-            path='/'
-            render={(props) => (
-              <Calendar {...props} />
-            )}
-          />
-          <Route
-            path='/calendar/:id'
-            render={(props) => (
-              <EventCard {...props} />
-            )}
-          />
-        </EventsProvider>
-        <Route 
-          path='/login'
-          component={Login}
-        />
-        <Route
-          path='/register'
-          component={Register}
-        />
-        <UsersProvider>
-          <AuthRoute exact path='/profile' component={Profile} />
-        </UsersProvider>
+        <Route path='/register' component={Register} />
+        <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
+        <Route path='/calendar/:id' render={(props) => (<EventCard {...props} />)} />
         <AuthRoute path='/events/create' component={CreateEvent} />
         <AuthRoute path='/events/edit/:id' component={EditEvent} />
-      </UserContext.Provider>
+        <Route path='/login' component={Login} />
+        <AuthRoute exact path='/profile' component={Profile} />
+      </UsersProvider>
+      </EventsProvider>
     </div>
   );
 }

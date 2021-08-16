@@ -45,11 +45,17 @@ const EventsProvider = ({ children }) => {
         return results;
     }
 
+    const removeFromEvents = (eventId) => {
+        dispatch({
+            type: eventsTypes.REMOVE_EVENT,
+            payload: eventId
+        })
+    }
+
     
     useEffect(() => {
         AxiosInstance.get('/events')
             .then(events => {
-                console.log('called event get')
                 dispatch({
                     type: eventsTypes.GET_SUCCESS,
                     payload: events.data
@@ -60,7 +66,7 @@ const EventsProvider = ({ children }) => {
     }, [])
 
     return (
-        <EventsContext.Provider value={{ events, sortByDay, getUpcomingEvents }}>
+        <EventsContext.Provider value={{ events, sortByDay, getUpcomingEvents, removeFromEvents }}>
             {children}
         </EventsContext.Provider>
     )

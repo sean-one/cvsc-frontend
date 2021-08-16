@@ -6,20 +6,25 @@ import AxiosInstance from '../../helpers/axios';
 
 import EventPreview from '../events/eventPreview';
 
-import UserContext from '../../context/userContext';
+import { UsersContext } from '../../context/users/users.provider';
+import { EventsContext } from '../../context/events/events.provider';
 
 import './profile.css';
 
 const Profile = (props) => {
-    const { userProfile, setUserProfile, userEvents, setUserEvents } = useContext(UserContext);
-    const [ refresher, setRefresher ] = useState(false);
+    const { userProfile, userEvents, setUserEvents, getFromLocal, deleteEvent } = useContext(UsersContext);
+    const { removeFromEvents } = useContext(EventsContext)
+    const [ refresher, setRefresher ] = useState(true)
 
     const removeEvent = async (e) => {
+        const eventId = e.currentTarget.id
         const token = localStorage.getItem('token')
-        AxiosInstance.delete(`/events/remove/${e.currentTarget.id}`, {
+        AxiosInstance.delete(`/events/remove/${eventId}`, {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
+                removeFromEvents(eventId)
+                deleteEvent(eventId)
                 setRefresher(!refresher)
                 return
             })
@@ -31,7 +36,8 @@ const Profile = (props) => {
     useEffect(() => {
         const userData = localStorage.getItem('user');
         if (userData) {
-            setUserProfile(JSON.parse(userData));
+            const user = JSON.parse(userData)
+            getFromLocal(user)
         }
         async function getData() {
             const events = await AxiosInstance.get(`events/user/${parseInt(localStorage.getItem('userId'))}`)
@@ -39,7 +45,7 @@ const Profile = (props) => {
             return
         }
         getData()
-    }, [refresher, setUserProfile, setUserEvents]);
+    }, [refresher]);
 
     return (
         <div className='userProfile'>

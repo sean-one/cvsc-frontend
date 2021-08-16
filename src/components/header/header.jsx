@@ -4,10 +4,10 @@ import React, { useState, useContext } from 'react';
 import Menu from '../navigation/menu';
 import './header.css';
 
-import UserContext from '../../context/userContext';
+import { UsersContext } from '../../context/users/users.provider';
 
 const Header = () => {
-    const { userProfile } = useContext(UserContext);
+    const { userProfile } = useContext(UsersContext);
     const [ activeMenu, setActiveMenu ] = useState(false)
 
     const toggleMenu = () => {
@@ -17,8 +17,6 @@ const Header = () => {
     const logout = () => {
         localStorage.clear()
         userProfile.avatar = "https://coachellavalleysmokers-images.s3.amazonaws.com/Coachella+Valley-01.png"
-        // localStorage.removeItem('token');
-        // localStorage.setItem('isLoggedIn', false);
         setActiveMenu(!activeMenu);
     }
     return (

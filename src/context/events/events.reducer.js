@@ -11,6 +11,11 @@ const eventsReducer = (state, action) => {
                 ...state,
                 events: action.payload
             }
+        case eventTypes.REMOVE_EVENT:
+            return {
+                ...state,
+                events: state.events.filter((event) => event.event_id != action.payload)
+            }
         default:
             return state;
     }

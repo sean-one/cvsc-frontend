@@ -5,7 +5,7 @@ const todaysDate = format(new Date(), 'yyyy-MM-dd');
 const sixtyDaysOut = format(add(new Date(), { days: 60 }), 'yyyy-MM-dd');
 
 
-console.log(sixtyDaysOut)
+// console.log(sixtyDaysOut)
 export const registrationSchema = yup.object().shape({
     username: yup
         .string()
