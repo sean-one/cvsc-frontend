@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useEffect } from 'react';
+import React, { useState, useReducer, createContext, useEffect } from 'react';
 import AxiosInstance from '../../helpers/axios';
 import eventsReducer, { EVENTS_INITIAL_STATE } from './events.reducer';
 import eventsTypes from './events.types';
@@ -10,6 +10,7 @@ export const EventsContext = createContext({
 });
 
 const EventsProvider = ({ children }) => {
+    const [ refresher, setRefresher ] = useState(true)
     const [ store, dispatch ] = useReducer(eventsReducer, EVENTS_INITIAL_STATE)
     const { events, businessList } = store;
     
@@ -54,12 +55,12 @@ const EventsProvider = ({ children }) => {
         return results;
     }
 
-    const addToEvents = (newevent) => {
+    function addToEvents(newevent) {
+        console.log('inside addToEvents')
         dispatch({
             type: eventsTypes.ADD_EVENT_TO_LIST,
             payload: newevent
         })
-        return
     }
 
     const removeFromEvents = (eventId) => {
@@ -67,6 +68,7 @@ const EventsProvider = ({ children }) => {
             type: eventsTypes.REMOVE_EVENT,
             payload: eventId
         })
+        setRefresher(!refresher)
     }
     
     useEffect(() => {
@@ -79,7 +81,7 @@ const EventsProvider = ({ children }) => {
                 dispatch({ type: eventsTypes.GET_SUCCESS, payload: { events, businesses } })
             }))
             .catch(err => console.log(err))
-    }, [])
+    }, [refresher])
 
     return (
         <EventsContext.Provider value={

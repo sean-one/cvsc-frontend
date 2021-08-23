@@ -23,6 +23,7 @@ const Profile = (props) => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
+                console.log(response)
                 removeFromEvents(eventId)
                 deleteEvent(eventId)
                 setRefresher(!refresher)

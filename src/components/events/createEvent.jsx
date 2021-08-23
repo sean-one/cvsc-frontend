@@ -12,8 +12,8 @@ import { EventsContext } from '../../context/events/events.provider';
 import './createEvent.css';
 
 const CreateEvent = (props) => {
-    const { useBrandList, useVenueList } = useContext(EventsContext);
-    const { userEvents, setUserEvents, addToEvents } = useContext(UsersContext);
+    const { addToEvents, useBrandList, useVenueList } = useContext(EventsContext);
+    const { userEvents, setUserEvents } = useContext(UsersContext);
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
@@ -57,7 +57,6 @@ const CreateEvent = (props) => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
-                console.log(response)
                 if(response.status === 200) {
                     addToEvents(response.data)
                     setUserEvents([...userEvents], response.data)
