@@ -23,8 +23,10 @@
     display: flex;
     flex-direction: column;
     padding: 0 0.5rem;
+}
+
+.cardInfo p {
     font-size: 1.1rem;
-    /* background-color: darkkhaki; */
 }
 
 .cardTitle {
@@ -34,8 +36,9 @@
     text-transform: uppercase;
 }
 
-.cardLocation {
-    font-size: 0.8rem;
+.cardLocation p {
+    color:chartreuse;
+    font-size: 0.9rem;
 }
 
 .cardDetails {

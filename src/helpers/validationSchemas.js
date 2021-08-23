@@ -56,18 +56,19 @@ export const createEventSchema = yup.object().shape({
         .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, 'incorrect time formatting')
         .required('there must be a beginning'),
     
-        // this should be UUID or whatever the ID ends up being
+    // this should be UUID or whatever the ID ends up being
     venue_id: yup
         .number()
         .moreThan(0, 'please select a venue location')
         .required('event location is required'),
-    
+        
     details: yup
         .string()
         .required(),
-    
+        
     // this should be UUID or whatever the ID ends up being
     brand_id: yup
         .number()
-        .required()
+        .moreThan(0, 'please select a brand')
+        .required('branding is required')
 })

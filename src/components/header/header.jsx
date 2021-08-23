@@ -1,4 +1,3 @@
-// import React, { useState } from 'react';
 import React, { useState, useContext } from 'react';
 
 import Menu from '../navigation/menu';
@@ -8,6 +7,7 @@ import { UsersContext } from '../../context/users/users.provider';
 
 const Header = () => {
     const { userProfile } = useContext(UsersContext);
+    const userAvatar = localStorage.getItem('avatar')
     const [ activeMenu, setActiveMenu ] = useState(false)
 
     const toggleMenu = () => {
@@ -19,10 +19,11 @@ const Header = () => {
         userProfile.avatar = "https://coachellavalleysmokers-images.s3.amazonaws.com/Coachella+Valley-01.png"
         setActiveMenu(!activeMenu);
     }
+
     return (
         <div className='header'>
             <div className='profile'>
-                <img className='profileImage' src={userProfile.avatar || "https://coachellavalleysmokers-images.s3.amazonaws.com/Coachella+Valley-01.png"} alt='user profile' />
+                <img className='profileImage' src={userAvatar || "https://coachellavalleysmokers-images.s3.amazonaws.com/Coachella+Valley-01.png"} alt='user profile' />
             </div>
             <div className='branding'>C.V.S.C.</div>
             <div className='menu' onClick={toggleMenu}>|||</div>

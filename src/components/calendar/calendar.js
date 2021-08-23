@@ -7,8 +7,8 @@ import './calendar.css';
 import { EventsContext } from '../../context/events/events.provider.js';
 
 const Calendar = () => {
-    const { events, sortByDay } = useContext(EventsContext);
-    const sortedEvents = sortByDay(events);
+    const { useSortedEvents } = useContext(EventsContext);
+    const sortedEvents = useSortedEvents();
 
     return (
         <div>

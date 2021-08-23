@@ -3,6 +3,7 @@ import AxiosInstance from '../../helpers/axios';
 import eventsReducer, { EVENTS_INITIAL_STATE } from './events.reducer';
 import eventsTypes from './events.types';
 import { format, startOfDay } from 'date-fns';
+import axios from 'axios';
 
 export const EventsContext = createContext({
     ...EVENTS_INITIAL_STATE
@@ -10,11 +11,11 @@ export const EventsContext = createContext({
 
 const EventsProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(eventsReducer, EVENTS_INITIAL_STATE)
-    const { events } = store;
+    const { events, businessList } = store;
     
     // get the events for each specific day sorted into a list of days contianing a list of events
-    const sortByDay = (listofevents) => {
-        return listofevents.reduce((obj, event) => {
+    const useSortedEvents = () => {
+        return events.reduce((obj, event) => {
             let eventDate = new Date(event.eventdate);
             // get the day of the event
             eventDate = format(startOfDay(eventDate), 'PP');
@@ -32,6 +33,14 @@ const EventsProvider = ({ children }) => {
         }, {});
     }
 
+    const useBrandList = () => {
+        return businessList.filter(business => business.businesstype === "brand" || business.businesstype === "both")
+    }
+
+    const useVenueList = () => {
+        return businessList.filter(business => business.businesstype === "venue" || business.businesstype === "both")
+    }
+
     const getUpcomingEvents = (listOfEvents, venueId, brandId, currentId) => {
         let results = {}
         if (venueId === brandId) {
@@ -45,28 +54,45 @@ const EventsProvider = ({ children }) => {
         return results;
     }
 
+    const addToEvents = (newevent) => {
+        dispatch({
+            type: eventsTypes.ADD_EVENT_TO_LIST,
+            payload: newevent
+        })
+        return
+    }
+
     const removeFromEvents = (eventId) => {
         dispatch({
             type: eventsTypes.REMOVE_EVENT,
             payload: eventId
         })
     }
-
     
     useEffect(() => {
-        AxiosInstance.get('/events')
-            .then(events => {
-                dispatch({
-                    type: eventsTypes.GET_SUCCESS,
-                    payload: events.data
-                })
-            })
+        const eventsCall = AxiosInstance.get('/events')
+        const businessCall = AxiosInstance.get('/business')
+        axios.all([eventsCall, businessCall])
+            .then(axios.spread((...responses) => {
+                const events = responses[0].data
+                const businesses = responses[1].data
+                dispatch({ type: eventsTypes.GET_SUCCESS, payload: { events, businesses } })
+            }))
             .catch(err => console.log(err))
-
     }, [])
 
     return (
-        <EventsContext.Provider value={{ events, sortByDay, getUpcomingEvents, removeFromEvents }}>
+        <EventsContext.Provider value={
+            {
+                events,
+                useSortedEvents,
+                useBrandList,
+                useVenueList,
+                getUpcomingEvents,
+                addToEvents,
+                removeFromEvents
+            }
+        }>
             {children}
         </EventsContext.Provider>
     )

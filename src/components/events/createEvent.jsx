@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,36 +6,23 @@ import { createEventSchema } from '../../helpers/validationSchemas';
 // import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
 
-import UserContext from '../../context/userContext';
+import { UsersContext } from '../../context/users/users.provider';
+import { EventsContext } from '../../context/events/events.provider';
 
 import './createEvent.css';
 
 const CreateEvent = (props) => {
+    const { useBrandList, useVenueList } = useContext(EventsContext);
+    const { userEvents, setUserEvents, addToEvents } = useContext(UsersContext);
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
     });
-    const { userEvents, setUserEvents } = useContext(UserContext)
     const [ adminRoleError, setAdminRoleError ] = useState(false);
     const [ networkError, setNetworkError ] = useState(false);
-    const [ venueList, setVenueList ] = useState([])
-    const [ brandList, setBrandList ] = useState([])
+    const venueList = useVenueList()
+    const brandList = useBrandList()
     let history = useHistory();
-
-    useEffect(() => {
-        async function getBusinessInfo() {
-            try {
-                const venues = await AxiosInstance.get('/business/venues')
-                const brands = await AxiosInstance.get('/business/brands')
-                setVenueList(venues.data)
-                setBrandList(brands.data)
-                return
-            } catch (error) {
-                setNetworkError(true);
-            }
-        }
-        getBusinessInfo()
-    }, [setVenueList, setBrandList]);
 
     const sendEvent = async (data) => {
         // console.log(data.eventmedia[0])
@@ -70,7 +57,9 @@ const CreateEvent = (props) => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
+                console.log(response)
                 if(response.status === 200) {
+                    addToEvents(response.data)
                     setUserEvents([...userEvents], response.data)
                     history.push({
                         pathname: `/calendar/${response.data.event_id}`,
@@ -85,6 +74,7 @@ const CreateEvent = (props) => {
             })
             .catch(err => {
                 if(!err.response) {
+                    console.log(err)
                     console.log('network error')
                 } else if(err.response.status === 400) {
                     localStorage.clear()
