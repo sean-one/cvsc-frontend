@@ -56,7 +56,6 @@ const EventsProvider = ({ children }) => {
     }
 
     function addToEvents(newevent) {
-        console.log('inside addToEvents')
         dispatch({
             type: eventsTypes.ADD_EVENT_TO_LIST,
             payload: newevent

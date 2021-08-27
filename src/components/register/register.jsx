@@ -7,14 +7,14 @@ import AxiosInstance from '../../helpers/axios';
 
 import './register.css';
 
-import UserContext from '../../context/userContext';
+import { UsersContext } from '../../context/users/users.provider.js';
 
 const Register = () => {
     const { register, handleSubmit, setError, formState:{ errors } } = useForm({
         mode: "onBlur",
         resolver: yupResolver(registrationSchema)
     })
-    const { setUserProfile } = useContext(UserContext);
+    const { setUserProfile } = useContext(UsersContext);
     const [ serverError, setServerError ] = useState(false);
     let history = useHistory();
 

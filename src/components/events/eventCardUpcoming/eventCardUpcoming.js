@@ -22,7 +22,7 @@ const EventCardUpcoming = (props) => {
                     </div> 
             }
             {
-                (upcomingAtLocation) && 
+                (upcomingAtLocation && upcomingAtLocation.length > 0) && 
                     <div>
                         <h3>{`more events at ${props.event.venue_name}`}</h3>
                         {upcomingAtLocation.map(event => {
@@ -33,7 +33,7 @@ const EventCardUpcoming = (props) => {
                     </div>    
             }
             {
-                (upcomingWithBrand) && 
+                (upcomingWithBrand && upcomingWithBrand.length > 0) && 
                     <div>
                         <h3>{`more events with ${props.event.brand_name}`}</h3>
                         {upcomingWithBrand.map(event => {
