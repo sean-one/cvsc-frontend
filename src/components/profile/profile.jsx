@@ -15,6 +15,7 @@ const Profile = (props) => {
     const { userProfile, userEvents, setUserEvents, getFromLocal, deleteEvent } = useContext(UsersContext);
     const { removeFromEvents } = useContext(EventsContext)
     const [ refresher, setRefresher ] = useState(true)
+    const isAdmin = JSON.parse(localStorage.getItem('isAdmin'))
 
     const removeEvent = async (e) => {
         const eventId = e.currentTarget.id
@@ -54,16 +55,19 @@ const Profile = (props) => {
                     <h3>{userProfile.username}</h3>
                 </div>
             </div>
-            <div className='createNewEvent'>
-                <Link to={{
-                    pathname: '/events/create',
-                    state: {
-                        from: props.location.pathname
-                    }
-                }}>
-                    <p>+ CREATE A NEW EVENT</p>
-                </Link>
-            </div>
+            {
+                (isAdmin) && 
+                    <div className='createNewEvent'>
+                        <Link to={{
+                            pathname: '/events/create',
+                            state: {
+                                from: props.location.pathname
+                            }
+                        }}>
+                            <p>+ CREATE A NEW EVENT</p>
+                        </Link>
+                    </div>
+            }
             <div className='userEvents'>
                 {
                     userEvents.map(event => {

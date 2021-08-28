@@ -5,6 +5,7 @@ import './menu.css';
 
 const Menu = (props) => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const isAdmin = JSON.parse(localStorage.getItem('isAdmin'))
     
     return (
         <ul className='menuListWrapper'>
@@ -33,7 +34,7 @@ const Menu = (props) => {
                         </Link>
             }
             {
-                (isLoggedIn === 'true')
+                (isAdmin)
                     && <Link to={{
                             pathname: '/events/create'
                         }}>
