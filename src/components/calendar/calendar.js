@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { format } from 'date-fns';
+import EventPreview from '../events/eventPreview';
 
 import Day from './day.jsx';
 
@@ -7,7 +8,7 @@ import './calendar.css';
 import { EventsContext } from '../../context/events/events.provider.js';
 
 const Calendar = () => {
-    const { useSortedEvents } = useContext(EventsContext);
+    const { events, useSortedEvents } = useContext(EventsContext);
     const sortedEvents = useSortedEvents();
 
     return (
@@ -25,6 +26,13 @@ const Calendar = () => {
                         )
                     })
                 }
+                {/* {
+                    events.map(event => {
+                        return (
+                            <EventPreview key={event.event_id} event={event} />
+                        )
+                    })
+                } */}
             </div>
         </div>
 

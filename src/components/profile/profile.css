@@ -19,6 +19,17 @@
     margin-bottom: 0.5rem;
 }
 
+.eventdate {
+    /* color: aqua; */
+    background-color: rgba(0, 255, 0, 0.7);
+    font-weight: bolder;
+    padding: 0.5rem;
+    z-index: 45;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .adminControls {
     display: flex;
     z-index: 45;
@@ -31,3 +42,22 @@
 .adminControls div {
     margin: 0 0.75rem;
 }
+
+.upcomingList {
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.upcomingList p {
+    padding: 1rem 0;
+}
+
+.careticon {
+    color: rgb(0, 255, 0)
+}
+
+/* .userEvents {
+    display: none;
+} */

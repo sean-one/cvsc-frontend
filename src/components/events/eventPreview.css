@@ -8,13 +8,28 @@
 }
 
 .cardImg {
+    position: relative;
     padding: 0.5rem;
     width: 35%;
+}
+
+.eventdate {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .cardImg img {
     width: 100%;
     border-radius: 50%;
+}
+
+.eventtime {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    text-align: right;
 }
 
 .cardInfo {

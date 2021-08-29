@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './menu.css';
 
 const Menu = (props) => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
     const isAdmin = JSON.parse(localStorage.getItem('isAdmin'))
     
     return (
@@ -15,7 +15,7 @@ const Menu = (props) => {
                 <li onClick={props.toggle}>Calendar</li>
             </Link>
             {
-                (isLoggedIn === 'false' || isLoggedIn === null)
+                (!isLoggedIn)
                     && <Link to={{
                             pathname: '/register'
                         }}>
@@ -23,7 +23,7 @@ const Menu = (props) => {
                         </Link>
             }
             {
-                (isLoggedIn === 'true')
+                (isLoggedIn)
                     && <Link to={{
                             pathname: '/profile',
                             // state: {
@@ -42,7 +42,7 @@ const Menu = (props) => {
                         </Link>
             }
             {
-                (isLoggedIn === 'true')
+                (isLoggedIn)
                     ? <Link to={{
                         pathname: '/'
                     }}>
