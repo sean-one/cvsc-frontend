@@ -33,9 +33,10 @@ const CreateEvent = (props) => {
             // this needs to create an error and stop the post.  this file is required
             const imageUrl = 'https://picsum.photos/300/400'
             data.eventmedia = imageUrl
-
+            
         } else {
-
+            
+            //! need to validate user posting BEFORE sending the image to s3
             // get s3 url from server
             const url = await AxiosInstance.get('/s3')
                 .then(response => {

@@ -17,7 +17,7 @@ const Profile = (props) => {
     const { removeFromEvents } = useContext(EventsContext)
     const [ refresher, setRefresher ] = useState(true)
     const [ eventListVisable, setEventListVisable ] = useState(false)
-    const isCreator = JSON.parse(localStorage.getItem('isCreator'))
+    // const isCreator = JSON.parse(localStorage.getItem('isCreator'))
 
     const removeEvent = async (e) => {
         const eventId = e.currentTarget.id
@@ -57,7 +57,17 @@ const Profile = (props) => {
                     <h3>{userProfile.username}</h3>
                 </div>
             </div>
-            {
+            <div className='createNewEvent'>
+                <Link to={{
+                    pathname: '/events/create',
+                    state: {
+                        from: props.location.pathname
+                    }
+                }}>
+                    <p>+ CREATE A NEW EVENT</p>
+                </Link>
+            </div>
+            {/* {
                 (isCreator) && 
                     <div className='createNewEvent'>
                         <Link to={{
@@ -69,7 +79,7 @@ const Profile = (props) => {
                             <p>+ CREATE A NEW EVENT</p>
                         </Link>
                     </div>
-            }
+            } */}
             <div className='upcomingList'>
                 <p>Upcoming events you have created.</p>
                 { 
