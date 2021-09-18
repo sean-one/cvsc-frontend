@@ -19,7 +19,7 @@ const CreateEvent = (props) => {
         resolver: yupResolver(createEventSchema)
     });
     const [ adminRoleError, setAdminRoleError ] = useState(false);
-    const [ networkError, setNetworkError ] = useState(false);
+    // const [ networkError, setNetworkError ] = useState(false);
     const venueList = useVenueList()
     const brandList = useBrandList()
     let history = useHistory();
@@ -86,7 +86,7 @@ const CreateEvent = (props) => {
     }
 
     return (
-        <div className='formWrapper'>
+        <div className='componentWrapper'>
             {/* <form className='createForm' onSubmit={sendEvent}> */}
             <form className='createForm' onSubmit={handleSubmit(sendEvent)}>
                 <label htmlFor='eventname'>Event Name:</label>
@@ -160,7 +160,7 @@ const CreateEvent = (props) => {
                 </select>
                 <p className='errormessage'>{errors.brand_id?.message}</p>
                 {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
-                {networkError && <p className='errormessage networkerror'>must be online to create a new event</p>}
+                {/* {networkError && <p className='errormessage networkerror'>must be online to create a new event</p>} */}
                 <input type='submit' value='submit' />
             </form>
         </div>

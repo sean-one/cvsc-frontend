@@ -1,22 +1,29 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
-import { format } from 'date-fns';
+import { withRouter } from 'react-router-dom';
+// import { Link, withRouter } from 'react-router-dom';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPencilAlt, faTrashAlt, faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+// import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
 
-import EventPreview from '../events/eventPreview';
+// import EventPreview from '../events/eventPreview';
 
 import { UsersContext } from '../../context/users/users.provider';
 import { EventsContext } from '../../context/events/events.provider';
 
+import AdminSection from './adminSection/adminSection';
+import CreatorSection from './creatorSection/creatorSection';
+
 import './profile.css';
 
 const Profile = (props) => {
-    const { userProfile, userEvents, setUserEvents, getFromLocal, deleteEvent } = useContext(UsersContext);
+    const { userProfile, useAdminRoles, setUserEvents, setUserRoles, getFromLocal, deleteEvent } = useContext(UsersContext);
+    // const { userProfile, useAdminRoles, useCreatorRoles, userEvents, setUserEvents, setUserRoles, getFromLocal, deleteEvent } = useContext(UsersContext);
     const { removeFromEvents } = useContext(EventsContext)
     const [ refresher, setRefresher ] = useState(true)
-    const [ eventListVisable, setEventListVisable ] = useState(false)
+    // const [ eventListVisable, setEventListVisable ] = useState(false)
+    const adminRoles = useAdminRoles()
+    // const creatorRoles = useCreatorRoles()
     // const isCreator = JSON.parse(localStorage.getItem('isCreator'))
 
     const removeEvent = async (e) => {
@@ -45,19 +52,26 @@ const Profile = (props) => {
         async function getData() {
             const events = await AxiosInstance.get(`events/user/${parseInt(localStorage.getItem('userId'))}`)
             setUserEvents(events.data)
+            const userRoles = await AxiosInstance.get(`roles/user/${parseInt(localStorage.getItem('userId'))}`)
+            setUserRoles(userRoles.data)
             return
         }
         getData()
     }, [refresher]);
 
     return (
-        <div className='userProfile'>
+        <div className='componentWrapper'>
             <div className='account'>
                 <div className='userinfo'>
                     <h3>{userProfile.username}</h3>
                 </div>
             </div>
-            <div className='createNewEvent'>
+            {
+                (adminRoles.length > 0) &&
+                    <AdminSection />
+            }
+            <CreatorSection />
+            {/* <div className='createNewEvent'>
                 <Link to={{
                     pathname: '/events/create',
                     state: {
@@ -67,19 +81,6 @@ const Profile = (props) => {
                     <p>+ CREATE A NEW EVENT</p>
                 </Link>
             </div>
-            {/* {
-                (isCreator) && 
-                    <div className='createNewEvent'>
-                        <Link to={{
-                            pathname: '/events/create',
-                            state: {
-                                from: props.location.pathname
-                            }
-                        }}>
-                            <p>+ CREATE A NEW EVENT</p>
-                        </Link>
-                    </div>
-            } */}
             <div className='upcomingList'>
                 <p>Upcoming events you have created.</p>
                 { 
@@ -87,8 +88,8 @@ const Profile = (props) => {
                         <FontAwesomeIcon className='careticon' icon={faCaretDown} size='1x' onClick={() => setEventListVisable(!eventListVisable)} />
                         : <FontAwesomeIcon className='careticon' icon={faCaretLeft} size='1x' onClick={() => setEventListVisable(!eventListVisable)} />
                 }
-            </div>
-            {
+            </div> */}
+            {/* {
                 (eventListVisable) &&
                 <div className='userEvents'>
                     {
@@ -116,10 +117,7 @@ const Profile = (props) => {
                         })
                     }
                 </div>
-            }
-            <div>
-                <p>here is the next group of stuff</p>
-            </div>
+            } */}
         </div>
     )
 }

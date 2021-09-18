@@ -10,12 +10,27 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userEvents } = store
+    const { userProfile, userEvents, userRoles } = store
+
+    const useAdminRoles = () => {
+        return userRoles.filter(role => role.roletype === 'admin')
+    }
+
+    const useCreatorRoles = () => {
+        return userRoles.filter(role => role.roletype === 'creator')
+    }
 
     const setUserProfile = userdata => {
         dispatch({
             type: userTypes.SIGNIN_SUCCESS,
             payload: userdata
+        })
+    }
+
+    const setUserRoles = roledata => {
+        dispatch({
+            type: userTypes.GET_USER_ROLES,
+            payload: roledata
         })
     }
 
@@ -42,7 +57,7 @@ const UsersProvider = ({ children }) => {
     }
 
     return (
-        <UsersContext.Provider value={{ userProfile, setUserProfile, userEvents, setUserEvents, getFromLocal, deleteEvent }}>
+        <UsersContext.Provider value={{ userProfile, useAdminRoles, useCreatorRoles, setUserRoles, setUserProfile, userEvents, setUserEvents, getFromLocal, deleteEvent }}>
             {children}
         </UsersContext.Provider>
     )

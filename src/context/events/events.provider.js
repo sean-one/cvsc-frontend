@@ -86,6 +86,7 @@ const EventsProvider = ({ children }) => {
         <EventsContext.Provider value={
             {
                 events,
+                businessList,
                 useSortedEvents,
                 useBrandList,
                 useVenueList,

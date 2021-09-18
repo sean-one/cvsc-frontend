@@ -1,0 +1,29 @@
+.requestCreator {
+    padding: 0.5rem 0;
+    border-top: solid 0.05rem black;
+    border-bottom: solid 0.05rem black;
+}
+
+.radioBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.radioBox input[type="radio"] {
+    opacity: 0;
+    width: 0;
+}
+
+.radioBox label {
+    display: inline-block;
+    background-color: #ddd;
+    padding: 10px 20px;
+    border: 2px solid #444;
+    border-radius: 4px;
+}
+
+.radioBox input[type="radio"]:checked + label {
+    background-color: #bfb;
+    border-color: #4c4;
+}

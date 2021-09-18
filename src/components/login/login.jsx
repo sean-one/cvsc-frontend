@@ -51,7 +51,7 @@ const Login = (props) => {
     }
 
     return (
-        <div className='formWrapper'>
+        <div className='componentWrapper'>
             <h2>Please Login</h2>
             <form className='loginform' onSubmit={handleSubmit(sendLogin)}>
                 <label htmlFor='username'>Username:</label>

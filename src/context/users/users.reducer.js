@@ -3,7 +3,8 @@ import { createLocalUser } from './users.utils';
 
 export const USERS_INITIAL_STATE = {
     userProfile: {},
-    userEvents: []
+    userEvents: [],
+    userRoles: []
 };
 
 const usersReducer = (state, action) => {
@@ -23,6 +24,11 @@ const usersReducer = (state, action) => {
             return {
                 ...state,
                 userEvents: action.payload
+            };
+        case userTypes.GET_USER_ROLES:
+            return {
+                ...state,
+                userRoles: action.payload
             };
         case userTypes.DELETE_EVENT:
             return {

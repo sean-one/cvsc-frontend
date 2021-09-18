@@ -5,6 +5,18 @@ const todaysDate = format(new Date(), 'yyyy-MM-dd');
 const sixtyDaysOut = format(add(new Date(), { days: 60 }), 'yyyy-MM-dd');
 
 
+export const requestBusinessCreator = yup.object().shape({
+    // this should be UUID or whatever the ID ends up being
+    business_id: yup
+        .number()
+        .moreThan(0, 'invalid business id')
+        .required('business id is required for request'),
+    
+    user_rights: yup
+        .string()
+        .matches(/(admin|creator)/)
+})
+
 // console.log(sixtyDaysOut)
 export const registrationSchema = yup.object().shape({
     username: yup
