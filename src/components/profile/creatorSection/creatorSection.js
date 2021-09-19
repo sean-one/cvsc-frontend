@@ -12,7 +12,7 @@ const CreatorSection = (props) => {
     return (
         <div className='creatorSection'>
             <CreatorRequestForm />
-            {
+            {/* {
                 userEvents.map(event => {
                     return (
                         <div key={event.id}>
@@ -24,7 +24,7 @@ const CreatorSection = (props) => {
                         </div>
                     )
                 })
-            }
+            } */}
             <p>you have creator rights!</p>
         </div>
     )

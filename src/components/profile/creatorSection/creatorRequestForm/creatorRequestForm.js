@@ -22,7 +22,7 @@ const CreatorRequestForm = (props) => {
         <div className='requestCreator'>
             <p>Request Business Creator Rights</p>
             <div className='requestFormWrapper'>
-                <form onSubmit={handleSubmit(sendRequest)}>
+                <form className='creatorRequestForm' onSubmit={handleSubmit(sendRequest)}>
                     <label htmlFor='business_id'>business</label>
                     <select id='business_id' {...register('business_id', { valueAsNumber: true })} required >
                         <option value='0'>Select...</option>
@@ -40,10 +40,11 @@ const CreatorRequestForm = (props) => {
                         
                         <input {...register('user_rights', { required: true })} type="radio" id="admin_rights" value="admin" />
                         <label htmlFor='admin_rights' >admin</label>
-                    
+                        
                     </div>
                     <input type='submit' value='submit' />
                 </form>
+                <p>this is text for the bottom line / success / failure</p>
             </div>
         </div>
     )
