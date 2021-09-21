@@ -42,6 +42,10 @@ const EventsProvider = ({ children }) => {
         return businessList.filter(business => business.businesstype === "venue" || business.businesstype === "both")
     }
 
+    const useBusinessRequest = () => {
+        return businessList.filter(business => business.requestOpen === true)
+    }
+
     const getUpcomingEvents = (listOfEvents, venueId, brandId, currentId) => {
         let results = {}
         if (venueId === brandId) {
@@ -86,10 +90,10 @@ const EventsProvider = ({ children }) => {
         <EventsContext.Provider value={
             {
                 events,
-                businessList,
                 useSortedEvents,
                 useBrandList,
                 useVenueList,
+                useBusinessRequest,
                 getUpcomingEvents,
                 addToEvents,
                 removeFromEvents

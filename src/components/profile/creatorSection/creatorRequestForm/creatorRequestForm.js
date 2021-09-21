@@ -1,21 +1,42 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { requestBusinessCreator } from '../../../../helpers/validationSchemas';
+import AxiosInstance from '../../../../helpers/axios';
 
 import { EventsContext } from '../../../../context/events/events.provider';
 
 import '../creatorSection.css'
 
 const CreatorRequestForm = (props) => {
-    const { businessList } = useContext(EventsContext)
+    const { useBusinessRequest } = useContext(EventsContext)
+    const businessList = useBusinessRequest()
+    const [ requestStatus, setRequestStatus ] = useState('')
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
     });
 
     const sendRequest = (data) => {
-        console.log(data)
+        // console.log(data)
+        const token = localStorage.getItem('token')
+
+        AxiosInstance.post('/userRoleRequests', data, {
+            headers: {'Authorization': 'Bearer ' + token}
+        })
+            .then(response => {
+                setRequestStatus('request successfully sent')
+            })
+            .catch(err => {
+                if(err.response.data.type === 'duplicate') {
+                    setRequestStatus('a previous request for this business is still pending')
+                }
+                console.log(err.response.data.type)
+            })
+    }
+
+    const resetStatus = () => {
+        setRequestStatus('')
     }
 
     return (
@@ -24,7 +45,7 @@ const CreatorRequestForm = (props) => {
             <div className='requestFormWrapper'>
                 <form className='creatorRequestForm' onSubmit={handleSubmit(sendRequest)}>
                     <label htmlFor='business_id'>business</label>
-                    <select id='business_id' {...register('business_id', { valueAsNumber: true })} required >
+                    <select id='business_id' {...register('business_id', { valueAsNumber: true })} required onFocus={resetStatus} >
                         <option value='0'>Select...</option>
                         {
                             businessList.map(business => (
@@ -44,7 +65,7 @@ const CreatorRequestForm = (props) => {
                     </div>
                     <input type='submit' value='submit' />
                 </form>
-                <p>this is text for the bottom line / success / failure</p>
+                <p>{requestStatus}</p>
             </div>
         </div>
     )
