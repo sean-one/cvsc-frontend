@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { requestBusinessCreator } from '../../../../helpers/validationSchemas';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../../../../helpers/axios';
 
 import { EventsContext } from '../../../../context/events/events.provider';
@@ -21,7 +23,7 @@ const CreatorRequestForm = (props) => {
         // console.log(data)
         const token = localStorage.getItem('token')
 
-        AxiosInstance.post('/userRoleRequests', data, {
+        AxiosInstance.post('/pendingRequest', data, {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
@@ -41,8 +43,15 @@ const CreatorRequestForm = (props) => {
 
     return (
         <div className='requestCreator'>
-            <p>Request Business Creator Rights</p>
-            <div className='requestFormWrapper'>
+            <div className='requestTab'>
+                <p>Request Business Creator Rights</p>
+                {
+                    (props.viewable) ?
+                        <FontAwesomeIcon className='careticon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
+                        : <FontAwesomeIcon className='careticon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
+                }
+            </div>
+            <div className={props.viewable ? 'requestFormWrapper' : 'inactive'}>
                 <form className='creatorRequestForm' onSubmit={handleSubmit(sendRequest)}>
                     <label htmlFor='business_id'>business</label>
                     <select id='business_id' {...register('business_id', { valueAsNumber: true })} required onFocus={resetStatus} >
@@ -56,10 +65,10 @@ const CreatorRequestForm = (props) => {
                     <p className='errormessage'>{errors.business_id?.message}</p>
                     <div className='radioBox'>
 
-                        <input {...register('user_rights', { required: true })} type="radio" id="creator_rights" value="creator" />
+                        <input {...register('request_for', { required: true })} type="radio" id="creator_rights" value="creator" />
                         <label htmlFor='creator_rights' >creator</label>
                         
-                        <input {...register('user_rights', { required: true })} type="radio" id="admin_rights" value="admin" />
+                        <input {...register('request_for', { required: true })} type="radio" id="admin_rights" value="admin" />
                         <label htmlFor='admin_rights' >admin</label>
                         
                     </div>

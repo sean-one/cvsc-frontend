@@ -12,13 +12,25 @@ const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
     const { userProfile, userEvents, userRoles } = store
 
-    const useAdminRoles = () => {
-        return userRoles.filter(role => role.roletype === 'admin')
-    }
-
-    const useCreatorRoles = () => {
-        return userRoles.filter(role => role.roletype === 'creator')
-    }
+    // const useAdminRoles = () => {
+    //     const userAdmin = userRoles.filter(role => role.roletype === 'admin')
+    //     let adminArr = []
+    //     userAdmin.map(row => {
+    //         adminArr.push(row.business_id)
+    //     })
+    //     // returns an array of business_ids that user has admin rights to
+    //     return adminArr
+    // }
+    
+    // const useCreatorRoles = () => {
+    //     const userCreator = userRoles.filter(role => role.roletype === 'creator')
+    //     let creatorArr = []
+    //     userCreator.map(row => {
+    //         creatorArr.push(row.business_id)
+    //     })
+    //     // returns an array of business_ids that user has creator rights to
+    //     return creatorArr;
+    // }
 
     const setUserProfile = userdata => {
         dispatch({
@@ -57,7 +69,7 @@ const UsersProvider = ({ children }) => {
     }
 
     return (
-        <UsersContext.Provider value={{ userProfile, useAdminRoles, useCreatorRoles, setUserRoles, setUserProfile, userEvents, setUserEvents, getFromLocal, deleteEvent }}>
+        <UsersContext.Provider value={{ userProfile, setUserRoles, setUserProfile, userEvents, setUserEvents, getFromLocal, deleteEvent }}>
             {children}
         </UsersContext.Provider>
     )

@@ -1,7 +1,22 @@
+.createNewEvent {
+    padding-top: 1.5rem;
+}
+
 .requestCreator {
     padding: 0.25rem 0;
     border-top: solid 0.05rem black;
     border-bottom: solid 0.05rem black;
+}
+
+.requestTab {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.requestFormWrapper form {
+    padding: 1rem;
 }
 
 .radioBox {
