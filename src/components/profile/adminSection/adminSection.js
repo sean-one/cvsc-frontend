@@ -1,7 +1,8 @@
 import React from 'react';
 
-
 import PendingRequest from './pendingRequest/pendingRequest';
+
+import './adminSection.css';
 
 const AdminSection = (props) => {
     return (
