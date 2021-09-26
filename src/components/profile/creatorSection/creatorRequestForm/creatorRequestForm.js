@@ -47,8 +47,8 @@ const CreatorRequestForm = (props) => {
                 <p>Request Business Creator Rights</p>
                 {
                     (props.viewable) ?
-                        <FontAwesomeIcon className='careticon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
-                        : <FontAwesomeIcon className='careticon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
+                        <FontAwesomeIcon className='tabIcon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
+                        : <FontAwesomeIcon className='tabIcon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
                 }
             </div>
             <div className={props.viewable ? 'requestFormWrapper' : 'inactive'}>
