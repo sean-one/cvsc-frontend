@@ -14,6 +14,7 @@ const Profile = (props) => {
     const { userProfile, setUserEvents, setUserRoles, getFromLocal, deleteEvent } = useContext(UsersContext);
     const { removeFromEvents } = useContext(EventsContext)
     const [ refresher, setRefresher ] = useState(true)
+    const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
 
     const removeEvent = async (e) => {
         const eventId = e.currentTarget.id
@@ -38,14 +39,14 @@ const Profile = (props) => {
             const user = JSON.parse(userData)
             getFromLocal(user)
         }
-        async function getData() {
-            const events = await AxiosInstance.get(`events/user/${parseInt(localStorage.getItem('userId'))}`)
-            setUserEvents(events.data)
-            const userRoles = await AxiosInstance.get(`roles/user/${parseInt(localStorage.getItem('userId'))}`)
-            setUserRoles(userRoles.data)
-            return
-        }
-        getData()
+        // async function getData() {
+        //     const events = await AxiosInstance.get(`events/user/${parseInt(localStorage.getItem('userId'))}`)
+        //     setUserEvents(events.data)
+        //     const userRoles = await AxiosInstance.get(`roles/user/${parseInt(localStorage.getItem('userId'))}`)
+        //     setUserRoles(userRoles.data)
+        //     return
+        // }
+        // getData()
     }, [refresher]);
 
     return (
@@ -55,7 +56,10 @@ const Profile = (props) => {
                     <h3>{userProfile.username}</h3>
                 </div>
             </div>
-            <AdminSection />
+            {
+                (isAdmin) && 
+                    <AdminSection />
+            }
             <CreatorSection remove={removeEvent}/>
         </div>
     )

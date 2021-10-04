@@ -12,6 +12,7 @@ import '../profile.css';
 const CreatorSection = (props) => {
     const [ eventListVisable, setEventListVisable ] = useState(true);
     const [ requestFormVisable, setRequestFormVisable ] = useState(false)
+    const userAccountType = localStorage.getItem('accounttype')
 
     const toggleRequestForm = () => {
         setRequestFormVisable(!requestFormVisable)
@@ -24,18 +25,24 @@ const CreatorSection = (props) => {
     return (
         <div className='creatorSection'>
             <CreatorRequestForm viewable={requestFormVisable} toggleView={toggleRequestForm}/>
-            <div className='createNewEvent'>
-                <p>Create A New Event</p>
-                <span><Link to={{
-                    pathname: '/events/create',
-                    state: {
-                        from: props.location.pathname
-                    }
-                }}>
-                    <FontAwesomeIcon className='tabIcon' icon={faPlus} size='1x' />
-                </Link></span>
-            </div>
-            <UpcomingEvents viewable={eventListVisable} toggleView={toggleEventList}/>
+            {
+                (userAccountType === 'editor') && 
+                    <div className='createNewEvent'>
+                        <p>Create A New Event</p>
+                        <span><Link to={{
+                            pathname: '/events/create',
+                            state: {
+                                from: props.location.pathname
+                            }
+                        }}>
+                            <FontAwesomeIcon className='tabIcon' icon={faPlus} size='1x' />
+                        </Link></span>
+                    </div>
+            }
+            {
+                (userAccountType === 'editor') && 
+                    <UpcomingEvents viewable={eventListVisable} toggleView={toggleEventList}/>
+            }
         </div>
     )
 }
