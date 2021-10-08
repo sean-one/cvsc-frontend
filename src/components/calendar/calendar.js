@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { format } from 'date-fns';
+import AxiosInstance from '../../helpers/axios';
 // import EventPreview from '../events/eventPreview';
 
 import Day from './day.jsx';
@@ -8,8 +9,17 @@ import './calendar.css';
 import { EventsContext } from '../../context/events/events.provider.js';
 
 const Calendar = () => {
-    const { useSortedEvents } = useContext(EventsContext);
+    const { setEvents, useSortedEvents } = useContext(EventsContext);
     const sortedEvents = useSortedEvents();
+
+    useEffect(() => {
+        AxiosInstance.get('/events')
+            .then(events => {
+                setEvents(events.data)
+                // console.log(events.data)
+            })
+            .catch(err => console.log(err))
+    }, []);
 
     return (
         <div>

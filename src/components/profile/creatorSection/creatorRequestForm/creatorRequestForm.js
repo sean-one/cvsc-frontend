@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { requestBusinessCreator } from '../../../../helpers/validationSchemas';
@@ -11,8 +11,8 @@ import { EventsContext } from '../../../../context/events/events.provider';
 import '../creatorSection.css'
 
 const CreatorRequestForm = (props) => {
-    const { useBusinessRequest } = useContext(EventsContext)
-    const businessList = useBusinessRequest()
+    const { setBusinessList, useBusinessOpenReq } = useContext(EventsContext)
+    const businessList = useBusinessOpenReq()
     const [ requestStatus, setRequestStatus ] = useState('')
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -40,6 +40,14 @@ const CreatorRequestForm = (props) => {
     const resetStatus = () => {
         setRequestStatus('')
     }
+
+    useEffect(() => {
+        AxiosInstance.get('/business')
+            .then(businesses => {
+                setBusinessList(businesses.data)
+            })
+            .catch(err => console.log(err))
+    }, []);
 
     return (
         <div className='requestCreator'>

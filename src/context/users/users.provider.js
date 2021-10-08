@@ -46,13 +46,6 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    const setUserEvents = eventdata => {
-        dispatch({
-            type: userTypes.GET_USER_EVENTS,
-            payload: eventdata
-        })
-    }
-
     const getFromLocal = userdata => {
         dispatch({
             type: userTypes.UPDATE_FROM_LOCAL,
@@ -60,16 +53,15 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    const deleteEvent = eventId => {
-        dispatch({
-            type: userTypes.DELETE_EVENT,
-            payload: eventId
-        })
-
-    }
-
     return (
-        <UsersContext.Provider value={{ userProfile, setUserRoles, setUserProfile, userEvents, setUserEvents, getFromLocal, deleteEvent }}>
+        <UsersContext.Provider value={
+            {
+                userProfile,
+                setUserProfile,
+                setUserRoles,
+                getFromLocal
+            }
+        }>
             {children}
         </UsersContext.Provider>
     )

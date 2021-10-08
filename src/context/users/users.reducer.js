@@ -3,7 +3,6 @@ import { createLocalUser } from './users.utils';
 
 export const USERS_INITIAL_STATE = {
     userProfile: {},
-    userEvents: [],
     userRoles: []
 };
 
@@ -20,21 +19,10 @@ const usersReducer = (state, action) => {
                 ...state,
                 userProfile: action.payload
             };
-        case userTypes.GET_USER_EVENTS:
-            return {
-                ...state,
-                userEvents: action.payload
-            };
         case userTypes.GET_USER_ROLES:
             return {
                 ...state,
                 userRoles: action.payload
-            };
-        case userTypes.DELETE_EVENT:
-            return {
-                ...state,
-                userEvents: state.userEvents.filter((event) => event.event_id !== action.payload)
-                // userEvents: removeFromArray(action.payload, state.userEvents)
             };
         default:
             throw new Error(`unhandled type: ${action.type}`)

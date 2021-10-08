@@ -2,16 +2,26 @@ import eventTypes from './events.types';
 
 export const EVENTS_INITIAL_STATE = {
     events: [],
-    businessList: []
+    businessList: [],
+    userEvents: []
 };
 
 const eventsReducer = (state, action) => {
     switch(action.type) {
-        case eventTypes.GET_SUCCESS:
+        case eventTypes.GET_EVENTS_OK:
             return {
                 ...state,
-                events: action.payload.events,
-                businessList: action.payload.businesses
+                events: action.payload
+            }
+        case eventTypes.GET_BUSINESSES_OK:
+            return {
+                ...state,
+                businessList: action.payload
+            }
+        case eventTypes.GET_USER_EVENTS_OK:
+            return {
+                ...state,
+                userEvents: action.payload
             }
         case eventTypes.ADD_EVENT_TO_LIST:
             return {
@@ -21,7 +31,8 @@ const eventsReducer = (state, action) => {
         case eventTypes.REMOVE_EVENT:
             return {
                 ...state,
-                events: state.events.filter((event) => event.event_id !== action.payload)
+                events: state.events.filter((event) => event.event_id !== action.payload),
+                userEvents: state.userEvents.filter((event) => event.event_id !== action.payload)
             }
         default:
             return state;

@@ -1,19 +1,38 @@
-import React, { useState, useReducer, createContext, useEffect } from 'react';
-import AxiosInstance from '../../helpers/axios';
+import React, { useReducer, createContext } from 'react';
 import eventsReducer, { EVENTS_INITIAL_STATE } from './events.reducer';
 import eventsTypes from './events.types';
 import { format, startOfDay } from 'date-fns';
-import axios from 'axios';
+import eventTypes from './events.types';
 
 export const EventsContext = createContext({
     ...EVENTS_INITIAL_STATE
 });
 
 const EventsProvider = ({ children }) => {
-    const [ refresher, setRefresher ] = useState(true)
     const [ store, dispatch ] = useReducer(eventsReducer, EVENTS_INITIAL_STATE)
-    const { events, businessList } = store;
+    const { events, businessList, userEvents } = store;
     
+    const setEvents = (events) => {
+        dispatch({
+            type: eventsTypes.GET_EVENTS_OK,
+            payload: events
+        })
+    }
+
+    const setBusinessList = (businesses) => {
+        dispatch({
+            type:eventTypes.GET_BUSINESSES_OK,
+            payload: businesses
+        })
+    }
+
+    const setUserEventList = (events) => {
+        dispatch({
+            type: eventTypes.GET_USER_EVENTS_OK,
+            payload: events
+        })
+    }
+
     // get the events for each specific day sorted into a list of days contianing a list of events
     const useSortedEvents = () => {
         return events.reduce((obj, event) => {
@@ -34,15 +53,18 @@ const EventsProvider = ({ children }) => {
         }, {});
     }
 
+    // filters business list to only include businesses with the type of brand
     const useBrandList = () => {
         return businessList.filter(business => business.businesstype === "brand" || business.businesstype === "both")
     }
-
+    
+    // filters business list to only include businesses with the type of venue
     const useVenueList = () => {
         return businessList.filter(business => business.businesstype === "venue" || business.businesstype === "both")
     }
 
-    const useBusinessRequest = () => {
+    // filters buisness list to only include those currently accepting request
+    const useBusinessOpenReq = () => {
         return businessList.filter(business => business.requestOpen === true)
     }
 
@@ -66,37 +88,28 @@ const EventsProvider = ({ children }) => {
         })
     }
 
-    const removeFromEvents = (eventId) => {
+    const removeEvent = (eventId) => {
         dispatch({
             type: eventsTypes.REMOVE_EVENT,
             payload: eventId
         })
-        setRefresher(!refresher)
     }
-    
-    useEffect(() => {
-        const eventsCall = AxiosInstance.get('/events')
-        const businessCall = AxiosInstance.get('/business')
-        axios.all([eventsCall, businessCall])
-            .then(axios.spread((...responses) => {
-                const events = responses[0].data
-                const businesses = responses[1].data
-                dispatch({ type: eventsTypes.GET_SUCCESS, payload: { events, businesses } })
-            }))
-            .catch(err => console.log(err))
-    }, [refresher])
 
     return (
         <EventsContext.Provider value={
             {
                 events,
+                setEvents,
+                setBusinessList,
+                setUserEventList,
+                userEvents,
                 useSortedEvents,
                 useBrandList,
                 useVenueList,
-                useBusinessRequest,
+                useBusinessOpenReq,
                 getUpcomingEvents,
                 addToEvents,
-                removeFromEvents
+                removeEvent
             }
         }>
             {children}
