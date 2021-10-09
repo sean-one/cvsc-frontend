@@ -3,7 +3,8 @@ import { createLocalUser } from './users.utils';
 
 export const USERS_INITIAL_STATE = {
     userProfile: {},
-    userRoles: []
+    userRoles: [],
+    pendingRequestList: []
 };
 
 const usersReducer = (state, action) => {
@@ -19,11 +20,16 @@ const usersReducer = (state, action) => {
                 ...state,
                 userProfile: action.payload
             };
-        case userTypes.GET_USER_ROLES:
+        case userTypes.GET_USER_ROLES_OK:
             return {
                 ...state,
                 userRoles: action.payload
             };
+        case userTypes.GET_PENDING_REQUEST_OK:
+            return {
+                ...state,
+                pendingRequestList: action.payload
+            }
         default:
             throw new Error(`unhandled type: ${action.type}`)
             // return state;

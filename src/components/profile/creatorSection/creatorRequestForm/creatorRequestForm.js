@@ -47,6 +47,7 @@ const CreatorRequestForm = (props) => {
                 setBusinessList(businesses.data)
             })
             .catch(err => console.log(err))
+        // eslint-disable-next-line
     }, []);
 
     return (

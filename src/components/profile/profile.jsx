@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { UsersContext } from '../../context/users/users.provider';
@@ -11,13 +11,14 @@ import './profile.css';
 const Profile = () => {
     const { userProfile, getFromLocal } = useContext(UsersContext);
     const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
-
+    
     useEffect(() => {
         const userData = localStorage.getItem('user');
         if (userData) {
             const user = JSON.parse(userData)
             getFromLocal(user)
         }
+        // eslint-disable-next-line
     }, []);
 
     return (
