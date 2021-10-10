@@ -21,14 +21,17 @@ const PendingRequest = (props) => {
         getPendingList()
         // esline-disable-next-line
     }, [getPendingList])
-
     console.log(pendingRequestList)
     return (
         <div>
             <p>here are the pending request</p>
-            {/* {
-                pendingRequestList.map(request => )
-            } */}
+            {
+                pendingRequestList.map(request => (
+                    <div key={request.id}>
+                        <p>{`${request.username} requesting ${request.request_for} access for ${request.name}`}</p>
+                    </div>
+                ))
+            }
         </div>
     )
 }
