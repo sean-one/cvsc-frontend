@@ -6,14 +6,12 @@ import { createEventSchema } from '../../helpers/validationSchemas';
 // import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
 
-import { UsersContext } from '../../context/users/users.provider';
 import { EventsContext } from '../../context/events/events.provider';
 
 import './createEvent.css';
 
 const CreateEvent = (props) => {
-    const { addToEvents, useBrandList, useVenueList } = useContext(EventsContext);
-    const { userEvents, setUserEvents } = useContext(UsersContext);
+    const { userEvents, addToEvents, useBrandList, useVenueList, setUserEventList } = useContext(EventsContext);
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
@@ -60,7 +58,7 @@ const CreateEvent = (props) => {
             .then(response => {
                 if(response.status === 200) {
                     addToEvents(response.data)
-                    setUserEvents([...userEvents], response.data)
+                    setUserEventList([...userEvents], response.data)
                     history.push({
                         pathname: `/calendar/${response.data.event_id}`,
                         state: {

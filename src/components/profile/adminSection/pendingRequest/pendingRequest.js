@@ -21,7 +21,7 @@ const PendingRequest = (props) => {
         getPendingList()
         // esline-disable-next-line
     }, [getPendingList])
-    console.log(pendingRequestList)
+    
     return (
         <div>
             <p>here are the pending request</p>
