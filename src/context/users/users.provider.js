@@ -60,6 +60,12 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    const userSignOut = () => {
+        dispatch({
+            type: userTypes.USER_LOGOUT
+        })
+    }
+
     return (
         <UsersContext.Provider value={
             {
@@ -70,7 +76,8 @@ const UsersProvider = ({ children }) => {
                 setUserRoles,
                 setPendingRequestList,
                 useAdminRoles,
-                getFromLocal
+                getFromLocal,
+                userSignOut
             }
         }>
             {children}

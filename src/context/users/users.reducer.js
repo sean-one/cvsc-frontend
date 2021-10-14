@@ -30,6 +30,10 @@ const usersReducer = (state, action) => {
                 ...state,
                 pendingRequestList: action.payload
             }
+        case userTypes.USER_LOGOUT:
+            return {
+                ...USERS_INITIAL_STATE
+            }
         default:
             throw new Error(`unhandled type: ${action.type}`)
             // return state;

@@ -6,10 +6,16 @@ export const removeFromArray = (removeId, currentArr) => {
 }
 
 export const createLocalUser = (userData) => {
+    if(userData.business_roles.length <= 1) {
+        userData.business_roles = [];
+        localStorage.setItem('accounttype', 'basic')
+    } else {
+        localStorage.setItem('accounttype', 'editor')
+    }
     localStorage.setItem('token', userData.token);
     localStorage.setItem('userId', userData.id)
     localStorage.setItem('isAdmin', userData.isAdmin)
-    localStorage.setItem('accounttype', userData.accounttype)
+    // localStorage.setItem('accounttype', userData.accounttype)
     localStorage.setItem('avatar', userData.avatar)
     localStorage.setItem('user', JSON.stringify(userData))
     localStorage.setItem('isLoggedIn', true)
