@@ -1,13 +1,17 @@
 import React, { useEffect, useContext, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
 import AxiosInstance from '../../../../helpers/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { UsersContext } from '../../../../context/users/users.provider';
+
+import { requestSubmit } from '../../../../helpers/requestSubmit';
 
 const PendingRequest = (props) => {
     const { pendingRequestList, setPendingRequestList, useAdminRoles } = useContext(UsersContext);
     const adminRoles = useAdminRoles()
+    const { register, handleSubmit } = useForm()
 
     const getPendingList = useCallback(() => {
         AxiosInstance.post('/pendingRequest/businesses', adminRoles)
@@ -24,6 +28,16 @@ const PendingRequest = (props) => {
         // esline-disable-next-line
     }, [getPendingList])
     
+    const sendRequestStatus = (data) => {
+        const dataClean = requestSubmit(data, pendingRequestList)
+        AxiosInstance.post('/roles/editUserRoles', dataClean)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(err => console.log(err))
+        return
+    }
+
     return (
         <div>
             <p>Pending Request</p>
@@ -36,19 +50,22 @@ const PendingRequest = (props) => {
                     <FontAwesomeIcon id='requestTableReject' className='requestTableIcons' icon={faTimes} size='1x' />
 
                 </div>
-                <div className='requestTable'>
+                <form className='requestTable' onSubmit={handleSubmit(sendRequestStatus)}>
                     {
                         pendingRequestList.map(request => (
                             <div className='requestTableRow' key={request.id}>
                                 <p className='requestTableText'>{request.username}</p>
                                 <p className='requestTableText'>{request.name}</p>
                                 <p className='requestTableText'>{request.request_for}</p>
-                                <input type='radio' id='approved' name={request.id} />
-                                <input type='radio' id='rejected' name={request.id} />
+                                <div className='requestTableButtons'>
+                                    <input {...register(`${request.id}`)} type='radio' id='approved' value='approved' />
+                                    <input {...register(`${request.id}`)} type='radio' id='rejected' value='rejected' />
+                                </div>
                             </div>
                         ))
                     }
-                </div>
+                    <input type='submit' value='submit' />
+                </form>
             </div>
         </div>
     )
