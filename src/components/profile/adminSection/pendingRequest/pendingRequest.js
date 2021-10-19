@@ -30,6 +30,7 @@ const PendingRequest = (props) => {
     
     const sendRequestStatus = (data) => {
         const dataClean = requestSubmit(data, pendingRequestList)
+        console.log(dataClean)
         AxiosInstance.post('/roles/editUserRoles', dataClean)
             .then(response => {
                 console.log(response)
