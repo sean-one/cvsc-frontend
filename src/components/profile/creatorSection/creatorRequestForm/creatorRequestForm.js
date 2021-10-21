@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { requestBusinessCreator } from '../../../../helpers/validationSchemas';
@@ -6,13 +6,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../../../../helpers/axios';
 
+import { UsersContext } from '../../../../context/users/users.provider';
 import { EventsContext } from '../../../../context/events/events.provider';
 
 import '../creatorSection.css'
 
 const CreatorRequestForm = (props) => {
-    const { setBusinessList, useBusinessOpenReq } = useContext(EventsContext)
-    const businessList = useBusinessOpenReq()
+    const { useBusinessIdRoles } = useContext(UsersContext)
+    const { useFilterBusinessRequestList } = useContext(EventsContext)
+    // get list of current roles for user
+    const userroles = useBusinessIdRoles()
+    // use userroles to filter businesslist
+    const businessList = useFilterBusinessRequestList(userroles)
     const [ requestStatus, setRequestStatus ] = useState('')
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -20,35 +25,26 @@ const CreatorRequestForm = (props) => {
     });
 
     const sendRequest = (data) => {
-        // console.log(data)
         const token = localStorage.getItem('token')
 
         AxiosInstance.post('/pendingRequest', data, {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
+                // console.log(response)
                 setRequestStatus('request successfully sent')
             })
             .catch(err => {
                 if(err.response.data.type === 'duplicate') {
                     setRequestStatus('a previous request for this business is still pending')
                 }
-                console.log(err.response.data.type)
+                // console.log(err.response.data.type)
             })
     }
 
     const resetStatus = () => {
         setRequestStatus('')
     }
-
-    useEffect(() => {
-        AxiosInstance.get('/business')
-            .then(businesses => {
-                setBusinessList(businesses.data)
-            })
-            .catch(err => console.log(err))
-        // eslint-disable-next-line
-    }, []);
 
     return (
         <div className='requestCreator'>

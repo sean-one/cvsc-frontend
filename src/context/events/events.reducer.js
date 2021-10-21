@@ -8,15 +8,16 @@ export const EVENTS_INITIAL_STATE = {
 
 const eventsReducer = (state, action) => {
     switch(action.type) {
+        case eventTypes.SET_SITE_DATA:
+            return {
+                ...state,
+                events: action.payload.eventResponse,
+                businessList: action.payload.businessResponse
+            }
         case eventTypes.GET_EVENTS_OK:
             return {
                 ...state,
                 events: action.payload
-            }
-        case eventTypes.GET_BUSINESSES_OK:
-            return {
-                ...state,
-                businessList: action.payload
             }
         case eventTypes.GET_USER_EVENTS_OK:
             return {

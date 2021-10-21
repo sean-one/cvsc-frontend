@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import AxiosInstance from '../../helpers/axios';
 
 import { UsersContext } from '../../context/users/users.provider';
 
@@ -9,30 +10,58 @@ import CreatorSection from './creatorSection/creatorSection';
 import './profile.css';
 
 const Profile = () => {
-    const { userProfile, getFromLocal } = useContext(UsersContext);
-    const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+    const [ loading, setLoading ] = useState(false);
+    const { userProfile, setUserRoles, useAdminRoles } = useContext(UsersContext);
+    // const { userProfile, getFromLocal, setUserRoles, userRoles, useAdminRoles } = useContext(UsersContext);
+    const adminRoles = useAdminRoles()
+    // const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
     
+    const getRoles = () => {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        AxiosInstance.get(`/roles/user/${parseInt(localStorage.getItem('userId'))}`, {
+            headers: {'Authorization': 'Bearer ' + token}
+        })
+            .then(userroles => {
+                setUserRoles(userroles.data)
+                setLoading(false)
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            })
+    }
+
     useEffect(() => {
-        const userData = localStorage.getItem('user');
-        if (userData) {
-            const user = JSON.parse(userData)
-            getFromLocal(user)
-        }
+        getRoles()
+        // const userData = localStorage.getItem('user');
+        // if (userData) {
+        //     const user = JSON.parse(userData)
+        //     getFromLocal(user)
+        // }
         // eslint-disable-next-line
     }, []);
 
     return (
         <div className='componentWrapper'>
-            <div className='account'>
-                <div className='userinfo'>
-                    <h3>{userProfile.username}</h3>
-                </div>
-            </div>
             {
-                (isAdmin) && 
-                    <AdminSection />
+                loading ? (
+                    <div> ...loading data... </div>
+                ) : (
+                    <>
+                        <div className='account'>
+                            <div className='userinfo'>
+                                <h3>{userProfile.username}</h3>
+                            </div>
+                        </div>
+                        {
+                            (adminRoles.length > 0) && 
+                                <AdminSection />
+                        }
+                        <CreatorSection />
+                    </>
+                )
             }
-            <CreatorSection />
         </div>
     )
 }

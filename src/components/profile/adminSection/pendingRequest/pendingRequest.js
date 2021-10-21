@@ -11,7 +11,7 @@ import { requestSubmit } from '../../../../helpers/requestSubmit';
 const PendingRequest = (props) => {
     const { pendingRequestList, setPendingRequestList, useAdminRoles } = useContext(UsersContext);
     const adminRoles = useAdminRoles()
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, reset } = useForm()
 
     const getPendingList = useCallback(() => {
         AxiosInstance.post('/pendingRequest/businesses', adminRoles)
@@ -29,13 +29,21 @@ const PendingRequest = (props) => {
     }, [getPendingList])
     
     const sendRequestStatus = (data) => {
+
+        const token = localStorage.getItem('token');
+        
         const dataClean = requestSubmit(data, pendingRequestList)
-        console.log(dataClean)
-        AxiosInstance.post('/roles/editUserRoles', dataClean)
+        
+        AxiosInstance.post('/roles/editUserRoles', dataClean, {
+            headers: {'Authorization': 'Bearer ' + token}
+        })
             .then(response => {
-                console.log(response)
+                getPendingList()
+                // reset the form so that nothing is checked already
+                reset()
             })
             .catch(err => console.log(err))
+        
         return
     }
 

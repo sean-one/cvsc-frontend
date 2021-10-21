@@ -11,6 +11,13 @@ export const EventsContext = createContext({
 const EventsProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(eventsReducer, EVENTS_INITIAL_STATE)
     const { events, businessList, userEvents } = store;
+
+    const setCalendar = (eventResponse, businessResponse) => {
+        dispatch({
+            type: eventsTypes.SET_SITE_DATA,
+            payload: { eventResponse, businessResponse }
+        })
+    }
     
     const setEvents = (events) => {
         dispatch({
@@ -19,18 +26,16 @@ const EventsProvider = ({ children }) => {
         })
     }
 
-    const setBusinessList = (businesses) => {
-        dispatch({
-            type:eventTypes.GET_BUSINESSES_OK,
-            payload: businesses
-        })
-    }
-
     const setUserEventList = (events) => {
         dispatch({
             type: eventTypes.GET_USER_EVENTS_OK,
             payload: events
         })
+    }
+
+    // filters the business list removing business not open to request & businesses user already has roles for
+    const useFilterBusinessRequestList = (userroles) => {
+        return businessList.filter(business => business.requestOpen === true && !userroles.includes(business.id))
     }
 
     // get the events for each specific day sorted into a list of days contianing a list of events
@@ -63,11 +68,6 @@ const EventsProvider = ({ children }) => {
         return businessList.filter(business => business.businesstype === "venue" || business.businesstype === "both")
     }
 
-    // filters buisness list to only include those currently accepting request
-    const useBusinessOpenReq = () => {
-        return businessList.filter(business => business.requestOpen === true)
-    }
-
     const getUpcomingEvents = (listOfEvents, venueId, brandId, currentId) => {
         let results = {}
         if (venueId === brandId) {
@@ -98,15 +98,15 @@ const EventsProvider = ({ children }) => {
     return (
         <EventsContext.Provider value={
             {
+                setCalendar,
                 events,
                 setEvents,
-                setBusinessList,
                 setUserEventList,
+                useFilterBusinessRequestList,
                 userEvents,
                 useSortedEvents,
                 useBrandList,
                 useVenueList,
-                useBusinessOpenReq,
                 getUpcomingEvents,
                 addToEvents,
                 removeEvent

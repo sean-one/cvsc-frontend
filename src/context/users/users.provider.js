@@ -21,6 +21,14 @@ const UsersProvider = ({ children }) => {
         // returns an array of business_ids that user has admin rights to
         return adminArr
     }
+
+    const useBusinessIdRoles = () => {
+        let businessIdList = []
+        userRoles.map(role => {
+            return businessIdList.push(role.business_id)
+        })
+        return businessIdList
+    }
     
     // const useCreatorRoles = () => {
     //     const userCreator = userRoles.filter(role => role.roletype === 'creator')
@@ -76,6 +84,7 @@ const UsersProvider = ({ children }) => {
                 setUserRoles,
                 setPendingRequestList,
                 useAdminRoles,
+                useBusinessIdRoles,
                 getFromLocal,
                 userSignOut
             }

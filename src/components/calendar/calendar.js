@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
 // import EventPreview from '../events/eventPreview';
@@ -7,46 +7,70 @@ import Day from './day.jsx';
 
 import './calendar.css';
 import { EventsContext } from '../../context/events/events.provider.js';
+import axios from 'axios';
 
 const Calendar = () => {
-    const { setEvents, useSortedEvents } = useContext(EventsContext);
+    const [ loading, setLoading ] = useState(false)
+    const { setCalendar, useSortedEvents } = useContext(EventsContext);
     const sortedEvents = useSortedEvents();
 
-    useEffect(() => {
-        AxiosInstance.get('/events')
-            .then(events => {
-                setEvents(events.data)
-                // console.log(events.data)
+    const getSiteData = () => {
+        setLoading(true)
+        const eventsApiCall = AxiosInstance.get('/events');
+        const businessApiCall = AxiosInstance.get('/business');
+        axios.all([ eventsApiCall, businessApiCall ])
+            .then(axios.spread((...responses) => {
+                
+                // responses[0].data.config.url === '/events'
+                const eventListResponse = responses[0].data
+                
+                // responses[1].data.config.url === '/business'
+                const businessListResponse = responses[1].data
+                // console.log(eventListResponse)
+                // console.log(businessListResponse)
+                setCalendar(eventListResponse, businessListResponse)
+                setLoading(false)
+            }))
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
             })
-            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        getSiteData();
+        // AxiosInstance.get('/events')
+        //     .then(events => {
+        //         setEvents(events.data)
+        //         // console.log(events.data)
+        //     })
+        //     .catch(err => console.log(err))
         // eslint-disable-next-line
     }, []);
 
     return (
         <div>
-            <div className='calendar'>
-                <p>filter</p>
-                {
-                    Object.keys(sortedEvents).sort(
-                        // sort event list by date
-                        (a,b) => new Date(a) - new Date(b)
-                    ).map(key => {
-                        const eventDate = new Date(key)
-                        return (
-                            <Day key={format(eventDate, 't')} date={eventDate} schedule={sortedEvents[key]} />
-                        )
-                    })
-                }
-                {/* {
-                    events.map(event => {
-                        return (
-                            <EventPreview key={event.event_id} event={event} />
-                        )
-                    })
-                } */}
-            </div>
+            {
+                loading ? (
+                    <div> ...loading data... </div>
+                ) : (
+                    <div className='calendar'>
+                        <p>filter</p>
+                        {
+                            Object.keys(sortedEvents).sort(
+                                // sort event list by date
+                                (a,b) => new Date(a) - new Date(b)
+                            ).map(key => {
+                                const eventDate = new Date(key)
+                                return (
+                                    <Day key={format(eventDate, 't')} date={eventDate} schedule={sortedEvents[key]} />
+                                )
+                            })
+                        }
+                    </div>
+                )
+            }
         </div>
-
     )
 }
 

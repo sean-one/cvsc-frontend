@@ -9,7 +9,7 @@ export const requestSubmit = (data, requestList) => {
             approvedRequest.push({ requestId: approvedRequestLine[0].id, user_id: approvedRequestLine[0].user_id, business_id: approvedRequestLine[0].business_id, roletype: approvedRequestLine[0].request_for})
         } else if (data[dataline] === "rejected") {
             const rejectedRequestLine = requestList.filter(request => request.id === Number(dataline))
-            rejectedRequest.push({ id: rejectedRequestLine[0].id })
+            rejectedRequest.push({ id: rejectedRequestLine[0].id, business_id: rejectedRequestLine[0].business_id })
         }
     }
     return { approved: approvedRequest, rejected: rejectedRequest }
