@@ -48,7 +48,7 @@ const CreatorRequestForm = (props) => {
 
     return (
         <div className='requestCreator'>
-            <div className='requestTab'>
+            <div className='tabHeader'>
                 <p>Request Business Creator Rights</p>
                 {
                     (props.viewable) ?

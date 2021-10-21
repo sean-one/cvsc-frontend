@@ -1,19 +1,34 @@
+/*
+==================    
+    profile.js
+==================
+*/
 .account {
     display: flex;
 }
 
-.avatar {
-    text-align: left;
-    width: 50%;
-    background: blue;
+
+/*
+===========================
+    profile.js children
+===========================
+*/
+
+.tabHeader {
+    padding: 0.8rem 0.4rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.1rem solid grey;
 }
 
-.avatar img {
-    padding: 1.5rem;
-    border-radius: 50%;
-    max-width: 55%;
-}
 
+/*
+=========================    
+    upcomingEvents.js
+=========================
+*/
 .adminWrapper {
     position: relative;
     margin-bottom: 0.5rem;
@@ -43,21 +58,6 @@
     margin: 0 0.75rem;
 }
 
-.upcomingList {
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.upcomingList p {
-    padding: 1rem 0;
-}
-
 .tabIcon {
     color: rgb(0, 255, 0)
 }
-
-/* .userEvents {
-    display: none;
-} */

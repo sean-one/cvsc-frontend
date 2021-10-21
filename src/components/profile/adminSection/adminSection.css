@@ -1,6 +1,20 @@
+/*
+=======================
+    adminSection.js
+=======================
+*/
+
 .adminSection {
+    border: 0.2rem solid blue;
     margin: 1rem 0;
+    padding: 0.8rem 0;
 }
+
+/*
+=========================
+    pendingRequest.js
+=========================
+*/
 
 .pendingRequestTable {
     background-color: white;

@@ -29,16 +29,14 @@ const UsersProvider = ({ children }) => {
         })
         return businessIdList
     }
-    
-    // const useCreatorRoles = () => {
-    //     const userCreator = userRoles.filter(role => role.roletype === 'creator')
-    //     let creatorArr = []
-    //     userCreator.map(row => {
-    //         creatorArr.push(row.business_id)
-    //     })
-    //     // returns an array of business_ids that user has creator rights to
-    //     return creatorArr;
-    // }
+
+    const isEditor = () => {
+        if (userRoles.length > 0) {
+            return true;
+        } else {
+            return false
+        }
+    }
 
     const setUserProfile = userdata => {
         dispatch({
@@ -85,6 +83,7 @@ const UsersProvider = ({ children }) => {
                 setPendingRequestList,
                 useAdminRoles,
                 useBusinessIdRoles,
+                isEditor,
                 getFromLocal,
                 userSignOut
             }

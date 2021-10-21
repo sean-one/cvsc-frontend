@@ -41,7 +41,7 @@ const UpcomingEvents = (props) => {
 
     return (
         <div>
-            <div className='upcomingEvents'>
+            <div className='tabHeader'>
                 <p>Upcoming Events</p>
                 {
                     (props.viewable) ?

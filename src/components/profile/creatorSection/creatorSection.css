@@ -1,3 +1,14 @@
+/*
+=========================
+    creatorSection.js
+=========================
+*/
+.creatorSection {
+    border: 0.2rem solid purple;
+    padding: 0.8rem 0;
+}
+
+
 .createNewEvent {
     display: flex;
     justify-content: space-between;
@@ -7,18 +18,12 @@
     border-bottom: solid 0.05rem black;
 }
 
-.requestCreator {
-    padding: 0.25rem 0;
-    border-top: solid 0.05rem black;
-    border-bottom: solid 0.05rem black;
-}
 
-.requestTab {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+/*
+=============================
+    creatorRequestForm.js
+=============================
+*/
 
 .requestFormWrapper form {
     padding: 1rem;
@@ -62,6 +67,12 @@
     border-radius: 0.4rem;
 }
 
+
+/*
+=========================
+    upcomingEvents.js
+=========================
+*/
 .upcomingEvents {
     display: flex;
     justify-content: space-between;

@@ -11,7 +11,7 @@ import './profile.css';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
-    const { userProfile, setUserRoles, useAdminRoles } = useContext(UsersContext);
+    const { userProfile, getFromLocal, setUserRoles, useAdminRoles } = useContext(UsersContext);
     const adminRoles = useAdminRoles()
     
     const getRoles = () => {
@@ -31,12 +31,14 @@ const Profile = () => {
     }
 
     useEffect(() => {
+
+        if (Object.keys(userProfile).length === 0) {
+            // save userprofile from local storage 
+            const user = JSON.parse(localStorage.getItem('user'))
+            getFromLocal(user)
+        }
+        
         getRoles()
-        // const userData = localStorage.getItem('user');
-        // if (userData) {
-        //     const user = JSON.parse(userData)
-        //     getFromLocal(user)
-        // }
         // eslint-disable-next-line
     }, []);
 

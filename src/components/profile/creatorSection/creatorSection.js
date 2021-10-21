@@ -12,7 +12,8 @@ import './creatorSection.css';
 import '../profile.css';
 
 const CreatorSection = (props) => {
-    const { userRoles } = useContext(UsersContext)
+    const { isEditor } = useContext(UsersContext)
+    const editorRights = isEditor()
     const [ eventListVisable, setEventListVisable ] = useState(true);
     const [ requestFormVisable, setRequestFormVisable ] = useState(false)
 
@@ -28,8 +29,8 @@ const CreatorSection = (props) => {
         <div className='creatorSection'>
             <CreatorRequestForm viewable={requestFormVisable} toggleView={toggleRequestForm}/>
             {
-                (userRoles.length > 0) && 
-                    <div className='createNewEvent'>
+                (editorRights) && 
+                    <div className='tabHeader'>
                         <p>Create A New Event</p>
                         <span><Link to={{
                             pathname: '/events/create',
@@ -42,7 +43,7 @@ const CreatorSection = (props) => {
                     </div>
             }
             {
-                (userRoles.length > 0) && 
+                (editorRights) &&
                     <UpcomingEvents viewable={eventListVisable} toggleView={toggleEventList}/>
             }
         </div>
