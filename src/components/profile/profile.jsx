@@ -12,9 +12,7 @@ import './profile.css';
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
     const { userProfile, setUserRoles, useAdminRoles } = useContext(UsersContext);
-    // const { userProfile, getFromLocal, setUserRoles, userRoles, useAdminRoles } = useContext(UsersContext);
     const adminRoles = useAdminRoles()
-    // const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
     
     const getRoles = () => {
         setLoading(true);

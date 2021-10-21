@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
+import { UsersContext } from '../../../context/users/users.provider';
 
 import CreatorRequestForm from './creatorRequestForm/creatorRequestForm';
 import UpcomingEvents from './upcomingEvents/upcomingEvents';
@@ -10,9 +12,9 @@ import './creatorSection.css';
 import '../profile.css';
 
 const CreatorSection = (props) => {
+    const { userRoles } = useContext(UsersContext)
     const [ eventListVisable, setEventListVisable ] = useState(true);
     const [ requestFormVisable, setRequestFormVisable ] = useState(false)
-    const userAccountType = localStorage.getItem('accounttype')
 
     const toggleRequestForm = () => {
         setRequestFormVisable(!requestFormVisable)
@@ -26,7 +28,7 @@ const CreatorSection = (props) => {
         <div className='creatorSection'>
             <CreatorRequestForm viewable={requestFormVisable} toggleView={toggleRequestForm}/>
             {
-                (userAccountType === 'editor') && 
+                (userRoles.length > 0) && 
                     <div className='createNewEvent'>
                         <p>Create A New Event</p>
                         <span><Link to={{
@@ -40,7 +42,7 @@ const CreatorSection = (props) => {
                     </div>
             }
             {
-                (userAccountType === 'editor') && 
+                (userRoles.length > 0) && 
                     <UpcomingEvents viewable={eventListVisable} toggleView={toggleEventList}/>
             }
         </div>

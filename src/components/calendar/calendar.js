@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
-// import EventPreview from '../events/eventPreview';
 
 import Day from './day.jsx';
 
@@ -26,8 +25,7 @@ const Calendar = () => {
                 
                 // responses[1].data.config.url === '/business'
                 const businessListResponse = responses[1].data
-                // console.log(eventListResponse)
-                // console.log(businessListResponse)
+                
                 setCalendar(eventListResponse, businessListResponse)
                 setLoading(false)
             }))
@@ -39,12 +37,6 @@ const Calendar = () => {
 
     useEffect(() => {
         getSiteData();
-        // AxiosInstance.get('/events')
-        //     .then(events => {
-        //         setEvents(events.data)
-        //         // console.log(events.data)
-        //     })
-        //     .catch(err => console.log(err))
         // eslint-disable-next-line
     }, []);
 
