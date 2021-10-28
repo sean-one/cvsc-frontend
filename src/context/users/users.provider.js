@@ -10,7 +10,7 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles, pendingRequestList } = store
+    const { userProfile, userRoles, businessRoles, pendingRequestList } = store
 
     const useAdminRoles = () => {
         const userAdmin = userRoles.filter(role => role.roletype === 'admin')
@@ -28,6 +28,10 @@ const UsersProvider = ({ children }) => {
             return businessIdList.push(role.business_id)
         })
         return businessIdList
+    }
+
+    const useBusinessRoles = () => {
+        return businessRoles.filter(roles => roles.user_id !== userProfile.id);
     }
 
     const isEditor = () => {
@@ -59,6 +63,13 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    const setBusinessRoles = businessRoles => {
+        dispatch({
+            type: userTypes.GET_BUSINESS_ROLES,
+            payload: businessRoles
+        })
+    }
+
     const getFromLocal = userdata => {
         dispatch({
             type: userTypes.UPDATE_FROM_LOCAL,
@@ -83,7 +94,9 @@ const UsersProvider = ({ children }) => {
                 setPendingRequestList,
                 useAdminRoles,
                 useBusinessIdRoles,
+                useBusinessRoles,
                 isEditor,
+                setBusinessRoles,
                 getFromLocal,
                 userSignOut
             }

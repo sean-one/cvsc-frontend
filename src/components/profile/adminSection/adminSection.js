@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import PendingRequest from './pendingRequest/pendingRequest';
+import RolesTab from './rolesTab/rolesTab';
 
 import './adminSection.css';
 
 const AdminSection = (props) => {
-    const [ pendingRequestVisable, setPendingRequestVisable ] = useState(true)
-
-    const togglePendingRequest = () => {
-        setPendingRequestVisable(!pendingRequestVisable)
-    }
 
     return (
         <div className='adminSection'>
-            <PendingRequest viewable={pendingRequestVisable} toggleView={togglePendingRequest} />
+            <RolesTab />
         </div>
     )
+
 }
 
 export default AdminSection;

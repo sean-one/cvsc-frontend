@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useCallback } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import AxiosInstance from '../../../../helpers/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,39 +6,30 @@ import { faTimes, faCheck, faCaretDown, faCaretLeft } from '@fortawesome/free-so
 
 import { UsersContext } from '../../../../context/users/users.provider';
 
-import { requestSubmit } from '../../../../helpers/requestSubmit';
+import { roleRequestStatusUpdate } from '../../../../helpers/dataCleanUp';
 
 const PendingRequest = (props) => {
-    const { pendingRequestList, setPendingRequestList, useAdminRoles } = useContext(UsersContext);
-    const adminRoles = useAdminRoles()
+    const { pendingRequestList } = useContext(UsersContext);
     const { register, handleSubmit, reset } = useForm()
 
-    const getPendingList = useCallback(() => {
-        AxiosInstance.post('/pendingRequest/businesses', adminRoles)
-            .then(response => {
-                setPendingRequestList(response.data)
-                // console.log(response.data)
-            })
-            .catch(err => console.log(err))
-        // eslint-disable-next-line
-    }, [])
-
     useEffect(() => {
-        getPendingList()
+
+        props.getPending()
         // esline-disable-next-line
-    }, [getPendingList])
+    }, [])
     
     const sendRequestStatus = (data) => {
 
         const token = localStorage.getItem('token');
         
-        const dataClean = requestSubmit(data, pendingRequestList)
+        const dataClean = roleRequestStatusUpdate(data, pendingRequestList)
         
         AxiosInstance.post('/roles/editUserRoles', dataClean, {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
-                getPendingList()
+                props.getPending()
+                props.getRoles()
                 // reset the form so that nothing is checked already
                 reset()
             })

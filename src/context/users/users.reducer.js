@@ -4,7 +4,8 @@ import { createLocalUser } from './users.utils';
 export const USERS_INITIAL_STATE = {
     userProfile: {},
     userRoles: [],
-    pendingRequestList: []
+    pendingRequestList: [],
+    businessRoles: []
 };
 
 const usersReducer = (state, action) => {
@@ -25,6 +26,11 @@ const usersReducer = (state, action) => {
                 ...state,
                 userRoles: action.payload
             };
+        case userTypes.GET_BUSINESS_ROLES:
+            return {
+                ...state,
+                businessRoles: action.payload
+            }
         case userTypes.GET_PENDING_REQUEST_OK:
             return {
                 ...state,
