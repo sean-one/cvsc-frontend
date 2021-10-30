@@ -8,7 +8,12 @@ const AdminSection = (props) => {
 
     return (
         <div className='adminSection'>
-            <RolesTab />
+            <div className='sectionHeader'>
+                <h3>Admin Options</h3>
+            </div>
+            <div className='sectionTabs'>
+                <RolesTab />
+            </div>
         </div>
     )
 

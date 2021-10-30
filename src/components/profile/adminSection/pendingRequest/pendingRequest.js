@@ -15,7 +15,7 @@ const PendingRequest = (props) => {
     useEffect(() => {
 
         props.getPending()
-        // esline-disable-next-line
+        // eslint-disable-next-line
     }, [])
     
     const sendRequestStatus = (data) => {

@@ -5,7 +5,6 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { UsersContext } from '../../../context/users/users.provider';
 
-import CreatorRequestForm from './creatorRequestForm/creatorRequestForm';
 import UpcomingEvents from './upcomingEvents/upcomingEvents';
 
 import './creatorSection.css';
@@ -14,12 +13,7 @@ import '../profile.css';
 const CreatorSection = (props) => {
     const { isEditor } = useContext(UsersContext)
     const editorRights = isEditor()
-    const [ eventListVisable, setEventListVisable ] = useState(true);
-    const [ requestFormVisable, setRequestFormVisable ] = useState(false)
-
-    const toggleRequestForm = () => {
-        setRequestFormVisable(!requestFormVisable)
-    }
+    const [ eventListVisable, setEventListVisable ] = useState(false);
 
     const toggleEventList = () => {
         setEventListVisable(!eventListVisable)
@@ -27,25 +21,29 @@ const CreatorSection = (props) => {
 
     return (
         <div className='creatorSection'>
-            <CreatorRequestForm viewable={requestFormVisable} toggleView={toggleRequestForm}/>
-            {
-                (editorRights) && 
-                    <div className='tabHeader'>
-                        <p>Create A New Event</p>
-                        <span><Link to={{
-                            pathname: '/events/create',
-                            state: {
-                                from: props.location.pathname
-                            }
-                        }}>
-                            <FontAwesomeIcon className='tabIcon' icon={faPlus} size='1x' />
-                        </Link></span>
-                    </div>
-            }
-            {
-                (editorRights) &&
-                    <UpcomingEvents viewable={eventListVisable} toggleView={toggleEventList}/>
-            }
+            <div className='sectionHeader'>
+                <h3>Creator Options</h3>
+            </div>
+            <div className='sectionTabs'>
+                {
+                    (editorRights) && 
+                        <div className='tabHeader'>
+                            <p>Create A New Event</p>
+                            <span><Link to={{
+                                pathname: '/events/create',
+                                state: {
+                                    from: props.location.pathname
+                                }
+                            }}>
+                                <FontAwesomeIcon className='tabIcon' icon={faPlus} size='1x' />
+                            </Link></span>
+                        </div>
+                }
+                {
+                    (editorRights) &&
+                        <UpcomingEvents viewable={eventListVisable} toggleView={toggleEventList}/>
+                }
+            </div>
         </div>
     )
 }

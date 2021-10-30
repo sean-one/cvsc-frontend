@@ -4,6 +4,7 @@ import AxiosInstance from '../../helpers/axios';
 
 import { UsersContext } from '../../context/users/users.provider';
 
+import BasicSection from './basicSection/basicSection';
 import AdminSection from './adminSection/adminSection';
 import CreatorSection from './creatorSection/creatorSection';
 
@@ -54,6 +55,7 @@ const Profile = () => {
                                 <h3>{userProfile.username}</h3>
                             </div>
                         </div>
+                        <BasicSection />
                         {
                             (adminRoles.length > 0) && 
                                 <AdminSection />

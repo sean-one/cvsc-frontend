@@ -9,13 +9,15 @@ import AxiosInstance from '../../../../helpers/axios';
 import { UsersContext } from '../../../../context/users/users.provider';
 import { EventsContext } from '../../../../context/events/events.provider';
 
-import '../creatorSection.css'
+import '../basicSection.css'
 
 const CreatorRequestForm = (props) => {
     const { useBusinessIdRoles } = useContext(UsersContext)
     const { useFilterBusinessRequestList } = useContext(EventsContext)
+    
     // get list of current roles for user
     const userroles = useBusinessIdRoles()
+    
     // use userroles to filter businesslist
     const businessList = useFilterBusinessRequestList(userroles)
     const [ requestStatus, setRequestStatus ] = useState('')

@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretLeft } from "@fortawesome/free-solid-svg-icons";
