@@ -12,7 +12,8 @@ import './profile.css';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
-    const { userProfile, getFromLocal, setUserRoles, useAdminRoles } = useContext(UsersContext);
+    const { userProfile, getFromLocal, setUserRoles, useAdminRoles, isEditor } = useContext(UsersContext);
+    const editorRights = isEditor()
     const adminRoles = useAdminRoles()
     
     const getRoles = () => {
@@ -60,7 +61,10 @@ const Profile = () => {
                             (adminRoles.length > 0) && 
                                 <AdminSection />
                         }
-                        <CreatorSection />
+                        {
+                            (editorRights) &&
+                                <CreatorSection />
+                        }
                     </>
                 )
             }

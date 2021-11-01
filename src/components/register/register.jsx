@@ -22,35 +22,6 @@ const Register = () => {
         setServerError(false)
         // remove confirmation from data
         delete data['confirmation']
-        
-        const file = data.avatar[0]
-        
-        if (file === undefined) {
-            // this is where a default image coule be send if not on the server
-            const imageUrl = 'https://picsum.photos/100/100'
-            data.avatar = imageUrl
-
-        } else {
-
-            // get s3 url from server
-            const url = await AxiosInstance.get('/s3')
-                .then(response => {
-                    return response.data.url
-                    // console.log(response)
-                })
-                .catch(err => console.log(err))
-    
-            // post the image directly to the s3 bucket
-            await AxiosInstance.put(url, file, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            })
-    
-            const imageUrl = url.split('?')[0]
-            data.avatar = imageUrl
-            
-        }
 
         AxiosInstance.post('/users/register', data)
             .then(response => {
@@ -99,14 +70,14 @@ const Register = () => {
                     required
                 />
                 <p className='errormessage'>{errors.email?.message}</p>
-                <label htmlFor='avatar'>Profile Image:</label>
+                {/* <label htmlFor='avatar'>Profile Image:</label>
                 <input
                     {...register('avatar')}
                     type='file'
                     id='avatar'
                     name='avatar'
                     accept="image/*"
-                />
+                /> */}
                 <label htmlFor='password'>Password:</label>
                 <input
                     {...register('password')}

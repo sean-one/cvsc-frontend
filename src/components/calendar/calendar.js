@@ -19,6 +19,7 @@ const Calendar = () => {
         const businessApiCall = AxiosInstance.get('/business');
         axios.all([ eventsApiCall, businessApiCall ])
             .then(axios.spread((...responses) => {
+                // console.log(responses)
                 
                 // responses[0].data.config.url === '/events'
                 const eventListResponse = responses[0].data
@@ -31,7 +32,6 @@ const Calendar = () => {
             }))
             .catch(err => {
                 setLoading(false)
-                console.log(err)
             })
     }
 
