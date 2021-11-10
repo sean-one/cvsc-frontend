@@ -96,6 +96,13 @@ const Register = () => {
                     required
                 />
                 <p className='errormessage'>{errors.confirmation?.message}</p>
+                <label htmlFor='instagram'>Instagram</label>
+                <input
+                    {...register('instagram')}
+                    type='text'
+                    id='instagram'
+                    name='instagram'
+                />
                 {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
                 <input type='submit' value='submit' />
             </form>

@@ -4,6 +4,7 @@ import { createLocalUser } from './users.utils';
 export const USERS_INITIAL_STATE = {
     userProfile: {},
     userRoles: [],
+    userContact: {},
     pendingRequestList: [],
     businessRoles: []
 };
@@ -30,6 +31,11 @@ const usersReducer = (state, action) => {
             return {
                 ...state,
                 businessRoles: action.payload
+            }
+        case userTypes.GET_USER_CONTACT_OK:
+            return {
+                ...state,
+                userContact: action.payload
             }
         case userTypes.GET_PENDING_REQUEST_OK:
             return {

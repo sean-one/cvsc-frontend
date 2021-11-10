@@ -84,3 +84,10 @@ export const createEventSchema = yup.object().shape({
         .moreThan(0, 'please select a brand')
         .required('branding is required')
 })
+
+export const addInstagramSchema = yup.object().shape({
+    instagram: yup
+        .string()
+        .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, 'invalid instagram account')
+        .required('instagram is required')
+})

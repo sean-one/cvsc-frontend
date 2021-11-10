@@ -51,11 +51,6 @@ const Profile = () => {
                     <div> ...loading data... </div>
                 ) : (
                     <>
-                        <div className='account'>
-                            <div className='userinfo'>
-                                <h3>{userProfile.username}</h3>
-                            </div>
-                        </div>
                         <BasicSection />
                         {
                             (adminRoles.length > 0) && 

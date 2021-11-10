@@ -1,7 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 
-const BusinessRequestForm = () => {
+const BusinessRequestForm = (props) => {
     const { register, handleSubmit } = useForm()
 
     const sendRequest = (data) => {
@@ -12,11 +14,15 @@ const BusinessRequestForm = () => {
         <div className='newBusinessSection'>
             <div className='tabHeader'>
                 <p>Add New Business Request</p>
-                {/* add fontawesome carets here to make fold unfold */}
+                {
+                    (props.viewable) ?
+                        <FontAwesomeIcon className='tabIcon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
+                        : <FontAwesomeIcon className='tabIcon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
+                }
             </div>
             {/* name, email, avatar, description, [brand, venue, both], contact, requestOpen */}
             {/* contact -- instagram, phone, website*/}
-            <div className='businessFormWrapper'>
+            <div className={props.viewable ? 'businessFormWrapper' : 'inactive'}>
                 <form className='businessRequestForm' onSubmit={handleSubmit(sendRequest)}>
                     
                     <label htmlFor='business_name'>Business Name:</label>

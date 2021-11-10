@@ -10,7 +10,7 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles, businessRoles, pendingRequestList } = store
+    const { userProfile, userRoles, userContact, businessRoles, pendingRequestList } = store
 
     const useAdminRoles = () => {
         const userAdmin = userRoles.filter(role => role.roletype === 'admin')
@@ -56,6 +56,13 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    const setUserContact = usercontact => {
+        dispatch({
+            type: userTypes.GET_USER_CONTACT_OK,
+            payload: usercontact
+        })
+    }
+
     const setPendingRequestList = pendingrequests => {
         dispatch({
             type: userTypes.GET_PENDING_REQUEST_OK,
@@ -88,9 +95,11 @@ const UsersProvider = ({ children }) => {
             {
                 userProfile,
                 userRoles,
+                userContact,
                 pendingRequestList,
                 setUserProfile,
                 setUserRoles,
+                setUserContact,
                 setPendingRequestList,
                 useAdminRoles,
                 useBusinessIdRoles,
