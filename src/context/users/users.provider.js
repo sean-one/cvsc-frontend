@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import usersReducer, { USERS_INITIAL_STATE } from './users.reducer';
 import userTypes from './users.types';
 
+import { userSignIn, userContactUpdate } from './users.utils';
 
 export const UsersContext = createContext({
     ...USERS_INITIAL_STATE
@@ -42,10 +43,25 @@ const UsersProvider = ({ children }) => {
         }
     }
 
+    // used at sucessful login
     const setUserProfile = userdata => {
+        // set up local storage
+        // also cleans data for the payload object
+        userSignIn(userdata)
+        
         dispatch({
             type: userTypes.SIGNIN_SUCCESS,
-            payload: userdata
+            payload: { user: userdata.user, contact: userdata.contact }
+        })
+    }
+
+    // used at contactSection updateContact
+    const updateUserContact = contact => {
+        // save contact to local storage
+        userContactUpdate(contact)
+        dispatch({
+            type: userTypes.UPDATE_USER_CONTACT,
+            payload: contact
         })
     }
 
@@ -98,6 +114,7 @@ const UsersProvider = ({ children }) => {
                 userContact,
                 pendingRequestList,
                 setUserProfile,
+                updateUserContact,
                 setUserRoles,
                 setUserContact,
                 setPendingRequestList,

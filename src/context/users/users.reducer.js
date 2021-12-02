@@ -1,5 +1,4 @@
 import userTypes from './users.types';
-import { createLocalUser } from './users.utils';
 
 export const USERS_INITIAL_STATE = {
     userProfile: {},
@@ -12,16 +11,21 @@ export const USERS_INITIAL_STATE = {
 const usersReducer = (state, action) => {
     switch(action.type) {
         case userTypes.SIGNIN_SUCCESS:
-            createLocalUser(action.payload)
             return {
                 ...state,
-                userProfile: action.payload
+                userProfile: action.payload.user,
+                userContact: action.payload.contact
             };
         case userTypes.UPDATE_FROM_LOCAL:
             return {
                 ...state,
                 userProfile: action.payload
             };
+        case userTypes.UPDATE_USER_CONTACT:
+            return {
+                ...state,
+                userContact: action.payload
+            }
         case userTypes.GET_USER_ROLES_OK:
             return {
                 ...state,

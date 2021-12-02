@@ -5,10 +5,16 @@ export const removeFromArray = (removeId, currentArr) => {
     return currentArr.filter(event => event.event_id !== removeId)
 }
 
-export const createLocalUser = (userData) => {
-    localStorage.setItem('token', userData.token);
-    localStorage.setItem('userId', userData.id)
-    localStorage.setItem('avatar', userData.avatar)
-    localStorage.setItem('user', JSON.stringify(userData))
+export const userSignIn = (user) => {
+    user.user = { id: user['id'], username: user['username'], avatar: user['avatar'], contact: user['contact_id']}
+    localStorage.setItem('token', user.token)
+    localStorage.setItem('userId', user.id)
+    localStorage.setItem('avatar', user.avatar)
+    localStorage.setItem('user', JSON.stringify(user.user))
+    localStorage.setItem('contact', JSON.stringify(user.contact))
     localStorage.setItem('isLoggedIn', true)
+}
+
+export const userContactUpdate = (contact) => {
+    localStorage.setItem('contact', JSON.stringify(contact))
 }

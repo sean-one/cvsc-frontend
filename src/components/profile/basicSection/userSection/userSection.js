@@ -1,35 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretLeft, faCamera, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import AxiosInstance from '../../../../helpers/axios';
+import { faCaretDown, faCaretLeft, faCamera } from '@fortawesome/free-solid-svg-icons';
 
 import { UsersContext } from '../../../../context/users/users.provider';
 
-import ContactSection from './contactSection/contactSection';
-import InstagramContact from './instagramContact/instagramContact';
+import ContactSection from '../../../contact/contactSection';
 
 import './userSection.css';
 
 const UserSection = (props) => {
-    const [ loading, setLoading ] = useState(true)
-    const { userProfile, userContact, setUserContact } = useContext(UsersContext)
-
-    useEffect(() => {
-        if (userProfile.contact_id) {
-            AxiosInstance.get(`/contacts/${userProfile.contact_id}`)
-                .then(contact => {
-                    setUserContact(contact.data)
-                    setLoading(false)
-                })
-                .catch(err => {
-                    console.log(err)
-                    setLoading(false)
-                })
-        } else {
-            setLoading(false)
-        }
-        // eslint-disable-next-line
-    }, [])
+    const { userProfile } = useContext(UsersContext)
 
     return (
         <div className='userSection'>
@@ -44,35 +24,14 @@ const UserSection = (props) => {
             <div className={props.viewable ? 'userProfile' : 'inactive'}>
                 <div className='userDetails'>
                     <div className='username'>
-                        <h3>{userProfile.username}</h3>
+                        <h3>{userProfile['username']}</h3>
                     </div>
                     <div className='userAvatar'>
-                        <img src={userProfile.avatar} alt='user profile' />
+                        <img src={userProfile['avatar']} alt='user profile' />
                         <FontAwesomeIcon id='userAvatarEdit' icon={faCamera} size='2x' />
                     </div>
                 </div>
-                {
-                    loading ? (
-                        <div> ...loading data... </div>
-                    ) : (
-                        <ContactSection />
-                        // <div className='contacts'>
-                        //     <div className='socialList'>
-                        //         <div className='user_email'>
-                        //             <FontAwesomeIcon className='tabIcon' icon={faEnvelope} size='1x' />
-                        //             <p>{userProfile.email}</p>
-                        //         </div>
-                        //         {
-                        //             userContact['instagram'] ? (
-                        //                 <p>{userContact['instagram']}</p>
-                        //                 ) : (
-                        //                 <InstagramContact />
-                        //             )
-                        //         }
-                        //     </div>
-                        // </div>
-                    )
-                }
+                <ContactSection />
             </div>
         </div>
     )

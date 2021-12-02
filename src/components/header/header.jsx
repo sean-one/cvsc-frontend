@@ -16,7 +16,7 @@ const Header = () => {
 
     const logout = () => {
         localStorage.clear()
-        userProfile.avatar = "https://coachellavalleysmokers-images.s3.amazonaws.com/Coachella+Valley-01.png"
+        userProfile['avatar'] = "https://coachellavalleysmokers-images.s3.amazonaws.com/Coachella+Valley-01.png"
         setActiveMenu(!activeMenu);
         userSignOut()
     }

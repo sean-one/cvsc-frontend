@@ -85,6 +85,28 @@ export const createEventSchema = yup.object().shape({
         .required('branding is required')
 })
 
+export const addContactSchema = yup.object().shape({
+    
+    // remove checkbox values from exported object
+    addinstagram: yup
+    .boolean()
+    .strip(),
+    
+    // remove checkbox values from exported object
+    addfacebook: yup
+        .boolean()
+        .strip(),
+
+    instagram: yup
+        .string()
+        .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, 'invalid instagram account / if blank uncheck box'),
+    
+    facebook: yup
+        .string()
+        .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, 'must provide full facebook url / if blank uncheck box')
+
+})
+
 export const addInstagramSchema = yup.object().shape({
     instagram: yup
         .string()
