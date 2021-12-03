@@ -45,6 +45,7 @@ const UsersProvider = ({ children }) => {
 
     // used at sucessful login
     const setUserProfile = userdata => {
+        console.log(userdata)
         // set up local storage
         // also cleans data for the payload object
         userSignIn(userdata)
@@ -71,7 +72,7 @@ const UsersProvider = ({ children }) => {
             payload: roledata
         })
     }
-    
+
     const setPendingRequestList = pendingrequests => {
         dispatch({
             type: userTypes.GET_PENDING_REQUEST_OK,

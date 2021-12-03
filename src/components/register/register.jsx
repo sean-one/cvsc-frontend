@@ -21,32 +21,28 @@ const Register = () => {
 
     const createUser = async (data) =>{
         const newUser = registerCleanUp(data)
-        console.log(newUser)
         setServerError(false)
 
         AxiosInstance.post('/users/register', newUser)
             .then(response => {
-                console.log(response)
-                // if(response.status === 200) {
-                //     setUserProfile(response.data)
-                //     history.push('/profile');
-                // } else {
-                //     throw new Error()
-                // }
+                if(response.status === 200) {
+                    console.log(response)
+                    setUserProfile(response.data)
+                    history.push('/profile');
+                } else {
+                    throw new Error()
+                }
             })
             .catch(err => {
-                if(err.response.status === 400) {
+                // console.log(err)
+                if(!err.response) {
+                    setServerError(true)
+                } else if(err.response.status === 400) {
                     setError(`${err.response.data.type}`, {
                         type: 'server',
                         message: err.response.data.message
                     })
                 }
-
-                if(!err.response) {
-                    setServerError(true)
-                }
-
-                console.log(err.response)
             })
     }
     return (
