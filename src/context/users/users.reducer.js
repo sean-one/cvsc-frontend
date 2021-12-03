@@ -36,11 +36,6 @@ const usersReducer = (state, action) => {
                 ...state,
                 businessRoles: action.payload
             }
-        case userTypes.GET_USER_CONTACT_OK:
-            return {
-                ...state,
-                userContact: action.payload
-            }
         case userTypes.GET_PENDING_REQUEST_OK:
             return {
                 ...state,

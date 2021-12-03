@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from '../../helpers/validationSchemas.js';
+import { registerCleanUp } from '../../helpers/dataCleanUp.js';
 import AxiosInstance from '../../helpers/axios';
 
 import './register.css';
@@ -19,21 +20,21 @@ const Register = () => {
     let history = useHistory();
 
     const createUser = async (data) =>{
+        const newUser = registerCleanUp(data)
+        console.log(newUser)
         setServerError(false)
-        // remove confirmation from data
-        delete data['confirmation']
 
-        AxiosInstance.post('/users/register', data)
+        AxiosInstance.post('/users/register', newUser)
             .then(response => {
-                if(response.status === 200) {
-                    setUserProfile(response.data)
-                    history.push('/profile');
-                } else {
-                    throw new Error()
-                }
+                console.log(response)
+                // if(response.status === 200) {
+                //     setUserProfile(response.data)
+                //     history.push('/profile');
+                // } else {
+                //     throw new Error()
+                // }
             })
             .catch(err => {
-                
                 if(err.response.status === 400) {
                     setError(`${err.response.data.type}`, {
                         type: 'server',
@@ -45,7 +46,7 @@ const Register = () => {
                     setServerError(true)
                 }
 
-                console.log('register post catch error')
+                console.log(err.response)
             })
     }
     return (

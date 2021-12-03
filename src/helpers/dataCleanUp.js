@@ -1,4 +1,20 @@
 
+export const registerCleanUp = (user) => {
+    let contact = {}
+    
+    if(user['instagram'] === '') {
+        contact = { email: user['email'] }
+    } else {
+        contact = { email: user['email'], instagram: user['instagram'] }
+    }
+
+    delete user['instagram']
+    delete user['email']
+    delete user['confirmation']
+    
+    return { user, contact }
+}
+
 export const roleRequestStatusUpdate = (data, requestList) => {
     const approvedRequest = []
     const rejectedRequest = []

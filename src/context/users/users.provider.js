@@ -71,14 +71,7 @@ const UsersProvider = ({ children }) => {
             payload: roledata
         })
     }
-
-    const setUserContact = usercontact => {
-        dispatch({
-            type: userTypes.GET_USER_CONTACT_OK,
-            payload: usercontact
-        })
-    }
-
+    
     const setPendingRequestList = pendingrequests => {
         dispatch({
             type: userTypes.GET_PENDING_REQUEST_OK,
@@ -116,7 +109,6 @@ const UsersProvider = ({ children }) => {
                 setUserProfile,
                 updateUserContact,
                 setUserRoles,
-                setUserContact,
                 setPendingRequestList,
                 useAdminRoles,
                 useBusinessIdRoles,
