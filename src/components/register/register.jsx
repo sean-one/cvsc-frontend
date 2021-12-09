@@ -26,7 +26,6 @@ const Register = () => {
         AxiosInstance.post('/users/register', newUser)
             .then(response => {
                 if(response.status === 200) {
-                    console.log(response)
                     setUserProfile(response.data)
                     history.push('/profile');
                 } else {
@@ -34,7 +33,6 @@ const Register = () => {
                 }
             })
             .catch(err => {
-                // console.log(err)
                 if(!err.response) {
                     setServerError(true)
                 } else if(err.response.status === 400) {
@@ -45,6 +43,7 @@ const Register = () => {
                 }
             })
     }
+    
     return (
         <div className='componentWrapper'>
             <h2>Registration</h2>

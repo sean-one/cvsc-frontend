@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import usersReducer, { USERS_INITIAL_STATE } from './users.reducer';
 import userTypes from './users.types';
 
-import { userSignIn, userContactUpdate } from './users.utils';
+import { userSignIn, userUpdate, userContactUpdate } from './users.utils';
 
 export const UsersContext = createContext({
     ...USERS_INITIAL_STATE
@@ -43,9 +43,8 @@ const UsersProvider = ({ children }) => {
         }
     }
 
-    // used at sucessful login
+    // used at sucessful login & successful registration
     const setUserProfile = userdata => {
-        console.log(userdata)
         // set up local storage
         // also cleans data for the payload object
         userSignIn(userdata)
@@ -66,6 +65,7 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    // used at profile on successful get on user roles
     const setUserRoles = roledata => {
         dispatch({
             type: userTypes.GET_USER_ROLES_OK,
@@ -73,10 +73,21 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    // used on rolestab after successful pending req get
     const setPendingRequestList = pendingrequests => {
         dispatch({
             type: userTypes.GET_PENDING_REQUEST_OK,
             payload: pendingrequests
+        })
+    }
+
+    // used after successful avatar update
+    const updateUser = userdata => {
+        userUpdate(userdata)
+
+        dispatch({
+            type: userTypes.UPDATE_USER,
+            payload: userdata
         })
     }
 
@@ -111,6 +122,7 @@ const UsersProvider = ({ children }) => {
                 updateUserContact,
                 setUserRoles,
                 setPendingRequestList,
+                updateUser,
                 useAdminRoles,
                 useBusinessIdRoles,
                 useBusinessRoles,

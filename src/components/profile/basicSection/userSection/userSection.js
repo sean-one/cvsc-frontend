@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretLeft, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { UsersContext } from '../../../../context/users/users.provider';
 
+import UserAvatar from './userAvatar/userAvatar';
 import ContactSection from '../../../contact/contactSection';
 
 import './userSection.css';
@@ -26,10 +27,7 @@ const UserSection = (props) => {
                     <div className='username'>
                         <h3>{userProfile['username']}</h3>
                     </div>
-                    <div className='userAvatar'>
-                        <img src={userProfile['avatar']} alt='user profile' />
-                        <FontAwesomeIcon id='userAvatarEdit' icon={faCamera} size='2x' />
-                    </div>
+                    <UserAvatar />
                 </div>
                 <ContactSection />
             </div>

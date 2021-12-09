@@ -9,30 +9,9 @@
     padding: 1rem 0;
 }
 
-.userAvatar {
-    position: relative;
-    width: 200px;
-    height: auto;
-}
-
 .username {
     align-self: flex-start;
     padding-left: 0.2rem;
     font-weight: bold;
     text-align: left;
-}
-
-.userAvatar img {
-    border-radius: 50%;
-    max-width: 100%;
-}
-
-#userAvatarEdit {
-    padding: 0.5rem;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 0px;
-    right: 30px;
-    color: green;
-    background-color: rgba(255,255,255,0.8);
 }

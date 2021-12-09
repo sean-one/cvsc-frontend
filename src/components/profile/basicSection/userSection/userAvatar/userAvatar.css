@@ -1,0 +1,30 @@
+.avatarSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userAvatar {
+    /* width: 100%; */
+    /* height: 200px; */
+    position: relative;
+    /* width: 200px; */
+    /* height: auto; */
+}
+
+#userAvatarEdit {
+    padding: 0.5rem;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0px;
+    right: 30px;
+    color: green;
+    background-color: rgba(255,255,255,0.8);
+}
+
+canvas {
+    background-color: coral;
+    /* border: 2px solid black; */
+    border-radius: 50%;
+}
