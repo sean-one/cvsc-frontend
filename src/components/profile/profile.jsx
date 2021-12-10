@@ -41,6 +41,9 @@ const Profile = () => {
         }
         
         getRoles()
+        return () => {
+            setLoading(false)
+        }
         // eslint-disable-next-line
     }, []);
 

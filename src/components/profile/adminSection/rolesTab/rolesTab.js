@@ -9,7 +9,7 @@ import { UsersContext } from '../../../../context/users/users.provider'
 const RolesTab = () => {
     const { useAdminRoles, setBusinessRoles, setPendingRequestList } = useContext(UsersContext);
     const adminRoles = useAdminRoles()
-    const [pendingRequestVisable, setPendingRequestVisable] = useState(true)
+    const [pendingRequestVisable, setPendingRequestVisable] = useState(false)
     const [editRolesVisable, setEditRolesVisable] = useState(false)
 
     const togglePendingRequest = () => {

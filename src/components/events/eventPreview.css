@@ -9,19 +9,18 @@
 
 .cardImg {
     position: relative;
+    border-radius: 50%;
     padding: 0.5rem;
     width: 35%;
+    /* height: inherit; */
+    /* width: 10rem; */
+    height: 13.5rem;
 }
 
 .eventdate {
     position: absolute;
     top: 0;
     left: 0;
-}
-
-.cardImg img {
-    width: 100%;
-    border-radius: 50%;
 }
 
 .eventtime {

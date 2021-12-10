@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,72 +16,113 @@ const CreateEvent = (props) => {
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
     });
+    const canvas = useRef(null)
     const [ adminRoleError, setAdminRoleError ] = useState(false);
+    const [ eventImage, setEventImage ] = useState()
+    const [ addImage, setAddImage ] = useState(false)
     // const [ networkError, setNetworkError ] = useState(false);
     const venueList = useVenueList()
     const brandList = useBrandList()
     let history = useHistory();
 
-    const sendEvent = async (data) => {
-        // console.log(data.eventmedia[0])
-        const token = localStorage.getItem('token')
-        const file = data.eventmedia[0]
+    const previewImage = (event) => {
+        setAddImage(true)
+        let fileToUpload = event.target.files
+        let reader = new FileReader()
+        const previewImage = new Image()
+        reader.onload = function(e) {
+            previewImage.src = e.target.result
+            previewImage.onload = () => setEventImage(previewImage)
+        }
+        reader.readAsDataURL(fileToUpload[0])
 
-        if (file === undefined) {
-            // this needs to create an error and stop the post.  this file is required
-            const imageUrl = 'https://picsum.photos/300/400'
-            data.eventmedia = imageUrl
-            
-        } else {
-            
-            //! need to validate user posting BEFORE sending the image to s3
-            // get s3 url from server
-            const url = await AxiosInstance.get('/s3')
+    }
+
+    const sendEvent = async (data) => {
+        canvas.current.toBlob(async function(blob) {
+            const token = localStorage.getItem('token')
+
+            // get image url from s3 bucket
+            const url = await AxiosInstance.get('/s3', { headers: { 'Authorization': 'Bearer ' + token } })
                 .then(response => {
                     return response.data.url
                 })
                 .catch(err => console.log(err))
             
-            await AxiosInstance.put(url, file, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            })
+            // upload the image to the s3 bucket at the url recieved
+            await AxiosInstance.put(url, blob, { headers: { 'Content-Type': 'multipart/form-data' }})
 
             const imageUrl = url.split('?')[0]
+            
             data.eventmedia = imageUrl
-        }
-
-        AxiosInstance.post('/events', data, {
-            headers: {'Authorization': 'Bearer ' + token}
+            
+            AxiosInstance.post('/events', data, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            })
+                .then(response => {
+                    if(response.status === 200) {
+                        addToEvents(response.data)
+                        setUserEventList([...userEvents], response.data)
+                        history.push({
+                            pathname: `/calendar/${response.data.event_id}`,
+                            state: {
+                                event: response.data
+                            }
+                        });
+                    } else {
+                        console.log(response)
+                        // throw new Error();
+                    }
+                })
+                .catch(err => {
+                    if(!err.response) {
+                        console.log(err)
+                        console.log('network error')
+                    } else if(err.response.status === 400) {
+                        localStorage.clear()
+                        history.push('/login');
+                    } else if(err.response.status === 403) {
+                        setAdminRoleError(true);
+                    }
+                })
         })
-            .then(response => {
-                if(response.status === 200) {
-                    addToEvents(response.data)
-                    setUserEventList([...userEvents], response.data)
-                    history.push({
-                        pathname: `/calendar/${response.data.event_id}`,
-                        state: {
-                            event: response.data
-                        }
-                    });
-                } else {
-                    console.log(response)
-                    // throw new Error();
-                }
-            })
-            .catch(err => {
-                if(!err.response) {
-                    console.log(err)
-                    console.log('network error')
-                } else if(err.response.status === 400) {
-                    localStorage.clear()
-                    history.push('/login');
-                } else if(err.response.status === 403) {
-                    setAdminRoleError(true);
-                }
-            })
+        
     }
+
+    useEffect(() => {
+        if(eventImage && canvas) {
+            const ctx = canvas.current.getContext('2d')
+            const MAX_WIDTH = 384
+            const MAX_HEIGHT = 480
+            let width = eventImage.width
+            let height = eventImage.height
+
+            if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width
+                width = MAX_WIDTH
+            }
+            else if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height
+                height = MAX_HEIGHT
+            } else {
+                if (width > height) {
+                    width = MAX_WIDTH;
+                    height *= width / MAX_WIDTH;
+                } else {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH
+                }
+            }
+            
+            // crops canvas to the size of the drawing
+            canvas.current.width = width
+            canvas.current.height = height
+
+            ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
+
+            ctx.drawImage(eventImage, ( canvas.current.width / 2 ) - ( width / 2 ), ( canvas.current.height / 2 ) - ( height / 2 ), width, height)
+        }
+    }, [eventImage, canvas]);
 
     return (
         <div className='componentWrapper'>
@@ -120,12 +161,22 @@ const CreateEvent = (props) => {
                     required
                 />
                 <p className='errormessage'>{errors.eventend?.message}</p>
+                {
+                    addImage && 
+                        <canvas
+                            id={'eventImagePreview'}
+                            ref={canvas}
+                            width={384}
+                            height={480}
+                        />
+                }
                 <label htmlFor='eventmedia'>Image Link:</label>
                 <input
                     {...register('eventmedia')}
                     type='file'
                     id='eventmedia'
                     accept='image/*'
+                    onChange={previewImage}
                 />
                 <p className='errormessage'>{errors.eventmedia?.message}</p>
                 <label htmlFor='venue_id'>Location:</label>

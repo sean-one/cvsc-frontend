@@ -20,9 +20,8 @@ const EventPreview = (props) => {
                 }
             }}>
                 <div className='eventCard' key={event.event_id}>
-                    <div className='cardImg'>
-                        {/* add the time of the event somewhere on one of the image corners */}
-                        <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} />
+                    <div className='cardImg' style={{backgroundImage: `url(${event.eventmedia})`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
+                        {/* <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} /> */}
                     </div>
                     <div className='cardInfo'>
                         <div className='cardTitle'>

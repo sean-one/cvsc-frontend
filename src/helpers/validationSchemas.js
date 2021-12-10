@@ -89,8 +89,8 @@ export const addContactSchema = yup.object().shape({
     
     // remove checkbox values from exported object
     addinstagram: yup
-    .boolean()
-    .strip(),
+        .boolean()
+        .strip(),
     
     // remove checkbox values from exported object
     addfacebook: yup
@@ -112,4 +112,50 @@ export const addInstagramSchema = yup.object().shape({
         .string()
         .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, 'invalid instagram account')
         .required('instagram is required')
+})
+
+export const addBusinessSchema = yup.object().shape({
+    business_description: yup
+        .string()
+        .required('business description is required'),
+
+    business_email: yup
+        .string()
+        .email()
+        .required('valid business email is required'),
+
+    business_name: yup
+        .string()
+        .required('business name is required'),
+
+    business_type: yup
+        .string()
+        .oneOf([ 'brand', 'venue', 'both' ], 'invalid brand type')
+        .required('business type is required'),
+
+    contact_instagram: yup
+        .string()
+        .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, 'invalid instagram account')
+        .required('instagram is required'),
+
+    contact_phone: yup
+        .string()
+        .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true }),
+
+    contact_website: yup
+        .string()
+        .url()
+        .notRequired(),
+
+    location_city_state: yup
+        .string()
+        .notRequired(),
+
+    location_street: yup
+        .string()
+        .notRequired(),
+
+    location_zip: yup
+        .string()
+        .matches(/^\d{5}$/, { message: 'invalid zip code', excludeEmptyString: true }),
 })
