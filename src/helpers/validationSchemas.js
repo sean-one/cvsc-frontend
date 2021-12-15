@@ -119,7 +119,7 @@ export const addBusinessSchema = yup.object().shape({
         .string()
         .required('business description is required'),
 
-    business_email: yup
+    email: yup
         .string()
         .email()
         .required('valid business email is required'),
@@ -133,29 +133,50 @@ export const addBusinessSchema = yup.object().shape({
         .oneOf([ 'brand', 'venue', 'both' ], 'invalid brand type')
         .required('business type is required'),
 
-    contact_instagram: yup
+    instagram: yup
         .string()
         .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, 'invalid instagram account')
         .required('instagram is required'),
 
-    contact_phone: yup
+    phone: yup
         .string()
         .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true }),
 
-    contact_website: yup
+    website: yup
         .string()
         .url()
         .notRequired(),
 
-    location_city_state: yup
+    city: yup
         .string()
-        .notRequired(),
-
-    location_street: yup
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+    
+    state: yup
         .string()
-        .notRequired(),
-
-    location_zip: yup
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+        
+    street_address: yup
         .string()
-        .matches(/^\d{5}$/, { message: 'invalid zip code', excludeEmptyString: true }),
-})
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+        
+    zip: yup
+        .string()
+        .matches(/^\d{5}$/, { message: 'invalid zip code', excludeEmptyString: true })
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+    })

@@ -5,6 +5,7 @@ import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { addBusinessSchema } from '../../../../helpers/validationSchemas';
+import { addBusiness } from '../../../../helpers/dataCleanUp';
 
 
 const BusinessRequestForm = (props) => {
@@ -30,7 +31,8 @@ const BusinessRequestForm = (props) => {
     }
 
     const sendRequest = (data) => {
-        console.log(data)
+        const cleanData = addBusiness(data)
+        console.log(cleanData)
     }
 
     useEffect(() => {
@@ -83,13 +85,13 @@ const BusinessRequestForm = (props) => {
                     />
                     <p className='errormessage'>{errors.business_name?.message}</p>
 
-                    <label htmlFor='business_email'>Business Email:</label>
-                    <input {...register('business_email')}
+                    <label htmlFor='email'>Business Email:</label>
+                    <input {...register('email')}
                         type='email'
-                        id='business_email'
+                        id='email'
                         required
                     />
-                    <p className='errormessage'>{errors.business_email?.message}</p>
+                    <p className='errormessage'>{errors.email?.message}</p>
 
                     {
                         editImage && <canvas id={'avatarCanvas'} ref={canvas} height={200} width={200} />
@@ -123,53 +125,61 @@ const BusinessRequestForm = (props) => {
                     {
                         (businessType !== 'brand') && (
                             <div>
-                                <label htmlFor='location_street'>Street Address:</label>
-                                <input {...register('location_street')}
+                                <label htmlFor='street_address'>Street Address:</label>
+                                <input {...register('street_address')}
                                     type='text'
-                                    id='location_street'
+                                    id='street_address'
                                     required
                                 />
-                                <p className='errormessage'>{errors.location_street?.message}</p>
+                                <p className='errormessage'>{errors.street_address?.message}</p>
                                 
-                                <label htmlFor='location_city_state'>City, State:</label>
-                                <input {...register('location_city_state')}
+                                <label htmlFor='city'>City:</label>
+                                <input {...register('city')}
                                     type='text'
-                                    id='location_city_state'
+                                    id='city'
                                     required
                                 />
-                                <p className='errormessage'>{errors.location_city_state?.message}</p>
+                                <p className='errormessage'>{errors.city?.message}</p>
                                 
-                                <label htmlFor='location_zip'>Zip:</label>
-                                <input {...register('location_zip')}
+                                <label htmlFor='state'>State:</label>
+                                <input {...register('state')}
                                     type='text'
-                                    id='location_zip'
+                                    id='state'
                                     required
                                 />
-                                <p className='errormessage'>{errors.location_zip?.message}</p>
+                                <p className='errormessage'>{errors.state?.message}</p>
+                                
+                                <label htmlFor='zip'>Zip:</label>
+                                <input {...register('zip')}
+                                    type='text'
+                                    id='zip'
+                                    required
+                                />
+                                <p className='errormessage'>{errors.zip?.message}</p>
                             </div>
                         )
                     }
 
-                    <label htmlFor='contact_instagram'>Instagram:</label>
-                    <input {...register('contact_instagram')}
+                    <label htmlFor='instagram'>Instagram:</label>
+                    <input {...register('instagram')}
                         type='text'
-                        id='contact_instagram'
+                        id='instagram'
                     />
-                    <p className='errormessage'>{errors.contact_instagram?.message}</p>
+                    <p className='errormessage'>{errors.instagram?.message}</p>
                     
-                    <label htmlFor='contact_phone'>Phone:</label>
-                    <input {...register('contact_phone')}
+                    <label htmlFor='phone'>Phone:</label>
+                    <input {...register('phone')}
                         type='tel'
-                        id='contact_phone'
+                        id='phone'
                     />
-                    <p className='errormessage'>{errors.contact_phone?.message}</p>
+                    <p className='errormessage'>{errors.phone?.message}</p>
 
-                    <label htmlFor='contact_website'>Website:</label>
-                    <input {...register('contact_website')}
+                    <label htmlFor='website'>Website:</label>
+                    <input {...register('website')}
                         type='url'
-                        id='contact_website'
+                        id='website'
                     />
-                    <p className='errormessage'>{errors.contact_website?.message}</p>
+                    <p className='errormessage'>{errors.website?.message}</p>
 
                     <input type='submit' value='submit' />
 
