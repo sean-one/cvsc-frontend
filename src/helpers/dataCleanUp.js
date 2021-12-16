@@ -44,6 +44,22 @@ export const roleEditUpdate = (data) => {
     return toBeDeleted;
 }
 
+export const createBusiness = (data) => {
+    data.business = {
+        ...(data['business_name'] && { ...data.business, name: data['business_name'] }),
+        ...(data['business_description'] && { ...data.business, description: data['business_description'] }),
+        ...(data['business_type'] && { ...data.business, businesstype: data['business_type'] }),
+        ...(data['business_avatar'] && { ...data.business, avatar: data['business_avatar'] })
+    }
+
+    delete data['business_name']
+    delete data['business_description']
+    delete data['business_type']
+    delete data['business_avatar']
+
+    return data;
+}
+
 export const createContact = (data) => {
     data.contact = {
         ...(data['email'] && { ...data.contact, email: data['email']}),
@@ -79,34 +95,12 @@ export const createLocation = (data) => {
 }
 
 export const addBusiness = (data) => {
-    console.log(data)
     if (data['business_type'] !== 'brand') {
         createLocation(data)
-        // console.log('no location')
-        // data.location = {
-        //     street_address: data['location_street'],
-        //     city_state: data['location_city_state'],
-        //     zip: data['location_zip']
-        // }
-        // delete data['location_street']
-        // delete data['location_city_state']
-        // delete data['location_zip']
     }
 
     createContact(data)
-    // data.contact = {
-    //     instagram: data['contact_instagram']
-    // }
-
-    // delete data['contact_instagram']
-
-    // data.contact = {
-    //     ...(data['contact_website'] && { ...data.contact, website: data['contact_website']}),
-    //     ...(data['contact_phone'] && { ...data.contact, phone: data['contact_phone']})
-    // }
-
-    // delete data['contact_website']
-    // delete data['contact_phone']
+    createBusiness(data)
 
     return data
 }

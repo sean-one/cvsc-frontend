@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import AxiosInstance from '../../../../helpers/axios';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { addBusinessSchema } from '../../../../helpers/validationSchemas';
@@ -31,8 +32,15 @@ const BusinessRequestForm = (props) => {
     }
 
     const sendRequest = (data) => {
+        const token = localStorage.getItem('token')
         const cleanData = addBusiness(data)
-        console.log(cleanData)
+        AxiosInstance.post('/business/add', cleanData, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(err => console.log(err))
     }
 
     useEffect(() => {
