@@ -11,8 +11,9 @@ import { addBusiness } from '../../../../helpers/dataCleanUp';
 
 const BusinessRequestForm = (props) => {
     const [ editImage, setEditImage ] = useState(false)
+    const [ serverError, setServerError ] = useState(false)
     const [ businessLogo, setBusinessLogo ] = useState()
-    const { register, handleSubmit, watch, formState:{ errors } } = useForm({
+    const { register, handleSubmit, setError, watch, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
     });
@@ -32,6 +33,7 @@ const BusinessRequestForm = (props) => {
     }
 
     const sendRequest = (data) => {
+        setServerError(false)
         const token = localStorage.getItem('token')
         const cleanData = addBusiness(data)
         AxiosInstance.post('/business/add', cleanData, {
@@ -40,7 +42,16 @@ const BusinessRequestForm = (props) => {
             .then(response => {
                 console.log(response)
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                if(!err.response) {
+                    setServerError(true)
+                } else if (err.response.status === 400) {
+                    setError(`${err.response.data.type}`, {
+                        type: 'server',
+                        message: err.response.data.message
+                    })
+                }
+            })
     }
 
     useEffect(() => {
@@ -189,6 +200,7 @@ const BusinessRequestForm = (props) => {
                     />
                     <p className='errormessage'>{errors.website?.message}</p>
 
+                    { serverError && <p className='errormessage'>network error, please wait a moment and try again</p> }
                     <input type='submit' value='submit' />
 
                 </form>

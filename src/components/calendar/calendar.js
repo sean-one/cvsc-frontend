@@ -26,6 +26,7 @@ const Calendar = () => {
                 
                 // responses[1].data.config.url === '/business'
                 const businessListResponse = responses[1].data
+                console.log(businessListResponse)
                 
                 setCalendar(eventListResponse, businessListResponse)
                 setLoading(false)
