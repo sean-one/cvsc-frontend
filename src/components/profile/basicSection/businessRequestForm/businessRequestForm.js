@@ -13,7 +13,7 @@ const BusinessRequestForm = (props) => {
     const [ editImage, setEditImage ] = useState(false)
     const [ serverError, setServerError ] = useState(false)
     const [ businessLogo, setBusinessLogo ] = useState()
-    const { register, handleSubmit, setError, watch, formState:{ errors } } = useForm({
+    const { register, handleSubmit, setError, watch, reset, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
     });
@@ -34,24 +34,53 @@ const BusinessRequestForm = (props) => {
 
     const sendRequest = (data) => {
         setServerError(false)
-        const token = localStorage.getItem('token')
-        const cleanData = addBusiness(data)
-        AxiosInstance.post('/business/add', cleanData, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(response => {
-                console.log(response)
+        canvas.current.toBlob(async function(blob) {
+            
+            const token = localStorage.getItem('token')
+            const cleanData = addBusiness(data)
+
+            const url = await AxiosInstance.get('/s3', {
+                headers: { 'Authorization': 'Bearer ' + token }
             })
-            .catch(err => {
-                if(!err.response) {
-                    setServerError(true)
-                } else if (err.response.status === 400) {
-                    setError(`${err.response.data.type}`, {
-                        type: 'server',
-                        message: err.response.data.message
-                    })
+                .then(response => {
+                    return response.data.url
+                })
+                .catch(err => console.log(err))
+
+            await AxiosInstance.put(url, blob, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
                 }
             })
+
+            const imageUrl = url.split('?')[0]
+
+            data.business.avatar = imageUrl
+            
+            AxiosInstance.post('/business/add', cleanData, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            })
+                .then(response => {
+                    if (response.status === 201) {
+                        reset()
+                        props.toggleView()
+                        setEditImage(false)
+                        alert('request sent')
+                        // console.log(response)
+                    }
+                })
+                .catch(err => {
+                    if(!err.response) {
+                        setServerError(true)
+                    } else if (err.response.status === 400) {
+                        setError(`${err.response.data.type}`, {
+                            type: 'server',
+                            message: err.response.data.message
+                        })
+                    }
+                })
+        })
+
     }
 
     useEffect(() => {
@@ -121,6 +150,7 @@ const BusinessRequestForm = (props) => {
                         id='business_avatar'
                         accept='image/*'
                         onChange={showPreview}
+                        required
                     />
                     <p className='errormessage'>{errors.business_avatar?.message}</p>
 

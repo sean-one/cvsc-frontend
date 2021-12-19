@@ -6,6 +6,7 @@ import { UsersContext } from '../../context/users/users.provider';
 
 import BasicSection from './basicSection/basicSection';
 import AdminSection from './adminSection/adminSection';
+import AdminUser from './adminUser/adminUserSection';
 import CreatorSection from './creatorSection/creatorSection';
 
 import './profile.css';
@@ -15,6 +16,7 @@ const Profile = () => {
     const { userProfile, getFromLocal, setUserRoles, useAdminRoles, isEditor } = useContext(UsersContext);
     const editorRights = isEditor()
     const adminRoles = useAdminRoles()
+    const userId = localStorage.getItem('userId')
     
     const getRoles = () => {
         setLoading(true);
@@ -58,6 +60,10 @@ const Profile = () => {
                         {
                             (adminRoles.length > 0) && 
                                 <AdminSection />
+                        }
+                        {
+                            (userId === process.env.REACT_APP_USER_ADMIN) &&
+                                <AdminUser />
                         }
                         {
                             (editorRights) &&
