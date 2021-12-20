@@ -10,7 +10,7 @@ const UserAdminProvider = ({ children }) => {
     const [store, dispatch ] = useReducer(userAdminReducer, USER_ADMIN_INITIAL_STATE)
     const { pendingBusinessRequest } = store
 
-    const setPendingBusinessRequestList = businessList => {
+    const setPendingBusinessRequestList = (businessList) => {
         dispatch({
             type: userAdminTypes.SET_PENDING_BUSINESSES,
             payload: businessList
@@ -21,7 +21,7 @@ const UserAdminProvider = ({ children }) => {
         <UserAdminContext.Provider value={
             {
                 pendingBusinessRequest,
-                setPendingBusinessRequestList
+                setPendingBusinessRequestList,
             }
         }>
             {children}
