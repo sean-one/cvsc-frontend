@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 // components
 import Calendar from './components/calendar/calendar';
 import EventCard from './components/events/eventCard.jsx';
+import Business from './components/business/business';
 import Header from './components/header/header.jsx';
 import Register from './components/register/register.jsx';
 import Login from './components/login/login.jsx';
@@ -28,6 +29,7 @@ const App = () => {
         <Route path='/register' component={Register} />
         <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
         <Route path='/calendar/:id' render={(props) => (<EventCard {...props} />)} />
+        <Route path='/business/:id' render={(props) => (<Business {...props} />)} />
         <AuthRoute path='/events/create' component={CreateEvent} />
         <AuthRoute path='/events/edit/:id' component={EditEvent} />
         <Route path='/login' component={Login} />
