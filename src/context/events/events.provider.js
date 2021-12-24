@@ -33,6 +33,10 @@ const EventsProvider = ({ children }) => {
         })
     }
 
+    const useBusinessById = (id) => {
+        return businessList.find(business => business.id == id)
+    }
+
     // filters the business list removing business not open to request & businesses user already has roles for
     const useFilterBusinessRequestList = (userroles) => {
         return businessList.filter(business => business.requestOpen === true && !userroles.includes(business.id))
@@ -100,8 +104,10 @@ const EventsProvider = ({ children }) => {
             {
                 setCalendar,
                 events,
+                businessList,
                 setEvents,
                 setUserEventList,
+                useBusinessById,
                 useFilterBusinessRequestList,
                 userEvents,
                 useSortedEvents,

@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
+
+import { EventsContext } from '../../context/events/events.provider';
 
 import './business.css';
 
 const Business = (props) => {
-    const [ business, setBusiness ] = useState()
+    const { useBusinessById } = useContext(EventsContext)
+    const [ business, setBusiness ] = useState(useBusinessById(props.match.params.id))
     const [ loading, setLoading ] = useState(false)
-
-    const getBusiness = () => {
-        setLoading(true)
-        AxiosInstance.get(`/business/${props.match.params.id}`)
-            .then(response => {
-                setBusiness(response.data)
-                setLoading(false)
-                // console.log(response)
-            })
-            .catch(err => {
-                setLoading(false)
-                console.log(err)
-            })
-    }
-
+    
     useEffect(() => {
-        getBusiness()
-        // return () => {
-        //     setLoading(false)
-        // }
+        if (!business) {
+            setLoading(true)
+            AxiosInstance.get(`/business/${props.match.params.id}`)
+                .then(response => {
+                        setBusiness(response.data)
+                        setLoading(false)
+                        // console.log(response)
+                    })
+                    .catch(err => {
+                            setLoading(false)
+                            console.log(err)
+                        })
+        }
         // eslint-disable-next-line
-    },[props.match.params.id])
-    console.log(props)
-    console.log(business)
+    },[])
+
     return (
         <div className='componentWrapper'>
             {
@@ -38,14 +35,14 @@ const Business = (props) => {
                     <div> ...loading data... </div>
                 ) : (
                     <div>
-                        {/* <div className='businessHeader'>
+                        <div className='businessHeader'>
                             <div className='branding'>
                                 <img src={business.avatar} alt='business branding' />
                             </div>
                             <div className='businessName'>
                                 <h2>{business.name}</h2>
                             </div>
-                        </div> */}
+                        </div>
                         <p>Business Page!</p>
                     </div>
                 )

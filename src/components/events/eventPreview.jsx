@@ -9,37 +9,44 @@ const EventPreview = (props) => {
     const detailPreview = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
     }
-
+    
     return (
-        <>
-            <Link to={{
-                pathname: `/calendar/${event.event_id}`,
-                state: {
-                    event,
-                    from: props.location.pathname
-                }
-            }}>
-                <div className='eventCard' key={event.event_id}>
-                    <div className='cardImg' style={{backgroundImage: `url(${event.eventmedia})`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-                        {/* <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} /> */}
-                    </div>
-                    <div className='cardInfo'>
-                        <div className='cardTitle'>
-                            <p>{event.eventname}</p>
-                        </div>
-                        <div className='cardLocation'>
-                            <p>{`${event.brand_name} at ${event.venue_name}`}</p>
-                        </div>
-                        <div className='cardDetails'>
-                            <p>{detailPreview(event.details, 100)}</p>
-                        </div>
-                        <div className='brand'>
-                            <p>{event.brand_name}</p>
-                        </div>
-                    </div>
+        <div className='eventCard' key={event.event_id}>
+            <div className='cardImg' style={{backgroundImage: `url(${event.eventmedia})`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
+                {/* <img src={event.eventmedia} alt={`upcoming event - ${event.eventname}`} /> */}
+            </div>
+            <div className='cardInfo'>
+                <div className='cardTitle'>
+                    <p>{event.eventname}</p>
                 </div>
-            </Link>
-        </>
+                <div className='cardLocation'>
+                    <Link to={{
+                        pathname:`/business/${event.venue_id}`,
+                        state: {
+                            from: props.location.pathname
+                        }
+                    }}>
+                        <p>{`${event.brand_name} at ${event.venue_name}`}</p>
+                    </Link>
+                </div>
+                <div className='cardDetails'>
+                    <p>{detailPreview(event.details, 100)}</p>
+                </div>
+                <div className='brand'>
+                    <p>{event.brand_name}</p>
+                </div>
+                <div className='eventLinkButton'>
+                    <Link to={{
+                        pathname: `/calendar/${event.event_id}`,
+                        state: {
+                            event,
+                            from: props.location.pathname
+                        }
+                    }}><div>more</div>
+                    </Link>
+                </div>
+            </div>
+        </div>
     )
 }
 

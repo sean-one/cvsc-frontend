@@ -39,6 +39,10 @@
     padding: 0 0.5rem;
 }
 
+.cardInfo div {
+    margin-top: 0.5rem;
+}
+
 .cardInfo p {
     font-size: 1.1rem;
 }
@@ -62,6 +66,10 @@
     /* height: 2.5rem; */
     /* overflow: hidden; */
     /* text-overflow: ellipsis; */
+}
+
+.eventLinkButton {
+    align-self: flex-end;
 }
 
 .eventAdmin {
