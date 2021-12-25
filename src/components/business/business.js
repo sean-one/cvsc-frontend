@@ -4,18 +4,21 @@ import AxiosInstance from '../../helpers/axios';
 
 import { EventsContext } from '../../context/events/events.provider';
 
+import UpcomingBusinessEvents from './upcomingBusinessEvents/upcomingBusinessEvents';
+
 import './business.css';
 
 const Business = (props) => {
     const { useBusinessById } = useContext(EventsContext)
     const [ business, setBusiness ] = useState(useBusinessById(props.match.params.id))
-    const [ loading, setLoading ] = useState(false)
+    const [ loading, setLoading ] = useState(true)
     
     useEffect(() => {
         if (!business) {
             setLoading(true)
             AxiosInstance.get(`/business/${props.match.params.id}`)
                 .then(response => {
+                        console.log(response.data)
                         setBusiness(response.data)
                         setLoading(false)
                         // console.log(response)
@@ -24,10 +27,12 @@ const Business = (props) => {
                             setLoading(false)
                             console.log(err)
                         })
+        } else {
+            setLoading(false)
         }
         // eslint-disable-next-line
-    },[])
-
+    }, [])
+    console.log(business)
     return (
         <div className='componentWrapper'>
             {
@@ -41,9 +46,17 @@ const Business = (props) => {
                             </div>
                             <div className='businessName'>
                                 <h2>{business.name}</h2>
+                                <p>{`Email: ${business.email}`}</p>
+                                <p>{`Instagram: ${business.instagram}`}</p>
                             </div>
                         </div>
-                        <p>Business Page!</p>
+                        <div className='businessLocation'>
+                            <p>{business.formatted}</p>
+                        </div>
+                        <div className='businessDetails'>
+                            <p>{business.description}</p>
+                        </div>
+                        <UpcomingBusinessEvents business={business.id} name={business.name}/>
                     </div>
                 )
             }

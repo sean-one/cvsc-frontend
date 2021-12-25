@@ -34,7 +34,7 @@ const EventsProvider = ({ children }) => {
     }
 
     const useBusinessById = (id) => {
-        return businessList.find(business => business.id == id)
+        return businessList.find(business => business.id === id)
     }
 
     // filters the business list removing business not open to request & businesses user already has roles for

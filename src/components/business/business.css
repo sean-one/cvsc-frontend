@@ -2,9 +2,25 @@
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: red;
+    /* background-color: red; */
 }
 
 .branding {
     margin: 0.2rem;
+}
+
+.businessName {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.businessName h2 {
+    padding-left: 0;
+}
+
+.businessDetails {
+    margin-top: 1rem;
 }
