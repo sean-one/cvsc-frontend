@@ -2,7 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
-import { UsersContext } from '../../context/users/users.provider';
+import { SiteContext } from '../../context/site/site.provider';
+import { RolesContext } from '../../context/roles/roles.provider';
 
 import BasicSection from './basicSection/basicSection';
 import AdminSection from './adminSection/adminSection';
@@ -13,9 +14,11 @@ import './profile.css';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
-    const { userProfile, getFromLocal, setUserRoles, useAdminRoles, isEditor } = useContext(UsersContext);
-    const editorRights = isEditor()
-    const adminRoles = useAdminRoles()
+    const { userRoles, editorRoles, adminRoles, setUserRoles, isAdmin, isEditor } = useContext(RolesContext);
+    const { setRoles } = useContext(SiteContext)
+    // const { setRoles, isEditor, isAdmin } = useContext(SiteContext)
+    // const checkEditor = isEditor()
+    // const checkAdmin = isAdmin()
     const userId = localStorage.getItem('userId')
     
     const getRoles = () => {
@@ -25,6 +28,7 @@ const Profile = () => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(userroles => {
+                setRoles(userroles.data)
                 setUserRoles(userroles.data)
                 setLoading(false)
             })
@@ -35,20 +39,13 @@ const Profile = () => {
     }
 
     useEffect(() => {
-
-        if (Object.keys(userProfile).length === 0) {
-            // save userprofile from local storage 
-            const user = JSON.parse(localStorage.getItem('user'))
-            getFromLocal(user)
-        }
-        
         getRoles()
-        return () => {
-            setLoading(false)
-        }
         // eslint-disable-next-line
     }, []);
-
+    
+    console.log(userRoles)
+    console.log(isAdmin)
+    console.log(isEditor)
     return (
         <div className='componentWrapper'>
             {
@@ -58,7 +55,8 @@ const Profile = () => {
                     <>
                         <BasicSection />
                         {
-                            (adminRoles.length > 0) && 
+                            // (checkAdmin) && 
+                            (true) && 
                                 <AdminSection />
                         }
                         {
@@ -66,7 +64,8 @@ const Profile = () => {
                                 <AdminUser />
                         }
                         {
-                            (editorRights) &&
+                            // (checkEditor) &&
+                            (true) &&
                                 <CreatorSection />
                         }
                     </>

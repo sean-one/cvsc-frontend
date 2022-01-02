@@ -5,13 +5,13 @@ import AxiosInstance from '../../helpers/axios';
 import Day from './day.jsx';
 
 import './calendar.css';
-import { EventsContext } from '../../context/events/events.provider.js';
+import { SiteContext } from '../../context/site/site.provider';
 import axios from 'axios';
 
 const Calendar = () => {
     const [ loading, setLoading ] = useState(false)
-    const { setCalendar, useSortedEvents } = useContext(EventsContext);
-    const sortedEvents = useSortedEvents();
+    const { setSiteInfo, useEventsSortedByDay } = useContext(SiteContext)
+    const siteSortedEvents = useEventsSortedByDay()
 
     const getSiteData = () => {
         setLoading(true)
@@ -27,7 +27,7 @@ const Calendar = () => {
                 // responses[1].data.config.url === '/business'
                 const businessListResponse = responses[1].data
                 
-                setCalendar(eventListResponse, businessListResponse)
+                setSiteInfo(eventListResponse, businessListResponse)
                 setLoading(false)
             }))
             .catch(err => {
@@ -49,13 +49,13 @@ const Calendar = () => {
                     <div className='calendar'>
                         <p>filter</p>
                         {
-                            Object.keys(sortedEvents).sort(
+                            Object.keys(siteSortedEvents).sort(
                                 // sort event list by date
                                 (a,b) => new Date(a) - new Date(b)
                             ).map(key => {
                                 const eventDate = new Date(key)
                                 return (
-                                    <Day key={format(eventDate, 't')} date={eventDate} schedule={sortedEvents[key]} />
+                                    <Day key={format(eventDate, 't')} date={eventDate} schedule={siteSortedEvents[key]} />
                                 )
                             })
                         }

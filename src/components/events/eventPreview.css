@@ -69,6 +69,7 @@
 }
 
 .eventLinkButton {
+    padding-right: 7rem;
     align-self: flex-end;
 }
 

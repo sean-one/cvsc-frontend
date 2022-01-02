@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { reformatTime } from '../../helpers/formatTime';
 import AxiosInstance from '../../helpers/axios';
 
+import { SiteContext } from '../../context/site/site.provider';
+
 const EditEvent = (props) => {
+    const { useVenueList, useBrandList, updateEvent } = useContext(SiteContext)
+    const venueList = useVenueList()
+    const brandList = useBrandList()
+    
     const { register, handleSubmit } = useForm();
-    const [ venueList, setVenueList ] = useState([]);
-    const [ brandList, setBrandList ] = useState([]);
     const currentEvent = props.location.state.event;
     const [ eventname, setEventname ] = useState(currentEvent.eventname);
     const [ eventdate, setEventdate ] = useState(format(new Date(currentEvent.eventdate), 'yyyy-MM-dd'));
@@ -18,24 +22,16 @@ const EditEvent = (props) => {
     const [ venue, setVenue ] = useState(currentEvent.venue_id);
     const [ eventdetails, setEventDetails ] = useState(currentEvent.details);
     const [ brands, setBrands ] = useState(currentEvent.brand_id);
+    
     let history = useHistory();
-
-    useEffect(() => {
-        async function getBusinessInfo() {
-            const venues = await AxiosInstance.get('/business/venues');
-            const brands = await AxiosInstance.get('/business/brands');
-            setVenueList(venues.data);
-            setBrandList(brands.data);
-            return
-        }
-        getBusinessInfo()
-    }, [setVenueList, setBrandList]);
 
     const sendEvent = (event) => {
         const token = localStorage.getItem('token')
+        // if this is not edited a string is returned
         if (isNaN(event.brand_id)) {
             event['brand_id'] = currentEvent.brand_id
         }
+        // if this is not edited a string is returned
         if (isNaN(event.venue_id)) {
             event['venue_id'] = currentEvent.venue_id
         }
@@ -43,7 +39,9 @@ const EditEvent = (props) => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
-                if (response.status === 200) {
+                const updatedEvent = response.data
+                if (response.status === 201) {
+                    updateEvent(updatedEvent.event_id, updatedEvent)
                     history.push({
                         pathname: `/calendar/${currentEvent.event_id}`,
                         state: {
@@ -68,8 +66,6 @@ const EditEvent = (props) => {
             })
     }
 
-    // console.log(currentEvent)
-    // console.log(eventstart)
     return (
         <div>
             <form onSubmit={handleSubmit((eventdata) => sendEvent(eventdata))}>

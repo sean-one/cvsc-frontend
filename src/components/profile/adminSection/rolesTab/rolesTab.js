@@ -20,6 +20,7 @@ const RolesTab = () => {
         setEditRolesVisable(!editRolesVisable)
     }
 
+    // passed to EDITROLES
     const getCurrentRoles = useCallback(() => {
         AxiosInstance.post('/roles/byBusinesses', adminRoles)
             .then(response => {
@@ -31,6 +32,7 @@ const RolesTab = () => {
         // eslint-disable-next-line    
     }, [])
 
+    // passed to PENDINGREQUEST
     const getPendingList = useCallback(() => {
         AxiosInstance.post('/pendingRequest/businesses', adminRoles)
             .then(response => {

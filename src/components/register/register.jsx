@@ -9,6 +9,7 @@ import AxiosInstance from '../../helpers/axios';
 import './register.css';
 
 import { UsersContext } from '../../context/users/users.provider.js';
+import { SiteContext } from '../../context/site/site.provider.js';
 
 const Register = () => {
     const { register, handleSubmit, setError, formState:{ errors } } = useForm({
@@ -16,6 +17,7 @@ const Register = () => {
         resolver: yupResolver(registrationSchema)
     })
     const { setUserProfile } = useContext(UsersContext);
+    const { setProfile } = useContext(SiteContext);
     const [ serverError, setServerError ] = useState(false);
     let history = useHistory();
 
@@ -26,6 +28,7 @@ const Register = () => {
         AxiosInstance.post('/users/register', newUser)
             .then(response => {
                 if(response.status === 200) {
+                    setProfile(response.data)
                     setUserProfile(response.data)
                     history.push('/profile');
                 } else {
@@ -48,6 +51,7 @@ const Register = () => {
         <div className='componentWrapper'>
             <h2>Registration</h2>
             <form className='registerForm' onSubmit={handleSubmit(createUser)}>
+                
                 <label htmlFor='username'>Username:</label>
                 <input
                     {...register('username')}
@@ -57,6 +61,7 @@ const Register = () => {
                     required
                 />
                 <p className='errormessage'>{errors.username?.message}</p>
+                
                 <label htmlFor='email'>Email:</label>
                 <input
                     {...register('email')}
@@ -66,14 +71,7 @@ const Register = () => {
                     required
                 />
                 <p className='errormessage'>{errors.email?.message}</p>
-                {/* <label htmlFor='avatar'>Profile Image:</label>
-                <input
-                    {...register('avatar')}
-                    type='file'
-                    id='avatar'
-                    name='avatar'
-                    accept="image/*"
-                /> */}
+
                 <label htmlFor='password'>Password:</label>
                 <input
                     {...register('password')}
@@ -83,6 +81,7 @@ const Register = () => {
                     required
                 />
                 <p className='errormessage'>{errors.password?.message}</p>
+                
                 <label htmlFor='confirmation'>Confirm Password:</label>
                 <input
                     {...register('confirmation')}
@@ -92,6 +91,7 @@ const Register = () => {
                     required
                 />
                 <p className='errormessage'>{errors.confirmation?.message}</p>
+                
                 <label htmlFor='instagram'>Instagram</label>
                 <input
                     {...register('instagram')}
@@ -100,6 +100,7 @@ const Register = () => {
                     name='instagram'
                 />
                 {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
+                
                 <input type='submit' value='submit' />
             </form>
         </div>

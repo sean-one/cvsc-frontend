@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,12 +7,13 @@ import AxiosInstance from '../../../../helpers/axios';
 
 import EventPreview from '../../../events/eventPreview';
 
-import { EventsContext } from '../../../../context/events/events.provider';
+import { SiteContext } from '../../../../context/site/site.provider';
 
 import '../creatorSection.css';
 
 const UpcomingEvents = (props) => {
-    const { userEvents, setUserEventList, removeEvent } = useContext(EventsContext)
+    const { userEvents, removeEvent } = useContext(SiteContext)
+    const events = userEvents()
 
     const deleteEvent = (eventId) => {
         const token = localStorage.getItem('token')
@@ -26,18 +27,6 @@ const UpcomingEvents = (props) => {
                 console.log('something went wront', err)
             })
     }
-
-    useEffect(() => {
-        const token = localStorage.getItem('token')
-        AxiosInstance.get(`events/user/${parseInt(localStorage.getItem('userId'))}`, {
-            headers: {'Authorization': 'Bearer ' + token}
-        })
-            .then(user_events => {
-                setUserEventList(user_events.data)
-            })
-            .catch(err => console.log(err))
-        // eslint-disable-next-line
-    }, []);
 
     return (
         <div>
@@ -53,9 +42,9 @@ const UpcomingEvents = (props) => {
                 (props.viewable) &&
                 <div className='userEvents'>
                     {
-                        userEvents.map(event => {
+                        events.map((event, i) => {
                             return (
-                                <div key={event.event_id} className='adminWrapper'>
+                                <div key={i} className='adminWrapper'>
                                     <div className='eventdate'>
                                         <p>{format(new Date(event.eventdate), 'MMM d')}</p>
                                     </div>
