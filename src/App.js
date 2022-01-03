@@ -28,7 +28,9 @@ const App = () => {
       <EventsProvider>
       <UsersProvider>
       <SiteProvider>
-        <Header />
+        <RolesProvider>
+          <Header />
+        </RolesProvider>
         <Route path='/register' component={Register} />
         <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
         <Route path='/calendar/:id' render={(props) => (<EventCard {...props} />)} />

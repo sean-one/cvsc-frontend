@@ -18,6 +18,13 @@ const RolesProvider = ({ children }) => {
         })
     }
 
+    const roleReset = () => {
+        console.log('clearing role')
+        dispatch({
+            type: roleTypes.ROLE_RESET
+        })
+    }
+
     return (
         <RolesContext.Provider value={
             {
@@ -26,7 +33,8 @@ const RolesProvider = ({ children }) => {
                 adminRoles,
                 isAdmin,
                 isEditor,
-                setUserRoles
+                setUserRoles,
+                roleReset
             }
         }>
             {children}

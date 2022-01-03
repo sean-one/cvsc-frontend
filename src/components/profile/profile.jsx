@@ -43,9 +43,8 @@ const Profile = () => {
         // eslint-disable-next-line
     }, []);
     
-    console.log(userRoles)
-    console.log(isAdmin)
-    console.log(isEditor)
+    console.log(`editor: ${editorRoles.length}`)
+    console.log(`admin: ${adminRoles.length}`)
     return (
         <div className='componentWrapper'>
             {
@@ -56,7 +55,7 @@ const Profile = () => {
                         <BasicSection />
                         {
                             // (checkAdmin) && 
-                            (true) && 
+                            (isAdmin) && 
                                 <AdminSection />
                         }
                         {
@@ -65,7 +64,7 @@ const Profile = () => {
                         }
                         {
                             // (checkEditor) &&
-                            (true) &&
+                            (isEditor || isAdmin) &&
                                 <CreatorSection />
                         }
                     </>

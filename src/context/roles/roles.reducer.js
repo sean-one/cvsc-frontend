@@ -16,8 +16,12 @@ const rolesReducer = (state, action) => {
                 userRoles: action.payload,
                 editorRoles: state.userRoles.filter(role => role.roletype === 'creator'),
                 adminRoles: state.userRoles.filter(role => role.roletype === 'admin'),
-                isAdmin: (state.adminRoles.length >= 1) ? true : false,
-                isEditor: (state.editorRoles.length >= 1) ? true : false
+                isAdmin: (!state.adminRoles.length) ? false : true,
+                isEditor: (!state.editorRoles.length) ? false : true
+            }
+        case roleTypes.ROLE_RESET:
+            return {
+                ...ROLES_INITIAL_STATE
             }
         default:
             throw new Error(`unhandled type: ${action.type}`)
