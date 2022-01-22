@@ -8,15 +8,13 @@ import AxiosInstance from '../../helpers/axios';
 import './login.css';
 
 import { UsersContext } from '../../context/users/users.provider';
-import { SiteContext } from '../../context/site/site.provider';
 
 const Login = (props) => {
     const { register, handleSubmit, setError, formState:{ errors } } = useForm({
         mode: "onBlur",
         resolver: yupResolver(loginSchema)
     });
-    const { setUserProfile } = useContext(UsersContext);
-    const { setProfile } = useContext(SiteContext);
+    const { setUser } = useContext(UsersContext);
     const [ serverError, setServerError ] = useState(false);
     let history = useHistory();
 
@@ -25,8 +23,7 @@ const Login = (props) => {
         AxiosInstance.post('/users/login', data)
             .then(response => {
                 if(response.status === 200) {
-                    setProfile(response.data)
-                    setUserProfile(response.data)
+                    setUser(response.data)
                     history.push('/profile');
                 } else {
                     console.log('inside else')

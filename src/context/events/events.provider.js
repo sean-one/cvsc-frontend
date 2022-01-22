@@ -72,19 +72,6 @@ const EventsProvider = ({ children }) => {
         return businessList.filter(business => business.businesstype === "venue" || business.businesstype === "both")
     }
 
-    const getUpcomingEvents = (listOfEvents, venueId, brandId, currentId) => {
-        let results = {}
-        if (venueId === brandId) {
-            let upcomingEvents = listOfEvents.filter(event => ((event.venue_id === brandId || event.brand_id === brandId) && event.event_id !== currentId))
-            results = {...results, upcomingEvents }
-        } else {
-            let upcomingAtLocation = listOfEvents.filter(event => (event.venue_id === venueId && event.event_id !== currentId))
-            let upcomingWithBrand = listOfEvents.filter(event => (event.brand_id === brandId && event.event_id !== currentId))
-            results = {...results, upcomingAtLocation, upcomingWithBrand }
-        }
-        return results;
-    }
-
     function addToEvents(newevent) {
         dispatch({
             type: eventsTypes.ADD_EVENT_TO_LIST,
@@ -113,7 +100,6 @@ const EventsProvider = ({ children }) => {
                 useSortedEvents,
                 useBrandList,
                 useVenueList,
-                getUpcomingEvents,
                 addToEvents,
                 removeEvent
             }

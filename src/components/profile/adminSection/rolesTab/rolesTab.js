@@ -34,7 +34,11 @@ const RolesTab = () => {
 
     // passed to PENDINGREQUEST
     const getPendingList = useCallback(() => {
-        AxiosInstance.post('/pendingRequest/businesses', adminRoles)
+        const token = localStorage.getItem('token');
+        // AxiosInstance.post('/pendingRequest/businesses', adminRoles)
+        AxiosInstance.get('/roles/pending-request', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
             .then(response => {
                 setPendingRequestList(response.data)
                 // console.log(response.data)

@@ -6,22 +6,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../../../../helpers/axios';
 
-import { UsersContext } from '../../../../context/users/users.provider';
-import { EventsContext } from '../../../../context/events/events.provider';
+import { SiteContext } from '../../../../context/site/site.provider';
+
+import useBusinessList from '../../../../hooks/useBusinessList';
 
 import '../basicSection.css'
 
 const CreatorRequestForm = (props) => {
-    const { useBusinessIdRoles } = useContext(UsersContext)
-    const { useFilterBusinessRequestList } = useContext(EventsContext)
+    const { businessList } = useContext(SiteContext)
+    const { businessCreatorRequest } = useBusinessList(businessList)
     
-    // get list of current roles for user
-    const userroles = useBusinessIdRoles()
-    
-    // use userroles to filter businesslist
-    const businessList = useFilterBusinessRequestList(userroles)
     const [ requestStatus, setRequestStatus ] = useState('')
-    const { register, handleSubmit, formState:{ errors } } = useForm({
+    const { register, handleSubmit, reset, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
     });
@@ -33,14 +29,17 @@ const CreatorRequestForm = (props) => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
-                // console.log(response)
                 setRequestStatus('request successfully sent')
+                setTimeout(() => {
+                    reset()
+                    setRequestStatus('')
+                }, 1000)
+                
             })
             .catch(err => {
                 if(err.response.data.type === 'duplicate') {
                     setRequestStatus('a previous request for this business is still pending')
                 }
-                // console.log(err.response.data.type)
             })
     }
 
@@ -64,7 +63,7 @@ const CreatorRequestForm = (props) => {
                     <select id='business_id' {...register('business_id', { valueAsNumber: true })} required onFocus={resetStatus} >
                         <option value='0'>Select...</option>
                         {
-                            businessList.map(business => (
+                            businessCreatorRequest.map(business => (
                                 <option key={business.id} value={business.id}>{business.name}</option>
                             ))
                         }

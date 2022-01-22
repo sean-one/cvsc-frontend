@@ -46,6 +46,9 @@ const EventPreview = (props) => {
                     </Link>
                 </div>
             </div>
+            <div className='cardTime'>
+                <p>{`${event.eventstart} - ${event.eventend}`}</p>
+            </div>
         </div>
     )
 }

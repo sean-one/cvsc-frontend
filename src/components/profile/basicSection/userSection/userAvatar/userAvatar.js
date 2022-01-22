@@ -58,6 +58,8 @@ const Useravatar = () => {
         reader.readAsDataURL(fileToUpload[0])
     }
 
+    // fix for memory leak
+    // https://stackoverflow.com/questions/58773210/trying-to-use-cleanup-function-in-useeffect-hook-to-cleanup-img-onload
     useEffect(() => {
         const avatarImage = new Image();
         avatarImage.crossOrigin = 'anonymous';

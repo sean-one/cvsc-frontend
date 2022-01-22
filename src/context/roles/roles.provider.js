@@ -9,12 +9,14 @@ export const RolesContext = createContext({
 
 const RolesProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(rolesReducer, ROLES_INITIAL_STATE)
-    const { userRoles, editorRoles, adminRoles, isAdmin, isEditor } = store
+    const { userRoles, editorRoles, adminRoles } = store
 
-    const setUserRoles = roles => {
+    const setUserRoles = userroles => {
+        const editorRoles = userroles.filter(role => role.roletype === 'creator')
+        const adminRoles = userroles.filter(role => role.roletype === 'admin')
         dispatch({
             type: roleTypes.SET_USER_ROLES,
-            payload: roles
+            payload: { userroles, adminRoles, editorRoles }
         })
     }
 
@@ -31,8 +33,6 @@ const RolesProvider = ({ children }) => {
                 userRoles,
                 editorRoles,
                 adminRoles,
-                isAdmin,
-                isEditor,
                 setUserRoles,
                 roleReset
             }

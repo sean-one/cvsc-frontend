@@ -4,8 +4,6 @@ export const ROLES_INITIAL_STATE = {
     userRoles: [],
     editorRoles: [],
     adminRoles: [],
-    isAdmin: false,
-    isEditor: false
 }
 
 const rolesReducer = (state, action) => {
@@ -13,11 +11,9 @@ const rolesReducer = (state, action) => {
         case roleTypes.SET_USER_ROLES:
             return {
                 ...state,
-                userRoles: action.payload,
-                editorRoles: state.userRoles.filter(role => role.roletype === 'creator'),
-                adminRoles: state.userRoles.filter(role => role.roletype === 'admin'),
-                isAdmin: (!state.adminRoles.length) ? false : true,
-                isEditor: (!state.editorRoles.length) ? false : true
+                userRoles: action.payload.userroles,
+                editorRoles: action.payload.editorRoles,
+                adminRoles: action.payload.adminRoles,
             }
         case roleTypes.ROLE_RESET:
             return {

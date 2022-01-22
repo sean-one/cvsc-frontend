@@ -1,6 +1,7 @@
+// import React, { useState, useEffect, useContext } from 'react';
 import React, { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import AxiosInstance from '../../../../helpers/axios';
+// import AxiosInstance from '../../../../helpers/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck, faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,7 +11,9 @@ import { roleRequestStatusUpdate } from '../../../../helpers/dataCleanUp';
 
 const PendingRequest = (props) => {
     const { pendingRequestList } = useContext(UsersContext);
-    const { register, handleSubmit, reset } = useForm()
+    // const [ requestList, setRequestList ] = useState()
+    // const { register, handleSubmit, reset } = useForm()
+    const { register, handleSubmit } = useForm()
 
     useEffect(() => {
 
@@ -19,21 +22,22 @@ const PendingRequest = (props) => {
     }, [])
     
     const sendRequestStatus = (data) => {
+        console.log(data)
 
         const token = localStorage.getItem('token');
         
         const dataClean = roleRequestStatusUpdate(data, pendingRequestList)
         
-        AxiosInstance.post('/roles/editUserRoles', dataClean, {
-            headers: {'Authorization': 'Bearer ' + token}
-        })
-            .then(response => {
-                props.getPending()
-                props.getRoles()
-                // reset the form so that nothing is checked already
-                reset()
-            })
-            .catch(err => console.log(err))
+        // AxiosInstance.post('/roles/editUserRoles', dataClean, {
+        //     headers: {'Authorization': 'Bearer ' + token}
+        // })
+        //     .then(response => {
+        //         props.getPending()
+        //         props.getRoles()
+        //         // reset the form so that nothing is checked already
+        //         reset()
+        //     })
+        //     .catch(err => console.log(err))
         
         return
     }

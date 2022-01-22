@@ -4,7 +4,6 @@ export const SITE_INITIAL_STATE = {
     events: [],
     businessList: [],
     userProfile: {},
-    userRoles: [],
     userContact: {},
     pendingRequestList: [],
     businessRoles: [],
@@ -23,11 +22,6 @@ const siteReducer = (state, action) => {
                 ...state,
                 userProfile: action.payload.user,
                 userContact: action.payload.contact
-            };
-        case siteTypes.SET_USER_ROLES:
-            return {
-                ...state,
-                userRoles: action.payload
             };
         case siteTypes.REMOVE_EVENT:
             return {

@@ -2,25 +2,17 @@ import React, { useContext } from 'react';
 
 import EventPreview from '../eventPreview';
 
-import { EventsContext } from '../../../context/events/events.provider';
+import { SiteContext } from '../../../context/site/site.provider'
 
 const EventCardUpcoming = (props) => {
-    const { events, getUpcomingEvents } = useContext(EventsContext);
-    const { upcomingEvents, upcomingAtLocation, upcomingWithBrand } = getUpcomingEvents(events, props.event.venue_id, props.event.brand_id, props.event.event_id);
+    const { events } = useContext(SiteContext);
+    const event = props.event
+    
+    const upcomingAtLocation = events.filter(e => (e.venue_id === event.venue_id) && (e.event_id !== event.event_id))
+    const upcomingWithBrand = events.filter(e => (e.brand_id === event.brand_id) && (e.venue_id !== event.venue_id) && (e.event_id !== event.event_id))
     
     return (
         <div>
-            {
-                (upcomingEvents) &&
-                    <div>
-                        <h3>more upcoming events</h3>
-                        {upcomingEvents.map(event => {
-                            return (
-                                <EventPreview key={event.event_id} event={event}/>
-                            )
-                        })}
-                    </div> 
-            }
             {
                 (upcomingAtLocation && upcomingAtLocation.length > 0) && 
                     <div>

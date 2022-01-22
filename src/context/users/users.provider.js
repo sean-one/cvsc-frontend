@@ -11,7 +11,30 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles, userContact, businessRoles, pendingRequestList } = store
+    const { userProfile, userRoles, editorRoles, adminRoles, userContact, businessRoles, pendingRequestList } = store
+
+    // used at sucessful login & successful registration
+    const setUser = userdata => {
+        // set up local storage
+        // also cleans data for the payload object
+        userSignIn(userdata)
+
+        dispatch({
+            type: userTypes.SET_USER,
+            payload: { user: userdata.user, contact: userdata.contact }
+        })
+    }
+
+    const setUserRoles = userroles => {
+        const editorRoles = userroles.filter(role => role.role_type === 'creator')
+        const adminRoles = userroles.filter(role => role.role_type === 'admin')
+        dispatch({
+            type: userTypes.SET_USER_ROLES,
+            payload: { userroles, adminRoles, editorRoles }
+        })
+    }
+
+
 
     const useAdminRoles = () => {
         const userAdmin = userRoles.filter(role => role.roletype === 'admin')
@@ -43,17 +66,7 @@ const UsersProvider = ({ children }) => {
         }
     }
 
-    // used at sucessful login & successful registration
-    const setUserProfile = userdata => {
-        // set up local storage
-        // also cleans data for the payload object
-        userSignIn(userdata)
-        
-        dispatch({
-            type: userTypes.SIGNIN_SUCCESS,
-            payload: { user: userdata.user, contact: userdata.contact }
-        })
-    }
+
 
     // used at contactSection updateContact
     const updateUserContact = contact => {
@@ -62,14 +75,6 @@ const UsersProvider = ({ children }) => {
         dispatch({
             type: userTypes.UPDATE_USER_CONTACT,
             payload: contact
-        })
-    }
-
-    // used at profile on successful get on user roles
-    const setUserRoles = roledata => {
-        dispatch({
-            type: userTypes.GET_USER_ROLES_OK,
-            payload: roledata
         })
     }
 
@@ -114,13 +119,16 @@ const UsersProvider = ({ children }) => {
     return (
         <UsersContext.Provider value={
             {
+                setUser,
+                editorRoles,
+                adminRoles,
+                setUserRoles,
+
+
                 userProfile,
-                userRoles,
                 userContact,
                 pendingRequestList,
-                setUserProfile,
                 updateUserContact,
-                setUserRoles,
                 setPendingRequestList,
                 updateUser,
                 useAdminRoles,

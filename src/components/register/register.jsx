@@ -9,15 +9,13 @@ import AxiosInstance from '../../helpers/axios';
 import './register.css';
 
 import { UsersContext } from '../../context/users/users.provider.js';
-import { SiteContext } from '../../context/site/site.provider.js';
 
 const Register = () => {
     const { register, handleSubmit, setError, formState:{ errors } } = useForm({
         mode: "onBlur",
         resolver: yupResolver(registrationSchema)
     })
-    const { setUserProfile } = useContext(UsersContext);
-    const { setProfile } = useContext(SiteContext);
+    const { setUser } = useContext(UsersContext);
     const [ serverError, setServerError ] = useState(false);
     let history = useHistory();
 
@@ -28,10 +26,10 @@ const Register = () => {
         AxiosInstance.post('/users/register', newUser)
             .then(response => {
                 if(response.status === 200) {
-                    setProfile(response.data)
-                    setUserProfile(response.data)
+                    setUser(response.data)
                     history.push('/profile');
                 } else {
+                    console.log('inside els')
                     throw new Error()
                 }
             })

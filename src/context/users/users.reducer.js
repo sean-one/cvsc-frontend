@@ -2,20 +2,31 @@ import userTypes from './users.types';
 
 export const USERS_INITIAL_STATE = {
     userProfile: {},
-    userRoles: [],
     userContact: {},
+    userRoles: [],
+    editorRoles: [],
+    adminRoles: [],
+    
     pendingRequestList: [],
     businessRoles: []
 };
 
 const usersReducer = (state, action) => {
     switch(action.type) {
-        case userTypes.SIGNIN_SUCCESS:
+        case userTypes.SET_USER:
             return {
                 ...state,
                 userProfile: action.payload.user,
                 userContact: action.payload.contact
             };
+        case userTypes.SET_USER_ROLES:
+            return {
+                ...state,
+                userRoles: action.payload.userroles,
+                editorRoles: action.payload.editorRoles,
+                adminRoles: action.payload.adminRoles,
+            }
+        
         case userTypes.UPDATE_FROM_LOCAL:
             return {
                 ...state,
@@ -31,11 +42,6 @@ const usersReducer = (state, action) => {
                 ...state,
                 userContact: action.payload
             }
-        case userTypes.GET_USER_ROLES_OK:
-            return {
-                ...state,
-                userRoles: action.payload
-            };
         case userTypes.GET_BUSINESS_ROLES:
             return {
                 ...state,
