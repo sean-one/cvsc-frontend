@@ -1,7 +1,8 @@
 // import React, { useState, useEffect, useContext } from 'react';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-// import AxiosInstance from '../../../../helpers/axios';
+import AxiosInstance from '../../../../helpers/axios';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck, faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,24 +11,44 @@ import { UsersContext } from '../../../../context/users/users.provider';
 import { roleRequestStatusUpdate } from '../../../../helpers/dataCleanUp';
 
 const PendingRequest = (props) => {
-    const { pendingRequestList } = useContext(UsersContext);
+    const { pendingRequestList, setPendingRequestList } = useContext(UsersContext);
     // const [ requestList, setRequestList ] = useState()
     // const { register, handleSubmit, reset } = useForm()
     const { register, handleSubmit } = useForm()
 
-    useEffect(() => {
+    const getPendingList = useCallback(() => {
+        const token = localStorage.getItem('token');
+        AxiosInstance.get('/roles/pending-request', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                setPendingRequestList(response.data)
+                // console.log(response.data)
+            })
+            .catch(err => console.log(err))
+        // eslint-disable-next-line
+    }, [])
 
-        props.getPending()
+    useEffect(() => {
+        // props.getPending()
+        getPendingList()
         // eslint-disable-next-line
     }, [])
     
     const sendRequestStatus = (data) => {
-        console.log(data)
 
         const token = localStorage.getItem('token');
         
-        const dataClean = roleRequestStatusUpdate(data, pendingRequestList)
+        // const dataClean = roleRequestStatusUpdate(data, pendingRequestList)
         
+        AxiosInstance.post('/roles/update-request', data, {
+            headers: {'Authorization': 'Bearer ' + token}
+        })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(err => console.log(err))
+
         // AxiosInstance.post('/roles/editUserRoles', dataClean, {
         //     headers: {'Authorization': 'Bearer ' + token}
         // })
