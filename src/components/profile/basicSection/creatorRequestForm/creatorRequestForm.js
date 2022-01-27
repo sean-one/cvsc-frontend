@@ -23,10 +23,11 @@ const CreatorRequestForm = (props) => {
     });
 
     const sendRequest = (data) => {
+        console.log(data)
         const token = localStorage.getItem('token')
 
-        AxiosInstance.post('/pendingRequest', data, {
-            headers: {'Authorization': 'Bearer ' + token}
+        AxiosInstance.post('/roles/request', data, {
+            headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
                 setRequestStatus('request successfully sent')
@@ -39,6 +40,10 @@ const CreatorRequestForm = (props) => {
             .catch(err => {
                 if(err.response.data.type === 'duplicate') {
                     setRequestStatus('a previous request for this business is still pending')
+                    setTimeout(() => {
+                        reset()
+                        setRequestStatus('')
+                    }, 1000)
                 }
             })
     }

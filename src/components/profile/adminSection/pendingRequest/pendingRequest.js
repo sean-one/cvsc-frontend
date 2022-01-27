@@ -8,12 +8,8 @@ import { faTimes, faCheck, faCaretDown, faCaretLeft } from '@fortawesome/free-so
 
 import { UsersContext } from '../../../../context/users/users.provider';
 
-import { roleRequestStatusUpdate } from '../../../../helpers/dataCleanUp';
-
 const PendingRequest = (props) => {
     const { pendingRequestList, setPendingRequestList } = useContext(UsersContext);
-    // const [ requestList, setRequestList ] = useState()
-    // const { register, handleSubmit, reset } = useForm()
     const { register, handleSubmit } = useForm()
 
     const getPendingList = useCallback(() => {
@@ -23,14 +19,12 @@ const PendingRequest = (props) => {
         })
             .then(response => {
                 setPendingRequestList(response.data)
-                // console.log(response.data)
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
-        // props.getPending()
         getPendingList()
         // eslint-disable-next-line
     }, [])
@@ -39,27 +33,15 @@ const PendingRequest = (props) => {
 
         const token = localStorage.getItem('token');
         
-        // const dataClean = roleRequestStatusUpdate(data, pendingRequestList)
-        
         AxiosInstance.post('/roles/update-request', data, {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
-                console.log(response)
+                setPendingRequestList(response.data)
+                // console.log(response)
             })
             .catch(err => console.log(err))
 
-        // AxiosInstance.post('/roles/editUserRoles', dataClean, {
-        //     headers: {'Authorization': 'Bearer ' + token}
-        // })
-        //     .then(response => {
-        //         props.getPending()
-        //         props.getRoles()
-        //         // reset the form so that nothing is checked already
-        //         reset()
-        //     })
-        //     .catch(err => console.log(err))
-        
         return
     }
 
@@ -91,7 +73,7 @@ const PendingRequest = (props) => {
                                 <div className='requestTableRow' key={request.id}>
                                     <p className='requestTableText'>{request.username}</p>
                                     <p className='requestTableText'>{request.name}</p>
-                                    <p className='requestTableText'>{request.request_for}</p>
+                                    <p className='requestTableText'>{request.role_type}</p>
                                     <div className='requestTableButtons'>
                                         <input {...register(`${request.id}`)} type='radio' id='approved' value='approved' />
                                         <input {...register(`${request.id}`)} type='radio' id='rejected' value='rejected' />
