@@ -23,7 +23,6 @@ const CreatorRequestForm = (props) => {
     });
 
     const sendRequest = (data) => {
-        console.log(data)
         const token = localStorage.getItem('token')
 
         AxiosInstance.post('/roles/request', data, {
@@ -38,13 +37,19 @@ const CreatorRequestForm = (props) => {
                 
             })
             .catch(err => {
+                
                 if(err.response.data.type === 'duplicate') {
                     setRequestStatus('a previous request for this business is still pending')
-                    setTimeout(() => {
-                        reset()
-                        setRequestStatus('')
-                    }, 1000)
                 }
+
+                if(err.response.data.type === 'missing input') {
+                    setRequestStatus('please be sure to select both the business & admin rights')
+                }
+
+                setTimeout(() => {
+                    reset()
+                    setRequestStatus('')
+                }, 1000)
             })
     }
 
