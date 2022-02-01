@@ -6,16 +6,14 @@ import AxiosInstance from '../../../../helpers/axios';
 
 import { UsersContext } from "../../../../context/users/users.provider";
 
-import { roleEditUpdate } from "../../../../helpers/dataCleanUp";
-
 const EditRoles = (props) => {
     const { useBusinessRoles, setBusinessRoles } = useContext(UsersContext)
     const currentRoles = useBusinessRoles()
     const { register, handleSubmit } = useForm()
 
-    const getRolesByBusiness = useCallback(() => {
+    const getCurrentRoles = useCallback(() => {
         const token = localStorage.getItem('token')
-        AxiosInstance.get('/roles/business-request', {
+        AxiosInstance.get('/roles/current-roles', {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
@@ -28,40 +26,24 @@ const EditRoles = (props) => {
     })
 
     useEffect(() => {
-        getRolesByBusiness()
+        getCurrentRoles()
         // eslint-disable-next-line
     }, [])
 
     const deleteRoles = (data) => {
-        console.log(data)
-        // {5: null, 8: null, 9: null, 29: 'delete', 31: 'delete'}
-        // need to remove any key value with value of null then create an array of the 'delete' keys
-        return
-        // const token = localStorage.getItem('token');
-        // const cleaned = roleEditUpdate(data)
-        // const roleEdits = []
+        const token = localStorage.getItem('token');
 
-        // for (const roleId in cleaned) {
-            
-        //     const roleToEdit = currentRoles.filter(role => role.id === cleaned[roleId])
-        //     roleEdits.push({ id: cleaned[roleId], business_id: roleToEdit[0].business_id })
-        
-        // }
-
-        // AxiosInstance.delete('/roles/deleteUserRoles', {
-        //     headers: {'Authorization': 'Bearer ' + token},
-        //     data: roleEdits
-        // })
-        //     .then(response => {
-        //         props.getRoles()
-        //         // console.log(response)
-        //     })
-        //     .catch(err => console.log(err))
-        // console.log(roleEdits)
+        AxiosInstance.delete('/roles/delete-roles', {
+            headers: { 'Authorization': 'Bearer ' + token },
+            data
+        })
+            .then(response => {
+                getCurrentRoles()
+            })
+            .catch(err => console.log(err))
 
     }
 
-    // console.log(currentRoles)
     return (
         <div>
             <div className='tabHeader'>
@@ -89,7 +71,7 @@ const EditRoles = (props) => {
                                         <p>{role.username}</p>
                                         <p>{role.name}</p>
                                         <p>{role.role_type}</p>
-                                        <input {...register(`${role.id}`)} type='radio' value='delete' />
+                                        <input {...register(`${role.id}`)} type='radio' value={role.business_id} />
                                     </div>
                                 ))
                             }

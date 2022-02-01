@@ -31,19 +31,6 @@ export const roleRequestStatusUpdate = (data, requestList) => {
     return { approved: approvedRequest, rejected: rejectedRequest }
 }
 
-export const roleEditUpdate = (data) => {
-    const toBeDeleted = []
-
-    for (const dataline in data) {
-        if(data[dataline] === 'delete') {
-            // this may need to be changed with addition of uuid
-            toBeDeleted.push(Number(dataline))
-        }
-    }
-
-    return toBeDeleted;
-}
-
 export const createBusiness = (data) => {
     data.business = {
         ...(data['business_name'] && { ...data.business, name: data['business_name'] }),

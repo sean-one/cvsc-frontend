@@ -10,7 +10,7 @@ import Day from './day.jsx';
 import './calendar.css';
 
 const Calendar = () => {
-    const { data, loading, fetchError } = useSiteFetch()
+    const { data, loading, fetchError } = useSiteFetch('...loading data...')
     const { events, setSiteInfo } = useContext(SiteContext)
     const siteSortedEvents = useEventsByDay(events)
     
@@ -23,7 +23,7 @@ const Calendar = () => {
         <div>
             {
                 loading ? (
-                    <div> ...loading data... </div>
+                    <div>{ fetchError }</div>
                 ) : (
                     <div className='calendar'>
                         <p>filter</p>
