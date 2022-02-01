@@ -57,7 +57,7 @@ const BusinessRequestForm = (props) => {
 
             data.business.avatar = imageUrl
             
-            AxiosInstance.post('/business/add', cleanData, {
+            AxiosInstance.post('/business/create/business-request', cleanData, {
                 headers: { 'Authorization': 'Bearer ' + token }
             })
                 .then(response => {

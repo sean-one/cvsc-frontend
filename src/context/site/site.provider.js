@@ -8,8 +8,9 @@ export const SiteContext = createContext({
 
 const SiteProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(siteReducer, SITE_INITIAL_STATE)
-    const { userRoles, userProfile, events, businessList } = store;
+    const { userProfile, events, businessList } = store;
 
+    // used inside calendar component build site event and businesses
     const setSiteInfo = ( eventResponse, businessResponse ) => {
         dispatch({
             type: siteTypes.SET_EVENTS_AND_BUSINESS,

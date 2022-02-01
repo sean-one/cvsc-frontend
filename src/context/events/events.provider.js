@@ -37,11 +37,6 @@ const EventsProvider = ({ children }) => {
         return businessList.find(business => business.id === id)
     }
 
-    // filters the business list removing business not open to request & businesses user already has roles for
-    const useFilterBusinessRequestList = (userroles) => {
-        return businessList.filter(business => business.requestOpen === true && !userroles.includes(business.id))
-    }
-
     // get the events for each specific day sorted into a list of days contianing a list of events
     const useSortedEvents = () => {
         return events.reduce((obj, event) => {

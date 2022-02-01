@@ -16,6 +16,7 @@ const Calendar = () => {
     
     useEffect(() => {
         setSiteInfo(data.events, data.businessList)
+        // eslint-disable-next-line
     }, [data])
     
     
