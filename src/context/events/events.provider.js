@@ -90,7 +90,6 @@ const EventsProvider = ({ children }) => {
                 setEvents,
                 setUserEventList,
                 useBusinessById,
-                useFilterBusinessRequestList,
                 userEvents,
                 useSortedEvents,
                 useBrandList,
