@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
-import { EventsContext } from '../../context/events/events.provider';
+import { SiteContext } from '../../context/site/site.provider';
 
 import UpcomingBusinessEvents from './upcomingBusinessEvents/upcomingBusinessEvents';
 
 import './business.css';
 
 const Business = (props) => {
-    const { useBusinessById } = useContext(EventsContext)
+    const { useBusinessById } = useContext(SiteContext)
     const [ business, setBusiness ] = useState(useBusinessById(props.match.params.id))
     const [ loading, setLoading ] = useState(true)
     

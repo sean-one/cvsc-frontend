@@ -8,13 +8,20 @@ export const SiteContext = createContext({
 
 const SiteProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(siteReducer, SITE_INITIAL_STATE)
-    const { userProfile, events, businessList } = store;
+    const { events, businessList } = store;
 
     // used inside calendar component build site event and businesses
     const setSiteInfo = ( eventResponse, businessResponse ) => {
         dispatch({
             type: siteTypes.SET_EVENTS_AND_BUSINESS,
             payload: { eventResponse, businessResponse }
+        })
+    }
+
+    const createEvent = (event) => {
+        dispatch({
+            type: siteTypes.CREATE_EVENT,
+            payload: event
         })
     }
 
@@ -32,10 +39,13 @@ const SiteProvider = ({ children }) => {
         })
     }
 
-    // USER PROFILE
-    const userEvents = () => {
-        const userId = userProfile.id
-        return events.filter(event => event.created_by === Number(userId))
+    const useEventFilterByUser = (user_id) => {
+        return events.filter(event => event.created_by === Number(user_id))
+    }
+
+    // BUSINESS
+    const useBusinessById = (business_id) => {
+        return businessList.find(business => business.id === business_id)
     }
 
     const useVenueList = () => {
@@ -52,12 +62,12 @@ const SiteProvider = ({ children }) => {
                 events,
                 businessList,
                 setSiteInfo,
+                createEvent,
                 removeEvent,
                 updateEvent,
-                userEvents,
-                // USER
-                userProfile,
+                useEventFilterByUser,
                 // BUSINESS
+                useBusinessById,
                 useVenueList,
                 useBrandList
             }

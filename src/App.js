@@ -14,7 +14,6 @@ import CreateEvent from './components/events/createEvent.jsx';
 import EditEvent from './components/events/editEvent';
 
 import SiteProvider from './context/site/site.provider';
-import EventsProvider from './context/events/events.provider';
 import UsersProvider from './context/users/users.provider';
 import UserAdminProvider from './context/adminuser/adminuser.provider';
 import RolesProvider from './context/roles/roles.provider';
@@ -25,7 +24,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <EventsProvider>
       <UsersProvider>
       <SiteProvider>
         <RolesProvider>
@@ -45,7 +43,6 @@ const App = () => {
         </RolesProvider>
       </SiteProvider>
       </UsersProvider>
-      </EventsProvider>
     </div>
   );
 }

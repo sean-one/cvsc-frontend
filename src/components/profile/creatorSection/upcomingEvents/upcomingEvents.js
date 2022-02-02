@@ -8,12 +8,14 @@ import AxiosInstance from '../../../../helpers/axios';
 import EventPreview from '../../../events/eventPreview';
 
 import { SiteContext } from '../../../../context/site/site.provider';
+import { UsersContext } from '../../../../context/users/users.provider';
 
 import '../creatorSection.css';
 
 const UpcomingEvents = (props) => {
-    const { userEvents, removeEvent } = useContext(SiteContext)
-    const events = userEvents()
+    const { userProfile } = useContext(UsersContext)
+    const { useEventFilterByUser, removeEvent } = useContext(SiteContext)
+    const userEvents = useEventFilterByUser(userProfile.id)
 
     const deleteEvent = (eventId) => {
         const token = localStorage.getItem('token')
@@ -42,7 +44,7 @@ const UpcomingEvents = (props) => {
                 (props.viewable) &&
                 <div className='userEvents'>
                     {
-                        events.map((event, i) => {
+                        userEvents.map((event, i) => {
                             return (
                                 <div key={i} className='adminWrapper'>
                                     <div className='eventdate'>

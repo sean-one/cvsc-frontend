@@ -3,19 +3,20 @@ import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createEventSchema } from '../../helpers/validationSchemas';
-// import { format } from 'date-fns';
 import AxiosInstance from '../../helpers/axios';
 
-import { EventsContext } from '../../context/events/events.provider';
+import { SiteContext } from '../../context/site/site.provider';
 
 import './createEvent.css';
 
 const CreateEvent = (props) => {
-    const { userEvents, addToEvents, useBrandList, useVenueList, setUserEventList } = useContext(EventsContext);
+    
+    const { createEvent, useBrandList, useVenueList } = useContext(SiteContext)
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
     });
+    
     const canvas = useRef(null)
     const [ adminRoleError, setAdminRoleError ] = useState(false);
     const [ eventImage, setEventImage ] = useState()
@@ -24,6 +25,7 @@ const CreateEvent = (props) => {
     const venueList = useVenueList()
     const brandList = useBrandList()
     let history = useHistory();
+    
 
     const previewImage = (event) => {
         setAddImage(true)
@@ -61,8 +63,7 @@ const CreateEvent = (props) => {
             })
                 .then(response => {
                     if(response.status === 200) {
-                        addToEvents(response.data)
-                        setUserEventList([...userEvents], response.data)
+                        createEvent(response.data)
                         history.push({
                             pathname: `/calendar/${response.data.event_id}`,
                             state: {

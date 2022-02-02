@@ -3,9 +3,6 @@ import siteTypes from './site.types';
 export const SITE_INITIAL_STATE = {
     events: [],
     businessList: [],
-    userProfile: {},
-    userContact: {},
-    pendingRequestList: [],
     businessRoles: [],
 };
 
@@ -17,12 +14,11 @@ const siteReducer = (state, action) => {
                 events: action.payload.eventResponse,
                 businessList: action.payload.businessResponse
             };
-        case siteTypes.USER_SIGNIN:
+        case siteTypes.CREATE_EVENT:
             return {
                 ...state,
-                userProfile: action.payload.user,
-                userContact: action.payload.contact
-            };
+                events: [ ...state.events, action.payload ]
+            }
         case siteTypes.REMOVE_EVENT:
             return {
                 ...state,
