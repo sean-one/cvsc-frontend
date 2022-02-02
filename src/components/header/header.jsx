@@ -4,10 +4,8 @@ import Menu from '../navigation/menu';
 import './header.css';
 
 import { UsersContext } from '../../context/users/users.provider';
-import { RolesContext } from '../../context/roles/roles.provider';
 
 const Header = () => {
-    const { roleReset } = useContext(RolesContext)
     const { userProfile, userSignOut } = useContext(UsersContext);
     // const userAvatar = localStorage.getItem('avatar')
     const [ activeMenu, setActiveMenu ] = useState(false)
@@ -21,7 +19,6 @@ const Header = () => {
         userProfile['avatar'] = "https://picsum.photos/200/200"
         // userProfile['avatar'] = "https://coachellavalleysmokers-images.s3.amazonaws.com/Coachella+Valley-01.png"
         setActiveMenu(!activeMenu);
-        roleReset()
         userSignOut()
     }
 
