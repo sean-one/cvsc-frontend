@@ -4,7 +4,7 @@ import AxiosInstance from '../../helpers/axios';
 
 import { SiteContext } from '../../context/site/site.provider';
 
-import UpcomingBusinessEvents from './upcomingBusinessEvents/upcomingBusinessEvents';
+import Upcoming from '../upcoming/upcoming';
 
 import './business.css';
 
@@ -18,7 +18,6 @@ const Business = (props) => {
             setLoading(true)
             AxiosInstance.get(`/business/${props.match.params.id}`)
                 .then(response => {
-                        console.log(response.data)
                         setBusiness(response.data)
                         setLoading(false)
                         // console.log(response)
@@ -32,7 +31,7 @@ const Business = (props) => {
         }
         // eslint-disable-next-line
     }, [])
-    console.log(business)
+
     return (
         <div className='componentWrapper'>
             {
@@ -56,7 +55,7 @@ const Business = (props) => {
                         <div className='businessDetails'>
                             <p>{business.description}</p>
                         </div>
-                        <UpcomingBusinessEvents business={business.id} name={business.name}/>
+                        <Upcoming business={business.id} />
                     </div>
                 )
             }

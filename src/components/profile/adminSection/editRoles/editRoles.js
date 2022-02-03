@@ -23,7 +23,8 @@ const EditRoles = (props) => {
                 console.log(Object.keys(err))
                 console.log(err.response)
             })
-    })
+        // eslint-disable-next-line
+    }, [])
 
     useEffect(() => {
         getCurrentRoles()
