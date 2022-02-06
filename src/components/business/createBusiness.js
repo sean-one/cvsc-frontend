@@ -1,19 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
-import AxiosInstance from '../../../../helpers/axios';
-
 import { yupResolver } from '@hookform/resolvers/yup';
-import { addBusinessSchema } from '../../../../helpers/validationSchemas';
-import { addBusiness } from '../../../../helpers/dataCleanUp';
+import AxiosInstance from '../../helpers/axios';
 
+import { addBusinessSchema } from '../../helpers/validationSchemas';
+import { addBusiness } from '../../helpers/dataCleanUp';
 
-const BusinessRequestForm = (props) => {
-    const [ editImage, setEditImage ] = useState(false)
-    const [ serverError, setServerError ] = useState(false)
-    const [ businessLogo, setBusinessLogo ] = useState()
-    const { register, handleSubmit, setError, watch, reset, formState:{ errors } } = useForm({
+const CreateBusiness = (props) => {
+    const [editImage, setEditImage] = useState(false)
+    const [serverError, setServerError] = useState(false)
+    const [businessLogo, setBusinessLogo] = useState()
+    const { register, handleSubmit, setError, watch, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
     });
@@ -25,7 +22,7 @@ const BusinessRequestForm = (props) => {
         let fileToUpload = event.target.files
         let reader = new FileReader()
         const previewImage = new Image()
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             previewImage.src = e.target.result
             previewImage.onload = () => setBusinessLogo(previewImage)
         }
@@ -34,8 +31,8 @@ const BusinessRequestForm = (props) => {
 
     const sendRequest = (data) => {
         setServerError(false)
-        canvas.current.toBlob(async function(blob) {
-            
+        canvas.current.toBlob(async function (blob) {
+
             const token = localStorage.getItem('token')
             const cleanData = addBusiness(data)
 
@@ -56,7 +53,7 @@ const BusinessRequestForm = (props) => {
             const imageUrl = url.split('?')[0]
 
             data.business.avatar = imageUrl
-            
+
             AxiosInstance.post('/business/create/business-request', cleanData, {
                 headers: { 'Authorization': 'Bearer ' + token }
             })
@@ -70,7 +67,7 @@ const BusinessRequestForm = (props) => {
                     }
                 })
                 .catch(err => {
-                    if(!err.response) {
+                    if (!err.response) {
                         setServerError(true)
                     } else if (err.response.status === 400) {
                         setError(`${err.response.data.type}`, {
@@ -111,20 +108,12 @@ const BusinessRequestForm = (props) => {
     }, [businessLogo, canvas]);
 
     return (
-        <div className='newBusinessSection'>
-            <div className='tabHeader'>
-                <p>Add New Business Request</p>
-                {
-                    (props.viewable) ?
-                        <FontAwesomeIcon className='tabIcon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
-                        : <FontAwesomeIcon className='tabIcon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
-                }
-            </div>
+        <div className='componentWrapper'>
             {/* name, email, avatar, description, [brand, venue, both], contact, requestOpen */}
             {/* contact -- instagram, phone, website*/}
-            <div className={props.viewable ? 'businessFormWrapper' : 'inactive'}>
+            <div className='businessFormWrapper'>
                 <form className='businessRequestForm' onSubmit={handleSubmit(sendRequest)}>
-                    
+
                     <label htmlFor='business_name'>Business Name:</label>
                     <input {...register('business_name')}
                         type='text'
@@ -181,7 +170,7 @@ const BusinessRequestForm = (props) => {
                                     required
                                 />
                                 <p className='errormessage'>{errors.street_address?.message}</p>
-                                
+
                                 <label htmlFor='city'>City:</label>
                                 <input {...register('city')}
                                     type='text'
@@ -189,7 +178,7 @@ const BusinessRequestForm = (props) => {
                                     required
                                 />
                                 <p className='errormessage'>{errors.city?.message}</p>
-                                
+
                                 <label htmlFor='state'>State:</label>
                                 <input {...register('state')}
                                     type='text'
@@ -197,7 +186,7 @@ const BusinessRequestForm = (props) => {
                                     required
                                 />
                                 <p className='errormessage'>{errors.state?.message}</p>
-                                
+
                                 <label htmlFor='zip'>Zip:</label>
                                 <input {...register('zip')}
                                     type='text'
@@ -215,7 +204,7 @@ const BusinessRequestForm = (props) => {
                         id='instagram'
                     />
                     <p className='errormessage'>{errors.instagram?.message}</p>
-                    
+
                     <label htmlFor='phone'>Phone:</label>
                     <input {...register('phone')}
                         type='tel'
@@ -230,7 +219,7 @@ const BusinessRequestForm = (props) => {
                     />
                     <p className='errormessage'>{errors.website?.message}</p>
 
-                    { serverError && <p className='errormessage'>network error, please wait a moment and try again</p> }
+                    {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
                     <input type='submit' value='submit' />
 
                 </form>
@@ -239,4 +228,4 @@ const BusinessRequestForm = (props) => {
     )
 }
 
-export default BusinessRequestForm;
+export default CreateBusiness;

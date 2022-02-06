@@ -33,7 +33,14 @@ const EventPreview = (props) => {
                     <p>{detailPreview(event.details, 100)}</p>
                 </div>
                 <div className='brand'>
+                    <Link to={{
+                        pathname: `/business/${event.brand_id}`,
+                        state: {
+                            from: props.location.pathname
+                        }
+                    }}>
                     <p>{event.brand_name}</p>
+                    </Link>
                 </div>
                 <div className='eventLinkButton'>
                     <Link to={{

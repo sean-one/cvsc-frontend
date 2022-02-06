@@ -11,6 +11,7 @@ import Login from './components/login/login.jsx';
 import AuthRoute from './components/auth/auth.jsx';
 import Profile from './components/profile/profile.jsx';
 import CreateEvent from './components/events/createEvent.jsx';
+import CreateBusiness from './components/business/createBusiness';
 import EditEvent from './components/events/editEvent';
 
 import SiteProvider from './context/site/site.provider';
@@ -26,12 +27,13 @@ const App = () => {
       <UsersProvider>
       <SiteProvider>
         <Header />
-        <Route path='/register' component={Register} />
         <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
+        <Route path='/register' component={Register} />
         <Route path='/calendar/:id' render={(props) => (<EventCard {...props} />)} />
-        <Route path='/business/:id' render={(props) => (<Business {...props} />)} />
-        <AuthRoute path='/events/create' component={CreateEvent} />
+        <Route exact path='/business/:id' render={(props) => (<Business {...props} />)} />
         <AuthRoute path='/events/edit/:id' component={EditEvent} />
+        <AuthRoute exact path='/create/business' component={CreateBusiness} />
+        <AuthRoute exact path='/create/event' component={CreateEvent} />
         <Route path='/login' component={Login} />
         <UserAdminProvider>
           <AuthRoute exact path='/profile' component={Profile} />

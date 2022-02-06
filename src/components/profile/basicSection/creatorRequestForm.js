@@ -1,16 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { requestBusinessCreator } from '../../../../helpers/validationSchemas';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
-import AxiosInstance from '../../../../helpers/axios';
 
-import { SiteContext } from '../../../../context/site/site.provider';
+import { requestBusinessCreator } from '../../../helpers/validationSchemas';
+import TabHeader from '../sectionComponents/tabHeader';
 
-import useBusinessList from '../../../../hooks/useBusinessList';
+import AxiosInstance from '../../../helpers/axios';
 
-import '../basicSection.css'
+import { SiteContext } from '../../../context/site/site.provider';
+
+import useBusinessList from '../../../hooks/useBusinessList';
+
+import './basicSection.css'
 
 const CreatorRequestForm = (props) => {
     const { businessList } = useContext(SiteContext)
@@ -59,14 +60,7 @@ const CreatorRequestForm = (props) => {
 
     return (
         <div className='requestCreator'>
-            <div className='tabHeader'>
-                <p>Request Business Creator Rights</p>
-                {
-                    (props.viewable) ?
-                        <FontAwesomeIcon className='tabIcon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
-                        : <FontAwesomeIcon className='tabIcon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
-                }
-            </div>
+            <TabHeader title='Creator Request Form' viewable={props.viewable} toggleView={props.toggleView} />
             <div className={props.viewable ? 'requestFormWrapper' : 'inactive'}>
                 <form className='creatorRequestForm' onSubmit={handleSubmit(sendRequest)}>
                     <label htmlFor='business_id'>business</label>

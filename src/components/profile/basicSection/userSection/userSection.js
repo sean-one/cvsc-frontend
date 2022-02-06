@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { UsersContext } from '../../../../context/users/users.provider';
 
+import TabHeader from '../../sectionComponents/tabHeader';
 import UserAvatar from './userAvatar/userAvatar';
 import ContactSection from '../../../contact/contactSection';
 
@@ -14,14 +13,7 @@ const UserSection = (props) => {
 
     return (
         <div className='userSection'>
-            <div className='tabHeader'>
-                <p>User Profile</p>
-                {
-                    (props.viewable) ?
-                        <FontAwesomeIcon className='tabIcon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
-                        : <FontAwesomeIcon className='tabIcon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
-                }
-            </div>
+            <TabHeader title='User Profile' viewable={props.viewable} toggleView={props.toggleView} />
             <div className={props.viewable ? 'userProfile' : 'inactive'}>
                 <div className='userDetails'>
                     <div className='username'>

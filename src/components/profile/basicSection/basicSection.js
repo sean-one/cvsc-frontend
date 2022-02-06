@@ -1,25 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import CreatorRequestForm from './creatorRequestForm/creatorRequestForm';
-import BusinessRequestForm from './businessRequestForm/businessRequestForm';
+// Basic Section Tabs
+import { withViewToggle } from '../../../hoc/withViewToggle';
+import TabLink from '../sectionComponents/tabLink';
+import CreatorRequestForm from './creatorRequestForm';
 import UserSection from './userSection/userSection';
 
 const BasicSection = () => {
-    const [userProfileVisable, setUserProfileVisable] = useState(false)
-    const [requestFormVisable, setRequestFormVisable] = useState(false)
-    const [businessRequestFormVisable, setBusinessRequestFormVisable] = useState(false)
-
-    const toggleUserProfile = () => {
-        setUserProfileVisable(!userProfileVisable)
-    }
-
-    const toggleRequestForm = () => {
-        setRequestFormVisable(!requestFormVisable)
-    }
-
-    const toggleBusinessRequestForm = () => {
-        setBusinessRequestFormVisable(!businessRequestFormVisable)
-    }
+    // wrap each section with a view toggle that expands each section
+    const UserSectionWrapped = withViewToggle(UserSection)
+    const CreatorRequestWrapped = withViewToggle(CreatorRequestForm)
 
     return (
         <div className='basicSection'>
@@ -27,9 +17,9 @@ const BasicSection = () => {
                 <h3>Basic Options</h3>
             </div>
             <div className='sectionTabs'>
-                <UserSection viewable={userProfileVisable} toggleView={toggleUserProfile} />
-                <CreatorRequestForm viewable={requestFormVisable} toggleView={toggleRequestForm} />
-                <BusinessRequestForm viewable={businessRequestFormVisable} toggleView={toggleBusinessRequestForm} />
+                <UserSectionWrapped />
+                <CreatorRequestWrapped />
+                <TabLink title='Create Business' createtype='business'/>
             </div>
         </div>
     )

@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import React from 'react';
 
+import { withViewToggle } from '../../../hoc/withViewToggle';
+import TabLink from '../sectionComponents/tabLink';
 import UpcomingEvents from './upcomingEvents/upcomingEvents';
 
 import './creatorSection.css';
 import '../profile.css';
 
 const CreatorSection = (props) => {
-    const [ eventListVisable, setEventListVisable ] = useState(false);
-
-    const toggleEventList = () => {
-        setEventListVisable(!eventListVisable)
-    }
+    const UpcomingSectionWrapped = withViewToggle(UpcomingEvents)
 
     return (
         <div className='creatorSection'>
@@ -21,21 +16,11 @@ const CreatorSection = (props) => {
                 <h3>Creator Options</h3>
             </div>
             <div className='sectionTabs'>
-                <div className='tabHeader'>
-                    <p>Create A New Event</p>
-                    <span><Link to={{
-                        pathname: '/events/create',
-                        state: {
-                            from: props.location.pathname
-                        }
-                    }}>
-                        <FontAwesomeIcon className='tabIcon' icon={faPlus} size='1x' />
-                    </Link></span>
-                </div>
-                <UpcomingEvents viewable={eventListVisable} toggleView={toggleEventList}/>
+                <TabLink title='Create Event' createtype='event' />
+                <UpcomingSectionWrapped />
             </div>
         </div>
     )
 }
 
-export default withRouter(CreatorSection);
+export default CreatorSection;

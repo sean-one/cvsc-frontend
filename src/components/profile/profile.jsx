@@ -8,18 +8,17 @@ import BasicSection from './basicSection/basicSection';
 import AdminSection from './adminSection/adminSection';
 // import AdminUser from './adminUser/adminUserSection';
 import CreatorSection from './creatorSection/creatorSection';
+import BusinessAdminSection from './businessAdminSection/businessAdminSection';
 
 import './profile.css';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
     const { userProfile, editorRoles, adminRoles, setUserRoles } = useContext(UsersContext);
-    // const userId = localStorage.getItem('userId')
     
     const getRoles = () => {
         setLoading(true);
         const token = localStorage.getItem('token');
-        // AxiosInstance.get(`/roles/user/${parseInt(localStorage.getItem('userId'))}`, {
         AxiosInstance.get(`/roles/user/${userProfile.id}`, {
             headers: {'Authorization': 'Bearer ' + token}
         })
@@ -38,6 +37,7 @@ const Profile = () => {
         // eslint-disable-next-line
     }, []);
     
+    
     return (
         <div className='componentWrapper'>
             {
@@ -47,19 +47,21 @@ const Profile = () => {
                     <>
                         <BasicSection />
                         {
+                            // (checkEditor) &&
+                            (!!editorRoles.length || !!adminRoles.length) &&
+                            <CreatorSection />
+                        }
+                        {
                             // (checkAdmin) && 
                             (!!adminRoles.length) && 
                                 <AdminSection />
                         }
+                        <BusinessAdminSection />
                         {/* {
                             (userId === process.env.REACT_APP_USER_ADMIN) &&
                                 <AdminUser />
                         } */}
-                        {
-                            // (checkEditor) &&
-                            (!!editorRoles.length || !!adminRoles.length) &&
-                                <CreatorSection />
-                        }
+                        
                     </>
                 )
             }

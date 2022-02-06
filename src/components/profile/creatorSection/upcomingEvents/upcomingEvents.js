@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencilAlt, faTrashAlt, faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import AxiosInstance from '../../../../helpers/axios';
 
+import TabHeader from '../../sectionComponents/tabHeader';
 import EventPreview from '../../../events/eventPreview';
 
 import { SiteContext } from '../../../../context/site/site.provider';
@@ -32,14 +33,7 @@ const UpcomingEvents = (props) => {
 
     return (
         <div>
-            <div className='tabHeader'>
-                <p>Upcoming Events</p>
-                {
-                    (props.viewable) ?
-                        <FontAwesomeIcon className='tabIcon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
-                        : <FontAwesomeIcon className='tabIcon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
-                }
-            </div>
+            <TabHeader title='Upcoming Created Events' viewable={props.viewable} toggleView={props.toggleView} />
             {
                 (props.viewable) &&
                 <div className='userEvents'>
