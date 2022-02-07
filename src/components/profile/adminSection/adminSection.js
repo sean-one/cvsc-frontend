@@ -1,10 +1,14 @@
 import React from 'react';
 
-import RolesTab from './rolesTab/rolesTab';
+import { withViewToggle } from '../../../hoc/withViewToggle';
+import EditRoles from './editRoles';
+import PendingRequest from './pendingRequest';
 
 import './adminSection.css';
 
 const AdminSection = (props) => {
+    const EditRolesTab = withViewToggle(EditRoles)
+    const PendingRequestTab = withViewToggle(PendingRequest)
 
     return (
         <div className='adminSection'>
@@ -12,7 +16,8 @@ const AdminSection = (props) => {
                 <h3>Admin Options</h3>
             </div>
             <div className='sectionTabs'>
-                <RolesTab />
+                <EditRolesTab />
+                <PendingRequestTab />
             </div>
         </div>
     )

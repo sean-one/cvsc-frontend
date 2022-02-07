@@ -2,11 +2,10 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
-import AxiosInstance from '../../../../../helpers/axios';
+import AxiosInstance from '../../../helpers/axios';
 
-import { UsersContext } from '../../../../../context/users/users.provider';
+import { UsersContext } from '../../../context/users/users.provider';
 
-import './userAvatar.css';
 
 const Useravatar = () => {
     const [ editImage, setEditImage ] = useState(false)

@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 
-import { UsersContext } from '../../../../context/users/users.provider';
+import { UsersContext } from '../../../context/users/users.provider';
 
-import TabHeader from '../../sectionComponents/tabHeader';
-import UserAvatar from './userAvatar/userAvatar';
-import ContactSection from '../../../contact/contactSection';
+import TabHeader from '../sectionComponents/tabHeader';
+import UserAvatar from './userAvatar';
+import ContactSection from '../../contact/contactSection';
 
-import './userSection.css';
 
 const UserSection = (props) => {
     const { userProfile } = useContext(UsersContext)

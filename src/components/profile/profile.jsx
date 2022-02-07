@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
@@ -16,7 +16,7 @@ const Profile = () => {
     const [ loading, setLoading ] = useState(false);
     const { userProfile, editorRoles, adminRoles, setUserRoles } = useContext(UsersContext);
     
-    const getRoles = () => {
+    const getRoles = useCallback(() => {
         setLoading(true);
         const token = localStorage.getItem('token');
         AxiosInstance.get(`/roles/user/${userProfile.id}`, {
@@ -30,7 +30,7 @@ const Profile = () => {
                 setLoading(false)
                 console.log(err)
             })
-    }
+    }, [])
 
     useEffect(() => {
         getRoles()

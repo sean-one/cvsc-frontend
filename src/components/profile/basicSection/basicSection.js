@@ -4,7 +4,7 @@ import React from 'react';
 import { withViewToggle } from '../../../hoc/withViewToggle';
 import TabLink from '../sectionComponents/tabLink';
 import CreatorRequestForm from './creatorRequestForm';
-import UserSection from './userSection/userSection';
+import UserSection from './userSection';
 
 const BasicSection = () => {
     // wrap each section with a view toggle that expands each section

@@ -1,12 +1,12 @@
 // import React, { useState, useEffect, useContext } from 'react';
 import React, { useEffect, useContext, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import AxiosInstance from '../../../../helpers/axios';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck, faCaretDown, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 
-import { UsersContext } from '../../../../context/users/users.provider';
+import AxiosInstance from '../../../helpers/axios';
+
+import { UsersContext } from '../../../context/users/users.provider';
 
 const PendingRequest = (props) => {
     const { pendingRequestList, setPendingRequestList } = useContext(UsersContext);
@@ -25,7 +25,7 @@ const PendingRequest = (props) => {
     }, [])
 
     useEffect(() => {
-        getPendingList()
+        // getPendingList()
         // eslint-disable-next-line
     }, [])
     

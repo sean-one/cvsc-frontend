@@ -23,7 +23,6 @@ const Login = (props) => {
         AxiosInstance.post('/users/login', data)
             .then(response => {
                 if(response.status === 200) {
-                    console.log(response.data)
                     setUser(response.data)
                     history.push('/profile');
                 } else {

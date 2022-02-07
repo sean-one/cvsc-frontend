@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretLeft } from "@fortawesome/free-solid-svg-icons";
-import AxiosInstance from '../../../../helpers/axios';
+import AxiosInstance from "../../../helpers/axios";
 
-import { UsersContext } from "../../../../context/users/users.provider";
+import { UsersContext } from "../../../context/users/users.provider";
+
+import TabHeader from "../sectionComponents/tabHeader";
 
 const EditRoles = (props) => {
     const { useBusinessRoles, setBusinessRoles } = useContext(UsersContext)
@@ -27,7 +27,7 @@ const EditRoles = (props) => {
     }, [])
 
     useEffect(() => {
-        getCurrentRoles()
+        // getCurrentRoles()
         // eslint-disable-next-line
     }, [])
 
@@ -47,14 +47,7 @@ const EditRoles = (props) => {
 
     return (
         <div>
-            <div className='tabHeader'>
-                <p>Edit Current Roles</p>
-                {
-                    (props.viewable) ?
-                        <FontAwesomeIcon className='tabIcon' icon={faCaretDown} size='1x' onClick={props.toggleView} />
-                        : <FontAwesomeIcon className='tabIcon' icon={faCaretLeft} size='1x' onClick={props.toggleView} />
-                }
-            </div>
+            <TabHeader title='Edit Business Roles' viewable={props.viewable} toggleView={props.toggleView} />
             <div>
                 {
                     (props.viewable) &&
