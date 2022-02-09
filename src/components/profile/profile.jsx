@@ -7,10 +7,9 @@ import { UsersContext } from '../../context/users/users.provider';
 import { RolesContext } from '../../context/roles/roles.provider';
 
 import BasicSection from './basicSection/basicSection';
-import AdminSection from './adminSection/adminSection';
+import BusinessAdminSection from './businessAdminSection/businessAdminSection';
 // import AdminUser from './adminUser/adminUserSection';
 import CreatorSection from './creatorSection/creatorSection';
-import BusinessAdminSection from './businessAdminSection/businessAdminSection';
 
 import './profile.css';
 
@@ -59,11 +58,6 @@ const Profile = () => {
                             // (checkEditor) &&
                             (isCreator || isAdmin) &&
                             <CreatorSection />
-                        }
-                        {
-                            // (checkAdmin) && 
-                            (isAdmin) && 
-                                <AdminSection />
                         }
                         {
                             (isBusinessAdmin.length > 0) &&

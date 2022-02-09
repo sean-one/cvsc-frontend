@@ -1,10 +1,10 @@
 /*
 =======================
-    adminSection.js
+    businessAdminSection.js
 =======================
 */
 
-.adminSection {
+.businessAdminSection {
     border: 0.2rem solid blue;
     margin: 1rem 0;
     padding: 0.8rem 0;
@@ -76,29 +76,4 @@
     align-items: center;
     width: 14rem;
 
-}
-
-/*
-====================
-    editRoles.js
-====================
-*/
-
-.tableHeaderRow, .roleTableRow {
-    padding: 1rem 0.5rem;
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    border-bottom: 0.1rem solid black;
-}
-
-.tableHeaderRow p, .roleTableRow p {
-    text-align: left;
-    width: 100%;
-}
-
-.roleTable {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
 }

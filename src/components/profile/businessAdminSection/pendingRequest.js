@@ -1,17 +1,29 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-import { RolesContext } from '../../../context/roles/roles.provider';
 import AxiosInstance from '../../../helpers/axios';
 
 import TabHeader from '../sectionComponents/tabHeader';
 
 const PendingRequest = (props) => {
-    const { usePendingRoles, setAllBusinessRoles } = useContext(RolesContext);
-    const [ pendingRequest, setPendingRequest ] = useState(usePendingRoles())
+    const [ pendingRequest, setPendingRequest ] = useState()
     const { register, handleSubmit } = useForm()
+
+    const getPendingRequest = useCallback(() => {
+        const token = localStorage.getItem('token')
+
+        AxiosInstance.get('/roles/pending-request', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                setPendingRequest(response.data)
+            })
+            .catch(err => {
+                console.log('error inside pending request')
+            })
+    }, [setPendingRequest])
 
     // data input shape { role.id: 'approved', role.id: 'rejected', role.id: null }
     const updateRoleRequest = (data) => {
@@ -24,14 +36,17 @@ const PendingRequest = (props) => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(response => {
-                setAllBusinessRoles(pendingRequest)
-                // setAllBusinessRoles(response.data)
+                setPendingRequest(response.data)
             })
             .catch(err => console.log(err))
 
         return
     }
 
+    useEffect(() => {
+        getPendingRequest()
+        //eslint-disable-next-line
+    }, [])
 
     return (
         <div>
