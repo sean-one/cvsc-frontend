@@ -5,10 +5,7 @@ export const USERS_INITIAL_STATE = {
     userContact: {},
     userRoles: [],
     editorRoles: [],
-    adminRoles: [],
-    
-    pendingRequestList: [],
-    businessRoles: []
+    adminRoles: [],  
 };
 
 const usersReducer = (state, action) => {
@@ -41,16 +38,6 @@ const usersReducer = (state, action) => {
             return {
                 ...state,
                 userContact: action.payload
-            }
-        case userTypes.GET_BUSINESS_ROLES:
-            return {
-                ...state,
-                businessRoles: action.payload
-            }
-        case userTypes.GET_PENDING_REQUEST_OK:
-            return {
-                ...state,
-                pendingRequestList: action.payload
             }
         case userTypes.USER_LOGOUT:
             return {

@@ -2,7 +2,9 @@ import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import AxiosInstance from '../../helpers/axios';
 
+import { SiteContext } from '../../context/site/site.provider';
 import { UsersContext } from '../../context/users/users.provider';
+import { RolesContext } from '../../context/roles/roles.provider';
 
 import BasicSection from './basicSection/basicSection';
 import AdminSection from './adminSection/adminSection';
@@ -14,8 +16,14 @@ import './profile.css';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
-    const { userProfile, editorRoles, adminRoles, setUserRoles } = useContext(UsersContext);
-    
+    const { useBusinessAdmin } = useContext(SiteContext);
+    const { userProfile, setUserRoles } = useContext(UsersContext);
+    const { setRoles, isCreatorAccount, isAdminAccount } = useContext(RolesContext)
+
+    const isCreator = isCreatorAccount()
+    const isAdmin = isAdminAccount()
+    const isBusinessAdmin = useBusinessAdmin(userProfile.id)
+
     const getRoles = useCallback(() => {
         setLoading(true);
         const token = localStorage.getItem('token');
@@ -23,6 +31,7 @@ const Profile = () => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(userroles => {
+                setRoles(userroles.data)
                 setUserRoles(userroles.data)
                 setLoading(false)
             })
@@ -30,7 +39,7 @@ const Profile = () => {
                 setLoading(false)
                 console.log(err)
             })
-    }, [])
+    }, [setRoles, setUserRoles, userProfile.id])
 
     useEffect(() => {
         getRoles()
@@ -48,15 +57,18 @@ const Profile = () => {
                         <BasicSection />
                         {
                             // (checkEditor) &&
-                            (!!editorRoles.length || !!adminRoles.length) &&
+                            (isCreator || isAdmin) &&
                             <CreatorSection />
                         }
                         {
                             // (checkAdmin) && 
-                            (!!adminRoles.length) && 
+                            (isAdmin) && 
                                 <AdminSection />
                         }
-                        <BusinessAdminSection />
+                        {
+                            (isBusinessAdmin.length > 0) &&
+                                <BusinessAdminSection businessAdminList={isBusinessAdmin} />
+                        }
                         {/* {
                             (userId === process.env.REACT_APP_USER_ADMIN) &&
                                 <AdminUser />

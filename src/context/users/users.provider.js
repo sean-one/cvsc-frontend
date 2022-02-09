@@ -11,7 +11,7 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles, editorRoles, adminRoles, userContact, businessRoles, pendingRequestList } = store
+    const { userProfile, userRoles, editorRoles, adminRoles, userContact } = store
 
     // used at sucessful login & successful registration
     const setUser = userdata => {
@@ -54,10 +54,6 @@ const UsersProvider = ({ children }) => {
         return businessIdList
     }
 
-    const useBusinessRoles = () => {
-        return businessRoles.filter(roles => roles.user_id !== userProfile.id);
-    }
-
     const isEditor = () => {
         if (userRoles.length > 0) {
             return true;
@@ -78,14 +74,6 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    // used on rolestab after successful pending req get
-    const setPendingRequestList = pendingrequests => {
-        dispatch({
-            type: userTypes.GET_PENDING_REQUEST_OK,
-            payload: pendingrequests
-        })
-    }
-
     // used after successful avatar update
     const updateUser = userdata => {
         userUpdate(userdata)
@@ -93,13 +81,6 @@ const UsersProvider = ({ children }) => {
         dispatch({
             type: userTypes.UPDATE_USER,
             payload: userdata
-        })
-    }
-
-    const setBusinessRoles = businessRoles => {
-        dispatch({
-            type: userTypes.GET_BUSINESS_ROLES,
-            payload: businessRoles
         })
     }
 
@@ -127,15 +108,11 @@ const UsersProvider = ({ children }) => {
 
                 userProfile,
                 userContact,
-                pendingRequestList,
                 updateUserContact,
-                setPendingRequestList,
                 updateUser,
                 useAdminRoles,
                 useBusinessIdRoles,
-                useBusinessRoles,
                 isEditor,
-                setBusinessRoles,
                 getFromLocal,
                 userSignOut
             }

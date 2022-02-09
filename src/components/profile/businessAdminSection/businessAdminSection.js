@@ -7,6 +7,11 @@ const BusinessAdminSection = (props) => {
                 <h3>Business Admin Options</h3>
             </div>
             <div className='sectionTabs'>
+                {
+                    props.businessAdminList.map(business => (
+                        <p key={business.id}>{business.name}</p>
+                    ))
+                }
 
             </div>
         </div>

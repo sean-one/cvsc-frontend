@@ -16,6 +16,7 @@ import EditEvent from './components/events/editEvent';
 
 import SiteProvider from './context/site/site.provider';
 import UsersProvider from './context/users/users.provider';
+import RolesProvider from './context/roles/roles.provider';
 import UserAdminProvider from './context/adminuser/adminuser.provider';
 
 import './App.css';
@@ -26,7 +27,9 @@ const App = () => {
     <div className="App">
       <UsersProvider>
       <SiteProvider>
-        <Header />
+        <RolesProvider>
+          <Header />
+        </RolesProvider>
         <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
         <Route path='/register' component={Register} />
         <Route path='/calendar/:id' render={(props) => (<EventCard {...props} />)} />
@@ -35,9 +38,11 @@ const App = () => {
         <AuthRoute exact path='/create/business' component={CreateBusiness} />
         <AuthRoute exact path='/create/event' component={CreateEvent} />
         <Route path='/login' component={Login} />
-        <UserAdminProvider>
-          <AuthRoute exact path='/profile' component={Profile} />
-        </UserAdminProvider>
+        <RolesProvider>
+          <UserAdminProvider>
+            <AuthRoute exact path='/profile' component={Profile} />
+          </UserAdminProvider>
+        </RolesProvider>
       </SiteProvider>
       </UsersProvider>
     </div>

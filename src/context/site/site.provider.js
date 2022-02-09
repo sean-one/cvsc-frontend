@@ -56,6 +56,10 @@ const SiteProvider = ({ children }) => {
         return businessList.filter(business => (business.businesstype === 'brand' || business.businesstype === 'both') && business.activeBusiness === true)
     }
 
+    const useBusinessAdmin = (user_id) => {
+        return businessList.filter(business => business.business_admin === user_id)
+    }
+
     return (
         <SiteContext.Provider value={
             {
@@ -69,7 +73,8 @@ const SiteProvider = ({ children }) => {
                 // BUSINESS
                 useBusinessById,
                 useVenueList,
-                useBrandList
+                useBrandList,
+                useBusinessAdmin
             }
         }>
             {children}
