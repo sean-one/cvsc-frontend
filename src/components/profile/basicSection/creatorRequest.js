@@ -13,7 +13,7 @@ import useBusinessList from '../../../hooks/useBusinessList';
 
 import './basicSection.css'
 
-const CreatorRequestForm = (props) => {
+const CreatorRequest = (props) => {
     const { businessList } = useContext(SiteContext)
     const { businessCreatorRequest } = useBusinessList(businessList)
     
@@ -26,7 +26,7 @@ const CreatorRequestForm = (props) => {
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
 
-        AxiosInstance.post('/roles/request', data, {
+        AxiosInstance.post('/roles/create-request', data, {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
@@ -60,7 +60,7 @@ const CreatorRequestForm = (props) => {
 
     return (
         <div className='requestCreator'>
-            <TabHeader title='Creator Request Form' viewable={props.viewable} toggleView={props.toggleView} />
+            <TabHeader title='Creator Request' viewable={props.viewable} toggleView={props.toggleView} />
             <div className={props.viewable ? 'requestFormWrapper' : 'inactive'}>
                 <form className='creatorRequestForm' onSubmit={handleSubmit(sendRequest)}>
                     <label htmlFor='business_id'>business</label>
@@ -90,4 +90,4 @@ const CreatorRequestForm = (props) => {
     )
 }
 
-export default CreatorRequestForm;
+export default CreatorRequest;

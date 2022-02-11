@@ -3,13 +3,13 @@ import React from 'react';
 // Basic Section Tabs
 import { withViewToggle } from '../../../hoc/withViewToggle';
 import TabLink from '../sectionComponents/tabLink';
-import CreatorRequestForm from './creatorRequestForm';
+import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
 
 const BasicSection = () => {
     // wrap each section with a view toggle that expands each section
     const UserSectionWrapped = withViewToggle(UserSection)
-    const CreatorRequestWrapped = withViewToggle(CreatorRequestForm)
+    const CreatorRequestWrapped = withViewToggle(CreatorRequest)
 
     return (
         <div className='basicSection'>

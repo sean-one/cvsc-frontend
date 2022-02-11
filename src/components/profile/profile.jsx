@@ -8,7 +8,6 @@ import { RolesContext } from '../../context/roles/roles.provider';
 
 import BasicSection from './basicSection/basicSection';
 import BusinessAdminSection from './businessAdminSection/businessAdminSection';
-// import AdminUser from './adminUser/adminUserSection';
 import CreatorSection from './creatorSection/creatorSection';
 
 import './profile.css';
@@ -63,11 +62,6 @@ const Profile = () => {
                             (isBusinessAdmin.length > 0) &&
                                 <BusinessAdminSection businessAdminList={isBusinessAdmin} />
                         }
-                        {/* {
-                            (userId === process.env.REACT_APP_USER_ADMIN) &&
-                                <AdminUser />
-                        } */}
-                        
                     </>
                 )
             }
