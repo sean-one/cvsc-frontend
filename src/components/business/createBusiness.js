@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AxiosInstance from '../../helpers/axios';
@@ -16,6 +17,7 @@ const CreateBusiness = (props) => {
     });
     const canvas = useRef(null)
     const businessType = watch('business_type')
+    let history = useHistory();
 
     const showPreview = (event) => {
         setEditImage(true)
@@ -54,7 +56,7 @@ const CreateBusiness = (props) => {
 
             data.business.avatar = imageUrl
 
-            AxiosInstance.post('/business/create/business-request', cleanData, {
+            AxiosInstance.post('/business/create', cleanData, {
                 headers: { 'Authorization': 'Bearer ' + token }
             })
                 .then(response => {
@@ -63,6 +65,9 @@ const CreateBusiness = (props) => {
                         props.toggleView()
                         setEditImage(false)
                         alert('request sent')
+                        history.push({
+                            pathname: '/profile',
+                        });
                         // console.log(response)
                     }
                 })
@@ -228,4 +233,4 @@ const CreateBusiness = (props) => {
     )
 }
 
-export default CreateBusiness;
+export default withRouter(CreateBusiness);
