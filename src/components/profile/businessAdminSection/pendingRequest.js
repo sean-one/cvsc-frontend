@@ -45,6 +45,10 @@ const PendingRequest = (props) => {
 
     useEffect(() => {
         getPendingRequest()
+        
+        return () => {
+            setPendingRequest(null)
+        }
         //eslint-disable-next-line
     }, [])
 
