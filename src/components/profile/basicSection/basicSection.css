@@ -103,6 +103,12 @@
     /* height: auto; */
 }
 
+#userProfileImage {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
 #userAvatarEdit {
     padding: 0.5rem;
     border-radius: 50%;

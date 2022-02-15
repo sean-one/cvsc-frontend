@@ -1,21 +1,20 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../../../helpers/axios';
 
 import { UsersContext } from '../../../context/users/users.provider';
-
+import useImagePreviewer from '../../../hooks/useImagePreviewer';
 
 const Useravatar = () => {
-    const [ editImage, setEditImage ] = useState(false)
+    const { imagePreview, canvas } = useImagePreviewer()
+    const [ imageToggle, setImageToggle ] = useState(false)
     const { userProfile, updateUser } = useContext(UsersContext)
-    const [profileImage, setProfileImage] = useState()
-    const canvas = useRef(null)
     const { register, handleSubmit, formState:{ errors } } = useForm()
 
     const toggleEdit = () => {
-        setEditImage(!editImage)
+        setImageToggle(!imageToggle)
     }
     
     const uploadImage = async (data) => {
@@ -42,71 +41,28 @@ const Useravatar = () => {
                 headers: { 'Authorization': 'Bearer ' + token }
             })
             updateUser(user.data[0])
-            setEditImage(!editImage)
+            setImageToggle(!imageToggle)
         })
     }
 
-    const showPreview = (event) => {
-        let fileToUpload = event.target.files
-        let reader = new FileReader()
-        const previewImage = new Image()
-        reader.onload = function(e) {
-            previewImage.src = e.target.result
-            previewImage.onload = () => setProfileImage(previewImage)
-        }
-        reader.readAsDataURL(fileToUpload[0])
-    }
-
-    // fix for memory leak
-    // https://stackoverflow.com/questions/58773210/trying-to-use-cleanup-function-in-useeffect-hook-to-cleanup-img-onload
-    useEffect(() => {
-        const avatarImage = new Image();
-        avatarImage.crossOrigin = 'anonymous';
-        avatarImage.src = `${userProfile['avatar']}`
-        avatarImage.onload = () => setProfileImage(avatarImage)    
-        // eslint-disable-next-line
-    }, [])
-
-    useEffect(() => {
-        let mounted = true
-        if (mounted) {
-            if(profileImage && canvas) {
-                const ctx = canvas.current.getContext('2d')
-                const MAX_WIDTH = 200
-                const MAX_HEIGHT = 200
-                let width = profileImage.width
-                let height = profileImage.height
-                
-                ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
-                if(width > height) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                } else {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH
-                }
-                ctx.drawImage(profileImage, ( canvas.current.width / 2 ) - ( width / 2 ), ( canvas.current.height / 2 ) - ( height / 2 ), width, height)
-            }
-        }
-        return () => {
-            mounted = false
-        }
-
-    }, [profileImage, canvas]);
 
     return (
         <div className='avatarSection'>
             <div id='avatarWrap' className='userAvatar'>
-                <canvas
-                    id={'avatarCanvas'}
-                    ref={canvas}
-                    height={200}
-                    width={200}
-                />
+                {
+                    !imageToggle ?
+                        <img id='userProfileImage' src={`${userProfile['avatar']}`} alt='user profile' />
+                        : <canvas
+                            id={'avatarCanvas'}
+                            ref={canvas}
+                            height={200}
+                            width={200}
+                        />
+                }
                 <FontAwesomeIcon id='userAvatarEdit' icon={faCamera} size='2x' onClick={toggleEdit}/>
             </div>
             {
-                editImage && (
+                imageToggle && (
                     <form onSubmit={handleSubmit(uploadImage)}>
                         <div className='fileUpload'>
                             <input
@@ -115,7 +71,7 @@ const Useravatar = () => {
                                 id='avatar'
                                 name='avatar'
                                 accept="image/*"
-                                onChange={showPreview}
+                                onChange={imagePreview}
                             />
                         </div>
                         <p className='errormessage'>{errors.avatar?.message}</p>

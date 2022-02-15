@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,40 +6,24 @@ import { createEventSchema } from '../../helpers/validationSchemas';
 import AxiosInstance from '../../helpers/axios';
 
 import { SiteContext } from '../../context/site/site.provider';
+import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 import './createEvent.css';
 
 const CreateEvent = (props) => {
-    
+    const { editImage, imagePreview, canvas } = useImagePreviewer()
     const { createEvent, useBrandList, useVenueList } = useContext(SiteContext)
     const { register, handleSubmit, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
     });
     
-    const canvas = useRef(null)
     const [ adminRoleError, setAdminRoleError ] = useState(false);
-    const [ eventImage, setEventImage ] = useState()
-    const [ addImage, setAddImage ] = useState(false)
     // const [ networkError, setNetworkError ] = useState(false);
     const venueList = useVenueList()
     const brandList = useBrandList()
     let history = useHistory();
     
-
-    const previewImage = (event) => {
-        setAddImage(true)
-        let fileToUpload = event.target.files
-        let reader = new FileReader()
-        const previewImage = new Image()
-        reader.onload = function(e) {
-            previewImage.src = e.target.result
-            previewImage.onload = () => setEventImage(previewImage)
-        }
-        reader.readAsDataURL(fileToUpload[0])
-
-    }
-
     const sendEvent = async (data) => {
         canvas.current.toBlob(async function(blob) {
             const token = localStorage.getItem('token')
@@ -90,41 +74,6 @@ const CreateEvent = (props) => {
         
     }
 
-    useEffect(() => {
-        if(eventImage && canvas) {
-            const ctx = canvas.current.getContext('2d')
-            const MAX_WIDTH = 384
-            const MAX_HEIGHT = 480
-            let width = eventImage.width
-            let height = eventImage.height
-
-            if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width
-                width = MAX_WIDTH
-            }
-            else if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height
-                height = MAX_HEIGHT
-            } else {
-                if (width > height) {
-                    width = MAX_WIDTH;
-                    height *= width / MAX_WIDTH;
-                } else {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH
-                }
-            }
-            
-            // crops canvas to the size of the drawing
-            canvas.current.width = width
-            canvas.current.height = height
-
-            ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
-
-            ctx.drawImage(eventImage, ( canvas.current.width / 2 ) - ( width / 2 ), ( canvas.current.height / 2 ) - ( height / 2 ), width, height)
-        }
-    }, [eventImage, canvas]);
-
     return (
         <div className='componentWrapper'>
             {/* <form className='createForm' onSubmit={sendEvent}> */}
@@ -163,7 +112,7 @@ const CreateEvent = (props) => {
                 />
                 <p className='errormessage'>{errors.eventend?.message}</p>
                 {
-                    addImage && 
+                    editImage && 
                         <canvas
                             id={'eventImagePreview'}
                             ref={canvas}
@@ -177,7 +126,7 @@ const CreateEvent = (props) => {
                     type='file'
                     id='eventmedia'
                     accept='image/*'
-                    onChange={previewImage}
+                    onChange={imagePreview}
                 />
                 <p className='errormessage'>{errors.eventmedia?.message}</p>
                 <label htmlFor='venue_id'>Location:</label>

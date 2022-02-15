@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,30 +6,18 @@ import AxiosInstance from '../../helpers/axios';
 
 import { addBusinessSchema } from '../../helpers/validationSchemas';
 import { addBusiness } from '../../helpers/dataCleanUp';
+import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 const CreateBusiness = (props) => {
-    const [editImage, setEditImage] = useState(false)
+    const { editImage, imagePreview, canvas } = useImagePreviewer()
     const [serverError, setServerError] = useState(false)
-    const [businessLogo, setBusinessLogo] = useState()
     const { register, handleSubmit, setError, watch, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
     });
-    const canvas = useRef(null)
+
     const businessType = watch('business_type')
     let history = useHistory();
-
-    const showPreview = (event) => {
-        setEditImage(true)
-        let fileToUpload = event.target.files
-        let reader = new FileReader()
-        const previewImage = new Image()
-        reader.onload = function (e) {
-            previewImage.src = e.target.result
-            previewImage.onload = () => setBusinessLogo(previewImage)
-        }
-        reader.readAsDataURL(fileToUpload[0])
-    }
 
     const sendRequest = (data) => {
         setServerError(false)
@@ -63,13 +51,12 @@ const CreateBusiness = (props) => {
                     if (response.status === 201) {
                         reset()
                         props.toggleView()
-                        setEditImage(false)
                         alert('request sent')
                         history.push({
                             pathname: '/profile',
                         });
-                        // console.log(response)
                     }
+                    console.log(response)
                 })
                 .catch(err => {
                     if (!err.response) {
@@ -85,32 +72,6 @@ const CreateBusiness = (props) => {
 
     }
 
-    useEffect(() => {
-        let mounted = true
-        if (mounted) {
-            if (businessLogo && canvas) {
-                const ctx = canvas.current.getContext('2d')
-                const MAX_WIDTH = 200
-                const MAX_HEIGHT = 200
-                let width = businessLogo.width
-                let height = businessLogo.height
-
-                ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
-                if (width > height) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                } else {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH
-                }
-                ctx.drawImage(businessLogo, (canvas.current.width / 2) - (width / 2), (canvas.current.height / 2) - (height / 2), width, height)
-            }
-        }
-        return () => {
-            mounted = false
-        }
-
-    }, [businessLogo, canvas]);
 
     return (
         <div className='componentWrapper'>
@@ -143,7 +104,7 @@ const CreateBusiness = (props) => {
                         type='file'
                         id='business_avatar'
                         accept='image/*'
-                        onChange={showPreview}
+                        onChange={imagePreview}
                         required
                     />
                     <p className='errormessage'>{errors.business_avatar?.message}</p>
