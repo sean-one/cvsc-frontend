@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+// import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AxiosInstance from '../../helpers/axios';
+// import AxiosInstance from '../../helpers/axios';
 
 import { addBusinessSchema } from '../../helpers/validationSchemas';
-import { addBusiness } from '../../helpers/dataCleanUp';
-import useImagePreviewer from '../../hooks/useImagePreviewer';
+// import { addBusiness } from '../../helpers/dataCleanUp';
+// import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 const CreateBusiness = (props) => {
-    const { editImage, imagePreview, canvas } = useImagePreviewer()
+    // const { editImage, imagePreview, canvas } = useImagePreviewer()
     const [serverError, setServerError] = useState(false)
     const { register, handleSubmit, setError, watch, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -17,59 +17,35 @@ const CreateBusiness = (props) => {
     });
 
     const businessType = watch('business_type')
-    let history = useHistory();
+    // let history = useHistory();
 
     const sendRequest = (data) => {
         setServerError(false)
-        canvas.current.toBlob(async function (blob) {
-
-            const token = localStorage.getItem('token')
-            const cleanData = addBusiness(data)
-
-            const url = await AxiosInstance.get('/s3', {
-                headers: { 'Authorization': 'Bearer ' + token }
-            })
-                .then(response => {
-                    return response.data.url
-                })
-                .catch(err => console.log(err))
-
-            await AxiosInstance.put(url, blob, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            })
-
-            const imageUrl = url.split('?')[0]
-
-            data.business.avatar = imageUrl
-
-            AxiosInstance.post('/business/create', cleanData, {
-                headers: { 'Authorization': 'Bearer ' + token }
-            })
-                .then(response => {
-                    if (response.status === 201) {
-                        reset()
-                        props.toggleView()
-                        alert('request sent')
-                        history.push({
-                            pathname: '/profile',
-                        });
-                    }
-                    console.log(response)
-                })
-                .catch(err => {
-                    if (!err.response) {
-                        setServerError(true)
-                    } else if (err.response.status === 400) {
-                        setError(`${err.response.data.type}`, {
-                            type: 'server',
-                            message: err.response.data.message
-                        })
-                    }
-                })
-        })
-
+        console.log(data)
+    //     AxiosInstance.post('/business/create', cleanData, {
+    //         headers: { 'Authorization': 'Bearer ' + token }
+    //     })
+    //         .then(response => {
+    //             if (response.status === 201) {
+    //                 reset()
+    //                 props.toggleView()
+    //                 alert('request sent')
+    //                 history.push({
+    //                     pathname: '/profile',
+    //                 });
+    //             }
+    //             console.log(response)
+    //         })
+    //         .catch(err => {
+    //             if (!err.response) {
+    //                 setServerError(true)
+    //             } else if (err.response.status === 400) {
+    //                 setError(`${err.response.data.type}`, {
+    //                     type: 'server',
+    //                     message: err.response.data.message
+    //                 })
+    //             }
+    //         })
     }
 
 
@@ -96,7 +72,7 @@ const CreateBusiness = (props) => {
                     />
                     <p className='errormessage'>{errors.email?.message}</p>
 
-                    {
+                    {/* {
                         editImage && <canvas id={'avatarCanvas'} ref={canvas} height={200} width={200} />
                     }
                     <label htmlFor='business_avatar'>Business Branding:</label>
@@ -107,7 +83,7 @@ const CreateBusiness = (props) => {
                         onChange={imagePreview}
                         required
                     />
-                    <p className='errormessage'>{errors.business_avatar?.message}</p>
+                    <p className='errormessage'>{errors.business_avatar?.message}</p> */}
 
                     <label htmlFor='business_description'>Business Bio:</label>
                     <textarea {...register('business_description')}
@@ -119,7 +95,7 @@ const CreateBusiness = (props) => {
 
                     {/* if dispensary or both is selected, need to insert new address input */}
                     <label htmlFor='business_type'>Business Type:</label>
-                    <select {...register('business_type')} required >
+                    <select {...register('business_type')} value='brand' required >
                         <option value='brand'>Brand</option>
                         <option value='venue'>Dispensary</option>
                         <option value='both'>{`Brand & Dispensary`}</option>
@@ -194,4 +170,5 @@ const CreateBusiness = (props) => {
     )
 }
 
-export default withRouter(CreateBusiness);
+// export default withRouter(CreateBusiness);
+export default CreateBusiness;
