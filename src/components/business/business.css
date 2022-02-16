@@ -10,22 +10,45 @@ h1 {
     /* background-color: red; */
 }
 
-.branding {
-    margin: 0.2rem;
+.businessBranding {
+    width: 7.5rem;
+    height: 7.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 0.2rem; */
 }
 
+.businessBranding img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
 .businessName {
-    padding-left: 1.5rem;
+    width: 100%;
+    /* padding-left: 1.5rem; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: flex-start;
+    align-items: flex-end;
 }
 
 .businessName h2 {
-    padding-left: 0;
+    padding-right: 0;
 }
 
 .businessDetails {
     margin-top: 1rem;
+}
+
+.businessListing {
+    padding-left: 0.5rem;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.businessListRow {
+    padding: 0.65rem 1.5rem;
+    display: flex;
+    align-items: center;
 }

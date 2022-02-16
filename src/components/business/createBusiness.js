@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-// import { withRouter, useHistory } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// import AxiosInstance from '../../helpers/axios';
+import AxiosInstance from '../../helpers/axios';
 
 import { addBusinessSchema } from '../../helpers/validationSchemas';
-// import { addBusiness } from '../../helpers/dataCleanUp';
+import { addBusiness } from '../../helpers/dataCleanUp';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 const CreateBusiness = (props) => {
@@ -16,36 +16,40 @@ const CreateBusiness = (props) => {
         resolver: yupResolver(addBusinessSchema)
     });
 
-    const businessType = watch('business_type')
-    // let history = useHistory();
+    const businessType = watch('business_type', 'brand')
+    let history = useHistory();
 
     const sendRequest = (data) => {
         setServerError(false)
-        console.log(data)
-    //     AxiosInstance.post('/business/create', cleanData, {
-    //         headers: { 'Authorization': 'Bearer ' + token }
-    //     })
-    //         .then(response => {
-    //             if (response.status === 201) {
-    //                 reset()
-    //                 props.toggleView()
-    //                 alert('request sent')
-    //                 history.push({
-    //                     pathname: '/profile',
-    //                 });
-    //             }
-    //             console.log(response)
-    //         })
-    //         .catch(err => {
-    //             if (!err.response) {
-    //                 setServerError(true)
-    //             } else if (err.response.status === 400) {
-    //                 setError(`${err.response.data.type}`, {
-    //                     type: 'server',
-    //                     message: err.response.data.message
-    //                 })
-    //             }
-    //         })
+
+        const token = localStorage.getItem('token')
+
+        data = addBusiness(data)
+        
+        AxiosInstance.post('/business/create', data, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                if (response.status === 201) {
+                    reset()
+                    // alert('request sent')
+                    history.push({
+                        pathname: '/profile',
+                    });
+                }
+                console.log(response)
+            })
+            .catch(err => {
+                console.log(err)
+                if (!err.response) {
+                    setServerError(true)
+                } else if (err.response.status === 400) {
+                    setError(`${err.response.data.type}`, {
+                        type: 'server',
+                        message: err.response.data.message
+                    })
+                }
+            })
     }
 
 
@@ -95,7 +99,7 @@ const CreateBusiness = (props) => {
 
                     {/* if dispensary or both is selected, need to insert new address input */}
                     <label htmlFor='business_type'>Business Type:</label>
-                    <select {...register('business_type')} value='brand' required >
+                    <select {...register('business_type')} required >
                         <option value='brand'>Brand</option>
                         <option value='venue'>Dispensary</option>
                         <option value='both'>{`Brand & Dispensary`}</option>
@@ -170,5 +174,4 @@ const CreateBusiness = (props) => {
     )
 }
 
-// export default withRouter(CreateBusiness);
-export default CreateBusiness;
+export default withRouter(CreateBusiness);

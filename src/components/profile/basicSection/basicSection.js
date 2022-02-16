@@ -8,8 +8,8 @@ import UserSection from './userSection';
 
 const BasicSection = () => {
     // wrap each section with a view toggle that expands each section
-    const UserSectionWrapped = withViewToggle(UserSection)
-    const CreatorRequestWrapped = withViewToggle(CreatorRequest)
+    const UserProfileTab = withViewToggle(UserSection)
+    const CreatorRequestTab = withViewToggle(CreatorRequest)
 
     return (
         <div className='basicSection'>
@@ -17,8 +17,8 @@ const BasicSection = () => {
                 <h3>Basic Options</h3>
             </div>
             <div className='sectionTabs'>
-                <UserSectionWrapped />
-                <CreatorRequestWrapped />
+                <UserProfileTab />
+                <CreatorRequestTab />
                 <TabLink title='Create Business' createtype='business'/>
             </div>
         </div>
