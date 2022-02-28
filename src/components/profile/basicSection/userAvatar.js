@@ -7,6 +7,8 @@ import AxiosInstance from '../../../helpers/axios';
 import { UsersContext } from '../../../context/users/users.provider';
 import useImagePreviewer from '../../../hooks/useImagePreviewer';
 
+import './basicSection.css'
+
 const Useravatar = () => {
     const { imagePreview, canvas } = useImagePreviewer()
     const [ imageToggle, setImageToggle ] = useState(false)

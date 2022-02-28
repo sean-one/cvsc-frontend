@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
-import TabHeader from '../sectionComponents/tabHeader';
+// import TabHeader from '../sectionComponents/tabHeader';
 
 import AxiosInstance from '../../../helpers/axios';
 
@@ -60,7 +60,7 @@ const CreatorRequest = (props) => {
 
     return (
         <div className='requestCreator'>
-            <TabHeader title='Creator Request' viewable={props.viewable} toggleView={props.toggleView} />
+            {/* <TabHeader title='Creator Request' viewable={props.viewable} toggleView={props.toggleView} /> */}
             <div className={props.viewable ? 'requestFormWrapper' : 'inactive'}>
                 <form className='creatorRequestForm' onSubmit={handleSubmit(sendRequest)}>
                     <label htmlFor='business_id'>business</label>

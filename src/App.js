@@ -5,9 +5,9 @@ import { Route } from 'react-router-dom';
 import Calendar from './components/calendar/calendar';
 import EventCard from './components/events/eventCard.jsx';
 import Business from './components/business/business';
-import Header from './components/header/header.jsx';
-import Register from './components/register/register.jsx';
-import Login from './components/login/login.jsx';
+import { NavHeader } from './components/NavHeader';
+import Register from './components/register.jsx';
+import Login from './components/login.jsx';
 import AuthRoute from './components/auth/auth.jsx';
 import Profile from './components/profile/profile.jsx';
 import CreateEvent from './components/events/createEvent.jsx';
@@ -15,39 +15,44 @@ import CreateBusiness from './components/business/createBusiness';
 import EditBusiness from './components/business/editBusiness';
 import EditEvent from './components/events/editEvent';
 
+import { Layout } from './components/Layout';
+
 import SiteProvider from './context/site/site.provider';
 import UsersProvider from './context/users/users.provider';
 import RolesProvider from './context/roles/roles.provider';
 import UserAdminProvider from './context/adminuser/adminuser.provider';
 
-import './App.css';
+// import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const App = () => {
 
   return (
-    <div className="App">
+    <React.Fragment>
       <UsersProvider>
       <SiteProvider>
-        <RolesProvider>
-          <Header />
-        </RolesProvider>
-        <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
-        <Route path='/register' component={Register} />
-        <Route path='/calendar/:id' render={(props) => (<EventCard {...props} />)} />
-        <Route exact path='/business/:id' render={(props) => (<Business {...props} />)} />
-        <AuthRoute path='/business/edit/:id' component={EditBusiness} />
-        <AuthRoute path='/events/edit/:id' component={EditEvent} />
-        <AuthRoute exact path='/create/business' component={CreateBusiness} />
-        <AuthRoute exact path='/create/event' component={CreateEvent} />
-        <Route path='/login' component={Login} />
-        <RolesProvider>
-          <UserAdminProvider>
-            <AuthRoute exact path='/profile' component={Profile} />
-          </UserAdminProvider>
-        </RolesProvider>
+          <RolesProvider>
+            <NavHeader />
+          </RolesProvider>
+          <Layout>
+            <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
+            <Route path='/register' component={Register} />
+            <Route path='/calendar/:id' render={(props) => (<EventCard {...props} />)} />
+            <Route exact path='/business/:id' render={(props) => (<Business {...props} />)} />
+            <AuthRoute path='/business/edit/:id' component={EditBusiness} />
+            <AuthRoute path='/events/edit/:id' component={EditEvent} />
+            <AuthRoute exact path='/create/business' component={CreateBusiness} />
+            <AuthRoute exact path='/create/event' component={CreateEvent} />
+            <Route path='/login' component={Login} />
+            <RolesProvider>
+              <UserAdminProvider>
+                <AuthRoute exact path='/profile' component={Profile} />
+              </UserAdminProvider>
+            </RolesProvider>
+          </Layout>
       </SiteProvider>
       </UsersProvider>
-    </div>
+    </React.Fragment>
   );
 }
 

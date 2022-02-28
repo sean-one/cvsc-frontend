@@ -8,6 +8,7 @@ import AxiosInstance from '../../helpers/axios'
 import { UsersContext } from '../../context/users/users.provider';
 
 import './contactSection.css'
+import { Card } from 'react-bootstrap';
 
 const ContactSection = () => {
     const [ editContact, setEditContact ] = useState(false)
@@ -45,39 +46,53 @@ const ContactSection = () => {
     }
 
     return (
-        <div className='contactWrapper'>
-            <form onSubmit={handleSubmit(updateContact)}>
+        <React.Fragment>
+            <Card>
                 {
                     Object.entries(userContact).map((contact, index) => {
-                        if (!contact[1]) {
+                        if(!contact[1]) {
                             contact[1] = "Add Contact"
-                            // console.log('missing')
                         }
                         return (
-                            <div key={index} className='contacts'>
-                                <FontAwesomeIcon className='tabIcon' key={index} icon={contactIcons[`${contact[0]}`]} size='1x' />
-                                {
-                                    editContact ? (
-                                    <div className='networkInput'>
-                                        <div className='inputWrapper'>
-                                            <input {...register(`${contact[0]}`)} id={`${contact[0]}`} type='text' name={`${contact[0]}`} placeholder={contact[1]} />
-                                        </div>
-                                        <p className='errormessage'>{errors[`${contact[0]}`]?.message}</p>
-                                    </div>
-                                    ) : (
-                                        <p>{contact[1]}</p>
-                                    )
-                                }
-                            </div>
+                            <Card.Body>{contact[1]}</Card.Body>
                         )
                     })
                 }
-                <p onClick={toggleEdit}>{editContact ? 'cancel' : 'edit'}</p>
-                {
-                    editContact && (<input type='submit' value='submit' />)
-                }
-            </form>
-        </div>
+            </Card>
+        </React.Fragment>
+        // <div className='contactWrapper'>
+        //     <form onSubmit={handleSubmit(updateContact)}>
+        //         {
+        //             Object.entries(userContact).map((contact, index) => {
+        //                 if (!contact[1]) {
+        //                     contact[1] = "Add Contact"
+        //                     // console.log('missing')
+        //                 }
+        //                 return (
+        //                     <div key={index} className='contacts'>
+        //                         <FontAwesomeIcon className='tabIcon' key={index} icon={contactIcons[`${contact[0]}`]} size='1x' />
+        //                         {
+        //                             editContact ? (
+        //                             <div className='networkInput'>
+        //                                 <div className='inputWrapper'>
+        //                                     <input {...register(`${contact[0]}`)} id={`${contact[0]}`} type='text' name={`${contact[0]}`} placeholder={contact[1]} />
+        //                                 </div>
+        //                                 <p className='errormessage'>{errors[`${contact[0]}`]?.message}</p>
+        //                             </div>
+        //                             ) : (
+        //                                 <p>{contact[1]}</p>
+        //                             )
+        //                         }
+        //                     </div>
+        //                 )
+        //             })
+        //         }
+        //         <p onClick={toggleEdit}>{editContact ? 'cancel' : 'edit'}</p>
+        //         {
+        //             editContact && (<input type='submit' value='submit' />)
+        //         }
+        //     </form>
+        // </div>
     );
 }
 

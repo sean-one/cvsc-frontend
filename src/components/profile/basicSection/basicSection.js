@@ -1,27 +1,33 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Row, Accordion } from 'react-bootstrap';
 
 // Basic Section Tabs
-import { withViewToggle } from '../../../hoc/withViewToggle';
-import TabLink from '../sectionComponents/tabLink';
 import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
 
 const BasicSection = () => {
-    // wrap each section with a view toggle that expands each section
-    const UserProfileTab = withViewToggle(UserSection)
-    const CreatorRequestTab = withViewToggle(CreatorRequest)
+
 
     return (
-        <div className='basicSection'>
-            <div className='sectionHeader'>
-                <h3>Basic Options</h3>
-            </div>
-            <div className='sectionTabs'>
-                <UserProfileTab />
-                <CreatorRequestTab />
-                <TabLink title='Create Business' createtype='business'/>
-            </div>
-        </div>
+        <Row>
+            <h3>Basic Section</h3>
+            <Accordion >
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header>User Profile</Accordion.Header>
+                    <Accordion.Body>
+                        <UserSection />
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                    <Accordion.Header>Creator Request</Accordion.Header>
+                    <Accordion.Body>
+                        <CreatorRequest />
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
+            <Link to={{ pathname: '/create/business' }}>Create Business</Link>
+        </Row>
     )
 }
 
