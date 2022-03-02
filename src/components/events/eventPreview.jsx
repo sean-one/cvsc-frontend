@@ -17,20 +17,26 @@ const EventPreview = (props) => {
                 <Card>
                     <Row className='gx-4'>
                         <Col md={4} className='mx-auto'>
-                            <Card.Img src={event.eventmedia} roundedCircle/>
-                            {/* <Card.Img thumbnail src={event.eventmedia} alt="event media"/> */}
+                            <Card.Img src={event.eventmedia} />
                         </Col>
                         <Col md={8}>
                             <Card.Body>
                                 <Card.Title>{event.eventname.toUpperCase()}</Card.Title>
                                 <Card.Subtitle>
-                                    <p>{`${event.brand_name} at ${event.venue_name}`}</p>
+                                    <Link to={{
+                                        pathname: `/business/${event.venue_id}`
+                                    }}>{`at ${event.venue_name}`}</Link>
                                 </Card.Subtitle>
                                 <Card.Text>
-                                    <p>{detailPreview(event.details, 100)}</p>
+                                    {detailPreview(event.details, 100)}
                                 </Card.Text>
-                                {/* <Link to={{ pathname: `/business/${event.id}`}} */}
-                                <Card.Link>Read More</Card.Link>
+                                <Link to={{
+                                    pathname: `/events/${event.event_id}`,
+                                    state: {
+                                        event,
+                                        from: props.location.pathname
+                                    }
+                                }}>Read More</Link>
                             </Card.Body>
                         </Col>
                     </Row>

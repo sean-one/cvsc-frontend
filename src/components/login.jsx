@@ -5,6 +5,8 @@ import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, Button } from 'react-bootstrap';
 import styled from 'styled-components';
+import { Container, Col, Row } from 'react-bootstrap';
+
 
 import AxiosInstance from '../helpers/axios';
 
@@ -63,35 +65,39 @@ const Login = (props) => {
     }
 
     return (
-        <React.Fragment>
-            <Styles>
-                <h2>Login</h2>
-                <Form onSubmit={handleSubmit(sendLogin)}>
-                    <Form.Group className="mb-3" controlId="username">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control {...register('username')} autoFocus type="text" name='username' placeholder="username" required />
-                        <p className='errormessage'>{errors.username?.message}</p>
-                    </Form.Group>
+        <Styles>
+            <Container>
+                <Row className='justify-content-lg-center'>
+                    <Col sm={12} lg={7}>
+                        <h2>Login</h2>
+                        <Form onSubmit={handleSubmit(sendLogin)}>
+                            <Form.Group className="mb-3" controlId="username">
+                                <Form.Label>Username</Form.Label>
+                                <Form.Control {...register('username')} autoFocus type="text" name='username' placeholder="username" required />
+                                <p className='errormessage'>{errors.username?.message}</p>
+                            </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="password">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control {...register('password')} name='password' type="password" placeholder="Password" required />
-                        <p className='errormessage'>{errors.password?.message}</p>
-                    </Form.Group>
+                            <Form.Group className="mb-3" controlId="password">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control {...register('password')} name='password' type="password" placeholder="Password" required />
+                                <p className='errormessage'>{errors.password?.message}</p>
+                            </Form.Group>
 
-                    {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
-                    <div className="d-grid gap-2">
-                        <Button variant="primary" size="lg" type='submit'>
-                            Submit
-                        </Button>
-                        <p className='text-center'>---- or ----</p>
-                        <Button href='/register' variant="secondary" size="lg">
-                            Register New Account
-                        </Button>
-                    </div>
-                </Form>
-            </Styles>
-        </React.Fragment>
+                            {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
+                            <div className="d-grid gap-2">
+                                <Button variant="primary" size="lg" type='submit'>
+                                    Submit
+                                </Button>
+                                <p className='text-center'>---- or ----</p>
+                                <Button href='/register' variant="secondary" size="lg">
+                                    Register New Account
+                                </Button>
+                            </div>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
+        </Styles>
     )
 }
 

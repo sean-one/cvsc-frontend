@@ -27,7 +27,7 @@ const Calendar = () => {
                 ) : (
                     <Container>
                         <Row>
-                            <Col lg={3} style={{ border: 'dotted 1px green', height: '100vh' }}>
+                            <Col lg={2} style={{ border: 'dotted 1px green', height: '100vh' }}>
                                 {/* filter options area */}
                             </Col>
                             <Col lg={7}>
@@ -45,7 +45,7 @@ const Calendar = () => {
                                     }
                                 </div>
                             </Col>
-                                <Col lg={2} style={{ border: 'dotted 1px green', height: '100vh' }}>
+                                <Col lg={3} style={{ border: 'dotted 1px green', height: '100vh' }}>
                                 {/* bottom, right ad space area */}
                             </Col>
                         </Row>

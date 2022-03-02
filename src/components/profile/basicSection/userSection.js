@@ -32,9 +32,7 @@ const UserSection = (props) => {
                         <Col>
                             <Card.Body>
                                 <Card.Title>{userProfile.username}</Card.Title>
-                                <Card.Text>
-                                    <ContactSection />
-                                </Card.Text>
+                                <ContactSection />
                             </Card.Body>
                         </Col>
                     </Row>

@@ -1,65 +1,69 @@
-import React, { useState, useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useContext } from 'react';
+// import React, { useState, useContext } from 'react';
+// import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
-import AxiosInstance from '../../helpers/axios'
+// import AxiosInstance from '../../helpers/axios'
 
 import { UsersContext } from '../../context/users/users.provider';
 
 import './contactSection.css'
-import { Card } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 
 const ContactSection = () => {
-    const [ editContact, setEditContact ] = useState(false)
-    const { userContact, updateUserContact } = useContext(UsersContext);
-    const { register, handleSubmit, formState:{ errors } } = useForm({
-        mode: 'onBlur',
-    })
+    // const [ editContact, setEditContact ] = useState(false)
+    const { userContact } = useContext(UsersContext);
+    // const { userContact, updateUserContact } = useContext(UsersContext);
+    // const { register, handleSubmit, formState:{ errors } } = useForm({
+    //     mode: 'onBlur',
+    // })
 
     const contactIcons = {
         email: faEnvelope,
         instagram: faInstagramSquare
     }
 
-    const toggleEdit = () => {
-        setEditContact(!editContact)
-    }
+    // const toggleEdit = () => {
+    //     setEditContact(!editContact)
+    // }
 
-    const updateContact = (data) => {
-        // remove empty fields
-        Object.keys(data).forEach(field => {
-            if(data[field] === '') {
-                delete data[field]
-            }
-        });
-        const token = localStorage.getItem('token')
-        AxiosInstance.post('/contacts/update', data, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(response => {
-                updateUserContact(response.data[0])
-                setEditContact(false)
-                // console.log(response.data)
-            })
-            .catch(err => console.log(err))
-    }
+    // const updateContact = (data) => {
+    //     // remove empty fields
+    //     Object.keys(data).forEach(field => {
+    //         if(data[field] === '') {
+    //             delete data[field]
+    //         }
+    //     });
+    //     const token = localStorage.getItem('token')
+    //     AxiosInstance.post('/contacts/update', data, {
+    //         headers: { 'Authorization': 'Bearer ' + token }
+    //     })
+    //         .then(response => {
+    //             updateUserContact(response.data[0])
+    //             setEditContact(false)
+    //             // console.log(response.data)
+    //         })
+    //         .catch(err => console.log(err))
+    // }
 
     return (
-        <React.Fragment>
-            <Card>
-                {
-                    Object.entries(userContact).map((contact, index) => {
-                        if(!contact[1]) {
-                            contact[1] = "Add Contact"
-                        }
-                        return (
-                            <Card.Body>{contact[1]}</Card.Body>
-                        )
-                    })
-                }
-            </Card>
-        </React.Fragment>
+        <ListGroup>
+            {
+                Object.entries(userContact).map((contact, index) => {
+                    if(!contact[1]) {
+                        contact[1] = "Add Contact"
+                    }
+                    return (
+                        <ListGroup.Item key={index} className='d-flex justify-content-start align-items-center'>
+                            <FontAwesomeIcon className='m-2' icon={contactIcons[`${contact[0]}`]} size='1x' />
+                            <p className='m-2' >{contact[1]}</p>
+                            <FontAwesomeIcon className='m-2' icon={faEdit} size='1x' />
+                        </ListGroup.Item>
+                    )
+                })
+            }
+        </ListGroup>
         // <div className='contactWrapper'>
         //     <form onSubmit={handleSubmit(updateContact)}>
         //         {

@@ -5,7 +5,6 @@ import TabLink from '../sectionComponents/tabLink';
 import UpcomingEvents from './upcomingEvents/upcomingEvents';
 
 import './creatorSection.css';
-import '../profile.css';
 
 const CreatorSection = (props) => {
     const UpcomingSectionWrapped = withViewToggle(UpcomingEvents)

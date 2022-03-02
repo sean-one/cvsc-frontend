@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AxiosInstance from '../../helpers/axios';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
+import AxiosInstance from '../../helpers/axios';
 import { addBusinessSchema } from '../../helpers/validationSchemas';
 import { addBusiness } from '../../helpers/dataCleanUp';
-// import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 const CreateBusiness = (props) => {
-    // const { editImage, imagePreview, canvas } = useImagePreviewer()
     const [serverError, setServerError] = useState(false)
     const { register, handleSubmit, setError, watch, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -54,123 +53,100 @@ const CreateBusiness = (props) => {
 
 
     return (
-        <div className='componentWrapper'>
-            {/* name, email, avatar, description, [brand, venue, both], contact, requestOpen */}
-            {/* contact -- instagram, phone, website*/}
-            <div className='businessFormWrapper'>
-                <form className='businessRequestForm' onSubmit={handleSubmit(sendRequest)}>
-
-                    <label htmlFor='business_name'>Business Name:</label>
-                    <input {...register('business_name')}
-                        type='text'
-                        id='business_name'
-                        required
-                    />
+        <Container>
+            <Form onSubmit={handleSubmit(sendRequest)}>
+                <Form.Group controlId='business_name'>
+                    <Form.Label>Business Name</Form.Label>
+                    <Form.Control {...register('business_name')} autoFocus type='text' name='business_name' required />
                     <p className='errormessage'>{errors.business_name?.message}</p>
+                </Form.Group>
 
-                    <label htmlFor='email'>Business Email:</label>
-                    <input {...register('email')}
-                        type='email'
-                        id='email'
-                        required
-                    />
+                <Form.Group controlId='email'>
+                    <Form.Label>Business Email</Form.Label>
+                    <Form.Control {...register('email')} type='text' name='email' required />
                     <p className='errormessage'>{errors.email?.message}</p>
+                </Form.Group>
 
-                    {/* {
-                        editImage && <canvas id={'avatarCanvas'} ref={canvas} height={200} width={200} />
-                    }
-                    <label htmlFor='business_avatar'>Business Branding:</label>
-                    <input {...register('business_avatar')}
-                        type='file'
-                        id='business_avatar'
-                        accept='image/*'
-                        onChange={imagePreview}
-                        required
-                    />
-                    <p className='errormessage'>{errors.business_avatar?.message}</p> */}
+                <Form.Group controlId='business_avatar'>
+                    <Form.Label>Business Branding</Form.Label>
+                    <Form.Control {...register('business_avatar')} type='text' name='business_avatar' required />
+                    <p className='errormessage'>{errors.business_avatar?.message}</p>
+                </Form.Group>
 
-                    <label htmlFor='business_description'>Business Bio:</label>
-                    <textarea {...register('business_description')}
-                        type='text'
-                        id='business_description'
-                        rows='10'
-                    />
+                <Form.Group controlId='business_description'>
+                    <Form.Label>Business Bio</Form.Label>
+                    <Form.Control {...register('business_description')} type='text' name='business_description' required />
                     <p className='errormessage'>{errors.business_description?.message}</p>
+                </Form.Group>
 
-                    {/* if dispensary or both is selected, need to insert new address input */}
-                    <label htmlFor='business_type'>Business Type:</label>
-                    <select {...register('business_type')} required >
+                <Form.Group controlId='business_type'>
+                    <Form.Label>Business Type</Form.Label>
+                    <Form.Select {...register('business_type')} type='text' name='business_type' required>
                         <option value='brand'>Brand</option>
                         <option value='venue'>Dispensary</option>
                         <option value='both'>{`Brand & Dispensary`}</option>
-                    </select>
+                    </Form.Select>
                     <p className='errormessage'>{errors.business_type?.message}</p>
+                </Form.Group>
 
-                    {
-                        (businessType !== 'brand') && (
-                            <div>
-                                <label htmlFor='street_address'>Street Address:</label>
-                                <input {...register('street_address')}
-                                    type='text'
-                                    id='street_address'
-                                    required
-                                />
-                                <p className='errormessage'>{errors.street_address?.message}</p>
+                {
+                    (businessType !== 'brand') && (
+                        <Container>
+                            <Row>
+                                <Col>
+                                    <Form.Group controlId='street_address'>
+                                        <Form.Label>Street Address</Form.Label>
+                                        <Form.Control {...register('street_address')} type='text' name='street_address' required />
+                                        <p className='errormessage'>{errors.street_address?.message}</p>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
 
-                                <label htmlFor='city'>City:</label>
-                                <input {...register('city')}
-                                    type='text'
-                                    id='city'
-                                    required
-                                />
-                                <p className='errormessage'>{errors.city?.message}</p>
+                            <Row>
+                                <Col lg={6}>
+                                    <Form.Group controlId='city'>
+                                        <Form.Label>City</Form.Label>
+                                        <Form.Control {...register('city')} type='text' name='city' required />
+                                        <p className='errormessage'>{errors.city?.message}</p>
+                                    </Form.Group>
+                                </Col>
 
-                                <label htmlFor='state'>State:</label>
-                                <input {...register('state')}
-                                    type='text'
-                                    id='state'
-                                    required
-                                />
-                                <p className='errormessage'>{errors.state?.message}</p>
+                                <Col lg={3}>
+                                    <Form.Group controlId='state'>
+                                        <Form.Label>State</Form.Label>
+                                        <Form.Control {...register('state')} type='text' name='state' required />
+                                        <p className='errormessage'>{errors.state?.message}</p>
+                                    </Form.Group>
+                                </Col>
 
-                                <label htmlFor='zip'>Zip:</label>
-                                <input {...register('zip')}
-                                    type='text'
-                                    id='zip'
-                                    required
-                                />
-                                <p className='errormessage'>{errors.zip?.message}</p>
-                            </div>
-                        )
-                    }
-
-                    <label htmlFor='instagram'>Instagram:</label>
-                    <input {...register('instagram')}
-                        type='text'
-                        id='instagram'
-                    />
+                                <Col lg={3}>
+                                    <Form.Group controlId='zip'>
+                                        <Form.Label>Zip</Form.Label>
+                                        <Form.Control {...register('zip')} type='text' name='zip' required />
+                                        <p className='errormessage'>{errors.zip?.message}</p>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                        </Container>
+                    )
+                }
+                
+                <Form.Group controlId='instagram'>
+                    <Form.Label>Instagram</Form.Label>
+                    <Form.Control {...register('instagram')} type='text' name='instagram' />
                     <p className='errormessage'>{errors.instagram?.message}</p>
+                </Form.Group>
 
-                    <label htmlFor='phone'>Phone:</label>
-                    <input {...register('phone')}
-                        type='tel'
-                        id='phone'
-                    />
-                    <p className='errormessage'>{errors.phone?.message}</p>
-
-                    <label htmlFor='website'>Website:</label>
-                    <input {...register('website')}
-                        type='url'
-                        id='website'
-                    />
+                <Form.Group controlId='website'>
+                    <Form.Label>Website</Form.Label>
+                    <Form.Control {...register('website')} type='text' name='website' />
                     <p className='errormessage'>{errors.website?.message}</p>
+                </Form.Group>
 
-                    {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
-                    <input type='submit' value='submit' />
-
-                </form>
-            </div>
-        </div>
+                {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
+                <Button type='submit'>Submit</Button>
+            </Form>
+        </Container>
     )
 }
 

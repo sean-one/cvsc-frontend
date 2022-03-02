@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Accordion } from 'react-bootstrap';
+import { Row, Accordion, Card } from 'react-bootstrap';
 
 // Basic Section Tabs
 import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
+import CreateBusiness from '../../business/createBusiness';
 
 const BasicSection = () => {
 
@@ -25,8 +26,13 @@ const BasicSection = () => {
                         <CreatorRequest />
                     </Accordion.Body>
                 </Accordion.Item>
+                <Accordion.Item eventKey="2">
+                    <Accordion.Header>Create Business</Accordion.Header>
+                    <Accordion.Body>
+                        <CreateBusiness />
+                    </Accordion.Body>
+                </Accordion.Item>
             </Accordion>
-            <Link to={{ pathname: '/create/business' }}>Create Business</Link>
         </Row>
     )
 }

@@ -1,17 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
-// import TabHeader from '../sectionComponents/tabHeader';
-
 import AxiosInstance from '../../../helpers/axios';
-
 import { SiteContext } from '../../../context/site/site.provider';
-
 import useBusinessList from '../../../hooks/useBusinessList';
 
-import './basicSection.css'
+// import './basicSection.css'
 
 const CreatorRequest = (props) => {
     const { businessList } = useContext(SiteContext)
@@ -59,34 +56,45 @@ const CreatorRequest = (props) => {
     }
 
     return (
-        <div className='requestCreator'>
-            {/* <TabHeader title='Creator Request' viewable={props.viewable} toggleView={props.toggleView} /> */}
-            <div className={props.viewable ? 'requestFormWrapper' : 'inactive'}>
-                <form className='creatorRequestForm' onSubmit={handleSubmit(sendRequest)}>
-                    <label htmlFor='business_id'>business</label>
-                    <select id='business_id' {...register('business_id', { valueAsNumber: true })} required onFocus={resetStatus} >
-                        <option value='0'>Select...</option>
-                        {
-                            businessCreatorRequest.map(business => (
-                                <option key={business.id} value={business.id}>{business.name}</option>
-                            ))
-                        }
-                    </select>
-                    <p className='errormessage'>{errors.business_id?.message}</p>
-                    <div className='radioBox'>
+        <Container>
+            <Form onSubmit={handleSubmit(sendRequest)}>
+                <Row>
+                    <Col lg={8}>
+                        <Form.Group controlId='business_id' className='d-flex justify-content-start alight-items-lg-center'>
+                            <Form.Label>Business</Form.Label>
+                            <Form.Select {...register('business_id', { valueAsNumber: true})} required onFocus={resetStatus} >
+                                <option value='0'>Select...</option>
+                                {
+                                    businessCreatorRequest.map(business => (
+                                        <option key={business.id} value={business.id}>{business.name}</option>
+                                    ))
+                                }
+                                <p className='errormessage'>{errors.business_id?.message}</p>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
 
-                        <input {...register('request_for', { required: true })} type="radio" id="creator_rights" value="creator" />
-                        <label htmlFor='creator_rights' >creator</label>
-                        
-                        <input {...register('request_for', { required: true })} type="radio" id="admin_rights" value="admin" />
-                        <label htmlFor='admin_rights' >admin</label>
-                        
-                    </div>
-                    <input type='submit' value='submit' />
-                </form>
-                <p>{requestStatus}</p>
-            </div>
-        </div>
+                    <Col lg={4}>
+                    <Form.Group controlId='request_for'>
+                        <Row>
+                            <Col lg={6}>
+                                <Form.Label>creator</Form.Label>
+                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='creator_rights' value='creator' />
+                            </Col>
+
+                            <Col lg={6}>
+                                <Form.Label>admin</Form.Label>
+                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='admin_rights' value='admin' />
+                            </Col>
+                        </Row>
+                    </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Button type='submit'>Submit</Button>
+                </Row>
+            </Form>
+        </Container>
     )
 }
 

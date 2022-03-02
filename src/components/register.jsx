@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form, Button, InputGroup } from 'react-bootstrap';
+import { Col, Container, Form, Button, InputGroup, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
@@ -58,61 +58,65 @@ const Register = () => {
     }
     
     return (
-        <React.Fragment>
-            <Styles>
-                <h2>Register</h2>
-                <Form onSubmit={handleSubmit(createUser)}>
-                    <Form.Group className="mb-3" controlId="username">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control {...register('username')} type="text" placeholder="username" name='username' required />
-                    </Form.Group>
-                    <p className='errormessage'>{errors.username?.message}</p>
+        <Styles>
+            <Container>
+                <Row className='justify-content-lg-center'>
+                    <Col sm={12} lg={7}>
+                        <h2>Register</h2>
+                        <Form onSubmit={handleSubmit(createUser)}>
+                            <Form.Group className="mb-3" controlId="username">
+                                <Form.Label>Username</Form.Label>
+                                <Form.Control {...register('username')} type="text" placeholder="username" name='username' required />
+                            </Form.Group>
+                            <p className='errormessage'>{errors.username?.message}</p>
 
-                    <Form.Group className="mb-3" controlId="email">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control {...register('email')} type="email" placeholder="email" name='email' required />
-                    </Form.Group>
-                    <p className='errormessage'>{errors.email?.message}</p>
+                            <Form.Group className="mb-3" controlId="email">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control {...register('email')} type="email" placeholder="email" name='email' required />
+                            </Form.Group>
+                            <p className='errormessage'>{errors.email?.message}</p>
 
-                    <Form.Group className="mb-3" controlId="password">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control {...register('password')} type="password" placeholder="Password" name='password' required />
-                    </Form.Group>
-                    <p className='errormessage'>{errors.password?.message}</p>
+                            <Form.Group className="mb-3" controlId="password">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control {...register('password')} type="password" placeholder="Password" name='password' required />
+                            </Form.Group>
+                            <p className='errormessage'>{errors.password?.message}</p>
 
-                    <Form.Group className="mb-3" controlId="confirmation">
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control {...register('confirmation')} type="password" placeholder="Confirm Password" name='confirmation' required />
-                    </Form.Group>
-                    <p className='errormessage'>{errors.confirmation?.message}</p>
+                            <Form.Group className="mb-3" controlId="confirmation">
+                                <Form.Label>Confirm Password</Form.Label>
+                                <Form.Control {...register('confirmation')} type="password" placeholder="Confirm Password" name='confirmation' required />
+                            </Form.Group>
+                            <p className='errormessage'>{errors.confirmation?.message}</p>
 
-                    <Form.Group className="mb-3" controlId="instagram">
-                        <Form.Label>Instagram</Form.Label>
-                        <InputGroup>
-                            <InputGroup.Text id="btnGroupAddon">@</InputGroup.Text>
-                            <Form.Control
-                                {...register('instagram')}
-                                type="text"
-                                placeholder="instagram"
-                                name='instagram'
-                                aria-describedby='btnGroupAddon'
-                            />
-                        </InputGroup>
-                    </Form.Group>
-                    
-                    {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
-                    <div className="d-grid gap-2">
-                        <Button variant="primary" size="lg" type='submit'>
-                            Submit
-                        </Button>
-                        <p className='text-center'>---- or ----</p>
-                        <Button href='/login' variant="secondary" size="lg">
-                            Login
-                        </Button>
-                    </div>
-                </Form>
-            </Styles>
-        </React.Fragment>
+                            <Form.Group className="mb-3" controlId="instagram">
+                                <Form.Label>Instagram</Form.Label>
+                                <InputGroup>
+                                    <InputGroup.Text id="btnGroupAddon">@</InputGroup.Text>
+                                    <Form.Control
+                                        {...register('instagram')}
+                                        type="text"
+                                        placeholder="instagram"
+                                        name='instagram'
+                                        aria-describedby='btnGroupAddon'
+                                    />
+                                </InputGroup>
+                            </Form.Group>
+                            
+                            {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
+                            <div className="d-grid gap-2">
+                                <Button variant="primary" size="lg" type='submit'>
+                                    Submit
+                                </Button>
+                                <p className='text-center'>---- or ----</p>
+                                <Button href='/login' variant="secondary" size="lg">
+                                    Login
+                                </Button>
+                            </div>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
+        </Styles>
         // <div className='componentWrapper'>
         //     <h2>Registration</h2>
         //     <form className='registerForm' onSubmit={handleSubmit(createUser)}>
