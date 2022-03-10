@@ -20,7 +20,7 @@ const PendingRequest = (props) => {
             })
     }, [setPendingRequest])
 
-    const approveUser = (e) => {
+    const approveRequest = (e) => {
         const reqData = { request_id: e.currentTarget.value}
         const token = localStorage.getItem('token')
 
@@ -28,37 +28,32 @@ const PendingRequest = (props) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
-                const updated = pendingRequest.filter(pr => pr.id !== reqData.request_id)
+                const updated = pendingRequest.filter(pr => pr.id !== parseInt(reqData.request_id))
                 setPendingRequest(updated)
-                console.log(response)
             })
             .catch(err => console.log(err))
-        console.log(e.currentTarget.value)
     }
 
-    // data input shape { role.id: 'approved', role.id: 'rejected', role.id: null }
-    const updateRoleRequest = (data) => {
-        // remove null values
-        data = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null))
+    const rejectRequest = (e) => {
+        const request_id = e.currentTarget.value
+        const token = localStorage.getItem('token')
 
-        const token = localStorage.getItem('token');
-        
-        AxiosInstance.post('/roles/update-request', data, {
-            headers: {'Authorization': 'Bearer ' + token}
+        AxiosInstance.delete(`/roles/reject-request/${request_id}`, {
+            headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
-                setPendingRequest(response.data)
+                const updated = pendingRequest.filter(pr => pr.id !== parseInt(request_id))
+                console.log(updated)
+                setPendingRequest(updated)
             })
             .catch(err => console.log(err))
-
-        return
     }
 
     useEffect(() => {
         getPendingRequest()
         
         return () => {
-            setPendingRequest(null)
+            setPendingRequest([])
         }
         //eslint-disable-next-line
     }, [])
@@ -81,8 +76,8 @@ const PendingRequest = (props) => {
                         <td>{pr.username}</td>
                         <td>{pr.name}</td>
                         <td>{pr.role_type}</td>
-                        <td><Button variant='success' onClick={(e) => approveUser(e)} value={pr.id}>yes</Button></td>
-                            <td><Button variant='danger'>no</Button></td>
+                            <td><Button variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>yes</Button></td>
+                            <td><Button variant='danger' onClick={(e) => rejectRequest(e)} value={pr.id}>no</Button></td>
                         </tr>
                     ))
                 }
