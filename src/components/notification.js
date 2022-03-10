@@ -24,9 +24,8 @@ const leftSlideOut = keyframes`
 
 const Styles = styled.div`
     .my-toast {
-        animation: ${rightSlideIn} 0.5s;
+        animation: ${rightSlideIn} 0.75s;
         animation-fill-mode: forwards;
-        width: 30rem;
     }
 
     .progressBar {
@@ -42,7 +41,7 @@ const Styles = styled.div`
     }
 
     .exit {
-        animation: ${leftSlideOut} 0.5s;
+        animation: ${leftSlideOut} 0.75s;
         animation-fill-mode: forwards;
     }
 `;
@@ -97,9 +96,6 @@ const Notification = (props) => {
     return(
         <Styles>
             <Toast onMouseEnter={pauseTimer} onMouseLeave={startTimer} className={`my-toast ${exit ? 'exit' : ''}`}>
-                <Toast.Header>
-                    {props.id}
-                </Toast.Header>
                 <Toast.Body>
                     {props.message}
                     <div className={`progressBar ${props.notification_type === 'SUCCESS' ? 'success' : 'error'}`} style={{ width: `${width}%` }} />

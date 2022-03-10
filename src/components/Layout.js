@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Styles = styled.div`
     .app {
         min-height: 100vh;
-        background-color: #dad7cd;
+        background-color: #588157;
         padding-top: 8.5rem;
 
     }

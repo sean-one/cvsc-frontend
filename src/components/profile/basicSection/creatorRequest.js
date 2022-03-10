@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import AxiosInstance from '../../../helpers/axios';
@@ -15,8 +15,6 @@ const CreatorRequest = (props) => {
     const { businessList } = useContext(SiteContext)
     const { businessCreatorRequest } = useBusinessList(businessList)
     
-    const [ requestStatus, setRequestStatus ] = useState('')
-    const [ show, setShow ] = useState(false)
     const { register, handleSubmit, reset, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
@@ -30,34 +28,39 @@ const CreatorRequest = (props) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
-                setRequestStatus('request successfully sent')
-                setTimeout(() => {
-                    reset()
-                    setRequestStatus('')
-                }, 1000)
-                
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'request successfully sent'
+                    }
+                })
             })
             .catch(err => {
                 
                 if(err.response.data.type === 'duplicate') {
-                    setShow(true)
-                    setRequestStatus('a previous request for this business is still pending')
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'error',
+                            message: 'a previous request for this business is still pending'
+                        }
+                    })
                 }
 
                 if(err.response.data.type === 'missing input') {
-                    setShow(true)
-                    setRequestStatus('please be sure to select both the business & admin rights')
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'error',
+                            message: 'please be sure to select both the business & admin rights'
+                        }
+                    })
                 }
-
-                setTimeout(() => {
-                    reset()
-                    setRequestStatus('')
-                }, 1000)
             })
-    }
-
-    const resetStatus = () => {
-        setRequestStatus('')
+            .finally(() => {
+                reset()
+            })
     }
 
 
@@ -67,7 +70,7 @@ const CreatorRequest = (props) => {
                 <Row className='d-flex align-items-center'>
                     <Col sm={12} lg={8}>
                         <Form.Group controlId='business_id' className='d-flex justify-content-start alight-items-lg-center'>
-                            <Form.Select {...register('business_id', { valueAsNumber: true})} required onFocus={resetStatus} >
+                            <Form.Select {...register('business_id', { valueAsNumber: true})} required >
                                 <option>Business Select...</option>
                                 {
                                     businessCreatorRequest.map(business => (
@@ -99,15 +102,14 @@ const CreatorRequest = (props) => {
                         <Button type='submit'>Submit</Button>
                     </Col>
 
-                    <Col lg={8}>
+                    {/* <Col lg={8}>
                         <p>{errors.business_id?.message}</p>
                         <Alert show={show} dismissible={true}>
                             {requestStatus}
                         </Alert>
-                    </Col>
+                    </Col> */}
                 </Row>
             </Form>
-            <Button onClick={() => dispatch({ type: 'ADD_NOTIFICATION', payload: { notification_type: 'error', message: 'from button'} })}>notification</Button>
         </Container>
     )
 }
