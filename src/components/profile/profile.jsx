@@ -47,37 +47,39 @@ const Profile = () => {
     return (
         <Container>
             <Row className='justify-content-lg-center'>
-                <Col lg={8}>
-                    <BasicSection className='my-3'/>
-                    {
-                        (isCreator || isAdmin) &&
-                            <Row className='my-3'>
-                                <h3>Creator</h3>
-                                <Accordion >
-                                    <Accordion.Item eventKey="0">
-                                        <Accordion.Header>User Profile</Accordion.Header>
-                                        <Accordion.Body>
-                                            <UserSection />
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                </Accordion>
-                            </Row>
-                    }
-                    {
-                        (isBusinessAdmin.length > 0) &&
-                            <Row className='my-3'>
-                                <h3>Business Admin</h3>
-                                <Accordion >
-                                    <Accordion.Item eventKey="0">
-                                        <Accordion.Header>User Profile</Accordion.Header>
-                                        <Accordion.Body>
-                                            <UserSection />
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                </Accordion>
-                            </Row>
-                    }
-                </Col>
+                { loading ? <Col><p>loading...</p></Col>
+                    : <Col lg={8}>
+                        <BasicSection className='my-3'/>
+                        {
+                            (isCreator || isAdmin) &&
+                                <Row className='my-3'>
+                                    <h3>Creator</h3>
+                                    <Accordion >
+                                        <Accordion.Item eventKey="0">
+                                            <Accordion.Header>User Profile</Accordion.Header>
+                                            <Accordion.Body>
+                                                <UserSection />
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                    </Accordion>
+                                </Row>
+                        }
+                        {
+                            (isBusinessAdmin.length > 0) &&
+                                <Row className='my-3'>
+                                    <h3>Business Admin</h3>
+                                    <Accordion >
+                                        <Accordion.Item eventKey="0">
+                                            <Accordion.Header>User Profile</Accordion.Header>
+                                            <Accordion.Body>
+                                                <UserSection />
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                    </Accordion>
+                                </Row>
+                        }
+                    </Col>
+                }
             </Row>
         </Container>
     )

@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+
+import NotificationsProvider from './context/notifications/notifications.provider';
 // import AxiosInstance from './helpers/axios';
 
 // import './index.css';
@@ -16,7 +18,9 @@ require('dotenv').config();
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <NotificationsProvider>
+        <App />
+      </NotificationsProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

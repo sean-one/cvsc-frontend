@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Accordion, Card } from 'react-bootstrap';
+import { Row, Accordion } from 'react-bootstrap';
 
 // Basic Section Tabs
 import CreatorRequest from './creatorRequest';

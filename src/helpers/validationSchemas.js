@@ -9,7 +9,8 @@ export const requestBusinessCreator = yup.object().shape({
     // this should be UUID or whatever the ID ends up being
     business_id: yup
         .number()
-        .moreThan(0, 'invalid business id')
+        .typeError('please select a business')
+        .moreThan(0, 'invalid business')
         .required('business id is required for request'),
     
     user_rights: yup

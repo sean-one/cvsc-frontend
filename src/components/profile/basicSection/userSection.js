@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
-import { Card, Button, Col, Container, Row, Image } from 'react-bootstrap';
+import { Card, Col, Container, Row, Image } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { UsersContext } from '../../../context/users/users.provider';
 
-import UserAvatar from './userAvatar';
 import ContactSection from '../../contact/contactSection';
 
 const ProfileImgStyles = styled.div`
@@ -27,7 +26,6 @@ const UserSection = (props) => {
                             <ProfileImgStyles>
                                 <Image className='userProfileImage' roundedCircle src={`${userProfile.avatar}`} alt='user profile' />
                             </ProfileImgStyles>
-                            {/* <UserAvatar /> */}
                         </Col>
                         <Col>
                             <Card.Body>
@@ -39,17 +37,6 @@ const UserSection = (props) => {
                 </Card>
             </Container>
         </React.Fragment>
-        // <div className='userSection'>
-        //     <div className={props.viewable ? 'userProfile' : 'inactive'}>
-        //         <div className='userDetails'>
-        //             <div className='username'>
-        //                 <h3>{userProfile['username']}</h3>
-        //             </div>
-        //             <UserAvatar />
-        //         </div>
-        //         <ContactSection />
-        //     </div>
-        // </div>
     )
 }
 
