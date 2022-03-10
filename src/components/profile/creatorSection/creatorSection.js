@@ -1,24 +1,31 @@
 import React from 'react';
+import { Accordion, Row } from 'react-bootstrap';
 
-import { withViewToggle } from '../../../hoc/withViewToggle';
-import TabLink from '../sectionComponents/tabLink';
+import CreateBusiness from '../../business/createBusiness';
 import UpcomingEvents from './upcomingEvents/upcomingEvents';
 
-import './creatorSection.css';
+// import './creatorSection.css';
 
-const CreatorSection = (props) => {
-    const UpcomingSectionWrapped = withViewToggle(UpcomingEvents)
+const CreatorSection = () => {
 
     return (
-        <div className='creatorSection'>
-            <div className='sectionHeader'>
-                <h3>Creator Options</h3>
-            </div>
-            <div className='sectionTabs'>
-                <TabLink title='Create Event' createtype='event' />
-                <UpcomingSectionWrapped />
-            </div>
-        </div>
+        <Row>
+            <h3>Creator Options</h3>
+            <Accordion >
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header>Create Event</Accordion.Header>
+                    <Accordion.Body>
+                        <CreateBusiness />
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                    <Accordion.Header>Upcoming Events</Accordion.Header>
+                    <Accordion.Body>
+                        <UpcomingEvents />
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
+        </Row>
     )
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Col, Container, Accordion, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 
@@ -9,7 +9,8 @@ import { UsersContext } from '../../context/users/users.provider';
 import { RolesContext } from '../../context/roles/roles.provider';
 
 import BasicSection from './basicSection/basicSection';
-import UserSection from './basicSection/userSection';
+import BusinessAdminSection from './businessAdminSection/businessAdminSection';
+import CreatorSection from './creatorSection/creatorSection';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
@@ -52,31 +53,11 @@ const Profile = () => {
                         <BasicSection className='my-3'/>
                         {
                             (isCreator || isAdmin) &&
-                                <Row className='my-3'>
-                                    <h3>Creator</h3>
-                                    <Accordion >
-                                        <Accordion.Item eventKey="0">
-                                            <Accordion.Header>User Profile</Accordion.Header>
-                                            <Accordion.Body>
-                                                <UserSection />
-                                            </Accordion.Body>
-                                        </Accordion.Item>
-                                    </Accordion>
-                                </Row>
+                                <CreatorSection />
                         }
                         {
                             (isBusinessAdmin.length > 0) &&
-                                <Row className='my-3'>
-                                    <h3>Business Admin</h3>
-                                    <Accordion >
-                                        <Accordion.Item eventKey="0">
-                                            <Accordion.Header>User Profile</Accordion.Header>
-                                            <Accordion.Body>
-                                                <UserSection />
-                                            </Accordion.Body>
-                                        </Accordion.Item>
-                                    </Accordion>
-                                </Row>
+                                <BusinessAdminSection />
                         }
                     </Col>
                 }

@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { Button, Table } from 'react-bootstrap';
 
 import AxiosInstance from '../../../helpers/axios';
 
-import TabHeader from '../sectionComponents/tabHeader';
-
 const PendingRequest = (props) => {
-    const [ pendingRequest, setPendingRequest ] = useState()
-    const { register, handleSubmit } = useForm()
+    const [ pendingRequest, setPendingRequest ] = useState([])
 
     const getPendingRequest = useCallback(() => {
         const token = localStorage.getItem('token')
@@ -24,6 +19,22 @@ const PendingRequest = (props) => {
                 console.log('error inside pending request')
             })
     }, [setPendingRequest])
+
+    const approveUser = (e) => {
+        const reqData = { request_id: e.currentTarget.value}
+        const token = localStorage.getItem('token')
+
+        AxiosInstance.post('/roles/approve-request', reqData, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                const updated = pendingRequest.filter(pr => pr.id !== reqData.request_id)
+                setPendingRequest(updated)
+                console.log(response)
+            })
+            .catch(err => console.log(err))
+        console.log(e.currentTarget.value)
+    }
 
     // data input shape { role.id: 'approved', role.id: 'rejected', role.id: null }
     const updateRoleRequest = (data) => {
@@ -53,38 +64,30 @@ const PendingRequest = (props) => {
     }, [])
 
     return (
-        <div>
-            <TabHeader title='Pending Requests' viewable={props.viewable} toggleView={props.toggleView} />
-            {
-                (props.viewable) &&
-                <div className='pendingRequestTable'>
-                    <div className='tableHeader'>
-                        <p className='tableHeadText'>Username</p>
-                        <p className='tableHeadText'>Business</p>
-                        <p className='tableHeadText'>Rights</p>
-                        <FontAwesomeIcon id='requestTableApprove' className='requestTableIcons' icon={faCheck} size='1x' />
-                        <FontAwesomeIcon id='requestTableReject' className='requestTableIcons' icon={faTimes} size='1x' />
-
-                    </div>
-                    <form className='requestTable' onSubmit={handleSubmit(updateRoleRequest)}>
-                        {
-                            pendingRequest.map(request => (
-                                <div className='requestTableRow' key={request.id}>
-                                    <p className='requestTableText'>{request.username}</p>
-                                    <p className='requestTableText'>{request.name}</p>
-                                    <p className='requestTableText'>{request.role_type}</p>
-                                    <div className='requestTableButtons'>
-                                        <input {...register(`${request.id}`)} type='radio' id='approved' value='approved' />
-                                        <input {...register(`${request.id}`)} type='radio' id='rejected' value='rejected' />
-                                    </div>
-                                </div>
-                            ))
-                        }
-                        <input type='submit' value='submit' />
-                    </form>
-                </div>
-            }
-        </div>
+        <Table striped bordered hover>
+            <thead>
+                <tr>
+                <th>Username</th>
+                <th>Business</th>
+                <th>Requested</th>
+                <th>Approve</th>
+                <th>Reject</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    pendingRequest.map(pr => (
+                        <tr key={pr.id}>
+                        <td>{pr.username}</td>
+                        <td>{pr.name}</td>
+                        <td>{pr.role_type}</td>
+                        <td><Button variant='success' onClick={(e) => approveUser(e)} value={pr.id}>yes</Button></td>
+                            <td><Button variant='danger'>no</Button></td>
+                        </tr>
+                    ))
+                }
+            </tbody>
+        </Table>
     )
 }
 

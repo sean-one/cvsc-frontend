@@ -6,8 +6,6 @@ import { faCannabis } from '@fortawesome/free-solid-svg-icons';
 import { SiteContext } from '../../../context/site/site.provider';
 import { UsersContext } from '../../../context/users/users.provider';
 
-import TabHeader from '../sectionComponents/tabHeader';
-
 const BusinessList = (props) => {
     const { useBusinessAdmin } = useContext(SiteContext)
     const { userProfile } = useContext(UsersContext)
@@ -16,7 +14,6 @@ const BusinessList = (props) => {
 
     return (
         <div className='businessListTab'>
-            <TabHeader title='Business Admin List' viewable={props.viewable} toggleView={props.toggleView} />
             {
                 (props.viewable) &&
                 <div className='businessList'>

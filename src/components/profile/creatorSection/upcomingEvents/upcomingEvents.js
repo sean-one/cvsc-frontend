@@ -1,69 +1,28 @@
 import React, { useContext } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { format } from 'date-fns';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import AxiosInstance from '../../../../helpers/axios';
+import { withRouter } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 
-import TabHeader from '../../sectionComponents/tabHeader';
 import EventPreview from '../../../events/eventPreview';
 
 import { SiteContext } from '../../../../context/site/site.provider';
 import { UsersContext } from '../../../../context/users/users.provider';
 
-import '../creatorSection.css';
 
-const UpcomingEvents = (props) => {
+const UpcomingEvents = () => {
     const { userProfile } = useContext(UsersContext)
-    const { useEventFilterByUser, removeEvent } = useContext(SiteContext)
+    const { useEventFilterByUser } = useContext(SiteContext)
     const userEvents = useEventFilterByUser(userProfile.id)
 
-    const deleteEvent = (eventId) => {
-        const token = localStorage.getItem('token')
-        AxiosInstance.delete(`/events/remove/${eventId}`, {
-            headers: {'Authorization': 'Bearer ' + token}
-        })
-            .then(response => {
-                removeEvent(eventId)
-            })
-            .catch(err => {
-                console.log('something went wront', err)
-            })
-    }
-
     return (
-        <div>
-            <TabHeader title='Upcoming Created Events' viewable={props.viewable} toggleView={props.toggleView} />
+        <Container>
             {
-                (props.viewable) &&
-                <div className='userEvents'>
-                    {
-                        userEvents.map((event, i) => {
-                            return (
-                                <div key={i} className='adminWrapper'>
-                                    <div className='eventdate'>
-                                        <p>{format(new Date(event.eventdate), 'MMM d')}</p>
-                                    </div>
-                                    <div className='adminControls'>
-                                        <Link to={{
-                                            pathname: `/events/edit/${event.event_id}`,
-                                            state: {
-                                                event,
-                                                from: props.location.pathname
-                                            }
-                                        }}>
-                                            <div><FontAwesomeIcon id={event.event_id} icon={faPencilAlt} size='1x' /></div>
-                                        </Link>
-                                        <div><FontAwesomeIcon id={event.event_id} icon={faTrashAlt} size='1x' onClick={() => deleteEvent(event.event_id)} /></div>
-                                    </div>
-                                    <EventPreview key={event.event_id} event={event} />
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+                userEvents.map((event, i) => {
+                    return (
+                        <EventPreview key={event.event_id} event={event} />
+                    )
+                })
             }
-        </div>
+        </Container>
     )
 }
 
