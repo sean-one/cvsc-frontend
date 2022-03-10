@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Button, Table } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import AxiosInstance from '../../../helpers/axios';
+import { NotificationsContext } from '../../../context/notifications/notifications.provider';
 
 const PendingRequest = (props) => {
     const [ pendingRequest, setPendingRequest ] = useState([])
+    const { dispatch } = useContext(NotificationsContext)
+    let history = useHistory()
 
     const getPendingRequest = useCallback(() => {
         const token = localStorage.getItem('token')
@@ -29,9 +35,29 @@ const PendingRequest = (props) => {
         })
             .then(response => {
                 const updated = pendingRequest.filter(pr => pr.id !== parseInt(reqData.request_id))
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'request has been approved'
+                    }
+                })
                 setPendingRequest(updated)
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                if(err.response.status === 401) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: 'token authorization error, please sign in'
+                        }
+                    })
+                    history.push('/login')
+                } else {
+                    console.log(err.response)
+                }
+            })
     }
 
     const rejectRequest = (e) => {
@@ -43,7 +69,13 @@ const PendingRequest = (props) => {
         })
             .then(response => {
                 const updated = pendingRequest.filter(pr => pr.id !== parseInt(request_id))
-                console.log(updated)
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'request has been rejected'
+                    }
+                })
                 setPendingRequest(updated)
             })
             .catch(err => console.log(err))
@@ -62,11 +94,11 @@ const PendingRequest = (props) => {
         <Table striped bordered hover>
             <thead>
                 <tr>
-                <th>Username</th>
+                <th>User</th>
                 <th>Business</th>
-                <th>Requested</th>
-                <th>Approve</th>
-                <th>Reject</th>
+                <th>Type</th>
+                <th><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></th>
+                <th><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></th>
                 </tr>
             </thead>
             <tbody>
@@ -76,8 +108,16 @@ const PendingRequest = (props) => {
                         <td>{pr.username}</td>
                         <td>{pr.name}</td>
                         <td>{pr.role_type}</td>
-                            <td><Button variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>yes</Button></td>
-                            <td><Button variant='danger' onClick={(e) => rejectRequest(e)} value={pr.id}>no</Button></td>
+                            <td>
+                                <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>
+                                    <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
+                                </Button>
+                            </td>
+                            <td>
+                                <Button size='sm' variant='danger' onClick={(e) => rejectRequest(e)} value={pr.id}>
+                                    <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                                </Button>
+                            </td>
                         </tr>
                     ))
                 }
