@@ -46,13 +46,13 @@ const Profile = () => {
     
     
     return (
-        <Row className='mx-auto'>
+        <Row>
             { loading ? <Col><p>loading...</p></Col>
                 : <Col>
                     <BasicSection />
                     {
                         (isCreator || isAdmin) &&
-                            <CreatorSection />
+                        <CreatorSection />
                     }
                     {
                         (isBusinessAdmin.length > 0) &&

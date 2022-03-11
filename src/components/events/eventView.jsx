@@ -1,7 +1,6 @@
 import React from 'react'
 import { Col, Container, Image, Row } from 'react-bootstrap'
 
-// import SampleImage from '../../assets/eventSampleImg.jpg';
 
 const EventView = (props) => {
     const event = props.location.state.event

@@ -57,13 +57,30 @@ const Login = () => {
             <Form onSubmit={handleSubmit(sendLogin)}>
                 <Form.Group className="mb-3" controlId="username">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control className={errors.username ? 'inputError' : ''} {...register('username')} onFocus={() => clearErrors('username')} type="text" name='username' placeholder="username" required />
+                    <Form.Control
+                        className={errors.username ? 'inputError' : ''}
+                        {...register('username')}
+                        autoFocus
+                        onFocus={() => clearErrors('username')}
+                        type='text'
+                        name='username'
+                        placeholder='username'
+                        required
+                    />
                     <p className='errormessage'>{errors.username?.message}</p>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control className={errors.password ? 'inputError' : ''} {...register('password')} onFocus={() => clearErrors('password')} name='password' type="password" placeholder="Password" required />
+                    <Form.Control
+                        className={errors.password ? 'inputError' : ''}
+                        {...register('password')}
+                        onFocus={() => clearErrors('password')}
+                        name='password'
+                        type='password'
+                        placeholder='Password'
+                        required
+                    />
                     <p className='errormessage'>{errors.password?.message}</p>
                 </Form.Group>
 

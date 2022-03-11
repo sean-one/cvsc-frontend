@@ -4,8 +4,6 @@ import { Row, Accordion } from 'react-bootstrap';
 import PendingRequest from './pendingRequest';
 import BusinessList from './businessList';
 
-import './businessAdminSection.css';
-
 
 const BusinessAdminSection = () => {
 

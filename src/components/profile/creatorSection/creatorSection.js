@@ -4,12 +4,11 @@ import { Accordion, Row } from 'react-bootstrap';
 import CreateBusiness from '../../business/createBusiness';
 import UpcomingEvents from './upcomingEvents/upcomingEvents';
 
-// import './creatorSection.css';
 
 const CreatorSection = () => {
-
+    
     return (
-        <Row>
+        <Row className='my-3'>
             <h3>Creator Options</h3>
             <Accordion >
                 <Accordion.Item eventKey="0">

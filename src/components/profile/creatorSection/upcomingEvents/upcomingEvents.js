@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
 import EventPreview from '../../../events/eventPreview';
 
@@ -14,7 +14,7 @@ const UpcomingEvents = () => {
     const userEvents = useEventFilterByUser(userProfile.id)
 
     return (
-        <Container>
+        <Row>
             {
                 userEvents.map((event, i) => {
                     return (
@@ -22,7 +22,7 @@ const UpcomingEvents = () => {
                     )
                 })
             }
-        </Container>
+        </Row>
     )
 }
 

@@ -1,16 +1,15 @@
 import React from 'react';
 import { Row, Accordion } from 'react-bootstrap';
 
-// Basic Section Tabs
 import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
 import CreateBusiness from '../../business/createBusiness';
 
+
 const BasicSection = () => {
 
-
     return (
-        <Row>
+        <Row className='my-3'>
             <h3>Basic Section</h3>
             <Accordion >
                 <Accordion.Item eventKey="0">

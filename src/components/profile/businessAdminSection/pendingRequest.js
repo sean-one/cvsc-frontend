@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Table, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -91,38 +91,40 @@ const PendingRequest = (props) => {
     }, [])
 
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                <th>User</th>
-                <th>Business</th>
-                <th>Type</th>
-                <th><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></th>
-                <th><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    pendingRequest.map(pr => (
-                        <tr key={pr.id}>
-                        <td>{pr.username}</td>
-                        <td>{pr.name}</td>
-                        <td>{pr.role_type}</td>
-                            <td>
-                                <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>
-                                    <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
-                                </Button>
-                            </td>
-                            <td>
-                                <Button size='sm' variant='danger' onClick={(e) => rejectRequest(e)} value={pr.id}>
-                                    <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-                                </Button>
-                            </td>
-                        </tr>
-                    ))
-                }
-            </tbody>
-        </Table>
+        <Row>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                    <th>User</th>
+                    <th>Business</th>
+                    <th>Type</th>
+                    <th><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></th>
+                    <th><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        pendingRequest.map(pr => (
+                            <tr key={pr.id}>
+                            <td>{pr.username}</td>
+                            <td>{pr.name}</td>
+                            <td>{pr.role_type}</td>
+                                <td>
+                                    <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>
+                                        <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
+                                    </Button>
+                                </td>
+                                <td>
+                                    <Button size='sm' variant='danger' onClick={(e) => rejectRequest(e)} value={pr.id}>
+                                        <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </Table>
+        </Row>
     )
 }
 

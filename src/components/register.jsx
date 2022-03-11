@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Col, Container, Form, Button, InputGroup, Row } from 'react-bootstrap';
+import { Form, Button, InputGroup, Row } from 'react-bootstrap';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import { registerCleanUp } from '../helpers/dataCleanUp.js';
