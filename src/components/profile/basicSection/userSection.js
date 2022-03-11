@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Card, Col, Container, Row, Image } from 'react-bootstrap';
+import { Card, Col, Row, Image } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { UsersContext } from '../../../context/users/users.provider';
@@ -33,10 +33,6 @@ const UserSection = (props) => {
                 </Col>
             </Row>
         </Card>
-        // <React.Fragment>
-        //     <Container>
-        //     </Container>
-        // </React.Fragment>
     )
 }
 

@@ -10,12 +10,12 @@ import { NotificationsContext } from '../../../context/notifications/notificatio
 import useBusinessList from '../../../hooks/useBusinessList';
 
 
-const CreatorRequest = (props) => {
+const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
     const { businessList } = useContext(SiteContext)
     const { businessCreatorRequest } = useBusinessList(businessList)
     
-    const { register, handleSubmit, reset, formState:{ errors } } = useForm({
+    const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
     });
@@ -63,54 +63,50 @@ const CreatorRequest = (props) => {
             })
     }
 
-
     return (
-        <Container className='p-0'>
-            <Form onSubmit={handleSubmit(sendRequest)}>
-                <Row className='d-flex align-items-center'>
-                    <Col sm={12} lg={8}>
-                        <Form.Group controlId='business_id' className='d-flex justify-content-start alight-items-lg-center'>
-                            <Form.Select {...register('business_id', { valueAsNumber: true})} required >
-                                <option>Business Select...</option>
-                                {
-                                    businessCreatorRequest.map(business => (
-                                        <option key={business.id} value={business.id}>{business.name}</option>
-                                        ))
-                                    }
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
+        <Form onSubmit={handleSubmit(sendRequest)}>
+            <Row className='d-flex align-items-center'>
+                <Col sm={12} lg={8}>
+                    <Form.Group controlId='business_id' className='d-flex justify-content-start alight-items-lg-center'>
+                        <Form.Select
+                            className={errors.business_id ? 'inputError' : ''}
+                            onFocus={() => clearErrors('business_id')}
+                            {...register('business_id', { valueAsNumber: true})}
+                            required
+                        >
+                            <option>Business Select...</option>
+                            {
+                                businessCreatorRequest.map(business => (
+                                    <option key={business.id} value={business.id}>{business.name}</option>
+                                    ))
+                                }
+                        </Form.Select>
+                    </Form.Group>
+                    <p className='errormessage'>{errors.business_id?.message}</p>
+                </Col>
 
-                    <Col md={12} lg={4}>
-                        <Form.Group controlId='request_for'>
-                            <Row className='d-flex'>
-                                <Col className='d-flex flex-column align-items-center'>
-                                    <Form.Check {...register('request_for', { required: true })} type={'radio'} id='creator_rights' value='creator' />
-                                    <Form.Label>creator</Form.Label>
-                                </Col>
+                <Col md={12} lg={4}>
+                    <Form.Group controlId='request_for'>
+                        <Row className='d-flex'>
+                            <Col className='d-flex flex-column align-items-center'>
+                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='creator_rights' value='creator' />
+                                <Form.Label>creator</Form.Label>
+                            </Col>
 
-                                <Col className='d-flex flex-column align-items-center'>
-                                    <Form.Check {...register('request_for', { required: true })} type={'radio'} id='admin_rights' value='admin' />
-                                    <Form.Label>admin</Form.Label>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row className='m-2'>
-                    <Col lg={4}>
-                        <Button type='submit'>Submit</Button>
-                    </Col>
-
-                    {/* <Col lg={8}>
-                        <p>{errors.business_id?.message}</p>
-                        <Alert show={show} dismissible={true}>
-                            {requestStatus}
-                        </Alert>
-                    </Col> */}
-                </Row>
-            </Form>
-        </Container>
+                            <Col className='d-flex flex-column align-items-center'>
+                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='admin_rights' value='admin' />
+                                <Form.Label>admin</Form.Label>
+                            </Col>
+                        </Row>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row className='m-2'>
+                <Col lg={4}>
+                    <Button type='submit'>Submit</Button>
+                </Col>
+            </Row>
+        </Form>
     )
 }
 

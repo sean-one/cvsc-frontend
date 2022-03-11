@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom';
 
 // components
 import Calendar from './components/calendar/calendar';
-import EventCard from './components/events/eventCard.jsx';
 import Business from './components/business/business';
 import { NavHeader } from './components/NavHeader';
 import Register from './components/register.jsx';

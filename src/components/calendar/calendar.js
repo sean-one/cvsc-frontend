@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { format } from 'date-fns';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 import useSiteFetch from '../../hooks/useSiteFetch';
 import useEventsByDay from '../../hooks/useEventsByDay';
