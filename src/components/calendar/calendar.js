@@ -25,28 +25,18 @@ const Calendar = () => {
                 loading ? (
                     <div>{ fetchError }</div>
                 ) : (
-                    <Container>
-                        <Row>
-                            <Col sm={12} lg={2} className='d-none d-lg-block' style={{ border: 'dotted 1px green', height: '100vh' }}>
-                                {/* filter options area */}
-                            </Col>
-                            <Col sm={12} lg={7}>
-                                {
-                                    Object.keys(siteSortedEvents).sort(
-                                        // sort event list by date
-                                        (a,b) => new Date(a) - new Date(b)
-                                    ).map(key => {
-                                        const eventDate = new Date(key)
-                                        return (
-                                            <Day key={format(eventDate, 't')} date={eventDate} schedule={siteSortedEvents[key]} />
-                                        )
-                                    })
-                                }
-                            </Col>
-                                <Col sm={12} lg={3} className='d-none d-lg-block' style={{ border: 'dotted 1px green', height: '100vh' }}>
-                                {/* bottom, right ad space area */}
-                            </Col>
-                        </Row>
+                    <Container className='px-0'>
+                        {
+                            Object.keys(siteSortedEvents).sort(
+                                // sort event list by date
+                                (a,b) => new Date(a) - new Date(b)
+                            ).map(key => {
+                                const eventDate = new Date(key)
+                                return (
+                                    <Day key={format(eventDate, 't')} date={eventDate} schedule={siteSortedEvents[key]} />
+                                )
+                            })
+                        }
                     </Container>
                 )
             }

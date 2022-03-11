@@ -54,7 +54,7 @@ const EventPreview = (props) => {
                             {detailPreview(event.details, 100)}
                         </Card.Text>
                         <Link to={{
-                            pathname: `/events/${event.event_id}`,
+                            pathname: `/event/${event.event_id}`,
                             state: {
                                 event,
                                 from: props.location.pathname

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 
@@ -46,23 +46,21 @@ const Profile = () => {
     
     
     return (
-        <Container>
-            <Row className='justify-content-lg-center'>
-                { loading ? <Col><p>loading...</p></Col>
-                    : <Col lg={8}>
-                        <BasicSection className='my-3'/>
-                        {
-                            (isCreator || isAdmin) &&
-                                <CreatorSection />
-                        }
-                        {
-                            (isBusinessAdmin.length > 0) &&
-                                <BusinessAdminSection />
-                        }
-                    </Col>
-                }
-            </Row>
-        </Container>
+        <Row className='mx-auto'>
+            { loading ? <Col><p>loading...</p></Col>
+                : <Col>
+                    <BasicSection />
+                    {
+                        (isCreator || isAdmin) &&
+                            <CreatorSection />
+                    }
+                    {
+                        (isBusinessAdmin.length > 0) &&
+                            <BusinessAdminSection />
+                    }
+                </Col>
+            }
+        </Row>
     )
 }
 
