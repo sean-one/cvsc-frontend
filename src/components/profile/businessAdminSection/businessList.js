@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCannabis } from '@fortawesome/free-solid-svg-icons';
+import { faCannabis, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
+import { Col, Container, Row } from 'react-bootstrap';
 
 import { SiteContext } from '../../../context/site/site.provider';
 import { UsersContext } from '../../../context/users/users.provider';
@@ -12,27 +13,27 @@ const BusinessList = (props) => {
     
     const business_admin_ids = useBusinessAdmin(userProfile.id)
 
+    // console.log(business_admin_ids[0])
     return (
-        <div className='businessListTab'>
+        <Container className='px-0'>
             {
-                (props.viewable) &&
-                <div className='businessList'>
-                    {
-                        business_admin_ids.map(business => (
-                            <Link className='businessListRow' key={business.id} to={{
-                                pathname:`/business/edit/${business.id}`,
-                                state: {
-                                    business,
-                                    from: props.location.pathname
-                                }
-                            }}>
-                                <FontAwesomeIcon className='tabIcon' icon={faCannabis} size='1x' /><p className='businessListing'>{business.name}</p>
-                            </Link>
-                        ))
-                    }
-                </div>
+                business_admin_ids.map(business => (
+                    <Row key={business.id} className='d-flex'>
+                        <Col className='flex-grow-0'><FontAwesomeIcon icon={faCannabis} size='1x'></FontAwesomeIcon></Col>
+                        <Col className='flex-grow-1'>{business.name}</Col>
+                        <Col className='flex-grow-0'><Link to={{
+                            pathname: `/business/${business.id}`,
+                            state: {
+                                business,
+                                from: props.location.pathname
+                            }
+                        }}>edit</Link></Col>
+                        <Col className='flex-grow-1'>req Open:</Col>
+                        <Col className='flex-grow-0'><FontAwesomeIcon icon={business.requestOpen ? faToggleOn : faToggleOff} size='1x'></FontAwesomeIcon></Col>
+                    </Row>
+                ))
             }
-        </div>
+        </Container>
     )
 }
 

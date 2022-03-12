@@ -37,7 +37,7 @@ const EventPreview = (props) => {
     }
     
     return (
-        <Card className='my-2'>
+        <Card className='my-3 p-1'>
             <Row className='gx-4'>
                 <Col md={4} className='mx-auto'>
                     <Card.Img variant='top' src={event.eventmedia} />
