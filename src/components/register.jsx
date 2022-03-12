@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,35 +9,55 @@ import { registerCleanUp } from '../helpers/dataCleanUp.js';
 import AxiosInstance from '../helpers/axios';
 
 import { UsersContext } from '../context/users/users.provider.js';
+import { NotificationsContext } from '../context/notifications/notifications.provider.js';
 
 
 const Register = () => {
+    const { setUser } = useContext(UsersContext);
+    const { dispatch } = useContext(NotificationsContext);
+
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: "onBlur",
         resolver: yupResolver(registrationSchema)
     })
-    const { setUser } = useContext(UsersContext);
-    const [ serverError, setServerError ] = useState(false);
+    
     let history = useHistory();
 
     const createUser = async (data) =>{
         const newUser = registerCleanUp(data)
-        setServerError(false)
 
         AxiosInstance.post('/users/register', newUser)
             .then(response => {
                 if(response.status === 200) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'SUCCESS',
+                            message: `${newUser.username} has been created and logged in`
+                        }
+                    })
                     setUser(response.data)
                     history.push('/profile');
                 } else {
-                    console.log('inside els')
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: 'something went wrong, please try again'
+                        }
+                    })
                     throw new Error()
                 }
             })
             .catch(err => {
-                console.log(err.response.data.message)
                 if(!err.response) {
-                    setServerError(true)
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: 'something went wrong, please try again'
+                        }
+                    })
                 } else if(err.response.status === 400) {
                     setError(`${err.response.data.type}`, {
                         type: 'server',
@@ -51,7 +71,7 @@ const Register = () => {
         <Row className='justify-content-lg-center'>
             <h2>Register</h2>
             <Form onSubmit={handleSubmit(createUser)}>
-                <Form.Group className="mb-3" controlId="username">
+                <Form.Group controlId="username">
                     <Form.Label>Username</Form.Label>
                     <Form.Control
                         className={errors.username ? 'inputError' : ''}
@@ -63,9 +83,9 @@ const Register = () => {
                         required
                     />
                 </Form.Group>
-                <p className='errormessage'>{errors.username?.message}</p>
+                <div className='errormessage'>{errors.username?.message}</div>
 
-                <Form.Group className="mb-3" controlId="email">
+                <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         className={errors.email ? 'inputError' : ''}
@@ -77,9 +97,9 @@ const Register = () => {
                         required
                     />
                 </Form.Group>
-                <p className='errormessage'>{errors.email?.message}</p>
+                <div className='errormessage'>{errors.email?.message}</div>
 
-                <Form.Group className="mb-3" controlId="password">
+                <Form.Group controlId="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         className={errors.password ? 'inputError' : ''}
@@ -91,9 +111,9 @@ const Register = () => {
                         required
                     />
                 </Form.Group>
-                <p className='errormessage'>{errors.password?.message}</p>
+                <div className='errormessage'>{errors.password?.message}</div>
 
-                <Form.Group className="mb-3" controlId="confirmation">
+                <Form.Group controlId="confirmation">
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
                         className={errors.confirmation ? 'inputError' : ''}
@@ -105,9 +125,9 @@ const Register = () => {
                         required
                     />
                 </Form.Group>
-                <p className='errormessage'>{errors.confirmation?.message}</p>
+                <div className='errormessage'>{errors.confirmation?.message}</div>
 
-                <Form.Group className="mb-3" controlId="instagram">
+                <Form.Group controlId="instagram">
                     <Form.Label>Instagram</Form.Label>
                     <InputGroup>
                         <InputGroup.Text id="btnGroupAddon">@</InputGroup.Text>
@@ -122,9 +142,8 @@ const Register = () => {
                         />
                     </InputGroup>
                 </Form.Group>
-                <p className='errormessage'>{errors.instagram?.message}</p>
+                <div className='errormessage'>{errors.instagram?.message}</div>
                 
-                {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
                 <div className="d-grid gap-2">
                     <Button variant="primary" size="lg" type='submit'>
                         Submit

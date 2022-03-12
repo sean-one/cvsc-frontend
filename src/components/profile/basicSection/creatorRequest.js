@@ -21,7 +21,6 @@ const CreatorRequest = () => {
     });
 
     const sendRequest = (data) => {
-        console.log(data)
         const token = localStorage.getItem('token')
 
         AxiosInstance.post('/roles/create-request', data, {
@@ -82,7 +81,7 @@ const CreatorRequest = () => {
                                 }
                         </Form.Select>
                     </Form.Group>
-                    <p className='errormessage'>{errors.business_id?.message}</p>
+                    <div className='errormessage'>{errors.business_id?.message}</div>
                 </Col>
 
                 <Col md={12} lg={4}>

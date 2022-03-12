@@ -1,22 +1,24 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, Button } from 'react-bootstrap';
-import { Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../helpers/axios';
 import { UsersContext } from '../context/users/users.provider';
+import { NotificationsContext } from '../context/notifications/notifications.provider';
 
 
 const Login = () => {
+    const { setUser } = useContext(UsersContext);
+    const { dispatch } = useContext(NotificationsContext);
+
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: "onBlur",
         resolver: yupResolver(loginSchema)
     });
-    const { setUser } = useContext(UsersContext);
-    const [ serverError, setServerError ] = useState(false);
     let history = useHistory();
 
     
@@ -24,17 +26,35 @@ const Login = () => {
         AxiosInstance.post('/users/login', data)
             .then(response => {
                 if(response.status === 200) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'SUCCESS',
+                            message: `logged in as: ${data.username}`
+                        }
+                    })
                     setUser(response.data)
                     history.push('/profile');
                 } else {
-                    console.log('inside else')
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: 'something went wrong, please try again'
+                        }
+                    })
                     throw new Error('invalid stuffs');
                 }
             })
             .catch(err => {
                 if (!err.response) {
-                    setServerError(true)
-
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: 'something went wrong, please try again'
+                        }
+                    })
                 } else if (err.response.status === 401) {
                     setError('password', {
                         type: 'server',
@@ -52,10 +72,10 @@ const Login = () => {
     }
 
     return (
-        <Row className='justify-content-lg-center'>
+        <Row>
             <h2>Login</h2>
             <Form onSubmit={handleSubmit(sendLogin)}>
-                <Form.Group className="mb-3" controlId="username">
+                <Form.Group controlId="username">
                     <Form.Label>Username</Form.Label>
                     <Form.Control
                         className={errors.username ? 'inputError' : ''}
@@ -67,10 +87,10 @@ const Login = () => {
                         placeholder='username'
                         required
                     />
-                    <p className='errormessage'>{errors.username?.message}</p>
+                    <div className='errormessage'>{errors.username?.message}</div>
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="password">
+                <Form.Group controlId="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         className={errors.password ? 'inputError' : ''}
@@ -81,19 +101,20 @@ const Login = () => {
                         placeholder='Password'
                         required
                     />
-                    <p className='errormessage'>{errors.password?.message}</p>
+                    <div className='errormessage'>{errors.password?.message}</div>
                 </Form.Group>
-
-                {serverError && <p className='errormessage'>network error, please wait a moment and try again</p>}
-                <div className="d-grid gap-2">
-                    <Button variant="primary" size="lg" type='submit'>
-                        Submit
-                    </Button>
-                    <p className='text-center'>---- or ----</p>
-                    <Button href='/register' variant="secondary" size="lg">
-                        Register New Account
-                    </Button>
-                </div>
+                <Row>
+                    <Col>
+                        <Button variant="primary" size="lg" type='submit'>
+                            Submit
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button href='/register' variant="secondary" size="lg">
+                            Register
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
         </Row>
     )
