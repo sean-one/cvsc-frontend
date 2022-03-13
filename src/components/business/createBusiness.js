@@ -37,9 +37,9 @@ const CreateBusiness = (props) => {
                             message: 'request successfully sent'
                         }
                     })
-                    // history.push({
-                    //     pathname: '/profile',
-                    // });
+                    history.push({
+                        pathname: '/profile',
+                    });
                 }
             })
             .catch(err => {
