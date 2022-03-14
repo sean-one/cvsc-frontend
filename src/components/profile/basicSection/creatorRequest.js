@@ -21,6 +21,7 @@ const CreatorRequest = () => {
     });
 
     const sendRequest = (data) => {
+        console.log(data)
         const token = localStorage.getItem('token')
 
         AxiosInstance.post('/roles/create-request', data, {
@@ -31,7 +32,7 @@ const CreatorRequest = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: 'request successfully sent'
+                        message: `your ${data.request_for} rights request submitted`
                     }
                 })
             })

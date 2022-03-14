@@ -33,7 +33,7 @@ const Register = () => {
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'SUCCESS',
-                            message: `${newUser.username} has been created and logged in`
+                            message: `${data.username} has been created and logged in`
                         }
                     })
                     setUser(response.data)

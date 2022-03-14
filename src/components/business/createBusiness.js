@@ -22,6 +22,7 @@ const CreateBusiness = (props) => {
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
 
+        // clean and format data
         data = addBusiness(data)
         
         AxiosInstance.post('/business/create', data, {
@@ -34,7 +35,7 @@ const CreateBusiness = (props) => {
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'SUCCESS',
-                            message: 'request successfully sent'
+                            message: 'business request submitted'
                         }
                     })
                     history.push({
@@ -103,7 +104,8 @@ const CreateBusiness = (props) => {
                     className={errors.business_description ? 'inputError' : ''}
                     {...register('business_description')}
                     onFocus={() => clearErrors('business_description')}
-                    type='text'
+                    as='textarea'
+                    rows={3}
                     name='business_description'
                     required
                 />
