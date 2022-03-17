@@ -3,9 +3,11 @@ import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createEventSchema } from '../../helpers/validationSchemas';
+import { Button, Form } from 'react-bootstrap';
 import AxiosInstance from '../../helpers/axios';
 
 import { SiteContext } from '../../context/site/site.provider';
+import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 import './createEvent.css';
@@ -13,7 +15,8 @@ import './createEvent.css';
 const CreateEvent = (props) => {
     const { editImage, imagePreview, canvas } = useImagePreviewer()
     const { createEvent, useBrandList, useVenueList } = useContext(SiteContext)
-    const { register, handleSubmit, formState:{ errors } } = useForm({
+    const { dispatch } = useContext(NotificationsContext);
+    const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
     });
@@ -48,8 +51,15 @@ const CreateEvent = (props) => {
                 .then(response => {
                     if(response.status === 200) {
                         createEvent(response.data)
+                        dispatch({
+                            type: "ADD_NOTIFICATION",
+                            payload: {
+                                notification_type: 'SUCCESS',
+                                message: `event '${data.eventname}' has been created`
+                            }
+                        })
                         history.push({
-                            pathname: `/calendar/${response.data.event_id}`,
+                            pathname: `/event/${response.data.event_id}`,
                             state: {
                                 event: response.data
                             }
@@ -74,95 +84,204 @@ const CreateEvent = (props) => {
         
     }
 
-    return (
-        <div className='componentWrapper'>
-            {/* <form className='createForm' onSubmit={sendEvent}> */}
-            <form className='createForm' onSubmit={handleSubmit(sendEvent)}>
-                <label htmlFor='eventname'>Event Name:</label>
-                <input
-                    {...register('eventname')}
-                    type='text'
-                    id='eventname'
-                    required
-                />
-                <p className='errormessage'>{errors.eventname?.message}</p>
-                <label htmlFor='eventdate'>Event Date:</label>
-                <input
-                    type='date'
-                    id='eventdate'
-                    {...register('eventdate')}
-                    required
-                />
-                <p className='errormessage'>{errors.eventdate?.message}</p>
-                <label htmlFor='eventstart'>Start Time:</label>
-                {/* <input type='time' id='eventstart' {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required /> */}
-                <input
-                    {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
-                    type='time'
-                    id='eventstart'
-                    required
-                />
-                <p className='errormessage'>{errors.eventstart?.message}</p>
-                <label htmlFor='eventend'>End Time:</label>
-                <input
-                    {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
-                    type='time'
-                    id='eventend'
-                    required
-                />
-                <p className='errormessage'>{errors.eventend?.message}</p>
-                {
-                    editImage && 
-                        <canvas
-                            id={'eventImagePreview'}
-                            ref={canvas}
-                            width={384}
-                            height={480}
-                        />
+    const sendTest = async (data) => {
+        const token = localStorage.getItem('token')
+        data.eventmedia = 'https://picsum.photos/384/480'
+        
+        AxiosInstance.post('/events', data, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                if(response.status === 200) {
+                    createEvent(response.data)
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'SUCCESS',
+                            message: `event '${data.eventname}' has been created`
+                        }
+                    })
+                    history.push({
+                        pathname: `/event/${response.data.event_id}`,
+                        state: {
+                            event: response.data
+                        }
+                    });
+                } else {
+                    console.log('axios else statement')
+                    console.log(response)
+                    // throw new Error();
                 }
-                <label htmlFor='eventmedia'>Image Link:</label>
-                <input
+            })
+            .catch(err => {
+                console.log('inside the catch')
+                console.log(err.response)
+                if (err.response.status === 403) {
+                    setError(`${err.response.data.type}`, {
+                        type: 'server',
+                        message: err.response.data.message
+                    })
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: `${err.response.data.message}`
+                        }
+                    })
+                }
+                
+                if(err.response.status === 400) {
+                    localStorage.clear()
+                    history.push('/login');
+                }
+            })        
+    }
+
+    return (
+        <Form onSubmit={handleSubmit(sendTest)}>
+
+            <Form.Group controlId='eventname'>
+                <Form.Label>Eventname</Form.Label>
+                <Form.Control
+                    className={errors.eventname ? 'inputError' : ''}
+                    {...register('eventname')}
+                    autoFocus
+                    onFocus={() => clearErrors('eventname')}
+                    type='text'
+                    name='eventname'
+                    required
+                />
+                <div className='errormessage'>{errors.eventname?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='eventdate'>
+                <Form.Label>Event Date</Form.Label>
+                <Form.Control
+                    className={errors.eventdate ? 'inputError' : ''}
+                    {...register('eventdate')}
+                    onFocus={() => clearErrors('eventdate')}
+                    type='date'
+                    name='eventdate'
+                    required
+                />
+                <div className='errormessage'>{errors.eventdate?.message}</div>
+            </Form.Group>
+            
+            <Form.Group controlId='eventstart'>
+                <Form.Label>Start</Form.Label>
+                <Form.Control
+                    className={errors.eventstart ? 'inputError' : ''}
+                    {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                    onFocus={() => clearErrors('eventstart')}
+                    type='time'
+                    name='eventstart'
+                    required
+                />
+                <div className='errormessage'>{errors.eventstart?.message}</div>
+            </Form.Group>
+            
+            <Form.Group controlId='eventend'>
+                <Form.Label>End</Form.Label>
+                <Form.Control
+                    className={errors.eventend ? 'inputError' : ''}
+                    {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                    onFocus={() => clearErrors('eventend')}
+                    type='time'
+                    name='eventend'
+                    required
+                />
+                <div className='errormessage'>{errors.eventend?.message}</div>
+            </Form.Group>
+
+            {
+                editImage &&
+                    <canvas
+                        id={'eventImagePreview'}
+                        ref={canvas}
+                        width={384}
+                        height={480}
+                    />
+            }
+            
+            <Form.Group controlId='eventmedia'>
+                <Form.Label>Image Link</Form.Label>
+                <Form.Control
+                    className={errors.eventmedia ? 'inputError' : ''}
                     {...register('eventmedia')}
+                    onFocus={() => clearErrors('eventmedia')}
                     type='file'
-                    id='eventmedia'
+                    name='eventmedia'
                     accept='image/*'
                     onChange={imagePreview}
                 />
-                <p className='errormessage'>{errors.eventmedia?.message}</p>
-                <label htmlFor='venue_id'>Location:</label>
-                <select id='venue_id' {...register('venue_id', { valueAsNumber: true })} required >
-                    <option value="0">Select...</option>
+                <div className='errormessage'>{errors.eventmedia?.message}</div>
+            </Form.Group>
+            
+            <Form.Group controlId='venue_id'>
+                <Form.Label>Location</Form.Label>
+                <Form.Select
+                    className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
+                    {...register('venue_id', { valueAsNumber: true })}
+                    onFocus={() => clearErrors([ 'venue_id', 'role_rights' ])}
+                    type='text'
+                    name='venue_id'
+                    required
+                >
+                    <option value='0'>Select...</option>
                     {
                         venueList.map(venue => (
                             <option key={venue.id} value={venue.id}>{venue.name}</option>
-                            ))
-                        }
-                </select>
-                <p className='errormessage'>{errors.venue_id?.message}</p>
-                {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
-                <label htmlFor='details'>Event Details:</label>
-                <textarea
+                        ))
+                    }
+
+                </Form.Select>
+                <div className='errormessage'>{errors.venue_id?.message}</div>
+                <div className='errormessage'>{errors.role_rights?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='details'>
+                <Form.Label>Event Details</Form.Label>
+                <Form.Control
+                    className={errors.details ? 'inputError' : ''}
                     {...register('details')}
-                    type='text'
-                    id='details'
-                    rows='10'
+                    autoFocus
+                    onFocus={() => clearErrors('details')}
+                    as='textarea'
+                    row={5}
+                    name='details'
+                    required
                 />
-                <p className='errormessage'>{errors.details?.message}</p>
-                <label htmlFor='brands'>Brand(s):</label>
-                <select id='brand_id' {...register('brand_id', { valueAsNumber: true })} required >
-                    <option value="0">Select...</option>
+                <div className='errormessage'>{errors.details?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='brand_id'>
+                <Form.Label>Location</Form.Label>
+                <Form.Select
+                    className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
+                    {...register('brand_id', { valueAsNumber: true })}
+                    onFocus={() => clearErrors([ 'brand_id', 'role_rights' ])}
+                    type='text'
+                    name='brand_id'
+                    required
+                >
+                    <option value='0'>Select...</option>
                     {
                         brandList.map(brand => (
                             <option key={brand.id} value={brand.id}>{brand.name}</option>
-                            ))
-                        }
-                </select>
-                <p className='errormessage'>{errors.brand_id?.message}</p>
-                {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
-                {/* {networkError && <p className='errormessage networkerror'>must be online to create a new event</p>} */}
-                <input type='submit' value='submit' />
-            </form>
-        </div>
+                        ))
+                    }
+
+                </Form.Select>
+                <div className='errormessage'>{errors.brand_id?.message}</div>
+                <div className='errormessage'>{errors.role_rights?.message}</div>
+            </Form.Group>
+
+            <Button type='submit'>Submit</Button>
+
+        </Form>
+        //         {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
+        //         {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
+        //         {/* {networkError && <p className='errormessage networkerror'>must be online to create a new event</p>} */}
     )
 }
 

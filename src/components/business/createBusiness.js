@@ -11,7 +11,7 @@ import { NotificationsContext } from '../../context/notifications/notifications.
 
 const CreateBusiness = (props) => {
     const {dispatch } = useContext(NotificationsContext) 
-    const { register, handleSubmit, watch, reset, clearErrors, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, reset, setError, clearErrors, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
     });
@@ -35,7 +35,7 @@ const CreateBusiness = (props) => {
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'SUCCESS',
-                            message: 'business request submitted'
+                            message: `${data.business.name} business request submitted`
                         }
                     })
                     history.push({
@@ -44,12 +44,17 @@ const CreateBusiness = (props) => {
                 }
             })
             .catch(err => {
-                console.log(err)
+                if (err.response.status) {
+                    setError(`${err.response.data.type}`, {
+                        type: 'server',
+                        message: err.response.data.message
+                    })
+                }
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: 'there was a server error'
+                        message: `${err.response.data.message}`
                     }
                 })
             })
@@ -85,7 +90,8 @@ const CreateBusiness = (props) => {
                 <div className='errormessage'>{errors.email?.message}</div>
             </Form.Group>
 
-            <Form.Group controlId='business_avatar'>
+            {/* <Form.Group controlId='business_avatar'> */}
+            <Form.Group>
                 <Form.Label>Business Branding</Form.Label>
                 <Form.Control
                     className={errors.business_avatar ? 'inputError' : ''}
@@ -93,6 +99,7 @@ const CreateBusiness = (props) => {
                     onFocus={() => clearErrors('business_avatar')}
                     type='text'
                     name='business_avatar'
+                    value='https://picsum.photos/100/100'
                     required
                 />
                 <div className='errormessage'>{errors.business_avatar?.message}</div>
@@ -105,7 +112,7 @@ const CreateBusiness = (props) => {
                     {...register('business_description')}
                     onFocus={() => clearErrors('business_description')}
                     as='textarea'
-                    rows={3}
+                    rows={5}
                     name='business_description'
                     required
                 />
