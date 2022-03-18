@@ -40,6 +40,7 @@ const usersReducer = (state, action) => {
                 userContact: action.payload
             }
         case userTypes.USER_LOGOUT:
+            localStorage.clear()
             return {
                 ...USERS_INITIAL_STATE
             }

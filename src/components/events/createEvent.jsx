@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,21 +8,20 @@ import AxiosInstance from '../../helpers/axios';
 
 import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
+import { UsersContext } from '../../context/users/users.provider';
 import useImagePreviewer from '../../hooks/useImagePreviewer';
 
-import './createEvent.css';
 
-const CreateEvent = (props) => {
+const CreateEvent = () => {
     const { editImage, imagePreview, canvas } = useImagePreviewer()
     const { createEvent, useBrandList, useVenueList } = useContext(SiteContext)
     const { dispatch } = useContext(NotificationsContext);
+    const { userSignOut } = useContext(UsersContext)
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
     });
     
-    const [ adminRoleError, setAdminRoleError ] = useState(false);
-    // const [ networkError, setNetworkError ] = useState(false);
     const venueList = useVenueList()
     const brandList = useBrandList()
     let history = useHistory();
@@ -49,7 +48,7 @@ const CreateEvent = (props) => {
                 headers: { 'Authorization': 'Bearer ' + token }
             })
                 .then(response => {
-                    if(response.status === 200) {
+                    if (response.status === 200) {
                         createEvent(response.data)
                         dispatch({
                             type: "ADD_NOTIFICATION",
@@ -65,80 +64,55 @@ const CreateEvent = (props) => {
                             }
                         });
                     } else {
-                        console.log(response)
+                        console.log('axios else statement')
                         // throw new Error();
                     }
                 })
                 .catch(err => {
-                    if(!err.response) {
-                        console.log(err)
-                        console.log('network error')
-                    } else if(err.response.status === 400) {
-                        localStorage.clear()
-                        history.push('/login');
-                    } else if(err.response.status === 403) {
-                        setAdminRoleError(true);
+                    if (!err.response) {
+                        dispatch({
+                            type: "ADD_NOTIFICATION",
+                            payload: {
+                                notification_type: 'ERROR',
+                                message: 'server error, please wait and try again'
+                            }
+                        })
                     }
-                })
-        })
-        
-    }
 
-    const sendTest = async (data) => {
-        const token = localStorage.getItem('token')
-        data.eventmedia = 'https://picsum.photos/384/480'
-        
-        AxiosInstance.post('/events', data, {
-            headers: { 'Authorization': 'Bearer ' + token }
+                    else if (err.response.status === 403 || err.response.status === 400) {
+                        setError(`${err.response.data.type}`, {
+                            type: 'server',
+                            message: err.response.data.message
+                        })
+                        dispatch({
+                            type: "ADD_NOTIFICATION",
+                            payload: {
+                                notification_type: 'ERROR',
+                                message: `${err.response.data.message}`
+                            }
+                        })
+                    }
+
+                    else if (err.response.status === 401) {
+                        userSignOut()
+                        dispatch({
+                            type: "ADD_NOTIFICATION",
+                            payload: {
+                                notification_type: 'ERROR',
+                                message: `${err.response.data.message}`
+                            }
+                        })
+                        history.push({
+                            pathname: '/login'
+                        })
+                    }
+                })   
         })
-            .then(response => {
-                if(response.status === 200) {
-                    createEvent(response.data)
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'SUCCESS',
-                            message: `event '${data.eventname}' has been created`
-                        }
-                    })
-                    history.push({
-                        pathname: `/event/${response.data.event_id}`,
-                        state: {
-                            event: response.data
-                        }
-                    });
-                } else {
-                    console.log('axios else statement')
-                    console.log(response)
-                    // throw new Error();
-                }
-            })
-            .catch(err => {
-                console.log('inside the catch')
-                console.log(err.response)
-                if (err.response.status === 403) {
-                    setError(`${err.response.data.type}`, {
-                        type: 'server',
-                        message: err.response.data.message
-                    })
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: `${err.response.data.message}`
-                        }
-                    })
-                }
-                
-                if(err.response.status === 400) {
-                    localStorage.clear()
-                    history.push('/login');
-                }
-            })        
+        
     }
 
     return (
-        <Form onSubmit={handleSubmit(sendTest)}>
+        <Form onSubmit={handleSubmit(sendEvent)}>
 
             <Form.Group controlId='eventname'>
                 <Form.Label>Eventname</Form.Label>
