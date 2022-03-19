@@ -3,7 +3,7 @@ import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createEventSchema } from '../../helpers/validationSchemas';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Row } from 'react-bootstrap';
 import AxiosInstance from '../../helpers/axios';
 
 import { SiteContext } from '../../context/site/site.provider';
@@ -26,7 +26,7 @@ const CreateEvent = () => {
     const brandList = useBrandList()
     let history = useHistory();
     
-    const sendEvent = async (data) => {
+    const createNewEvent = async (data) => {
         canvas.current.toBlob(async function(blob) {
             const token = localStorage.getItem('token')
 
@@ -112,7 +112,7 @@ const CreateEvent = () => {
     }
 
     return (
-        <Form onSubmit={handleSubmit(sendEvent)}>
+        <Form onSubmit={handleSubmit(createNewEvent)}>
 
             <Form.Group controlId='eventname'>
                 <Form.Label>Eventname</Form.Label>
@@ -169,12 +169,14 @@ const CreateEvent = () => {
 
             {
                 editImage &&
-                    <canvas
-                        id={'eventImagePreview'}
-                        ref={canvas}
-                        width={384}
-                        height={480}
-                    />
+                    <Row className='mx-auto'>
+                        <canvas
+                            id={'eventImagePreview'}
+                            ref={canvas}
+                            width={384}
+                            height={480}
+                        />
+                    </Row>
             }
             
             <Form.Group controlId='eventmedia'>
