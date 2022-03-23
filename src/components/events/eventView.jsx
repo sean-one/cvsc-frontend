@@ -35,7 +35,7 @@ const EventView = (props) => {
                 {event.details}
             </Row>
             <Row>
-                <UpcomingEvents business={event.venue_name}/>
+                <UpcomingEvents venue={event.venue_id} brand={event.brand_id}/>
             </Row>
         </Container>
     )

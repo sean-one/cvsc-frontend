@@ -39,6 +39,14 @@ const SiteProvider = ({ children }) => {
         })
     }
 
+    const useEventFilterVenueId = (venue_id) => {
+        return events.filter(event => event.venue_id === venue_id)
+    }
+
+    const useEventFilterBrandId = (brand_id) => {
+        return events.filter(event => event.brand_id === brand_id)
+    }
+
     const useEventFilterByUser = (user_id) => {
         return events.filter(event => event.created_by === Number(user_id))
     }
@@ -69,6 +77,8 @@ const SiteProvider = ({ children }) => {
                 createEvent,
                 removeEvent,
                 updateEvent,
+                useEventFilterVenueId,
+                useEventFilterBrandId,
                 useEventFilterByUser,
                 // BUSINESS
                 useBusinessById,
