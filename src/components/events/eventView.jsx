@@ -22,9 +22,9 @@ const EventView = (props) => {
             <Row className='mx-auto my-3'>
                 <Image fluid src={event.eventmedia} alt={event.eventname} />
             </Row>
-            <Row className='d-flex flex-row mx-3' onClick={(e) => checkMap(e)}>
+            <Row className='d-flex flex-row mx-3'>
                 <Col xs={1}>
-                    <FontAwesomeIcon icon={faLocationArrow} size='1x' />
+                    <FontAwesomeIcon onClick={(e) => checkMap(e)} icon={faLocationArrow} size='1x' />
                 </Col>
                 <Col className='fw-bold'>
                     {event.venue_name}
