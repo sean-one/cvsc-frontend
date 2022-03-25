@@ -18,6 +18,10 @@ const SiteProvider = ({ children }) => {
         })
     }
 
+    const useEventById = (event_id) => {
+        return events.find(event => event.event_id === event_id)
+    }
+
     const createEvent = (event) => {
         dispatch({
             type: siteTypes.CREATE_EVENT,
@@ -74,6 +78,7 @@ const SiteProvider = ({ children }) => {
                 events,
                 businessList,
                 setSiteInfo,
+                useEventById,
                 createEvent,
                 removeEvent,
                 updateEvent,

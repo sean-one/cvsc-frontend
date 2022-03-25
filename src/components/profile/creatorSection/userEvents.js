@@ -2,13 +2,12 @@ import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Row } from 'react-bootstrap';
 
-import EventPreview from '../../../events/eventPreview';
+import EventPreview from '../../events/eventPreview';
 
-import { SiteContext } from '../../../../context/site/site.provider';
-import { UsersContext } from '../../../../context/users/users.provider';
+import { SiteContext } from '../../../context/site/site.provider';
+import { UsersContext } from '../../../context/users/users.provider';
 
-
-const UpcomingEvents = () => {
+const UserEvents = () => {
     const { userProfile } = useContext(UsersContext)
     const { useEventFilterByUser } = useContext(SiteContext)
     const userEvents = useEventFilterByUser(userProfile.id)
@@ -26,4 +25,4 @@ const UpcomingEvents = () => {
     )
 }
 
-export default withRouter(UpcomingEvents);
+export default withRouter(UserEvents);

@@ -3,7 +3,7 @@ import { Col, Container, Image, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 
-import UpcomingEvents from './upcomingEvents';
+import UpcomingEventView from '../upcoming/upcoming.eventview'
 import { formatTime } from '../../helpers/formatTime';
 
 
@@ -35,7 +35,7 @@ const EventView = (props) => {
                 {event.details}
             </Row>
             <Row>
-                <UpcomingEvents venue={event.venue_id} brand={event.brand_id}/>
+                <UpcomingEventView event={event.event_id}/>
             </Row>
         </Container>
     )

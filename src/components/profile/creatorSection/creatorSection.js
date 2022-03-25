@@ -2,7 +2,7 @@ import React from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
 import CreateEvent from '../../events/createEvent';
-import UpcomingEvents from './upcomingEvents/upcomingEvents';
+import UserEvents from './userEvents';
 
 
 const CreatorSection = () => {
@@ -20,7 +20,7 @@ const CreatorSection = () => {
                 <Accordion.Item eventKey="1">
                     <Accordion.Header>Upcoming Events</Accordion.Header>
                     <Accordion.Body>
-                        <UpcomingEvents />
+                        <UserEvents />
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>

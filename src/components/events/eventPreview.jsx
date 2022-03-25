@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Card, Row, Col } from 'react-bootstrap';
 
-import './eventPreview.css';
 import AxiosInstance from '../../helpers/axios';
 import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
