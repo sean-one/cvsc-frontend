@@ -8,7 +8,7 @@ import AxiosInstance from '../../../helpers/axios';
 import { SiteContext } from '../../../context/site/site.provider';
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
 import useBusinessList from '../../../hooks/useBusinessList';
-
+import useBusinessListFilter from '../../../hooks/useBusinessListFilter';
 
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
@@ -19,6 +19,9 @@ const CreatorRequest = () => {
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
     });
+
+    const businessFilter = useBusinessListFilter()
+    // console.log(businessFilter)
 
     const sendRequest = (data) => {
         console.log(data)

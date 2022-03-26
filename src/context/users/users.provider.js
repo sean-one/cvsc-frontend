@@ -103,6 +103,7 @@ const UsersProvider = ({ children }) => {
                 setUser,
                 editorRoles,
                 adminRoles,
+                userRoles,
                 setUserRoles,
 
 
