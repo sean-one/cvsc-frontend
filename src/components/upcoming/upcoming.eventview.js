@@ -4,14 +4,19 @@ import { Container } from 'react-bootstrap';
 import { SiteContext } from '../../context/site/site.provider';
 import EventPreview from '../events/eventPreview';
 
+import useEventsFilter from '../../hooks/useEventsFilter';
+
 
 const UpcomingEventView = (props) => {
     const { useEventById, events } = useContext(SiteContext)
     const selectedEvent = useEventById(props.event);
 
+    const atVenueName = useEventsFilter({ venue_id: 5 })
+
     const atVenue = events.filter(e => (e.venue_id === selectedEvent.venue_id) && (e.event_id !== selectedEvent.event_id))
     const withBrand = events.filter(e => (e.brand_id === selectedEvent.brand_id) && (e.venue_id !== selectedEvent.venue_id) && (e.event_id !== selectedEvent.event_id))    
 
+    console.log(atVenueName)
     return (
         <React.Fragment>
             {
