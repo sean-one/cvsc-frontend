@@ -4,13 +4,12 @@ import { Row } from 'react-bootstrap';
 
 import EventPreview from '../../events/eventPreview';
 
-import { SiteContext } from '../../../context/site/site.provider';
 import { UsersContext } from '../../../context/users/users.provider';
+import useEventsFilter from '../../../hooks/useEventsFilter';
 
 const UserEvents = () => {
     const { userProfile } = useContext(UsersContext)
-    const { useEventFilterByUser } = useContext(SiteContext)
-    const userEvents = useEventFilterByUser(userProfile.id)
+    const userEvents = useEventsFilter({ user_id: userProfile.id })
 
     return (
         <Row>

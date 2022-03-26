@@ -8,19 +8,16 @@ import useEventsFilter from '../../hooks/useEventsFilter';
 
 
 const UpcomingEventView = (props) => {
-    const { useEventById, events } = useContext(SiteContext)
+    const { useEventById } = useContext(SiteContext)
     const selectedEvent = useEventById(props.event);
 
-    const atVenueName = useEventsFilter({ venue_id: 5 })
+    const atVenue = useEventsFilter({ venue_id: selectedEvent.venue_id, event_id: selectedEvent.event_id })
+    const withBrand = useEventsFilter({ brand_id: selectedEvent.brand_id, event_id: selectedEvent.event_id })
 
-    const atVenue = events.filter(e => (e.venue_id === selectedEvent.venue_id) && (e.event_id !== selectedEvent.event_id))
-    const withBrand = events.filter(e => (e.brand_id === selectedEvent.brand_id) && (e.venue_id !== selectedEvent.venue_id) && (e.event_id !== selectedEvent.event_id))    
-
-    console.log(atVenueName)
     return (
         <React.Fragment>
             {
-                (selectedEvent.brand_id !== selectedEvent.venue_id) &&
+                ((selectedEvent.brand_id !== selectedEvent.venue_id) && (withBrand.length > 0)) &&
                     <Container>
                         <h3>{`upcoming events with ${selectedEvent.brand_name}`}</h3>
                         {withBrand.map(event => {
@@ -30,14 +27,17 @@ const UpcomingEventView = (props) => {
                         })}
                     </Container>
             }
-            <Container>
-                <h3>{`upcoming events at ${selectedEvent.venue_name}`}</h3>
-                {atVenue.map(event => {
-                    return (
-                        <EventPreview key={event.event_id} event={event}/>
-                    )
-                })}
-            </Container>
+            {
+                (atVenue.length > 0) &&
+                    <Container>
+                        <h3>{`upcoming events at ${selectedEvent.venue_name}`}</h3>
+                        {atVenue.map(event => {
+                            return (
+                                <EventPreview key={event.event_id} event={event}/>
+                            )
+                        })}
+                    </Container>
+            }
         </React.Fragment>
     )
 }
