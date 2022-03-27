@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 
 // components
 import Calendar from './components/calendar/calendar';
-import Business from './components/business/business';
+import BusinessView from './components/business/businessView';
 import { NavHeader } from './components/NavHeader';
 import Register from './components/register.jsx';
 import Login from './components/login.jsx';
@@ -36,7 +36,7 @@ const App = () => {
             <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
             <Route path='/register' component={Register} />
             <Route path='/event/:id' render={(props) => (<EventView {...props} />)} />
-            <Route exact path='/business/:id' render={(props) => (<Business {...props} />)} />
+            <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <AuthRoute path='/business/edit/:id' component={EditBusiness} />
             <AuthRoute path='/events/edit/:id' component={EditEvent} />
             <Route path='/login' component={Login} />

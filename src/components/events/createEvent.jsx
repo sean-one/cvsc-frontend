@@ -10,13 +10,13 @@ import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
 import useImagePreviewer from '../../hooks/useImagePreviewer';
-import useBusinessListFilter from '../../hooks/useBusinessListFilter';
+import useBusinessFilter from '../../hooks/useBusinessFilter';
 
 
 const CreateEvent = () => {
     const { editImage, imagePreview, canvas } = useImagePreviewer()
     const { createEvent } = useContext(SiteContext)
-    const { venue_list, brand_list } = useBusinessListFilter()
+    const { venue_list, brand_list } = useBusinessFilter()
     const { dispatch } = useContext(NotificationsContext);
     const { userSignOut } = useContext(UsersContext)
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({

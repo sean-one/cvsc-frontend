@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './business.css';
 
 const EditBusiness = (props) => {
     const business = props.location.state.business

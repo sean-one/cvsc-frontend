@@ -6,11 +6,11 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import AxiosInstance from '../../../helpers/axios';
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
-import useBusinessListFilter from '../../../hooks/useBusinessListFilter';
+import useBusinessFilter from '../../../hooks/useBusinessFilter';
 
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
-    const { business_filtered } = useBusinessListFilter()
+    const { business_filtered } = useBusinessFilter()
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',

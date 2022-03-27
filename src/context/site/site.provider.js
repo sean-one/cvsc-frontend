@@ -44,10 +44,6 @@ const SiteProvider = ({ children }) => {
     }
 
     // BUSINESS
-    const useBusinessById = (business_id) => {
-        return businessList.find(business => business.id === business_id)
-    }
-
     const useBusinessAdmin = (user_id) => {
         return businessList.filter(business => business.business_admin === user_id)
     }
@@ -63,7 +59,6 @@ const SiteProvider = ({ children }) => {
                 removeEvent,
                 updateEvent,
                 // BUSINESS
-                useBusinessById,
                 useBusinessAdmin
             }
         }>
