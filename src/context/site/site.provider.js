@@ -48,14 +48,6 @@ const SiteProvider = ({ children }) => {
         return businessList.find(business => business.id === business_id)
     }
 
-    const useVenueList = () => {
-        return businessList.filter(business => (business.businesstype === 'venue' || business.businesstype === 'both') && business.activeBusiness === true)
-    }
-
-    const useBrandList = () => {
-        return businessList.filter(business => (business.businesstype === 'brand' || business.businesstype === 'both') && business.activeBusiness === true)
-    }
-
     const useBusinessAdmin = (user_id) => {
         return businessList.filter(business => business.business_admin === user_id)
     }
@@ -72,8 +64,6 @@ const SiteProvider = ({ children }) => {
                 updateEvent,
                 // BUSINESS
                 useBusinessById,
-                useVenueList,
-                useBrandList,
                 useBusinessAdmin
             }
         }>

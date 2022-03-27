@@ -7,13 +7,24 @@ const useBusinessListFilter = () => {
     const { businessList } = useContext(SiteContext);
     const { useBusinessIdRoles } = useContext(UsersContext)
     const userRolesIdArray = useBusinessIdRoles()
-    let filteredBusiness = businessList
+    let business_filtered = businessList
+
+    // remove inactive and request closed businesses
+    business_filtered = business_filtered.filter(business => (business.requestOpen === true) && (business.activeBusiness === true))
+
+    // brand and venue list for current active businesses
+    const venue_list = business_filtered.filter(business => (business.businesstype === 'venue' || business.businesstype === 'both') && business.activeBusiness === true)
+    const brand_list = business_filtered.filter(business => (business.businesstype === 'brand' || business.businesstype === 'both') && business.activeBusiness === true)
+
 
     if (userRolesIdArray.length > 0) {
-        filteredBusiness.filter(business => !userRolesIdArray.includes(Number(business.id)))
+        business_filtered = business_filtered.filter(business => !userRolesIdArray.includes(business.id))
     }
-    console.log(filteredBusiness)
-    return filteredBusiness
+
+    const venue_filtered = business_filtered.filter(business => (business.businesstype === 'venue') || (business.businesstype === 'both'))
+    const brand_filtered = business_filtered.filter(business => business.businesstype === 'brand')
+    
+    return { business_filtered, venue_filtered, brand_filtered, venue_list, brand_list }
 }
 
 export default useBusinessListFilter;

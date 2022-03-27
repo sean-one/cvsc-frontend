@@ -5,26 +5,19 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import AxiosInstance from '../../../helpers/axios';
-import { SiteContext } from '../../../context/site/site.provider';
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
-import useBusinessList from '../../../hooks/useBusinessList';
 import useBusinessListFilter from '../../../hooks/useBusinessListFilter';
 
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
-    const { businessList } = useContext(SiteContext)
-    const { businessCreatorRequest } = useBusinessList(businessList)
+    const { business_filtered } = useBusinessListFilter()
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
     });
 
-    const businessFilter = useBusinessListFilter()
-    // console.log(businessFilter)
-
     const sendRequest = (data) => {
-        console.log(data)
         const token = localStorage.getItem('token')
 
         AxiosInstance.post('/roles/create-request', data, {
@@ -79,7 +72,7 @@ const CreatorRequest = () => {
                         >
                             <option>Business Select...</option>
                             {
-                                businessCreatorRequest.map(business => (
+                                business_filtered.map(business => (
                                     <option key={business.id} value={business.id}>{business.name}</option>
                                     ))
                                 }

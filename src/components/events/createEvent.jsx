@@ -10,11 +10,13 @@ import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
 import useImagePreviewer from '../../hooks/useImagePreviewer';
+import useBusinessListFilter from '../../hooks/useBusinessListFilter';
 
 
 const CreateEvent = () => {
     const { editImage, imagePreview, canvas } = useImagePreviewer()
-    const { createEvent, useBrandList, useVenueList } = useContext(SiteContext)
+    const { createEvent } = useContext(SiteContext)
+    const { venue_list, brand_list } = useBusinessListFilter()
     const { dispatch } = useContext(NotificationsContext);
     const { userSignOut } = useContext(UsersContext)
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -22,8 +24,6 @@ const CreateEvent = () => {
         resolver: yupResolver(createEventSchema)
     });
     
-    const venueList = useVenueList()
-    const brandList = useBrandList()
     let history = useHistory();
     
     const createNewEvent = async (data) => {
@@ -205,7 +205,7 @@ const CreateEvent = () => {
                 >
                     <option value='0'>Select...</option>
                     {
-                        venueList.map(venue => (
+                        venue_list.map(venue => (
                             <option key={venue.id} value={venue.id}>{venue.name}</option>
                         ))
                     }
@@ -231,7 +231,7 @@ const CreateEvent = () => {
             </Form.Group>
 
             <Form.Group controlId='brand_id'>
-                <Form.Label>Location</Form.Label>
+                <Form.Label>Brand</Form.Label>
                 <Form.Select
                     className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
                     {...register('brand_id', { valueAsNumber: true })}
@@ -242,7 +242,7 @@ const CreateEvent = () => {
                 >
                     <option value='0'>Select...</option>
                     {
-                        brandList.map(brand => (
+                        brand_list.map(brand => (
                             <option key={brand.id} value={brand.id}>{brand.name}</option>
                         ))
                     }
