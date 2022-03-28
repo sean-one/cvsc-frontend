@@ -12,25 +12,25 @@ const BusinessView = (props) => {
 
     return (
         <Container className='px-0'>
-            <Row>
+            <Row className='px-0'>
                 <Col>
                     <Image fluid src={BusinessLogo} alt={business.name} />
                 </Col>
                 <Col className='d-flex flex-column align-items-left justify-content-center'>
-                    <Row>
-                        <h2>{business.name}</h2>
+                    <Row className='px-0'>
+                        <h2 className='px-0'>{business.name}</h2>
                     </Row>
-                    <Row>
-                        <Row>
+                    <Row className='d-flex flex-column px-0 mt-3'>
+                        <Row className='px-0 mx-0'>
                             {`Email: ${business.email}`}
                         </Row>
-                        <Row>
+                        <Row className='px-0 mx-0'>
                             {`Instagram: ${business.instagram}`}
                         </Row>
                     </Row>
                 </Col>
             </Row>
-            <Row className='m-3 fw-bold'>
+            <Row className='py-3 fw-bold'>
                 {business.formatted}
             </Row>
             <Row className='py-3 m-2 fs-4 lh-lg border-top border-bottom'>
