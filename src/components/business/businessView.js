@@ -12,9 +12,9 @@ const BusinessView = (props) => {
 
     return (
         <Container className='px-0'>
-            <Row className='px-0'>
-                <Col>
-                    <Image fluid src={BusinessLogo} alt={business.name} />
+            <Row className='m-2 px-0'>
+                <Col className='mx-auto'>
+                    <Image fluid src='https://picsum.photos/500/500' alt={business.name} />
                 </Col>
                 <Col className='d-flex flex-column align-items-left justify-content-center'>
                     <Row className='px-0'>
@@ -30,7 +30,7 @@ const BusinessView = (props) => {
                     </Row>
                 </Col>
             </Row>
-            <Row className='py-3 fw-bold'>
+            <Row className='m-2 py-3 fw-bold'>
                 {business.formatted}
             </Row>
             <Row className='py-3 m-2 fs-4 lh-lg border-top border-bottom'>

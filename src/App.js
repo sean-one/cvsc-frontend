@@ -13,6 +13,7 @@ import EventView from './components/events/eventView';
 import EditBusiness from './components/business/editBusiness';
 import EditEvent from './components/events/editEvent';
 
+import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 
 import SiteProvider from './context/site/site.provider';
@@ -27,6 +28,7 @@ const App = () => {
 
   return (
     <React.Fragment>
+      <ScrollToTop/>
       <UsersProvider>
       <SiteProvider>
           <RolesProvider>

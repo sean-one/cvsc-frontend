@@ -28,13 +28,14 @@ export const Layout = (props) => {
         <Styles>
             <Container fluid className='app'>
                 <Row className='px-3--md'>
-                    <Col sm={12} lg={2} className='d-none d-lg-block' style={{ border: 'dotted 1px red', height: '100vh' }}>
+                    {/* add 'd-lg-block' to class name to add to sides on larger screens */}
+                    <Col sm={12} lg={2} className='d-none d-lg-block'>
                         {/* filter options area */}
                     </Col>
                     <Col sm={12} lg={7}>
                         {props.children}
                     </Col>
-                    <Col sm={12} lg={3} className='d-none d-lg-block' style={{ border: 'dotted 1px red', height: '100vh' }}>
+                    <Col sm={12} lg={3} className='d-none d-lg-block'>
                         {/* bottom, right ad space area */}
                     </Col>
                 </Row>
