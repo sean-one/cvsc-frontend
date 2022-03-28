@@ -63,7 +63,11 @@ const EventPreview = (props) => {
                 </Col>
             </Row>
             <Card.Footer className='d-flex justify-around'>
-                <Col>{event.brand_name}</Col>
+                <Col>
+                    <Link to={{
+                        pathname: `/business/${event.brand_id}`
+                    }}>{event.brand_name}</Link>
+                </Col>
                 <Col>{event.city}</Col>
                 {
                     (event.created_by === parseInt(localStorage.getItem('userId'))) &&

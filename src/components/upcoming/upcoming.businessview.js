@@ -9,7 +9,7 @@ const UpcomingBusinessView = (props) => {
     const business_events = useEventsFilter({ business_id: props.business})
     
     return (
-        <Container>
+        <Container className='px-0'>
             <h3>Upcoming Events</h3>
             {
                 business_events.map(event => {
