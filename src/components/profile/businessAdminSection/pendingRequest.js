@@ -98,8 +98,8 @@ const PendingRequest = (props) => {
                     <th>User</th>
                     <th>Business</th>
                     <th>Type</th>
-                    <th><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></th>
-                    <th><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></th>
+                    <th><FontAwesomeIcon icon={faCheck} /></th>
+                    <th><FontAwesomeIcon icon={faTrash} /></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,12 +111,12 @@ const PendingRequest = (props) => {
                             <td>{pr.role_type}</td>
                                 <td>
                                     <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>
-                                        <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
+                                        <FontAwesomeIcon icon={faCheck} />
                                     </Button>
                                 </td>
                                 <td>
                                     <Button size='sm' variant='danger' onClick={(e) => rejectRequest(e)} value={pr.id}>
-                                        <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </Button>
                                 </td>
                             </tr>

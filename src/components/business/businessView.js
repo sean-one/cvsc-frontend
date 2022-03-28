@@ -5,7 +5,7 @@ import { Col, Container, Image, Row } from 'react-bootstrap'
 import UpcomingBusinessView from '../upcoming/upcoming.businessview';
 import useBusinessFilter from '../../hooks/useBusinessFilter';
 
-import BusinessLogo from '../../assets/business_logo.jpg'
+// import BusinessLogo from '../../assets/business_logo.jpg'
 
 const BusinessView = (props) => {
     const { business } = useBusinessFilter(props.match.params.id)

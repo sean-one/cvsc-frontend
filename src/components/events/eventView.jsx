@@ -1,7 +1,7 @@
-import React from 'react'
-import { Col, Container, Image, Row } from 'react-bootstrap'
+import React, { useState, useEffect } from 'react'
+import { Button, Col, Container, Image, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
+import { faLocationArrow, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import UpcomingEventView from '../upcoming/upcoming.eventview'
 import { formatTime } from '../../helpers/formatTime';
@@ -9,15 +9,42 @@ import { formatTime } from '../../helpers/formatTime';
 
 const EventView = (props) => {
     const event = props.location.state.event
+    const [ isCreator, setIsCreator ] = useState(false)
 
     const checkMap = (e) => {
         console.log('click')
     }
 
+    // check if user created event to show edit and delete options
+    useEffect(() => {
+        const user_id = localStorage.getItem('userId')
+        if (!user_id) {
+            return
+        } else {
+            if (event.created_by === Number(user_id)) {
+                setIsCreator(true)
+            }
+        }
+    }, [event.created_by])
+
     return (
         <Container className='px-0'>
             <Row className='d-flex justify-content-between'>
-                <h2>{event.eventname}</h2>
+                <Col xs={10}>
+                    <h2>{event.eventname}</h2>
+                </Col>
+                <Col className={`${isCreator ? 'd-flex' : 'd-none'}`}>
+                    <Col>
+                        <Button size='sm' variant='info'>
+                            <FontAwesomeIcon icon={faEdit} />
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button size='sm' variant='danger'>
+                            <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                    </Col>
+                </Col>
             </Row>
             <Row className='mx-auto my-3'>
                 <Image fluid src={event.eventmedia} alt={event.eventname} />
