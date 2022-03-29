@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row, useAccordionButton } from 'react-bootstrap';
 
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import AxiosInstance from '../../../helpers/axios';
@@ -17,46 +17,47 @@ const CreatorRequest = () => {
         resolver: yupResolver(requestBusinessCreator)
     });
 
-    const sendRequest = (data) => {
+    const sendRequest = (data, e) => {
         const token = localStorage.getItem('token')
+        console.log(e)
 
-        AxiosInstance.post('/roles/create-request', data, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(response => {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `your ${data.request_for} rights request submitted`
-                    }
-                })
-            })
-            .catch(err => {
+        // AxiosInstance.post('/roles/create-request', data, {
+        //     headers: { 'Authorization': 'Bearer ' + token }
+        // })
+        //     .then(response => {
+        //         dispatch({
+        //             type: "ADD_NOTIFICATION",
+        //             payload: {
+        //                 notification_type: 'SUCCESS',
+        //                 message: `your ${data.request_for} rights request submitted`
+        //             }
+        //         })
+        //     })
+        //     .catch(err => {
                 
-                if(err.response.data.type === 'duplicate') {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'error',
-                            message: 'a previous request for this business is still pending'
-                        }
-                    })
-                }
+        //         if(err.response.data.type === 'duplicate') {
+        //             dispatch({
+        //                 type: "ADD_NOTIFICATION",
+        //                 payload: {
+        //                     notification_type: 'error',
+        //                     message: 'a previous request for this business is still pending'
+        //                 }
+        //             })
+        //         }
 
-                if(err.response.data.type === 'missing input') {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'error',
-                            message: 'please be sure to select both the business & admin rights'
-                        }
-                    })
-                }
-            })
-            .finally(() => {
-                reset()
-            })
+        //         if(err.response.data.type === 'missing input') {
+        //             dispatch({
+        //                 type: "ADD_NOTIFICATION",
+        //                 payload: {
+        //                     notification_type: 'error',
+        //                     message: 'please be sure to select both the business & admin rights'
+        //                 }
+        //             })
+        //         }
+        //     })
+        //     .finally(() => {
+        //         reset()
+        //     })
     }
 
     return (
