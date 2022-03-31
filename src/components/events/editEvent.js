@@ -1,27 +1,30 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+
 import { reformatTime } from '../../helpers/formatTime';
 import AxiosInstance from '../../helpers/axios';
-
-import { SiteContext } from '../../context/site/site.provider';
+import useImagePreviewer from '../../hooks/useImagePreviewer';
+import useBusinessFilter from '../../hooks/useBusinessFilter';
+// import { SiteContext } from '../../context/site/site.provider';
 
 const EditEvent = (props) => {
-    const { useVenueList, useBrandList, updateEvent } = useContext(SiteContext)
-    const venueList = useVenueList()
-    const brandList = useBrandList()
+    const { event, handleClose } = props;
+
+    const { venue_list, brand_list } = useBusinessFilter()
+    const { editImage, imagePreview, canvas } = useImagePreviewer()
     
-    const { register, handleSubmit } = useForm();
-    const currentEvent = props.location.state.event;
-    const [ eventname, setEventname ] = useState(currentEvent.eventname);
-    const [ eventdate, setEventdate ] = useState(format(new Date(currentEvent.eventdate), 'yyyy-MM-dd'));
-    const [ eventstart, setEventstart ] = useState(reformatTime(currentEvent.eventstart));
-    const [ eventend, setEventend ] = useState(reformatTime(currentEvent.eventend));
-    const [ eventmedia, setEventmedia ] = useState(currentEvent.eventmedia);
-    const [ venue, setVenue ] = useState(currentEvent.venue_id);
-    const [ eventdetails, setEventDetails ] = useState(currentEvent.details);
-    const [ brands, setBrands ] = useState(currentEvent.brand_id);
+    const { register, handleSubmit, clearErrors, formState:{ errors } } = useForm();
+    const [ eventname, setEventname ] = useState(event.eventname);
+    const [ eventdate, setEventdate ] = useState(format(new Date(event.eventdate), 'yyyy-MM-dd'));
+    const [ eventstart, setEventstart ] = useState(reformatTime(event.eventstart));
+    const [ eventend, setEventend ] = useState(reformatTime(event.eventend));
+    const [ eventmedia, setEventmedia ] = useState(event.eventmedia);
+    const [ venue, setVenue ] = useState(event.venue_id);
+    const [ eventdetails, setEventDetails ] = useState(event.details);
+    const [ brands, setBrands ] = useState(event.brand_id);
     
     let history = useHistory();
 
@@ -67,40 +70,168 @@ const EditEvent = (props) => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit((eventdata) => sendEvent(eventdata))}>
-                <label htmlFor='eventname'>Event Name:</label>
-                <input type='text' id='eventname' value={eventname} {...register('eventname')} required onChange={(e) => setEventname(e.target.value)} />
-                <label htmlFor='eventdate'>Event Date:</label>
-                <input type='date' id='eventdate' value={eventdate} {...register('eventdate')} required onChange={(e) => setEventdate(e.target.value)} />
-                <label htmlFor='eventstart'>Start Time:</label>
-                {/* <input type='time' id='eventstart' {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required /> */}
-                <input type='time' id='eventstart' value={eventstart} {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })} required onChange={(e) => setEventstart(e.target.value)} />
-                <label htmlFor='eventend'>End Time:</label>
-                <input type='time' id='eventend' value={eventend} {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })} required onChange={(e) => setEventend(e.target.value)} />
-                <img src={currentEvent.eventmedia} alt={currentEvent.eventname} />
-                <label htmlFor='eventmedia'>Upload New Image:</label>
-                <input type='text' id='eventmedia' value={eventmedia} {...register('eventmedia')} onChange={(e) => setEventmedia(e.target.value)} />
-                <select id='venue_id' value={venue} {...register('venue_id', { valueAsNumber: true })} required onChange={(e) => setVenue(e.target.value)}>
+        <Form>
+
+            <Form.Group controlId='eventname'>
+                <Form.Label>Eventname</Form.Label>
+                <Form.Control
+                    className={errors.eventname ? 'inputError' : ''}
+                    {...register('eventname')}
+                    autoFocus
+                    onFocus={() => clearErrors('eventname')}
+                    type='text'
+                    name='eventname'
+                    value={eventname}
+                    onChange={(e) => setEventname(e)}
+                />
+                <div className='errormessage'>{errors.eventname?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='eventdate'>
+                <Form.Label>Event Date</Form.Label>
+                <Form.Control
+                    className={errors.eventdate ? 'inputError' : ''}
+                    {...register('eventdate')}
+                    onFocus={() => clearErrors('eventdate')}
+                    type='date'
+                    name='eventdate'
+                    value={eventdate}
+                    onChange={(e) => setEventdate(e)}
+                />
+                <div className='errormessage'>{errors.eventdate?.message}</div>
+            </Form.Group>
+
+            <Row>
+                <Col>
+                    <Form.Group controlId='eventstart'>
+                        <Form.Label>Start</Form.Label>
+                        <Form.Control
+                            className={errors.eventstart ? 'inputError' : ''}
+                            {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                            onFocus={() => clearErrors('eventstart')}
+                            type='time'
+                            name='eventstart'
+                            value={eventstart}
+                            onChange={(e) => setEventstart(e)}
+                        />
+                        <div className='errormessage'>{errors.eventstart?.message}</div>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId='eventend'>
+                        <Form.Label>End</Form.Label>
+                        <Form.Control
+                            className={errors.eventend ? 'inputError' : ''}
+                            {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                            onFocus={() => clearErrors('eventend')}
+                            type='time'
+                            name='eventend'
+                            value={eventend}
+                            onChange={(e) => setEventend(e)}
+                        />
+                        <div className='errormessage'>{errors.eventend?.message}</div>
+                    </Form.Group>
+                </Col>
+            </Row>
+
+            {
+                editImage &&
+                <Row className='mx-auto'>
+                    <canvas
+                        id={'eventImagePreview'}
+                        ref={canvas}
+                        width={384}
+                        height={480}
+                    />
+                </Row>
+            }
+
+            <Form.Group controlId='eventmedia'>
+                <Form.Label>Image Link</Form.Label>
+                <Form.Control
+                    className={errors.eventmedia ? 'inputError' : ''}
+                    {...register('eventmedia')}
+                    onFocus={() => clearErrors('eventmedia')}
+                    type='file'
+                    name='eventmedia'
+                    accept='image/*'
+                    onChange={imagePreview}
+                />
+                <div className='errormessage'>{errors.eventmedia?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='venue_id'>
+                <Form.Label>Location</Form.Label>
+                <Form.Select
+                    className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
+                    {...register('venue_id', { valueAsNumber: true })}
+                    onFocus={() => clearErrors(['venue_id', 'role_rights'])}
+                    type='text'
+                    name='venue_id'
+                    value={venue}
+                    onChange={(e) => setVenue(e)}
+                >
+                    <option value='0'>Select...</option>
                     {
-                        venueList.map(venue => (
+                        venue_list.map(venue => (
                             <option key={venue.id} value={venue.id}>{venue.name}</option>
                         ))
                     }
-                </select>
-                <label htmlFor='details'>Event Details:</label>
-                <textarea type='text' id='details' value={eventdetails} {...register('details')} rows='10' onChange={(e) => setEventDetails(e.target.value)} />
-                <label htmlFor='brands'>Brand(s):</label>
-                <select id='brand_id' value={brands} {...register('brand_id', { valueAsNumber: true })} required onChange={(e) => setBrands(e.target.value)}>
+
+                </Form.Select>
+                <div className='errormessage'>{errors.venue_id?.message}</div>
+                <div className='errormessage'>{errors.role_rights?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='details'>
+                <Form.Label>Event Details</Form.Label>
+                <Form.Control
+                    className={errors.details ? 'inputError' : ''}
+                    {...register('details')}
+                    autoFocus
+                    onFocus={() => clearErrors('details')}
+                    as='textarea'
+                    row={15}
+                    name='details'
+                    value={eventdetails}
+                    onChange={(e) => setEventDetails(e)}
+                />
+                <div className='errormessage'>{errors.details?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='brand_id'>
+                <Form.Label>Brand</Form.Label>
+                <Form.Select
+                    className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
+                    {...register('brand_id', { valueAsNumber: true })}
+                    onFocus={() => clearErrors(['brand_id', 'role_rights'])}
+                    type='text'
+                    name='brand_id'
+                    value={brands}
+                    onChange={(e) => setBrands(e)}
+                >
+                    <option value='0'>Select...</option>
                     {
-                        brandList.map(brand => (
+                        brand_list.map(brand => (
                             <option key={brand.id} value={brand.id}>{brand.name}</option>
                         ))
                     }
-                </select>
-                <input type='submit' value='submit' />
-            </form>
-        </div>
+
+                </Form.Select>
+                <div className='errormessage'>{errors.brand_id?.message}</div>
+                <div className='errormessage'>{errors.role_rights?.message}</div>
+            </Form.Group>
+
+            <Row className='d-flex justify-content-around pt-3'>
+                <Col xs={2}>
+                    <Button type='submit'>Update</Button>
+                </Col>
+                <Col xs={2}>
+                    <Button onClick={handleClose} variant='secondary'>Close</Button>
+                </Col>
+            </Row>
+
+        </Form>
     )
 }
 
