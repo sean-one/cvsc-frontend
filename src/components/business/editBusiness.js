@@ -1,11 +1,26 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
+import styled from 'styled-components';
 
 import { update_Business } from '../../helpers/dataCleanUp';
 import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import AxiosInstance from '../../helpers/axios';
+
+const Styles = styled.div`
+    .errormessage {
+        width: 100%;
+        text-align: left;
+        padding: 0.25rem;
+        color: #DAD7CD;
+        /* font-weight: bold; */
+    }
+
+    .inputError {
+        border: 2px solid red;
+    }
+`
 
 const EditBusiness = ({ business, handleClose }) => {
     const { updateBusiness } = useContext(SiteContext)
@@ -74,80 +89,82 @@ const EditBusiness = ({ business, handleClose }) => {
     }
 
     return (
-        <Form onSubmit={handleSubmit(sendBusinessUpdate)}>
+        <Styles>
+            <Form onSubmit={handleSubmit(sendBusinessUpdate)}>
 
-            <Form.Group controlId='email'>
-                <Form.Label>Business Email</Form.Label>
-                <Form.Control
-                    className={errors.email ? 'inputError' : ''}
-                    {...register('email')}
-                    onFocus={() => clearErrors('email')}
-                    type='text'
-                    name='email'
-                />
-                <div className='errormessage'>{errors.email?.message}</div>
-            </Form.Group>
+                <Form.Group controlId='email'>
+                    <Form.Label>Business Email</Form.Label>
+                    <Form.Control
+                        className={errors.email ? 'inputError' : ''}
+                        {...register('email')}
+                        onFocus={() => clearErrors('email')}
+                        type='text'
+                        name='email'
+                    />
+                    <div className='errormessage'>{errors.email?.message}</div>
+                </Form.Group>
 
-            {/* <Form.Group controlId='business_avatar'> */}
-            {/* <Form.Group>
-                <Form.Label>Business Branding</Form.Label>
-                <Form.Control
-                    className={errors.business_avatar ? 'inputError' : ''}
-                    {...register('business_avatar')}
-                    onFocus={() => clearErrors('business_avatar')}
-                    type='text'
-                    name='business_avatar'
-                />
-                <div className='errormessage'>{errors.business_avatar?.message}</div>
-            </Form.Group> */}
+                {/* <Form.Group controlId='business_avatar'> */}
+                {/* <Form.Group>
+                    <Form.Label>Business Branding</Form.Label>
+                    <Form.Control
+                        className={errors.business_avatar ? 'inputError' : ''}
+                        {...register('business_avatar')}
+                        onFocus={() => clearErrors('business_avatar')}
+                        type='text'
+                        name='business_avatar'
+                    />
+                    <div className='errormessage'>{errors.business_avatar?.message}</div>
+                </Form.Group> */}
 
-            <Form.Group controlId='business_description'>
-                <Form.Label>Business Bio</Form.Label>
-                <Form.Control
-                    className={errors.business_description ? 'inputError' : ''}
-                    {...register('business_description')}
-                    onFocus={() => clearErrors('business_description')}
-                    as='textarea'
-                    rows={5}
-                    name='business_description'
-                />
-                <div className='errormessage'>{errors.business_description?.message}</div>
-            </Form.Group>
+                <Form.Group controlId='business_description'>
+                    <Form.Label>Business Bio</Form.Label>
+                    <Form.Control
+                        className={errors.business_description ? 'inputError' : ''}
+                        {...register('business_description')}
+                        onFocus={() => clearErrors('business_description')}
+                        as='textarea'
+                        rows={5}
+                        name='business_description'
+                    />
+                    <div className='errormessage'>{errors.business_description?.message}</div>
+                </Form.Group>
 
-            <Form.Group controlId='instagram'>
-                <Form.Label>Instagram</Form.Label>
-                <Form.Control
-                    className={errors.instagram ? 'inputError' : ''}
-                    {...register('instagram')}
-                    onFocus={() => clearErrors('instagram')}
-                    type='text'
-                    name='instagram'
-                />
-                <div className='errormessage'>{errors.instagram?.message}</div>
-            </Form.Group>
+                <Form.Group controlId='instagram'>
+                    <Form.Label>Instagram</Form.Label>
+                    <Form.Control
+                        className={errors.instagram ? 'inputError' : ''}
+                        {...register('instagram')}
+                        onFocus={() => clearErrors('instagram')}
+                        type='text'
+                        name='instagram'
+                    />
+                    <div className='errormessage'>{errors.instagram?.message}</div>
+                </Form.Group>
 
-            <Form.Group controlId='website'>
-                <Form.Label>Website</Form.Label>
-                <Form.Control
-                    className={errors.website ? 'inputError' : ''}
-                    {...register('website')}
-                    onFocus={() => clearErrors('website')}
-                    type='text'
-                    name='website'
-                />
-                <div className='errormessage'>{errors.website?.message}</div>
-            </Form.Group>
+                <Form.Group controlId='website'>
+                    <Form.Label>Website</Form.Label>
+                    <Form.Control
+                        className={errors.website ? 'inputError' : ''}
+                        {...register('website')}
+                        onFocus={() => clearErrors('website')}
+                        type='text'
+                        name='website'
+                    />
+                    <div className='errormessage'>{errors.website?.message}</div>
+                </Form.Group>
 
-            <Row className='d-flex justify-content-around pt-3'>
-                <Col xs={2}>
-                    <Button type='submit' disabled={!isDirty}>Update</Button>
-                </Col>
-                <Col xs={2}>
-                    <Button onClick={handleClose} variant='secondary'>Close</Button>
-                </Col>
-            </Row>
+                <Row className='d-flex justify-content-around pt-3'>
+                    <Col xs={2}>
+                        <Button type='submit' disabled={!isDirty}>Update</Button>
+                    </Col>
+                    <Col xs={2}>
+                        <Button onClick={handleClose} variant='secondary'>Close</Button>
+                    </Col>
+                </Row>
 
-        </Form>
+            </Form>
+        </Styles>
     )
 }
 

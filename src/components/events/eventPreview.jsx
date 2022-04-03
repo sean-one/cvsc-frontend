@@ -6,10 +6,10 @@ import AxiosInstance from '../../helpers/axios';
 import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 
-const EventPreview = (props) => {
-    const event = props.event;
-    const { removeEvent } = useContext(SiteContext)
+const EventPreview = ({ event, location }) => {
+    const { removeEvent, useBusinessName } = useContext(SiteContext)
     const { dispatch } = useContext(NotificationsContext)
+    const venue_name = useBusinessName(event.venue_id)
 
     const detailPreview = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
@@ -47,7 +47,7 @@ const EventPreview = (props) => {
                         <Card.Subtitle>
                             <Link to={{
                                 pathname: `/business/${event.venue_id}`
-                            }}>{`at ${event.venue_name}`}</Link>
+                            }}>{`at ${venue_name}`}</Link>
                         </Card.Subtitle>
                         <Card.Text>
                             {detailPreview(event.details, 100)}
@@ -56,7 +56,7 @@ const EventPreview = (props) => {
                             pathname: `/event/${event.event_id}`,
                             state: {
                                 event,
-                                from: props.location.pathname
+                                from: location.pathname
                             }
                         }}>Read More</Link>
                     </Card.Body>
@@ -77,7 +77,7 @@ const EventPreview = (props) => {
                                     pathname: `/events/edit/${event.event_id}`,
                                     state: {
                                         event,
-                                        from: props.location.pathname
+                                        from: location.pathname
                                     }
                                 }}>edit</Link></Col>
                                 <Col onClick={() => delEvent(event.event_id)}>del</Col>
