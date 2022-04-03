@@ -51,6 +51,9 @@ const BusinessView = (props) => {
                         <Row className='px-0 mx-0'>
                             {`Instagram: ${business.instagram}`}
                         </Row>
+                        <Row className='px-0 mx-0'>
+                            {`Website: ${business.website}`}
+                        </Row>
                     </Row>
                 </Col>
             </Row>
@@ -75,9 +78,9 @@ const BusinessView = (props) => {
                 {business.description}
             </Row>
             <UpcomingBusinessView business={business.id}/>
-            <Modal show={modalShow} onHide={handleModalClose}>
+            <Modal centered show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Business</Modal.Title>
+                    <Modal.Title>{`${business.name}`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <EditBusiness business={business} handleClose={handleModalClose}/>

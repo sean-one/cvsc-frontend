@@ -93,6 +93,5 @@ export const update_Business = (data, df) => {
     createContact(data)
     createBusiness(data)
     
-    console.log(data)
     return data
 }

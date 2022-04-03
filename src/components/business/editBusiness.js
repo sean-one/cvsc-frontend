@@ -1,30 +1,27 @@
 import React, { useContext } from 'react';
-import { useForm, useFormState } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import { update_Business } from '../../helpers/dataCleanUp';
 import { SiteContext } from '../../context/site/site.provider';
+import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import AxiosInstance from '../../helpers/axios';
 
-const EditBusiness = (props) => {
-    const { business, handleClose } = props;
+const EditBusiness = ({ business, handleClose }) => {
     const { updateBusiness } = useContext(SiteContext)
-    const { register, handleSubmit, clearErrors, control } = useForm({
+    const { dispatch } = useContext(NotificationsContext)
+    const { register, handleSubmit, setError, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
-            business_name: business.name,
             email: business.email,
             business_description: business.description,
             instagram: business.instagram,
-            website: business.website
+            website: business.website,
         }
     })
 
-    const { isDirty, dirtyFields, errors } = useFormState({
-        control
-    })
-    
     const sendBusinessUpdate = (data) => {
         const token = localStorage.getItem('token')
+        
         // clean up data prior to sending to server
         data = update_Business(data, dirtyFields)
 
@@ -35,27 +32,49 @@ const EditBusiness = (props) => {
                 if(response.status === 201) {
                     updateBusiness(response.data[0].id, response.data[0])
                     handleClose()
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'SUCCESS',
+                            message: `${response.data[0].name} has been updated`
+
+                        }
+                    })
                 }
             })
             .catch(err => {
-                console.log(err)
+                if(!err.response) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: 'server error, please wait and try again'
+                        }
+                    })
+                }
+
+                else if (err.response.status === 400) {
+                    setError(`${err.response.data.type}`, {
+                        type: 'server',
+                        message: `${err.response.data.message}`
+                    })
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: `${err.response.data.message}`
+                        }
+                    })
+                }
+
+                else {
+                    console.log(err)
+                }
             })
     }
 
     return (
         <Form onSubmit={handleSubmit(sendBusinessUpdate)}>
-            <Form.Group controlId='business_name'>
-                <Form.Label>Business Name</Form.Label>
-                <Form.Control
-                    className={errors.business_name ? 'inputError' : ''}
-                    {...register('business_name')}
-                    autoFocus
-                    onFocus={() => clearErrors('business_name')}
-                    type='text'
-                    name='business_name'
-                />
-                <div className='errormessage'>{errors.business_name?.message}</div>
-            </Form.Group>
 
             <Form.Group controlId='email'>
                 <Form.Label>Business Email</Form.Label>
@@ -94,22 +113,6 @@ const EditBusiness = (props) => {
                 />
                 <div className='errormessage'>{errors.business_description?.message}</div>
             </Form.Group>
-
-            {/* <Form.Group controlId='business_type'>
-                <Form.Label>Business Type</Form.Label>
-                <Form.Select
-                    className={errors.business_type ? 'inputError' : ''}
-                    {...register('business_type')}
-                    onFocus={() => clearErrors('business_type')}
-                    type='text'
-                    name='business_type'
-                >
-                    <option value='brand'>Brand</option>
-                    <option value='venue'>Dispensary</option>
-                    <option value='both'>{`Brand & Dispensary`}</option>
-                </Form.Select>
-                <div className='errormessage'>{errors.business_type?.message}</div>
-            </Form.Group> */}
 
             <Form.Group controlId='instagram'>
                 <Form.Label>Instagram</Form.Label>
