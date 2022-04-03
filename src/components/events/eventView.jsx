@@ -1,20 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Col, Container, Image, Row } from 'react-bootstrap'
+import React, { useState, useEffect, useContext } from 'react'
+import { Button, Col, Container, Image, Modal, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-import UpcomingEventView from '../upcoming/upcoming.eventview'
 import { formatTime } from '../../helpers/formatTime';
+import { SiteContext } from '../../context/site/site.provider';
+
+import UpcomingEventView from '../upcoming/upcoming.eventview'
+import EditEvent from './editEvent'
 
 
 const EventView = (props) => {
-    const event = props.location.state.event
+    const { useEventById } = useContext(SiteContext)
+    const event = useEventById(Number(props.match.params.id))
+    
     const [ isCreator, setIsCreator ] = useState(false)
-
+    const [ modalShow, setModalShow ] = useState(false)
+    
+    const handleModalClose = () => setModalShow(false)
+    const handleModalOpen = () => setModalShow(true)
+    
     const checkMap = (e) => {
         console.log('click')
     }
-
+    
     // check if user created event to show edit and delete options
     useEffect(() => {
         const user_id = localStorage.getItem('userId')
@@ -23,6 +32,8 @@ const EventView = (props) => {
         } else {
             if (event.created_by === Number(user_id)) {
                 setIsCreator(true)
+            } else {
+                return
             }
         }
     }, [event.created_by])
@@ -36,7 +47,7 @@ const EventView = (props) => {
                 <Col className={`${isCreator ? 'd-flex' : 'd-none'}`}>
                     <Col>
                         <Button size='sm' variant='info'>
-                            <FontAwesomeIcon icon={faEdit} />
+                            <FontAwesomeIcon onClick={handleModalOpen} icon={faEdit} />
                         </Button>
                     </Col>
                     <Col>
@@ -64,6 +75,14 @@ const EventView = (props) => {
             <Row>
                 <UpcomingEventView event={event.event_id}/>
             </Row>
+            <Modal show={modalShow} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Event</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <EditEvent event={event} handleClose={handleModalClose}/>
+                </Modal.Body>
+            </Modal>
         </Container>
     )
 }

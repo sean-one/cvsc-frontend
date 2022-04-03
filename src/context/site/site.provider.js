@@ -44,6 +44,17 @@ const SiteProvider = ({ children }) => {
     }
 
     // BUSINESS
+    const updateBusiness = (id, business) => {
+        dispatch({
+            type: siteTypes.UPDATE_BUSINESS,
+            payload: { id, business }
+        })
+    }
+
+    const useBusinessById = (business_id) => {
+        return businessList.find(business => business.id === business_id)
+    }
+
     const useBusinessAdmin = (user_id) => {
         return businessList.filter(business => business.business_admin === user_id)
     }
@@ -59,6 +70,8 @@ const SiteProvider = ({ children }) => {
                 removeEvent,
                 updateEvent,
                 // BUSINESS
+                updateBusiness,
+                useBusinessById,
                 useBusinessAdmin
             }
         }>

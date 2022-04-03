@@ -27,87 +27,101 @@ const CreateEvent = () => {
     let history = useHistory();
     
     const createNewEvent = async (data) => {
-        canvas.current.toBlob(async function(blob) {
-            const token = localStorage.getItem('token')
-
-            // get image url from s3 bucket
-            const url = await AxiosInstance.get('/s3', { headers: { 'Authorization': 'Bearer ' + token } })
-                .then(response => {
-                    return response.data.url
+        try {
+            canvas.current.toBlob(async function(blob) {
+                const token = localStorage.getItem('token')
+    
+                // get image url from s3 bucket
+                const url = await AxiosInstance.get('/s3', { headers: { 'Authorization': 'Bearer ' + token } })
+                    .then(response => {
+                        return response.data.url
+                    })
+                    .catch(err => console.log(err))
+                
+                // upload the image to the s3 bucket at the url recieved
+                await AxiosInstance.put(url, blob, { headers: { 'Content-Type': 'multipart/form-data' }})
+    
+                const imageUrl = url.split('?')[0]
+                
+                data.eventmedia = imageUrl
+                
+                AxiosInstance.post('/events', data, {
+                    headers: { 'Authorization': 'Bearer ' + token }
                 })
-                .catch(err => console.log(err))
-            
-            // upload the image to the s3 bucket at the url recieved
-            await AxiosInstance.put(url, blob, { headers: { 'Content-Type': 'multipart/form-data' }})
-
-            const imageUrl = url.split('?')[0]
-            
-            data.eventmedia = imageUrl
-            
-            AxiosInstance.post('/events', data, {
-                headers: { 'Authorization': 'Bearer ' + token }
+                    .then(response => {
+                        if (response.status === 200) {
+                            createEvent(response.data)
+                            dispatch({
+                                type: "ADD_NOTIFICATION",
+                                payload: {
+                                    notification_type: 'SUCCESS',
+                                    message: `event '${data.eventname}' has been created`
+                                }
+                            })
+                            history.push({
+                                pathname: `/event/${response.data.event_id}`,
+                                state: {
+                                    event: response.data
+                                }
+                            });
+                        } else {
+                            console.log('axios else statement')
+                            // throw new Error();
+                        }
+                    })
+                    .catch(err => {
+                        if (!err.response) {
+                            dispatch({
+                                type: "ADD_NOTIFICATION",
+                                payload: {
+                                    notification_type: 'ERROR',
+                                    message: 'server error, please wait and try again'
+                                }
+                            })
+                        }
+    
+                        else if (err.response.status === 403 || err.response.status === 400) {
+                            setError(`${err.response.data.type}`, {
+                                type: 'server',
+                                message: `${err.response.data.message}`
+                            })
+                            dispatch({
+                                type: "ADD_NOTIFICATION",
+                                payload: {
+                                    notification_type: 'ERROR',
+                                    message: `${err.response.data.message}`
+                                }
+                            })
+                        }
+    
+                        else if (err.response.status === 401) {
+                            userSignOut()
+                            dispatch({
+                                type: "ADD_NOTIFICATION",
+                                payload: {
+                                    notification_type: 'ERROR',
+                                    message: `${err.response.data.message}`
+                                }
+                            })
+                            history.push({
+                                pathname: '/login'
+                            })
+                        }
+                    })   
             })
-                .then(response => {
-                    if (response.status === 200) {
-                        createEvent(response.data)
-                        dispatch({
-                            type: "ADD_NOTIFICATION",
-                            payload: {
-                                notification_type: 'SUCCESS',
-                                message: `event '${data.eventname}' has been created`
-                            }
-                        })
-                        history.push({
-                            pathname: `/event/${response.data.event_id}`,
-                            state: {
-                                event: response.data
-                            }
-                        });
-                    } else {
-                        console.log('axios else statement')
-                        // throw new Error();
-                    }
-                })
-                .catch(err => {
-                    if (!err.response) {
-                        dispatch({
-                            type: "ADD_NOTIFICATION",
-                            payload: {
-                                notification_type: 'ERROR',
-                                message: 'server error, please wait and try again'
-                            }
-                        })
-                    }
-
-                    else if (err.response.status === 403 || err.response.status === 400) {
-                        setError(`${err.response.data.type}`, {
-                            type: 'server',
-                            message: err.response.data.message
-                        })
-                        dispatch({
-                            type: "ADD_NOTIFICATION",
-                            payload: {
-                                notification_type: 'ERROR',
-                                message: `${err.response.data.message}`
-                            }
-                        })
-                    }
-
-                    else if (err.response.status === 401) {
-                        userSignOut()
-                        dispatch({
-                            type: "ADD_NOTIFICATION",
-                            payload: {
-                                notification_type: 'ERROR',
-                                message: `${err.response.data.message}`
-                            }
-                        })
-                        history.push({
-                            pathname: '/login'
-                        })
-                    }
-                })   
-        })
+        } catch (error) {
+            setError('eventmedia', {
+                type: 'server',
+                message: 'missing image'
+            })
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: `please be sure to add and image`
+                }
+            })
+        }
         
     }
 
@@ -180,7 +194,7 @@ const CreateEvent = () => {
             }
             
             <Form.Group controlId='eventmedia'>
-                <Form.Label>Image Link</Form.Label>
+                <Form.Label>Event Image</Form.Label>
                 <Form.Control
                     className={errors.eventmedia ? 'inputError' : ''}
                     {...register('eventmedia')}

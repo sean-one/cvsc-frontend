@@ -75,3 +75,24 @@ export const addBusiness = (data) => {
 
     return data
 }
+
+export const update_Business = (data, df) => {
+    
+    // removed unchanged fields
+    const dirtyList = Object.keys(df)
+    for (const [key] of Object.entries(data)) {
+        if(!dirtyList.includes(key)) {
+            delete data[key]
+        }
+    }
+
+    if (data['business_type'] !== 'brand') {
+        createLocation(data)
+    }
+
+    createContact(data)
+    createBusiness(data)
+    
+    console.log(data)
+    return data
+}

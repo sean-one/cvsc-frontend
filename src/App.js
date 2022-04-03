@@ -11,7 +11,6 @@ import AuthRoute from './components/auth/auth.jsx';
 import Profile from './components/profile/profile.jsx';
 import EventView from './components/events/eventView';
 import EditBusiness from './components/business/editBusiness';
-import EditEvent from './components/events/editEvent';
 
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
@@ -40,7 +39,6 @@ const App = () => {
             <Route path='/event/:id' render={(props) => (<EventView {...props} />)} />
             <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <AuthRoute path='/business/edit/:id' component={EditBusiness} />
-            <AuthRoute path='/events/edit/:id' component={EditEvent} />
             <Route path='/login' component={Login} />
             <RolesProvider>
               <UserAdminProvider>
