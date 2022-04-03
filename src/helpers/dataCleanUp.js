@@ -86,10 +86,6 @@ export const update_Business = (data, df) => {
         }
     }
 
-    if (data['business_type'] !== 'brand') {
-        createLocation(data)
-    }
-
     createContact(data)
     createBusiness(data)
     
