@@ -22,15 +22,18 @@ const EditEvent = (props) => {
     const { updateEvent } = useContext(SiteContext)
     const { userSignOut } = useContext(UsersContext)
 
-    const { register, handleSubmit, clearErrors, setError, formState:{ errors } } = useForm();
-    const [ eventname, setEventname ] = useState(event.eventname);
-    const [ eventdate, setEventdate ] = useState(format(new Date(event.eventdate), 'yyyy-MM-dd'));
-    const [ eventstart, setEventstart ] = useState(reformatTime(event.eventstart));
-    const [ eventend, setEventend ] = useState(reformatTime(event.eventend));
-    // const [ eventmedia, setEventmedia ] = useState(event.eventmedia);
-    const [ venue, setVenue ] = useState(event.venue_id);
-    const [ eventdetails, setEventDetails ] = useState(event.details);
-    const [ brands, setBrands ] = useState(event.brand_id);
+    const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
+        defaultValues: {
+            eventname: event.eventname,
+            eventdate: format(new Date(event.eventdate), "P"),
+            eventstart: reformatTime(event.eventstart),
+            eventend: reformatTime(event.eventend),
+            venue_id: event.venue_id,
+            details: event.details,
+            brand_id: event.brand_id
+
+        }
+    });
     
     let history = useHistory();
 
@@ -113,8 +116,6 @@ const EditEvent = (props) => {
                     onFocus={() => clearErrors('eventname')}
                     type='text'
                     name='eventname'
-                    value={eventname}
-                    onChange={(e) => setEventname(e.target.value)}
                 />
                 <div className='errormessage'>{errors.eventname?.message}</div>
             </Form.Group>
@@ -127,8 +128,6 @@ const EditEvent = (props) => {
                     onFocus={() => clearErrors('eventdate')}
                     type='date'
                     name='eventdate'
-                    value={eventdate}
-                    onChange={(e) => setEventdate(e.target.value)}
                 />
                 <div className='errormessage'>{errors.eventdate?.message}</div>
             </Form.Group>
@@ -139,12 +138,10 @@ const EditEvent = (props) => {
                         <Form.Label>Start</Form.Label>
                         <Form.Control
                             className={errors.eventstart ? 'inputError' : ''}
-                            {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                            {...register('eventstart')}
                             onFocus={() => clearErrors('eventstart')}
                             type='time'
                             name='eventstart'
-                            value={eventstart}
-                            onChange={(e) => setEventstart(e.target.value)}
                         />
                         <div className='errormessage'>{errors.eventstart?.message}</div>
                     </Form.Group>
@@ -154,12 +151,10 @@ const EditEvent = (props) => {
                         <Form.Label>End</Form.Label>
                         <Form.Control
                             className={errors.eventend ? 'inputError' : ''}
-                            {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                            {...register('eventend')}
                             onFocus={() => clearErrors('eventend')}
                             type='time'
                             name='eventend'
-                            value={eventend}
-                            onChange={(e) => setEventend(e.target.value)}
                         />
                         <div className='errormessage'>{errors.eventend?.message}</div>
                     </Form.Group>
@@ -200,8 +195,6 @@ const EditEvent = (props) => {
                     onFocus={() => clearErrors(['venue_id', 'role_rights'])}
                     type='text'
                     name='venue_id'
-                    value={venue}
-                    onChange={(e) => setVenue(e.target.value)}
                 >
                     <option value='0'>Select...</option>
                     {
@@ -225,8 +218,6 @@ const EditEvent = (props) => {
                     as='textarea'
                     row={15}
                     name='details'
-                    value={eventdetails}
-                    onChange={(e) => setEventDetails(e.target.value)}
                 />
                 <div className='errormessage'>{errors.details?.message}</div>
             </Form.Group>
@@ -239,8 +230,6 @@ const EditEvent = (props) => {
                     onFocus={() => clearErrors(['brand_id', 'role_rights'])}
                     type='text'
                     name='brand_id'
-                    value={brands}
-                    onChange={(e) => setBrands(e.target.value)}
                 >
                     <option value='0'>Select...</option>
                     {
@@ -256,7 +245,7 @@ const EditEvent = (props) => {
 
             <Row className='d-flex justify-content-around pt-3'>
                 <Col xs={2}>
-                    <Button type='submit'>Update</Button>
+                    <Button type='submit' disabled={isDirty}>Update</Button>
                 </Col>
                 <Col xs={2}>
                     <Button onClick={handleClose} variant='secondary'>Close</Button>

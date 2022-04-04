@@ -12,9 +12,12 @@ const UpcomingBusinessView = (props) => {
     
     return (
         <Container className='px-0'>
-            <Row className='px-0 py-1'>
-                <h3>{`Upcoming events with ${business.name}`}</h3>
-            </Row>
+            {
+                (business_events.length > 0) &&  
+                    <Row className='px-0 py-1'>
+                        <h3>{`Upcoming events with ${business.name}`}</h3>
+                    </Row>
+            }
             {
                 business_events.map(event => {
                     return (

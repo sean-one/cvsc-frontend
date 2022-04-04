@@ -74,12 +74,12 @@ const EventPreview = ({ event, location }) => {
                         <Col>
                             <Row>
                                 <Col><Link to={{
-                                    pathname: `/events/edit/${event.event_id}`,
+                                    pathname: `/event/${event.event_id}`,
                                     state: {
                                         event,
                                         from: location.pathname
                                     }
-                                }}>edit</Link></Col>
+                                }}>view</Link></Col>
                                 <Col onClick={() => delEvent(event.event_id)}>del</Col>
                             </Row>
                         </Col>
