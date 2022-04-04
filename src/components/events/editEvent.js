@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
@@ -15,6 +15,7 @@ import { UsersContext } from '../../context/users/users.provider';
 const EditEvent = (props) => {
     const { event, handleClose } = props;
 
+    console.log(format(new Date(event.eventdate), "MM/dd/yyyy"))
     const { venue_list, brand_list } = useBusinessFilter()
     // const { editImage, imagePreview, canvas } = useImagePreviewer()
     
@@ -25,7 +26,7 @@ const EditEvent = (props) => {
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
             eventname: event.eventname,
-            eventdate: format(new Date(event.eventdate), "P"),
+            eventdate: format(new Date(event.eventdate), 'yyyy-MM-dd'),
             eventstart: reformatTime(event.eventstart),
             eventend: reformatTime(event.eventend),
             venue_id: event.venue_id,
@@ -245,7 +246,7 @@ const EditEvent = (props) => {
 
             <Row className='d-flex justify-content-around pt-3'>
                 <Col xs={2}>
-                    <Button type='submit' disabled={isDirty}>Update</Button>
+                    <Button type='submit' disabled={!isDirty}>Update</Button>
                 </Col>
                 <Col xs={2}>
                     <Button onClick={handleClose} variant='secondary'>Close</Button>
