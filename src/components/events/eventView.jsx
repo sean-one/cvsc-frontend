@@ -8,11 +8,14 @@ import { SiteContext } from '../../context/site/site.provider';
 
 import UpcomingEventView from '../upcoming/upcoming.eventview'
 import EditEvent from './editEvent'
+import { Link } from 'react-router-dom';
 
 
 const EventView = (props) => {
-    const { useEventById } = useContext(SiteContext)
+    const { useEventById, useBusinessName } = useContext(SiteContext)
     const event = useEventById(Number(props.match.params.id))
+    const venue_name = useBusinessName(event.venue_id)
+    const brand_name = useBusinessName(event.brand_id)
     
     const [ isCreator, setIsCreator ] = useState(false)
     const [ modalShow, setModalShow ] = useState(false)
@@ -65,12 +68,19 @@ const EventView = (props) => {
                     <FontAwesomeIcon onClick={(e) => checkMap(e)} icon={faLocationArrow} size='1x' />
                 </Col>
                 <Col className='fw-bold'>
-                    {event.venue_name}
+                    {venue_name}
                 </Col>
             </Row>
             <Row className='d-flex justify-content-end me-3 fs-4 fw-bold'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</Row>
-            <Row className='py-3 m-2 fs-4 lh-lg border-top border-bottom'>
+            <Row className='py-3 m-2 fs-4 lh-lg border-top'>
                 {event.details}
+            </Row>
+            <Row className='py-3 m-2 fw-bold border-bottom'>
+                <Link to={{
+                    pathname: `/business/${event.brand_id}`
+                }}>
+                    {`With Brand: ${brand_name}`}
+                </Link>
             </Row>
             <Row>
                 <UpcomingEventView event={event.event_id}/>

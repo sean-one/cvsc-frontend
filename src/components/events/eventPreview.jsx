@@ -10,6 +10,7 @@ const EventPreview = ({ event, location }) => {
     const { removeEvent, useBusinessName } = useContext(SiteContext)
     const { dispatch } = useContext(NotificationsContext)
     const venue_name = useBusinessName(event.venue_id)
+    const brand_name = useBusinessName(event.brand_id)
 
     const detailPreview = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
@@ -66,7 +67,7 @@ const EventPreview = ({ event, location }) => {
                 <Col>
                     <Link to={{
                         pathname: `/business/${event.brand_id}`
-                    }}>{event.brand_name}</Link>
+                    }}>{brand_name}</Link>
                 </Col>
                 <Col>{event.city}</Col>
                 {
