@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import usersReducer, { USERS_INITIAL_STATE } from './users.reducer';
 import userTypes from './users.types';
 
-import { userSignIn, userUpdate, userContactUpdate } from './users.utils';
+import { userSignIn, userUpdate, userContactUpdate, findCreatorRights, findAdminRights } from './users.utils';
 
 export const UsersContext = createContext({
     ...USERS_INITIAL_STATE
@@ -11,7 +11,7 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles, editorRoles, adminRoles, userContact } = store
+    const { userProfile, userRoles, userContact, isCreator, isAdmin } = store
 
     // used at sucessful login & successful registration
     const setUser = userdata => {
@@ -26,22 +26,12 @@ const UsersProvider = ({ children }) => {
     }
 
     const setUserRoles = userroles => {
-        const editorRoles = userroles.filter(role => role.role_type === 'creator')
-        const adminRoles = userroles.filter(role => role.role_type === 'admin')
+        const creatorrights = findCreatorRights(userroles)
+        const adminrights = findAdminRights(userroles)
         dispatch({
             type: userTypes.SET_USER_ROLES,
-            payload: { userroles, adminRoles, editorRoles }
+            payload: { userroles, creatorrights, adminrights }
         })
-    }
-
-    const useAdminRoles = () => {
-        const userAdmin = userRoles.filter(role => role.roletype === 'admin')
-        let adminArr = []
-        userAdmin.map(row => {
-            return adminArr.push(row.business_id)
-        })
-        // returns an array of business_ids that user has admin rights to
-        return adminArr
     }
 
     const useBusinessIdRoles = () => {
@@ -51,16 +41,6 @@ const UsersProvider = ({ children }) => {
         })
         return businessIdList
     }
-
-    const isEditor = () => {
-        if (userRoles.length > 0) {
-            return true;
-        } else {
-            return false
-        }
-    }
-
-
 
     // used at contactSection updateContact
     const updateUserContact = contact => {
@@ -92,19 +72,16 @@ const UsersProvider = ({ children }) => {
         <UsersContext.Provider value={
             {
                 setUser,
-                editorRoles,
-                adminRoles,
-                userRoles,
                 setUserRoles,
+                isCreator,
+                isAdmin,
 
 
                 userProfile,
                 userContact,
                 updateUserContact,
                 updateUser,
-                useAdminRoles,
                 useBusinessIdRoles,
-                isEditor,
                 userSignOut
             }
         }>

@@ -4,8 +4,8 @@ export const USERS_INITIAL_STATE = {
     userProfile: {},
     userContact: {},
     userRoles: [],
-    editorRoles: [],
-    adminRoles: [],  
+    isCreator: false,
+    isAdmin: false,
 };
 
 const usersReducer = (state, action) => {
@@ -20,8 +20,8 @@ const usersReducer = (state, action) => {
             return {
                 ...state,
                 userRoles: action.payload.userroles,
-                editorRoles: action.payload.editorRoles,
-                adminRoles: action.payload.adminRoles,
+                isCreator: action.payload.creatorrights,
+                isAdmin: action.payload.adminrights
             }
         case userTypes.UPDATE_USER:
             return {

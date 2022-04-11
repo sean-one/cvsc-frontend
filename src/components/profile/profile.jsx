@@ -6,7 +6,6 @@ import AxiosInstance from '../../helpers/axios';
 
 import { SiteContext } from '../../context/site/site.provider';
 import { UsersContext } from '../../context/users/users.provider';
-import { RolesContext } from '../../context/roles/roles.provider';
 
 import BasicSection from './basicSection/basicSection';
 import BusinessAdminSection from './businessAdminSection/businessAdminSection';
@@ -15,11 +14,7 @@ import CreatorSection from './creatorSection/creatorSection';
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
     const { useBusinessAdmin } = useContext(SiteContext);
-    const { userProfile, setUserRoles } = useContext(UsersContext);
-    const { setRoles, isCreatorAccount, isAdminAccount } = useContext(RolesContext)
-
-    const isCreator = isCreatorAccount()
-    const isAdmin = isAdminAccount()
+    const { userProfile, setUserRoles, isCreator, isAdmin } = useContext(UsersContext);
     const isBusinessAdmin = useBusinessAdmin(userProfile.id)
 
     const getRoles = useCallback(() => {
@@ -29,15 +24,15 @@ const Profile = () => {
             headers: {'Authorization': 'Bearer ' + token}
         })
             .then(userroles => {
-                setRoles(userroles.data)
                 setUserRoles(userroles.data)
-                setLoading(false)
             })
             .catch(err => {
-                setLoading(false)
                 console.log(err)
             })
-    }, [setRoles, setUserRoles, userProfile.id])
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [setUserRoles, userProfile.id])
 
     useEffect(() => {
         getRoles()

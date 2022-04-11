@@ -16,7 +16,6 @@ import { Layout } from './components/Layout';
 
 import SiteProvider from './context/site/site.provider';
 import UsersProvider from './context/users/users.provider';
-import RolesProvider from './context/roles/roles.provider';
 import UserAdminProvider from './context/adminuser/adminuser.provider';
 
 // import './App.css';
@@ -29,20 +28,16 @@ const App = () => {
       <ScrollToTop/>
       <UsersProvider>
       <SiteProvider>
-          <RolesProvider>
-            <NavHeader />
-          </RolesProvider>
+          <NavHeader />
           <Layout>
             <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
             <Route path='/register' component={Register} />
             <Route path='/event/:id' render={(props) => (<EventView {...props} />)} />
             <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
-            <RolesProvider>
-              <UserAdminProvider>
-                <AuthRoute exact path='/profile' component={Profile} />
-              </UserAdminProvider>
-            </RolesProvider>
+            <UserAdminProvider>
+              <AuthRoute exact path='/profile' component={Profile} />
+            </UserAdminProvider>
           </Layout>
       </SiteProvider>
       </UsersProvider>

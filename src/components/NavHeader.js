@@ -3,19 +3,16 @@ import { Link, useHistory } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
 import { UsersContext } from '../context/users/users.provider';
-import { RolesContext } from '../context/roles/roles.provider';
 
 import logobrand from '../assets/cvsc.png'
 
 export const NavHeader = (props) => {
     const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
     const { userSignOut } = useContext(UsersContext);
-    const { roleReset } = useContext(RolesContext)
     let history = useHistory()
 
     const logout = () => {
         localStorage.clear()
-        roleReset()
         userSignOut()
 
         document.getElementById('navbarToggle').classList.remove('show')

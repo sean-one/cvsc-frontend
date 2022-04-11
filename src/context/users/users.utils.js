@@ -25,3 +25,25 @@ export const userUpdate = (user) => {
 export const userContactUpdate = (contact) => {
     localStorage.setItem('contact', JSON.stringify(contact))
 }
+
+export const findCreatorRights = (roles) => {
+    const creatorIndex = roles.findIndex(role => {
+        return role.role_type === 'creator'
+    })
+    if (creatorIndex >= 0) {
+        return true
+    } else {
+        return false
+    }
+}
+
+export const findAdminRights = (roles) => {
+    const adminIndex = roles.findIndex(role => {
+        return role.role_type === 'admin'
+    })
+    if (adminIndex >= 0) {
+        return true
+    } else {
+        return false
+    }
+}
