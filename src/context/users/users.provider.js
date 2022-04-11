@@ -34,8 +34,6 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-
-
     const useAdminRoles = () => {
         const userAdmin = userRoles.filter(role => role.roletype === 'admin')
         let adminArr = []
@@ -84,13 +82,6 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    const getFromLocal = userdata => {
-        dispatch({
-            type: userTypes.UPDATE_FROM_LOCAL,
-            payload: userdata
-        })
-    }
-
     const userSignOut = () => {
         dispatch({
             type: userTypes.USER_LOGOUT
@@ -114,7 +105,6 @@ const UsersProvider = ({ children }) => {
                 useAdminRoles,
                 useBusinessIdRoles,
                 isEditor,
-                getFromLocal,
                 userSignOut
             }
         }>

@@ -23,12 +23,6 @@ const usersReducer = (state, action) => {
                 editorRoles: action.payload.editorRoles,
                 adminRoles: action.payload.adminRoles,
             }
-        
-        case userTypes.UPDATE_FROM_LOCAL:
-            return {
-                ...state,
-                userProfile: action.payload
-            };
         case userTypes.UPDATE_USER:
             return {
                 ...state,

@@ -43,6 +43,10 @@ const SiteProvider = ({ children }) => {
         })
     }
 
+    const useBusinessAdminEventFilter = (user_id) => {
+        
+    }
+
     // BUSINESS
     const updateBusiness = (id, business) => {
         dispatch({
