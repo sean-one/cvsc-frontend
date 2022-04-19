@@ -7,6 +7,7 @@ const useBusinessFilter = (business_id = null) => {
     const { businessList } = useContext(SiteContext);
     const { useBusinessIdRoles } = useContext(UsersContext)
     const userRolesIdArray = useBusinessIdRoles()
+
     let business_filtered = businessList
     let business
 
@@ -28,6 +29,7 @@ const useBusinessFilter = (business_id = null) => {
         business = businessList.find(business => business.id === Number(business_id))
     }
 
+    // return a list based on business type
     const venue_filtered = business_filtered.filter(business => (business.businesstype === 'venue') || (business.businesstype === 'both'))
     const brand_filtered = business_filtered.filter(business => business.businesstype === 'brand')
 

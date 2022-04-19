@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import usersReducer, { USERS_INITIAL_STATE } from './users.reducer';
 import userTypes from './users.types';
 
-import { userSignIn, userUpdate, userContactUpdate, findCreatorRights, findAdminRights } from './users.utils';
+import { userSignIn, userUpdate, userContactUpdate, findCreatorRights, findManagerRights, findAdminRights } from './users.utils';
 
 export const UsersContext = createContext({
     ...USERS_INITIAL_STATE
@@ -11,7 +11,7 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles, userContact, isCreator, isAdmin } = store
+    const { userProfile, userRoles, userContact, isCreator, isManager, isAdmin } = store
 
     // used at sucessful login & successful registration
     const setUser = userdata => {
@@ -25,21 +25,35 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    // sets the userroles object and set the creator and admin rights
     const setUserRoles = userroles => {
         const creatorrights = findCreatorRights(userroles)
         const adminrights = findAdminRights(userroles)
+        const managerrights = findManagerRights(userroles)
         dispatch({
             type: userTypes.SET_USER_ROLES,
-            payload: { userroles, creatorrights, adminrights }
+            payload: { userroles, creatorrights, managerrights, adminrights }
         })
     }
 
+    // creates an array of business_id with both 'creator' and 'admin'
+    // used in useBusinessFilter hook
     const useBusinessIdRoles = () => {
         let businessIdList = []
         userRoles.map(role => {
             return businessIdList.push(role.business_id)
         })
         return businessIdList
+    }
+
+    // creates an array of business_id with 'admin' rights
+    const useBusinessAdminIdRoles = () => {
+        let businessAdminIdList = []
+        const userAdminRoles = userRoles.filter(role => role.role_type === 'admin')
+        userAdminRoles.map(a_role => {
+            return businessAdminIdList.push(a_role.business_id)
+        })
+        return businessAdminIdList
     }
 
     // used at contactSection updateContact
@@ -82,6 +96,7 @@ const UsersProvider = ({ children }) => {
                 updateUserContact,
                 updateUser,
                 useBusinessIdRoles,
+                useBusinessAdminIdRoles,
                 userSignOut
             }
         }>

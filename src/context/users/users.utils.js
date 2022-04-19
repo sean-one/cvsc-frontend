@@ -47,3 +47,14 @@ export const findAdminRights = (roles) => {
         return false
     }
 }
+
+export const findManagerRights = (roles) => {
+    const managerIndex = roles.findIndex(role => {
+        return role.role_type === 'manager'
+    })
+    if (managerIndex >= 0) {
+        return true
+    } else {
+        return false
+    }
+}

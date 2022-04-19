@@ -3,19 +3,14 @@ import { withRouter } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
-
-import { SiteContext } from '../../context/site/site.provider';
 import { UsersContext } from '../../context/users/users.provider';
-
 import BasicSection from './basicSection/basicSection';
 import BusinessAdminSection from './businessAdminSection/businessAdminSection';
 import CreatorSection from './creatorSection/creatorSection';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
-    const { useBusinessAdmin } = useContext(SiteContext);
-    const { userProfile, setUserRoles, isCreator, isAdmin } = useContext(UsersContext);
-    const isBusinessAdmin = useBusinessAdmin(userProfile.id)
+    const { userProfile, setUserRoles, isCreator, isManager, isAdmin } = useContext(UsersContext);
 
     const getRoles = useCallback(() => {
         setLoading(true);
@@ -46,11 +41,11 @@ const Profile = () => {
                 : <Col>
                     <BasicSection />
                     {
-                        (isCreator || isAdmin) &&
+                        (isCreator || isManager || isAdmin) &&
                         <CreatorSection />
                     }
                     {
-                        (isBusinessAdmin.length > 0) &&
+                        (isAdmin) &&
                             <BusinessAdminSection />
                     }
                 </Col>

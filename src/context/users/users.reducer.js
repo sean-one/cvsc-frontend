@@ -5,6 +5,7 @@ export const USERS_INITIAL_STATE = {
     userContact: {},
     userRoles: [],
     isCreator: false,
+    isManager: false,
     isAdmin: false,
 };
 
@@ -21,6 +22,7 @@ const usersReducer = (state, action) => {
                 ...state,
                 userRoles: action.payload.userroles,
                 isCreator: action.payload.creatorrights,
+                isManager: action.payload.managerrights,
                 isAdmin: action.payload.adminrights
             }
         case userTypes.UPDATE_USER:
