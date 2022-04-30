@@ -90,8 +90,8 @@ const CreatorRequest = () => {
                             </Col>
 
                             <Col className='d-flex flex-column align-items-center'>
-                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='admin_rights' value='admin' />
-                                <Form.Label>admin</Form.Label>
+                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='manager_rights' value='manager' />
+                                <Form.Label>manager</Form.Label>
                             </Col>
                         </Row>
                     </Form.Group>

@@ -5,8 +5,8 @@ import { Col, Row } from 'react-bootstrap';
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
 import BasicSection from './basicSection/basicSection';
+import BusinessUserSection from './businessUser/businessUser';
 import BusinessAdminSection from './businessAdminSection/businessAdminSection';
-import CreatorSection from './creatorSection/creatorSection';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
@@ -42,7 +42,7 @@ const Profile = () => {
                     <BasicSection />
                     {
                         (isCreator || isManager || isAdmin) &&
-                        <CreatorSection />
+                        <BusinessUserSection />
                     }
                     {
                         (isAdmin) &&
