@@ -4,10 +4,10 @@ import { Accordion, Row } from 'react-bootstrap';
 import CreateEvent from '../../events/createEvent';
 import UserEvents from './userEvents';
 
-const BusinessUserSection = () => {
+const BusinessOptions = () => {
     return (
         <Row className='my-3'>
-            <h3>Creator Options</h3>
+            <h3>Business Options</h3>
             <Accordion >
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Create Event</Accordion.Header>
@@ -26,4 +26,4 @@ const BusinessUserSection = () => {
     )
 }
 
-export default BusinessUserSection;
+export default BusinessOptions;

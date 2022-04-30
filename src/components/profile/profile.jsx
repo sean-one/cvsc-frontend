@@ -5,7 +5,7 @@ import { Col, Row } from 'react-bootstrap';
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
 import BasicSection from './basicSection/basicSection';
-import BusinessUserSection from './businessUser/businessUser';
+import BusinessOptions from './businessOptions/businessOptions';
 import BusinessAdminSection from './businessAdminSection/businessAdminSection';
 
 const Profile = () => {
@@ -42,7 +42,7 @@ const Profile = () => {
                     <BasicSection />
                     {
                         (isCreator || isManager || isAdmin) &&
-                        <BusinessUserSection />
+                        <BusinessOptions />
                     }
                     {
                         (isAdmin) &&
