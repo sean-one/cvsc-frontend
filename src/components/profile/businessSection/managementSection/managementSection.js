@@ -1,16 +1,14 @@
 import React from 'react';
 import { Row, Accordion } from 'react-bootstrap';
 
-import PendingRequest from './pendingRequest';
-import BusinessList from './businessList';
-import CreatorEvents from './creatorEvents';
+import PendingRequest from '../pendingRequest';
+import CreatorEvents from '../creatorEvents';
 
 
-const BusinessAdminSection = () => {
+const ManagementSection = () => {
 
     return (
         <Row className='my-3'>
-            <h3>Business Admin Options</h3>
             <Accordion >
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Pending Request</Accordion.Header>
@@ -19,12 +17,6 @@ const BusinessAdminSection = () => {
                     </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
-                    <Accordion.Header>Business List</Accordion.Header>
-                    <Accordion.Body>
-                        <BusinessList />
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="2">
                     <Accordion.Header>Creator Events</Accordion.Header>
                     <Accordion.Body>
                         <CreatorEvents />
@@ -33,7 +25,6 @@ const BusinessAdminSection = () => {
             </Accordion>
         </Row>
     )
-
 }
 
-export default BusinessAdminSection;
+export default ManagementSection;

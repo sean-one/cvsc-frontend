@@ -1,20 +1,4 @@
 
-export const registerCleanUp = (user) => {
-    let contact = {}
-    
-    if(user['instagram'] === '') {
-        contact = { email: user['email'] }
-    } else {
-        contact = { email: user['email'], instagram: user['instagram'] }
-    }
-
-    delete user['instagram']
-    delete user['email']
-    delete user['confirmation']
-    
-    return { user, contact }
-}
-
 export const createBusiness = (data) => {
     data.business = {
         ...(data['business_name'] && { ...data.business, name: data['business_name'] }),

@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCannabis, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { Col, Container, Row } from 'react-bootstrap';
 
-import { SiteContext } from '../../../context/site/site.provider';
-import { UsersContext } from '../../../context/users/users.provider';
+import { SiteContext } from '../../../../context/site/site.provider';
+import { UsersContext } from '../../../../context/users/users.provider';
 
 const BusinessList = (props) => {
     const { useBusinessAdmin } = useContext(SiteContext)

@@ -28,7 +28,7 @@ const CreatorRequest = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `your ${data.request_for} rights request submitted`
+                        message: `your request has been submitted`
                     }
                 })
             })
@@ -49,7 +49,7 @@ const CreatorRequest = () => {
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'error',
-                            message: 'please be sure to select both the business & admin rights'
+                            message: 'please be sure to select the business you would like creator rights for'
                         }
                     })
                 }
@@ -67,7 +67,7 @@ const CreatorRequest = () => {
                         <Form.Select
                             className={errors.business_id ? 'inputError' : ''}
                             onFocus={() => clearErrors('business_id')}
-                            {...register('business_id', { valueAsNumber: true})}
+                            {...register('business_id')}
                             required
                         >
                             <option>Business Select...</option>
@@ -79,22 +79,6 @@ const CreatorRequest = () => {
                         </Form.Select>
                     </Form.Group>
                     <div className='errormessage'>{errors.business_id?.message}</div>
-                </Col>
-
-                <Col md={12} lg={4}>
-                    <Form.Group controlId='request_for'>
-                        <Row className='d-flex'>
-                            <Col className='d-flex flex-column align-items-center'>
-                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='creator_rights' value='creator' />
-                                <Form.Label>creator</Form.Label>
-                            </Col>
-
-                            <Col className='d-flex flex-column align-items-center'>
-                                <Form.Check {...register('request_for', { required: true })} type={'radio'} id='manager_rights' value='manager' />
-                                <Form.Label>manager</Form.Label>
-                            </Col>
-                        </Row>
-                    </Form.Group>
                 </Col>
             </Row>
             <Row className='m-2'>

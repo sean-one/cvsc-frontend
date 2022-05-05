@@ -2,10 +2,9 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form, Button, InputGroup, Row } from 'react-bootstrap';
+import { Col, Form, Button, InputGroup, Row } from 'react-bootstrap';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
-import { registerCleanUp } from '../helpers/dataCleanUp.js';
 import AxiosInstance from '../helpers/axios';
 
 import { UsersContext } from '../context/users/users.provider.js';
@@ -24,9 +23,9 @@ const Register = () => {
     let history = useHistory();
 
     const createUser = async (data) =>{
-        const newUser = registerCleanUp(data)
+        delete data['confirmation']
 
-        AxiosInstance.post('/users/register', newUser)
+        AxiosInstance.post('/users/register', data)
             .then(response => {
                 if(response.status === 200) {
                     dispatch({
@@ -144,15 +143,18 @@ const Register = () => {
                 </Form.Group>
                 <div className='errormessage'>{errors.instagram?.message}</div>
                 
-                <div className="d-grid gap-2">
-                    <Button variant="primary" size="lg" type='submit'>
-                        Submit
-                    </Button>
-                    <p className='text-center'>---- or ----</p>
-                    <Button href='/login' variant="secondary" size="lg">
-                        Login
-                    </Button>
-                </div>
+                <Row>
+                    <Col>
+                        <Button variant="primary" size="lg" type='submit'>
+                            Submit
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button href='/login' variant="secondary" size="lg">
+                            Login
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
         </Row>
     )

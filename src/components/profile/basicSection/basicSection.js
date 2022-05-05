@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Row, Accordion } from 'react-bootstrap';
 
 import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
 import CreateBusiness from '../../business/createBusiness';
+import CreateEvent from '../../events/createEvent';
+import UserEvents from './userEvents';
+
+import { UsersContext } from '../../../context/users/users.provider';
 
 
 const BasicSection = () => {
+    const { userProfile } = useContext(UsersContext);
 
     return (
         <Row className='my-3'>
@@ -30,6 +35,24 @@ const BasicSection = () => {
                         <CreateBusiness />
                     </Accordion.Body>
                 </Accordion.Item>
+                {
+                    (userProfile.account_type !== 'basic') ?
+                        <Accordion.Item eventKey="3">
+                            <Accordion.Header>Create Event</Accordion.Header>
+                            <Accordion.Body>
+                                <CreateEvent />
+                            </Accordion.Body>
+                        </Accordion.Item> : null
+                }
+                {
+                    (userProfile.account_type !== 'basic') ?
+                        <Accordion.Item eventKey="4">
+                            <Accordion.Header>Upcoming Events</Accordion.Header>
+                            <Accordion.Body>
+                                <UserEvents />
+                            </Accordion.Body>
+                        </Accordion.Item> : null
+                }
             </Accordion>
         </Row>
     )

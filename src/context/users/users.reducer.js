@@ -4,9 +4,6 @@ export const USERS_INITIAL_STATE = {
     userProfile: {},
     userContact: {},
     userRoles: [],
-    isCreator: false,
-    isManager: false,
-    isAdmin: false,
 };
 
 const usersReducer = (state, action) => {
@@ -20,10 +17,7 @@ const usersReducer = (state, action) => {
         case userTypes.SET_USER_ROLES:
             return {
                 ...state,
-                userRoles: action.payload.userroles,
-                isCreator: action.payload.creatorrights,
-                isManager: action.payload.managerrights,
-                isAdmin: action.payload.adminrights
+                userRoles: action.payload,
             }
         case userTypes.UPDATE_USER:
             return {
