@@ -34,7 +34,7 @@ const PendingRequest = (props) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
-                const updated = pendingRequest.filter(pr => pr.id !== parseInt(reqData.request_id))
+                const updated = pendingRequest.filter(pr => pr.id !== response.data.id)
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -68,7 +68,7 @@ const PendingRequest = (props) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
-                const updated = pendingRequest.filter(pr => pr.id !== parseInt(request_id))
+                const updated = pendingRequest.filter(pr => pr.id !== response.data)
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {

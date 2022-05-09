@@ -6,8 +6,6 @@ import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
 import BasicSection from './basicSection/basicSection';
 import BusinessSection from './businessSection/businessSection';
-// import BusinessManagementSection from './businessManagementSection/businessManagementSection';
-// import BusinessAdminSection from './businessAdminSection/businessAdminSection';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
@@ -43,7 +41,11 @@ const Profile = () => {
             { loading ? <Col><p>loading...</p></Col>
                 : <Col>
                     <BasicSection />
-                    <BusinessSection />
+                    {
+                        (userProfile.account_type !== 'basic' && userProfile.account_type !== 'creator') ?
+                            <BusinessSection />
+                            : null
+                    }
                 </Col>
             }
         </Row>

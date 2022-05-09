@@ -11,7 +11,7 @@ const BusinessSection = () => {
     
     return (
         <Row className='my-3'>
-            <h3>{`Business ${userProfile.account_type} Options`}</h3>
+            <h3>{`${userProfile.account_type.charAt(0).toUpperCase() + userProfile.account_type.slice(1)} Options`}</h3>
             {
                 (userProfile.account_type === 'manager') ?
                     <ManagementSection />

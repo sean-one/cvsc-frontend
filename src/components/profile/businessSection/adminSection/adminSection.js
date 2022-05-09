@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Accordion } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 
 import PendingRequest from '../pendingRequest';
 import BusinessList from './businessList';
@@ -9,28 +9,26 @@ import CreatorEvents from '../creatorEvents';
 const AdminSection = () => {
 
     return (
-        <Row className='my-3'>
-            <Accordion >
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Pending Request</Accordion.Header>
-                    <Accordion.Body>
-                        <PendingRequest />
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                    <Accordion.Header>Business List</Accordion.Header>
-                    <Accordion.Body>
-                        <BusinessList />
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="2">
-                    <Accordion.Header>Creator Events</Accordion.Header>
-                    <Accordion.Body>
-                        <CreatorEvents />
-                    </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
-        </Row>
+        <Accordion >
+            <Accordion.Item eventKey="0">
+                <Accordion.Header>Pending Request</Accordion.Header>
+                <Accordion.Body>
+                    <PendingRequest />
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+                <Accordion.Header>Business List</Accordion.Header>
+                <Accordion.Body>
+                    <BusinessList />
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="2">
+                <Accordion.Header>Creator Events</Accordion.Header>
+                <Accordion.Body>
+                    <CreatorEvents />
+                </Accordion.Body>
+            </Accordion.Item>
+        </Accordion>
     )
 
 }
