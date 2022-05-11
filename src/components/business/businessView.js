@@ -13,7 +13,7 @@ import EditBusiness from './editBusiness';
 
 const BusinessView = (props) => {
     const { useBusinessById } = useContext(SiteContext);
-    const business = useBusinessById(Number(props.match.params.id));
+    const business = useBusinessById(props.match.params.id);
 
     const [ isAdmin, setIsAdmin ] = useState(false);
     const [ modalShow, setModalShow ] = useState(false);
@@ -26,7 +26,7 @@ const BusinessView = (props) => {
         if(!user_id) {
             return
         } else {
-            if (business.business_admin === Number(user_id)) {
+            if (business.business_admin === user_id) {
                 setIsAdmin(true)
             } else {
                 return

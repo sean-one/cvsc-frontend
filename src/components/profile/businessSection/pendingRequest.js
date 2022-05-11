@@ -27,10 +27,10 @@ const PendingRequest = (props) => {
     }, [setPendingRequest])
 
     const approveRequest = (e) => {
-        const reqData = { request_id: e.currentTarget.value}
+        const request_data = { request_id: e.currentTarget.value }
         const token = localStorage.getItem('token')
 
-        AxiosInstance.post(`/roles/approve/${e.currentTarget.value}`, reqData, {
+        AxiosInstance.post(`/roles/approve/${request_data.request_id}`, request_data, {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {

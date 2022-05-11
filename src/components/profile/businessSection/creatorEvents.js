@@ -10,7 +10,7 @@ const CreatorEvents = () => {
     const businessAdminIds = useBusinessAdminIdRoles()
     const adminEvents = useEventsFilter({ remove_user_id: userProfile.id, business_ids: businessAdminIds })
 
-    console.log(adminEvents)
+    // console.log(adminEvents)
 
     return (
         <Row>

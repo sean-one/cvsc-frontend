@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 const EventView = (props) => {
     const { useEventById, useBusinessName } = useContext(SiteContext)
-    const event = useEventById(Number(props.match.params.id))
+    const event = useEventById(props.match.params.id)
     const venue_name = useBusinessName(event.venue_id)
     const brand_name = useBusinessName(event.brand_id)
     
@@ -33,7 +33,7 @@ const EventView = (props) => {
         if (!user_id) {
             return
         } else {
-            if (event.created_by === Number(user_id)) {
+            if (event.created_by === user_id) {
                 setIsCreator(true)
             } else {
                 return

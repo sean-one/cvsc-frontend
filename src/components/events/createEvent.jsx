@@ -211,7 +211,7 @@ const CreateEvent = () => {
                 <Form.Label>Location</Form.Label>
                 <Form.Select
                     className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
-                    {...register('venue_id', { valueAsNumber: true })}
+                    {...register('venue_id')}
                     onFocus={() => clearErrors([ 'venue_id', 'role_rights' ])}
                     type='text'
                     name='venue_id'
@@ -248,7 +248,7 @@ const CreateEvent = () => {
                 <Form.Label>Brand</Form.Label>
                 <Form.Select
                     className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
-                    {...register('brand_id', { valueAsNumber: true })}
+                    {...register('brand_id')}
                     onFocus={() => clearErrors([ 'brand_id', 'role_rights' ])}
                     type='text'
                     name='brand_id'

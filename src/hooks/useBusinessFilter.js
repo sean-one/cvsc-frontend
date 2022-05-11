@@ -26,7 +26,7 @@ const useBusinessFilter = (business_id = null) => {
 
     // return single business from business id input
     if (business_id) {
-        business = businessList.find(business => business.id === Number(business_id))
+        business = businessList.find(business => business.id === business_id)
     }
 
     // return a list based on business type
