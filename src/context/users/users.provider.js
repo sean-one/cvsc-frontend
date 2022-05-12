@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import usersReducer, { USERS_INITIAL_STATE } from './users.reducer';
 import userTypes from './users.types';
 
-import { userSignIn, userUpdate, userContactUpdate } from './users.utils';
+import { userSignIn, userUpdate } from './users.utils';
 
 export const UsersContext = createContext({
     ...USERS_INITIAL_STATE
@@ -11,17 +11,16 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles, userContact } = store
+    const { userProfile, userRoles } = store
 
     // used at sucessful login & successful registration
     const setUser = userdata => {
-        // set up local storage
-        // also cleans data for the payload object
+        // set up local storage and cleans data payload object
         userSignIn(userdata)
 
         dispatch({
             type: userTypes.SET_USER,
-            payload: { user: userdata.user, contact: userdata.contact }
+            payload: userdata.user
         })
     }
 
@@ -53,16 +52,6 @@ const UsersProvider = ({ children }) => {
         return businessAdminIdList
     }
 
-    // used at contactSection updateContact
-    const updateUserContact = contact => {
-        // save contact to local storage
-        userContactUpdate(contact)
-        dispatch({
-            type: userTypes.UPDATE_USER_CONTACT,
-            payload: contact
-        })
-    }
-
     // used after successful avatar update
     const updateUser = userdata => {
         userUpdate(userdata)
@@ -87,8 +76,6 @@ const UsersProvider = ({ children }) => {
 
 
                 userProfile,
-                userContact,
-                updateUserContact,
                 updateUser,
                 useBusinessIdRoles,
                 useBusinessAdminIdRoles,

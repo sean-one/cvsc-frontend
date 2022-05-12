@@ -2,7 +2,6 @@ import userTypes from './users.types';
 
 export const USERS_INITIAL_STATE = {
     userProfile: {},
-    userContact: {},
     userRoles: [],
 };
 
@@ -11,8 +10,7 @@ const usersReducer = (state, action) => {
         case userTypes.SET_USER:
             return {
                 ...state,
-                userProfile: action.payload.user,
-                userContact: action.payload.contact
+                userProfile: action.payload,
             };
         case userTypes.SET_USER_ROLES:
             return {

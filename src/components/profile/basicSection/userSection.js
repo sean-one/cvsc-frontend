@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
-import { Card, Col, Row, Image } from 'react-bootstrap';
+import { Button, Card, Col, Row, Image, ButtonGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { UsersContext } from '../../../context/users/users.provider';
 
-import ContactSection from '../../contact/contactSection';
 
 const ProfileImgStyles = styled.div`
     .userProfileImage {
@@ -25,12 +24,18 @@ const UserSection = (props) => {
                         <Image className='userProfileImage' roundedCircle src={`${userProfile.avatar}`} alt='user profile' />
                     </ProfileImgStyles>
                 </Col>
-                <Col>
+                <Col className='my-auto ps-3'>
                     <Card.Body>
                         <Card.Title>{userProfile.username}</Card.Title>
-                        <ContactSection />
+                        <Card.Subtitle>{userProfile.email}</Card.Subtitle>
                     </Card.Body>
                 </Col>
+            </Row>
+            <Row sm={2} className='d-flex justify-content-end'>
+                <ButtonGroup>
+                    <Button variant='secondary' className='mx-2'>edit</Button>
+                    <Button variant='success'>submit</Button>
+                </ButtonGroup>
             </Row>
         </Card>
     )
