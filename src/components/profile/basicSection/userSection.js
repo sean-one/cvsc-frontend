@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Card, Col, Row, Image, ButtonGroup } from 'react-bootstrap';
+import { Card, Col, Image, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { UsersContext } from '../../../context/users/users.provider';
@@ -30,12 +30,6 @@ const UserSection = (props) => {
                         <Card.Subtitle>{userProfile.email}</Card.Subtitle>
                     </Card.Body>
                 </Col>
-            </Row>
-            <Row sm={2} className='d-flex justify-content-end'>
-                <ButtonGroup>
-                    <Button variant='secondary' className='mx-2'>edit</Button>
-                    <Button variant='success'>submit</Button>
-                </ButtonGroup>
             </Row>
         </Card>
     )
