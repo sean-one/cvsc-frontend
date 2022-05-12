@@ -22,11 +22,6 @@ const usersReducer = (state, action) => {
                 ...state,
                 userProfile: action.payload
             }
-        case userTypes.UPDATE_USER_CONTACT:
-            return {
-                ...state,
-                userContact: action.payload
-            }
         case userTypes.USER_LOGOUT:
             localStorage.clear()
             return {
