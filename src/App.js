@@ -16,7 +16,6 @@ import { Layout } from './components/Layout';
 
 import SiteProvider from './context/site/site.provider';
 import UsersProvider from './context/users/users.provider';
-import UserAdminProvider from './context/adminuser/adminuser.provider';
 
 // import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -35,9 +34,7 @@ const App = () => {
             <Route path='/event/:id' render={(props) => (<EventView {...props} />)} />
             <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
-            <UserAdminProvider>
-              <AuthRoute exact path='/profile' component={Profile} />
-            </UserAdminProvider>
+            <AuthRoute exact path='/profile' component={Profile} />
           </Layout>
       </SiteProvider>
       </UsersProvider>

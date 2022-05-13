@@ -2,11 +2,10 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Col, Form, Button, InputGroup, Row } from 'react-bootstrap';
+import { Col, Form, Button, Row } from 'react-bootstrap';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import AxiosInstance from '../helpers/axios';
-
 import { UsersContext } from '../context/users/users.provider.js';
 import { NotificationsContext } from '../context/notifications/notifications.provider.js';
 
@@ -28,6 +27,7 @@ const Register = () => {
         AxiosInstance.post('/users/register', data)
             .then(response => {
                 if(response.status === 200) {
+                    // send success message
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
@@ -35,8 +35,13 @@ const Register = () => {
                             message: `${data.username} has been created and logged in`
                         }
                     })
+
+                    // set user to the users context
                     setUser(response.data)
+
+                    // forward to profile page
                     history.push('/profile');
+
                 } else {
                     dispatch({
                         type: "ADD_NOTIFICATION",
@@ -58,9 +63,9 @@ const Register = () => {
                         }
                     })
                 } else if(err.response.status === 400) {
-                    setError(`${err.response.data.type}`, {
+                    setError(`${err.response.data.error.type}`, {
                         type: 'server',
-                        message: err.response.data.message
+                        message: err.response.data.error.message
                     })
                 }
             })
@@ -98,64 +103,56 @@ const Register = () => {
                 </Form.Group>
                 <div className='errormessage'>{errors.email?.message}</div>
 
-                <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        className={errors.password ? 'inputError' : ''}
-                        onFocus={() => clearErrors('password')}
-                        {...register('password')}
-                        type="password"
-                        placeholder="Password"
-                        name='password'
-                        required
-                    />
-                </Form.Group>
-                <div className='errormessage'>{errors.password?.message}</div>
+                <Row>
+                    <Col>
+                        <Form.Group controlId="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                className={errors.password ? 'inputError' : ''}
+                                onFocus={() => clearErrors('password')}
+                                {...register('password')}
+                                type="password"
+                                placeholder="Password"
+                                name='password'
+                                required
+                            />
+                        </Form.Group>
+                        <div className='errormessage'>{errors.password?.message}</div>
+                    </Col>
 
-                <Form.Group controlId="confirmation">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control
-                        className={errors.confirmation ? 'inputError' : ''}
-                        onFocus={() => clearErrors('confirmation')}
-                        {...register('confirmation')}
-                        type="password"
-                        placeholder="Confirm Password"
-                        name='confirmation'
-                        required
-                    />
-                </Form.Group>
-                <div className='errormessage'>{errors.confirmation?.message}</div>
+                    <Col>
+                        <Form.Group controlId="confirmation">
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control
+                                className={errors.confirmation ? 'inputError' : ''}
+                                onFocus={() => clearErrors('confirmation')}
+                                {...register('confirmation')}
+                                type="password"
+                                placeholder="Confirm Password"
+                                name='confirmation'
+                                required
+                            />
+                        </Form.Group>
+                        <div className='errormessage'>{errors.confirmation?.message}</div>
+                    </Col>
+                </Row>
 
-                <Form.Group controlId="instagram">
-                    <Form.Label>Instagram</Form.Label>
-                    <InputGroup>
-                        <InputGroup.Text id="btnGroupAddon">@</InputGroup.Text>
-                        <Form.Control
-                            className={errors.instagram ? 'inputError' : ''}
-                            onFocus={() => clearErrors('instagram')}
-                            {...register('instagram')}
-                            type="text"
-                            placeholder="instagram"
-                            name='instagram'
-                            aria-describedby='btnGroupAddon'
-                        />
-                    </InputGroup>
-                </Form.Group>
-                <div className='errormessage'>{errors.instagram?.message}</div>
-                
                 <Row>
                     <Col>
                         <Button variant="primary" size="lg" type='submit'>
                             Submit
                         </Button>
                     </Col>
-                    <Col>
-                        <Button href='/login' variant="secondary" size="lg">
-                            Login
-                        </Button>
-                    </Col>
                 </Row>
             </Form>
+            <Row>
+                <Col className='d-flex flex-column justify-content-center align-items-center my-2'>
+                    <p>already have a login?</p>
+                    <Button href='/login' variant="secondary" size="lg">
+                        Login page
+                    </Button>
+                </Col>
+            </Row>
         </Row>
     )
 }

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -6,16 +7,20 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import AxiosInstance from '../../../helpers/axios';
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import { UsersContext } from '../../../context/users/users.provider';
 import useBusinessFilter from '../../../hooks/useBusinessFilter';
+
 
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
+    const { userSignOut } = useContext(UsersContext)
     const { business_filtered } = useBusinessFilter()
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
     });
+    let history = useHistory();
 
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
@@ -33,8 +38,17 @@ const CreatorRequest = () => {
                 })
             })
             .catch(err => {
-                
-                if(err.response.data.type === 'duplicate') {
+                if (err.response.data.error.type === 'token') {
+                    // clear localstorage and sign out user info
+                    localStorage.clear()
+                    userSignOut()
+
+                    //token error, forward to login screen
+                    history.push('/login');
+                    
+                }
+
+                if(err.response.data.error.type === 'duplicate') {
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
@@ -44,7 +58,7 @@ const CreatorRequest = () => {
                     })
                 }
 
-                if(err.response.data.type === 'missing input') {
+                if(err.response.data.error.type === 'missing_input') {
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {

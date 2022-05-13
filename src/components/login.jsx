@@ -26,6 +26,7 @@ const Login = () => {
         AxiosInstance.post('/users/login', data)
             .then(response => {
                 if(response.status === 200) {
+                    // send success message
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
@@ -33,8 +34,13 @@ const Login = () => {
                             message: `logged in as: ${data.username}`
                         }
                     })
+
+                    // set user to the users context
                     setUser(response.data)
+
+                    // forward to profile page
                     history.push('/profile');
+
                 } else {
                     dispatch({
                         type: "ADD_NOTIFICATION",
@@ -55,18 +61,22 @@ const Login = () => {
                             message: 'something went wrong, please try again'
                         }
                     })
-                } else if (err.response.status === 401) {
-                    setError('password', {
+
+                } else if (err.response.status === 400 ) {
+                    setError(`${err.response.data.error.type}`, {
                         type: 'server',
-                        message: 'password or username is incorrect'
+                        message: err.response.data.error.message
                     })
+
                 } else if (err.response.status === 404) {
                     setError('username', {
                         type: 'server',
                         message: 'username is incorrect'
                     })
+
                 } else {
                     console.log(err.name + ': ' + err.message)
+                    
                 }
             })
     }
