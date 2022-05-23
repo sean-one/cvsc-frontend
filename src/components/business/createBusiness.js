@@ -22,42 +22,43 @@ const CreateBusiness = (props) => {
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
 
+        console.log(data)
         // clean and format data
-        data = addBusiness(data)
+        // data = addBusiness(data)
         
-        AxiosInstance.post('/business/create', data, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(response => {
-                if (response.status === 201) {
-                    reset()
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'SUCCESS',
-                            message: `${data.business.name} business request submitted`
-                        }
-                    })
-                    history.push({
-                        pathname: '/profile',
-                    });
-                }
-            })
-            .catch(err => {
-                if (err.response.status) {
-                    setError(`${err.response.data.type}`, {
-                        type: 'server',
-                        message: err.response.data.message
-                    })
-                }
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${err.response.data.message}`
-                    }
-                })
-            })
+        // AxiosInstance.post('/business/create', data, {
+        //     headers: { 'Authorization': 'Bearer ' + token }
+        // })
+        //     .then(response => {
+        //         if (response.status === 201) {
+        //             reset()
+        //             dispatch({
+        //                 type: "ADD_NOTIFICATION",
+        //                 payload: {
+        //                     notification_type: 'SUCCESS',
+        //                     message: `${data.business.name} business request submitted`
+        //                 }
+        //             })
+        //             history.push({
+        //                 pathname: '/profile',
+        //             });
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err.response.status) {
+        //             setError(`${err.response.data.type}`, {
+        //                 type: 'server',
+        //                 message: err.response.data.message
+        //             })
+        //         }
+        //         dispatch({
+        //             type: "ADD_NOTIFICATION",
+        //             payload: {
+        //                 notification_type: 'ERROR',
+        //                 message: `${err.response.data.message}`
+        //             }
+        //         })
+        //     })
     }
 
 
@@ -228,6 +229,30 @@ const CreateBusiness = (props) => {
                     name='website'
                 />
                 <div className='errormessage'>{errors.website?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='facebook'>
+                <Form.Label>Facebook</Form.Label>
+                <Form.Control
+                    className={errors.facebook ? 'inputError' : ''}
+                    {...register('facebook')}
+                    onFocus={() => clearErrors('facebook')}
+                    type='text'
+                    name='facebook'
+                />
+                <div className='errormessage'>{errors.facebook?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='phone'>
+                <Form.Label>Phone</Form.Label>
+                <Form.Control
+                    className={errors.phone ? 'inputError' : ''}
+                    {...register('phone')}
+                    onFocus={() => clearErrors('phone')}
+                    type='text'
+                    name='phone'
+                />
+                <div className='errormessage'>{errors.phone?.message}</div>
             </Form.Group>
 
             <Button type='submit'>Submit</Button>

@@ -136,11 +136,18 @@ export const addBusinessSchema = yup.object().shape({
 
     phone: yup
         .string()
-        .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true }),
+        .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
+        .notRequired(),
 
     website: yup
         .string()
         .url()
+        .notRequired(),
+    
+    facebook: yup
+        .string()
+        .url()
+        .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
         .notRequired(),
 
     city: yup

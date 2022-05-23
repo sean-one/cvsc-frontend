@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -38,34 +38,23 @@ const CreatorRequest = () => {
                 })
             })
             .catch(err => {
-                if (err.response.data.error.type === 'token') {
+                if (err.response.data.error.type !== 'token') {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'error',
+                            message: err.response.data.error.message
+                        }
+                    })
+                } else {
+                    
+                    //token error, forward to login screen
+                    history.push('/login');
+
                     // clear localstorage and sign out user info
                     localStorage.clear()
                     userSignOut()
 
-                    //token error, forward to login screen
-                    history.push('/login');
-                    
-                }
-
-                if(err.response.data.error.type === 'duplicate') {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'error',
-                            message: 'a previous request for this business is still pending'
-                        }
-                    })
-                }
-
-                if(err.response.data.error.type === 'missing_input') {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'error',
-                            message: 'please be sure to select the business you would like creator rights for'
-                        }
-                    })
                 }
             })
             .finally(() => {
@@ -104,4 +93,4 @@ const CreatorRequest = () => {
     )
 }
 
-export default CreatorRequest;
+export default withRouter(CreatorRequest);
