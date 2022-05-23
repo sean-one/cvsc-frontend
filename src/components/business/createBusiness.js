@@ -6,7 +6,6 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 import { addBusinessSchema } from '../../helpers/validationSchemas';
-import { addBusiness } from '../../helpers/dataCleanUp';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 
 const CreateBusiness = (props) => {
@@ -22,43 +21,39 @@ const CreateBusiness = (props) => {
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
 
-        console.log(data)
-        // clean and format data
-        // data = addBusiness(data)
-        
-        // AxiosInstance.post('/business/create', data, {
-        //     headers: { 'Authorization': 'Bearer ' + token }
-        // })
-        //     .then(response => {
-        //         if (response.status === 201) {
-        //             reset()
-        //             dispatch({
-        //                 type: "ADD_NOTIFICATION",
-        //                 payload: {
-        //                     notification_type: 'SUCCESS',
-        //                     message: `${data.business.name} business request submitted`
-        //                 }
-        //             })
-        //             history.push({
-        //                 pathname: '/profile',
-        //             });
-        //         }
-        //     })
-        //     .catch(err => {
-        //         if (err.response.status) {
-        //             setError(`${err.response.data.type}`, {
-        //                 type: 'server',
-        //                 message: err.response.data.message
-        //             })
-        //         }
-        //         dispatch({
-        //             type: "ADD_NOTIFICATION",
-        //             payload: {
-        //                 notification_type: 'ERROR',
-        //                 message: `${err.response.data.message}`
-        //             }
-        //         })
-        //     })
+        AxiosInstance.post('/business/create', data, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                if (response.status === 201) {
+                    reset()
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'SUCCESS',
+                            message: `${data.business.name} business request submitted`
+                        }
+                    })
+                    history.push({
+                        pathname: '/profile',
+                    });
+                }
+            })
+            .catch(err => {
+                if (err.response.status) {
+                    setError(`${err.response.data.type}`, {
+                        type: 'server',
+                        message: err.response.data.message
+                    })
+                }
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${err.response.data.message}`
+                    }
+                })
+            })
     }
 
 

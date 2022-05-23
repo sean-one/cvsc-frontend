@@ -16,7 +16,7 @@ const BasicSection = () => {
     return (
         <Row className='my-3'>
             <h3>Basic Section</h3>
-            <Accordion >
+            <Accordion defaultActiveKey="0">
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>User Profile</Accordion.Header>
                     <Accordion.Body>

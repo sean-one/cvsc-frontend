@@ -131,12 +131,12 @@ export const addBusinessSchema = yup.object().shape({
 
     instagram: yup
         .string()
-        .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, 'invalid instagram account')
-        .required('instagram is required'),
+        // .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, { message: 'invalid instagram account', excludeEmptyString: true })
+        .notRequired(),
 
     phone: yup
         .string()
-        .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
+        // .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
         .notRequired(),
 
     website: yup
@@ -144,10 +144,15 @@ export const addBusinessSchema = yup.object().shape({
         .url()
         .notRequired(),
     
+    twitter: yup
+        .string()
+        .url()
+        .notRequired(),
+
     facebook: yup
         .string()
         .url()
-        .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
+        // .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
         .notRequired(),
 
     city: yup
