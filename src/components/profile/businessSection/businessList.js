@@ -21,7 +21,7 @@ const BusinessList = (props) => {
                     <Row key={business.id} className='d-flex'>
                         <Col className='flex-grow-0'><FontAwesomeIcon icon={faCannabis} size='1x'></FontAwesomeIcon></Col>
                         <Col className='flex-grow-1'><Link to={{
-                            pathname: `/business/${business.id}`,
+                            pathname: `/business/admin/${business.id}`,
                             state: {
                                 business,
                                 from: props.location.pathname
