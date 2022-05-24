@@ -31,7 +31,7 @@ const CreateBusiness = (props) => {
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'SUCCESS',
-                            message: `${data.business.name} business request submitted`
+                            message: `${response.data.name} business request submitted`
                         }
                     })
                     history.push({
