@@ -42,9 +42,17 @@ const EditBusiness = ({ business, handleClose }) => {
         // clean up data prior to sending to server
         const dirtyList = Object.keys(dirtyFields)
         for (const [key] of Object.entries(data)) {
+            
+            // remove if untouched
             if(!dirtyList.includes(key)) {
                 delete data[key]
             }
+
+            // change empty string to null
+            if(data[key] === '') {
+                data[key] = null
+            }
+
         }
 
         AxiosInstance.put(`/business/${business.id}`, data, {

@@ -7,12 +7,13 @@ import UpcomingBusinessView from '../upcoming/upcoming.businessview';
 import EditBusiness from '../business/editBusiness';
 
 const BusinessAdminView = (props) => {
-    const business = props.location.state.business
+    const business = props.location.state.business.id
     const [modalShow, setModalShow] = useState(false);
 
     const handleModalClose = () => setModalShow(false);
     const handleModalOpen = () => setModalShow(true);
     
+    // console.log(props.location.state.business.id)
     return (
         <Container className='px-0'>
             <Row className='m-2 px-0'>
