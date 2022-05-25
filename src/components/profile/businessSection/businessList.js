@@ -19,10 +19,10 @@ const BusinessList = (props) => {
                         <Col className='flex-grow-1'><Link to={{
                             pathname: `/business/admin/${business.id}`,
                             state: {
-                                business,
+                                business_id: business.id,
                                 from: props.location.pathname
                             }
-                        }}>{business.name}</Link></Col>
+                        }}>{business.business_name}</Link></Col>
                     </Row>
                 ))
             }

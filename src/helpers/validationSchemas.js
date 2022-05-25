@@ -115,7 +115,7 @@ export const addBusinessSchema = yup.object().shape({
         .string()
         .required('business description is required'),
 
-    email: yup
+    business_email: yup
         .string()
         .email()
         .required('valid business email is required'),
@@ -129,27 +129,27 @@ export const addBusinessSchema = yup.object().shape({
         .oneOf([ 'brand', 'venue', 'both' ], 'invalid brand type')
         .required('business type is required'),
 
-    instagram: yup
+    business_instagram: yup
         .string()
         // .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, { message: 'invalid instagram account', excludeEmptyString: true })
         .notRequired(),
 
-    phone: yup
+    business_phone: yup
         .string()
         // .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
         .notRequired(),
 
-    website: yup
+    business_website: yup
         .string()
         .url()
         .notRequired(),
     
-    twitter: yup
+    business_twitter: yup
         .string()
         .url()
         .notRequired(),
 
-    facebook: yup
+    business_facebook: yup
         .string()
         .url()
         // .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})

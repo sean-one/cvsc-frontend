@@ -6,9 +6,11 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 import { addBusinessSchema } from '../../helpers/validationSchemas';
+import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 
 const CreateBusiness = (props) => {
+    const { addBusiness } = useContext(SiteContext)
     const {dispatch } = useContext(NotificationsContext) 
     const { register, handleSubmit, watch, reset, setError, clearErrors, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -27,15 +29,19 @@ const CreateBusiness = (props) => {
             .then(response => {
                 if (response.status === 201) {
                     reset()
+                    addBusiness(response.data)
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'SUCCESS',
-                            message: `${response.data.name} business request submitted`
+                            message: `${response.data.business_name} business request submitted`
                         }
                     })
                     history.push({
-                        pathname: '/profile',
+                        pathname: `/business/admin/${response.data.id}`,
+                        state: {
+                            business_id: response.data.id,
+                        }
                     });
                 }
             })
@@ -73,17 +79,17 @@ const CreateBusiness = (props) => {
                 <div className='errormessage'>{errors.business_name?.message}</div>
             </Form.Group>
 
-            <Form.Group controlId='email'>
+            <Form.Group controlId='business_email'>
                 <Form.Label>Business Email</Form.Label>
                 <Form.Control
-                    className={errors.email ? 'inputError' : ''}
-                    {...register('email')}
-                    onFocus={() => clearErrors('email')}
+                    className={errors.business_email ? 'inputError' : ''}
+                    {...register('business_email')}
+                    onFocus={() => clearErrors('business_email')}
                     type='text'
-                    name='email'
+                    name='business_email'
                     required
                 />
-                <div className='errormessage'>{errors.email?.message}</div>
+                <div className='errormessage'>{errors.business_email?.message}</div>
             </Form.Group>
 
             {/* <Form.Group controlId='business_avatar'> */}
@@ -202,52 +208,64 @@ const CreateBusiness = (props) => {
                 )
             }
             
-            <Form.Group controlId='instagram'>
+            <Form.Group controlId='business_instagram'>
                 <Form.Label>Instagram</Form.Label>
                 <Form.Control
-                    className={errors.instagram ? 'inputError' : ''}
-                    {...register('instagram')}
-                    onFocus={() => clearErrors('instagram')}
+                    className={errors.business_instagram ? 'inputError' : ''}
+                    {...register('business_instagram')}
+                    onFocus={() => clearErrors('business_instagram')}
                     type='text'
-                    name='instagram'
+                    name='business_instagram'
                 />
-                <div className='errormessage'>{errors.instagram?.message}</div>
+                <div className='errormessage'>{errors.business_instagram?.message}</div>
             </Form.Group>
 
-            <Form.Group controlId='website'>
+            <Form.Group controlId='business_website'>
                 <Form.Label>Website</Form.Label>
                 <Form.Control
-                    className={errors.website ? 'inputError' : ''}
-                    {...register('website')}
-                    onFocus={() => clearErrors('website')}
+                    className={errors.business_website ? 'inputError' : ''}
+                    {...register('business_website')}
+                    onFocus={() => clearErrors('business_website')}
                     type='text'
-                    name='website'
+                    name='business_website'
                 />
-                <div className='errormessage'>{errors.website?.message}</div>
+                <div className='errormessage'>{errors.business_website?.message}</div>
             </Form.Group>
 
-            <Form.Group controlId='facebook'>
+            <Form.Group controlId='business_facebook'>
                 <Form.Label>Facebook</Form.Label>
                 <Form.Control
-                    className={errors.facebook ? 'inputError' : ''}
-                    {...register('facebook')}
-                    onFocus={() => clearErrors('facebook')}
+                    className={errors.business_facebook ? 'inputError' : ''}
+                    {...register('business_facebook')}
+                    onFocus={() => clearErrors('business_facebook')}
                     type='text'
-                    name='facebook'
+                    name='business_facebook'
                 />
-                <div className='errormessage'>{errors.facebook?.message}</div>
+                <div className='errormessage'>{errors.business_facebook?.message}</div>
             </Form.Group>
 
-            <Form.Group controlId='phone'>
+            <Form.Group controlId='business_phone'>
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
-                    className={errors.phone ? 'inputError' : ''}
-                    {...register('phone')}
-                    onFocus={() => clearErrors('phone')}
+                    className={errors.business_phone ? 'inputError' : ''}
+                    {...register('business_phone')}
+                    onFocus={() => clearErrors('business_phone')}
                     type='text'
-                    name='phone'
+                    name='business_phone'
                 />
-                <div className='errormessage'>{errors.phone?.message}</div>
+                <div className='errormessage'>{errors.business_phone?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='business_twitter'>
+                <Form.Label>Twitter</Form.Label>
+                <Form.Control
+                    className={errors.business_twitter ? 'inputError' : ''}
+                    {...register('business_twitter')}
+                    onFocus={() => clearErrors('business_twitter')}
+                    type='text'
+                    name='business_twitter'
+                />
+                <div className='errormessage'>{errors.business_twitter?.message}</div>
             </Form.Group>
 
             <Button type='submit'>Submit</Button>

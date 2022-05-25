@@ -29,6 +29,11 @@ const siteReducer = (state, action) => {
                 ...state,
                 events: state.events.map(event => (event.event_id === action.payload.id ? action.payload.event : event))
             }
+        case siteTypes.ADD_BUSINESS:
+            return {
+                ...state,
+                businessList: [ ...state.businessList, action.payload ]
+            }
         case siteTypes.UPDATE_BUSINESS:
             return {
                 ...state,
