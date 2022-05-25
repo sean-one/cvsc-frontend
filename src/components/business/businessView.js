@@ -24,6 +24,7 @@ const BusinessView = (props) => {
                         <Row className='px-0 mx-0'>
                             {`Email: ${business.email}`}
                         </Row>
+                        {/* dynamically add optional contact information */}
                         <Row className='px-0 mx-0'>
                             {
                                 (business.phone !== null)

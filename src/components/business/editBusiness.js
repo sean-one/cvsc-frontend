@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { update_Business } from '../../helpers/dataCleanUp';
 import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import AxiosInstance from '../../helpers/axios';
@@ -31,6 +30,9 @@ const EditBusiness = ({ business, handleClose }) => {
             business_description: business.description,
             instagram: business.instagram,
             website: business.website,
+            facebook: business.facebook,
+            phone: business.phone,
+            twitter: business.twitter,
         }
     })
 
@@ -38,7 +40,12 @@ const EditBusiness = ({ business, handleClose }) => {
         const token = localStorage.getItem('token')
         
         // clean up data prior to sending to server
-        data = update_Business(data, dirtyFields)
+        const dirtyList = Object.keys(dirtyFields)
+        for (const [key] of Object.entries(data)) {
+            if(!dirtyList.includes(key)) {
+                delete data[key]
+            }
+        }
 
         AxiosInstance.put(`/business/${business.id}`, data, {
             headers: {'Authorization': 'Bearer ' + token}
@@ -152,6 +159,42 @@ const EditBusiness = ({ business, handleClose }) => {
                         name='website'
                     />
                     <div className='errormessage'>{errors.website?.message}</div>
+                </Form.Group>
+
+                <Form.Group controlId='facebook'>
+                    <Form.Label>Facebook</Form.Label>
+                    <Form.Control
+                        className={errors.facebook ? 'inputError' : ''}
+                        {...register('facebook')}
+                        onFocus={() => clearErrors('facebook')}
+                        type='text'
+                        name='facebook'
+                    />
+                    <div className='errormessage'>{errors.facebook?.message}</div>
+                </Form.Group>
+
+                <Form.Group controlId='phone'>
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                        className={errors.phone ? 'inputError' : ''}
+                        {...register('phone')}
+                        onFocus={() => clearErrors('phone')}
+                        type='text'
+                        name='phone'
+                    />
+                    <div className='errormessage'>{errors.phone?.message}</div>
+                </Form.Group>
+
+                <Form.Group controlId='twitter'>
+                    <Form.Label>Twitter</Form.Label>
+                    <Form.Control
+                        className={errors.twitter ? 'inputError' : ''}
+                        {...register('twitter')}
+                        onFocus={() => clearErrors('twitter')}
+                        type='text'
+                        name='twitter'
+                    />
+                    <div className='errormessage'>{errors.twitter?.message}</div>
                 </Form.Group>
 
                 <Row className='d-flex justify-content-around pt-3'>
