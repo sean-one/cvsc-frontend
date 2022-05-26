@@ -18,13 +18,23 @@ const BusinessAdminView = (props) => {
     return (
         <Container className='px-0'>
             <Row className='m-2 px-0'>
-                <Col className='mx-auto'>
+                <Col sm={10} className='fs-2 fw-bold'>
+                    {business.business_name}
+                </Col>
+                <Col sm={2} className='d-flex justify-content-end'>
+                    <Button size='sm' variant='info' className='m-2'>
+                        <FontAwesomeIcon onClick={handleModalOpen} icon={faEdit} />
+                    </Button>
+                    <Button size='sm' variant='danger' className='m-2'>
+                        <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                </Col>
+            </Row>
+            <Row className='m-2 px-0'>
+                <Col md={6} className='m-auto'>
                     <Image fluid src='https://picsum.photos/500/500' alt={business.business_name} />
                 </Col>
-                <Col className='d-flex flex-column align-items-left justify-content-center'>
-                    <Row className='px-0'>
-                        <h2 className='px-0'>{business.business_name}</h2>
-                    </Row>
+                <Col md={6} className='d-flex flex-column align-items-left justify-content-center'>
                     <Row className='d-flex flex-column px-0 mt-3'>
                         <Row className='px-0 mx-0'>
                             {`Email: ${business.business_email}`}
@@ -65,28 +75,22 @@ const BusinessAdminView = (props) => {
                                     : null
                             }
                         </Row>
+                        <Row className='px-0 mx-0 fs-6 lh-sm mt-2 border-top'>
+                            {business.business_description}
+                        </Row>
                     </Row>
                 </Col>
             </Row>
-            <Row className='m-2 py-3 fw-bold'>
-                <Col xs={10}>
+            <Row className='m-2 fw-bold'>
+                <Col sm={2}>
+                    <Button size='sm' variant='info' className='m-2'>
+                        edit
+                        {/* <FontAwesomeIcon onClick={handleModalOpen} icon={faEdit} /> */}
+                    </Button>
+                </Col>
+                <Col sm={10}>
                     {business.formatted}
                 </Col>
-                <Col className='d-flex'>
-                    <Col>
-                        <Button size='sm' variant='info'>
-                            <FontAwesomeIcon onClick={handleModalOpen} icon={faEdit} />
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button size='sm' variant='danger'>
-                            <FontAwesomeIcon icon={faTrash} />
-                        </Button>
-                    </Col>
-                </Col>
-            </Row>
-            <Row className='py-3 m-2 fs-4 lh-lg border-top border-bottom'>
-                {business.business_description}
             </Row>
             <UpcomingBusinessView business={business.id} />
             <Modal centered show={modalShow} onHide={handleModalClose}>

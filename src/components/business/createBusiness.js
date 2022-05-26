@@ -27,9 +27,13 @@ const CreateBusiness = (props) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
+                
                 if (response.status === 201) {
+                    
                     reset()
+                    
                     addBusiness(response.data)
+                    
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
@@ -37,6 +41,7 @@ const CreateBusiness = (props) => {
                             message: `${response.data.business_name} business request submitted`
                         }
                     })
+                    
                     history.push({
                         pathname: `/business/admin/${response.data.id}`,
                         state: {
@@ -44,14 +49,17 @@ const CreateBusiness = (props) => {
                         }
                     });
                 }
+
             })
             .catch(err => {
+                
                 if (err.response.status) {
                     setError(`${err.response.data.type}`, {
                         type: 'server',
                         message: err.response.data.message
                     })
                 }
+                
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {

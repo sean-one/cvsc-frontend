@@ -146,12 +146,10 @@ export const addBusinessSchema = yup.object().shape({
     
     business_twitter: yup
         .string()
-        .url()
         .notRequired(),
 
     business_facebook: yup
         .string()
-        .url()
         // .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
         .notRequired(),
 
