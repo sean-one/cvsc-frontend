@@ -15,7 +15,7 @@ const UpcomingBusinessView = (props) => {
             {
                 (business_events.length > 0) &&  
                     <Row className='px-0 py-1'>
-                        <h3>{`Upcoming events with ${business.name}`}</h3>
+                        <h3>{`Upcoming events with ${business.business_name}`}</h3>
                     </Row>
             }
             {
