@@ -69,7 +69,7 @@ const EventPreview = ({ event, location }) => {
                         pathname: `/business/${event.brand_id}`
                     }}>{brand_name}</Link>
                 </Col>
-                <Col>{event.city}</Col>
+                <Col>{event.location_city}</Col>
                 {
                     (event.created_by === parseInt(localStorage.getItem('userId'))) &&
                         <Col>

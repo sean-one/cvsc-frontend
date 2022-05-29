@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { SiteContext } from '../../context/site/site.provider';
-import UpcomingBusinessView from '../upcoming/upcoming.businessview';
 import EditBusinessModal from '../editModals/editBusinessModal';
 import BusinessLocation from './location/businessLocation';
 
@@ -90,10 +89,9 @@ const BusinessAdminView = (props) => {
             </Row>
             {
                 (business.business_type !== 'brand')
-                    ? <BusinessLocation business={business}/>
+                    ? <BusinessLocation business={business} />
                     : null
             }
-            <UpcomingBusinessView business={business.id} />
             <EditBusinessModal business={business} modalshow={modalShow} close={handleModalClose} />
         </Container>
     )
