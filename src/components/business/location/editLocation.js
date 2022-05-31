@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
+
+import { SiteContext } from '../../../context/site/site.provider';
+import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import AxiosInstance from '../../../helpers/axios';
 
 const Styles = styled.div`
     .errormessage {
@@ -18,7 +22,8 @@ const Styles = styled.div`
 `
 
 const EditLocation = ({ modalClose, business_location }) => {
-    // const { dispatch } = useContext(NotificationsContext)
+    const { updateBusiness } = useContext(SiteContext)
+    const { dispatch } = useContext(NotificationsContext)
     const { register, handleSubmit, setError, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
             street_address: business_location.street_address,
@@ -28,8 +33,33 @@ const EditLocation = ({ modalClose, business_location }) => {
         }
     })
 
-    const sendLocationUpdate = (e) => {
-        return
+    const sendLocationUpdate = (data) => {
+        const token = localStorage.getItem('token')
+
+        AxiosInstance.put(`/locations/${business_location.location_id}`, data, {
+            headers: {'Authorization': 'Bearer ' + token}
+        })
+            .then(response => {
+                updateBusiness(response.data.id, response.data)
+                modalClose()
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${response.data.business_name} has been updated`
+                    }
+                })
+            })
+            .catch(err => {
+                if(err.response.data.error.type === 'invalid_address') {
+                    setError('street_address', {
+                        type: 'server',
+                        message: `${err.response.data.error.message}`
+                    })
+                }
+                console.log('inside error')
+                console.log(err.response.data.error.type)
+            })
     }
 
 
