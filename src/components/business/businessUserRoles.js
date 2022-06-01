@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useContext } from 'react';
+import React, { useCallback, useEffect, useContext } from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
@@ -22,7 +22,7 @@ const BusinessUserRoles = ({ business_id }) => {
             .catch(err => {
                 console.log(err)
             })
-    }, [business_id])
+    }, [setBusinessUserRoles, business_id])
 
     useEffect(() => {
         getAllBusinessRoles()
