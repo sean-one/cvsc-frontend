@@ -15,7 +15,7 @@ const BusinessSection = () => {
             <h3>{`${userProfile.account_type.charAt(0).toUpperCase() + userProfile.account_type.slice(1)} Options`}</h3>
             <Accordion >
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header>Pending Request</Accordion.Header>
+                    <Accordion.Header>Pending Creator Request</Accordion.Header>
                     <Accordion.Body>
                         <PendingRequest />
                     </Accordion.Body>

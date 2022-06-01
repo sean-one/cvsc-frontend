@@ -92,14 +92,13 @@ const PendingRequest = (props) => {
 
     return (
         <Row>
-            <Table striped bordered hover>
+            <Table striped hover>
                 <thead>
                     <tr>
-                    <th>User</th>
-                    <th>Business</th>
-                    <th>Type</th>
-                    <th><FontAwesomeIcon icon={faCheck} /></th>
-                    <th><FontAwesomeIcon icon={faTrash} /></th>
+                    <th>username</th>
+                    <th>business</th>
+                    <th className='text-end'><FontAwesomeIcon icon={faCheck} /></th>
+                    <th className='text-end'><FontAwesomeIcon icon={faTrash} /></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,13 +107,12 @@ const PendingRequest = (props) => {
                             <tr key={pr.id}>
                             <td>{pr.username}</td>
                             <td>{pr.business_name}</td>
-                            <td>{pr.role_type}</td>
-                                <td>
+                                <td className='text-end'>
                                     <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>
                                         <FontAwesomeIcon icon={faCheck} />
                                     </Button>
                                 </td>
-                                <td>
+                                <td className='text-end'>
                                     <Button size='sm' variant='danger' onClick={(e) => rejectRequest(e)} value={pr.id}>
                                         <FontAwesomeIcon icon={faTrash} />
                                     </Button>

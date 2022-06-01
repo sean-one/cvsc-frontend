@@ -85,6 +85,8 @@ const SiteProvider = ({ children }) => {
     
     const useManagers = businessUserRoles.filter(user_role => (user_role.role_type === 'manager' && user_role.active_role))
 
+    const useAdminRole = businessUserRoles.filter(user_role => (user_role.role_type === 'admin' && user_role.active_role))
+
     return (
         <SiteContext.Provider value={
             {
@@ -106,6 +108,7 @@ const SiteProvider = ({ children }) => {
                 usePending,
                 useCreators,
                 useManagers,
+                useAdminRole,
             }
         }>
             {children}

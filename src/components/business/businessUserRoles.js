@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useContext } from 'react';
-import { Accordion, Row } from 'react-bootstrap';
+import { Accordion, ListGroup, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 import { SiteContext } from '../../context/site/site.provider';
+import PendingRoleList from './userRoleList/pendingRoleList';
+import CreatorRoleList from './userRoleList/creatorRoleList';
+import ManagerRoleList from './userRoleList/managerRoleList';
 
 const BusinessUserRoles = ({ business_id }) => {
-    const { setBusinessUserRoles, usePending, useCreators, useManagers } = useContext(SiteContext)
+    const { setBusinessUserRoles, usePending, useCreators, useManagers, useAdminRole } = useContext(SiteContext)
     const pending_roles = usePending
     const creator_roles = useCreators
     const manager_roles = useManagers
+    const admin_role = useAdminRole[0]
 
     const getAllBusinessRoles = useCallback(() => {
         const token = localStorage.getItem('token');
@@ -29,35 +33,44 @@ const BusinessUserRoles = ({ business_id }) => {
         // eslint-disable-next-line
     }, []);
 
-
     return (
         <Row className='m-2 px-0'>
             <h4>Business Roles</h4>
             <Accordion>
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Pending Request</Accordion.Header>
-                    <Accordion.Body>
-                        {
-                            pending_roles.map(role => <p key={role.id}>{`${role.username} - request for: ${role.role_type}`}</p>)
-                        }
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                    <Accordion.Header>Creators</Accordion.Header>
-                    <Accordion.Body>
-                        {
-                            creator_roles.map(role => <p key={role.id}>{`${role.username} / ${role.role_type}`}</p>)
-                        }
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="2">
-                    <Accordion.Header>Managers</Accordion.Header>
-                    <Accordion.Body>
-                        {
-                            manager_roles.map(role => <p key={role.id}>{`${role.username} / ${role.role_type}`}</p>)
-                        }
-                    </Accordion.Body>
-                </Accordion.Item>
+                {
+                    pending_roles.length > 0
+                        ? <Accordion.Item eventKey="0">
+                            <Accordion.Header>Pending Request</Accordion.Header>
+                            <Accordion.Body>
+                                <PendingRoleList pending_roles={pending_roles} />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        : null
+                }
+                {
+                    creator_roles.length > 0
+                        ? <Accordion.Item eventKey="1">
+                            <Accordion.Header>Creators</Accordion.Header>
+                            <Accordion.Body>
+                                <CreatorRoleList creator_roles={creator_roles} />          
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        : null
+                }
+                {
+                    manager_roles.length > 0
+                        ? <Accordion.Item eventKey="2">
+                            <Accordion.Header>Managers</Accordion.Header>
+                            <Accordion.Body>
+                                <ManagerRoleList manager_roles={manager_roles} />         
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        : null
+                }
+                <ListGroup variant='flush'>
+                    {/* <ListGroup.Item>Business Admin</ListGroup.Item> */}
+                    <ListGroup.Item>{`Business Admin: ${admin_role.username}`}</ListGroup.Item>
+                </ListGroup>
             </Accordion>
         </Row>
     )
