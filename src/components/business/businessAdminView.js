@@ -6,6 +6,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { SiteContext } from '../../context/site/site.provider';
 import EditBusinessModal from '../editModals/editBusinessModal';
 import BusinessLocation from './location/businessLocation';
+import BusinessUserRoles from './businessUserRoles';
 
 const BusinessAdminView = (props) => {
     const { useBusinessById } = useContext(SiteContext)
@@ -92,6 +93,7 @@ const BusinessAdminView = (props) => {
                     ? <BusinessLocation business={business} />
                     : null
             }
+            <BusinessUserRoles business_id={business.id} />
             <EditBusinessModal business={business} modalshow={modalShow} close={handleModalClose} />
         </Container>
     )

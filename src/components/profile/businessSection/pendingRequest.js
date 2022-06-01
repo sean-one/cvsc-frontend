@@ -107,7 +107,7 @@ const PendingRequest = (props) => {
                         pendingRequest.map(pr => (
                             <tr key={pr.id}>
                             <td>{pr.username}</td>
-                            <td>{pr.name}</td>
+                            <td>{pr.business_name}</td>
                             <td>{pr.role_type}</td>
                                 <td>
                                     <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={pr.id}>

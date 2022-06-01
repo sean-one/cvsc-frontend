@@ -76,7 +76,7 @@ const CreatorRequest = () => {
                             <option>Business Select...</option>
                             {
                                 business_filtered.map(business => (
-                                    <option key={business.id} value={business.id}>{business.name}</option>
+                                    <option key={business.id} value={business.id}>{business.business_name}</option>
                                     ))
                                 }
                         </Form.Select>

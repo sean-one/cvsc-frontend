@@ -4,6 +4,7 @@ export const SITE_INITIAL_STATE = {
     events: [],
     businessList: [],
     businessRoles: [],
+    businessUserRoles: [],
 };
 
 const siteReducer = (state, action) => {
@@ -38,6 +39,11 @@ const siteReducer = (state, action) => {
             return {
                 ...state,
                 businessList: state.businessList.map(business => (business.id === action.payload.id ? action.payload.business : business))
+            }
+        case siteTypes.SET_BUSINESS_USER_ROLES:
+            return {
+                ...state,
+                businessUserRoles: action.payload
             }
         default:
             return state;

@@ -24,7 +24,7 @@ const Styles = styled.div`
 const EditLocation = ({ modalClose, business_location }) => {
     const { updateBusiness } = useContext(SiteContext)
     const { dispatch } = useContext(NotificationsContext)
-    const { register, handleSubmit, setError, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, setError, clearErrors, formState: { isDirty, errors } } = useForm({
         defaultValues: {
             street_address: business_location.street_address,
             location_city: business_location.location_city,
@@ -57,8 +57,6 @@ const EditLocation = ({ modalClose, business_location }) => {
                         message: `${err.response.data.error.message}`
                     })
                 }
-                console.log('inside error')
-                console.log(err.response.data.error.type)
             })
     }
 

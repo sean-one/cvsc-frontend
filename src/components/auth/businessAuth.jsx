@@ -1,4 +1,3 @@
-import { Component } from "react";
 // import { Redirect } from "react-router-dom";
 import { Route } from "react-router-dom";
 

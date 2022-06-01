@@ -13,11 +13,11 @@ const useBusinessFilter = (business_id = null) => {
 
 
     // remove inactive and request closed businesses
-    business_filtered = business_filtered.filter(business => (business.requestOpen === true) && (business.activeBusiness === true))
+    business_filtered = business_filtered.filter(business => (business.business_request_open === true) && (business.active_business === true))
 
     // brand and venue list for current active businesses
-    const venue_list = business_filtered.filter(business => (business.businesstype === 'venue' || business.businesstype === 'both') && business.activeBusiness === true)
-    const brand_list = business_filtered.filter(business => (business.businesstype === 'brand' || business.businesstype === 'both') && business.activeBusiness === true)
+    const venue_list = business_filtered.filter(business => (business.business_type === 'venue' || business.business_type === 'both') && business.active_business === true)
+    const brand_list = business_filtered.filter(business => (business.business_type === 'brand' || business.business_type === 'both') && business.active_business === true)
 
     // remove business with current creator or admin roles
     if (userRolesIdArray.length > 0) {
@@ -30,8 +30,8 @@ const useBusinessFilter = (business_id = null) => {
     }
 
     // return a list based on business type
-    const venue_filtered = business_filtered.filter(business => (business.businesstype === 'venue') || (business.businesstype === 'both'))
-    const brand_filtered = business_filtered.filter(business => business.businesstype === 'brand')
+    const venue_filtered = business_filtered.filter(business => (business.business_type === 'venue') || (business.business_type === 'both'))
+    const brand_filtered = business_filtered.filter(business => business.business_type === 'brand')
 
     return { business, business_filtered, venue_filtered, brand_filtered, venue_list, brand_list }
 }

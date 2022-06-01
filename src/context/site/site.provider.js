@@ -8,7 +8,7 @@ export const SiteContext = createContext({
 
 const SiteProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(siteReducer, SITE_INITIAL_STATE)
-    const { events, businessList } = store;
+    const { events, businessList, businessUserRoles } = store;
 
     // used inside calendar component build site event and businesses
     const setSiteInfo = ( eventResponse, businessResponse ) => {
@@ -71,6 +71,20 @@ const SiteProvider = ({ children }) => {
         return businessList.filter(business => business.business_admin === user_id)
     }
 
+    // BUSINESS USER ROLES
+    const setBusinessUserRoles = (business_user_roles) => {
+        dispatch({
+            type: siteTypes.SET_BUSINESS_USER_ROLES,
+            payload: business_user_roles
+        })
+    }
+
+    const usePending = businessUserRoles.filter(user_role => !user_role.active_role)
+
+    const useCreators = businessUserRoles.filter(user_role => (user_role.role_type === 'creator' && user_role.active_role))
+    
+    const useManagers = businessUserRoles.filter(user_role => (user_role.role_type === 'manager' && user_role.active_role))
+
     return (
         <SiteContext.Provider value={
             {
@@ -86,7 +100,12 @@ const SiteProvider = ({ children }) => {
                 updateBusiness,
                 useBusinessById,
                 useBusinessName,
-                useBusinessAdmin
+                useBusinessAdmin,
+                // BUSINESS USER ROLES
+                setBusinessUserRoles,
+                usePending,
+                useCreators,
+                useManagers,
             }
         }>
             {children}
