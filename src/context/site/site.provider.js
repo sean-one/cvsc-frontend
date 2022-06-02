@@ -79,6 +79,21 @@ const SiteProvider = ({ children }) => {
         })
     }
 
+    const updateBusinessUserRoles = (role_id, updated_role) => {
+        dispatch({
+            type: siteTypes.UPDATE_BUSINESS_USER_ROLES,
+            payload: { role_id, updated_role }
+        })
+
+    }
+
+    const removeBusinessUserRole = (role_id) => {
+        dispatch({
+            type: siteTypes.REMOVE_BUSINESS_USER_ROLE,
+            payload: role_id
+        })
+    }
+
     const usePending = businessUserRoles.filter(user_role => !user_role.active_role)
 
     const useCreators = businessUserRoles.filter(user_role => (user_role.role_type === 'creator' && user_role.active_role))
@@ -105,6 +120,8 @@ const SiteProvider = ({ children }) => {
                 useBusinessAdmin,
                 // BUSINESS USER ROLES
                 setBusinessUserRoles,
+                updateBusinessUserRoles,
+                removeBusinessUserRole,
                 usePending,
                 useCreators,
                 useManagers,

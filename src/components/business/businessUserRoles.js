@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useContext } from 'react';
+import React, { useCallback, useEffect, useContext, useState } from 'react';
 import { Accordion, ListGroup, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
@@ -9,12 +9,14 @@ import ManagerRoleList from './userRoleList/managerRoleList';
 
 const BusinessUserRoles = ({ business_id }) => {
     const { setBusinessUserRoles, usePending, useCreators, useManagers, useAdminRole } = useContext(SiteContext)
+    const [ loading, setLoading ] = useState(true);
     const pending_roles = usePending
     const creator_roles = useCreators
     const manager_roles = useManagers
     const admin_role = useAdminRole[0]
 
     const getAllBusinessRoles = useCallback(() => {
+        setLoading(true)
         const token = localStorage.getItem('token');
 
         AxiosInstance.get(`/roles/business/${business_id}`, {
@@ -26,6 +28,7 @@ const BusinessUserRoles = ({ business_id }) => {
             .catch(err => {
                 console.log(err)
             })
+        setLoading(false)
     }, [setBusinessUserRoles, business_id])
 
     useEffect(() => {
@@ -36,42 +39,50 @@ const BusinessUserRoles = ({ business_id }) => {
     return (
         <Row className='m-2 px-0'>
             <h4>Business Roles</h4>
-            <Accordion>
-                {
-                    pending_roles.length > 0
-                        ? <Accordion.Item eventKey="0">
-                            <Accordion.Header>Pending Request</Accordion.Header>
-                            <Accordion.Body>
-                                <PendingRoleList pending_roles={pending_roles} />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        : null
-                }
-                {
-                    creator_roles.length > 0
-                        ? <Accordion.Item eventKey="1">
-                            <Accordion.Header>Creators</Accordion.Header>
-                            <Accordion.Body>
-                                <CreatorRoleList creator_roles={creator_roles} />          
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        : null
-                }
-                {
-                    manager_roles.length > 0
-                        ? <Accordion.Item eventKey="2">
-                            <Accordion.Header>Managers</Accordion.Header>
-                            <Accordion.Body>
-                                <ManagerRoleList manager_roles={manager_roles} />         
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        : null
-                }
-                <ListGroup variant='flush'>
-                    {/* <ListGroup.Item>Business Admin</ListGroup.Item> */}
-                    <ListGroup.Item>{`Business Admin: ${admin_role.username}`}</ListGroup.Item>
-                </ListGroup>
-            </Accordion>
+            {
+                (!loading)
+                    ? <Accordion>
+                        {
+                            pending_roles.length > 0
+                                ? <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Pending Creator Request</Accordion.Header>
+                                    <Accordion.Body>
+                                        <PendingRoleList pending_roles={pending_roles} />
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                : null
+                        }
+                        {
+                            creator_roles.length > 0
+                                ? <Accordion.Item eventKey="1">
+                                    <Accordion.Header>Creators</Accordion.Header>
+                                    <Accordion.Body>
+                                        <CreatorRoleList creator_roles={creator_roles} />          
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                : null
+                        }
+                        {
+                            manager_roles.length > 0
+                                ? <Accordion.Item eventKey="2">
+                                    <Accordion.Header>Managers</Accordion.Header>
+                                    <Accordion.Body>
+                                        <ManagerRoleList manager_roles={manager_roles} />         
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                : null
+                        }
+                        {
+                            admin_role
+                                ? <ListGroup variant='flush'>
+                                    {/* <ListGroup.Item>Business Admin</ListGroup.Item> */}
+                                    <ListGroup.Item>{`Business Admin: ${admin_role.username}` || ''}</ListGroup.Item>
+                                </ListGroup>
+                                : null
+                        }
+                    </Accordion>
+                    : <p>...loading</p>
+            }
         </Row>
     )
 }

@@ -45,6 +45,16 @@ const siteReducer = (state, action) => {
                 ...state,
                 businessUserRoles: action.payload
             }
+        case siteTypes.UPDATE_BUSINESS_USER_ROLES:
+            return {
+                ...state,
+                businessUserRoles: state.businessUserRoles.map(role => (role.id === action.payload.role_id ? action.payload.updated_role : role))
+            }
+        case siteTypes.REMOVE_BUSINESS_USER_ROLE:
+            return {
+                ...state,
+                businessUserRoles: state.businessUserRoles.filter((role) => role.id !== action.payload)
+            }
         default:
             return state;
     }

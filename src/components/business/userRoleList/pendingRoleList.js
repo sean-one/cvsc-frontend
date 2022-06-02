@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import AxiosInstance from '../../../helpers/axios'
+import { SiteContext } from '../../../context/site/site.provider'
 import { NotificationsContext } from '../../../context/notifications/notifications.provider'
 
 const PendingRoleList = ({ pending_roles }) => {
+    const { updateBusinessUserRoles, removeBusinessUserRole } = useContext(SiteContext)
     const { dispatch } = useContext(NotificationsContext)
     let history = useHistory()
     
@@ -19,6 +21,7 @@ const PendingRoleList = ({ pending_roles }) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
+                updateBusinessUserRoles(request_data.request_id, response.data)
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -51,6 +54,7 @@ const PendingRoleList = ({ pending_roles }) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
+                removeBusinessUserRole(request_id)
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
