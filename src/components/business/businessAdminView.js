@@ -7,6 +7,7 @@ import { SiteContext } from '../../context/site/site.provider';
 import EditBusinessModal from '../editModals/editBusinessModal';
 import BusinessLocation from './location/businessLocation';
 import BusinessUserRoles from './businessUserRoles';
+import UpcomingBusinessView from '../upcoming/upcoming.businessview';
 
 const BusinessAdminView = (props) => {
     const { useBusinessById } = useContext(SiteContext)
@@ -94,6 +95,7 @@ const BusinessAdminView = (props) => {
                     : null
             }
             <BusinessUserRoles business_id={business.id} />
+            <UpcomingBusinessView business={business.id} />
             <EditBusinessModal business={business} modalshow={modalShow} close={handleModalClose} />
         </Container>
     )
