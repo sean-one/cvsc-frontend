@@ -34,7 +34,7 @@ const PendingRequest = (props) => {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
-                const updated = pendingRequest.filter(pr => pr.id !== response.data[0].id)
+                const updated = pendingRequest.filter(pr => pr.id !== response.data.id)
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -64,14 +64,11 @@ const PendingRequest = (props) => {
         const request_id = e.currentTarget.value
         const token = localStorage.getItem('token')
 
-        console.log(pendingRequest)
         AxiosInstance.delete(`/roles/reject-request/${request_id}`, {
             headers: { 'Authorization': 'Bearer ' + token }
         })
             .then(response => {
-                console.log(response)
                 const updated = pendingRequest.filter(pr => pr.id !== request_id)
-                console.log(updated)
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {

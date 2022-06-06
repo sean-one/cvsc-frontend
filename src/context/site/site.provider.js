@@ -84,7 +84,6 @@ const SiteProvider = ({ children }) => {
             type: siteTypes.UPDATE_BUSINESS_USER_ROLES,
             payload: { role_id, updated_role }
         })
-
     }
 
     const removeBusinessUserRole = (role_id) => {
