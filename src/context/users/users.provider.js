@@ -42,6 +42,16 @@ const UsersProvider = ({ children }) => {
         return businessIdList
     }
 
+    const useRoleBusinessIds_Active = () => {
+        let business_ids = []
+        const roles = userRoles.filter(role => role.active_role)
+        
+        roles.map(role => {
+            return business_ids.push(role.business_id)
+        })
+        return business_ids
+    }
+
     const addUserRole = (user_role) => {
         dispatch({
             type: userTypes.ADD_USER_ROLE,
@@ -81,11 +91,12 @@ const UsersProvider = ({ children }) => {
                 setUser,
                 setUserRoles,
                 addUserRole,
-
-
+                
+                
                 userProfile,
                 updateUser,
                 useBusinessIdRoles,
+                useRoleBusinessIds_Active,
                 useBusinessAdminIdRoles,
                 userSignOut
             }

@@ -18,8 +18,8 @@ const CreateEvent = () => {
     const venue_list = useVenueList()
     const brand_list = useBrandList()
     const { dispatch } = useContext(NotificationsContext);
-    const { userSignOut, useBusinessIdRoles } = useContext(UsersContext)
-    const business_roles = useBusinessIdRoles()
+    const { userSignOut, useRoleBusinessIds_Active } = useContext(UsersContext)
+    const business_roles = useRoleBusinessIds_Active()
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
@@ -126,6 +126,7 @@ const CreateEvent = () => {
         
     }
 
+    console.log(business_roles)
     return (
         <Form onSubmit={handleSubmit(createNewEvent)}>
 
