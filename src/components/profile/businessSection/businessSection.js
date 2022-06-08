@@ -3,7 +3,6 @@ import { Accordion, Row } from 'react-bootstrap';
 
 import { UsersContext } from '../../../context/users/users.provider';
 import PendingRequest from './pendingRequest';
-import CreatorEvents from './creatorEvents';
 import BusinessList from './businessList';
 
 
@@ -20,15 +19,9 @@ const BusinessSection = () => {
                         <PendingRequest />
                     </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                    <Accordion.Header>Creator Events</Accordion.Header>
-                    <Accordion.Body>
-                        <CreatorEvents />
-                    </Accordion.Body>
-                </Accordion.Item>
                 {
-                    (userProfile.account_type === 'admin') ?
-                        <Accordion.Item eventKey="2">
+                    (userProfile.account_type === 'admin' || userProfile.account_type === 'manager') ?
+                        <Accordion.Item eventKey="1">
                             <Accordion.Header>Business List</Accordion.Header>
                             <Accordion.Body>
                                 <BusinessList />

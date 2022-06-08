@@ -32,20 +32,28 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    // creates an array of business_id with both 'creator' and 'admin'
-    // used in useBusinessFilter hook
-    const useBusinessIdRoles = () => {
-        let businessIdList = []
+    const useRoleBusinessIds_All = () => {
+        let business_ids = []
         userRoles.map(role => {
-            return businessIdList.push(role.business_id)
+            return business_ids.push(role.business_id)
         })
-        return businessIdList
+        return business_ids
     }
 
     const useRoleBusinessIds_Active = () => {
         let business_ids = []
         const roles = userRoles.filter(role => role.active_role)
         
+        roles.map(role => {
+            return business_ids.push(role.business_id)
+        })
+        return business_ids
+    }
+
+    const useRoleBuinsessIds_Management = () => {
+        let business_ids = []
+        const roles = userRoles.filter(role => role.role_type === 'manager' || role.role_type === 'admin')
+
         roles.map(role => {
             return business_ids.push(role.business_id)
         })
@@ -95,7 +103,8 @@ const UsersProvider = ({ children }) => {
                 
                 userProfile,
                 updateUser,
-                useBusinessIdRoles,
+                useRoleBuinsessIds_Management,
+                useRoleBusinessIds_All,
                 useRoleBusinessIds_Active,
                 useBusinessAdminIdRoles,
                 userSignOut

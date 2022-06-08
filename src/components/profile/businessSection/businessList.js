@@ -6,15 +6,15 @@ import { SiteContext } from '../../../context/site/site.provider';
 import { UsersContext } from '../../../context/users/users.provider';
 
 const BusinessList = (props) => {
-    const { useBusinessAdmin } = useContext(SiteContext)
-    const { userProfile } = useContext(UsersContext)
-    
-    const business_admin_ids = useBusinessAdmin(userProfile.id)
+    const { useBusinessByIdList } = useContext(SiteContext)
+    const { useRoleBuinsessIds_Management } = useContext(UsersContext)
+    const business_ids = useRoleBuinsessIds_Management()
+    const business_list = useBusinessByIdList(business_ids)
 
     return (
         <Container className='px-0'>
             {
-                business_admin_ids.map(business => (
+                business_list.map(business => (
                     <Row key={business.id} className='d-flex'>
                         <Col className='flex-grow-1'><Link to={{
                             pathname: `/business/admin/${business.id}`,

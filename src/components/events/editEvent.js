@@ -9,7 +9,6 @@ import { reformatTime } from '../../helpers/formatTime';
 import { update_event } from '../../helpers/dataCleanUp';
 import AxiosInstance from '../../helpers/axios';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
-import useBusinessFilter from '../../hooks/useBusinessFilter';
 import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
@@ -30,14 +29,14 @@ const Styles = styled.div`
 
 const EditEvent = (props) => {
     const { event, handleClose } = props;
-
-    const { venue_list, brand_list } = useBusinessFilter()
+    const { dispatch } = useContext(NotificationsContext);
+    const { updateEvent, useVenueList, useBrandList } = useContext(SiteContext)
+    const { userSignOut, useRoleBusinessIds_Active } = useContext(UsersContext)
+    const venue_list = useVenueList()
+    const brand_list = useBrandList()
+    const business_roles = useRoleBusinessIds_Active()
     // const { editImage, imagePreview, canvas } = useImagePreviewer()
     
-    const { dispatch } = useContext(NotificationsContext);
-    const { updateEvent } = useContext(SiteContext)
-    const { userSignOut } = useContext(UsersContext)
-
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
             eventname: event.eventname,
@@ -215,7 +214,7 @@ const EditEvent = (props) => {
                         <option value='0'>Select...</option>
                         {
                             venue_list.map(venue => (
-                                <option key={venue.id} value={venue.id}>{venue.name}</option>
+                                <option key={venue.id} value={venue.id} style={ business_roles.includes(venue.id) ? { color:'green'} : {} }>{venue.business_name}</option>
                             ))
                         }
 
@@ -250,7 +249,7 @@ const EditEvent = (props) => {
                         <option value='0'>Select...</option>
                         {
                             brand_list.map(brand => (
-                                <option key={brand.id} value={brand.id}>{brand.name}</option>
+                                <option key={brand.id} value={brand.id} style={ business_roles.includes(brand.id) ? { color:'green'} : {} }>{brand.business_name}</option>
                             ))
                         }
 

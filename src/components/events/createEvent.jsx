@@ -126,7 +126,6 @@ const CreateEvent = () => {
         
     }
 
-    console.log(business_roles)
     return (
         <Form onSubmit={handleSubmit(createNewEvent)}>
 
@@ -271,9 +270,6 @@ const CreateEvent = () => {
             <Button type='submit'>Submit</Button>
 
         </Form>
-        //         {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
-        //         {adminRoleError && <p className='errormessage'>must have admin rights to at least one</p>}
-        //         {/* {networkError && <p className='errormessage networkerror'>must be online to create a new event</p>} */}
     )
 }
 

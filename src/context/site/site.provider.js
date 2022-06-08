@@ -22,6 +22,10 @@ const SiteProvider = ({ children }) => {
         return events.find(event => event.event_id === event_id)
     }
 
+    const useEventsByUser = (user_id) => {
+        return events.filter(event => event.created_by === user_id)
+    }
+
     // returns an array of events with the business listed as the brand and or the venue
     const useEventsByBusiness = (business_id) => {
         return events.filter(event => event.brand_id === business_id || event.venue_id === business_id)
@@ -48,6 +52,7 @@ const SiteProvider = ({ children }) => {
         })
     }
 
+
     // BUSINESS
     const addBusiness = (business) => {
         dispatch({
@@ -65,6 +70,14 @@ const SiteProvider = ({ children }) => {
 
     const useBusinessById = (business_id) => {
         return businessList.find(business => business.id === business_id)
+    }
+
+    const useBusinessByIdList = (business_ids) => {
+        let business_list = []
+        if(businessList.length > 0) {
+            business_list = businessList.filter(business => business_ids.includes(business.id))
+        }
+        return business_list
     }
 
     const useBusinessName = (business_id) => {
@@ -91,6 +104,7 @@ const SiteProvider = ({ children }) => {
         }
         return brand_list
     }
+
 
     // BUSINESS USER ROLES
     const setBusinessUserRoles = (business_user_roles) => {
@@ -129,6 +143,7 @@ const SiteProvider = ({ children }) => {
                 businessList,
                 setSiteInfo,
                 useEventById,
+                useEventsByUser,
                 useEventsByBusiness,
                 createEvent,
                 removeEvent,
@@ -137,6 +152,7 @@ const SiteProvider = ({ children }) => {
                 addBusiness,
                 updateBusiness,
                 useBusinessById,
+                useBusinessByIdList,
                 useBusinessName,
                 useBusinessAdmin,
                 useVenueList,

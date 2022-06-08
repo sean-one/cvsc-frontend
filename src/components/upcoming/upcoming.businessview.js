@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Row } from 'react-bootstrap';
 
+import { SiteContext } from '../../context/site/site.provider';
 import EventPreview from '../events/eventPreview';
-import useEventsFilter from '../../hooks/useEventsFilter';
-import useBusinessFilter from '../../hooks/useBusinessFilter';
 
 
 const UpcomingBusinessView = (props) => {
-    const { business } = useBusinessFilter(props.business)
-    const business_events = useEventsFilter({ business_id: props.business})
+    const { useBusinessById, useEventsByBusiness } = useContext(SiteContext)
+    const business = useBusinessById(props.business)
+    const business_events = useEventsByBusiness(props.business)
     
     return (
         <Container className='px-0'>
