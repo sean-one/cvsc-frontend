@@ -17,6 +17,11 @@ const usersReducer = (state, action) => {
                 ...state,
                 userRoles: action.payload,
             }
+        case userTypes.ADD_USER_ROLE:
+            return {
+                ...state,
+                userRoles: [ ...state.userRoles, action.payload ]
+            }
         case userTypes.UPDATE_USER:
             return {
                 ...state,

@@ -96,7 +96,7 @@ const BusinessAdminView = (props) => {
                     : null
             }
             <BusinessUserRoles business_id={business.id} />
-            <UpcomingBusinessAdmin />
+            <UpcomingBusinessAdmin business_id={business.id} business_type={business.business_type} />
             {/* <UpcomingBusinessView business={business.id} /> */}
             <EditBusinessModal business={business} modalshow={modalShow} close={handleModalClose} />
         </Container>

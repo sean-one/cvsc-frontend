@@ -23,6 +23,7 @@ const BusinessList = (props) => {
                                 from: props.location.pathname
                             }
                         }}>{business.business_name}</Link></Col>
+                        <Col>{business.business_type}</Col>
                     </Row>
                 ))
             }

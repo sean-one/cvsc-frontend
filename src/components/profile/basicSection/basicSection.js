@@ -41,6 +41,7 @@ const BasicSection = () => {
                             <Accordion.Header>Create Event</Accordion.Header>
                             <Accordion.Body>
                                 <CreateEvent />
+                                {/* <CreateEvent venue_list={useVenueList} brand_list={useBrandList} /> */}
                             </Accordion.Body>
                         </Accordion.Item> : null
                 }

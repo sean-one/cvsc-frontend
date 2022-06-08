@@ -22,6 +22,11 @@ const SiteProvider = ({ children }) => {
         return events.find(event => event.event_id === event_id)
     }
 
+    // returns an array of events with the business listed as the brand and or the venue
+    const useEventsByBusiness = (business_id) => {
+        return events.filter(event => event.brand_id === business_id || event.venue_id === business_id)
+    }
+
     const createEvent = (event) => {
         dispatch({
             type: siteTypes.CREATE_EVENT,
@@ -71,6 +76,22 @@ const SiteProvider = ({ children }) => {
         return businessList.filter(business => business.business_admin === user_id)
     }
 
+    const useVenueList = () => {
+        let venue_list = []
+        if (businessList.length > 0) {
+            venue_list = businessList.filter(business => business.business_type !== 'brand' && business.active_business === true)
+        }
+        return venue_list
+    }
+
+    const useBrandList = () => {
+        let brand_list = []
+        if (businessList.length > 0) {
+            brand_list = businessList.filter(business => business.business_type !== 'venue' && business.active_business === true)
+        }
+        return brand_list
+    }
+
     // BUSINESS USER ROLES
     const setBusinessUserRoles = (business_user_roles) => {
         dispatch({
@@ -108,6 +129,7 @@ const SiteProvider = ({ children }) => {
                 businessList,
                 setSiteInfo,
                 useEventById,
+                useEventsByBusiness,
                 createEvent,
                 removeEvent,
                 updateEvent,
@@ -117,6 +139,8 @@ const SiteProvider = ({ children }) => {
                 useBusinessById,
                 useBusinessName,
                 useBusinessAdmin,
+                useVenueList,
+                useBrandList,
                 // BUSINESS USER ROLES
                 setBusinessUserRoles,
                 updateBusinessUserRoles,

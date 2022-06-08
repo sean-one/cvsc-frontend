@@ -10,22 +10,23 @@ import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
 import useImagePreviewer from '../../hooks/useImagePreviewer';
-import useBusinessFilter from '../../hooks/useBusinessFilter';
 
 
 const CreateEvent = () => {
     const { editImage, imagePreview, canvas } = useImagePreviewer()
-    const { createEvent } = useContext(SiteContext)
-    const { venue_list, brand_list } = useBusinessFilter()
+    const { createEvent, useVenueList, useBrandList } = useContext(SiteContext)
+    const venue_list = useVenueList()
+    const brand_list = useBrandList()
     const { dispatch } = useContext(NotificationsContext);
-    const { userSignOut } = useContext(UsersContext)
+    const { userSignOut, useBusinessIdRoles } = useContext(UsersContext)
+    const business_roles = useBusinessIdRoles()
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)
     });
     
     let history = useHistory();
-    
+
     const createNewEvent = async (data) => {
         try {
             canvas.current.toBlob(async function(blob) {
@@ -220,7 +221,7 @@ const CreateEvent = () => {
                     <option value='0'>Select...</option>
                     {
                         venue_list.map(venue => (
-                            <option key={venue.id} value={venue.id}>{venue.name}</option>
+                            <option key={venue.id} value={venue.id} style={ business_roles.includes(venue.id) ? { color:'green'} : {} }>{venue.business_name}</option>
                         ))
                     }
 
@@ -257,7 +258,7 @@ const CreateEvent = () => {
                     <option value='0'>Select...</option>
                     {
                         brand_list.map(brand => (
-                            <option key={brand.id} value={brand.id}>{brand.name}</option>
+                            <option key={brand.id} value={brand.id} style={ business_roles.includes(brand.id) ? { color:'green'} : {} }>{brand.business_name}</option>
                         ))
                     }
 

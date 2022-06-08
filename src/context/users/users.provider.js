@@ -42,6 +42,13 @@ const UsersProvider = ({ children }) => {
         return businessIdList
     }
 
+    const addUserRole = (user_role) => {
+        dispatch({
+            type: userTypes.ADD_USER_ROLE,
+            payload: user_role
+        })
+    }
+
     // creates an array of business_id with 'admin' rights
     const useBusinessAdminIdRoles = () => {
         let businessAdminIdList = []
@@ -73,6 +80,7 @@ const UsersProvider = ({ children }) => {
             {
                 setUser,
                 setUserRoles,
+                addUserRole,
 
 
                 userProfile,
