@@ -2,13 +2,14 @@ import React, { useContext } from 'react'
 import { Button, Col, ListGroup } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
-import AxiosInstance from '../../../helpers/axios'
-import { NotificationsContext } from '../../../context/notifications/notifications.provider'
-import { SiteContext } from '../../../context/site/site.provider'
+import AxiosInstance from '../../../../helpers/axios'
+import { NotificationsContext } from '../../../../context/notifications/notifications.provider'
+import { SiteContext } from '../../../../context/site/site.provider'
 
-const CreatorRoleList = ({ creator_roles }) => {
+const CreatorRoleList = () => {
+  const { updateBusinessUserRoles, useCreators } = useContext(SiteContext)
   const { dispatch } = useContext(NotificationsContext)
-  const { updateBusinessUserRoles } = useContext(SiteContext)
+  const creator_roles = useCreators
   let history = useHistory()
 
   const upgradeUserRole = (e) => {

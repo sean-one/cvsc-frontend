@@ -17,7 +17,7 @@ const BusinessList = (props) => {
                 business_list.map(business => (
                     <Row key={business.id} className='d-flex'>
                         <Col className='flex-grow-1'><Link to={{
-                            pathname: `/business/admin/${business.id}`,
+                            pathname: `/business/manage/${business.id}`,
                             state: {
                                 business_id: business.id,
                                 from: props.location.pathname

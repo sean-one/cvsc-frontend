@@ -9,7 +9,7 @@ import Register from './components/register.jsx';
 import Login from './components/login.jsx';
 import AuthRoute from './components/auth/auth.jsx';
 import BusinessAuthRoute from './components/auth/businessAuth';
-import BusinessAdminView from './components/business/businessAdminView';
+import BusinessManagement from './components/business/management/businessManagement';
 import Profile from './components/profile/profile.jsx';
 import EventView from './components/events/eventView';
 
@@ -37,7 +37,7 @@ const App = () => {
             <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
             <AuthRoute exact path='/profile' component={Profile} />
-            <BusinessAuthRoute exact path='/business/admin/:id' component={BusinessAdminView} />
+            <BusinessAuthRoute exact path='/business/manage/:id' component={BusinessManagement} />
           </Layout>
       </SiteProvider>
       </UsersProvider>

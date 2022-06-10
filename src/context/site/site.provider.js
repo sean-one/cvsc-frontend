@@ -31,6 +31,23 @@ const SiteProvider = ({ children }) => {
         return events.filter(event => event.brand_id === business_id || event.venue_id === business_id)
     }
 
+    const useEventsByRoles = (account_type, business_id) => {
+        let event_list = []
+        let creator_ids = []
+        if(account_type === 'manager') {
+            useCreators.map(role => {
+                return creator_ids.push(role.user_id)
+            })
+
+            event_list = events.filter(event => creator_ids.includes(event.created_by))
+
+        } else if(account_type === 'admin') {
+            event_list = events.filter(event => event.brand_id === business_id || event.venue_id === business_id)
+        }
+        
+        return event_list
+    }
+
     const createEvent = (event) => {
         dispatch({
             type: siteTypes.CREATE_EVENT,
@@ -114,6 +131,10 @@ const SiteProvider = ({ children }) => {
         })
     }
 
+    const useBusinessRole = (user_id) => {
+        return businessUserRoles.find(user_role => user_role.user_id === user_id)
+    }
+
     const updateBusinessUserRoles = (role_id, updated_role) => {
         dispatch({
             type: siteTypes.UPDATE_BUSINESS_USER_ROLES,
@@ -134,8 +155,6 @@ const SiteProvider = ({ children }) => {
     
     const useManagers = businessUserRoles.filter(user_role => (user_role.role_type === 'manager' && user_role.active_role))
 
-    const useAdminRole = businessUserRoles.filter(user_role => (user_role.role_type === 'admin' && user_role.active_role))
-
     return (
         <SiteContext.Provider value={
             {
@@ -145,9 +164,11 @@ const SiteProvider = ({ children }) => {
                 useEventById,
                 useEventsByUser,
                 useEventsByBusiness,
+                useEventsByRoles,
                 createEvent,
                 removeEvent,
                 updateEvent,
+                
                 // BUSINESS
                 addBusiness,
                 updateBusiness,
@@ -157,14 +178,15 @@ const SiteProvider = ({ children }) => {
                 useBusinessAdmin,
                 useVenueList,
                 useBrandList,
+                
                 // BUSINESS USER ROLES
                 setBusinessUserRoles,
+                useBusinessRole,
                 updateBusinessUserRoles,
                 removeBusinessUserRole,
                 usePending,
                 useCreators,
                 useManagers,
-                useAdminRole,
             }
         }>
             {children}

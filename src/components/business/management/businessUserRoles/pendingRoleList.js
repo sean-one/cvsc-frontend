@@ -4,12 +4,13 @@ import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-import AxiosInstance from '../../../helpers/axios'
-import { SiteContext } from '../../../context/site/site.provider'
-import { NotificationsContext } from '../../../context/notifications/notifications.provider'
+import AxiosInstance from '../../../../helpers/axios'
+import { SiteContext } from '../../../../context/site/site.provider'
+import { NotificationsContext } from '../../../../context/notifications/notifications.provider'
 
-const PendingRoleList = ({ pending_roles }) => {
-    const { updateBusinessUserRoles, removeBusinessUserRole } = useContext(SiteContext)
+const PendingRoleList = () => {
+    const { updateBusinessUserRoles, removeBusinessUserRole, usePending } = useContext(SiteContext)
+    const pending_roles = usePending
     const { dispatch } = useContext(NotificationsContext)
     let history = useHistory()
     

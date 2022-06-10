@@ -4,14 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { SiteContext } from '../../context/site/site.provider';
-import EditBusinessModal from '../editModals/editBusinessModal';
+import { UsersContext } from '../../context/users/users.provider';
 import BusinessLocation from './location/businessLocation';
-import BusinessUserRoles from './businessUserRoles';
-// import UpcomingBusinessView from '../upcoming/upcoming.businessview';
 import UpcomingBusinessAdmin from '../upcoming/upcoming.businessAdmin';
 
 const BusinessAdminView = (props) => {
-    const { useBusinessById } = useContext(SiteContext)
+    const { useBusinessById, useBusinessRole } = useContext(SiteContext)
+    const { userProfile } = useContext(UsersContext)
+    const user_role = useBusinessRole(userProfile.id)
     const business = useBusinessById(props.location.state.business_id)
     const [modalShow, setModalShow] = useState(false);
 
@@ -95,10 +95,7 @@ const BusinessAdminView = (props) => {
                     ? <BusinessLocation business={business} />
                     : null
             }
-            <BusinessUserRoles business_id={business.id} />
-            <UpcomingBusinessAdmin business_id={business.id} business_type={business.business_type} />
-            {/* <UpcomingBusinessView business={business.id} /> */}
-            <EditBusinessModal business={business} modalshow={modalShow} close={handleModalClose} />
+            <UpcomingBusinessAdmin business_id={business.id} business_type={business.business_type} account_type={user_role.role_type} />
         </Container>
     )
 }

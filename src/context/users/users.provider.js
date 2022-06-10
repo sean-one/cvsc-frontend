@@ -32,6 +32,10 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    const useBusinessRole = (business_id) => {
+        return userRoles.find(role => role.business_id === business_id)
+    }
+
     const useRoleBusinessIds_All = () => {
         let business_ids = []
         userRoles.map(role => {
@@ -98,6 +102,7 @@ const UsersProvider = ({ children }) => {
             {
                 setUser,
                 setUserRoles,
+                useBusinessRole,
                 addUserRole,
                 
                 
