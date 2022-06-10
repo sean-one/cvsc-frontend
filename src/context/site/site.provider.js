@@ -26,6 +26,14 @@ const SiteProvider = ({ children }) => {
         return events.filter(event => event.created_by === user_id)
     }
 
+    const useUpcomingVenue = (business_id, event_id) => {
+        return events.filter(e => e.venue_id === business_id && e.event_id !== event_id)
+    }
+    
+    const useUpcomingBrand = (business_id, event_id) => {
+        return events.filter(e => e.brand_id === business_id && e.event_id !== event_id)
+    }
+
     // returns an array of events with the business listed as the brand and or the venue
     const useEventsByBusiness = (business_id) => {
         return events.filter(event => event.brand_id === business_id || event.venue_id === business_id)
@@ -158,6 +166,8 @@ const SiteProvider = ({ children }) => {
                 setSiteInfo,
                 useEventById,
                 useEventsByUser,
+                useUpcomingVenue,
+                useUpcomingBrand,
                 useEventsByBusiness,
                 useEventsByRoles,
                 createEvent,

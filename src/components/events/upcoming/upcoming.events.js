@@ -4,22 +4,19 @@ import { Container } from 'react-bootstrap';
 import { SiteContext } from '../../../context/site/site.provider';
 import EventPreview from '../eventPreview';
 
-import useEventsFilter from '../../../hooks/useEventsFilter';
 
+const UpcomingEvents = ({ event, venue_id, brand_id }) => {
+    const { useUpcomingVenue, useUpcomingBrand } = useContext(SiteContext)
 
-const UpcomingEvents = (props) => {
-    const { useEventById } = useContext(SiteContext)
-    const selectedEvent = useEventById(props.event);
-
-    const atVenue = useEventsFilter({ venue_id: selectedEvent.venue_id, event_id: selectedEvent.event_id })
-    const withBrand = useEventsFilter({ brand_id: selectedEvent.brand_id, event_id: selectedEvent.event_id })
+    const atVenue = useUpcomingVenue(venue_id, event.event_id)
+    const withBrand = useUpcomingBrand(brand_id, event.event_id)
 
     return (
         <React.Fragment>
             {
-                ((selectedEvent.brand_id !== selectedEvent.venue_id) && (withBrand.length > 0)) &&
+                ((event.brand_id !== event.venue_id) && (withBrand.length > 0)) &&
                 <Container>
-                    <h3>{`upcoming events with ${selectedEvent.brand_name}`}</h3>
+                    <h3>{`upcoming events with ${event.brand_name}`}</h3>
                     {withBrand.map(event => {
                         return (
                             <EventPreview key={event.event_id} event={event} />
@@ -30,7 +27,7 @@ const UpcomingEvents = (props) => {
             {
                 (atVenue.length > 0) &&
                 <Container>
-                    <h3>{`upcoming events at ${selectedEvent.venue_name}`}</h3>
+                    <h3>{`upcoming events at ${event.venue_name}`}</h3>
                     {atVenue.map(event => {
                         return (
                             <EventPreview key={event.event_id} event={event} />

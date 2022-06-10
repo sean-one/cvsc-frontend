@@ -68,7 +68,7 @@ const EventView = (props) => {
                 </Link>
             </Row>
             <Row>
-                <UpcomingEvents event={event.event_id}/>
+                <UpcomingEvents event={event} venue_id={event.venue_id} brand_id={event.brand_id} />
             </Row>
         </Container>
     )
