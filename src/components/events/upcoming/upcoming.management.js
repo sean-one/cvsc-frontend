@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import { format } from 'date-fns';
-import { Button, Col, ListGroup, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Col, ListGroup, Row } from 'react-bootstrap';
 
 import { SiteContext } from '../../../context/site/site.provider';
 import EditEventButton from '../../editButtonModals/editEventButton';
@@ -33,11 +31,6 @@ const UpcomingManagement = ({ business_id, business_type, account_type }) => {
                                     <Row style={business_type === 'venue' ? { display: 'none' } : {}}>{`${event.venue_name}`}</Row>
                                 </Col>
                                 <EditEventButton event={event} />
-                                <Col sm={1} className='m-0 px-0'>
-                                    <Button size='sm' variant='danger'>
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </Button>
-                                </Col>
                             </ListGroup.Item>
                         )
                     })

@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Button, Col, Container, Image, Modal, Row } from 'react-bootstrap'
+import { Col, Container, Image, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationArrow, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 
 import { formatTime } from '../../helpers/formatTime';
 import { SiteContext } from '../../context/site/site.provider';
 
 import EditEventButton from '../editButtonModals/editEventButton';
 import UpcomingEvents from './upcoming/upcoming.events';
-import EditEvent from './editEvent'
 import { Link } from 'react-router-dom';
 
 
@@ -22,7 +21,6 @@ const EventView = (props) => {
         console.log('click')
     }
     
-    console.log(event)
     // check if user created event to show edit and delete options
     useEffect(() => {
         const user_id = localStorage.getItem('userId')
@@ -43,13 +41,13 @@ const EventView = (props) => {
                 <Col xs={10}>
                     <h2>{event.eventname}</h2>
                 </Col>
-                <Col className={`${isCreator ? 'd-flex' : 'd-none'}`}>
+                <Col className={`${isCreator ? 'd-block p-0 m-0' : 'd-none'}`}>
                     <EditEventButton event={event} />
-                    <Col>
+                    {/* <Col className='m-0 px-0'>
                         <Button size='sm' variant='danger'>
                             <FontAwesomeIcon icon={faTrash} />
                         </Button>
-                    </Col>
+                    </Col> */}
                 </Col>
             </Row>
             <Row className='mx-auto my-3'>

@@ -97,11 +97,6 @@ const SiteProvider = ({ children }) => {
         return business_list
     }
 
-    const useBusinessName = (business_id) => {
-        const selectedBusiness = businessList.find(business => business.id === business_id )
-        return selectedBusiness.business_name
-    }
-
     const useBusinessAdmin = (user_id) => {
         return businessList.filter(business => business.business_admin === user_id)
     }
@@ -174,7 +169,6 @@ const SiteProvider = ({ children }) => {
                 updateBusiness,
                 useBusinessById,
                 useBusinessByIdList,
-                useBusinessName,
                 useBusinessAdmin,
                 useVenueList,
                 useBrandList,

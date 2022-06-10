@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import EditLocationButton from '../../editButtonModals/editLocationButton';
 
