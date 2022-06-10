@@ -8,7 +8,7 @@ import AxiosInstance from '../../../helpers/axios';
 import BusinessLocation from '../location/businessLocation';
 import EditBusinessButton from '../../editButtonModals/editBusinessButton';
 import BusinessUserRoles from './businessUserRoles/businessUserRoles';
-import UpcomingBusinessAdmin from '../../upcoming/upcoming.businessAdmin';
+import UpcomingManagement from '../../events/upcoming/upcoming.management';
 
 const BusinessManagement = (props) => {
     const business_id = props.location.state.business_id
@@ -112,7 +112,7 @@ const BusinessManagement = (props) => {
                     : null
             }
             <BusinessUserRoles business_id={current_business.id} business_role={user_role} />
-            <UpcomingBusinessAdmin business_id={current_business.id} business_type={current_business.role_type} account_type={user_role.role_type} />
+            <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} account_type={user_role.role_type} />
         </Container>
     )
 }

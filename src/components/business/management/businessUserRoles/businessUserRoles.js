@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
+import { SiteContext } from '../../../../context/site/site.provider';
 import PendingRoleList from './pendingRoleList';
 import CreatorRoleList from './creatorRoleList';
 import ManagerRoleList from './managerRoleList';
 
 const BusinessUserRoles = ({ business_role }) => {
+    const { usePending, useManagers } = useContext(SiteContext)
 
     return (
         <Row className='m-2 px-0'>
             <h4>Business Roles</h4>
             <Accordion>
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Pending Creator Request</Accordion.Header>
-                    <Accordion.Body>
-                        <PendingRoleList />
-                    </Accordion.Body>
-                </Accordion.Item>
+                {
+                    (usePending.length > 0)
+                        ? <Accordion.Item eventKey="0">
+                            <Accordion.Header>Pending Creator Request</Accordion.Header>
+                            <Accordion.Body>
+                                <PendingRoleList />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        : null
+                }
                 <Accordion.Item eventKey="1">
                     <Accordion.Header>Creators</Accordion.Header>
                     <Accordion.Body>
@@ -24,7 +30,7 @@ const BusinessUserRoles = ({ business_role }) => {
                     </Accordion.Body>
                 </Accordion.Item>
                 {
-                    (business_role.role_type !== 'admin')
+                    ((business_role.role_type !== 'admin') && (useManagers.length > 0))
                         ? null
                         : <Accordion.Item eventKey="2">
                             <Accordion.Header>Managers</Accordion.Header>

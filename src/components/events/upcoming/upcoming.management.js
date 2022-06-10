@@ -2,15 +2,15 @@ import React, { useContext } from 'react';
 import { format } from 'date-fns';
 import { Button, Col, ListGroup, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { SiteContext } from '../../context/site/site.provider';
-import EditEventButton from '../editButtonModals/editEventButton';
+import { SiteContext } from '../../../context/site/site.provider';
+import EditEventButton from '../../editButtonModals/editEventButton';
 
-const UpcomingBusinessAdmin = ({ business_id, business_type, account_type }) => {
+const UpcomingManagement = ({ business_id, business_type, account_type }) => {
     const { useEventsByRoles } = useContext(SiteContext);
     const upcoming_events = useEventsByRoles(account_type, business_id)
-    
+
     return (
         <Row className='m-2 px-0'>
             <h4>Upcoming Events</h4>
@@ -29,15 +29,10 @@ const UpcomingBusinessAdmin = ({ business_id, business_type, account_type }) => 
                                     {`${event.event_creator}`}
                                 </Col>
                                 <Col sm={3} className='m-0 px-0'>
-                                    <Row style={ business_type === 'brand' ? { display:'none'} : {} }>{`${event.brand_name}`}</Row>
-                                    <Row style={ business_type === 'venue' ? { display:'none'} : {} }>{`${event.venue_name}`}</Row>
+                                    <Row style={business_type === 'brand' ? { display: 'none' } : {}}>{`${event.brand_name}`}</Row>
+                                    <Row style={business_type === 'venue' ? { display: 'none' } : {}}>{`${event.venue_name}`}</Row>
                                 </Col>
                                 <EditEventButton event={event} />
-                                {/* <Col sm={1} className='m-0 px-0'>
-                                    <Button size='sm' variant='info'>
-                                        <FontAwesomeIcon icon={faEdit} />
-                                    </Button>
-                                </Col> */}
                                 <Col sm={1} className='m-0 px-0'>
                                     <Button size='sm' variant='danger'>
                                         <FontAwesomeIcon icon={faTrash} />
@@ -52,4 +47,4 @@ const UpcomingBusinessAdmin = ({ business_id, business_type, account_type }) => 
     )
 }
 
-export default UpcomingBusinessAdmin;
+export default UpcomingManagement;

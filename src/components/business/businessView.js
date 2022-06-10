@@ -4,7 +4,7 @@ import { Col, Container, Image, Row } from 'react-bootstrap'
 
 import { SiteContext } from '../../context/site/site.provider';
 
-import UpcomingBusinessView from '../upcoming/upcoming.businessview';
+import UpcomingBusiness from '../events/upcoming/upcoming.business';
 
 const BusinessView = (props) => {
     const { useBusinessById } = useContext(SiteContext);
@@ -64,7 +64,7 @@ const BusinessView = (props) => {
             <Row className='py-3 m-2 fs-4 lh-lg border-top border-bottom'>
                 {business.business_description}
             </Row>
-            <UpcomingBusinessView business={business.id}/>
+            <UpcomingBusiness business={business.id}/>
         </Container>
     )
 }

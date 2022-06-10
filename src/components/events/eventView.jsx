@@ -6,27 +6,23 @@ import { faLocationArrow, faEdit, faTrash } from '@fortawesome/free-solid-svg-ic
 import { formatTime } from '../../helpers/formatTime';
 import { SiteContext } from '../../context/site/site.provider';
 
-import UpcomingEventView from '../upcoming/upcoming.eventview'
+import EditEventButton from '../editButtonModals/editEventButton';
+import UpcomingEvents from './upcoming/upcoming.events';
 import EditEvent from './editEvent'
 import { Link } from 'react-router-dom';
 
 
 const EventView = (props) => {
-    const { useEventById, useBusinessName } = useContext(SiteContext)
+    const { useEventById } = useContext(SiteContext)
     const event = useEventById(props.match.params.id)
-    const venue_name = useBusinessName(event.venue_id)
-    const brand_name = useBusinessName(event.brand_id)
-    
     const [ isCreator, setIsCreator ] = useState(false)
-    const [ modalShow, setModalShow ] = useState(false)
     
-    const handleModalClose = () => setModalShow(false)
-    const handleModalOpen = () => setModalShow(true)
     
     const checkMap = (e) => {
         console.log('click')
     }
     
+    console.log(event)
     // check if user created event to show edit and delete options
     useEffect(() => {
         const user_id = localStorage.getItem('userId')
@@ -48,11 +44,7 @@ const EventView = (props) => {
                     <h2>{event.eventname}</h2>
                 </Col>
                 <Col className={`${isCreator ? 'd-flex' : 'd-none'}`}>
-                    <Col>
-                        <Button size='sm' variant='info'>
-                            <FontAwesomeIcon onClick={handleModalOpen} icon={faEdit} />
-                        </Button>
-                    </Col>
+                    <EditEventButton event={event} />
                     <Col>
                         <Button size='sm' variant='danger'>
                             <FontAwesomeIcon icon={faTrash} />
@@ -68,7 +60,7 @@ const EventView = (props) => {
                     <FontAwesomeIcon onClick={(e) => checkMap(e)} icon={faLocationArrow} size='1x' />
                 </Col>
                 <Col className='fw-bold'>
-                    {venue_name}
+                    {event.venue_name}
                 </Col>
             </Row>
             <Row className='d-flex justify-content-end me-3 fs-4 fw-bold'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</Row>
@@ -79,20 +71,12 @@ const EventView = (props) => {
                 <Link to={{
                     pathname: `/business/${event.brand_id}`
                 }}>
-                    {`With Brand: ${brand_name}`}
+                    {`With Brand: ${event.brand_name}`}
                 </Link>
             </Row>
             <Row>
-                <UpcomingEventView event={event.event_id}/>
+                <UpcomingEvents event={event.event_id}/>
             </Row>
-            <Modal show={modalShow} onHide={handleModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit Event</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <EditEvent event={event} handleClose={handleModalClose}/>
-                </Modal.Body>
-            </Modal>
         </Container>
     )
 }

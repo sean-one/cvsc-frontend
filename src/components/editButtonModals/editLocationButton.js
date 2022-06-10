@@ -6,6 +6,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import EditLocation from '../business/location/editLocation';
 
 const EditLocationButton = ({ business_location }) => {
+    // props.business_location is the full business object with location information joined
     const [ modalShow, setModalShow ] = useState(false)
 
     const handleModalClose = () => setModalShow(false)
