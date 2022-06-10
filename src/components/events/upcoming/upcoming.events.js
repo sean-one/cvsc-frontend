@@ -7,10 +7,10 @@ import EventPreview from '../eventPreview';
 
 const UpcomingEvents = ({ event, venue_id, brand_id }) => {
     const { useUpcomingVenue, useUpcomingBrand } = useContext(SiteContext)
-
     const atVenue = useUpcomingVenue(venue_id, event.event_id)
     const withBrand = useUpcomingBrand(brand_id, event.event_id)
 
+    
     return (
         <React.Fragment>
             {

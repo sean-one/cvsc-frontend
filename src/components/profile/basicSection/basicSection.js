@@ -5,7 +5,8 @@ import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
 import CreateBusiness from '../../business/createBusiness';
 import CreateEvent from '../../events/createEvent';
-import UserEvents from './userEvents';
+// import UserEvents from './userEvents';
+import UpcomingCreatedBy from '../../events/upcoming/upcoming.created_by';
 
 import { UsersContext } from '../../../context/users/users.provider';
 
@@ -50,7 +51,7 @@ const BasicSection = () => {
                         <Accordion.Item eventKey="4">
                             <Accordion.Header>Upcoming Events</Accordion.Header>
                             <Accordion.Body>
-                                <UserEvents />
+                                <UpcomingCreatedBy user_id={userProfile.id} />
                             </Accordion.Body>
                         </Accordion.Item> : null
                 }

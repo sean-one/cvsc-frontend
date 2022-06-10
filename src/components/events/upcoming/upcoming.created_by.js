@@ -1,21 +1,17 @@
 import React, { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
 import { Row } from 'react-bootstrap';
 
-import EventPreview from '../../events/eventPreview';
-
 import { SiteContext } from '../../../context/site/site.provider';
-import { UsersContext } from '../../../context/users/users.provider';
+import EventPreview from '../eventPreview';
 
-const UserEvents = () => {
-    const { userProfile } = useContext(UsersContext)
+const UpcomingCreatedBy = ({ user_id }) => {
     const { useEventsByUser } = useContext(SiteContext);
-    const userEvents = useEventsByUser(userProfile.id)
+    const user_events = useEventsByUser(user_id)
 
     return (
         <Row>
             {
-                userEvents.map((event, i) => {
+                user_events.map((event, i) => {
                     return (
                         <EventPreview key={event.event_id} event={event} />
                     )
@@ -25,4 +21,4 @@ const UserEvents = () => {
     )
 }
 
-export default withRouter(UserEvents);
+export default UpcomingCreatedBy;
