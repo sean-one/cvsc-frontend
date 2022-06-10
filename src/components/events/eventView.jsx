@@ -43,11 +43,6 @@ const EventView = (props) => {
                 </Col>
                 <Col className={`${isCreator ? 'd-block p-0 m-0' : 'd-none'}`}>
                     <EditEventButton event={event} />
-                    {/* <Col className='m-0 px-0'>
-                        <Button size='sm' variant='danger'>
-                            <FontAwesomeIcon icon={faTrash} />
-                        </Button>
-                    </Col> */}
                 </Col>
             </Row>
             <Row className='mx-auto my-3'>

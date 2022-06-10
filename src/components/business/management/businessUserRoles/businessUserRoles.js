@@ -7,7 +7,7 @@ import CreatorRoleList from './creatorRoleList';
 import ManagerRoleList from './managerRoleList';
 
 const BusinessUserRoles = ({ business_role }) => {
-    const { usePending, useManagers } = useContext(SiteContext)
+    const { useCreators, usePending, useManagers } = useContext(SiteContext)
 
     return (
         <Row className='m-2 px-0'>
@@ -23,21 +23,26 @@ const BusinessUserRoles = ({ business_role }) => {
                         </Accordion.Item>
                         : null
                 }
-                <Accordion.Item eventKey="1">
-                    <Accordion.Header>Creators</Accordion.Header>
-                    <Accordion.Body>
-                        <CreatorRoleList />
-                    </Accordion.Body>
-                </Accordion.Item>
                 {
-                    ((business_role.role_type !== 'admin') && (useManagers.length > 0))
-                        ? null
-                        : <Accordion.Item eventKey="2">
+                    (useCreators.length > 0)
+                        ? <Accordion.Item eventKey="1">
+                            <Accordion.Header>Creators</Accordion.Header>
+                            <Accordion.Body>
+                                <CreatorRoleList />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        : null
+                }
+                {
+                    // ((business_role.role_type !== 'admin') && (useManagers.length > 0))
+                    (useManagers.length > 0 && business_role.role_type === 'admin')
+                        ? <Accordion.Item eventKey="2">
                             <Accordion.Header>Managers</Accordion.Header>
                             <Accordion.Body>
                                 <ManagerRoleList />
                             </Accordion.Body>
                         </Accordion.Item>
+                        : null
                 }
             </Accordion>
         </Row>

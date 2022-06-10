@@ -44,7 +44,7 @@ const BusinessManagement = (props) => {
                     {current_business.business_name}
                 </Col>
                 {
-                    (user_role.role_type === 'admin')
+                    ((!loading) && (user_role.role_type === 'admin'))
                         ? <EditBusinessButton business={current_business} />
                         : null
                 }
@@ -107,12 +107,20 @@ const BusinessManagement = (props) => {
                 </Col>
             </Row>
             {
-                (current_business.business_type !== 'brand')
+                ((!loading) && (current_business.business_type !== 'brand'))
                     ? <BusinessLocation business={current_business} user_role={user_role} />
                     : null
             }
-            <BusinessUserRoles business_id={current_business.id} business_role={user_role} />
-            <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} account_type={user_role.role_type} />
+            {
+                (!loading)
+                    ? <BusinessUserRoles business_id={current_business.id} business_role={user_role} />
+                    : <p>...loading...</p>
+            }
+            {
+                (!loading)
+                    ? <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} account_type={user_role.role_type} />
+                    : <p>...loading...</p>
+            }
         </Container>
     )
 }
