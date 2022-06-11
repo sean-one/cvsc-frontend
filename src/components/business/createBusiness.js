@@ -31,7 +31,12 @@ const CreateBusiness = () => {
             .then(business => {
                 
                 if (business.status === 201) {
-                    const admin_role = { business_id: business.data.id, active_role: business.data.active_role, role_type: business.data.role_type }
+                    const admin_role = {
+                        business_id: business.data.id,
+                        business_name: business.data.business_name,
+                        active_role: business.data.active_role,
+                        role_type: business.data.role_type
+                    }
                     addUserRole(admin_role)
                     delete business.data['active_role']
                     delete business.data['role_type']
