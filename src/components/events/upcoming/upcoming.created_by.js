@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Row } from 'react-bootstrap';
 
 import { SiteContext } from '../../../context/site/site.provider';
-import EventPreview from '../eventPreview';
+import EventListing from '../eventListing';
 
 const UpcomingCreatedBy = ({ user_id }) => {
     const { useEventsByUser } = useContext(SiteContext);
@@ -10,13 +10,7 @@ const UpcomingCreatedBy = ({ user_id }) => {
 
     return (
         <Row>
-            {
-                user_events.map((event, i) => {
-                    return (
-                        <EventPreview key={event.event_id} event={event} />
-                    )
-                })
-            }
+            <EventListing event_list={user_events} />
         </Row>
     )
 }

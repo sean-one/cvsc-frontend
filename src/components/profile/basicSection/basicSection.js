@@ -5,11 +5,10 @@ import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
 import CreateBusiness from '../../business/createBusiness';
 import CreateEvent from '../../events/createEvent';
-// import UserEvents from './userEvents';
 import UpcomingCreatedBy from '../../events/upcoming/upcoming.created_by';
 
 import { UsersContext } from '../../../context/users/users.provider';
-
+import UserRoles from './userRoles';
 
 const BasicSection = () => {
     const { userProfile, useAccountType } = useContext(UsersContext);
@@ -50,7 +49,16 @@ const BasicSection = () => {
                 {
                     (account_type !== 'basic') ?
                         <Accordion.Item eventKey="4">
-                            <Accordion.Header>Upcoming Events</Accordion.Header>
+                            <Accordion.Header>Current Roles</Accordion.Header>
+                            <Accordion.Body>
+                                <UserRoles />
+                            </Accordion.Body>
+                        </Accordion.Item> : null
+                }
+                {
+                    (account_type !== 'basic') ?
+                        <Accordion.Item eventKey="5">
+                            <Accordion.Header>Upcoming Created Events</Accordion.Header>
                             <Accordion.Body>
                                 <UpcomingCreatedBy user_id={userProfile.id} />
                             </Accordion.Body>

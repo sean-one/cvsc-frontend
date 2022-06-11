@@ -130,6 +130,7 @@ const UsersProvider = ({ children }) => {
                 useBusinessRole,
                 addUserRole,
                 removeUserRole,
+                userRoles,
                 
                 userProfile,
                 updateUser,
