@@ -13,8 +13,9 @@ const ProfileImgStyles = styled.div`
 `;
 
 
-const UserSection = (props) => {
-    const { userProfile } = useContext(UsersContext)
+const UserSection = () => {
+    const { userProfile, useAccountType } = useContext(UsersContext)
+    const account_type = useAccountType()
 
     return (
         <Card>
@@ -28,6 +29,7 @@ const UserSection = (props) => {
                     <Card.Body>
                         <Card.Title>{userProfile.username}</Card.Title>
                         <Card.Subtitle>{userProfile.email}</Card.Subtitle>
+                        <Card.Text>{`Account Type: ${account_type.toUpperCase()}`}</Card.Text>
                     </Card.Body>
                 </Col>
             </Row>

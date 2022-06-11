@@ -9,7 +9,8 @@ import BusinessSection from './businessSection/businessSection';
 
 const Profile = () => {
     const [ loading, setLoading ] = useState(false);
-    const { userProfile, setUserRoles } = useContext(UsersContext);
+    const { userProfile, setUserRoles, useAccountType } = useContext(UsersContext);
+    const account_type = useAccountType()
 
     const getRoles = useCallback(() => {
         // set loading state
@@ -36,13 +37,14 @@ const Profile = () => {
         // eslint-disable-next-line
     }, []);
     
+    
     return (
         <Row>
             { loading ? <Col><p>loading...</p></Col>
                 : <Col>
                     <BasicSection />
                     {
-                        (userProfile.account_type !== 'basic' && userProfile.account_type !== 'creator') ?
+                        (account_type !== 'basic' && account_type !== 'creator') ?
                             <BusinessSection />
                             : null
                     }

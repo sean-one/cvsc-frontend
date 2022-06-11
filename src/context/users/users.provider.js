@@ -32,6 +32,23 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    const useAccountType = () => {
+        // remove roles not approved
+        const active_roles = userRoles.filter(role => role.active_role)
+        // if no roles account is basic
+        if (active_roles.length === 0) {
+            return 'basic'
+        } else {
+            if(active_roles.find(role => role.role_type === 'admin')) {
+                return 'admin'
+            } else if(active_roles.find(role => role.role_type === 'manager')) {
+                return 'manager'
+            } else {
+                return 'creator'
+            }
+        }
+    }
+
     const useBusinessRole = (business_id) => {
         return userRoles.find(role => role.business_id === business_id)
     }
@@ -71,6 +88,13 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    const removeUserRole = (business_id) => {
+        dispatch({
+            type: userTypes.REMOVE_USER_ROLE,
+            payload: business_id
+        })
+    }
+
     // creates an array of business_id with 'admin' rights
     const useBusinessAdminIdRoles = () => {
         let businessAdminIdList = []
@@ -102,9 +126,10 @@ const UsersProvider = ({ children }) => {
             {
                 setUser,
                 setUserRoles,
+                useAccountType,
                 useBusinessRole,
                 addUserRole,
-                
+                removeUserRole,
                 
                 userProfile,
                 updateUser,

@@ -5,9 +5,9 @@ import { Col, ListGroup, Row } from 'react-bootstrap';
 import { SiteContext } from '../../../context/site/site.provider';
 import EditEventButton from '../../editButtonModals/editEventButton';
 
-const UpcomingManagement = ({ business_id, business_type, account_type }) => {
+const UpcomingManagement = ({ business_id, business_type, role_type }) => {
     const { useEventsByRoles } = useContext(SiteContext);
-    const upcoming_events = useEventsByRoles(account_type, business_id)
+    const upcoming_events = useEventsByRoles(role_type, business_id)
 
     return (
         <Row className='m-2 px-0'>

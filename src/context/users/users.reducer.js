@@ -22,6 +22,11 @@ const usersReducer = (state, action) => {
                 ...state,
                 userRoles: [ ...state.userRoles, action.payload ]
             }
+        case userTypes.REMOVE_USER_ROLE:
+            return {
+                ...state,
+                userRoles: state.userRoles.filter(role => role.business_id !== action.payload)
+            }
         case userTypes.UPDATE_USER:
             return {
                 ...state,

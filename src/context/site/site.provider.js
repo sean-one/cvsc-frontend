@@ -93,6 +93,13 @@ const SiteProvider = ({ children }) => {
         })
     }
 
+    const removeBusiness = (business_id) => {
+        dispatch({
+            type: siteTypes.REMOVE_BUSINESS,
+            payload: business_id
+        })
+    }
+
     const useBusinessById = (business_id) => {
         return businessList.find(business => business.id === business_id)
     }
@@ -177,6 +184,7 @@ const SiteProvider = ({ children }) => {
                 // BUSINESS
                 addBusiness,
                 updateBusiness,
+                removeBusiness,
                 useBusinessById,
                 useBusinessByIdList,
                 useBusinessAdmin,

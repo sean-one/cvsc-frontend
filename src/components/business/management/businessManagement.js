@@ -39,7 +39,7 @@ const BusinessManagement = (props) => {
 
     return (
         <Container className='px-0'>
-            <Row className='m-2 px-0'>
+            <Row className='d-flex m-2 px-0'>
                 <Col sm={10} className='fs-2 fw-bold'>
                     {current_business.business_name}
                 </Col>
@@ -118,7 +118,7 @@ const BusinessManagement = (props) => {
             }
             {
                 (!loading)
-                    ? <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} account_type={user_role.role_type} />
+                    ? <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} role_type={user_role.role_type} />
                     : <p>...loading...</p>
             }
         </Container>

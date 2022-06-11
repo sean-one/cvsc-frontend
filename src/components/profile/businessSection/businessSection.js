@@ -7,11 +7,12 @@ import BusinessList from './businessList';
 
 
 const BusinessSection = () => {
-    const { userProfile } = useContext(UsersContext)
+    const { useAccountType } = useContext(UsersContext)
+    const account_type = useAccountType()
     
     return (
         <Row className='my-3'>
-            <h3>{`${userProfile.account_type.charAt(0).toUpperCase() + userProfile.account_type.slice(1)} Options`}</h3>
+            <h3>{`${account_type.charAt(0).toUpperCase() + account_type.slice(1)} Options`}</h3>
             <Accordion >
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Pending Creator Request</Accordion.Header>
@@ -20,7 +21,7 @@ const BusinessSection = () => {
                     </Accordion.Body>
                 </Accordion.Item>
                 {
-                    (userProfile.account_type === 'admin' || userProfile.account_type === 'manager') ?
+                    (account_type === 'admin' || account_type === 'manager') ?
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>Business List</Accordion.Header>
                             <Accordion.Body>

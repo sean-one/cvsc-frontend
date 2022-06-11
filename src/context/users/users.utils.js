@@ -8,7 +8,6 @@ export const removeFromArray = (removeId, currentArr) => {
 export const userSignIn = (user) => {
     user.user = {
         id: user['id'],
-        account_type: user['account_type'],
         username: user['username'],
         avatar: user['avatar'],
         email: user['email']
@@ -22,7 +21,6 @@ export const userSignIn = (user) => {
 export const userUpdate = (user) => {
     user.user = {
         id: user['id'],
-        account_type: user['account_type'],
         username: user['username'],
         avatar: user['avatar'],
         email: user['email']

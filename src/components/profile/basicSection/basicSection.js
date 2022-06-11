@@ -12,7 +12,8 @@ import { UsersContext } from '../../../context/users/users.provider';
 
 
 const BasicSection = () => {
-    const { userProfile } = useContext(UsersContext);
+    const { userProfile, useAccountType } = useContext(UsersContext);
+    const account_type = useAccountType()
 
     return (
         <Row className='my-3'>
@@ -37,7 +38,7 @@ const BasicSection = () => {
                     </Accordion.Body>
                 </Accordion.Item>
                 {
-                    (userProfile.account_type !== 'basic') ?
+                    (account_type !== 'basic') ?
                         <Accordion.Item eventKey="3">
                             <Accordion.Header>Create Event</Accordion.Header>
                             <Accordion.Body>
@@ -47,7 +48,7 @@ const BasicSection = () => {
                         </Accordion.Item> : null
                 }
                 {
-                    (userProfile.account_type !== 'basic') ?
+                    (account_type !== 'basic') ?
                         <Accordion.Item eventKey="4">
                             <Accordion.Header>Upcoming Events</Accordion.Header>
                             <Accordion.Body>

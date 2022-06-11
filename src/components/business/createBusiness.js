@@ -8,9 +8,11 @@ import AxiosInstance from '../../helpers/axios';
 import { addBusinessSchema } from '../../helpers/validationSchemas';
 import { SiteContext } from '../../context/site/site.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
+import { UsersContext } from '../../context/users/users.provider';
 
-const CreateBusiness = (props) => {
+const CreateBusiness = () => {
     const { addBusiness } = useContext(SiteContext)
+    const { addUserRole } = useContext(UsersContext)
     const {dispatch } = useContext(NotificationsContext) 
     const { register, handleSubmit, watch, reset, setError, clearErrors, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -26,26 +28,29 @@ const CreateBusiness = (props) => {
         AxiosInstance.post('/business/create', data, {
             headers: { 'Authorization': 'Bearer ' + token }
         })
-            .then(response => {
+            .then(business => {
                 
-                if (response.status === 201) {
-                    
+                if (business.status === 201) {
+                    const admin_role = { business_id: business.data.id, active_role: business.data.active_role, role_type: business.data.role_type }
+                    addUserRole(admin_role)
+                    delete business.data['active_role']
+                    delete business.data['role_type']
                     reset()
                     
-                    addBusiness(response.data)
+                    addBusiness(business.data)
                     
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'SUCCESS',
-                            message: `${response.data.business_name} business request submitted`
+                            message: `${business.data.business_name} business request submitted`
                         }
                     })
                     
                     history.push({
-                        pathname: `/business/admin/${response.data.id}`,
+                        pathname: `/business/manage/${business.data.id}`,
                         state: {
-                            business_id: response.data.id,
+                            business_id: business.data.id,
                         }
                     });
                 }

@@ -3,7 +3,6 @@ import siteTypes from './site.types';
 export const SITE_INITIAL_STATE = {
     events: [],
     businessList: [],
-    businessRoles: [],
     businessUserRoles: [],
 };
 
@@ -39,6 +38,12 @@ const siteReducer = (state, action) => {
             return {
                 ...state,
                 businessList: state.businessList.map(business => (business.id === action.payload.id ? action.payload.business : business))
+            }
+        case siteTypes.REMOVE_BUSINESS:
+            return {
+                ...state,
+                businessList: state.businessList.filter(business => business.id !== action.payload),
+                businessUserRoles: []
             }
         case siteTypes.SET_BUSINESS_USER_ROLES:
             return {
