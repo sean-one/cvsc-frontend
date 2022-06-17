@@ -15,7 +15,6 @@ const useSiteFetch = () => {
             if (isMounted) {
                 setData({ events: eventCall.data, businessList: businessCall.data })
                 setFetchError(null)
-                setLoading(false)
             }
 
         } catch (error) {
@@ -23,25 +22,24 @@ const useSiteFetch = () => {
                 if (isMounted) {
                     setFetchError(error.message)
                     setData([])
-                    setLoading(false)
                 }
             } else if (error.response.status === 404) {
                 if (isMounted) {
                     setFetchError(`${error.response.config.url} response error`)
                     setData([])
-                    setLoading(false)
                 }
             } else {
                 if (isMounted) {
                     setFetchError(error)
                     setData([])
-                    setLoading(false)
                 }
             } 
              
+        } finally {
+            setLoading(false)
         }
     }, [])
-    
+
 
     useEffect(() => {
         setLoading(true)
