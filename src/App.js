@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 // components
 import Calendar from './components/calendar/calendar';
@@ -22,6 +24,8 @@ import UsersProvider from './context/users/users.provider';
 // import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+const queryClient = new QueryClient()
+
 const App = () => {
 
   return (
@@ -29,6 +33,7 @@ const App = () => {
       <ScrollToTop/>
       <UsersProvider>
       <SiteProvider>
+        <QueryClientProvider client={queryClient}>
           <NavHeader />
           <Layout>
             <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
@@ -39,6 +44,8 @@ const App = () => {
             <AuthRoute exact path='/profile' component={Profile} />
             <BusinessAuthRoute exact path='/business/manage/:id' component={BusinessManagement} />
           </Layout>
+          <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
       </SiteProvider>
       </UsersProvider>
     </React.Fragment>

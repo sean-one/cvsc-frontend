@@ -1,46 +1,42 @@
-import React, { useEffect, useContext } from 'react'
+import React from 'react'
 import { format } from 'date-fns';
 import { Container } from 'react-bootstrap';
 
-import useSiteFetch from '../../hooks/useSiteFetch';
-import useEventsByDay from '../../hooks/useEventsByDay';
-import { SiteContext } from '../../context/site/site.provider'
+import filterEventsByDay from '../../helpers/filterEventsByDay';
+import { useEventsQuery } from '../../hooks/useEvents';
 
 import Day from './day.jsx';
 
 const Calendar = () => {
-    const { data, loading, fetchError } = useSiteFetch('...loading data...')
-    const { events, setSiteInfo } = useContext(SiteContext)
-    const siteSortedEvents = useEventsByDay(events)
+    const { data, isLoading, isError, isSuccess } = useEventsQuery()
+    let siteSortedEvents = {}
     
-    useEffect(() => {
-        setSiteInfo(data.events, data.businessList)
-        // eslint-disable-next-line
-    }, [data])
-    
-    
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+
+    if(isError) {
+        return <div>Error... something went wrong</div>
+    }
+
+    if(isSuccess) {
+        siteSortedEvents = filterEventsByDay(data.data)
+    }
+
     return (
-        <div>
+        <Container className='px-0'>
             {
-                loading ? (
-                    <div>{ fetchError }</div>
-                ) : (
-                    <Container className='px-0'>
-                        {
-                            Object.keys(siteSortedEvents).sort(
-                                // sort event list by date
-                                (a,b) => new Date(a) - new Date(b)
-                            ).map(key => {
-                                const eventDate = new Date(key)
-                                return (
-                                    <Day key={format(eventDate, 't')} date={eventDate} schedule={siteSortedEvents[key]} />
-                                )
-                            })
-                        }
-                    </Container>
-                )
+                Object.keys(siteSortedEvents).sort(
+                    // sort event list by date
+                    (a,b) => new Date(a) - new Date(b)
+                ).map(key => {
+                    const eventDate = new Date(key)
+                    return (
+                        <Day key={format(eventDate, 't')} date={eventDate} schedule={siteSortedEvents[key]} />
+                    )
+                })
             }
-        </div>
+        </Container>
     )
 }
 
