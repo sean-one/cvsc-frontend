@@ -1,14 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Container, Row } from 'react-bootstrap';
 
-import { SiteContext } from '../../../context/site/site.provider';
+import { useEventsQuery } from '../../../hooks/useEvents';
 import EventPreview from '../eventPreview';
 
 
-const UpcomingBusiness = (props) => {
-    const { useBusinessById, useEventsByBusiness } = useContext(SiteContext)
-    const business = useBusinessById(props.business)
-    const business_events = useEventsByBusiness(props.business)
+const UpcomingBusiness = ({ business }) => {
+    const { data: events, isLoading } = useEventsQuery()
+
+    if (isLoading) {
+        return <div>loading..</div>
+    }
+
+    const business_events = events.data.filter(event => event.brand_id === business.id || event.venue_id === business.id)
 
     return (
         <Container className='px-0'>
