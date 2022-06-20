@@ -8,4 +8,11 @@ const getAllEvents = async () => {
     return events_api_call
 }
 
+const getEvent = async (id) => {
+    const single_event = await AxiosInstance.get(`/events/${id}`)
+
+    return single_event
+}
+
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
+export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id))
