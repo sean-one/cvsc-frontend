@@ -16,7 +16,7 @@ const Calendar = () => {
     }
 
     if(isError) {
-        return <div>Error... something went wrong</div>
+        return <div>Error...something is wrong</div>
     }
 
     if(isSuccess) {
