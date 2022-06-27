@@ -5,6 +5,7 @@ import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
+import { GoogleLogin } from '@react-oauth/google';
 
 import AxiosInstance from '../helpers/axios';
 import { UsersContext } from '../context/users/users.provider';
@@ -124,6 +125,16 @@ const Login = () => {
                             Register
                         </Button>
                     </Col>
+                </Row>
+                <Row>
+                    <GoogleLogin
+                        onSuccess={response => {
+                            console.log(response)
+                        }}
+                        onError={() => {
+                            console.log('login failed')
+                        }}
+                    />
                 </Row>
             </Form>
         </Row>

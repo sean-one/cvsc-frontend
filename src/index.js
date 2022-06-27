@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import NotificationsProvider from './context/notifications/notifications.provider';
 // import AxiosInstance from './helpers/axios';
@@ -20,9 +21,11 @@ require('dotenv').config();
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <NotificationsProvider>
-        <App />
-      </NotificationsProvider>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <NotificationsProvider>
+          <App />
+        </NotificationsProvider>
+      </GoogleOAuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
