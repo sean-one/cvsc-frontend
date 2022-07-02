@@ -11,14 +11,17 @@ export const NavHeader = (props) => {
     const { userSignOut } = useContext(UsersContext);
     let history = useHistory()
 
-    const logout = () => {
+    const logout = async () => {
         localStorage.clear()
-        userSignOut()
-
+        
+        await userSignOut()
+        
         document.getElementById('navbarToggle').classList.remove('show')
         document.getElementById('navbarToggle').classList.add('hide')
         
-        history.push('/')
+        window.open("http://localhost:3333/auth/logout", "_self")
+        
+        // history.push('/')
     }
 
     

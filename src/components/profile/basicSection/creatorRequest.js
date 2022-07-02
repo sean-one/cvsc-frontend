@@ -6,23 +6,30 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import AxiosInstance from '../../../helpers/axios';
-import { SiteContext } from '../../../context/site/site.provider';
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
 import { UsersContext } from '../../../context/users/users.provider';
+import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 
 
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
-    const { businessList } = useContext(SiteContext)
+    const { data: businessList, isLoading } = useBusinessesQuery()
     const { userSignOut, useRoleBusinessIds_All, addUserRole } = useContext(UsersContext)
     const business_roles = useRoleBusinessIds_All()
-    let business_filtered = businessList
+    
+    let history = useHistory();
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(requestBusinessCreator)
     });
-    let history = useHistory();
+    
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+    
+    let business_filtered = businessList.data
+    
 
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')

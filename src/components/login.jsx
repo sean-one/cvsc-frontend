@@ -5,7 +5,6 @@ import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
-import { GoogleLogin } from '@react-oauth/google';
 
 import AxiosInstance from '../helpers/axios';
 import { UsersContext } from '../context/users/users.provider';
@@ -82,6 +81,18 @@ const Login = () => {
             })
     }
 
+    const googleAuthButton = (e) => {
+        e.preventDefault()
+        window.open("http://localhost:3333/auth/google", "_self")
+        // console.log('click google')
+        // AxiosInstance.get('/auth/google')
+        //     .then(response => {
+        //         console.log(response)
+        //     })
+        //     .catch(err => console.log(err))
+    }
+
+
     return (
         <Row>
             <h2>Login</h2>
@@ -91,7 +102,7 @@ const Login = () => {
                     <Form.Control
                         className={errors.username ? 'inputError' : ''}
                         {...register('username')}
-                        autoFocus
+                        // autoFocus
                         onFocus={() => clearErrors('username')}
                         type='text'
                         name='username'
@@ -127,14 +138,7 @@ const Login = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <GoogleLogin
-                        onSuccess={response => {
-                            console.log(response)
-                        }}
-                        onError={() => {
-                            console.log('login failed')
-                        }}
-                    />
+                    <button onClick={googleAuthButton}>Google</button>
                 </Row>
             </Form>
         </Row>

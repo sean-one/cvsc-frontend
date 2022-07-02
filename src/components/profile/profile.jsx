@@ -1,45 +1,42 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
-import { useUserRolesQuery } from '../../hooks/useUserAuthApi';
+// import { useUserRolesQuery } from '../../hooks/useUserAuthApi';
 import { UsersContext } from '../../context/users/users.provider';
 import BasicSection from './basicSection/basicSection';
 import BusinessSection from './businessSection/businessSection';
 
 const Profile = () => {
-    const { userProfile, setUserRoles, useAccountType } = useContext(UsersContext);
-    const { data } = useUserRolesQuery(userProfile.id)
+    const { setUser, useAccountType } = useContext(UsersContext);
+    // const { data } = useUserRolesQuery(userProfile.id)
     const [ loading, setLoading ] = useState(false);
     const account_type = useAccountType()
+    
+    let history = useHistory()
 
-    const getRoles = useCallback(() => {
-        // set loading state
+    const getGoogleUser = useCallback(() => {
         setLoading(true);
 
-        const token = localStorage.getItem('token');
-        
-        AxiosInstance.get(`/roles/user/${userProfile.id}`, {
-            headers: {'Authorization': 'Bearer ' + token}
-        })
-            .then(userroles => {
-                setUserRoles(userroles.data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            .finally(() => {
+        AxiosInstance.get('/auth/google/success')
+            .then(response => {
+                setUser(response.data.user)
                 setLoading(false)
             })
-    }, [setUserRoles, userProfile.id])
+            .catch(err => {
+                if(err.response.status === 401) {
+                    history.push('/login')
+                }
+            })
+    }, [setUser, history])
 
     useEffect(() => {
-        getRoles()
-        // eslint-disable-next-line
-    }, []);
+        getGoogleUser()
+        // eslint-disable-next-line 
+    }, [])
+
     
-    console.log(data)
     return (
         <Row>
             { loading ? <Col><p>loading...</p></Col>

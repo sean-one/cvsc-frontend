@@ -9,7 +9,7 @@ import BusinessView from './components/business/businessView';
 import { NavHeader } from './components/NavHeader';
 import Register from './components/register.jsx';
 import Login from './components/login.jsx';
-import AuthRoute from './components/auth/auth.jsx';
+// import AuthRoute from './components/auth/auth.jsx';
 import BusinessAuthRoute from './components/auth/businessAuth';
 import BusinessManagement from './components/business/management/businessManagement';
 import Profile from './components/profile/profile.jsx';
@@ -41,7 +41,8 @@ const App = () => {
             <Route path='/event/:id' render={(props) => (<EventView {...props} />)} />
             <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
-            <AuthRoute exact path='/profile' component={Profile} />
+            <Route exact path='/profile' component={Profile} />
+            {/* <AuthRoute exact path='/profile' component={Profile} /> */}
             <BusinessAuthRoute exact path='/business/manage/:id' component={BusinessManagement} />
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />

@@ -8,7 +8,7 @@ const AuthRoute = ({ component: Component, ...rest }) => (
         checkToken() ? (
             <Component {...props} />    
         ) : (
-            <Redirect to={{ pathname: '/login' }} />
+            <Redirect to={{ pathname: '/profile' }} />
         )
     )} />
 )

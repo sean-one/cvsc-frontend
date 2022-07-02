@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 const getAllBusinesses = async () => {
-    const businesses_api_call = await AxiosInstance.get('/businesses')
+    const businesses_api_call = await AxiosInstance.get('/business')
 
     return businesses_api_call
 }
