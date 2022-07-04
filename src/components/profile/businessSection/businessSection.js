@@ -19,21 +19,29 @@ const BusinessSection = ({ user_id }) => {
     // console.log(roles)
     return (
         <Row className='my-3'>
-            <h3>{`${account_type.charAt(0).toUpperCase() + account_type.slice(1)} Options`}</h3>
-            <Accordion >
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Pending Creator Request</Accordion.Header>
-                    <Accordion.Body>
-                        <PendingRequest />
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                    <Accordion.Header>Business List</Accordion.Header>
-                    <Accordion.Body>
-                        <BusinessList />
-                    </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
+            {
+                (account_type === 'basic' || account_type === 'creator')
+                    ? null
+                    : <h3>{`${account_type.charAt(0).toUpperCase() + account_type.slice(1)} Options`}</h3>
+            }
+            {
+                (account_type === 'basic' || account_type === 'creator')
+                    ? null
+                    : <Accordion >
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Pending Creator Request</Accordion.Header>
+                            <Accordion.Body>
+                                <PendingRequest />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Business List</Accordion.Header>
+                            <Accordion.Body>
+                                <BusinessList />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+            }
         </Row>
     )
 }
