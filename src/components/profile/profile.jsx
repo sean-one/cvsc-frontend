@@ -13,10 +13,10 @@ const Profile = () => {
     
     let history = useHistory()
 
-    const getGoogleUser = useCallback(() => {
+    const getUser = useCallback(() => {
         setLoading(true);
 
-        AxiosInstance.get('/auth/google/success')
+        AxiosInstance.get('/auth/login/success')
             .then(response => {
                 setUser(response.data.user)
             })
@@ -32,7 +32,7 @@ const Profile = () => {
     }, [])
 
     useEffect(() => {
-        getGoogleUser()
+        getUser()
         // eslint-disable-next-line 
     }, [])
 

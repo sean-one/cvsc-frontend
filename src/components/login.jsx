@@ -23,7 +23,7 @@ const Login = () => {
 
     
     const sendLogin = (data) => {
-        AxiosInstance.post('/users/login', data)
+        AxiosInstance.post('/auth/local', data)
             .then(response => {
                 if(response.status === 200) {
                     // send success message
@@ -36,7 +36,7 @@ const Login = () => {
                     })
 
                     // set user to the users context
-                    setUser(response.data)
+                    // setUser(response.data)
 
                     // forward to profile page
                     history.push('/profile');
