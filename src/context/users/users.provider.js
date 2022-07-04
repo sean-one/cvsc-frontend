@@ -8,11 +8,11 @@ export const UsersContext = createContext({
     ...USERS_INITIAL_STATE
 });
 
-
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
     const { userProfile, userRoles } = store
-
+    
+    console.log(userRoles)
     // used at sucessful login & successful registration
     const setUser = userdata => {
         // set up local storage and cleans data payload object
@@ -32,9 +32,9 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    const useAccountType = () => {
+    const setAccountType = (roles=[]) => {
         // remove roles not approved
-        const active_roles = userRoles.filter(role => role.active_role)
+        const active_roles = roles.filter(role => role.active_role)
         // if no roles account is basic
         if (active_roles.length === 0) {
             return 'basic'
@@ -126,7 +126,7 @@ const UsersProvider = ({ children }) => {
             {
                 setUser,
                 setUserRoles,
-                useAccountType,
+                setAccountType,
                 useBusinessRole,
                 addUserRole,
                 removeUserRole,

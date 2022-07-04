@@ -8,11 +8,18 @@ import CreateEvent from '../../events/createEvent';
 import UpcomingCreatedBy from '../../events/upcoming/upcoming.created_by';
 
 import { UsersContext } from '../../../context/users/users.provider';
+import { useUserRolesQuery } from '../../../hooks/useUserAuthApi';
 import UserRoles from './userRoles';
 
-const BasicSection = () => {
-    const { userProfile, useAccountType } = useContext(UsersContext);
-    const account_type = useAccountType()
+const BasicSection = ({ user_id }) => {
+    const { data: roles, isLoading } = useUserRolesQuery(user_id)
+    const { setAccountType } = useContext(UsersContext);
+
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+
+    const account_type = setAccountType(roles.data)
 
     return (
         <Row className='my-3'>
@@ -21,7 +28,7 @@ const BasicSection = () => {
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>User Profile</Accordion.Header>
                     <Accordion.Body>
-                        <UserSection />
+                        <UserSection user_id={user_id} />
                     </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
@@ -60,7 +67,7 @@ const BasicSection = () => {
                         <Accordion.Item eventKey="5">
                             <Accordion.Header>Upcoming Created Events</Accordion.Header>
                             <Accordion.Body>
-                                <UpcomingCreatedBy user_id={userProfile.id} />
+                                <UpcomingCreatedBy user_id={user_id} />
                             </Accordion.Body>
                         </Accordion.Item> : null
                 }
