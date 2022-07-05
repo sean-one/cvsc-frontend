@@ -5,6 +5,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { UsersContext } from '../context/users/users.provider';
 
 import logobrand from '../assets/cvsc.png'
+import AxiosInstance from '../helpers/axios';
 
 export const NavHeader = (props) => {
     const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
@@ -12,14 +13,26 @@ export const NavHeader = (props) => {
     let history = useHistory()
 
     const logout = async () => {
-        localStorage.clear()
+        AxiosInstance.get('/auth/logout')
+            .then(response => {
+                if(response.status === 200) {
+                    localStorage.clear()
+                    userSignOut()
+                }
+                console.log(response)
+            })
+            .catch(err => console.log(err))
+            .finally(
+                history.push('/')
+            )
+                // localStorage.clear()
+            document.getElementById('navbarToggle').classList.remove('show')
+            document.getElementById('navbarToggle').classList.add('hide')
+                
+        // await userSignOut()
         
-        await userSignOut()
         
-        document.getElementById('navbarToggle').classList.remove('show')
-        document.getElementById('navbarToggle').classList.add('hide')
-        
-        window.open("http://localhost:3333/auth/logout", "_self")
+        // window.open("http://localhost:3333/auth/logout", "_self")
         
         // history.push('/')
     }

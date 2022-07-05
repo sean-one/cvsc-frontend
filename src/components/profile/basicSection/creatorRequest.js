@@ -14,8 +14,8 @@ import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
     const { data: businessList, isLoading } = useBusinessesQuery()
-    const { userSignOut, useRoleBusinessIds_All, addUserRole } = useContext(UsersContext)
-    const business_roles = useRoleBusinessIds_All()
+    const { userSignOut, useRoleBusinessIds_All, addUserRole, filterCurrentRoles } = useContext(UsersContext)
+    // const business_roles = useRoleBusinessIds_All()
     
     let history = useHistory();
     
@@ -28,8 +28,8 @@ const CreatorRequest = () => {
         return <div>loading...</div>
     }
     
-    let business_filtered = businessList.data
-    
+    // let business_filtered = businessList.data
+    const business_filtered = filterCurrentRoles(businessList.data)
 
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
@@ -72,10 +72,10 @@ const CreatorRequest = () => {
             })
     }
 
-    if(business_roles.length > 0) {
-        business_filtered = business_filtered.filter(business => !business_roles.includes(business.id))
-    }
-
+    // if(business_roles.length > 0) {
+    //     business_filtered = business_filtered.filter(business => !business_roles.includes(business.id))
+    // }
+    console.log(business_filtered)
     return (
         <Form onSubmit={handleSubmit(sendRequest)}>
             <Row className='d-flex align-items-center'>

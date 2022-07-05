@@ -49,6 +49,23 @@ const UsersProvider = ({ children }) => {
         }
     }
 
+    const filterCurrentRoles = (business_list) => {
+        let business_ids = []
+        let business_list_filtered = business_list
+        // filter out active roles only
+        const active_roles = userRoles.filter(role => role.active_role)
+
+        active_roles.map(role => {
+            return business_ids.push(role.business_id)
+        })
+
+        if(business_ids.length > 0) {
+            business_list_filtered = business_list_filtered.filter(business => !active_roles.includes(business.id))
+        }
+
+        return business_list_filtered
+    }
+
     const useBusinessRole = (business_id) => {
         return userRoles.find(role => role.business_id === business_id)
     }
@@ -116,6 +133,7 @@ const UsersProvider = ({ children }) => {
     }
 
     const userSignOut = () => {
+        console.log('inside sign out')
         dispatch({
             type: userTypes.USER_LOGOUT
         })
@@ -127,6 +145,7 @@ const UsersProvider = ({ children }) => {
                 setUser,
                 setUserRoles,
                 setAccountType,
+                filterCurrentRoles,
                 useBusinessRole,
                 addUserRole,
                 removeUserRole,
