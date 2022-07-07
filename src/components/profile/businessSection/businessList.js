@@ -2,14 +2,19 @@ import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 
-import { SiteContext } from '../../../context/site/site.provider';
+import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
 
 const BusinessList = (props) => {
-    const { useBusinessByIdList } = useContext(SiteContext)
+    const { data: businesses, isLoading } = useBusinessesQuery()
     const { useRoleBuinsessIds_Management } = useContext(UsersContext)
     const business_ids = useRoleBuinsessIds_Management()
-    const business_list = useBusinessByIdList(business_ids)
+
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+
+    const business_list = businesses.data.filter(business => business_ids.includes(business.id))
 
     return (
         <Container className='px-0'>

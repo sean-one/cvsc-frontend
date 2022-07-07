@@ -18,7 +18,7 @@ const BusinessUserRoles = ({ business_role, business_id }) => {
     const usePending = business_roles.data.filter(business_role => !business_role.active_role)
     const useCreators = business_roles.data.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
     const useManagers = business_roles.data.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
-    // console.log(business_roles)
+    console.log(useCreators)
     return (
         <Row className='m-2 px-0'>
             <h4>Business Roles</h4>
@@ -38,7 +38,7 @@ const BusinessUserRoles = ({ business_role, business_id }) => {
                         ? <Accordion.Item eventKey="1">
                             <Accordion.Header>Creators</Accordion.Header>
                             <Accordion.Body>
-                                <CreatorRoleList />
+                                <CreatorRoleList creator_roles={useCreators} />
                             </Accordion.Body>
                         </Accordion.Item>
                         : null

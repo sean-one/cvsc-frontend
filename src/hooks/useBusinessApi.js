@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 const getAllBusinesses = async () => {
@@ -20,6 +20,13 @@ export const createBusiness = async (business) => {
     return new_business
 }
 
+export const upgradeCreator = async (role_id) => {
+    const token = localStorage.getItem('token')
+    const new_manager = await AxiosInstance.post(`/roles/upgrade/creator/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+
+    return new_manager
+}
+
 const getAllBusinessRoles = async (id) => {
     const token = localStorage.getItem('token')
     const business_roles = await AxiosInstance.get(`/roles/business/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })
@@ -31,3 +38,4 @@ const getAllBusinessRoles = async (id) => {
 export const useBusinessesQuery = () => useQuery(["businesses"], getAllBusinesses, { refetchOnMount: false })
 export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
+// export const useCreatorRoleMutation = (id) => useMutation(upgradeCreator(id))
