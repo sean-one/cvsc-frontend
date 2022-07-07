@@ -1,12 +1,19 @@
 import React, { useContext } from 'react';
 import { Row } from 'react-bootstrap';
 
-import { SiteContext } from '../../../context/site/site.provider';
+import { useEventsQuery } from '../../../hooks/useEvents';
+import { UsersContext } from '../../../context/users/users.provider';
 import EventListing from '../eventListing';
 
-const UpcomingCreatedBy = ({ user_id }) => {
-    const { useEventsByUser } = useContext(SiteContext);
-    const user_events = useEventsByUser(user_id)
+const UpcomingCreatedBy = () => {
+    const { data: events, isLoading } = useEventsQuery()
+    const { userProfile } = useContext(UsersContext)
+
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+
+    const user_events = events.data.filter(event => event.created_by === userProfile.id)
 
     return (
         <Row>

@@ -13,28 +13,16 @@ export const NavHeader = (props) => {
     let history = useHistory()
 
     const logout = async () => {
-        AxiosInstance.get('/auth/logout')
-            .then(response => {
-                if(response.status === 200) {
-                    localStorage.clear()
-                    userSignOut()
-                }
-                console.log(response)
-            })
-            .catch(err => console.log(err))
-            .finally(
-                history.push('/')
-            )
-                // localStorage.clear()
-            document.getElementById('navbarToggle').classList.remove('show')
-            document.getElementById('navbarToggle').classList.add('hide')
-                
-        // await userSignOut()
+        localStorage.clear()
         
+        userSignOut()
         
-        // window.open("http://localhost:3333/auth/logout", "_self")
+        await AxiosInstance.get('/auth/logout')
         
-        // history.push('/')
+        // document.getElementById('navbarToggle').classList.remove('show')
+        // document.getElementById('navbarToggle').classList.add('hide')
+        
+        history.push('/')
     }
 
     

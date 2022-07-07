@@ -1,19 +1,55 @@
 import React, { useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
-import AxiosInstance from '../../helpers/axios';
 import { addBusinessSchema } from '../../helpers/validationSchemas';
-import { SiteContext } from '../../context/site/site.provider';
+import { createBusiness } from '../../hooks/useBusinessApi';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
 
 const CreateBusiness = () => {
-    const { addBusiness } = useContext(SiteContext)
+    const queryClient = useQueryClient()
     const { addUserRole } = useContext(UsersContext)
     const {dispatch } = useContext(NotificationsContext) 
+    
+    const { mutateAsync } = useMutation(createBusiness, {
+        onSuccess: ({ data: new_business }) => {
+            const admin_role = {
+                business_id: new_business.id,
+                business_name: new_business.business_name,
+                active_role: new_business.active_role,
+                role_type: new_business.role_type
+            }
+    
+            addUserRole(admin_role)
+
+            // delete business.data['active_role']
+            // delete business.data['role_type']
+            
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${new_business.business_name} business request submitted`
+                }
+            })
+            
+            history.push({
+                pathname: `/business/manage/${new_business.id}`,
+                state: {
+                    business_id: new_business.id,
+                }
+            });
+        },
+        onError: (error, new_business, context) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries("businesses"),
+    })
+    
     const { register, handleSubmit, watch, reset, setError, clearErrors, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
@@ -22,62 +58,28 @@ const CreateBusiness = () => {
     const businessType = watch('business_type', 'brand')
     let history = useHistory();
 
-    const sendRequest = (data) => {
-        const token = localStorage.getItem('token')
+    const sendRequest = async (business_data) => {
+        await mutateAsync(business_data)
 
-        AxiosInstance.post('/business/create', data, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(business => {
+        reset()
+        
+        //     .catch(err => {
                 
-                if (business.status === 201) {
-                    const admin_role = {
-                        business_id: business.data.id,
-                        business_name: business.data.business_name,
-                        active_role: business.data.active_role,
-                        role_type: business.data.role_type
-                    }
-                    addUserRole(admin_role)
-                    delete business.data['active_role']
-                    delete business.data['role_type']
-                    reset()
-                    
-                    addBusiness(business.data)
-                    
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'SUCCESS',
-                            message: `${business.data.business_name} business request submitted`
-                        }
-                    })
-                    
-                    history.push({
-                        pathname: `/business/manage/${business.data.id}`,
-                        state: {
-                            business_id: business.data.id,
-                        }
-                    });
-                }
-
-            })
-            .catch(err => {
+        //         if (err.response.status) {
+        //             setError(`${err.response.data.type}`, {
+        //                 type: 'server',
+        //                 message: err.response.data.message
+        //             })
+        //         }
                 
-                if (err.response.status) {
-                    setError(`${err.response.data.type}`, {
-                        type: 'server',
-                        message: err.response.data.message
-                    })
-                }
-                
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${err.response.data.message}`
-                    }
-                })
-            })
+        //         dispatch({
+        //             type: "ADD_NOTIFICATION",
+        //             payload: {
+        //                 notification_type: 'ERROR',
+        //                 message: `${err.response.data.message}`
+        //             }
+        //         })
+        //     })
     }
 
 

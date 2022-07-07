@@ -3,7 +3,6 @@ import { Card, Col, Image, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { UsersContext } from '../../../context/users/users.provider';
-import { useUserRolesQuery } from '../../../hooks/useUserAuthApi';
 
 const ProfileImgStyles = styled.div`
     .userProfileImage {
@@ -13,15 +12,10 @@ const ProfileImgStyles = styled.div`
 `;
 
 
-const UserSection = ({ user_id }) => {
-    const { data: roles, isLoading } = useUserRolesQuery(user_id)
+const UserSection = () => {
     const { userProfile, setAccountType } = useContext(UsersContext)
+    const account_type = setAccountType()
 
-    if(isLoading) {
-        return <div>loading...</div>
-    }
-
-    const account_type = setAccountType(roles.data)
 
     return (
         <Card>

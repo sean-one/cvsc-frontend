@@ -12,7 +12,6 @@ const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
     const { userProfile, userRoles } = store
     
-    console.log(userRoles)
     // used at sucessful login & successful registration
     const setUser = userdata => {
         // set up local storage and cleans data payload object
@@ -24,7 +23,7 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    // sets the userroles object and set the creator and admin rights
+    // sets the userroles object used to figure out account type
     const setUserRoles = userroles => {
         dispatch({
             type: userTypes.SET_USER_ROLES,
@@ -32,9 +31,9 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    const setAccountType = (roles=[]) => {
+    const setAccountType = () => {
         // remove roles not approved
-        const active_roles = roles.filter(role => role.active_role)
+        const active_roles = userRoles.filter(role => role.active_role)
         // if no roles account is basic
         if (active_roles.length === 0) {
             return 'basic'
@@ -49,20 +48,21 @@ const UsersProvider = ({ children }) => {
         }
     }
 
-    const filterCurrentRoles = (business_list) => {
+    const filterBusinessByCurrentRoles = (business_list) => {
         let business_ids = []
         let business_list_filtered = business_list
+        
         // filter out active roles only
         const active_roles = userRoles.filter(role => role.active_role)
 
         active_roles.map(role => {
             return business_ids.push(role.business_id)
         })
-
+        
         if(business_ids.length > 0) {
-            business_list_filtered = business_list_filtered.filter(business => !active_roles.includes(business.id))
+            business_list_filtered = business_list_filtered.filter(business => !business_ids.includes(business.id))
         }
-
+        
         return business_list_filtered
     }
 
@@ -145,7 +145,7 @@ const UsersProvider = ({ children }) => {
                 setUser,
                 setUserRoles,
                 setAccountType,
-                filterCurrentRoles,
+                filterBusinessByCurrentRoles,
                 useBusinessRole,
                 addUserRole,
                 removeUserRole,

@@ -8,7 +8,7 @@ import BasicSection from './basicSection/basicSection';
 import BusinessSection from './businessSection/businessSection';
 
 const Profile = () => {
-    const { userProfile, setUser } = useContext(UsersContext);
+    const { userProfile, setUser, setUserRoles } = useContext(UsersContext);
     const [ loading, setLoading ] = useState(false);
     
     let history = useHistory()
@@ -19,6 +19,7 @@ const Profile = () => {
         AxiosInstance.get('/auth/login/success')
             .then(response => {
                 setUser(response.data.user)
+                setUserRoles(response.data.roles)
             })
             .catch(err => {
                 if(err.response.status === 401) {

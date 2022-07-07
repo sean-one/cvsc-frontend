@@ -2,21 +2,15 @@ import React, { useContext } from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
 import { UsersContext } from '../../../context/users/users.provider';
-import { useUserRolesQuery } from '../../../hooks/useUserAuthApi';
 import PendingRequest from './pendingRequest';
 import BusinessList from './businessList';
 
 
-const BusinessSection = ({ user_id }) => {
-    const { data: roles, isLoading } = useUserRolesQuery(user_id)
+const BusinessSection = () => {
     const { setAccountType } = useContext(UsersContext)
+    const account_type = setAccountType()
     
-    if (isLoading) {
-        return <div>loading...</div>
-    }
 
-    const account_type = setAccountType(roles.data)
-    // console.log(roles)
     return (
         <Row className='my-3'>
             {

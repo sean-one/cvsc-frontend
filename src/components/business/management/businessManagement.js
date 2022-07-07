@@ -1,9 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Col, Container, Image, Row } from 'react-bootstrap';
 
-import { SiteContext } from '../../../context/site/site.provider';
+// import { SiteContext } from '../../../context/site/site.provider';
+import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
-import AxiosInstance from '../../../helpers/axios';
+// import AxiosInstance from '../../../helpers/axios';
 
 import BusinessLocation from '../location/businessLocation';
 import EditBusinessButton from '../../editButtonModals/editBusinessButton';
@@ -11,31 +12,38 @@ import BusinessUserRoles from './businessUserRoles/businessUserRoles';
 import UpcomingManagement from '../../events/upcoming/upcoming.management';
 
 const BusinessManagement = (props) => {
-    const business_id = props.location.state.business_id
+    const { data: business, isLoading } = useBusinessQuery(props.location.state.business_id)
+    // const business_id = props.location.state.business_id
     const { useBusinessRole } = useContext(UsersContext)
-    const { setBusinessUserRoles, useBusinessById } = useContext(SiteContext)
-    const current_business = useBusinessById(business_id)
-    const user_role = useBusinessRole(business_id)
-    const [ loading, setLoading ] = useState(false)
+    // const { setBusinessUserRoles, useBusinessById } = useContext(SiteContext)
+    // const current_business = useBusinessById(business_id)
+    const user_role = useBusinessRole(props.location.state.business_id)
+    // const [ loading, setLoading ] = useState(false)
 
-    const getBusinessRoles = useCallback(() => {
-        setLoading(true)
-        const token = localStorage.getItem('token')
+    // const getBusinessRoles = useCallback(() => {
+    //     setLoading(true)
+    //     const token = localStorage.getItem('token')
 
-        AxiosInstance.get(`/roles/business/${business_id}`, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(current_roles => {
-                setBusinessUserRoles(current_roles.data)
-                setLoading(false)
-            })
-            .catch(err => console.log(err))
-    }, [setBusinessUserRoles, business_id])
+    //     AxiosInstance.get(`/roles/business/${business_id}`, {
+    //         headers: { 'Authorization': 'Bearer ' + token }
+    //     })
+    //         .then(current_roles => {
+    //             setBusinessUserRoles(current_roles.data)
+    //             setLoading(false)
+    //         })
+    //         .catch(err => console.log(err))
+    // }, [setBusinessUserRoles, business_id])
 
-    useEffect(() => {
-        getBusinessRoles()
-        // eslint-disable-next-line
-    }, []);
+    // useEffect(() => {
+    //     getBusinessRoles()
+    //     // eslint-disable-next-line
+    // }, []);
+
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+
+    const current_business = business.data
 
     return (
         <Container className='px-0'>
@@ -43,11 +51,11 @@ const BusinessManagement = (props) => {
                 <Col sm={10} className='fs-2 fw-bold'>
                     {current_business.business_name}
                 </Col>
-                {
+                {/* {
                     ((!loading) && (user_role.role_type === 'admin'))
                         ? <EditBusinessButton business={current_business} />
                         : null
-                }
+                } */}
             </Row>
             <Row className='m-2 px-0'>
                 <Col md={6} className='m-auto'>
@@ -107,20 +115,12 @@ const BusinessManagement = (props) => {
                 </Col>
             </Row>
             {
-                ((!loading) && (current_business.business_type !== 'brand'))
+                ((current_business.business_type !== 'brand'))
                     ? <BusinessLocation business={current_business} user_role={user_role} />
                     : null
             }
-            {
-                (!loading)
-                    ? <BusinessUserRoles business_id={current_business.id} business_role={user_role} />
-                    : <p>...loading...</p>
-            }
-            {
-                (!loading)
-                    ? <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} role_type={user_role.role_type} />
-                    : <p>...loading...</p>
-            }
+            <BusinessUserRoles business_id={current_business.id} business_role={user_role} />
+            <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} role_type={user_role.role_type} />
         </Container>
     )
 }

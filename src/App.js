@@ -46,7 +46,7 @@ const App = () => {
             <BusinessAuthRoute exact path='/business/manage/:id' component={BusinessManagement} />
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
+        </QueryClientProvider>
       </SiteProvider>
       </UsersProvider>
     </React.Fragment>

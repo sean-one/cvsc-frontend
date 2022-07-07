@@ -7,12 +7,10 @@ import { Form, Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../helpers/axios';
-import { UsersContext } from '../context/users/users.provider';
 import { NotificationsContext } from '../context/notifications/notifications.provider';
 
 
 const Login = () => {
-    const { setUser } = useContext(UsersContext);
     const { dispatch } = useContext(NotificationsContext);
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -34,9 +32,6 @@ const Login = () => {
                             message: `logged in as: ${data.username}`
                         }
                     })
-
-                    // set user to the users context
-                    // setUser(response.data)
 
                     // forward to profile page
                     history.push('/profile');
