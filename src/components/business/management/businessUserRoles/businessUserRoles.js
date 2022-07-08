@@ -15,41 +15,42 @@ const BusinessUserRoles = ({ business_role, business_id }) => {
         return <div>loading...</div>
     }
 
-    const usePending = business_roles.data.filter(business_role => !business_role.active_role)
-    const useCreators = business_roles.data.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
-    const useManagers = business_roles.data.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
-    console.log(useCreators)
+    const pending_roles = business_roles.data.filter(business_role => !business_role.active_role)
+    const creator_roles = business_roles.data.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
+    const manager_roles = business_roles.data.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
+    
+    
     return (
         <Row className='m-2 px-0'>
             <h4>Business Roles</h4>
             <Accordion>
                 {
-                    (usePending.length > 0)
+                    (pending_roles.length > 0)
                         ? <Accordion.Item eventKey="0">
                             <Accordion.Header>Pending Creator Request</Accordion.Header>
                             <Accordion.Body>
-                                <PendingRoleList />
+                                <PendingRoleList pending_roles={pending_roles} />
                             </Accordion.Body>
                         </Accordion.Item>
                         : null
                 }
                 {
-                    (useCreators.length > 0)
+                    (creator_roles.length > 0)
                         ? <Accordion.Item eventKey="1">
                             <Accordion.Header>Creators</Accordion.Header>
                             <Accordion.Body>
-                                <CreatorRoleList creator_roles={useCreators} />
+                                <CreatorRoleList creator_roles={creator_roles} />
                             </Accordion.Body>
                         </Accordion.Item>
                         : null
                 }
                 {
                     // ((business_role.role_type !== 'admin') && (useManagers.length > 0))
-                    (useManagers.length > 0 && business_role.role_type === 'admin')
+                    (manager_roles.length > 0 && business_role.role_type === 'admin')
                         ? <Accordion.Item eventKey="2">
                             <Accordion.Header>Managers</Accordion.Header>
                             <Accordion.Body>
-                                <ManagerRoleList />
+                                <ManagerRoleList manager_roles={manager_roles} />
                             </Accordion.Body>
                         </Accordion.Item>
                         : null
