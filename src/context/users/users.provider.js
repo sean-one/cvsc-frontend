@@ -133,7 +133,6 @@ const UsersProvider = ({ children }) => {
     }
 
     const userSignOut = () => {
-        console.log('inside sign out')
         dispatch({
             type: userTypes.USER_LOGOUT
         })
