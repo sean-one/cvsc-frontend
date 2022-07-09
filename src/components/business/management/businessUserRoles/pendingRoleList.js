@@ -1,37 +1,19 @@
 import React, { useContext } from 'react'
-import { useMutation, useQueryClient } from 'react-query'
 import { Button, Col, ListGroup } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-import { approveBusinessRole, removeBusinessRole } from '../../../../hooks/useBusinessApi'
+import { usePendingRoleMutation, useUserRoleDeleteMutation } from '../../../../hooks/useBusinessApi'
 import { NotificationsContext } from '../../../../context/notifications/notifications.provider'
 
 const PendingRoleList = ({ pending_roles }) => {
-    const queryClient = useQueryClient()
     const { dispatch } = useContext(NotificationsContext)
     let history = useHistory()
 
-    const { mutateAsync: approvalMutation } = useMutation(approveBusinessRole, {
-        onSuccess: (request_id) => {
-            queryClient.invalidateQueries('business_roles')
-        },
-        onError: (error, new_business, context) => {
-            console.log(error)
-        },
-        onSettled: () => queryClient.refetchQueries('business_roles'),
-    })
+    const { mutateAsync: approvalMutation } = usePendingRoleMutation()
 
-    const { mutateAsync: removeMutation } = useMutation(removeBusinessRole, {
-        onSuccess: (request_id) => {
-            queryClient.invalidateQueries('business_roles')
-        },
-        onError: (error, new_business, context) => {
-            console.log(error)
-        },
-        onSettled: () => queryClient.refetchQueries('business_roles'),
-    })
+    const { mutateAsync: removeMutation } = useUserRoleDeleteMutation()
     
     const approveRequest = async (e) => {
         const approval_response = await approvalMutation(e.currentTarget.value)
