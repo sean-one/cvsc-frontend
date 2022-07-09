@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
 import { UsersContext } from '../../../context/users/users.provider';
-import PendingRequest from './pendingRequest';
 import BusinessList from './businessList';
 
 
@@ -23,12 +22,6 @@ const BusinessSection = () => {
                     ? null
                     : <Accordion >
                         <Accordion.Item eventKey="0">
-                            <Accordion.Header>Pending Creator Request</Accordion.Header>
-                            <Accordion.Body>
-                                <PendingRequest />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="1">
                             <Accordion.Header>Business List</Accordion.Header>
                             <Accordion.Body>
                                 <BusinessList />
