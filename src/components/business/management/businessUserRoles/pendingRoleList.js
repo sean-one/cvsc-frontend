@@ -1,70 +1,80 @@
 import React, { useContext } from 'react'
+import { useMutation, useQueryClient } from 'react-query'
 import { Button, Col, ListGroup } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-import AxiosInstance from '../../../../helpers/axios'
-import { SiteContext } from '../../../../context/site/site.provider'
+import { approveBusinessRole, removeBusinessRole } from '../../../../hooks/useBusinessApi'
 import { NotificationsContext } from '../../../../context/notifications/notifications.provider'
 
-const PendingRoleList = () => {
-    const { updateBusinessUserRoles, removeBusinessUserRole, usePending } = useContext(SiteContext)
-    const pending_roles = usePending
+const PendingRoleList = ({ pending_roles }) => {
+    const queryClient = useQueryClient()
     const { dispatch } = useContext(NotificationsContext)
     let history = useHistory()
-    
-    const approveRequest = (e) => {
-        const request_data = { request_id: e.currentTarget.value }
-        const token = localStorage.getItem('token')
 
-        AxiosInstance.post(`/roles/approve/${request_data.request_id}`, request_data, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(response => {
-                updateBusinessUserRoles(request_data.request_id, response.data)
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: 'request has been approved'
-                    }
-                })
-            })
-            .catch(err => {
-                if (err.response.status === 401) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: 'token authorization error, please sign in'
-                        }
-                    })
-                    history.push('/login')
-                } else {
-                    console.log(err.response)
+    const { mutateAsync: approvalMutation } = useMutation(approveBusinessRole, {
+        onSuccess: (request_id) => {
+            queryClient.invalidateQueries('business_roles')
+        },
+        onError: (error, new_business, context) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('business_roles'),
+    })
+
+    const { mutateAsync: removeMutation } = useMutation(removeBusinessRole, {
+        onSuccess: (request_id) => {
+            queryClient.invalidateQueries('business_roles')
+        },
+        onError: (error, new_business, context) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('business_roles'),
+    })
+    
+    const approveRequest = async (e) => {
+        const approval_response = await approvalMutation(e.currentTarget.value)
+
+        if(approval_response.status === 200) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${approval_response.data.username} now has ${approval_response.data.role_type} privileges`
                 }
             })
+
+        } else if(approval_response.status === 401) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: 'token authorization error, please sign in'
+                }
+            })
+            history.push('/login')
+
+        } else {
+            console.log(approval_response)
+        }
     }
 
-    const rejectRequest = (e) => {
-        const request_id = e.currentTarget.value
-        const token = localStorage.getItem('token')
+    const rejectRequest = async (e) => {
+        const removal_response = await removeMutation(e.currentTarget.value)
 
-        AxiosInstance.delete(`/roles/reject-request/${request_id}`, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(response => {
-                removeBusinessUserRole(request_id)
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: 'request has been rejected'
-                    }
-                })
+        if(removal_response.status === 200) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: 'request has been rejected'
+                }
             })
-            .catch(err => console.log(err))
+
+        } else {
+            console.log('something went wrong')
+        }
     }
 
     return (

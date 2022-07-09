@@ -1,15 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
 import { useBusinessRolesQuery } from '../../../../hooks/useBusinessApi';
-import { SiteContext } from '../../../../context/site/site.provider';
 import PendingRoleList from './pendingRoleList';
 import CreatorRoleList from './creatorRoleList';
 import ManagerRoleList from './managerRoleList';
 
 const BusinessUserRoles = ({ business_role, business_id }) => {
     const { data: business_roles, isLoading } = useBusinessRolesQuery(business_id)
-    // const { useCreators, usePending, useManagers } = useContext(SiteContext)
 
     if(isLoading) {
         return <div>loading...</div>

@@ -6,12 +6,12 @@ import { Col, Form, Button, Row } from 'react-bootstrap';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import AxiosInstance from '../helpers/axios';
-import { UsersContext } from '../context/users/users.provider.js';
+// import { UsersContext } from '../context/users/users.provider.js';
 import { NotificationsContext } from '../context/notifications/notifications.provider.js';
 
 
 const Register = () => {
-    const { setUser } = useContext(UsersContext);
+    // const { setUser } = useContext(UsersContext);
     const { dispatch } = useContext(NotificationsContext);
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -37,7 +37,7 @@ const Register = () => {
                     })
 
                     // set user to the users context
-                    setUser(response.data)
+                    // setUser(response.data)
 
                     // forward to profile page
                     history.push('/profile');

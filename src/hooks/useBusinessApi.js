@@ -27,6 +27,20 @@ export const upgradeCreator = async (role_id) => {
     return new_manager
 }
 
+export const approveBusinessRole = async (role_id) => {
+    const token = localStorage.getItem('token')
+    const new_creator = await AxiosInstance.post(`/roles/approve/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+    
+    return new_creator
+}
+
+export const removeBusinessRole = async (role_id) => {
+    const token = localStorage.getItem('token')
+    const removed_role_count = await AxiosInstance.delete(`/roles/user_remove/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+
+    return removed_role_count
+}
+
 const getAllBusinessRoles = async (id) => {
     const token = localStorage.getItem('token')
     const business_roles = await AxiosInstance.get(`/roles/business/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })

@@ -1,13 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Button, Col, ListGroup } from 'react-bootstrap'
 
-import { SiteContext } from '../../../../context/site/site.provider'
+const ManagerRoleList = ({ manager_roles }) => {
+  
 
-const ManagerRoleList = () => {
-  const { useManagers } = useContext(SiteContext)
-  const manager_roles = useManagers
-  
-  
   return (
     <ListGroup variant='flush'>
           {
