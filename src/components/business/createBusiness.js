@@ -1,54 +1,18 @@
 import React, { useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 import { addBusinessSchema } from '../../helpers/validationSchemas';
-import { createBusiness } from '../../hooks/useBusinessApi';
+import { useAddBusinessMutation } from '../../hooks/useBusinessApi';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
 
 const CreateBusiness = () => {
-    const queryClient = useQueryClient()
+    const { mutateAsync: addBusinessMutation } = useAddBusinessMutation()
     const { addUserRole } = useContext(UsersContext)
     const {dispatch } = useContext(NotificationsContext) 
-    
-    const { mutateAsync } = useMutation(createBusiness, {
-        onSuccess: ({ data: new_business }) => {
-            const admin_role = {
-                business_id: new_business.id,
-                business_name: new_business.business_name,
-                active_role: new_business.active_role,
-                role_type: new_business.role_type
-            }
-    
-            addUserRole(admin_role)
-
-            // delete business.data['active_role']
-            // delete business.data['role_type']
-            
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${new_business.business_name} business request submitted`
-                }
-            })
-            
-            history.push({
-                pathname: `/business/manage/${new_business.id}`,
-                state: {
-                    business_id: new_business.id,
-                }
-            });
-        },
-        onError: (error, new_business, context) => {
-            console.log(error)
-        },
-        onSettled: () => queryClient.refetchQueries("businesses"),
-    })
     
     const { register, handleSubmit, watch, reset, setError, clearErrors, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -59,27 +23,53 @@ const CreateBusiness = () => {
     let history = useHistory();
 
     const sendRequest = async (business_data) => {
-        await mutateAsync(business_data)
+        const new_business = await addBusinessMutation(business_data)
 
-        reset()
-        
-        //     .catch(err => {
-                
-        //         if (err.response.status) {
-        //             setError(`${err.response.data.type}`, {
-        //                 type: 'server',
-        //                 message: err.response.data.message
-        //             })
-        //         }
-                
-        //         dispatch({
-        //             type: "ADD_NOTIFICATION",
-        //             payload: {
-        //                 notification_type: 'ERROR',
-        //                 message: `${err.response.data.message}`
-        //             }
-        //         })
-        //     })
+        if(new_business.status === 201) {
+            
+            const admin_role = {
+                business_id: new_business.data.id,
+                business_name: new_business.data.business_name,
+                active_role: new_business.data.active_role,
+                role_type: new_business.data.role_type
+            }
+    
+            addUserRole(admin_role)
+    
+            // delete business.data['active_role']
+            // delete business.data['role_type']
+    
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${new_business.data.business_name} business request submitted`
+                }
+            })
+
+            reset()
+    
+            history.push({
+                pathname: `/business/manage/${new_business.data.id}`,
+                state: {
+                    business_id: new_business.data.id,
+                }
+            })
+
+        } else {
+            // setError(`${err.response.data.type}`, {
+            //     type: 'server',
+            //     message: err.response.data.message
+            // })
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: `something is wrong in new business creation`
+                }
+            })
+        }
     }
 
 

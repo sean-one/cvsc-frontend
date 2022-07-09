@@ -14,7 +14,7 @@ const getBusiness = async (id) => {
     return single_business
 }
 
-export const createBusiness = async (business) => {
+const createBusiness = async (business) => {
     const token = localStorage.getItem('token')
     const new_business = await AxiosInstance.post('/business/create', business, { headers: { 'Authorization': 'Bearer ' + token } })
 
@@ -67,6 +67,23 @@ const getAllBusinessRoles = async (id) => {
 export const useBusinessesQuery = () => useQuery(["businesses"], getAllBusinesses, { refetchOnMount: false })
 export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
+
+export const useAddBusinessMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(createBusiness, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('businesses')
+        },
+        onError: (error, new_business, context) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('businesses'),
+    })
+}
+
+//-----------------------------------------
+//  business role mutations
+//-----------------------------------------
 
 // approves pending role request and adjust 'active_role: true'
 export const usePendingRoleMutation = () => {
@@ -125,6 +142,7 @@ export const useUserRoleDeleteMutation = () => {
     })
 }
 
+// removes 'manager' role
 export const useManagerRoleDeleteMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeManagerRole, {

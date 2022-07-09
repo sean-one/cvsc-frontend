@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Button, Col, ListGroup } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
-import { useCreatorUpgradeMutation } from '../../../../hooks/useBusinessApi';
+import { useCreatorUpgradeMutation, useUserRoleDeleteMutation } from '../../../../hooks/useBusinessApi';
 import { NotificationsContext } from '../../../../context/notifications/notifications.provider'
 
 const CreatorRoleList = ({ creator_roles }) => {
@@ -10,6 +10,7 @@ const CreatorRoleList = ({ creator_roles }) => {
   let history = useHistory()
 
   const { mutateAsync: creatorUpgradeMutation } = useCreatorUpgradeMutation()
+  const { mutateAsync: creatorDeleteMutation } = useUserRoleDeleteMutation()
 
   const upgradeCreator = async (e) => {
     const upgrade_response = await creatorUpgradeMutation(e.currentTarget.value)
@@ -20,6 +21,29 @@ const CreatorRoleList = ({ creator_roles }) => {
         payload: {
           notification_type: 'SUCCESS',
           message: `${upgrade_response.data.username} now has ${upgrade_response.data.role_type} privileges`
+        }
+      })
+    } else {
+      dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+              notification_type: 'ERROR',
+              message: 'token authorization error, please sign in'
+          }
+      })
+      history.push('/login')
+    }
+  }
+
+  const removeCreator = async (e) => {
+    const removal_response = await creatorDeleteMutation(e.currentTarget.value)
+    
+    if (removal_response.status === 200) {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          notification_type: 'SUCCESS',
+          message: `creator role has been deleted`
         }
       })
     } else {
@@ -45,7 +69,7 @@ const CreatorRoleList = ({ creator_roles }) => {
                         <Button size='sm' variant='success' onClick={(e) => upgradeCreator(e)} value={role.id}>upgrade</Button>
                       </Col>
                       <Col sm={2}>
-                        <Button size='sm' variant='danger'>remove</Button>
+                        <Button size='sm' variant='danger' onClick={(e) => removeCreator(e)} value={role.id}>remove</Button>
                       </Col>
                     </ListGroup.Item>
                 )
