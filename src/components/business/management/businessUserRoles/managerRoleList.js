@@ -1,14 +1,16 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, Col, ListGroup } from 'react-bootstrap'
-import { useManagerDowngradeMutation } from '../../../../hooks/useBusinessApi'
+import { useManagerDowngradeMutation, useManagerRoleDeleteMutation } from '../../../../hooks/useBusinessApi'
 
 import { NotificationsContext } from '../../../../context/notifications/notifications.provider'
 
 const ManagerRoleList = ({ manager_roles }) => {
   const { dispatch } = useContext(NotificationsContext);
   let history = useHistory()
+  
   const { mutateAsync: managerDowngradeMutation } = useManagerDowngradeMutation()
+  const { mutateAsync: managerDeleteMutation } = useManagerRoleDeleteMutation()
   
   const downgradeManagerRole = async (e) => {
     const downgrade_response = await managerDowngradeMutation(e.currentTarget.value)
@@ -33,6 +35,28 @@ const ManagerRoleList = ({ manager_roles }) => {
     }
   }
 
+  const removeManagerRole = async (e) => {
+    const removed_manager = await managerDeleteMutation(e.currentTarget.value)
+
+    if(removed_manager.status === 200) {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          notification_type: 'SUCCESS',
+          message: `manager role has been deleted`
+        }
+      })
+    } else {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          notification_type: 'ERROR',
+          message: 'error inside manager remove'
+        }
+      })
+    }
+  }
+
   return (
     <ListGroup variant='flush'>
           {
@@ -43,7 +67,7 @@ const ManagerRoleList = ({ manager_roles }) => {
                     <Button size='sm' variant='info' onClick={(e) => downgradeManagerRole(e)} value={role.id}>downgrade</Button>
                   </Col>
                   <Col sm={2}>
-                    <Button size='sm' variant='danger'>remove</Button>
+                    <Button size='sm' variant='danger' onClick={(e) => removeManagerRole(e)} value={role.id}>remove</Button>
                   </Col>
                 </ListGroup.Item>
             )

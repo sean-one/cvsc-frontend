@@ -13,6 +13,8 @@ export const NavHeader = (props) => {
     let history = useHistory()
 
     const logout = async () => {
+        history.push('/')
+        
         localStorage.clear()
         
         userSignOut()
@@ -22,7 +24,6 @@ export const NavHeader = (props) => {
         // document.getElementById('navbarToggle').classList.remove('show')
         // document.getElementById('navbarToggle').classList.add('hide')
         
-        history.push('/')
     }
 
     

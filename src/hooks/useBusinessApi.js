@@ -49,6 +49,13 @@ const removeUserRole = async (role_id) => {
     return removed_role_count
 }
 
+const removeManagerRole = async (role_id) => {
+    const token = localStorage.getItem('token')
+    const removed_role_count = await AxiosInstance.delete(`/roles/manager_remove/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+
+    return removed_role_count
+}
+
 const getAllBusinessRoles = async (id) => {
     const token = localStorage.getItem('token')
     const business_roles = await AxiosInstance.get(`/roles/business/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })
@@ -108,6 +115,19 @@ export const useManagerDowngradeMutation = () => {
 export const useUserRoleDeleteMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeUserRole, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('business_roles')
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('business_roles'),
+    })
+}
+
+export const useManagerRoleDeleteMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(removeManagerRole, {
         onSuccess: () => {
             queryClient.invalidateQueries('business_roles')
         },

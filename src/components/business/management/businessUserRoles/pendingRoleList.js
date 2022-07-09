@@ -11,12 +11,11 @@ const PendingRoleList = ({ pending_roles }) => {
     const { dispatch } = useContext(NotificationsContext)
     let history = useHistory()
 
-    const { mutateAsync: approvalMutation } = usePendingRoleMutation()
-
-    const { mutateAsync: removeMutation } = useUserRoleDeleteMutation()
+    const { mutateAsync: roleApprovalMutation } = usePendingRoleMutation()
+    const { mutateAsync: userDeleteMutation } = useUserRoleDeleteMutation()
     
     const approveRequest = async (e) => {
-        const approval_response = await approvalMutation(e.currentTarget.value)
+        const approval_response = await roleApprovalMutation(e.currentTarget.value)
 
         if(approval_response.status === 200) {
             dispatch({
@@ -43,7 +42,7 @@ const PendingRoleList = ({ pending_roles }) => {
     }
 
     const rejectRequest = async (e) => {
-        const removal_response = await removeMutation(e.currentTarget.value)
+        const removal_response = await userDeleteMutation(e.currentTarget.value)
 
         if(removal_response.status === 200) {
             dispatch({
