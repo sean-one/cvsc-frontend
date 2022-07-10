@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 
@@ -14,5 +14,24 @@ const getEvent = async (id) => {
     return single_event
 }
 
+const addEvent = async (event) => {
+    const new_event = await AxiosInstance.post('/events', event)
+
+    return new_event
+}
+
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id))
+
+export const useAddEventMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(addEvent, {
+        onSuccess: () => {
+            queryClient.cancelQueries('events')
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('events')
+    })
+}

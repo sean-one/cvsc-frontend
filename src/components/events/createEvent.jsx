@@ -6,19 +6,19 @@ import { createEventSchema } from '../../helpers/validationSchemas';
 import { Button, Form, Row } from 'react-bootstrap';
 import AxiosInstance from '../../helpers/axios';
 
-import { SiteContext } from '../../context/site/site.provider';
+import { useBusinessesQuery } from '../../hooks/useBusinessApi';
+import { useAddEventMutation } from '../../hooks/useEvents';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
 import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 
 const CreateEvent = () => {
+    const { data: business_list, isLoading: loadingBusinessList } = useBusinessesQuery()
     const { editImage, imagePreview, canvas } = useImagePreviewer()
-    const { createEvent, useVenueList, useBrandList } = useContext(SiteContext)
-    const venue_list = useVenueList()
-    const brand_list = useBrandList()
+    const { mutateAsync: addEventMutation } = useAddEventMutation()
     const { dispatch } = useContext(NotificationsContext);
-    const { userSignOut, useRoleBusinessIds_Active } = useContext(UsersContext)
+    const { useRoleBusinessIds_Active } = useContext(UsersContext)
     const business_roles = useRoleBusinessIds_Active()
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -26,6 +26,13 @@ const CreateEvent = () => {
     });
     
     let history = useHistory();
+
+    if(loadingBusinessList) {
+        return <div>loading...</div>
+    }
+
+    const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business === true)
+    const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business === true)
 
     const createNewEvent = async (data) => {
         try {
@@ -46,69 +53,58 @@ const CreateEvent = () => {
                 
                 data.eventmedia = imageUrl
                 
-                AxiosInstance.post('/events', data, {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                })
-                    .then(response => {
-                        if (response.status === 200) {
-                            createEvent(response.data)
-                            dispatch({
-                                type: "ADD_NOTIFICATION",
-                                payload: {
-                                    notification_type: 'SUCCESS',
-                                    message: `event '${data.eventname}' has been created`
-                                }
-                            })
-                            history.push({
-                                pathname: `/event/${response.data.event_id}`,
-                                state: {
-                                    event: response.data
-                                }
-                            });
-                        } else {
-                            console.log('axios else statement')
-                            // throw new Error();
+                const add_event_response = await addEventMutation(data)
+
+                if(add_event_response.status === 201) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'SUCCESS',
+                            message: `event '${add_event_response.data.eventname}' has been created`
                         }
                     })
-                    .catch(err => {
-                        if (!err.response) {
-                            dispatch({
-                                type: "ADD_NOTIFICATION",
-                                payload: {
-                                    notification_type: 'ERROR',
-                                    message: 'server error, please wait and try again'
-                                }
-                            })
+                    history.push({
+                        pathname: `/event/${add_event_response.data.event_id}`,
+                        state: {
+                            event: add_event_response.data
                         }
-    
-                        else if (err.response.status === 403 || err.response.status === 400) {
-                            setError(`${err.response.data.type}`, {
-                                type: 'server',
-                                message: `${err.response.data.message}`
-                            })
-                            dispatch({
-                                type: "ADD_NOTIFICATION",
-                                payload: {
-                                    notification_type: 'ERROR',
-                                    message: `${err.response.data.message}`
-                                }
-                            })
-                        }
-    
-                        else if (err.response.status === 401) {
-                            userSignOut()
-                            dispatch({
-                                type: "ADD_NOTIFICATION",
-                                payload: {
-                                    notification_type: 'ERROR',
-                                    message: `${err.response.data.message}`
-                                }
-                            })
-                            history.push({
-                                pathname: '/login'
-                            })
-                        }
-                    })   
+                    });
+                } else {
+                    console.log('sumtins no rite')
+                    //             dispatch({
+                    //                 type: "ADD_NOTIFICATION",
+                    //                 payload: {
+                    //                     notification_type: 'ERROR',
+                    //                     message: 'server error, please wait and try again'
+                    //                 }
+                    //             })
+
+                    //         (err.response.status === 403 || err.response.status === 400) {
+                    //             setError(`${err.response.data.type}`, {
+                    //                 type: 'server',
+                    //                 message: `${err.response.data.message}`
+                    //             })
+                    //             dispatch({
+                    //                 type: "ADD_NOTIFICATION",
+                    //                 payload: {
+                    //                     notification_type: 'ERROR',
+                    //                     message: `${err.response.data.message}`
+                    //                 }
+                    //             })
+                    //         (err.response.status === 401) {
+                    //             userSignOut()
+                    //             dispatch({
+                    //                 type: "ADD_NOTIFICATION",
+                    //                 payload: {
+                    //                     notification_type: 'ERROR',
+                    //                     message: `${err.response.data.message}`
+                    //                 }
+                    //             })
+                    //             history.push({
+                    //                 pathname: '/login'
+                    //             })
+                    //         }
+                }
             })
         } catch (error) {
             setError('eventmedia', {

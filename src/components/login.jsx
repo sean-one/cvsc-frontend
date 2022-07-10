@@ -78,13 +78,7 @@ const Login = () => {
 
     const googleAuthButton = (e) => {
         e.preventDefault()
-        window.open("http://localhost:3333/auth/google", "_self")
-        // console.log('click google')
-        // AxiosInstance.get('/auth/google')
-        //     .then(response => {
-        //         console.log(response)
-        //     })
-        //     .catch(err => console.log(err))
+        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
     }
 
 

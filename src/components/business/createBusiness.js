@@ -14,7 +14,7 @@ const CreateBusiness = () => {
     const { addUserRole } = useContext(UsersContext)
     const {dispatch } = useContext(NotificationsContext) 
     
-    const { register, handleSubmit, watch, reset, setError, clearErrors, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, reset, clearErrors, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
     });
