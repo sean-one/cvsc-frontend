@@ -71,39 +71,17 @@ const CreateEvent = () => {
                     });
                 } else {
                     console.log('sumtins no rite')
-                    //             dispatch({
-                    //                 type: "ADD_NOTIFICATION",
-                    //                 payload: {
-                    //                     notification_type: 'ERROR',
-                    //                     message: 'server error, please wait and try again'
-                    //                 }
-                    //             })
+                    // dispatch({
+                    //     type: "ADD_NOTIFICATION",
+                    //     payload: {
+                    //         notification_type: 'ERROR',
+                    //         message: 'server error, please wait and try again'
+                    //     }
+                    // })
 
-                    //         (err.response.status === 403 || err.response.status === 400) {
-                    //             setError(`${err.response.data.type}`, {
-                    //                 type: 'server',
-                    //                 message: `${err.response.data.message}`
-                    //             })
-                    //             dispatch({
-                    //                 type: "ADD_NOTIFICATION",
-                    //                 payload: {
-                    //                     notification_type: 'ERROR',
-                    //                     message: `${err.response.data.message}`
-                    //                 }
-                    //             })
-                    //         (err.response.status === 401) {
-                    //             userSignOut()
-                    //             dispatch({
-                    //                 type: "ADD_NOTIFICATION",
-                    //                 payload: {
-                    //                     notification_type: 'ERROR',
-                    //                     message: `${err.response.data.message}`
-                    //                 }
-                    //             })
-                    //             history.push({
-                    //                 pathname: '/login'
-                    //             })
-                    //         }
+                    // history.push({
+                    //     pathname: '/login'
+                    // })
                 }
             })
         } catch (error) {

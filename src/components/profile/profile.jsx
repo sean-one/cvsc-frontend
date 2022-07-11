@@ -18,14 +18,10 @@ const Profile = () => {
 
         AxiosInstance.get('/auth/login/success')
             .then(response => {
-                console.log('inside the auth/login/success response')
-                console.log(response)
                 setUser(response.data.user)
                 setUserRoles(response.data.roles)
             })
             .catch(err => {
-                console.log('inside the suth/login/success err')
-                console.log(err)
                 if(err.response.status === 401) {
                     history.push('/login')
                 }
