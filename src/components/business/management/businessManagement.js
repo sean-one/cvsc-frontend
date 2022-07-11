@@ -1,43 +1,17 @@
 import React, { useContext } from 'react';
 import { Col, Container, Image, Row } from 'react-bootstrap';
 
-// import { SiteContext } from '../../../context/site/site.provider';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
-// import AxiosInstance from '../../../helpers/axios';
 
 import BusinessLocation from '../location/businessLocation';
-// import EditBusinessButton from '../../editButtonModals/editBusinessButton';
+import EditBusinessButton from '../../editButtonModals/editBusinessButton';
 import BusinessUserRoles from './businessUserRoles/businessUserRoles';
 import UpcomingManagement from '../../events/upcoming/upcoming.management';
 
 const BusinessManagement = (props) => {
     const { data: business, isLoading } = useBusinessQuery(props.location.state.business_id)
-    // const business_id = props.location.state.business_id
-    const { useBusinessRole } = useContext(UsersContext)
-    // const { setBusinessUserRoles, useBusinessById } = useContext(SiteContext)
-    // const current_business = useBusinessById(business_id)
-    const user_role = useBusinessRole(props.location.state.business_id)
-    // const [ loading, setLoading ] = useState(false)
-
-    // const getBusinessRoles = useCallback(() => {
-    //     setLoading(true)
-    //     const token = localStorage.getItem('token')
-
-    //     AxiosInstance.get(`/roles/business/${business_id}`, {
-    //         headers: { 'Authorization': 'Bearer ' + token }
-    //     })
-    //         .then(current_roles => {
-    //             setBusinessUserRoles(current_roles.data)
-    //             setLoading(false)
-    //         })
-    //         .catch(err => console.log(err))
-    // }, [setBusinessUserRoles, business_id])
-
-    // useEffect(() => {
-    //     getBusinessRoles()
-    //     // eslint-disable-next-line
-    // }, []);
+    const { userProfile } = useContext(UsersContext)
 
     if(isLoading) {
         return <div>loading...</div>
@@ -45,17 +19,18 @@ const BusinessManagement = (props) => {
 
     const current_business = business.data
 
+
     return (
         <Container className='px-0'>
             <Row className='d-flex m-2 px-0'>
                 <Col sm={10} className='fs-2 fw-bold'>
                     {current_business.business_name}
                 </Col>
-                {/* {
-                    ((!loading) && (user_role.role_type === 'admin'))
+                {
+                    (userProfile.id === current_business.business_admin)
                         ? <EditBusinessButton business={current_business} />
                         : null
-                } */}
+                }
             </Row>
             <Row className='m-2 px-0'>
                 <Col md={6} className='m-auto'>
@@ -116,11 +91,11 @@ const BusinessManagement = (props) => {
             </Row>
             {
                 ((current_business.business_type !== 'brand'))
-                    ? <BusinessLocation business={current_business} user_role={user_role} />
+                    ? <BusinessLocation business={current_business} />
                     : null
             }
-            <BusinessUserRoles business_id={current_business.id} business_role={user_role} />
-            <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} role_type={user_role.role_type} />
+            <BusinessUserRoles business={current_business} />
+            <UpcomingManagement business_id={current_business.id} business_type={current_business.role_type} />
         </Container>
     )
 }

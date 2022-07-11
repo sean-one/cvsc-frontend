@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
 import { useBusinessRolesQuery } from '../../../../hooks/useBusinessApi';
+import { UsersContext } from '../../../../context/users/users.provider';
 import PendingRoleList from './pendingRoleList';
 import CreatorRoleList from './creatorRoleList';
 import ManagerRoleList from './managerRoleList';
 
-const BusinessUserRoles = ({ business_role, business_id }) => {
-    const { data: business_roles, isLoading } = useBusinessRolesQuery(business_id)
+const BusinessUserRoles = ({ business }) => {
+    const { userProfile } = useContext(UsersContext)
+    const { data: business_roles, isLoading } = useBusinessRolesQuery(business.id)
 
     if(isLoading) {
         return <div>loading...</div>
@@ -16,7 +18,6 @@ const BusinessUserRoles = ({ business_role, business_id }) => {
     const pending_roles = business_roles.data.filter(business_role => !business_role.active_role)
     const creator_roles = business_roles.data.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
     const manager_roles = business_roles.data.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
-    
     
     return (
         <Row className='m-2 px-0'>
@@ -43,8 +44,7 @@ const BusinessUserRoles = ({ business_role, business_id }) => {
                         : null
                 }
                 {
-                    // ((business_role.role_type !== 'admin') && (useManagers.length > 0))
-                    (manager_roles.length > 0 && business_role.role_type === 'admin')
+                    (manager_roles.length > 0 && userProfile.id === business.business_admin)
                         ? <Accordion.Item eventKey="2">
                             <Accordion.Header>Managers</Accordion.Header>
                             <Accordion.Body>
