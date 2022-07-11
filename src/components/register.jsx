@@ -24,7 +24,7 @@ const Register = () => {
     const createUser = async (data) =>{
         delete data['confirmation']
 
-        AxiosInstance.post('/users/register', data)
+        AxiosInstance.post('/auth/local', data)
             .then(response => {
                 if(response.status === 200) {
                     // send success message
@@ -35,9 +35,6 @@ const Register = () => {
                             message: `${data.username} has been created and logged in`
                         }
                     })
-
-                    // set user to the users context
-                    // setUser(response.data)
 
                     // forward to profile page
                     history.push('/profile');
