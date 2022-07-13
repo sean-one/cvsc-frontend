@@ -19,7 +19,6 @@ const BusinessManagement = (props) => {
 
     const current_business = business.data
 
-
     return (
         <Container className='px-0'>
             <Row className='d-flex m-2 px-0'>

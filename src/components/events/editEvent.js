@@ -7,9 +7,9 @@ import styled from 'styled-components';
 
 import { reformatTime } from '../../helpers/formatTime';
 import { update_event } from '../../helpers/dataCleanUp';
-import AxiosInstance from '../../helpers/axios';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
-import { SiteContext } from '../../context/site/site.provider';
+import { useBusinessesQuery } from '../../hooks/useBusinessApi';
+import { useEditEventMutation } from '../../hooks/useEvents';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
 
@@ -27,13 +27,11 @@ const Styles = styled.div`
     }
 `
 
-const EditEvent = (props) => {
-    const { event, handleClose } = props;
+const EditEvent = ({ event, handleClose }) => {
+    const { data: business_list, isLoading } = useBusinessesQuery()
+    const { mutateAsync: editEventMutation } = useEditEventMutation()
     const { dispatch } = useContext(NotificationsContext);
-    const { updateEvent, useVenueList, useBrandList } = useContext(SiteContext)
-    const { userSignOut, useRoleBusinessIds_Active } = useContext(UsersContext)
-    const venue_list = useVenueList()
-    const brand_list = useBrandList()
+    const { useRoleBusinessIds_Active } = useContext(UsersContext)
     const business_roles = useRoleBusinessIds_Active()
     // const { editImage, imagePreview, canvas } = useImagePreviewer()
     
@@ -52,72 +50,39 @@ const EditEvent = (props) => {
     
     let history = useHistory();
 
-    const sendUpdate = (data) => {
-        const token = localStorage.getItem('token')
-        
-        data = update_event(data, dirtyFields)
+    const sendUpdate = async (data) => {
+        data = await update_event(data, dirtyFields)
+        const edit_event_response = await editEventMutation(event.event_id, data)
 
-        AxiosInstance.put(`/events/${event.event_id}`, data, {
-            headers: {'Authorization': 'Bearer ' + token}
-        })
-            .then(response => {
-                const updatedEvent = response.data
-                if (response.status === 201) {
-                    updateEvent(updatedEvent.event_id, updatedEvent)
-                    handleClose()
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'SUCCESS',
-                            message: `${updatedEvent.eventname} has been updated`
-                        }
-                    })
-                } else {
-                    console.log(response)
-                    throw new Error();
+        console.log(edit_event_response)
+        if(edit_event_response.status) {
+            handleClose()
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${edit_event_response.data.eventname} has been updated`
                 }
             })
-            .catch(err => {
-                if (!err.response) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: 'server error, please wait and try again'
-                        }
-                    })
-                }
-                
-                else if (err.response.status === 400) {
-                    userSignOut()
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: `${err.response.data.message}`
-                        }
-                    })
-                    history.push({
-                        pathname: '/login'
-                    });
-                }
-                
-                else if (err.response.status === 403) {
-                    setError(`${err.response.data.type}`, {
-                        type: 'server',
-                        message: `${err.response.data.message}`
-                    })
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: `${err.response.data.message}`
-                        }
-                    })
+        } else {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: 'server error, please wait and try again'
                 }
             })
+        }
     }
 
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+
+    const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business === true)
+    const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business === true)
+
+    console.log(event)
     return (
         <Styles>
             <Form onSubmit={handleSubmit(sendUpdate)}>

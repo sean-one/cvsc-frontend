@@ -1,14 +1,11 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
 
-// import { SiteContext } from '../../../context/site/site.provider';
 import { useEventsQuery } from '../../../hooks/useEvents'
 import EventListing from '../eventListing';
 
 const UpcomingManagement = ({ business_id, business_type }) => {
     const { data: events_list, isLoading } = useEventsQuery()
-    // const { useEventsByRoles } = useContext(SiteContext);
-    // const upcoming_events = useEventsByRoles(role_type, business_id)
 
     if(isLoading) {
         return <div>loading...</div>

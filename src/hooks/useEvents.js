@@ -20,12 +20,32 @@ const addEvent = async (event) => {
     return new_event
 }
 
+const updateEvent = async (event_id, event_updates) => {
+    const token = localStorage.getItem('token')
+    const updated_event = await AxiosInstance.put(`/events/${event_id}`, event_updates, { headers: { 'Authorization': 'Bearer ' + token } })
+
+    return updated_event
+}
+
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id))
 
 export const useAddEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(addEvent, {
+        onSuccess: () => {
+            queryClient.cancelQueries('events')
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('events')
+    })
+}
+
+export const useEditEventMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(updateEvent, {
         onSuccess: () => {
             queryClient.cancelQueries('events')
         },

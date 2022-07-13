@@ -36,6 +36,7 @@ const EditEventButton = ({ event }) => {
             .catch(err => console.log(err))
     }
 
+
     return (
         <Col sm={2} className='d-flex mx-1'>
             <Col className='m-0 px-1'>
