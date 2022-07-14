@@ -51,8 +51,9 @@ const EditEvent = ({ event, handleClose }) => {
     let history = useHistory();
 
     const sendUpdate = async (data) => {
-        data = await update_event(data, dirtyFields)
-        const edit_event_response = await editEventMutation(event.event_id, data)
+        const { event_id } = event
+        const update_data = await update_event(data, dirtyFields)
+        const edit_event_response = await editEventMutation({ ...update_data, event_id })
 
         console.log(edit_event_response)
         if(edit_event_response.status) {
@@ -82,7 +83,7 @@ const EditEvent = ({ event, handleClose }) => {
     const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business === true)
     const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business === true)
 
-    console.log(event)
+    // console.log(event)
     return (
         <Styles>
             <Form onSubmit={handleSubmit(sendUpdate)}>
@@ -171,7 +172,7 @@ const EditEvent = ({ event, handleClose }) => {
                     <Form.Label>Location</Form.Label>
                     <Form.Select
                         className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
-                        {...register('venue_id', { valueAsNumber: true })}
+                        {...register('venue_id')}
                         onFocus={() => clearErrors(['venue_id', 'role_rights'])}
                         type='text'
                         name='venue_id'
@@ -206,7 +207,7 @@ const EditEvent = ({ event, handleClose }) => {
                     <Form.Label>Brand</Form.Label>
                     <Form.Select
                         className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
-                        {...register('brand_id', { valueAsNumber: true })}
+                        {...register('brand_id')}
                         onFocus={() => clearErrors(['brand_id', 'role_rights'])}
                         type='text'
                         name='brand_id'
