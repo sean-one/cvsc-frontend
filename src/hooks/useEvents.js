@@ -22,8 +22,6 @@ const addEvent = async (event) => {
 
 const updateEvent = async ({ event_id, ...event_updates }) => {
     const token = localStorage.getItem('token')
-    console.log('inside mutation')
-    console.log(event_updates)
     const updated_event = await AxiosInstance.put(`/events/${event_id}`, event_updates, { headers: { 'Authorization': 'Bearer ' + token } })
 
     return updated_event
