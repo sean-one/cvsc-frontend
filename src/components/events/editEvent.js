@@ -51,28 +51,37 @@ const EditEvent = ({ event, handleClose }) => {
     let history = useHistory();
 
     const sendUpdate = async (data) => {
-        const { event_id } = event
-        const update_data = await update_event(data, dirtyFields)
-        const edit_event_response = await editEventMutation({ ...update_data, event_id })
+        try {
+            const { event_id } = event
+            const update_data = await update_event(data, dirtyFields)
+            const edit_event_response = await editEventMutation({ ...update_data, event_id })
+            
+            if(edit_event_response.status === 201) {
+                handleClose()
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${edit_event_response.data.eventname} has been updated`
+                    }
+                })
+            }
+        } catch (error) {
+            if(error.response.data.error.type === 'role_validation') {
+                setError('brand_id', {
+                    type: 'role_validation',
+                    message: 'must have valid rights for at least one business'
+                })
 
-        console.log(edit_event_response)
-        if(edit_event_response.status) {
-            handleClose()
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${edit_event_response.data.eventname} has been updated`
-                }
-            })
-        } else {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: 'server error, please wait and try again'
-                }
-            })
+                setError('venue_id', {
+                    type: 'role_validation',
+                    message: 'must have valid rights for at least one business'
+                })
+            }
+            console.log('inside the send update')
+            console.log(Object.keys(error))
+            console.log(error.response)
+            
         }
     }
 
