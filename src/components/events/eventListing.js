@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Col, ListGroup, Row } from 'react-bootstrap';
 
 import EditEventButton from '../editButtonModals/editEventButton';
 
-const EventListing = ({ event_list, business_type }) => {
+const EventListing = ({ event_list, business_type, location }) => {
     return (
         <ListGroup className='px-2'>
             {
@@ -15,7 +16,13 @@ const EventListing = ({ event_list, business_type }) => {
                                 {`${format(new Date(event.eventdate), 'MM/dd')}`}
                             </Col>
                             <Col sm={4} className='m-0 px-0'>
-                                {`${event.eventname}`}
+                                <Link to={{
+                                    pathname: `/event/${event.event_id}`,
+                                    state: {
+                                        event,
+                                        from: location.pathname
+                                    }
+                                }}>{`${event.eventname}`}</Link>
                             </Col>
                             <Col sm={2} className='m-0 px-0'>
                                 {`${event.event_creator}`}
@@ -33,4 +40,4 @@ const EventListing = ({ event_list, business_type }) => {
     )
 }
 
-export default EventListing;
+export default withRouter(EventListing);
