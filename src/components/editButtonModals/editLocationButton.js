@@ -6,21 +6,20 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import EditLocation from '../business/location/editLocation';
 
 const EditLocationButton = ({ business_location }) => {
-    // props.business_location is the full business object with location information joined
     const [ modalShow, setModalShow ] = useState(false)
 
     const handleModalClose = () => setModalShow(false)
     const handleModalOpen = () => setModalShow(true)
 
-
+    console.log(business_location)
     return (
-        <Col sm={1} className='m-0 px-0'>
-            <Button size='sm' variant='success' onClick={handleModalOpen}>
+        <Col className='mx-0 px-0'>
+            <Button size='sm' variant='outline-dark' onClick={handleModalOpen}>
                 <FontAwesomeIcon icon={faEdit} />
             </Button>
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Location</Modal.Title>
+                    <Modal.Title>{`Edit ${business_location.venue_name} Location`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <EditLocation business_location={business_location} modalClose={handleModalClose} />

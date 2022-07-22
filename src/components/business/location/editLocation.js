@@ -24,6 +24,7 @@ const Styles = styled.div`
 const EditLocation = ({ modalClose, business_location }) => {
     const { updateBusiness } = useContext(SiteContext)
     const { dispatch } = useContext(NotificationsContext)
+    
     const { register, handleSubmit, setError, clearErrors, formState: { isDirty, errors } } = useForm({
         defaultValues: {
             street_address: business_location.street_address,

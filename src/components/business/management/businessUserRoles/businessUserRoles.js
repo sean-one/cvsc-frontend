@@ -20,14 +20,18 @@ const BusinessUserRoles = ({ business }) => {
     const manager_roles = business_roles.data.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
     
     return (
-        <Row className='m-2 px-0'>
-            <h4>Business Roles</h4>
-            <Accordion>
+        <Row className='px-1 py-3'>
+            {
+                (Object.keys(business_roles.data).length > 1) && (
+                    <h4>Business Roles</h4>
+                )
+            }
+            <Accordion className='px-2'>
                 {
                     (pending_roles.length > 0)
                         ? <Accordion.Item eventKey="0">
                             <Accordion.Header>Pending Creator Request</Accordion.Header>
-                            <Accordion.Body>
+                            <Accordion.Body className='px-1 py-1'>
                                 <PendingRoleList pending_roles={pending_roles} />
                             </Accordion.Body>
                         </Accordion.Item>
@@ -37,7 +41,7 @@ const BusinessUserRoles = ({ business }) => {
                     (creator_roles.length > 0)
                         ? <Accordion.Item eventKey="1">
                             <Accordion.Header>Creators</Accordion.Header>
-                            <Accordion.Body>
+                            <Accordion.Body className='px-1 py-1'>
                                 <CreatorRoleList creator_roles={creator_roles} />
                             </Accordion.Body>
                         </Accordion.Item>
@@ -47,7 +51,7 @@ const BusinessUserRoles = ({ business }) => {
                     (manager_roles.length > 0 && userProfile.id === business.business_admin)
                         ? <Accordion.Item eventKey="2">
                             <Accordion.Header>Managers</Accordion.Header>
-                            <Accordion.Body>
+                            <Accordion.Body className='px-1 py-1'>
                                 <ManagerRoleList manager_roles={manager_roles} />
                             </Accordion.Body>
                         </Accordion.Item>

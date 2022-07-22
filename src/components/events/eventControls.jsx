@@ -3,7 +3,7 @@ import { Button, Col, Modal, Row } from 'react-bootstrap'
 
 import EditEvent from './editEvent'
 
-function EventControls({ event }) {
+const EventControls = ({ event }) => {
     const [ modalShow, setModalShow ] = useState(false)
 
     const handleModalOpen = () => setModalShow(true)

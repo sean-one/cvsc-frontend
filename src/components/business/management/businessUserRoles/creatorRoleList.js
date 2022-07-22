@@ -63,12 +63,12 @@ const CreatorRoleList = ({ creator_roles }) => {
     <ListGroup variant='flush'>
           {
                 creator_roles.map(role => 
-                    <ListGroup.Item key={role.id} className='d-flex'>
-                      <Col sm={8}>{role.username}</Col>
-                      <Col sm={2}>
-                        <Button size='sm' variant='success' onClick={(e) => upgradeCreator(e)} value={role.id}>upgrade</Button>
+                    <ListGroup.Item key={role.id} className='d-flex px-3'>
+                      <Col xs={6}>{role.username}</Col>
+                      <Col xs={3} className='text-center'>
+                        <Button size='sm' variant='outline-success' onClick={(e) => upgradeCreator(e)} value={role.id}>upgrade</Button>
                       </Col>
-                      <Col sm={2}>
+                      <Col xs={3} className='text-center'>
                         <Button size='sm' variant='danger' onClick={(e) => removeCreator(e)} value={role.id}>remove</Button>
                       </Col>
                     </ListGroup.Item>

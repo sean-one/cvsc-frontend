@@ -8,13 +8,13 @@ import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
 
 import BusinessLocation from '../location/businessLocation';
-// import EditBusinessButton from '../../editButtonModals/editBusinessButton';
+import BusinessControls from './businessControls';
 import BusinessUserRoles from './businessUserRoles/businessUserRoles';
 import UpcomingManagement from '../../events/upcoming/upcoming.management';
 
 const BusinessManagement = (props) => {
     const { data: business, isLoading } = useBusinessQuery(props.location.state.business_id)
-    // const { userProfile } = useContext(UsersContext)
+    const { userProfile } = useContext(UsersContext)
 
     if(isLoading) {
         return <div>loading...</div>
@@ -25,30 +25,27 @@ const BusinessManagement = (props) => {
     return (
         <>
             <Row>
-                <Col xs={12}>
-                    <h1>{current_business.business_name}</h1>
-                </Col>
-                {/* {
-                    (userProfile.id === current_business.business_admin)
-                        ? <EditBusinessButton business={current_business} />
-                        : null
-                } */}
+                <h1>{current_business.business_name}</h1>
             </Row>
             <Row className='px-0'>
                 <Col xs={5}>
                     <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
                 </Col>
-                <Col xs={7} className='fs-6 py-3'>
+                {/* contact section */}
+                <Col xs={7} className='fs-6 py-3 px-2'>
                     <Row>
-                        <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
-                        <Col xs={11}>{`${current_business.business_email}`}</Col>
+                        <BusinessLocation business={current_business} />
+                    </Row>
+                    <Row className='px-0'>
+                        <Col xs={1} className='m-0 px-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
+                        <Col xs={11} className='p-0'>{`${current_business.business_email}`}</Col>
                     </Row>
                     {/* dynamically add optional contact information */}
                     {
                         (current_business.business_phone) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faPhone} /></Col>
-                                <Col xs={11}>{`${current_business.business_phone}`}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_phone}`}</Col>
                             </Row>
                         )
                     }
@@ -56,7 +53,7 @@ const BusinessManagement = (props) => {
                         (current_business.business_instagram) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faInstagram} /></Col>
-                                <Col xs={11}>{`${current_business.business_instagram}`}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_instagram}`}</Col>
                             </Row>
                         )
 
@@ -65,7 +62,7 @@ const BusinessManagement = (props) => {
                         (current_business.business_facebook) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faFacebook} /></Col>
-                                <Col xs={11}>{`${current_business.business_facebook}`}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_facebook}`}</Col>
                             </Row>
                         )
                     }
@@ -73,7 +70,7 @@ const BusinessManagement = (props) => {
                         (current_business.business_website) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faGlobe} /></Col>
-                                <Col xs={11}>{`${current_business.business_website}`}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_website}`}</Col>
                             </Row>
                         )
                     }
@@ -81,24 +78,25 @@ const BusinessManagement = (props) => {
                         (current_business.business_twitter) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faTwitter} /></Col>
-                                <Col xs={11}>{`${current_business.business_twitter}`}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_twitter}`}</Col>
                             </Row>
                         )
                     }
                 </Col>
             </Row>
-            <Row>
-                <Col>{`Request Open: ${current_business.business_request_open}`}</Col>
-                <Col>{`Active Business: ${current_business.active_business}`}</Col>
-            </Row>
-            <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
+            {
+                (current_business.business_admin === userProfile.id) && (
+                    <BusinessControls business={current_business} />
+                )
+            }
+            <Row className='px-0 mx-0 fs-6 lh-sm mt-1 pt-2 border-top'>
                 {current_business.business_description}
             </Row>
-            {
+            {/* {
                 ((current_business.business_type !== 'brand'))
                     ? <BusinessLocation business={current_business} />
                     : null
-            }
+            } */}
             <BusinessUserRoles business={current_business} />
             <UpcomingManagement business_id={current_business.id} />
         </>

@@ -12,7 +12,7 @@ import { UsersContext } from '../../context/users/users.provider';
 const CreateBusiness = () => {
     const { mutateAsync: addBusinessMutation } = useAddBusinessMutation()
     const { addUserRole } = useContext(UsersContext)
-    const {dispatch } = useContext(NotificationsContext) 
+    const { dispatch } = useContext(NotificationsContext) 
     
     const { register, handleSubmit, watch, reset, clearErrors, formState: { errors } } = useForm({
         mode: 'onBlur',

@@ -61,12 +61,12 @@ const ManagerRoleList = ({ manager_roles }) => {
     <ListGroup variant='flush'>
           {
               manager_roles.map(role =>
-                <ListGroup.Item key={role.id} className='d-flex'>
-                  <Col sm={8}>{role.username}</Col>
-                  <Col sm={2}>
-                    <Button size='sm' variant='info' onClick={(e) => downgradeManagerRole(e)} value={role.id}>downgrade</Button>
+                <ListGroup.Item key={role.id} className='d-flex px-3'>
+                  <Col xs={6}>{role.username}</Col>
+                  <Col xs={3} className='text-center'>
+                    <Button size='sm' variant='outline-danger' onClick={(e) => downgradeManagerRole(e)} value={role.id}>downgrade</Button>
                   </Col>
-                  <Col sm={2}>
+                  <Col xs={3} className='text-center'>
                     <Button size='sm' variant='danger' onClick={(e) => removeManagerRole(e)} value={role.id}>remove</Button>
                   </Col>
                 </ListGroup.Item>

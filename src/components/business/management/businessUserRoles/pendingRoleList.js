@@ -62,14 +62,14 @@ const PendingRoleList = ({ pending_roles }) => {
         <ListGroup variant='flush'>
             {
                 pending_roles.map(role => 
-                    <ListGroup.Item key={role.id} className='d-flex'>
-                        <Col sm={10}>{role.username}</Col>
-                        <Col sm={1}>
+                    <ListGroup.Item key={role.id} className='d-flex px-3'>
+                        <Col xs={10}>{role.username}</Col>
+                        <Col xs={1} className='text-center'>
                             <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={role.id}>
                                 <FontAwesomeIcon icon={faCheck}/>
                             </Button>
                         </Col>
-                        <Col sm={1}>
+                        <Col xs={1} className='text-center'>
                             <Button size='sm' variant='danger' onClick={(e) => rejectRequest(e)} value={role.id}>
                                 <FontAwesomeIcon icon={faTrash}/>
                             </Button>

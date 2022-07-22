@@ -24,6 +24,7 @@ const Styles = styled.div`
 const EditBusiness = ({ business, handleClose }) => {
     const { updateBusiness } = useContext(SiteContext)
     const { dispatch } = useContext(NotificationsContext)
+    
     const { register, handleSubmit, setError, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
             business_email: business.business_email,

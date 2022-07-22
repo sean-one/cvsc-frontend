@@ -89,7 +89,6 @@ const EditEvent = ({ event, handleClose }) => {
     const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business === true)
     const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business === true)
 
-    console.log(userProfile)
     return (
         <Styles>
             <Form onSubmit={handleSubmit(sendUpdate)}>

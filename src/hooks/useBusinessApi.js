@@ -14,6 +14,18 @@ const getBusiness = async (id) => {
     return single_business
 }
 
+const getBusinessLocation = async (business_id) => {
+    const business_location = await AxiosInstance.get(`/locations/business/${business_id}`)
+
+    return business_location
+}
+
+const updateLocation = async ({ location_id, ...location_updates }) => {
+    const updated_location = await AxiosInstance.put(`/locations/${location_id}`, location_updates)
+
+    return updated_location;
+}
+
 const createBusiness = async (business) => {
     const token = localStorage.getItem('token')
     const new_business = await AxiosInstance.post('/business/create', business, { headers: { 'Authorization': 'Bearer ' + token } })
@@ -63,9 +75,16 @@ const getAllBusinessRoles = async (id) => {
     return business_roles
 }
 
+const toggleActiveBusiness = async (id) => {
+    const updated_business = await AxiosInstance.put(`/business/toggle-active/${id}`)
+
+    return updated_business
+}
+
 
 export const useBusinessesQuery = () => useQuery(["businesses"], getAllBusinesses, { refetchOnMount: false })
 export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
+export const useBusinessLocationQuery = (business_id) => useQuery(["business_location", business_id], () => getBusinessLocation(business_id))
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
 
 export const useAddBusinessMutation = () => {
@@ -78,6 +97,28 @@ export const useAddBusinessMutation = () => {
             console.log(error)
         },
         onSettled: () => queryClient.refetchQueries('businesses'),
+    })
+}
+
+export const useLocationMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(updateLocation, {
+        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business_location', data.venue_id])},
+        onError: (error, updated_location, context) => { console.log(error) },
+        onSettled: ({ data }) => { queryClient.refetchQueries(['business_location', data.venue_id]) }
+    })
+}
+
+export const useActiveBusinessMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(toggleActiveBusiness, {
+        onSuccess: ({ data }) => {
+            queryClient.invalidateQueries(['businesses', data.id])
+        },
+        onError: (error, updated_business, context) => { console.log(error) },
+        onSettled: ({ data }) => {
+            queryClient.refetchQueries(['businesses', data.id])
+        }
     })
 }
 
