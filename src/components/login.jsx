@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -114,22 +114,20 @@ const Login = () => {
                     />
                     <div className='errormessage'>{errors.password?.message}</div>
                 </Form.Group>
-                <Row>
-                    <Col>
-                        <Button variant="primary" size="lg" type='submit'>
+                <Row className='text-center'>
+                    <Col xs={6}>
+                        <Button variant="outline-dark" type='submit'>
                             Submit
                         </Button>
                     </Col>
-                    <Col>
-                        <Button href='/register' variant="secondary" size="lg">
-                            Register
-                        </Button>
+                    <Col xs={6}>
+                        <Button variant='outline-dark' onClick={googleAuthButton}>Google Login</Button>
                     </Col>
                 </Row>
-                <Row>
-                    <button onClick={googleAuthButton}>Google</button>
-                </Row>
             </Form>
+            <Row className='my-3 text-center'>
+                <p>New to the club? <Link to={{ pathname: '/register' }}>Register</Link></p>
+            </Row>
         </Row>
     )
 }

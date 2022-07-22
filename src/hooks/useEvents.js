@@ -28,7 +28,7 @@ const updateEvent = async ({ event_id, ...event_updates }) => {
 }
 
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
-export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id))
+export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 
 export const useAddEventMutation = () => {
     const queryClient = useQueryClient()

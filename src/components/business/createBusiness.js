@@ -111,7 +111,7 @@ const CreateBusiness = () => {
                     onFocus={() => clearErrors('business_avatar')}
                     type='text'
                     name='business_avatar'
-                    value='https://picsum.photos/100/100'
+                    value='https://picsum.photos/300'
                     required
                 />
                 <div className='errormessage'>{errors.business_avatar?.message}</div>

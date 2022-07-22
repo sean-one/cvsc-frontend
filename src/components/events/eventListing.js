@@ -1,37 +1,48 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { format } from 'date-fns';
-import { Col, ListGroup, Row } from 'react-bootstrap';
+import { Col, Image, ListGroup, Row } from 'react-bootstrap';
 
-import EditEventButton from '../editButtonModals/editEventButton';
+// import EditEventButton from '../editButtonModals/editEventButton';
+import EventControls from './eventControls';
 
-const EventListing = ({ event_list, business_type, location }) => {
+const EventListing = ({ event_list, location }) => {
     return (
         <ListGroup className='px-2'>
             {
                 event_list.map(event => {
                     return (
-                        <ListGroup.Item key={event.event_id} className='d-flex'>
-                            <Col sm={1} className='m-0 px-0'>
-                                {`${format(new Date(event.eventdate), 'MM/dd')}`}
-                            </Col>
-                            <Col sm={4} className='m-0 px-0'>
-                                <Link to={{
-                                    pathname: `/event/${event.event_id}`,
-                                    state: {
-                                        event,
-                                        from: location.pathname
-                                    }
-                                }}>{`${event.eventname}`}</Link>
-                            </Col>
-                            <Col sm={2} className='m-0 px-0'>
-                                {`${event.event_creator}`}
-                            </Col>
-                            <Col sm={3} className='m-0 px-0'>
-                                <Row style={business_type === 'brand' ? { display: 'none' } : {}}>{`${event.brand_name}`}</Row>
-                                <Row style={business_type === 'venue' ? { display: 'none' } : {}}>{`${event.venue_name}`}</Row>
-                            </Col>
-                            <EditEventButton event={event} />
+                        <ListGroup.Item key={event.event_id} className='my-1 py-1'>
+                            <Row className='fs-5 lh-base p-1 fw-bold'>
+                                <Col xs={2} className='m-0 px-0'>
+                                    {`${format(new Date(event.eventdate), 'MM/dd')}`}
+                                </Col>
+                                <Col xs={10} className='m-0 px-0 text-center'>
+                                    <Link to={{
+                                        pathname: `/event/${event.event_id}`,
+                                        state: {
+                                            event,
+                                            from: location.pathname
+                                        }
+                                    }}>{`${event.eventname}`}</Link>
+                                </Col>
+                            </Row>
+                            <Row>
+                            </Row>
+                            <Row>
+                                <Col xs={5}>
+                                    <Image src={event.eventmedia} thumbnail />
+                                </Col>
+                                <Col xs={7} className='py-2'>
+                                    <Row>{`created by: ${event.event_creator}`}</Row>
+                                    <Row>{`venue: ${event.venue_name}`}</Row>
+                                    <Row>{`brand: ${event.brand_name}`}</Row>
+                                    <Row>
+                                        <EventControls event={event}/>
+                                        {/* <EditEventButton event={event} /> */}
+                                    </Row>
+                                </Col>
+                            </Row>
                         </ListGroup.Item>
                     )
                 })

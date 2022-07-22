@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -31,7 +30,7 @@ const EditEvent = ({ event, handleClose }) => {
     const { data: business_list, isLoading } = useBusinessesQuery()
     const { mutateAsync: editEventMutation } = useEditEventMutation()
     const { dispatch } = useContext(NotificationsContext);
-    const { useRoleBusinessIds_Active } = useContext(UsersContext)
+    const { userProfile, useRoleBusinessIds_Active } = useContext(UsersContext)
     const business_roles = useRoleBusinessIds_Active()
     // const { editImage, imagePreview, canvas } = useImagePreviewer()
     
@@ -48,8 +47,6 @@ const EditEvent = ({ event, handleClose }) => {
         }
     });
     
-    let history = useHistory();
-
     const sendUpdate = async (data) => {
         try {
             const { event_id } = event
@@ -92,7 +89,7 @@ const EditEvent = ({ event, handleClose }) => {
     const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business === true)
     const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business === true)
 
-    // console.log(event)
+    console.log(userProfile)
     return (
         <Styles>
             <Form onSubmit={handleSubmit(sendUpdate)}>
@@ -177,26 +174,30 @@ const EditEvent = ({ event, handleClose }) => {
                     <div className='errormessage'>{errors.eventmedia?.message}</div>
                 </Form.Group> */}
 
-                <Form.Group controlId='venue_id'>
-                    <Form.Label>Location</Form.Label>
-                    <Form.Select
-                        className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
-                        {...register('venue_id')}
-                        onFocus={() => clearErrors(['venue_id', 'role_rights'])}
-                        type='text'
-                        name='venue_id'
-                    >
-                        <option value='0'>Select...</option>
-                        {
-                            venue_list.map(venue => (
-                                <option key={venue.id} value={venue.id} style={ business_roles.includes(venue.id) ? { color:'green'} : {} }>{venue.business_name}</option>
-                            ))
-                        }
+                {
+                    (event.created_by === userProfile.id) && (
+                        <Form.Group controlId='venue_id'>
+                            <Form.Label>Location</Form.Label>
+                            <Form.Select
+                                className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
+                                {...register('venue_id')}
+                                onFocus={() => clearErrors(['venue_id', 'role_rights'])}
+                                type='text'
+                                name='venue_id'
+                            >
+                                <option value='0'>Select...</option>
+                                {
+                                    venue_list.map(venue => (
+                                        <option key={venue.id} value={venue.id} style={ business_roles.includes(venue.id) ? { color:'green'} : {} }>{venue.business_name}</option>
+                                    ))
+                                }
 
-                    </Form.Select>
-                    <div className='errormessage'>{errors.venue_id?.message}</div>
-                    <div className='errormessage'>{errors.role_rights?.message}</div>
-                </Form.Group>
+                            </Form.Select>
+                            <div className='errormessage'>{errors.venue_id?.message}</div>
+                            <div className='errormessage'>{errors.role_rights?.message}</div>
+                        </Form.Group>
+                    )
+                }
 
                 <Form.Group controlId='details'>
                     <Form.Label>Event Details</Form.Label>
@@ -212,26 +213,30 @@ const EditEvent = ({ event, handleClose }) => {
                     <div className='errormessage'>{errors.details?.message}</div>
                 </Form.Group>
 
-                <Form.Group controlId='brand_id'>
-                    <Form.Label>Brand</Form.Label>
-                    <Form.Select
-                        className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
-                        {...register('brand_id')}
-                        onFocus={() => clearErrors(['brand_id', 'role_rights'])}
-                        type='text'
-                        name='brand_id'
-                    >
-                        <option value='0'>Select...</option>
-                        {
-                            brand_list.map(brand => (
-                                <option key={brand.id} value={brand.id} style={ business_roles.includes(brand.id) ? { color:'green'} : {} }>{brand.business_name}</option>
-                            ))
-                        }
+                {
+                    (event.created_by === userProfile.id) && (
+                        <Form.Group controlId='brand_id'>
+                            <Form.Label>Brand</Form.Label>
+                            <Form.Select
+                                className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
+                                {...register('brand_id')}
+                                onFocus={() => clearErrors(['brand_id', 'role_rights'])}
+                                type='text'
+                                name='brand_id'
+                            >
+                                <option value='0'>Select...</option>
+                                {
+                                    brand_list.map(brand => (
+                                        <option key={brand.id} value={brand.id} style={ business_roles.includes(brand.id) ? { color:'green'} : {} }>{brand.business_name}</option>
+                                    ))
+                                }
 
-                    </Form.Select>
-                    <div className='errormessage'>{errors.brand_id?.message}</div>
-                    <div className='errormessage'>{errors.role_rights?.message}</div>
-                </Form.Group>
+                            </Form.Select>
+                            <div className='errormessage'>{errors.brand_id?.message}</div>
+                            <div className='errormessage'>{errors.role_rights?.message}</div>
+                        </Form.Group>
+                    )
+                }
 
                 <Row className='d-flex justify-content-around pt-3'>
                     <Col xs={2}>

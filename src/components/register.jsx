@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Col, Form, Button, Row } from 'react-bootstrap';
@@ -64,6 +64,11 @@ const Register = () => {
                     })
                 }
             })
+    }
+
+    const googleAuthButton = (e) => {
+        e.preventDefault()
+        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, '_self')
     }
     
     return (
@@ -133,19 +138,21 @@ const Register = () => {
                 </Row>
 
                 <Row>
-                    <Col>
-                        <Button variant="primary" size="lg" type='submit'>
+                    <Col xs={6}>
+                        <Button variant="outline-dark" type='submit'>
                             Submit
+                        </Button>
+                    </Col>
+                    <Col xs={6}>
+                        <Button variant="outline-dark" onClick={googleAuthButton}>
+                            Register with Google
                         </Button>
                     </Col>
                 </Row>
             </Form>
             <Row>
                 <Col className='d-flex flex-column justify-content-center align-items-center my-2'>
-                    <p>already have a login?</p>
-                    <Button href='/login' variant="secondary" size="lg">
-                        Login page
-                    </Button>
+                    <p>already have a login? <Link to={{ pathname: '/login' }}>Login</Link></p>
                 </Col>
             </Row>
         </Row>

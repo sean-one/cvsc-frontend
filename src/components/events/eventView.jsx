@@ -24,7 +24,14 @@ const EventView = (props) => {
         <Container className='px-0'>
             <Row className='d-flex justify-content-between'>
                 <Col xs={10}>
-                    <h2>{event.data.eventname}</h2>
+                    <Row>
+                        <h2>{event.data.eventname}</h2>
+                    </Row>
+                    <Row>
+                        <Link style={ {textDecoration: 'none'} } to={ {pathname: `/business/${event.data.brand_id}`} }>
+                            {`featuring: ${event.data.brand_name}`}
+                        </Link>
+                    </Row>
                 </Col>
                 <Col className={`${(userProfile.id === event.data.created_by) ? 'd-block p-0 m-0' : 'd-none'}`}>
                     <EditEventButton event={event} />
@@ -42,15 +49,8 @@ const EventView = (props) => {
                 </Col>
             </Row>
             <Row className='d-flex justify-content-end me-3 fs-4 fw-bold'>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</Row>
-            <Row className='py-3 m-2 fs-4 lh-lg border-top'>
+            <Row className='py-3 m-2 fs-5 lh-base border-top'>
                 {event.data.details}
-            </Row>
-            <Row className='py-3 m-2 fw-bold border-bottom'>
-                <Link to={{
-                    pathname: `/business/${event.data.brand_id}`
-                }}>
-                    {`With Brand: ${event.data.brand_name}`}
-                </Link>
             </Row>
             <Row>
                 <UpcomingEvents event={event.data} venue_id={event.data.venue_id} brand_id={event.data.brand_id} />

@@ -5,8 +5,14 @@ import styled from 'styled-components';
 const Styles = styled.div`
     .app {
         min-height: 100vh;
+        width: 100vw;
         background-color: #588157;
         padding-top: 7rem;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
     }
 
     .errormessage {
@@ -32,7 +38,7 @@ export const Layout = (props) => {
                     <Col sm={12} lg={2} className='d-none d-lg-block'>
                         {/* filter options area */}
                     </Col>
-                    <Col sm={12} lg={7}>
+                    <Col xs={12} sm={12} lg={7}>
                         {props.children}
                     </Col>
                     <Col sm={12} lg={3} className='d-none d-lg-block'>

@@ -21,7 +21,6 @@ import { Layout } from './components/Layout';
 import SiteProvider from './context/site/site.provider';
 import UsersProvider from './context/users/users.provider';
 
-// import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const queryClient = new QueryClient()
