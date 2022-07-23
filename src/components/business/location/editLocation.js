@@ -3,9 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { SiteContext } from '../../../context/site/site.provider';
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
-import AxiosInstance from '../../../helpers/axios';
+import { useLocationMutation } from '../../../hooks/useBusinessApi';
 
 const Styles = styled.div`
     .errormessage {
@@ -22,7 +21,7 @@ const Styles = styled.div`
 `
 
 const EditLocation = ({ modalClose, business_location }) => {
-    const { updateBusiness } = useContext(SiteContext)
+    const { mutateAsync: editBusinessLocation } = useLocationMutation()
     const { dispatch } = useContext(NotificationsContext)
     
     const { register, handleSubmit, setError, clearErrors, formState: { isDirty, errors } } = useForm({
@@ -34,31 +33,21 @@ const EditLocation = ({ modalClose, business_location }) => {
         }
     })
 
-    const sendLocationUpdate = (data) => {
-        const token = localStorage.getItem('token')
+    const sendLocationUpdate = async (data) => {
+        const updated_location = await editBusinessLocation({ ...data, ...business_location.id })
 
-        AxiosInstance.put(`/locations/${business_location.location_id}`, data, {
-            headers: {'Authorization': 'Bearer ' + token}
-        })
-            .then(response => {
-                updateBusiness(response.data.id, response.data)
-                modalClose()
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${response.data.business_name} has been updated`
-                    }
-                })
-            })
-            .catch(err => {
-                if(err.response.data.error.type === 'invalid_address') {
-                    setError('street_address', {
-                        type: 'server',
-                        message: `${err.response.data.error.message}`
-                    })
+        if(updated_location.status === 200) {
+            modalClose()
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${updated_location.data.venue_name} location updated`
                 }
             })
+        } else {
+            console.log(`error: ${updated_location.status}`)
+        }
     }
 
 

@@ -39,7 +39,7 @@ export const NavHeader = (props) => {
     }
 
     return (
-        <Navbar expand='md' bg="light" variant="light" fixed='top'>
+        <Navbar expand='xs' bg="light" variant="light" fixed='top' className='py-0'>
             <Container>
                 <Navbar.Brand>
                     <Link to={{ pathname: "/" }}>

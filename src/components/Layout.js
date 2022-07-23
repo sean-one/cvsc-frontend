@@ -7,7 +7,7 @@ const Styles = styled.div`
         min-height: 100vh;
         width: 100vw;
         background-color: #588157;
-        padding-top: 7rem;
+        padding-top: 6rem;
     }
 
     a {

@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
-import { Button, Col, Modal } from 'react-bootstrap';
+import { Col, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import EditLocation from '../business/location/editLocation';
+import { useBusinessLocationQuery } from '../../hooks/useBusinessApi';
 
-const EditLocationButton = ({ business_location }) => {
+const EditLocationButton = ({ business_id }) => {
+    const { data: business_location, isLoading } = useBusinessLocationQuery(business_id)
     const [ modalShow, setModalShow ] = useState(false)
 
     const handleModalClose = () => setModalShow(false)
     const handleModalOpen = () => setModalShow(true)
 
-    console.log(business_location)
+    if(isLoading) {
+        return <div>loading...</div>
+    }
+
     return (
-        <Col className='mx-0 px-0'>
-            <Button size='sm' variant='outline-dark' onClick={handleModalOpen}>
-                <FontAwesomeIcon icon={faEdit} />
-            </Button>
+        <Col xs={1} className='px-0'>
+            <FontAwesomeIcon icon={faPencilAlt} onClick={handleModalOpen} />
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{`Edit ${business_location.venue_name} Location`}</Modal.Title>
+                    <Modal.Title>{`Edit ${business_location.data.venue_name} Location`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <EditLocation business_location={business_location} modalClose={handleModalClose} />
+                    <EditLocation business_location={business_location.data} modalClose={handleModalClose} />
                 </Modal.Body>
             </Modal>
         </Col>

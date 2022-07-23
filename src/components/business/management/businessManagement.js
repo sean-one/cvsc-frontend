@@ -25,17 +25,15 @@ const BusinessManagement = (props) => {
     return (
         <>
             <Row>
-                <h1>{current_business.business_name}</h1>
+                <h1 className='mb-0'>{current_business.business_name}</h1>
             </Row>
+            <BusinessLocation business={current_business} />
             <Row className='px-0'>
                 <Col xs={5}>
                     <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
                 </Col>
                 {/* contact section */}
                 <Col xs={7} className='fs-6 py-3 px-2'>
-                    <Row>
-                        <BusinessLocation business={current_business} />
-                    </Row>
                     <Row className='px-0'>
                         <Col xs={1} className='m-0 px-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
                         <Col xs={11} className='p-0'>{`${current_business.business_email}`}</Col>
@@ -70,7 +68,7 @@ const BusinessManagement = (props) => {
                         (current_business.business_website) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faGlobe} /></Col>
-                                <Col xs={11} className='p-0'>{`${current_business.business_website}`}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_website.split('.')[1]}`}</Col>
                             </Row>
                         )
                     }
@@ -89,7 +87,7 @@ const BusinessManagement = (props) => {
                     <BusinessControls business={current_business} />
                 )
             }
-            <Row className='px-0 mx-0 fs-6 lh-sm mt-1 pt-2 border-top'>
+            <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
                 {current_business.business_description}
             </Row>
             {/* {
