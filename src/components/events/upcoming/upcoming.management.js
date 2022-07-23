@@ -4,7 +4,7 @@ import { Row } from 'react-bootstrap';
 import { useEventsQuery } from '../../../hooks/useEvents'
 import EventListing from '../eventListing';
 
-const UpcomingManagement = ({ business_id }) => {
+const UpcomingManagement = ({ business_name, business_id }) => {
     const { data: events_list, isLoading } = useEventsQuery()
 
     if(isLoading) {
@@ -15,7 +15,7 @@ const UpcomingManagement = ({ business_id }) => {
 
     return (
         <Row className='m-0 px-0'>
-            <h4>Upcoming Events</h4>
+            <h4>{`Upcoming ${business_name} Events`}</h4>
             <EventListing event_list={upcoming_events} />
         </Row>
     )

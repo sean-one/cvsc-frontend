@@ -21,6 +21,7 @@ const Styles = styled.div`
 `
 
 const EditLocation = ({ modalClose, business_location }) => {
+    const { id: location_id } = business_location
     const { mutateAsync: editBusinessLocation } = useLocationMutation()
     const { dispatch } = useContext(NotificationsContext)
     
@@ -34,7 +35,7 @@ const EditLocation = ({ modalClose, business_location }) => {
     })
 
     const sendLocationUpdate = async (data) => {
-        const updated_location = await editBusinessLocation({ ...data, ...business_location.id })
+        const updated_location = await editBusinessLocation({ ...data, location_id })
 
         if(updated_location.status === 200) {
             modalClose()

@@ -1,18 +1,18 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import { Col, Container, Image, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 
 import { formatTime } from '../../helpers/formatTime';
-import { UsersContext } from '../../context/users/users.provider';
+// import { UsersContext } from '../../context/users/users.provider';
 import { useEventQuery } from '../../hooks/useEvents';
 
 import UpcomingEvents from './upcoming/upcoming.events';
-import EditEventButton from '../editButtonModals/editEventButton';
+// import EditEventButton from '../editButtonModals/editEventButton';
 
 const EventView = (props) => {
-    const { userProfile } = useContext(UsersContext);
+    // const { userProfile } = useContext(UsersContext);
     const { data: event, isLoading } = useEventQuery(props.match.params.id)
     
     if (isLoading) {
@@ -21,21 +21,19 @@ const EventView = (props) => {
 
     console.log(event)
     return (
-        <Container className='px-0'>
-            <Row className='d-flex justify-content-between'>
-                <Col xs={10}>
-                    <Row>
-                        <h2>{event.data.eventname}</h2>
-                    </Row>
-                    <Row>
-                        <Link style={ {textDecoration: 'none'} } to={ {pathname: `/business/${event.data.brand_id}`} }>
+        <>
+            <Row className='d-flex justify-content-between px-3'>
+                <Col className='px-0'>
+                    <h2>{event.data.eventname}</h2>
+                    <Row className='py-0 px-0'>
+                        <Link to={ {pathname: `/business/${event.data.brand_id}`} }>
                             {`featuring: ${event.data.brand_name}`}
                         </Link>
                     </Row>
                 </Col>
-                <Col className={`${(userProfile.id === event.data.created_by) ? 'd-block p-0 m-0' : 'd-none'}`}>
+                {/* <Col className={`${(userProfile.id === event.data.created_by) ? 'd-block p-0 m-0' : 'd-none'}`}>
                     <EditEventButton event={event} />
-                </Col>
+                </Col> */}
             </Row>
             <Row className='mx-auto my-3'>
                 <Image fluid src={event.data.eventmedia} alt={event.data.eventname} />
@@ -55,7 +53,7 @@ const EventView = (props) => {
             <Row>
                 <UpcomingEvents event={event.data} venue_id={event.data.venue_id} brand_id={event.data.brand_id} />
             </Row>
-        </Container>
+        </>
     )
 }
 

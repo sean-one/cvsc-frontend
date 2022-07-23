@@ -27,7 +27,11 @@ const BusinessManagement = (props) => {
             <Row>
                 <h1 className='mb-0'>{current_business.business_name}</h1>
             </Row>
-            <BusinessLocation business={current_business} />
+            {
+                (current_business.business_type !== 'brand') && (
+                    <BusinessLocation business={current_business} />
+                )
+            }
             <Row className='px-0'>
                 <Col xs={5}>
                     <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
@@ -90,13 +94,8 @@ const BusinessManagement = (props) => {
             <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
                 {current_business.business_description}
             </Row>
-            {/* {
-                ((current_business.business_type !== 'brand'))
-                    ? <BusinessLocation business={current_business} />
-                    : null
-            } */}
             <BusinessUserRoles business={current_business} />
-            <UpcomingManagement business_id={current_business.id} />
+            <UpcomingManagement business_id={current_business.id} business_name={current_business.business_name} />
         </>
     )
 }

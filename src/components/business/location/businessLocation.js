@@ -16,7 +16,6 @@ const BusinessLocation = ({ business }) => {
         return <div>loading...</div>
     }
 
-    console.log(business_location.data)
     return (
         <Row className='px-3 py-1'>
             {
