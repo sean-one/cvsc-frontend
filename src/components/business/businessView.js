@@ -1,9 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Col, Container, Image, Row } from 'react-bootstrap'
+import { Col, Image, Row } from 'react-bootstrap'
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import UpcomingBusiness from '../events/upcoming/upcoming.business';
+import BusinessLocation from './location/businessLocation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 const BusinessView = (props) => {
     const { data: business, isLoading } = useBusinessQuery(props.match.params.id)
@@ -13,61 +17,76 @@ const BusinessView = (props) => {
     }
 
     return (
-        <Container className='px-0'>
-            <Row className='m-2 px-0'>
-                <Col className='mx-auto'>
-                    <Image fluid src='https://picsum.photos/500/500' alt={business.data.business_name} />
+        <>
+            <Row>
+                <h1>{business.data.business_name}</h1>
+            </Row>
+            <Row className='px-0 my-3'>
+                <Col xs={5}>
+                    <Image src={business.data.business_avatar} alt={business.data.business_name} thumbnail />
                 </Col>
-                <Col className='d-flex flex-column align-items-left justify-content-center'>
+                {/* contact section */}
+                <Col xs={7} className='fs-6 py-3 px-2'>
+                    {
+                        (business.data.business_type !== 'brand') && (
+                            <Row>
+                                <BusinessLocation business={business.data} />
+                            </Row>
+                        )
+                    }
                     <Row className='px-0'>
-                        <h2 className='px-0'>{business.data.business_name}</h2>
+                        <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
+                        <Col xs={11} className='p-0'>{business.data.business_email}</Col>
                     </Row>
-                    <Row className='d-flex flex-column px-0 mt-3'>
-                        <Row className='px-0 mx-0'>
-                            {`Email: ${business.data.business_email}`}
-                        </Row>
-                        {/* dynamically add optional contact information */}
-                        <Row className='px-0 mx-0'>
-                            {
-                                (business.data.business_phone !== null)
-                                    ? `Phone: ${business.data.business_phone}`
-                                    : null
-                            }
-                        </Row>
-                        <Row className='px-0 mx-0'>
-                            {
-                                (business.data.business_instagram !== null)
-                                    ? `Instagram: ${business.data.business_instagram}`
-                                    : null
-                            }
-                        </Row>
-                        <Row className='px-0 mx-0'>
-                            {
-                                (business.data.business_facebook !== null)
-                                    ? `Facebook: ${business.data.business_facebook}`
-                                    : null
-                            }
-                        </Row>
-                        <Row className='px-0 mx-0'>
-                            {
-                                (business.data.business_website !== null)
-                                    ? `Website: ${business.data.business_website}`
-                                    : null
-                            }
-                        </Row>
-                    </Row>
+                    {/* dynamically add optional contact information */}
+                    {
+                        (business.data.business_phone) && (
+                            <Row>
+                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faPhone} /></Col>
+                                <Col xs={11} className='p-0'>{business.data.business_phone}</Col>
+                            </Row>
+                        )
+                    }
+                    {
+                        (business.data.business_instagram) && (
+                            <Row>
+                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faInstagram} /></Col>
+                                <Col xs={11} className='p-0'>{business.data.business_instagram}</Col>
+                            </Row>
+                        )
+                    }
+                    {
+                        (business.data.business_facebook) && (
+                            <Row>
+                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faFacebook} /></Col>
+                                <Col xs={11} className='p-0'>{business.data.business_facebook}</Col>
+                            </Row>
+                        )
+                    }
+                    {
+                        (business.data.business_website) && (
+                            <Row>
+                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faGlobe} /></Col>
+                                <Col xs={11} className='p-0'>{business.data.business_website}</Col>
+                            </Row>
+                        )
+                    }
+                    {
+                        (business.data.business_twitter) && (
+                            <Row>
+                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faTwitter} /></Col>
+                                <Col xs={11} className='p-0'>{business.data.business_twitter}</Col>
+                            </Row>
+                        )
+                    }
                 </Col>
             </Row>
-            <Row className='m-2 py-3 fw-bold'>
-                <Col xs={10}>
-                    {business.data.formatted}
-                </Col>
-            </Row>
-            <Row className='py-3 m-2 fs-4 lh-lg border-top border-bottom'>
+            <Row className='px-0 mx-0 fs-6 lh-sm pt-2 border-top'>
+                <h6 className='ps-0'>About us:</h6>
                 {business.data.business_description}
             </Row>
-            <UpcomingBusiness business={business.data}/>
-        </Container>
+            <UpcomingBusiness business_name={business.data.business_name} business_id={business.data.id} />
+        </>
     )
 }
 

@@ -1,61 +1,60 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
-import { Col, Container, Image, Row } from 'react-bootstrap'
+import { Col, Image, Row } from 'react-bootstrap'
+import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
+import { faCannabis, faClinicMedical  } from '@fortawesome/free-solid-svg-icons'
 
 import { formatTime } from '../../helpers/formatTime';
-import { UsersContext } from '../../context/users/users.provider';
 import { useEventQuery } from '../../hooks/useEvents';
 
 import UpcomingEvents from './upcoming/upcoming.events';
-import EditEventButton from '../editButtonModals/editEventButton';
 
 const EventView = (props) => {
-    const { userProfile } = useContext(UsersContext);
     const { data: event, isLoading } = useEventQuery(props.match.params.id)
     
     if (isLoading) {
         return <div>loading...</div>
     }
 
-    console.log(event)
     return (
-        <Container className='px-0'>
-            <Row className='d-flex justify-content-between'>
-                <Col xs={10}>
-                    <Row>
-                        <h2>{event.data.eventname}</h2>
-                    </Row>
-                    <Row>
-                        <Link style={ {textDecoration: 'none'} } to={ {pathname: `/business/${event.data.brand_id}`} }>
-                            {`featuring: ${event.data.brand_name}`}
-                        </Link>
-                    </Row>
-                </Col>
-                <Col className={`${(userProfile.id === event.data.created_by) ? 'd-block p-0 m-0' : 'd-none'}`}>
-                    <EditEventButton event={event} />
-                </Col>
+        <>
+            <Row className='py-0'>
+                <h2>{event.data.eventname.toUpperCase()}</h2>
+            </Row>
+            <Row className='fw-bold'>
+                <Col xs={6}>{format(new Date(event.data.eventdate), 'E, MMMM d')}</Col>
+                <Col xs={6} className='text-end'>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</Col>
             </Row>
             <Row className='mx-auto my-3'>
                 <Image fluid src={event.data.eventmedia} alt={event.data.eventname} />
             </Row>
-            <Row className='d-flex flex-row mx-3'>
-                <Col xs={1}>
-                    <FontAwesomeIcon icon={faLocationArrow} size='1x' />
-                </Col>
-                <Col className='fw-bold'>
-                    {event.data.venue_name}
+            {/* brand and venue names and links */}
+            <Row>
+                <Col className='d-flex justify-content-center px-4'>
+                    <Col xs={1}><FontAwesomeIcon icon={faClinicMedical} /></Col>
+                    <Col xs={5} className='border-end'>
+                        <Link to={{ pathname: `/business/${event.data.venue_id}` }}>
+                            {event.data.venue_name}
+                        </Link>
+                    
+                    </Col>
+                    <Col xs={5} className='text-end'>
+                        <Link to={{ pathname: `/business/${event.data.brand_id}` }}>
+                            {event.data.brand_name}
+                        </Link>
+                    </Col>
+                    <Col xs={1} className='text-end'><FontAwesomeIcon icon={faCannabis} /></Col>
                 </Col>
             </Row>
-            <Row className='d-flex justify-content-end me-3 fs-4 fw-bold'>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</Row>
-            <Row className='py-3 m-2 fs-5 lh-base border-top'>
+
+            <Row className='px-0 mx-0 fs-6 lh-sm mt-1 pt-2 border-top'>
                 {event.data.details}
             </Row>
             <Row>
                 <UpcomingEvents event={event.data} venue_id={event.data.venue_id} brand_id={event.data.brand_id} />
             </Row>
-        </Container>
+        </>
     )
 }
 

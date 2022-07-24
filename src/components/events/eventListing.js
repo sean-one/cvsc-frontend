@@ -3,7 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Col, Image, ListGroup, Row } from 'react-bootstrap';
 
-// import EditEventButton from '../editButtonModals/editEventButton';
 import EventControls from './eventControls';
 
 const EventListing = ({ event_list, location }) => {
@@ -28,8 +27,6 @@ const EventListing = ({ event_list, location }) => {
                                 </Col>
                             </Row>
                             <Row>
-                            </Row>
-                            <Row>
                                 <Col xs={5}>
                                     <Image src={event.eventmedia} thumbnail />
                                 </Col>
@@ -39,7 +36,6 @@ const EventListing = ({ event_list, location }) => {
                                     <Row>{`brand: ${event.brand_name}`}</Row>
                                     <Row>
                                         <EventControls event={event}/>
-                                        {/* <EditEventButton event={event} /> */}
                                     </Row>
                                 </Col>
                             </Row>

@@ -7,7 +7,7 @@ const Styles = styled.div`
         min-height: 100vh;
         width: 100vw;
         background-color: #588157;
-        padding-top: 7rem;
+        padding-top: 6.5rem;
     }
 
     a {
@@ -35,13 +35,13 @@ export const Layout = (props) => {
             <Container fluid className='app'>
                 <Row className='px-3--md'>
                     {/* add 'd-lg-block' to class name to add to sides on larger screens */}
-                    <Col sm={12} lg={2} className='d-none d-lg-block'>
+                    <Col xs={12} lg={2} className='d-none d-lg-block'>
                         {/* filter options area */}
                     </Col>
                     <Col xs={12} sm={12} lg={7}>
                         {props.children}
                     </Col>
-                    <Col sm={12} lg={3} className='d-none d-lg-block'>
+                    <Col xs={12} lg={3} className='d-none d-lg-block'>
                         {/* bottom, right ad space area */}
                     </Col>
                 </Row>

@@ -12,13 +12,13 @@ const UserRoles = () => {
             {
                 userRoles.map(role => (
                     <ListGroup.Item key={role.business_id} className='d-flex justify-content-space-between' disabled={!role.active_role}>
-                        <Col sm={6}>
+                        <Col xs={6}>
                             {role.business_name}
                         </Col>
-                        <Col sm={3}>
+                        <Col xs={3}>
                             {role.role_type}
                         </Col>
-                        <Col sm={3}>
+                        <Col xs={3}>
                             {role.active_role ? '' : 'pending' }
                         </Col>
                         

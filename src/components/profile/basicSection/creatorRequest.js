@@ -74,7 +74,7 @@ const CreatorRequest = () => {
     return (
         <Form onSubmit={handleSubmit(sendRequest)}>
             <Row className='d-flex align-items-center'>
-                <Col sm={12} lg={8}>
+                <Col xs={12} lg={8}>
                     <Form.Group controlId='business_id' className='d-flex justify-content-start alight-items-lg-center'>
                         <Form.Select
                             className={errors.business_id ? 'inputError' : ''}

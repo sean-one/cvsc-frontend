@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone, faGlobe, } from '@fortawesome/free-solid-svg-icons';
@@ -25,7 +26,9 @@ const BusinessManagement = (props) => {
     return (
         <>
             <Row>
-                <h1>{current_business.business_name}</h1>
+                <Link to={{ pathname: `/business/${business.data.id}` }}>
+                    <h1>{current_business.business_name}</h1>
+                </Link>
             </Row>
             <Row className='px-0'>
                 <Col xs={5}>
@@ -33,9 +36,13 @@ const BusinessManagement = (props) => {
                 </Col>
                 {/* contact section */}
                 <Col xs={7} className='fs-6 py-3 px-2'>
-                    <Row>
-                        <BusinessLocation business={current_business} />
-                    </Row>
+                    {
+                        (current_business.business_type !== 'brand') && (
+                            <Row>
+                                <BusinessLocation business={current_business} />
+                            </Row>
+                        )
+                    }
                     <Row className='px-0'>
                         <Col xs={1} className='m-0 px-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
                         <Col xs={11} className='p-0'>{`${current_business.business_email}`}</Col>
@@ -70,7 +77,7 @@ const BusinessManagement = (props) => {
                         (current_business.business_website) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faGlobe} /></Col>
-                                <Col xs={11} className='p-0'>{`${current_business.business_website}`}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_website.split('.')[1]}`}</Col>
                             </Row>
                         )
                     }
