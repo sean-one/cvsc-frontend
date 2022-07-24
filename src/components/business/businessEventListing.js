@@ -15,32 +15,32 @@ const BusinessEventListing = ({ event_list, location, business_name }) => {
     
     return (
         <>
-            <h4>{`${business_name} upcoming events`}</h4>
-            <ListGroup className='px-2'>
+            <Row className='pt-3'>
+                <h5>{`Upcoming ${business_name} events`}</h5>
+            </Row>
+            <ListGroup className='px-0'>
                 {
                     event_list.map(event => {
                         return (
-                            <ListGroup.Item key={event.event_id} className='my-1 py-1'>
+                            <ListGroup.Item key={event.event_id} className='my-1 py-1 lh-sm'>
                                 <Row>
-                                    <Col>
-                                        <Link to={{
-                                            pathname: `/event/${event.event_id}`,
-                                            state: {
-                                                event,
-                                                from: location.pathname
-                                            }
-                                        }}><h3 className='text-truncate'>{`${event.eventname.toUpperCase()}`}</h3></Link>
-                                    </Col>
+                                    <Link to={{
+                                        pathname: `/event/${event.event_id}`,
+                                        state: {
+                                            event,
+                                            from: location.pathname
+                                        }
+                                    }}><h4 className='mb-0 text-truncate'>{`${event.eventname.toUpperCase()}`}</h4></Link>
+                                </Row>
+                                <Row className='px-2 border-bottom'>
+                                    <Col xs={6} className='px-0'>{format(new Date(event.eventdate), 'E, MMM do')}</Col>
+                                    <Col xs={6} className='px-1 text-end'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</Col>
                                 </Row>
                                 <Row>
-                                    <Col xs={5}>
+                                    <Col xs={5} className='py-3'>
                                         <Image src={event.eventmedia} thumbnail />               
                                     </Col>
-                                    <Col xs={7}>
-                                        <Row className='border-bottom'>
-                                            <Col xs={6} className='px-0'>{format(new Date(event.eventdate), 'E, MMMM do')}</Col>
-                                            <Col xs={6} className='px-1 text-end'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</Col>
-                                        </Row>
+                                    <Col xs={7} className='py-2'>
                                         <Row>
                                             <Col xs={1} className='px-0'><FontAwesomeIcon icon={faClinicMedical} /></Col>
                                             <Col xs={11}>

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
 
 import { useEventsQuery } from '../../../hooks/useEvents'
-import EventListing from '../eventListing';
+import BusinessEventListing from '../../business/businessEventListing';
 
 const UpcomingManagement = ({ business_name, business_id }) => {
     const { data: events_list, isLoading } = useEventsQuery()
@@ -14,10 +13,9 @@ const UpcomingManagement = ({ business_name, business_id }) => {
     const upcoming_events = events_list.data.filter(event => event.brand_id === business_id || event.venue_id === business_id)
 
     return (
-        <Row className='m-0 px-0'>
-            <h4>{`Upcoming ${business_name} Events`}</h4>
-            <EventListing event_list={upcoming_events} />
-        </Row>
+        <>
+            <BusinessEventListing event_list={upcoming_events} business_name={business_name} />
+        </>
     )
 }
 
