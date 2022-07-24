@@ -18,7 +18,6 @@ import EventView from './components/events/eventView';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 
-import SiteProvider from './context/site/site.provider';
 import UsersProvider from './context/users/users.provider';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -31,7 +30,6 @@ const App = () => {
     <React.Fragment>
       <ScrollToTop/>
       <UsersProvider>
-      <SiteProvider>
         <QueryClientProvider client={queryClient}>
           <NavHeader />
           <Layout>
@@ -46,7 +44,6 @@ const App = () => {
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
-      </SiteProvider>
       </UsersProvider>
     </React.Fragment>
   );
