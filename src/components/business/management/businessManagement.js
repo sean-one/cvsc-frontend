@@ -26,23 +26,19 @@ const BusinessManagement = (props) => {
     return (
         <>
             <Row>
-                <Link to={{ pathname: `/business/${business.data.id}` }}>
-                    <h1>{current_business.business_name}</h1>
-                </Link>
+                <h1 className='mb-0'>{current_business.business_name}</h1>
             </Row>
+            {
+                (current_business.business_type !== 'brand') && (
+                    <BusinessLocation business={current_business} />
+                )
+            }
             <Row className='px-0'>
                 <Col xs={5}>
                     <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
                 </Col>
                 {/* contact section */}
                 <Col xs={7} className='fs-6 py-3 px-2'>
-                    {
-                        (current_business.business_type !== 'brand') && (
-                            <Row>
-                                <BusinessLocation business={current_business} />
-                            </Row>
-                        )
-                    }
                     <Row className='px-0'>
                         <Col xs={1} className='m-0 px-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
                         <Col xs={11} className='p-0'>{`${current_business.business_email}`}</Col>
@@ -96,16 +92,11 @@ const BusinessManagement = (props) => {
                     <BusinessControls business={current_business} />
                 )
             }
-            <Row className='px-0 mx-0 fs-6 lh-sm mt-1 pt-2 border-top'>
+            <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
                 {current_business.business_description}
             </Row>
-            {/* {
-                ((current_business.business_type !== 'brand'))
-                    ? <BusinessLocation business={current_business} />
-                    : null
-            } */}
             <BusinessUserRoles business={current_business} />
-            <UpcomingManagement business_id={current_business.id} />
+            <UpcomingManagement business_id={current_business.id} business_name={current_business.business_name} />
         </>
     )
 }

@@ -7,12 +7,13 @@ import EventControls from './eventControls';
 
 const EventListing = ({ event_list, location }) => {
     return (
-        <ListGroup className='px-2'>
+        <ListGroup className='px-0'>
             {
                 event_list.map(event => {
                     return (
                         <ListGroup.Item key={event.event_id} className='my-1 py-1'>
-                            <Row className='fs-5 lh-base p-1 fw-bold'>
+                            {/* date and event name */}
+                            <Row className='fs-6 lh-base p-1 fw-bold'>
                                 <Col xs={2} className='m-0 px-0'>
                                     {`${format(new Date(event.eventdate), 'MM/dd')}`}
                                 </Col>
@@ -23,9 +24,10 @@ const EventListing = ({ event_list, location }) => {
                                             event,
                                             from: location.pathname
                                         }
-                                    }}>{`${event.eventname}`}</Link>
+                                    }}>{`${event.eventname.toUpperCase()}`}</Link>
                                 </Col>
                             </Row>
+                            {/* thumbnail and event info */}
                             <Row>
                                 <Col xs={5}>
                                     <Image src={event.eventmedia} thumbnail />
@@ -39,6 +41,7 @@ const EventListing = ({ event_list, location }) => {
                                     </Row>
                                 </Col>
                             </Row>
+
                         </ListGroup.Item>
                     )
                 })
