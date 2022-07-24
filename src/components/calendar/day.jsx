@@ -8,12 +8,12 @@ const Day = (props) => {
     const daysEvents = props.schedule
     
     return (
-        <React.Fragment>
-            <u><h4>{format(props.date, 'MMMM d')}</h4></u>
+        <>
+            {/* <u><h4>{format(props.date, 'MMMM d')}</h4></u> */}
             {daysEvents.sort((a,b) => a.eventstart - b.eventstart).map(event => (
                 <EventPreview key={event.event_id} event={event}/>
             ))}
-        </React.Fragment>
+        </>
     )
 }
 

@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { format } from 'date-fns';
 import { Card, Row, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCannabis, faClinicMedical } from '@fortawesome/free-solid-svg-icons';
 
+import { formatTime } from '../../helpers/formatTime';
 
 const EventPreview = ({ event, location }) => {
 
@@ -10,40 +14,39 @@ const EventPreview = ({ event, location }) => {
     }
     
     return (
-        <Card className='my-3 p-1'>
-            <Row className='gx-4'>
-                <Col md={4} className='mx-auto'>
-                    <Card.Img variant='top' src={event.eventmedia} />
-                </Col>
-                <Col md={8}>
-                    <Card.Body>
-                        <Card.Title>{event.eventname.toUpperCase()}</Card.Title>
-                        <Card.Subtitle>
-                            <Link to={{
-                                pathname: `/business/${event.venue_id}`
-                            }}>{`at ${event.venue_name}`}</Link>
-                        </Card.Subtitle>
-                        <Card.Text>
-                            {detailPreview(event.details, 100)}
-                        </Card.Text>
-                        <Link to={{
-                            pathname: `/event/${event.event_id}`,
-                            state: {
-                                event,
-                                from: location.pathname
-                            }
-                        }}>Read More</Link>
-                    </Card.Body>
-                </Col>
-            </Row>
-            <Card.Footer className='d-flex justify-around'>
-                <Col>
-                    <Link to={{
-                        pathname: `/business/${event.brand_id}`
-                    }}>{event.brand_name}</Link>
-                </Col>
-                <Col>{event.location_city}</Col>
-            </Card.Footer>
+        <Card className='my-3'>
+            <Card.Img variant='top' src={event.eventmedia} />
+            <Col md={8}>
+                <Card.Body className='py-1 px-2 mx-0'>
+                    <Card.Title className='my-0 py-1'>{event.eventname.toUpperCase()}</Card.Title>
+                    <Card.Subtitle>
+                        <Row className='fst-italic'>
+                            <Col xs={6}>{format(new Date(event.eventdate), 'E, MMM d')}</Col>
+                            <Col xs={6} className='text-end'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</Col>
+                        </Row>
+                    </Card.Subtitle>
+                    <Card.Text>
+                        <Row className='mx-0 py-1 border-bottom'></Row>
+                        <Row className='py-1'>
+                            <Col className='d-flex justify-content-center px-4'>
+                                <Col xs={1}><FontAwesomeIcon icon={faClinicMedical} /></Col>
+                                <Col xs={5} className='border-end'>
+                                    <Link to={{ pathname: `/business/${event.venue_id}` }}>
+                                        {event.venue_name}
+                                    </Link>
+
+                                </Col>
+                                <Col xs={5} className='text-end'>
+                                    <Link to={{ pathname: `/business/${event.brand_id}` }}>
+                                        {event.brand_name}
+                                    </Link>
+                                </Col>
+                                <Col xs={1} className='text-end'><FontAwesomeIcon icon={faCannabis} /></Col>
+                            </Col>
+                        </Row>    
+                    </Card.Text>
+                </Card.Body>
+            </Col>
         </Card>
     )
 }

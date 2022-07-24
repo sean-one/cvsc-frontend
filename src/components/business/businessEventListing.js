@@ -58,7 +58,15 @@ const BusinessEventListing = ({ event_list, location, business_name }) => {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            {textTruncation(event.details, 125)}
+                                            <Link className='px-0'to={{
+                                                pathname: `/event/${event.event_id}`,
+                                                state: {
+                                                    event,
+                                                    from: location.pathname
+                                                }
+                                            }}>
+                                                {textTruncation(event.details, 125)}
+                                            </Link>
                                         </Row>
                                     </Col>
                                 </Row>

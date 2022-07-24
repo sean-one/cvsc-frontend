@@ -1,6 +1,5 @@
 import React from 'react'
 import { format } from 'date-fns';
-import { Container } from 'react-bootstrap';
 
 import filterEventsByDay from '../../helpers/filterEventsByDay';
 import { useEventsQuery } from '../../hooks/useEvents';
@@ -24,7 +23,7 @@ const Calendar = () => {
     }
 
     return (
-        <Container className='px-0'>
+        <>
             {
                 Object.keys(siteSortedEvents).sort(
                     // sort event list by date
@@ -36,7 +35,7 @@ const Calendar = () => {
                     )
                 })
             }
-        </Container>
+        </>
     )
 }
 
