@@ -109,9 +109,9 @@ export const useAddBusinessMutation = () => {
 export const useUpdateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateBusiness, {
-        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business', data.data.id])},
+        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business', data.id]) },
         onError: (error, updated_business, context) => { console.log(error) },
-        onSettled: ({ data }) => { queryClient.refetchQueries(['business', data.data.id]) }
+        onSettled: ({ data }) => { queryClient.refetchQueries(['business', data.id]) }
     })
 }
 

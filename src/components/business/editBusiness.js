@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
-// import { NotificationsContext } from '../../context/notifications/notifications.provider';
-// import AxiosInstance from '../../helpers/axios';
+import { NotificationsContext } from '../../context/notifications/notifications.provider';
 
 const Styles = styled.div`
     .errormessage {
@@ -24,7 +23,7 @@ const Styles = styled.div`
 const EditBusiness = ({ business, handleClose }) => {
     const { id: business_id } = business
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
-    // const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useContext(NotificationsContext)
     
     const { register, handleSubmit, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
@@ -56,51 +55,20 @@ const EditBusiness = ({ business, handleClose }) => {
         }
 
         const updated_business_response = await updateBusiness({ ...data, business_id })
-        console.log(updated_business_response)
-        return
         
-        // success
-        // if(response.status === 201) {
-        //     updateBusiness(response.data[0].id, response.data[0])
-        //     handleClose()
-        //     dispatch({
-        //         type: "ADD_NOTIFICATION",
-        //         payload: {
-        //             notification_type: 'SUCCESS',
-        //             message: `${response.data[0].business_name} has been updated`
+        if (updated_business_response.status === 201) {
+            handleClose()
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${updated_business_response.data.business_name} has been updated`
 
-        //         }
-        //     })
-        // }
-        // error
-        // if(!err.response) {
-        //     dispatch({
-        //         type: "ADD_NOTIFICATION",
-        //         payload: {
-        //             notification_type: 'ERROR',
-        //             message: 'server error, please wait and try again'
-        //         }
-        //     })
-        // }
-
-        // else if (err.response.status === 400) {
-        //     setError(`${err.response.data.type}`, {
-        //         type: 'server',
-        //         message: `${err.response.data.message}`
-        //     })
-        //     dispatch({
-        //         type: "ADD_NOTIFICATION",
-        //         payload: {
-        //             notification_type: 'ERROR',
-        //             message: `${err.response.data.message}`
-        //         }
-        //     })
-        // }
-
-        // else {
-        //     console.log(Object.keys(err.response))
-        //     console.log(err.response.data)
-        // }
+                }
+            })
+        } else {
+            console.log(updated_business_response)
+        }
     }
 
     return (

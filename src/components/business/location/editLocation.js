@@ -37,7 +37,7 @@ const EditLocation = ({ modalClose, business_location }) => {
     const sendLocationUpdate = async (data) => {
         const updated_location = await editBusinessLocation({ ...data, location_id })
 
-        if(updated_location.status === 200) {
+        if(updated_location.status === 201) {
             modalClose()
             dispatch({
                 type: "ADD_NOTIFICATION",
