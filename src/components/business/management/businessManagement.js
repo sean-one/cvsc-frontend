@@ -26,14 +26,16 @@ const BusinessManagement = (props) => {
     return (
         <>
             <Row>
-                <h1 className='mb-0'>{current_business.business_name}</h1>
+                <Link to={{ pathname: `/business/${current_business.id}` }}>
+                    <h1 className='mb-0'>{current_business.business_name}</h1>
+                </Link>
             </Row>
             {
                 (current_business.business_type !== 'brand') && (
                     <BusinessLocation business={current_business} />
                 )
             }
-            <Row className='px-0'>
+            <Row className='px-0 mb-3'>
                 <Col xs={5}>
                     <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
                 </Col>

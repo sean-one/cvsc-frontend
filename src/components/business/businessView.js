@@ -19,21 +19,19 @@ const BusinessView = (props) => {
     return (
         <>
             <Row>
-                <h1>{business.data.business_name}</h1>
+                <h1 className='mb-0'>{business.data.business_name}</h1>
             </Row>
-            <Row className='px-0 my-3'>
+            {
+                (business.data.business_type !== 'brand') && (
+                    <BusinessLocation business={business.data} />
+                )
+            }
+            <Row className='px-0 mb-3'>
                 <Col xs={5}>
                     <Image src={business.data.business_avatar} alt={business.data.business_name} thumbnail />
                 </Col>
                 {/* contact section */}
                 <Col xs={7} className='fs-6 py-3 px-2'>
-                    {
-                        (business.data.business_type !== 'brand') && (
-                            <Row>
-                                <BusinessLocation business={business.data} />
-                            </Row>
-                        )
-                    }
                     <Row className='px-0'>
                         <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
                         <Col xs={11} className='p-0'>{business.data.business_email}</Col>

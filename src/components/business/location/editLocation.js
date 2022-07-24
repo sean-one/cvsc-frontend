@@ -25,7 +25,7 @@ const EditLocation = ({ modalClose, business_location }) => {
     const { mutateAsync: editBusinessLocation } = useLocationMutation()
     const { dispatch } = useContext(NotificationsContext)
     
-    const { register, handleSubmit, setError, clearErrors, formState: { isDirty, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, formState: { isDirty, errors } } = useForm({
         defaultValues: {
             street_address: business_location.street_address,
             location_city: business_location.location_city,
