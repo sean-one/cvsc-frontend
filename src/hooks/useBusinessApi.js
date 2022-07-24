@@ -20,6 +20,12 @@ const getBusinessLocation = async (business_id) => {
     return business_location
 }
 
+const updateBusiness = async ({ business_id, ...business_updates }) => {
+    const updated_business = await AxiosInstance.put(`/business/${business_id}`, business_updates)
+
+    return updated_business;
+}
+
 const updateLocation = async ({ location_id, ...location_updates }) => {
     const updated_location = await AxiosInstance.put(`/locations/${location_id}`, location_updates)
 
@@ -97,6 +103,15 @@ export const useAddBusinessMutation = () => {
             console.log(error)
         },
         onSettled: () => queryClient.refetchQueries('businesses'),
+    })
+}
+
+export const useUpdateBusinessMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(updateBusiness, {
+        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business', data.data.id])},
+        onError: (error, updated_business, context) => { console.log(error) },
+        onSettled: ({ data }) => { queryClient.refetchQueries(['business', data.data.id]) }
     })
 }
 
