@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Row, Accordion } from 'react-bootstrap';
+import { Accordion, Col, Image, Row } from 'react-bootstrap';
 
 import CreatorRequest from './creatorRequest';
 import UserSection from './userSection';
@@ -11,13 +11,23 @@ import { UsersContext } from '../../../context/users/users.provider';
 import UserRoles from './userRoles';
 
 const BasicSection = () => {
-    const { setAccountType } = useContext(UsersContext);
+    const { userProfile, setAccountType } = useContext(UsersContext);
     const account_type = setAccountType()
 
 
     return (
         <Row className='my-3'>
-            <h3>Basic Section</h3>
+            {/* <Row>
+                <Col xs={4}>
+                    <Image thumbnail roundedCircle src={userProfile.avatar} alt={userProfile.username} />
+                </Col>
+                <Col xs={8}>
+                    <Row>{userProfile.username}</Row>
+                    <Row>{userProfile.email}</Row>
+                    <Row>{`Account Type: ${account_type.toUpperCase()}`}</Row>
+                </Col>
+            </Row> */}
+            {/* <h3>Basic Section</h3> */}
             <Accordion defaultActiveKey="0">
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>User Profile</Accordion.Header>
