@@ -9,9 +9,9 @@ import { formatTime } from '../../helpers/formatTime';
 
 const EventPreview = ({ event, location }) => {
 
-    const detailPreview = (eventdetails, cutoff) => {
-        return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
-    }
+    // const detailPreview = (eventdetails, cutoff) => {
+    //     return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
+    // }
     
     return (
         <Card className='my-3'>
@@ -25,26 +25,24 @@ const EventPreview = ({ event, location }) => {
                             <Col xs={6} className='text-end'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</Col>
                         </Row>
                     </Card.Subtitle>
-                    <Card.Text>
-                        <Row className='mx-0 py-1 border-bottom'></Row>
-                        <Row className='py-1'>
-                            <Col className='d-flex justify-content-center px-4'>
-                                <Col xs={1}><FontAwesomeIcon icon={faClinicMedical} /></Col>
-                                <Col xs={5} className='border-end'>
-                                    <Link to={{ pathname: `/business/${event.venue_id}` }}>
-                                        {event.venue_name}
-                                    </Link>
+                    <Row className='mx-0 py-1 border-bottom'></Row>
+                    <Row className='py-1'>
+                        <Col className='d-flex justify-content-center px-4'>
+                            <Col xs={1}><FontAwesomeIcon icon={faClinicMedical} /></Col>
+                            <Col xs={5} className='border-end'>
+                                <Link to={{ pathname: `/business/${event.venue_id}` }}>
+                                    {event.venue_name}
+                                </Link>
 
-                                </Col>
-                                <Col xs={5} className='text-end'>
-                                    <Link to={{ pathname: `/business/${event.brand_id}` }}>
-                                        {event.brand_name}
-                                    </Link>
-                                </Col>
-                                <Col xs={1} className='text-end'><FontAwesomeIcon icon={faCannabis} /></Col>
                             </Col>
-                        </Row>    
-                    </Card.Text>
+                            <Col xs={5} className='text-end'>
+                                <Link to={{ pathname: `/business/${event.brand_id}` }}>
+                                    {event.brand_name}
+                                </Link>
+                            </Col>
+                            <Col xs={1} className='text-end'><FontAwesomeIcon icon={faCannabis} /></Col>
+                        </Col>
+                    </Row>    
                 </Card.Body>
             </Col>
         </Card>

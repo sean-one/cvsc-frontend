@@ -27,6 +27,7 @@ const BusinessManagement = (props) => {
         <>
             <Row>
                 <Link to={{ pathname: `/business/${current_business.id}` }}>
+                    {/* {current_business.business_name} */}
                     <h1 className='mb-0'>{current_business.business_name}</h1>
                 </Link>
             </Row>
