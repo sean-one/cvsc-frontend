@@ -129,7 +129,7 @@ const Register = () => {
                         <div className='errormessage'>{errors.confirmation?.message}</div>
                     </Col>
                 </Row>
-
+                <div className='errormessage'>{errors.invalid_input?.message}</div>
                 <Row>
                     <Col xs={4}>
                         <Button variant="outline-dark" type='submit'>
