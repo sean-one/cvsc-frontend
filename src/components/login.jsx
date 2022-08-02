@@ -48,25 +48,10 @@ const Login = () => {
                 }
             })
             .catch(err => {
-                if (!err.response) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: 'something went wrong, please try again'
-                        }
-                    })
-
-                } else if (err.response.status === 400 ) {
+                if (err.response.status === 400 ) {
                     setError(`${err.response.data.error.type}`, {
                         type: 'server',
                         message: err.response.data.error.message
-                    })
-
-                } else if (err.response.status === 404) {
-                    setError('username', {
-                        type: 'server',
-                        message: 'username is incorrect'
                     })
 
                 } else {
