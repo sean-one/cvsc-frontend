@@ -114,6 +114,7 @@ const Login = () => {
                     />
                     <div className='errormessage'>{errors.password?.message}</div>
                 </Form.Group>
+                <div className='errormessage'>{errors.credentials?.message}</div>
                 <Row className='text-center'>
                     <Col xs={6}>
                         <Button variant="outline-dark" type='submit'>

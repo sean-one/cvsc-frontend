@@ -21,10 +21,11 @@ const Register = () => {
 
     const createUser = async (data) =>{
         delete data['confirmation']
+        data['register'] = true;
 
         AxiosInstance.post('/auth/local', data)
             .then(response => {
-                if(response.status === 200) {
+                if(response.data.success) {
                     // send success message
                     dispatch({
                         type: "ADD_NOTIFICATION",
@@ -36,31 +37,23 @@ const Register = () => {
 
                     // forward to profile page
                     history.push('/profile');
-
-                } else {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: 'something went wrong, please try again'
-                        }
-                    })
-                    throw new Error()
                 }
             })
             .catch(err => {
-                if(!err.response) {
+                if(err.response.status === 400) {
+                    setError(`${err.response.data.error.type}`, {
+                        type: 'server',
+                        message: err.response.data.error.message
+                    })
+                }
+
+                else if(!err.response) {
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
                             notification_type: 'ERROR',
                             message: 'something went wrong, please try again'
                         }
-                    })
-                } else if(err.response.status === 400) {
-                    setError(`${err.response.data.error.type}`, {
-                        type: 'server',
-                        message: err.response.data.error.message
                     })
                 }
             })
@@ -72,7 +65,7 @@ const Register = () => {
     }
     
     return (
-        <Row className='justify-content-lg-center'>
+        <>
             <h2>Register</h2>
             <Form onSubmit={handleSubmit(createUser)}>
                 <Form.Group controlId="username">
@@ -138,12 +131,12 @@ const Register = () => {
                 </Row>
 
                 <Row>
-                    <Col xs={6}>
+                    <Col xs={4}>
                         <Button variant="outline-dark" type='submit'>
                             Submit
                         </Button>
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={8}>
                         <Button variant="outline-dark" onClick={googleAuthButton}>
                             Register with Google
                         </Button>
@@ -155,7 +148,7 @@ const Register = () => {
                     <p>already have a login? <Link to={{ pathname: '/login' }}>Login</Link></p>
                 </Col>
             </Row>
-        </Row>
+        </>
     )
 }
 

@@ -73,9 +73,10 @@ const CreatorRequest = () => {
     
     return (
         <Form onSubmit={handleSubmit(sendRequest)}>
-            <Row className='d-flex align-items-center'>
-                <Col xs={12} lg={8}>
-                    <Form.Group controlId='business_id' className='d-flex justify-content-start alight-items-lg-center'>
+            <Row className='d-flex align-items-center px-3'>
+                <Col xs={10} className='px-0'>
+                    <Form.Label>Business Creator Request</Form.Label>
+                    <Form.Group controlId='business_id'>
                         <Form.Select
                             className={errors.business_id ? 'inputError' : ''}
                             onFocus={() => clearErrors('business_id')}
@@ -90,13 +91,13 @@ const CreatorRequest = () => {
                                 }
                         </Form.Select>
                     </Form.Group>
-                    <div className='errormessage'>{errors.business_id?.message}</div>
+                </Col>
+                <Col xs={2} className='align-self-end'>
+                    <Button type='submit'> + </Button>
                 </Col>
             </Row>
-            <Row className='m-2'>
-                <Col lg={4}>
-                    <Button type='submit'>Submit</Button>
-                </Col>
+            <Row className='errormessage px-3'>
+                {errors.business_id?.message}
             </Row>
         </Form>
     )

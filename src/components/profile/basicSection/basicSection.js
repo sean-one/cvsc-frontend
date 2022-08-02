@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import { Accordion, Row } from 'react-bootstrap';
-// import { Accordion, Col, Image, Row } from 'react-bootstrap';
+import { Accordion, Col, Image, Row } from 'react-bootstrap';
 
 import CreatorRequest from './creatorRequest';
-import UserSection from './userSection';
+import NewBusinessButton from '../../business/newBusinessButton';
 import CreateBusiness from '../../business/createBusiness';
 import CreateEvent from '../../events/createEvent';
 import UpcomingCreatedBy from '../../events/upcoming/upcoming.created_by';
@@ -12,36 +11,32 @@ import { UsersContext } from '../../../context/users/users.provider';
 import UserRoles from './userRoles';
 
 const BasicSection = () => {
-    const { setAccountType } = useContext(UsersContext);
+    const { userProfile, setAccountType } = useContext(UsersContext);
     const account_type = setAccountType()
 
 
     return (
         <Row className='my-3'>
-            {/* <Row>
-                <Col xs={4}>
+            <Row className='pb-2'>
+                <Col xs={5}>
                     <Image thumbnail roundedCircle src={userProfile.avatar} alt={userProfile.username} />
                 </Col>
-                <Col xs={8}>
+                <Col xs={7} className='d-flex flex-column justify-content-center'>
                     <Row>{userProfile.username}</Row>
                     <Row>{userProfile.email}</Row>
                     <Row>{`Account Type: ${account_type.toUpperCase()}`}</Row>
                 </Col>
-            </Row> */}
-            {/* <h3>Basic Section</h3> */}
-            <Accordion defaultActiveKey="0">
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>User Profile</Accordion.Header>
-                    <Accordion.Body>
-                        <UserSection />
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                    <Accordion.Header>Creator Request</Accordion.Header>
-                    <Accordion.Body>
-                        <CreatorRequest />
-                    </Accordion.Body>
-                </Accordion.Item>
+            </Row>
+            <Row className='me-0 pe-0'>
+                <Col xs={6}>
+                    <NewBusinessButton />
+                </Col>
+                <Col xs={6} className='border'>
+                    Create New Event
+                </Col>
+            </Row>
+            <CreatorRequest />
+            <Accordion>
                 <Accordion.Item eventKey="2">
                     <Accordion.Header>Create Business</Accordion.Header>
                     <Accordion.Body>
