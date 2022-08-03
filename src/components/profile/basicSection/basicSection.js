@@ -3,8 +3,7 @@ import { Accordion, Col, Image, Row } from 'react-bootstrap';
 
 import CreatorRequest from './creatorRequest';
 import NewBusinessButton from '../../business/newBusinessButton';
-import CreateBusiness from '../../business/createBusiness';
-import CreateEvent from '../../events/createEvent';
+import NewEventButton from '../../events/newEventButton';
 import UpcomingCreatedBy from '../../events/upcoming/upcoming.created_by';
 
 import { UsersContext } from '../../../context/users/users.provider';
@@ -27,32 +26,19 @@ const BasicSection = () => {
                     <Row>{`Account Type: ${account_type.toUpperCase()}`}</Row>
                 </Col>
             </Row>
-            <Row className='me-0 pe-0'>
-                <Col xs={6}>
+            <Row className='m-0 py-2'>
+                <Col xs={6} className='m-0 p-0'>
                     <NewBusinessButton />
                 </Col>
-                <Col xs={6} className='border'>
-                    Create New Event
-                </Col>
+                {
+                    (account_type !== 'basic') &&
+                        <Col xs={6} className='m-0 p-0 text-end'>
+                            <NewEventButton />
+                        </Col>
+                }
             </Row>
             <CreatorRequest />
             <Accordion>
-                <Accordion.Item eventKey="2">
-                    <Accordion.Header>Create Business</Accordion.Header>
-                    <Accordion.Body>
-                        <CreateBusiness />
-                    </Accordion.Body>
-                </Accordion.Item>
-                {
-                    (account_type !== 'basic') ?
-                        <Accordion.Item eventKey="3">
-                            <Accordion.Header>Create Event</Accordion.Header>
-                            <Accordion.Body>
-                                <CreateEvent />
-                                {/* <CreateEvent venue_list={useVenueList} brand_list={useBrandList} /> */}
-                            </Accordion.Body>
-                        </Accordion.Item> : null
-                }
                 {
                     (account_type !== 'basic') ?
                         <Accordion.Item eventKey="4">
