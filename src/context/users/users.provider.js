@@ -31,6 +31,7 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+    // returns the account type for the logged in user / used in basic & business sections
     const setAccountType = () => {
         // remove roles not approved
         const active_roles = userRoles.filter(role => role.active_role)
@@ -48,7 +49,7 @@ const UsersProvider = ({ children }) => {
         }
     }
 
-    const filterBusinessByCurrentRoles = (business_list) => {
+    const filterByActiveRoles = (business_list) => {
         let business_ids = []
         let business_list_filtered = business_list
         
@@ -64,18 +65,6 @@ const UsersProvider = ({ children }) => {
         }
         
         return business_list_filtered
-    }
-
-    const useBusinessRole = (business_id) => {
-        return userRoles.find(role => role.business_id === business_id)
-    }
-
-    const useRoleBusinessIds_All = () => {
-        let business_ids = []
-        userRoles.map(role => {
-            return business_ids.push(role.business_id)
-        })
-        return business_ids
     }
 
     const useRoleBusinessIds_Active = () => {
@@ -112,16 +101,6 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    // creates an array of business_id with 'admin' rights
-    const useBusinessAdminIdRoles = () => {
-        let businessAdminIdList = []
-        const userAdminRoles = userRoles.filter(role => role.role_type === 'admin')
-        userAdminRoles.map(a_role => {
-            return businessAdminIdList.push(a_role.business_id)
-        })
-        return businessAdminIdList
-    }
-
     // used after successful avatar update
     const updateUser = userdata => {
         userUpdate(userdata)
@@ -144,19 +123,16 @@ const UsersProvider = ({ children }) => {
                 setUser,
                 setUserRoles,
                 setAccountType,
-                filterBusinessByCurrentRoles,
-                useBusinessRole,
+                filterByActiveRoles,
+                useRoleBusinessIds_Active,
+                useRoleBuinsessIds_Management,
                 addUserRole,
                 removeUserRole,
-                userRoles,
+                updateUser,
+                userSignOut,
                 
                 userProfile,
-                updateUser,
-                useRoleBuinsessIds_Management,
-                useRoleBusinessIds_All,
-                useRoleBusinessIds_Active,
-                useBusinessAdminIdRoles,
-                userSignOut
+                userRoles,
             }
         }>
             {children}

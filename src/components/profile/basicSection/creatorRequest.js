@@ -14,7 +14,7 @@ import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
     const { data: businessList, isLoading } = useBusinessesQuery()
-    const { userSignOut, addUserRole, filterBusinessByCurrentRoles } = useContext(UsersContext)
+    const { userSignOut, addUserRole, filterByActiveRoles } = useContext(UsersContext)
     
     let history = useHistory();
     
@@ -27,7 +27,7 @@ const CreatorRequest = () => {
         return <div>loading...</div>
     }
     
-    const business_filtered = filterBusinessByCurrentRoles(businessList.data)
+    const business_filtered = filterByActiveRoles(businessList.data)
 
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
