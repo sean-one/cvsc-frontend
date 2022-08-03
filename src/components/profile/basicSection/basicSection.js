@@ -38,8 +38,9 @@ const BasicSection = () => {
                 }
             </Row>
             <CreatorRequest />
+            <UserRoles />
             <Accordion>
-                {
+                {/* {
                     (account_type !== 'basic') ?
                         <Accordion.Item eventKey="4">
                             <Accordion.Header>Current Roles</Accordion.Header>
@@ -47,7 +48,7 @@ const BasicSection = () => {
                                 <UserRoles />
                             </Accordion.Body>
                         </Accordion.Item> : null
-                }
+                } */}
                 {
                     (account_type !== 'basic') ?
                         <Accordion.Item eventKey="5">
