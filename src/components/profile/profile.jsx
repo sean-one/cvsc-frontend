@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { Col, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
@@ -37,18 +36,16 @@ const Profile = () => {
         // eslint-disable-next-line 
     }, [])
 
+    if(loading) {
+        return <div>loading...</div>
+    }
+
 
     return (
-        <Row>
-            {
-                !loading
-                    ? <Col>
-                        <BasicSection user_id={userProfile.id} />
-                        <BusinessSection user_id={userProfile.id} />
-                    </Col>
-                    : <div>loading...</div>
-            }
-        </Row>
+        <div>
+            <BasicSection user_id={userProfile.id} />
+            <BusinessSection user_id={userProfile.id} />
+        </div>
     )
 }
 

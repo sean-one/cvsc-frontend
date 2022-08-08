@@ -10,11 +10,11 @@ import { NotificationsContext } from '../../context/notifications/notifications.
 import { UsersContext } from '../../context/users/users.provider';
 
 const CreateBusiness = () => {
-    const { mutateAsync: addBusinessMutation } = useAddBusinessMutation()
+    const { mutateAsync: addBusinessMutation, error: addError } = useAddBusinessMutation()
     const { addUserRole } = useContext(UsersContext)
     const { dispatch } = useContext(NotificationsContext) 
     
-    const { register, handleSubmit, watch, reset, clearErrors, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(addBusinessSchema)
     });
@@ -23,53 +23,59 @@ const CreateBusiness = () => {
     let history = useHistory();
 
     const sendRequest = async (business_data) => {
-        const new_business = await addBusinessMutation(business_data)
-
-        if(new_business.status === 201) {
+        try {
+            const new_business = await addBusinessMutation(business_data)
             
-            const admin_role = {
-                business_id: new_business.data.id,
-                business_name: new_business.data.business_name,
-                active_role: new_business.data.active_role,
-                role_type: new_business.data.role_type
-            }
-    
-            addUserRole(admin_role)
-    
-            // delete business.data['active_role']
-            // delete business.data['role_type']
-    
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${new_business.data.business_name} business request submitted`
-                }
-            })
-
-            reset()
-    
-            history.push({
-                pathname: `/business/manage/${new_business.data.id}`,
-                state: {
+            if(new_business.status === 201) {
+                
+                const admin_role = {
                     business_id: new_business.data.id,
+                    business_name: new_business.data.business_name,
+                    active_role: new_business.data.active_role,
+                    role_type: new_business.data.role_type
                 }
-            })
+        
+                addUserRole(admin_role)
+        
+                // delete business.data['active_role']
+                // delete business.data['role_type']
+        
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${new_business.data.business_name} business request submitted`
+                    }
+                })
+    
+                reset()
+        
+                history.push({
+                    pathname: `/business/manage/${new_business.data.id}`,
+                    state: {
+                        business_id: new_business.data.id,
+                    }
+                })
+    
+            }
+        } catch (error) {
+            if(addError.response.status === 400) {
+                setError(`${addError.response.data.error.type}`, {
+                    type: 'server',
+                    message: addError.response.data.error.message
+                })
 
-        } else {
-            // setError(`${err.response.data.type}`, {
-            //     type: 'server',
-            //     message: err.response.data.message
-            // })
-
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: `something is wrong in new business creation`
-                }
-            })
+            }
         }
+
+        //     dispatch({
+        //         type: "ADD_NOTIFICATION",
+        //         payload: {
+        //             notification_type: 'ERROR',
+        //             message: `something is wrong in new business creation`
+        //         }
+        //     })
+        // }
     }
 
 

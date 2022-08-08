@@ -3,11 +3,17 @@ import { Container, Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const Styles = styled.div`
-    .app {
+    * {
+        box-sizing: border-box;
+    }
+
+    .app_container {
         min-height: 100vh;
-        width: 100vw;
+        max-width: 100vw;
+        margin: 0;
+        padding: 6.5rem 0.75rem 0 0.75rem;
         background-color: #588157;
-        padding-top: 6.5rem;
+        /* box-sizing: border-box; */
     }
 
     a {
@@ -32,19 +38,19 @@ const Styles = styled.div`
 export const Layout = (props) => {
     return (
         <Styles>
-            <Container fluid className='app'>
-                <Row className='px-3--md'>
-                    {/* add 'd-lg-block' to class name to add to sides on larger screens */}
-                    <Col xs={12} lg={2} className='d-none d-lg-block'>
-                        {/* filter options area */}
-                    </Col>
-                    <Col xs={12} sm={12} lg={7}>
-                        {props.children}
-                    </Col>
-                    <Col xs={12} lg={3} className='d-none d-lg-block'>
-                        {/* bottom, right ad space area */}
-                    </Col>
-                </Row>
+            <Container fluid className='app_container d-flex justify-content-center g-2'>
+                {/* add 'd-lg-block' to class name to add to sides on larger screens */}
+                <Col xs={12} lg={3} className='d-none d-lg-block border'>
+                    {/* filter options area */}
+                    ad space
+                </Col>
+                <Col xs={12} sm={12} lg={6}>
+                    {props.children}
+                </Col>
+                <Col xs={12} lg={3} className='d-none d-lg-block border'>
+                    {/* bottom, right ad space area */}
+                    ad space
+                </Col>
             </Container>
         </Styles>
     )

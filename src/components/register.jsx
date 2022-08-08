@@ -20,43 +20,66 @@ const Register = () => {
     let history = useHistory();
 
     const createUser = async (data) =>{
-        delete data['confirmation']
-        data['register'] = true;
+        try {
+            delete data['confirmation']
+            data['register'] = true;
+            
+            const { data: new_user } = await AxiosInstance.post('/auth/local', data)
 
-        AxiosInstance.post('/auth/local', data)
-            .then(response => {
-                if(response.data.success) {
-                    // send success message
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'SUCCESS',
-                            message: `${data.username} has been created and logged in`
-                        }
-                    })
+            if(new_user.success) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${new_user.user.username} has been created and logged in`
+                    }
+                })
+                history.push('/profile')
+            }
 
-                    // forward to profile page
-                    history.push('/profile');
-                }
-            })
-            .catch(err => {
-                if(err.response.status === 400) {
-                    setError(`${err.response.data.error.type}`, {
-                        type: 'server',
-                        message: err.response.data.error.message
-                    })
-                }
+            console.log(new_user)
+                // .then(response => {
+                //     if(response.data.success) {
+                //         // send success message
+                //         dispatch({
+                //             type: "ADD_NOTIFICATION",
+                //             payload: {
+                //                 notification_type: 'SUCCESS',
+                //                 message: `${data.username} has been created and logged in`
+                //             }
+                //         })
+    
+                //         // forward to profile page
+                //         history.push('/profile');
+                //     }
+                // })
+                // .catch(err => {
+                //     if(err.response.status === 400) {
+                //         setError(`${err.response.data.error.type}`, {
+                //             type: 'server',
+                //             message: err.response.data.error.message
+                //         })
+                //     }
+    
+                //     else if(!err.response) {
+                //         dispatch({
+                //             type: "ADD_NOTIFICATION",
+                //             payload: {
+                //                 notification_type: 'ERROR',
+                //                 message: 'something went wrong, please try again'
+                //             }
+                //         })
+                //     }
+                // })
+        } catch (error) {
+            if(error.response.status === 400) {
+                setError(`${error.response.data.error.type}`, {
+                    type: 'server',
+                    message: error.response.data.error.message
+                })
+            }
+        }
 
-                else if(!err.response) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: 'something went wrong, please try again'
-                        }
-                    })
-                }
-            })
     }
 
     const googleAuthButton = (e) => {

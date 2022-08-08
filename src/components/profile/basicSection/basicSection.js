@@ -8,24 +8,16 @@ import UpcomingCreatedBy from '../../events/upcoming/upcoming.created_by';
 
 import { UsersContext } from '../../../context/users/users.provider';
 import UserRoles from './userRoles';
+import AccountDetails from './accountDetails';
 
 const BasicSection = () => {
-    const { userProfile, setAccountType } = useContext(UsersContext);
+    const { setAccountType } = useContext(UsersContext);
     const account_type = setAccountType()
 
 
     return (
-        <Row className='my-3'>
-            <Row className='pb-2'>
-                <Col xs={5}>
-                    <Image thumbnail roundedCircle src={userProfile.avatar} alt={userProfile.username} />
-                </Col>
-                <Col xs={7} className='d-flex flex-column justify-content-center'>
-                    <Row>{userProfile.username}</Row>
-                    <Row>{userProfile.email}</Row>
-                    <Row>{`Account Type: ${account_type.toUpperCase()}`}</Row>
-                </Col>
-            </Row>
+        <div className='border border-danger'>
+            <AccountDetails />
             <Row className='m-0 py-2'>
                 <Col xs={6} className='m-0 p-0'>
                     <NewBusinessButton />
@@ -38,9 +30,9 @@ const BasicSection = () => {
                 }
             </Row>
             <CreatorRequest />
-            {/* <UserRoles /> */}
+            <UserRoles />
             <Accordion>
-                {
+                {/* {
                     (account_type !== 'basic') ?
                         <Accordion.Item eventKey="4">
                             <Accordion.Header>Current Roles</Accordion.Header>
@@ -48,7 +40,7 @@ const BasicSection = () => {
                                 <UserRoles />
                             </Accordion.Body>
                         </Accordion.Item> : null
-                }
+                } */}
                 {
                     (account_type !== 'basic') ?
                         <Accordion.Item eventKey="5">
@@ -59,7 +51,7 @@ const BasicSection = () => {
                         </Accordion.Item> : null
                 }
             </Accordion>
-        </Row>
+        </div>
     )
 }
 
