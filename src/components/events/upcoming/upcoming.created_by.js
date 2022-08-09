@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Row } from 'react-bootstrap';
+// import { Row } from 'react-bootstrap';
 
 import { useEventsQuery } from '../../../hooks/useEvents';
 import { UsersContext } from '../../../context/users/users.provider';
@@ -16,9 +16,10 @@ const UpcomingCreatedBy = () => {
     const user_events = events.data.filter(event => event.created_by === userProfile.id)
 
     return (
-        <Row>
+        <div>
+            <h6>Calendar</h6>
             <EventListing event_list={user_events} />
-        </Row>
+        </div>
     )
 }
 

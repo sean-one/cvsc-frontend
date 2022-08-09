@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Accordion, Col, Image, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import CreatorRequest from './creatorRequest';
 import NewBusinessButton from '../../business/newBusinessButton';
@@ -30,27 +30,12 @@ const BasicSection = () => {
                 }
             </Row>
             <CreatorRequest />
-            <UserRoles />
-            <Accordion>
-                {/* {
-                    (account_type !== 'basic') ?
-                        <Accordion.Item eventKey="4">
-                            <Accordion.Header>Current Roles</Accordion.Header>
-                            <Accordion.Body>
-                                <UserRoles />
-                            </Accordion.Body>
-                        </Accordion.Item> : null
-                } */}
-                {
-                    (account_type !== 'basic') ?
-                        <Accordion.Item eventKey="5">
-                            <Accordion.Header>Upcoming Created Events</Accordion.Header>
-                            <Accordion.Body>
-                                <UpcomingCreatedBy />
-                            </Accordion.Body>
-                        </Accordion.Item> : null
-                }
-            </Accordion>
+            {
+                (account_type !== 'basic') && <UserRoles />
+            }
+            {
+                (account_type !== 'basic') && <UpcomingCreatedBy />
+            }
         </div>
     )
 }

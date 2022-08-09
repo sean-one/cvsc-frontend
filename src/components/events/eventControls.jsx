@@ -10,7 +10,7 @@ const EventControls = ({ event }) => {
     const handleModalClose = () => setModalShow(false)
 
     return (
-        <Row className='py-3'>
+        <div className='d-flex'>
             <Col xs={4}>
                 <Button variant='outline-success' href={`/event/${event.event_id}`}>View</Button>
             </Col>
@@ -28,7 +28,7 @@ const EventControls = ({ event }) => {
                     <EditEvent event={event} handleClose={handleModalClose} />
                 </Modal.Body>
             </Modal>
-        </Row>
+        </div>
     )
 }
 
