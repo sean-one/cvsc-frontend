@@ -3,7 +3,8 @@ import React, { useContext } from 'react';
 
 import { useEventsQuery } from '../../../hooks/useEvents';
 import { UsersContext } from '../../../context/users/users.provider';
-import EventListing from '../eventListing';
+import EventMiniCard from '../event_miniCard';
+// import EventListing from '../eventListing';
 
 const UpcomingCreatedBy = () => {
     const { data: events, isLoading } = useEventsQuery()
@@ -18,7 +19,10 @@ const UpcomingCreatedBy = () => {
     return (
         <div>
             <h6>Calendar</h6>
-            <EventListing event_list={user_events} />
+            {
+                user_events.map(event => <EventMiniCard key={event.event_id} event={event} />)
+            }
+            {/* <EventListing event_list={user_events} /> */}
         </div>
     )
 }

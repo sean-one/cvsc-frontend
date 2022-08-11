@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { format } from 'date-fns';
-import { Col, Image, ListGroup, Row } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
 
 import EventControls from './eventControls';
 

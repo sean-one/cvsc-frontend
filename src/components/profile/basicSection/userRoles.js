@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 import { UsersContext } from '../../../context/users/users.provider';
 

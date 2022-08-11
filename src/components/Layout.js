@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -19,6 +19,16 @@ const Styles = styled.div`
     a {
         text-decoration: none;
         color: inherit;
+    }
+
+    .event-card-title {
+        font-weight: bold;
+        color: darkgreen;
+        text-transform: capitalize;
+    }
+
+    .icon-button {
+        cursor: pointer;
     }
 
     .errormessage {
