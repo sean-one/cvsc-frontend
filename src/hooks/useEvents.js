@@ -27,6 +27,13 @@ const updateEvent = async ({ event_id, ...event_updates }) => {
     return updated_event
 }
 
+const removeEvent = async (event_id) => {
+    const token = localStorage.getItem('token')
+    const removed_event_count = await AxiosInstance.delete(`/events/remove/${event_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+
+    return removed_event_count
+}
+
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 
@@ -46,6 +53,19 @@ export const useAddEventMutation = () => {
 export const useEditEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
+        onSuccess: () => {
+            queryClient.cancelQueries('events')
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('events')
+    })
+}
+
+export const useEventRemoveMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(removeEvent, {
         onSuccess: () => {
             queryClient.cancelQueries('events')
         },

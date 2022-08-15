@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
-import { Button, Col, Modal } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { Col, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import EditEvent from './editEvent'
+import { useEventRemoveMutation } from '../../hooks/useEvents';
 
 const EventControls = ({ event }) => {
+    const { mutateAsync: removeEvent } = useEventRemoveMutation()
     const [ modalShow, setModalShow ] = useState(false)
+    let history = useHistory();
 
     const handleModalOpen = () => setModalShow(true)
     const handleModalClose = () => setModalShow(false)
 
+    const deleteEvent = async (event_id) => {
+        const event_removed = await removeEvent(event_id)
+
+        console.log('the event has been removed!')
+        console.log(event_removed)
+
+        return
+    }
+
+
     return (
         <div className='d-flex justify-content-end'>
-            <Col xs={2} className='text-success icon-button border-start border-end border-muted text-center' href={`/event/${event.event_id}`}>
-                {/* <Button size='sm' variant='outline-success' >View</Button> */}
+            <Col xs={2} className='text-success icon-button border-start border-end border-muted text-center' onClick={() => history.push(`/event/${event.event_id}`)}>
                 <FontAwesomeIcon icon={faEye} size='1x' />
             </Col>
             <Col xs={2} className='text-primary icon-button text-center' onClick={handleModalOpen}>
-                {/* <Button size='sm' variant='outline-primary' >Edit</Button> */}
                 <FontAwesomeIcon icon={faPenSquare} />
             </Col>
-            <Col xs={2} className='text-danger icon-button border-start border-end border-muted text-center'>
-                {/* <Button size='sm' variant='danger'>Delete</Button> */}
+            <Col xs={2} className='text-muted icon-button border-start border-end border-muted text-center' onClick={() => deleteEvent(event.event_id)}>
                 <FontAwesomeIcon icon={faTrash} />
             </Col>
             <Modal show={modalShow} onHide={handleModalClose}>
