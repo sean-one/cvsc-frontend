@@ -7,7 +7,8 @@ import BasicSection from './basicSection/basicSection';
 import BusinessSection from './businessSection/businessSection';
 
 const Profile = () => {
-    const { userProfile, setUser, setUserRoles } = useContext(UsersContext);
+    const { userProfile, setUser, setUserRoles, setAccountType } = useContext(UsersContext);
+    const account_type = setAccountType();
     const [ loading, setLoading ] = useState(false);
     
     let history = useHistory()
@@ -44,7 +45,11 @@ const Profile = () => {
     return (
         <div>
             <BasicSection user_id={userProfile.id} />
-            <BusinessSection user_id={userProfile.id} />
+            {
+                (account_type === 'basic' || account_type === 'creator')
+                    ? null
+                    : <BusinessSection user_id={userProfile.id} />
+            }
         </div>
     )
 }

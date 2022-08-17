@@ -1,35 +1,28 @@
 import React, { useContext } from 'react';
-import { Accordion, Row } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import { UsersContext } from '../../../context/users/users.provider';
-import BusinessList from './businessList';
 
 
 const BusinessSection = () => {
     const { setAccountType } = useContext(UsersContext)
     const account_type = setAccountType()
+
+    let history = useHistory()
     
+    const businessListLink = () => {
+        history.push('/admin/business_list')
+    }
 
     return (
-        <Row className='my-3'>
-            {
-                (account_type === 'basic' || account_type === 'creator')
-                    ? null
-                    : <h3>{`${account_type.charAt(0).toUpperCase() + account_type.slice(1)} Options`}</h3>
-            }
-            {
-                (account_type === 'basic' || account_type === 'creator')
-                    ? null
-                    : <Accordion >
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header>Business List</Accordion.Header>
-                            <Accordion.Body>
-                                <BusinessList />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion>
-            }
-        </Row>
+        <div className='border border-info'>
+            <div className='bg-light d-flex justify-content-between align-items-center rounded p-2 my-1' onClick={() => businessListLink()}>
+                <p className='lh-sm m-0'>{`${account_type.charAt(0).toUpperCase() + account_type.slice(1)} Options`}</p>
+                <FontAwesomeIcon icon={faChevronRight} />
+            </div>
+        </div>
     )
 }
 

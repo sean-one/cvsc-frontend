@@ -13,6 +13,9 @@ import Login from './components/login.jsx';
 import BusinessAuthRoute from './components/auth/businessAuth';
 import BusinessManagement from './components/business/management/businessManagement';
 import Profile from './components/profile/profile.jsx';
+import UserRolesTab from './components/profile/basicSection/userRolesTab';
+import UpcomingCreatedBy from './components/events/upcoming/upcoming.created_by';
+import BusinessList from './components/profile/businessSection/businessList';
 import EventView from './components/events/eventView';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -39,6 +42,9 @@ const App = () => {
             <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
             <Route exact path='/profile' component={Profile} />
+            <Route exact path='/roles' component={UserRolesTab} />
+            <Route exact path='/user_calendar' component={UpcomingCreatedBy} />
+            <Route exact path='/admin/business_list' component={BusinessList} />
             {/* <AuthRoute exact path='/profile' component={Profile} /> */}
             <BusinessAuthRoute exact path='/business/manage/:id' component={BusinessManagement} />
           </Layout>
