@@ -49,6 +49,18 @@ const UsersProvider = ({ children }) => {
         }
     }
 
+    const getBusinessRole = (business_id) => {
+        const active_roles = userRoles.filter(role => role.active_role)
+        if(active_roles.length === 0) {
+            // need to send an error
+            console.log('error at getBusinessRole')
+            return
+        }
+        const business_role = active_roles.find(role => role.business_id === business_id)
+        
+        return business_role
+    }
+
     const filterByActiveRoles = (business_list) => {
         let business_ids = []
         let business_list_filtered = business_list
@@ -123,6 +135,7 @@ const UsersProvider = ({ children }) => {
                 setUser,
                 setUserRoles,
                 setAccountType,
+                getBusinessRole,
                 filterByActiveRoles,
                 useRoleBusinessIds_Active,
                 useRoleBuinsessIds_Management,
