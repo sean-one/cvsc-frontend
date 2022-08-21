@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React, { useState } from 'react';
 import { Col } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import BusinessContols from '../../business/businessControls';
 
-const BusinessListItem = ({ business, location }) => {
+const BusinessListItem = ({ business }) => {
+    const [ controlShow, setControlShow ] = useState(false)
 
     return (
         <div>
@@ -16,21 +16,22 @@ const BusinessListItem = ({ business, location }) => {
                     {business.business_type}
                 </Col>
                 <Col xs={8} className='flex-grow-1'>
-                    <Link to={{
-                        pathname: `/business/manage/${business.id}`,
-                        state: {
-                            business_id: business.id,
-                            from: location.pathname
-                        }
-                    }}>{business.business_name}</Link>
+                    {business.business_name}
                 </Col>
-                <Col xs={1} className='px-2'>
-                    <FontAwesomeIcon icon={faChevronRight} />
+                <Col xs={1} className='px-2' onClick={() => setControlShow(!controlShow)}>
+                    {
+                        (controlShow)
+                            ? <FontAwesomeIcon icon={faChevronDown} />
+                            : <FontAwesomeIcon icon={faChevronRight} />
+                    }
                 </Col>
             </div>
-            <BusinessContols business_id={business.id}/>
+            {
+                (controlShow) &&
+                    <BusinessContols business={business}/>
+            }
         </div>
     )
 }
 
-export default withRouter(BusinessListItem)
+export default BusinessListItem;
