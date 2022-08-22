@@ -4,6 +4,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
+import { UsersContext } from '../../context/users/users.provider';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 
 const Styles = styled.div`
@@ -23,7 +24,9 @@ const Styles = styled.div`
 const EditBusiness = ({ business, handleClose }) => {
     const { id: business_id } = business
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
+    const { getBusinessRole } = useContext(UsersContext)
     const { dispatch } = useContext(NotificationsContext)
+    const user_role = getBusinessRole(business_id)
     
     const { register, handleSubmit, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
@@ -75,17 +78,20 @@ const EditBusiness = ({ business, handleClose }) => {
         <Styles>
             <Form onSubmit={handleSubmit(sendBusinessUpdate)}>
 
-                <Form.Group controlId='business_email'>
-                    <Form.Label>Business Email</Form.Label>
-                    <Form.Control
-                        className={errors.business_email ? 'inputError' : ''}
-                        {...register('business_email')}
-                        onFocus={() => clearErrors('business_email')}
-                        type='text'
-                        name='business_email'
-                    />
-                    <div className='errormessage'>{errors.business_email?.message}</div>
-                </Form.Group>
+                {
+                    (user_role.role_type === 'admin') &&
+                        <Form.Group controlId='business_email'>
+                            <Form.Label>Business Email</Form.Label>
+                            <Form.Control
+                                className={errors.business_email ? 'inputError' : ''}
+                                {...register('business_email')}
+                                onFocus={() => clearErrors('business_email')}
+                                type='text'
+                                name='business_email'
+                            />
+                            <div className='errormessage'>{errors.business_email?.message}</div>
+                        </Form.Group>
+                }
 
                 {/* <Form.Group controlId='business_avatar'> */}
                 {/* <Form.Group>

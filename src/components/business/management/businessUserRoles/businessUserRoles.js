@@ -22,7 +22,6 @@ const BusinessUserRoles = ({ business }) => {
     const creator_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
     const manager_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
     
-    console.log(business_roles_minus_admin)
     return (
         <Row className='px-1 py-3'>
             {

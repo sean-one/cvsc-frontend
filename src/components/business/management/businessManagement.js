@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,6 @@ import { faEnvelope, faPhone, faGlobe, } from '@fortawesome/free-solid-svg-icons
 import { faInstagram, faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
-import { UsersContext } from '../../../context/users/users.provider';
 
 import BusinessLocation from '../location/businessLocation';
 import BusinessControls from '../businessControls';
@@ -15,7 +14,6 @@ import UpcomingManagement from '../../events/upcoming/upcoming.management';
 
 const BusinessManagement = (props) => {
     const { data: business, isLoading } = useBusinessQuery(props.location.state.business_id)
-    const { userProfile } = useContext(UsersContext)
 
     if(isLoading) {
         return <div>loading...</div>
@@ -90,11 +88,7 @@ const BusinessManagement = (props) => {
                     }
                 </Col>
             </Row>
-            {
-                (current_business.business_admin === userProfile.id) && (
-                    <BusinessControls business={current_business} />
-                )
-            }
+            <BusinessControls business={current_business} />
             <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
                 {current_business.business_description}
             </Row>

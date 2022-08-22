@@ -40,7 +40,7 @@ const BusinessContols = ({ business, location }) => {
             }
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{}</Modal.Title>
+                    <Modal.Title>{business.business_name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <EditBusiness business={business} handleClose={handleModalClose} />
