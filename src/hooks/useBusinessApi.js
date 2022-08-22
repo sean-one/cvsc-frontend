@@ -87,6 +87,12 @@ const toggleActiveBusiness = async (id) => {
     return updated_business
 }
 
+const toggleBusinessRequestStatus = async (id) => {
+    const updated_business = await AxiosInstance.put(`/business/toggle-request/${id}`)
+
+    return updated_business
+}
+
 
 export const useBusinessesQuery = () => useQuery(["businesses"], getAllBusinesses, { refetchOnMount: false })
 export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
@@ -129,6 +135,19 @@ export const useActiveBusinessMutation = () => {
     return useMutation(toggleActiveBusiness, {
         onSuccess: ({ data }) => {
             queryClient.invalidateQueries(['businesses', data.id])
+        },
+        onError: (error, updated_business, context) => { console.log(error) },
+        onSettled: ({ data }) => {
+            queryClient.refetchQueries(['businesses', data.id])
+        }
+    })
+}
+
+export const useBusinessRequestMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(toggleBusinessRequestStatus, {
+        onSuccess: ({ data }) => {
+            queryClient.invalidateQueries(['business', data.id])
         },
         onError: (error, updated_business, context) => { console.log(error) },
         onSettled: ({ data }) => {
