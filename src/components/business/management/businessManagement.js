@@ -9,7 +9,7 @@ import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
 
 import BusinessLocation from '../location/businessLocation';
-import BusinessControls from './businessControls';
+import BusinessControls from '../businessControls';
 import BusinessUserRoles from './businessUserRoles/businessUserRoles';
 import UpcomingManagement from '../../events/upcoming/upcoming.management';
 
