@@ -15,14 +15,18 @@ const BusinessUserRoles = ({ business }) => {
         return <div>loading...</div>
     }
 
-    const pending_roles = business_roles.data.filter(business_role => !business_role.active_role)
-    const creator_roles = business_roles.data.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
-    const manager_roles = business_roles.data.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
+    //remove admin from list
+    const business_roles_minus_admin = business_roles.data.filter(business_role => (business_role.role_type !== 'admin'))
+
+    const pending_roles = business_roles_minus_admin.filter(business_role => !business_role.active_role)
+    const creator_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
+    const manager_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
     
+    console.log(business_roles_minus_admin)
     return (
         <Row className='px-1 py-3'>
             {
-                (Object.keys(business_roles.data).length > 1) && (
+                (Object.keys(business_roles_minus_admin).length > 1) && (
                     <h4>Business Roles</h4>
                 )
             }
