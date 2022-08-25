@@ -178,8 +178,10 @@ export const usePendingRoleMutation = () => {
         onError: (error) => {
             console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries('business_roles'),
-        onSettled: () => queryClient.refetchQueries('pending_roles'),
+        onSettled: () => {
+            queryClient.refetchQueries('business_roles')
+            queryClient.refetchQueries('pending_roles')
+        },
 })}
 
 // upgrades 'creator' role to a 'manager' role

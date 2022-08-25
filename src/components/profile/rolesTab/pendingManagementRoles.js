@@ -1,18 +1,31 @@
 import React from 'react';
 
 import { usePendingRolesQuery } from '../../../hooks/useBusinessApi';
+import sortPendingByBusiness from '../../../helpers/sortPendingByBusiness';
 import PendingRoleList from '../../business/management/businessUserRoles/pendingRoleList';
 
 const PendingManagementRoles = () => {
-    const { data: pending_roles, isLoading } = usePendingRolesQuery()
+    const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery()
+    let sortedByBusiness = {}
 
     if(isLoading) {
         return <div>loading...</div>
     }
 
+    if(isSuccess) {
+        sortedByBusiness = sortPendingByBusiness(pending_roles.data)
+    }
+
     return (
         <div>
-            <PendingRoleList pending_roles={pending_roles.data} />
+            {
+                Object.keys(sortedByBusiness).map(key => (
+                    <div key={sortedByBusiness[key][0].business_id}>
+                        <div>{key}</div>
+                        <PendingRoleList pending_roles={sortedByBusiness[key]} />
+                    </div>
+                ))
+            }
         </div>
     )
 }

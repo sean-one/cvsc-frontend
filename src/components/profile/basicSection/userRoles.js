@@ -26,7 +26,6 @@ const UserRoles = () => {
                     </div>
                 ))
             }
-            <h6>Pending User Request</h6>
         </div>
     )
 }
