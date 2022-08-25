@@ -74,6 +74,12 @@ const removeManagerRole = async (role_id) => {
     return removed_role_count
 }
 
+const getAllPendingRoles = async () => {
+    const pending_roles = await AxiosInstance.get(`/roles/management/pending`)
+
+    return pending_roles
+}
+
 const getAllBusinessRoles = async (id) => {
     const token = localStorage.getItem('token')
     const business_roles = await AxiosInstance.get(`/roles/business/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })
@@ -98,6 +104,7 @@ export const useBusinessesQuery = () => useQuery(["businesses"], getAllBusinesse
 export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
 export const useBusinessLocationQuery = (business_id) => useQuery(["business_location", business_id], () => getBusinessLocation(business_id))
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
+export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())
 
 export const useAddBusinessMutation = () => {
     const queryClient = useQueryClient()
@@ -166,11 +173,13 @@ export const usePendingRoleMutation = () => {
     return useMutation(approvePendingRole, {
         onSuccess: () => {
             queryClient.invalidateQueries('business_roles')
+            queryClient.invalidateQueries('pending_roles')
         },
         onError: (error) => {
             console.log(error)
         },
         onSettled: () => queryClient.refetchQueries('business_roles'),
+        onSettled: () => queryClient.refetchQueries('pending_roles'),
 })}
 
 // upgrades 'creator' role to a 'manager' role

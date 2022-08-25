@@ -9,7 +9,7 @@ const AccountDetails = () => {
     
     return (
         <div className='d-flex flex-column align-items-center border mb-3'>
-            <Col xs={8} className='p-1'>
+            <Col xs={8} className='p-1 text-center'>
                 <Image thumbnail roundedCircle src={userProfile.avatar} alt={`${userProfile.username} avatar`} />
             </Col>
             <Col xs={12} className='d-flex flex-column justify-content-center'>

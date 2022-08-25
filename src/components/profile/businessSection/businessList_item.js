@@ -11,14 +11,14 @@ const BusinessListItem = ({ business }) => {
 
     return (
         <div>
-            <div className='d-flex border-bottom border-dark my-1 rounded'>
+            <div className='d-flex border-bottom border-dark my-1 rounded' onClick={() => setControlShow(!controlShow)}>
                 <Col xs={2} className='pe-2'>
                     {business.business_type}
                 </Col>
                 <Col xs={8} className='flex-grow-1'>
                     {business.business_name}
                 </Col>
-                <Col xs={1} className='px-2' onClick={() => setControlShow(!controlShow)}>
+                <Col xs={1} className='px-2'>
                     {
                         (controlShow)
                             ? <FontAwesomeIcon icon={faChevronDown} />

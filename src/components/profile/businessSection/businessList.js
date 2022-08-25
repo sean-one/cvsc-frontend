@@ -6,8 +6,8 @@ import { UsersContext } from '../../../context/users/users.provider';
 
 const BusinessList = () => {
     const { data: businesses, isLoading } = useBusinessesQuery()
-    const { useRoleBuinsessIds_Management } = useContext(UsersContext)
-    const business_ids = useRoleBuinsessIds_Management()
+    const { userRolesBuinsessManagementIds } = useContext(UsersContext)
+    const business_ids = userRolesBuinsessManagementIds()
 
     if(isLoading) {
         return <div>loading...</div>

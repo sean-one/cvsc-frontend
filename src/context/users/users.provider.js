@@ -61,22 +61,32 @@ const UsersProvider = ({ children }) => {
         return business_role
     }
 
-    const filterByActiveRoles = (business_list) => {
-        let business_ids = []
-        let business_list_filtered = business_list
+    // const filterByActiveRoles = (business_list) => {
+    //     let business_ids = []
+    //     let business_list_filtered = business_list
         
-        // filter out active roles only
-        const active_roles = userRoles.filter(role => role.active_role)
+    //     // filter out active roles only
+    //     const active_roles = userRoles.filter(role => role.active_role)
 
-        active_roles.map(role => {
+    //     active_roles.map(role => {
+    //         return business_ids.push(role.business_id)
+    //     })
+        
+    //     if(business_ids.length > 0) {
+    //         business_list_filtered = business_list_filtered.filter(business => !business_ids.includes(business.id))
+    //     }
+        
+    //     return business_list_filtered
+    // }
+
+    const userRolesBusinessIds = () => {
+        let business_ids = []
+
+        userRoles.map(role => {
             return business_ids.push(role.business_id)
         })
-        
-        if(business_ids.length > 0) {
-            business_list_filtered = business_list_filtered.filter(business => !business_ids.includes(business.id))
-        }
-        
-        return business_list_filtered
+
+        return business_ids
     }
 
     const useRoleBusinessIds_Active = () => {
@@ -89,7 +99,7 @@ const UsersProvider = ({ children }) => {
         return business_ids
     }
 
-    const useRoleBuinsessIds_Management = () => {
+    const userRolesBuinsessManagementIds = () => {
         let business_ids = []
         const roles = userRoles.filter(role => role.role_type === 'manager' || role.role_type === 'admin')
 
@@ -136,9 +146,10 @@ const UsersProvider = ({ children }) => {
                 setUserRoles,
                 setAccountType,
                 getBusinessRole,
-                filterByActiveRoles,
+                // filterByActiveRoles,
+                userRolesBusinessIds,
+                userRolesBuinsessManagementIds,
                 useRoleBusinessIds_Active,
-                useRoleBuinsessIds_Management,
                 addUserRole,
                 removeUserRole,
                 updateUser,

@@ -39,7 +39,7 @@ const BasicSection = () => {
             </Row>
             <AccountDetails />
             <div className='bg-light d-flex justify-content-between align-items-center rounded p-2 my-1' onClick={() => rolesLink()}>
-                <p className='lh-sm m-0'>Role Tab</p>
+                <p className='lh-sm m-0'>Roles Tab</p>
                 <FontAwesomeIcon icon={faChevronRight} />
             </div>
             <div className='bg-light d-flex justify-content-between align-items-center rounded p-2 my-1' onClick={() => calendarLink()}>

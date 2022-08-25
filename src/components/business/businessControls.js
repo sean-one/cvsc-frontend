@@ -16,10 +16,11 @@ const BusinessContols = ({ business, location }) => {
     const handleModalOpen = () => setModalShow(true);
     const handleModalClose = () => setModalShow(false);
     
+
     return (
         <div className='d-flex flex-column'>
-            <div className='d-flex justify-content-around'>
-                <div>
+            <div className='d-flex justify-content-around py-2'>
+                <div className='border border-danger'>
                     <Link to={{
                         pathname: `/business/manage/${business_id}`,
                         state: {
@@ -28,11 +29,11 @@ const BusinessContols = ({ business, location }) => {
                         }
                     }}>view</Link>
                 </div>
-                <div onClick={handleModalOpen}>edit</div>
+                <div className='border border-danger' onClick={handleModalOpen}>edit</div>
             </div>
             {
                 (user_role.role_type === 'admin') &&
-                    <div className='d-flex justify-content-around'>
+                    <div className='d-flex justify-content-around py-2'>
                         <BusinessRequestToggle business_id={business.id} request_open={business.business_request_open} />
                         <BusinessActiveToggle business_id={business.id} isActive={business.active_business} />
                     </div>

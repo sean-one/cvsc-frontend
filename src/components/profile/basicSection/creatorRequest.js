@@ -14,8 +14,8 @@ import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 const CreatorRequest = () => {
     const { dispatch } = useContext(NotificationsContext);
     const { data: businessList, isLoading } = useBusinessesQuery()
-    const { userSignOut, addUserRole, filterByActiveRoles } = useContext(UsersContext)
-    
+    const { userSignOut, addUserRole, userRolesBusinessIds } = useContext(UsersContext)
+    const user_roles_business_ids = userRolesBusinessIds()
     let history = useHistory();
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
@@ -27,7 +27,8 @@ const CreatorRequest = () => {
         return <div>loading...</div>
     }
     
-    const business_filtered = filterByActiveRoles(businessList.data)
+    const request_open = businessList.data.filter(business => business.business_request_open)
+    const business_filtered = request_open.filter(business => !user_roles_business_ids.includes(business.id))
 
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
@@ -70,7 +71,7 @@ const CreatorRequest = () => {
             })
     }
 
-    
+
     return (
         <Form onSubmit={handleSubmit(sendRequest)}>
             <Row className='d-flex align-items-center px-3'>
