@@ -89,7 +89,7 @@ const UsersProvider = ({ children }) => {
         return business_ids
     }
 
-    const useRoleBusinessIds_Active = () => {
+    const userActiveRoles = () => {
         let business_ids = []
         const roles = userRoles.filter(role => role.active_role)
         
@@ -149,7 +149,7 @@ const UsersProvider = ({ children }) => {
                 // filterByActiveRoles,
                 userRolesBusinessIds,
                 userRolesBuinsessManagementIds,
-                useRoleBusinessIds_Active,
+                userActiveRoles,
                 addUserRole,
                 removeUserRole,
                 updateUser,

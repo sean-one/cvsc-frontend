@@ -18,8 +18,8 @@ const CreateEvent = () => {
     const { editImage, imagePreview, canvas } = useImagePreviewer()
     const { mutateAsync: addEventMutation } = useAddEventMutation()
     const { dispatch } = useContext(NotificationsContext);
-    const { useRoleBusinessIds_Active } = useContext(UsersContext)
-    const business_roles = useRoleBusinessIds_Active()
+    const { userActiveRoles } = useContext(UsersContext)
+    const business_roles = userActiveRoles()
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema)

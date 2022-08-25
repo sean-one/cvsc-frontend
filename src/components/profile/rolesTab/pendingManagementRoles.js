@@ -19,6 +19,10 @@ const PendingManagementRoles = () => {
     return (
         <div>
             {
+                ((Object.keys(sortedByBusiness).length) !== 0) &&
+                    <h6>Pending Business Request</h6>
+            }
+            {
                 Object.keys(sortedByBusiness).map(key => (
                     <div key={sortedByBusiness[key][0].business_id}>
                         <div>{key}</div>

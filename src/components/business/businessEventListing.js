@@ -12,12 +12,16 @@ const BusinessEventListing = ({ event_list, location, business_name }) => {
     const textTruncation = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
     }
+
     
     return (
-        <>
-            <Row className='pt-3'>
-                <h5>{`Upcoming ${business_name} events`}</h5>
-            </Row>
+        <div>
+            {
+                (event_list.length > 0) &&
+                    <Row className='pt-3'>
+                        <h6>{`Upcoming ${business_name} events`}</h6>
+                    </Row>
+            }
             <ListGroup className='px-0'>
                 {
                     event_list.map(event => {
@@ -75,7 +79,7 @@ const BusinessEventListing = ({ event_list, location, business_name }) => {
                     })
                 }
             </ListGroup>
-        </>
+        </div>
     )
 }
 

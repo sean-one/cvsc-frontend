@@ -103,6 +103,7 @@ const toggleBusinessRequestStatus = async (id) => {
 export const useBusinessesQuery = () => useQuery(["businesses"], getAllBusinesses, { refetchOnMount: false })
 export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
 export const useBusinessLocationQuery = (business_id) => useQuery(["business_location", business_id], () => getBusinessLocation(business_id))
+
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
 export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())
 
@@ -220,11 +221,15 @@ export const useUserRoleDeleteMutation = () => {
     return useMutation(removeUserRole, {
         onSuccess: () => {
             queryClient.invalidateQueries('business_roles')
+            queryClient.invalidateQueries('pending_roles')
         },
         onError: (error) => {
             console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries('business_roles'),
+        onSettled: () => {
+            queryClient.refetchQueries('business_roles')
+            queryClient.refetchQueries('pending_roles')
+        },
     })
 }
 
@@ -238,6 +243,8 @@ export const useManagerRoleDeleteMutation = () => {
         onError: (error) => {
             console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries('business_roles'),
+        onSettled: () => {
+            queryClient.refetchQueries('business_roles')
+        },
     })
 }

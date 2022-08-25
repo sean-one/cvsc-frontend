@@ -7,11 +7,8 @@ import { faCannabis, faClinicMedical } from '@fortawesome/free-solid-svg-icons';
 
 import { formatTime } from '../../helpers/formatTime';
 
-const EventPreview = ({ event, location }) => {
+const EventPreview = ({ event }) => {
 
-    // const detailPreview = (eventdetails, cutoff) => {
-    //     return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
-    // }
     
     return (
         <Card className='my-3'>

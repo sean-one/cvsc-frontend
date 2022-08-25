@@ -30,8 +30,8 @@ const EditEvent = ({ event, handleClose }) => {
     const { data: business_list, isLoading } = useBusinessesQuery()
     const { mutateAsync: editEventMutation } = useEditEventMutation()
     const { dispatch } = useContext(NotificationsContext);
-    const { userProfile, useRoleBusinessIds_Active } = useContext(UsersContext)
-    const business_roles = useRoleBusinessIds_Active()
+    const { userProfile, userActiveRoles } = useContext(UsersContext)
+    const business_roles = userActiveRoles()
     // const { editImage, imagePreview, canvas } = useImagePreviewer()
     
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
