@@ -7,7 +7,9 @@ import { UsersContext } from '../../../context/users/users.provider';
 const UserRoles = () => {
     const { userRoles } = useContext(UsersContext)
 
-    
+    // sort list to put active roles towards top of the list
+    userRoles.sort((a,b) => b.active_role - a.active_role)
+
     return (
         <div className='my-3'>
             {
