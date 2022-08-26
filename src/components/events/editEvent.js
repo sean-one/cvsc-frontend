@@ -86,8 +86,8 @@ const EditEvent = ({ event, handleClose }) => {
         return <div>loading...</div>
     }
 
-    const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business === true)
-    const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business === true)
+    const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
+    const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
     return (
         <Styles>
