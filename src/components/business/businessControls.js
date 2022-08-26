@@ -1,29 +1,23 @@
-import React, { useState, useContext } from 'react'
-import { Link, withRouter } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import React, { useContext } from 'react'
 
-import BusinessRequestToggle from './businessRequestToggle';
+import BusinessRequestToggle from './buttons/businessRequestToggle';
 import BusinessActiveToggle from './businessActiveToggle';
-import NewEventButton from '../events/newEventButton';
-import EditBusiness from './editBusiness';
+import CreateEventButton from '../events/buttons/createEventButton';
+import EditBusinessButton from './buttons/editBusinessButton';
 import ViewBusinessButton from './buttons/viewBusinessButton';
 import { UsersContext } from '../../context/users/users.provider';
 
-const BusinessContols = ({ business, location }) => {
+const BusinessContols = ({ business }) => {
     const business_id = business.id
     const { getBusinessRole } = useContext(UsersContext)
     const user_role = getBusinessRole(business_id)
-    const [ modalShow, setModalShow ] = useState(false)
 
-    const handleModalOpen = () => setModalShow(true);
-    const handleModalClose = () => setModalShow(false);
-    
 
     return (
         <div className='d-flex flex-column ps-4 bg-light rounded-bottom mb-4 shadow'>
             <ViewBusinessButton business_id={business_id} />
-            <NewEventButton />
-            <div className='py-1' onClick={handleModalOpen}>Edit Business</div>
+            <CreateEventButton />
+            <EditBusinessButton business={business} />
             {
                 (user_role.role_type === 'admin') &&
                     <BusinessRequestToggle business_id={business.id} request_open={business.business_request_open} />
@@ -32,16 +26,8 @@ const BusinessContols = ({ business, location }) => {
                 (user_role.role_type === 'admin') &&
                     <BusinessActiveToggle business_id={business.id} isActive={business.active_business} />
             }
-            <Modal show={modalShow} onHide={handleModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{business.business_name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <EditBusiness business={business} handleClose={handleModalClose} />
-                </Modal.Body>
-            </Modal>
         </div>
     )
 }
 
-export default withRouter(BusinessContols);
+export default BusinessContols;

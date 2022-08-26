@@ -38,7 +38,7 @@ const App = () => {
           <Layout>
             <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
             <Route path='/register' component={Register} />
-            <Route path='/event/:id' render={(props) => (<EventView {...props} />)} />
+            <Route path='/event/:event_id' render={(props) => (<EventView {...props} />)} />
             <Route exact path='/business/:id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
             <Route exact path='/profile' component={Profile} />

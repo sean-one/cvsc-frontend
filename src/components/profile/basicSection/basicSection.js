@@ -4,8 +4,8 @@ import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-import NewBusinessButton from '../../business/newBusinessButton';
-import NewEventButton from '../../events/newEventButton';
+import CreateBusinessButton from '../../business/buttons/createBusinessButton';
+import CreateEventButton from '../../events/buttons/createEventButton';
 
 import { UsersContext } from '../../../context/users/users.provider';
 import AccountDetails from './accountDetails';
@@ -28,12 +28,12 @@ const BasicSection = () => {
         <div className='border border-danger'>
             <Row className='m-0 py-2'>
                 <Col xs={6} className='m-0 p-0'>
-                    <NewBusinessButton />
+                    <CreateBusinessButton />
                 </Col>
                 {
                     (account_type !== 'basic') &&
                         <Col xs={6} className='m-0 p-0 text-end'>
-                            <NewEventButton />
+                            <CreateEventButton />
                         </Col>
                 }
             </Row>

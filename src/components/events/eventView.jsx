@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,8 +10,9 @@ import { useEventQuery } from '../../hooks/useEvents';
 
 import UpcomingEvents from './upcoming/upcoming.events';
 
-const EventView = (props) => {
-    const { data: event, isLoading } = useEventQuery(props.match.params.id)
+const EventView = () => {
+    let { event_id } = useParams()
+    const { data: event, isLoading } = useEventQuery(event_id)
     
     if (isLoading) {
         return <div>loading...</div>

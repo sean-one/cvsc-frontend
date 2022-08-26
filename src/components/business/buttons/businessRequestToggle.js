@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 
-import { useBusinessRequestMutation } from '../../hooks/useBusinessApi';
+import { useBusinessRequestMutation } from '../../../hooks/useBusinessApi';
 
 const BusinessRequestToggle = ({ business_id, request_open }) => {
     const [ requestOpen, setRequestOpen ] = useState(request_open)
