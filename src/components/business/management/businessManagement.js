@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone, faGlobe, } from '@fortawesome/free-solid-svg-icons';
@@ -12,8 +12,9 @@ import BusinessControls from '../businessControls';
 import BusinessUserRoles from './businessUserRoles/businessUserRoles';
 import UpcomingManagement from '../../events/upcoming/upcoming.management';
 
-const BusinessManagement = (props) => {
-    const { data: business, isLoading } = useBusinessQuery(props.location.state.business_id)
+const BusinessManagement = () => {
+    let { business_id } = useParams()
+    const { data: business, isLoading } = useBusinessQuery(business_id)
 
     if(isLoading) {
         return <div>loading...</div>
@@ -21,6 +22,7 @@ const BusinessManagement = (props) => {
 
     const current_business = business.data
 
+    
     return (
         <>
             <Row>

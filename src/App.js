@@ -46,7 +46,7 @@ const App = () => {
             <Route exact path='/user_calendar' component={UpcomingCreatedBy} />
             <Route exact path='/admin/business_list' component={BusinessList} />
             {/* <AuthRoute exact path='/profile' component={Profile} /> */}
-            <BusinessAuthRoute exact path='/business/manage/:id' component={BusinessManagement} />
+            <BusinessAuthRoute exact path='/business/manage/:business_id' component={BusinessManagement} />
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
