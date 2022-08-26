@@ -11,11 +11,11 @@ const BusinessListItem = ({ business }) => {
 
     return (
         <div>
-            <div className='d-flex border-bottom border-dark my-1 rounded' onClick={() => setControlShow(!controlShow)}>
+            <div className='d-flex border-top border-dark mt-1 rounded' onClick={() => setControlShow(!controlShow)}>
                 <Col xs={2} className='pe-2'>
                     {business.business_type}
                 </Col>
-                <Col xs={8} className='flex-grow-1'>
+                <Col xs={8} className='flex-grow-1 fw-bold'>
                     {business.business_name}
                 </Col>
                 <Col xs={1} className='px-2'>

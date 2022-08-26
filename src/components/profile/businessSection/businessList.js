@@ -16,7 +16,7 @@ const BusinessList = () => {
     const business_list = businesses.data.filter(business => business_ids.includes(business.id))
 
     return (
-        <div className='border border-light'>
+        <div>
             <h6>Business List</h6>
             {
                 business_list.map(business => (

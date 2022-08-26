@@ -18,26 +18,24 @@ const BusinessContols = ({ business, location }) => {
     
 
     return (
-        <div className='d-flex flex-column'>
-            <div className='d-flex justify-content-around py-2'>
-                <div className='border border-danger'>
-                    <Link to={{
-                        pathname: `/business/manage/${business_id}`,
-                        state: {
-                            business_id: business_id,
-                            from: location.pathname
-                        }
-                    }}>view</Link>
-                </div>
-                <div className='border border-danger' onClick={handleModalOpen}>edit</div>
+        <div className='d-flex flex-column ps-4 bg-light rounded-bottom mb-4 shadow'>
+            <div>
+                <Link to={{
+                    pathname: `/business/manage/${business_id}`,
+                    state: {
+                        business_id: business_id,
+                        from: location.pathname
+                    }
+                }}>View Business</Link>
             </div>
+            <div onClick={handleModalOpen}>Edit Business</div>
             {
                 (user_role.role_type === 'admin') &&
-                    <div className='d-flex justify-content-around py-2'>
-                        <BusinessRequestToggle business_id={business.id} request_open={business.business_request_open} />
-                        <BusinessActiveToggle business_id={business.id} isActive={business.active_business} />
-                    </div>
-
+                    <BusinessRequestToggle business_id={business.id} request_open={business.business_request_open} />
+            }
+            {
+                (user_role.role_type === 'admin') &&
+                    <BusinessActiveToggle business_id={business.id} isActive={business.active_business} />
             }
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>

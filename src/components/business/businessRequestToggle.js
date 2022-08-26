@@ -15,9 +15,10 @@ const BusinessRequestToggle = ({ business_id, request_open }) => {
     }
 
     return (
-        <div className='d-flex align-items-center'>
-            {`request ${(requestOpen) ? 'enabled' : 'disabled'}`}
+        <div className='d-flex align-items-center justify-content-between pe-4'>
+            <div className={(requestOpen) ? 'text-secondary' : 'text-danger'}>{'Request Disabled'}</div>
             <FontAwesomeIcon icon={(requestOpen) ? faToggleOn : faToggleOff} size='lg' onClick={toggleRequestStatus}/>
+            <div className={(requestOpen) ? 'text-success' : 'text-secondary'}>{'Enabled'}</div>
         </div>
     )
 }

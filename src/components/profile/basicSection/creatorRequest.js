@@ -27,7 +27,7 @@ const CreatorRequest = () => {
         return <div>loading...</div>
     }
     
-    const request_open = businessList.data.filter(business => business.business_request_open)
+    const request_open = businessList.data.filter(business => business.business_request_open && business.active_business)
     const business_filtered = request_open.filter(business => !user_roles_business_ids.includes(business.id))
 
     const sendRequest = (data) => {
