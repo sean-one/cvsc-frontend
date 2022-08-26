@@ -143,10 +143,12 @@ export const useActiveBusinessMutation = () => {
     return useMutation(toggleActiveBusiness, {
         onSuccess: ({ data }) => {
             queryClient.invalidateQueries(['businesses', data.id])
+            queryClient.invalidateQueries('pending_roles')
         },
         onError: (error, updated_business, context) => { console.log(error) },
         onSettled: ({ data }) => {
             queryClient.refetchQueries(['businesses', data.id])
+            queryClient.refetchQueries('pending_roles')
         }
     })
 }
