@@ -7,9 +7,13 @@ import { UsersContext } from '../../../context/users/users.provider';
 const UserRoles = () => {
     const { userRoles } = useContext(UsersContext)
 
+    
     return (
-        <div className='border my-3'>
-            <h6>Current Roles</h6>
+        <div className='my-3'>
+            {
+                (userRoles.length > 0) &&
+                    <h6>Current Roles</h6>
+            }
             {
                 userRoles.map(role => (
                     <div key={role.business_id} className={`d-flex justify-content-space-between border-bottom ${!role.active_role && 'text-danger'}`}>

@@ -92,7 +92,10 @@ const BusinessManagement = (props) => {
             <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
                 {current_business.business_description}
             </Row>
-            <BusinessUserRoles business={current_business} />
+            {
+                (current_business.active_business) &&
+                    <BusinessUserRoles business={current_business} />
+            }
             <UpcomingManagement business_id={current_business.id} business_name={current_business.business_name} />
         </>
     )
