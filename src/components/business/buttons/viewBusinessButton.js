@@ -7,7 +7,7 @@ const ViewBusinessButton = ({ business_id }) => {
     let history = useHistory()
 
     const businessLink = () => {
-        history.push(`/business/manage/${business_id}`)
+        history.push(`/business/${business_id}`)
     }
 
     return (

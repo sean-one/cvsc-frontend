@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 
 import BusinessRequestToggle from './buttons/businessRequestToggle';
-import BusinessActiveToggle from './businessActiveToggle';
+import BusinessActiveToggle from './buttons/businessActiveToggle';
 import CreateEventButton from '../events/buttons/createEventButton';
 import EditBusinessButton from './buttons/editBusinessButton';
 import ViewBusinessButton from './buttons/viewBusinessButton';

@@ -1,89 +1,104 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useParams, withRouter } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap'
-
-import { useBusinessQuery } from '../../hooks/useBusinessApi';
-import UpcomingBusiness from '../events/upcoming/upcoming.business';
-import BusinessLocation from './location/businessLocation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
-const BusinessView = (props) => {
-    const { data: business, isLoading } = useBusinessQuery(props.match.params.id)
+import { useBusinessQuery } from '../../hooks/useBusinessApi';
+
+import BusinessLocation from './location/businessLocation';
+// import BusinessControls from './businessControls';
+// import BusinessUserRoles from './management/businessUserRoles/businessUserRoles';
+import UpcomingBusiness from '../events/upcoming/upcoming.business';
+// import UpcomingManagement from '../events/upcoming/upcoming.management';
+
+
+const BusinessView = () => {
+    let { business_id } = useParams()
+    const { data: businessFetch, isLoading } = useBusinessQuery(business_id)
 
     if (isLoading) {
         return <p>loading...</p>
     }
 
+    const current_business = businessFetch.data
+
+    console.log(current_business)
     return (
         <>
             <Row>
-                <h1 className='mb-0'>{business.data.business_name}</h1>
+                <h1 className='mb-0'>{current_business.business_name}</h1>
             </Row>
             {
-                (business.data.business_type !== 'brand') && (
-                    <BusinessLocation business={business.data} />
+                (current_business.business_type !== 'brand') && (
+                    <BusinessLocation business={current_business} />
                 )
             }
             <Row className='px-0 mb-3'>
                 <Col xs={5}>
-                    <Image src={business.data.business_avatar} alt={business.data.business_name} thumbnail />
+                    <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
                 </Col>
                 {/* contact section */}
                 <Col xs={7} className='fs-6 py-3 px-2'>
                     <Row className='px-0'>
-                        <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
-                        <Col xs={11} className='p-0'>{business.data.business_email}</Col>
+                        <Col xs={1} className='m-0 px-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
+                        <Col xs={11} className='p-0'>{`${current_business.business_email}`}</Col>
                     </Row>
                     {/* dynamically add optional contact information */}
                     {
-                        (business.data.business_phone) && (
+                        (current_business.business_phone) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faPhone} /></Col>
-                                <Col xs={11} className='p-0'>{business.data.business_phone}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_phone}`}</Col>
                             </Row>
                         )
                     }
                     {
-                        (business.data.business_instagram) && (
+                        (current_business.business_instagram) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faInstagram} /></Col>
-                                <Col xs={11} className='p-0'>{business.data.business_instagram}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_instagram}`}</Col>
                             </Row>
                         )
+
                     }
                     {
-                        (business.data.business_facebook) && (
+                        (current_business.business_facebook) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faFacebook} /></Col>
-                                <Col xs={11} className='p-0'>{business.data.business_facebook}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_facebook}`}</Col>
                             </Row>
                         )
                     }
                     {
-                        (business.data.business_website) && (
+                        (current_business.business_website) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faGlobe} /></Col>
-                                <Col xs={11} className='p-0'>{business.data.business_website}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_website.split('.')[1]}`}</Col>
                             </Row>
                         )
                     }
                     {
-                        (business.data.business_twitter) && (
+                        (current_business.business_twitter) && (
                             <Row>
                                 <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faTwitter} /></Col>
-                                <Col xs={11} className='p-0'>{business.data.business_twitter}</Col>
+                                <Col xs={11} className='p-0'>{`${current_business.business_twitter}`}</Col>
                             </Row>
                         )
                     }
                 </Col>
             </Row>
-            <Row className='px-0 mx-0 fs-6 lh-sm pt-2 border-top'>
-                <h6 className='ps-0'>About us:</h6>
-                {business.data.business_description}
+            {/* <BusinessControls business={current_business} /> */}
+            <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
+                {current_business.business_description}
             </Row>
-            <UpcomingBusiness business_name={business.data.business_name} business_id={business.data.id} />
+            {/* {
+                (current_business.active_business) &&
+                    <BusinessUserRoles business={current_business} />
+            } */}
+            <UpcomingBusiness business_name={current_business.business_name} business_id={current_business.id} />
+            {/* <UpcomingManagement business_id={business_id} business_name={current_business.business_name} /> */}
         </>
     )
 }
