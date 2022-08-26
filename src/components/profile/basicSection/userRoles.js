@@ -22,13 +22,13 @@ const UserRoles = () => {
                         <Col xs={1} className=''>
                             {role.role_type.charAt().toUpperCase()}
                         </Col>
-                        <Col xs={8}>
+                        <Col xs={7}>
                             {role.business_name}
                         </Col>
                         <Col xs={2}>
                             {role.active_role ? 'Active' : 'pending' }
                         </Col>
-                    
+                        <Col xs={1}>delete</Col>
                     </div>
                 ))
             }

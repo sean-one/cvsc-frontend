@@ -15,7 +15,7 @@ const BusinessActiveToggle = ({ business_id, isActive }) => {
     }
 
     return (
-        <div className='d-flex align-items-center justify-content-between pe-4'>
+        <div className='d-flex align-items-center justify-content-between pe-4 py-1'>
             <div className={(activeBusiness) ? 'text-secondary' : 'text-danger'}>{'Inactive Business'}</div>
             <FontAwesomeIcon icon={(activeBusiness) ? faToggleOn : faToggleOff} size='lg' onClick={toggleActiveStatus} />
             <div className={(activeBusiness) ? 'text-success' : 'text-secondary'}>{'Active Business'}</div>

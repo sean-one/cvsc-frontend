@@ -11,7 +11,7 @@ const BusinessListItem = ({ business }) => {
 
     return (
         <div>
-            <div className='d-flex border-top border-dark mt-1 rounded' onClick={() => setControlShow(!controlShow)}>
+            <div className='d-flex border-top border-dark my-2 rounded' onClick={() => setControlShow(!controlShow)}>
                 <Col xs={2} className='pe-2'>
                     {business.business_type}
                 </Col>

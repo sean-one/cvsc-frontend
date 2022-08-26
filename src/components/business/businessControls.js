@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 
 import BusinessRequestToggle from './businessRequestToggle';
 import BusinessActiveToggle from './businessActiveToggle';
+import NewEventButton from '../events/newEventButton';
 import EditBusiness from './editBusiness';
 import { UsersContext } from '../../context/users/users.provider';
 
@@ -19,7 +20,7 @@ const BusinessContols = ({ business, location }) => {
 
     return (
         <div className='d-flex flex-column ps-4 bg-light rounded-bottom mb-4 shadow'>
-            <div>
+            <div className='py-1'>
                 <Link to={{
                     pathname: `/business/manage/${business_id}`,
                     state: {
@@ -27,8 +28,9 @@ const BusinessContols = ({ business, location }) => {
                         from: location.pathname
                     }
                 }}>View Business</Link>
+                <NewEventButton />
             </div>
-            <div onClick={handleModalOpen}>Edit Business</div>
+            <div className='py-1' onClick={handleModalOpen}>Edit Business</div>
             {
                 (user_role.role_type === 'admin') &&
                     <BusinessRequestToggle business_id={business.id} request_open={business.business_request_open} />
