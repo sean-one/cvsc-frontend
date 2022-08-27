@@ -24,12 +24,9 @@ const BusinessView = () => {
 
     const current_business = businessFetch.data
 
-    console.log(current_business)
     return (
-        <>
-            <Row>
-                <h1 className='mb-0'>{current_business.business_name}</h1>
-            </Row>
+        <div>
+            <h1 className='mb-0'>{current_business.business_name}</h1>
             {
                 (current_business.business_type !== 'brand') && (
                     <BusinessLocation business={current_business} />
@@ -99,7 +96,7 @@ const BusinessView = () => {
             } */}
             <UpcomingBusiness business_name={current_business.business_name} business_id={current_business.id} />
             {/* <UpcomingManagement business_id={business_id} business_name={current_business.business_name} /> */}
-        </>
+        </div>
     )
 }
 

@@ -10,8 +10,6 @@ import { NavHeader } from './components/NavHeader';
 import Register from './components/register.jsx';
 import Login from './components/login.jsx';
 // import AuthRoute from './components/auth/auth.jsx';
-import BusinessAuthRoute from './components/auth/businessAuth';
-import BusinessManagement from './components/business/management/businessManagement';
 import Profile from './components/profile/profile.jsx';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UpcomingCreatedBy from './components/events/upcoming/upcoming.created_by';
@@ -46,7 +44,6 @@ const App = () => {
             <Route exact path='/user_calendar' component={UpcomingCreatedBy} />
             <Route exact path='/admin/business_list' component={BusinessList} />
             {/* <AuthRoute exact path='/profile' component={Profile} /> */}
-            <BusinessAuthRoute exact path='/business/manage/:business_id' component={BusinessManagement} />
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
