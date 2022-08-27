@@ -2,7 +2,7 @@ import React from 'react';
 
 import { usePendingRolesQuery } from '../../../hooks/useBusinessApi';
 import sortPendingByBusiness from '../../../helpers/sortPendingByBusiness';
-import PendingRoleList from '../../business/management/businessUserRoles/pendingRoleList';
+import RolesList from '../../roles/rolesList';
 
 const PendingManagementRoles = () => {
     const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery()
@@ -26,7 +26,7 @@ const PendingManagementRoles = () => {
                 Object.keys(sortedByBusiness).map(key => (
                     <div key={sortedByBusiness[key][0].business_id}>
                         <div>{key}</div>
-                        <PendingRoleList pending_roles={sortedByBusiness[key]} />
+                        <RolesList roles_list={sortedByBusiness[key]} list_type='pending' />
                     </div>
                 ))
             }

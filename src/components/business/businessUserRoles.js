@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
 import { Accordion, Row } from 'react-bootstrap';
 
-import { useBusinessRolesQuery } from '../../../../hooks/useBusinessApi';
-import { UsersContext } from '../../../../context/users/users.provider';
-import PendingRoleList from './pendingRoleList';
-import CreatorRoleList from './creatorRoleList';
-import ManagerRoleList from './managerRoleList';
+import { useBusinessRolesQuery } from '../../hooks/useBusinessApi';
+import { UsersContext } from '../../context/users/users.provider';
+import RolesList from '../roles/rolesList';
 
 const BusinessUserRoles = ({ business }) => {
     const { userProfile } = useContext(UsersContext)
@@ -35,7 +33,7 @@ const BusinessUserRoles = ({ business }) => {
                         ? <Accordion.Item eventKey="0">
                             <Accordion.Header>Pending Creator Request</Accordion.Header>
                             <Accordion.Body className='px-1 py-1'>
-                                <PendingRoleList pending_roles={pending_roles} />
+                                <RolesList roles_list={pending_roles} list_type='pending' />
                             </Accordion.Body>
                         </Accordion.Item>
                         : null
@@ -45,7 +43,7 @@ const BusinessUserRoles = ({ business }) => {
                         ? <Accordion.Item eventKey="1">
                             <Accordion.Header>Creators</Accordion.Header>
                             <Accordion.Body className='px-1 py-1'>
-                                <CreatorRoleList creator_roles={creator_roles} />
+                                <RolesList roles_list={creator_roles} list_type='creator'/>
                             </Accordion.Body>
                         </Accordion.Item>
                         : null
@@ -55,7 +53,7 @@ const BusinessUserRoles = ({ business }) => {
                         ? <Accordion.Item eventKey="2">
                             <Accordion.Header>Managers</Accordion.Header>
                             <Accordion.Body className='px-1 py-1'>
-                                <ManagerRoleList manager_roles={manager_roles} />
+                                <RolesList roles_list={manager_roles} list_type='manager'/>
                             </Accordion.Body>
                         </Accordion.Item>
                         : null

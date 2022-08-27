@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, withRouter } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import { useBusinessQuery } from '../../hooks/useBusinessApi';
 
 import BusinessLocation from './location/businessLocation';
 // import BusinessControls from './businessControls';
-// import BusinessUserRoles from './management/businessUserRoles/businessUserRoles';
+import BusinessUserRoles from './businessUserRoles';
 import UpcomingBusiness from '../events/upcoming/upcoming.business';
 // import UpcomingManagement from '../events/upcoming/upcoming.management';
 
@@ -90,14 +90,14 @@ const BusinessView = () => {
             <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
                 {current_business.business_description}
             </Row>
-            {/* {
+            {
                 (current_business.active_business) &&
                     <BusinessUserRoles business={current_business} />
-            } */}
+            }
             <UpcomingBusiness business_name={current_business.business_name} business_id={current_business.id} />
             {/* <UpcomingManagement business_id={business_id} business_name={current_business.business_name} /> */}
         </div>
     )
 }
 
-export default withRouter(BusinessView);
+export default BusinessView;
