@@ -1,13 +1,16 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
+import { Tab, Tabs } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
-import BasicSection from './basicSection/basicSection';
-import BusinessSection from './businessSection/businessSection';
+import AccountDetails from './basicSection/accountDetails';
+import BusinessList from './businessSection/businessList';
+import RolesTab from './rolesTab/rolesTab';
+import UpcomingCreatedBy from '../events/upcoming/upcoming.created_by';
 
 const Profile = () => {
-    const { userProfile, setUser, setUserRoles, setAccountType } = useContext(UsersContext);
+    const { setUser, setUserRoles, setAccountType } = useContext(UsersContext);
     const account_type = setAccountType();
     const [ loading, setLoading ] = useState(false);
     
@@ -44,12 +47,28 @@ const Profile = () => {
 
     return (
         <div>
-            <BasicSection user_id={userProfile.id} />
-            {
-                (account_type === 'basic' || account_type === 'creator')
-                    ? null
-                    : <BusinessSection user_id={userProfile.id} />
-            }
+            <Tabs
+                defaultActiveKey="profile"
+                id="uncontrolled-tab-example"
+                className="mb-3"
+                fill
+                >
+                    <Tab eventKey="profile" title="Profile">
+                        <AccountDetails />
+                    </Tab>
+                    <Tab eventKey="roles" title="Roles">
+                        <RolesTab />
+                    </Tab>
+                    <Tab eventKey="events" title="Events">
+                        <UpcomingCreatedBy />
+                    </Tab>
+                    {
+                        (account_type !== 'basic' && account_type !== 'creator') &&
+                        <Tab eventKey="manager" title="Manager">
+                            <BusinessList />
+                        </Tab>
+                    }
+            </Tabs>
         </div>
     )
 }

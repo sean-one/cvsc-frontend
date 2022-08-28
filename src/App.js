@@ -11,9 +11,6 @@ import Register from './components/register.jsx';
 import Login from './components/login.jsx';
 // import AuthRoute from './components/auth/auth.jsx';
 import Profile from './components/profile/profile.jsx';
-import RolesTab from './components/profile/rolesTab/rolesTab';
-import UpcomingCreatedBy from './components/events/upcoming/upcoming.created_by';
-import BusinessList from './components/profile/businessSection/businessList';
 import EventView from './components/events/eventView';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -40,9 +37,6 @@ const App = () => {
             <Route exact path='/business/:business_id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
             <Route exact path='/profile' component={Profile} />
-            <Route exact path='/roles' component={RolesTab} />
-            <Route exact path='/user_calendar' component={UpcomingCreatedBy} />
-            <Route exact path='/admin/business_list' component={BusinessList} />
             {/* <AuthRoute exact path='/profile' component={Profile} /> */}
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />

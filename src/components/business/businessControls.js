@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useLocation } from 'react-router-dom';
 
 import BusinessRequestToggle from './buttons/businessRequestToggle';
 import BusinessActiveToggle from './buttons/businessActiveToggle';
@@ -12,11 +13,16 @@ const BusinessContols = ({ business }) => {
     const { getBusinessRole } = useContext(UsersContext)
     const user_role = getBusinessRole(business_id)
 
+    let { pathname } = useLocation()
+
 
     return (
         <div className='d-flex flex-column ps-4 bg-light rounded-bottom mb-4 shadow'>
             <ViewBusinessButton business_id={business_id} />
-            <CreateEventButton />
+            {
+                (pathname !== '/profile') &&
+                    <CreateEventButton />
+            }
             <EditBusinessButton business={business} />
             {
                 (user_role.role_type === 'admin') &&
