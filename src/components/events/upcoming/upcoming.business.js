@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useEventsQuery } from '../../../hooks/useEvents';
-import BusinessEventListing from '../../business/businessEventListing';
+import EventList from '../eventList';
 
 
 const UpcomingBusiness = ({ business_name, business_id }) => {
@@ -14,13 +14,17 @@ const UpcomingBusiness = ({ business_name, business_id }) => {
     const business_events = events.data.filter(event => event.brand_id === business_id || event.venue_id === business_id)
 
     return (
-        <>
+        <div>
+            {
+                (business_events.length > 0) &&
+                    <h6>{`Upcoming ${business_name} events`}</h6>
+            }
             {
                 (business_events.length > 0) && (
-                    <BusinessEventListing event_list={business_events} business_name={business_name} />
+                    <EventList event_list={business_events} />
                 )
             }
-        </>
+        </div>
     )
 }
 

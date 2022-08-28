@@ -11,7 +11,6 @@ import BusinessLocation from './location/businessLocation';
 // import BusinessControls from './businessControls';
 import BusinessUserRoles from './businessUserRoles';
 import UpcomingBusiness from '../events/upcoming/upcoming.business';
-// import UpcomingManagement from '../events/upcoming/upcoming.management';
 
 
 const BusinessView = () => {
@@ -95,7 +94,6 @@ const BusinessView = () => {
                     <BusinessUserRoles business={current_business} />
             }
             <UpcomingBusiness business_name={current_business.business_name} business_id={current_business.id} />
-            {/* <UpcomingManagement business_id={business_id} business_name={current_business.business_name} /> */}
         </div>
     )
 }
