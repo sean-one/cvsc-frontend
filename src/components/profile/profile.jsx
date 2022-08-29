@@ -64,9 +64,9 @@ const Profile = () => {
                     </Tab>
                     {
                         (account_type !== 'basic' && account_type !== 'creator') &&
-                        <Tab eventKey="manager" title="Manager">
-                            <BusinessList />
-                        </Tab>
+                            <Tab eventKey="manager" title="Manager">
+                                <BusinessList />
+                            </Tab>
                     }
             </Tabs>
         </div>

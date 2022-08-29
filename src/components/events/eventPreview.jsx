@@ -15,7 +15,11 @@ const EventPreview = ({ event }) => {
             <Card.Img variant='top' src={event.eventmedia} />
             <Col md={8}>
                 <Card.Body className='py-1 px-2 mx-0'>
-                    <Card.Title className='my-0 py-1'>{event.eventname.toUpperCase()}</Card.Title>
+                    <Card.Title className='my-0 py-1'>
+                        <Link to={{
+                            pathname: `/event/${event.event_id}`
+                        }}>{event.eventname.toUpperCase()}</Link>
+                    </Card.Title>
                     <Card.Subtitle>
                         <Row className='fst-italic'>
                             <Col xs={6}>{format(new Date(event.eventdate), 'E, MMM d')}</Col>

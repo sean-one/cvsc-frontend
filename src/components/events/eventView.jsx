@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap'
 import { format } from 'date-fns'
@@ -7,17 +7,20 @@ import { faCannabis, faClinicMedical  } from '@fortawesome/free-solid-svg-icons'
 
 import { formatTime } from '../../helpers/formatTime';
 import { useEventQuery } from '../../hooks/useEvents';
+import { UsersContext } from '../../context/users/users.provider';
 
 import UpcomingEvents from './upcoming/upcoming.events';
 
 const EventView = () => {
     let { event_id } = useParams()
+    const { userProfile } = useContext(UsersContext);
     const { data: event, isLoading } = useEventQuery(event_id)
     
     if (isLoading) {
         return <div>loading...</div>
     }
 
+    
     return (
         <>
             <Row className='py-0'>
