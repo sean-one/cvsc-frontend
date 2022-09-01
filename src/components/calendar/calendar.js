@@ -7,7 +7,7 @@ import { useEventsQuery } from '../../hooks/useEvents';
 import Day from './day.jsx';
 
 const Calendar = () => {
-    const { data, isLoading, isError, isSuccess } = useEventsQuery()
+    const { data: eventList, isLoading, isError, isSuccess } = useEventsQuery()
     let siteSortedEvents = {}
     
     if(isLoading) {
@@ -19,7 +19,7 @@ const Calendar = () => {
     }
 
     if(isSuccess) {
-        siteSortedEvents = filterEventsByDay(data.data)
+        siteSortedEvents = filterEventsByDay(eventList.data)
     }
 
     return (

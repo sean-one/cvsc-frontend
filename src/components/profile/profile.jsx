@@ -7,9 +7,10 @@ import { UsersContext } from '../../context/users/users.provider';
 import AccountDetails from './basicSection/accountDetails';
 import BusinessList from './businessSection/businessList';
 import RolesTab from './rolesTab/rolesTab';
-import UpcomingCreatedBy from '../events/upcoming/upcoming.created_by';
+import UserEventsTab from './userEventsTab/userEventsTab';
 
 const Profile = () => {
+    const [ user_events, setUserEvents ] = useState([])
     const { setUser, setUserRoles, setAccountType } = useContext(UsersContext);
     const account_type = setAccountType();
     const [ loading, setLoading ] = useState(false);
@@ -23,6 +24,7 @@ const Profile = () => {
             .then(response => {
                 setUser(response.data.user)
                 setUserRoles(response.data.roles)
+                setUserEvents(response.data.user_events)
             })
             .catch(err => {
                 if(err.response.status === 401) {
@@ -60,7 +62,7 @@ const Profile = () => {
                         <RolesTab />
                     </Tab>
                     <Tab eventKey="events" title="Events">
-                        <UpcomingCreatedBy />
+                        <UserEventsTab user_events={user_events} />
                     </Tab>
                     {
                         (account_type !== 'basic' && account_type !== 'creator') &&

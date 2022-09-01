@@ -3,6 +3,7 @@ import userTypes from './users.types';
 export const USERS_INITIAL_STATE = {
     userProfile: {},
     userRoles: [],
+    userEvents: [],
 };
 
 const usersReducer = (state, action) => {

@@ -18,7 +18,6 @@ const UpcomingCreatedBy = () => {
 
     return (
         <div>
-            <h6>Calendar</h6>
             {
                 user_events.map(event => <EventMiniCard key={event.event_id} event={event} />)
             }
