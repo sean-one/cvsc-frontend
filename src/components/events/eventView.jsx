@@ -14,17 +14,19 @@ const EventView = () => {
     let { event_id } = useParams()
     let brand_event_list = []
     let venue_event_list = []
+    let both_event_list = []
 
     const { data: event, isLoading: eventLoading, isSuccess: eventSuccess } = useEventQuery(event_id)
     const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
 
-    if (eventLoading && listLoading) {
+    if (eventLoading || listLoading) {
         return <div>loading...</div>
     }
 
     if (eventSuccess && listSuccess) {
         brand_event_list = events.data.filter(e => e.brand_id === event.data.brand_id && e.event_id !== event.data.event_id)
         venue_event_list = events.data.filter(e => e.venue_id === event.data.venue_id && e.event_id !== event.data.event_id)
+        both_event_list = events.data.filter(e => (e.venue_id === event.data.venue_id || e.brand_id === event.data.brand_id) && e.event_id !== event.data.event_id)
     }
 
 
@@ -63,8 +65,14 @@ const EventView = () => {
                 {event.data.details}
             </Row>
             <Row>
-                <EventList event_list={brand_event_list} business_name={event.data.brand_name} />
-                <EventList event_list={venue_event_list} business_name={event.data.venue_name} />
+                {
+                    (event.data.brand_id === event.data.venue_id)
+                        ? <EventList event_list={both_event_list} business_name={event.data.brand_name} />
+                        : <div>
+                            <EventList event_list={brand_event_list} business_name={event.data.brand_name} />
+                            <EventList event_list={venue_event_list} business_name={event.data.venue_name} />
+                        </div>
+                }
             </Row>
         </>
     )

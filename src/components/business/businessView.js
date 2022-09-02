@@ -6,19 +6,27 @@ import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
+import { useEventsQuery } from '../../hooks/useEvents';
 
 import BusinessLocation from './location/businessLocation';
 // import BusinessControls from './businessControls';
 import BusinessUserRoles from './businessUserRoles';
-import UpcomingBusiness from '../events/upcoming/upcoming.business';
+import EventList from '../events/eventList';
 
 
 const BusinessView = () => {
     let { business_id } = useParams()
-    const { data: businessFetch, isLoading } = useBusinessQuery(business_id)
+    let business_list = []
 
-    if (isLoading) {
+    const { data: businessFetch, isLoading: businessLoading, isSuccess: businessSuccess } = useBusinessQuery(business_id)
+    const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
+
+    if (businessLoading || listLoading) {
         return <p>loading...</p>
+    }
+
+    if (businessSuccess && listSuccess) {
+        business_list = events.data.filter(e => e.brand_id === businessFetch.data.id || e.venue_id === businessFetch.data.id)
     }
 
     const current_business = businessFetch.data
@@ -93,7 +101,7 @@ const BusinessView = () => {
                 (current_business.active_business) &&
                     <BusinessUserRoles business={current_business} />
             }
-            <UpcomingBusiness business_name={current_business.business_name} business_id={current_business.id} />
+            <EventList event_list={business_list} business_name={current_business.business_name} />
         </div>
     )
 }
