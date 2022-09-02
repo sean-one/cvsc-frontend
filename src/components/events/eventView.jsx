@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap'
 import { format } from 'date-fns'
@@ -6,21 +6,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCannabis, faClinicMedical  } from '@fortawesome/free-solid-svg-icons'
 
 import { formatTime } from '../../helpers/formatTime';
-import { useEventQuery } from '../../hooks/useEvents';
-import { UsersContext } from '../../context/users/users.provider';
+import { useEventQuery, useEventsQuery } from '../../hooks/useEvents';
 
-import UpcomingEvents from './upcoming/upcoming.events';
+import EventList from './eventList';
 
 const EventView = () => {
     let { event_id } = useParams()
-    const { userProfile } = useContext(UsersContext);
-    const { data: event, isLoading } = useEventQuery(event_id)
-    
-    if (isLoading) {
+    let brand_event_list = []
+    let venue_event_list = []
+
+    const { data: event, isLoading: eventLoading, isSuccess: eventSuccess } = useEventQuery(event_id)
+    const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
+
+    if (eventLoading && listLoading) {
         return <div>loading...</div>
     }
 
-    
+    if (eventSuccess && listSuccess) {
+        brand_event_list = events.data.filter(e => e.brand_id === event.data.brand_id && e.event_id !== event.data.event_id)
+        venue_event_list = events.data.filter(e => e.venue_id === event.data.venue_id && e.event_id !== event.data.event_id)
+    }
+
+
     return (
         <>
             <Row className='py-0'>
@@ -56,7 +63,8 @@ const EventView = () => {
                 {event.data.details}
             </Row>
             <Row>
-                <UpcomingEvents event={event.data} venue_id={event.data.venue_id} brand_id={event.data.brand_id} />
+                <EventList event_list={brand_event_list} business_name={event.data.brand_name} />
+                <EventList event_list={venue_event_list} business_name={event.data.venue_name} />
             </Row>
         </>
     )

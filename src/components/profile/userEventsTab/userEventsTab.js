@@ -1,8 +1,7 @@
 import React from 'react';
 
-import UpcomingCreatedBy from '../../events/upcoming/upcoming.created_by';
-import EventsInactiveList from '../../events/eventsInactiveList';
-
+import EventList from '../../events/eventList';
+import CreateEventButton from '../../events/buttons/createEventButton';
 
 const UserEventsTab = ({ user_events }) => {
     const upcoming_events = user_events.filter(event => event.active_event)
@@ -10,14 +9,23 @@ const UserEventsTab = ({ user_events }) => {
 
     return (
         <div>
-            <h6>Calendar</h6>
+            <div className='d-flex justify-content-between align-items-center mb-2'>
+                <h6>Calendar</h6>
+                <CreateEventButton />
+            </div>
             {
                 (upcoming_events.length > 0) &&
-                    <UpcomingCreatedBy event_list={upcoming_events} />
+                    <EventList event_list={upcoming_events} />
             }
             {
                 (inactive_events.length > 0) &&
-                    <EventsInactiveList event_list={inactive_events} />
+                    <div className='pt-3'>
+                        <h6>Inactive Events</h6>
+                    </div>
+            }
+            {
+                (inactive_events.length > 0) &&
+                    <EventList event_list={inactive_events} />
             }
         </div>
     )

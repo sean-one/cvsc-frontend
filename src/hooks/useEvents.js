@@ -10,6 +10,7 @@ const getAllEvents = async () => {
 
 const getEvent = async (id) => {
     const single_event = await AxiosInstance.get(`/events/${id}`)
+    console.log(single_event)
 
     return single_event
 }
