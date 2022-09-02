@@ -1,7 +1,7 @@
 import React from 'react';
 
-import CreatorRequest from '../basicSection/creatorRequest';
-import UserRoles from '../basicSection/userRoles';
+import CreatorRequest from './creatorRequest';
+import UserRoles from './userRoles';
 import PendingManagementRoles from './pendingManagementRoles';
 
 const RolesTab = () => {

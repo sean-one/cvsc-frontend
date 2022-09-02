@@ -4,8 +4,8 @@ import { Tab, Tabs } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
-import AccountDetails from './basicSection/accountDetails';
-import BusinessList from './businessSection/businessList';
+import AccountDetails from './accountTab/accountDetails';
+import BusinessList from './managerTab/businessList';
 import RolesTab from './rolesTab/rolesTab';
 import UserEventsTab from './userEventsTab/userEventsTab';
 
