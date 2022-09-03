@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
-import { addBusinessSchema } from '../../helpers/validationSchemas';
-import { useAddBusinessMutation } from '../../hooks/useBusinessApi';
-import { NotificationsContext } from '../../context/notifications/notifications.provider';
-import { UsersContext } from '../../context/users/users.provider';
+import { addBusinessSchema } from '../../../helpers/validationSchemas';
+import { useAddBusinessMutation } from '../../../hooks/useBusinessApi';
+import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import { UsersContext } from '../../../context/users/users.provider';
 
 const CreateBusiness = () => {
     const { mutateAsync: addBusinessMutation, error: addError } = useAddBusinessMutation()
@@ -81,6 +81,7 @@ const CreateBusiness = () => {
 
     return (
         <Form onSubmit={handleSubmit(sendRequest)}>
+            {/* business name input */}
             <Form.Group controlId='business_name'>
                 <Form.Label>Business Name</Form.Label>
                 <Form.Control
@@ -95,6 +96,7 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_name?.message}</div>
             </Form.Group>
 
+            {/* business email input */}
             <Form.Group controlId='business_email'>
                 <Form.Label>Business Email</Form.Label>
                 <Form.Control
@@ -109,6 +111,8 @@ const CreateBusiness = () => {
             </Form.Group>
 
             {/* <Form.Group controlId='business_avatar'> */}
+
+            {/* business avatar random link */}
             <Form.Group>
                 <Form.Label>Business Branding</Form.Label>
                 <Form.Control
@@ -123,8 +127,9 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_avatar?.message}</div>
             </Form.Group>
 
+            {/* business description input */}
             <Form.Group controlId='business_description'>
-                <Form.Label>Business Bio</Form.Label>
+                <Form.Label>Business Description</Form.Label>
                 <Form.Control
                     className={errors.business_description ? 'inputError' : ''}
                     {...register('business_description')}
@@ -137,6 +142,7 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_description?.message}</div>
             </Form.Group>
 
+            {/* business type option selector */}
             <Form.Group controlId='business_type'>
                 <Form.Label>Business Type</Form.Label>
                 <Form.Select
@@ -154,76 +160,74 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_type?.message}</div>
             </Form.Group>
 
+            {/* if business type is dispensary or both, address option will display */}
             {
                 (businessType !== 'brand') && (
-                    <Container>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId='street_address'>
-                                    <Form.Label>Street Address</Form.Label>
-                                    <Form.Control
-                                        className={errors.street_address ? 'inputError' : ''}
-                                        {...register('street_address')}
-                                        onFocus={() => clearErrors('street_address')}
-                                        type='text'
-                                        name='street_address'
-                                        required
-                                    />
-                                    <div className='errormessage'>{errors.street_address?.message}</div>
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                    <div>
+                        <div>
+                            {/* street address input for location */}
+                            <Form.Group controlId='street_address'>
+                                <Form.Label>Street Address</Form.Label>
+                                <Form.Control
+                                    className={errors.street_address ? 'inputError' : ''}
+                                    {...register('street_address')}
+                                    onFocus={() => clearErrors('street_address')}
+                                    type='text'
+                                    name='street_address'
+                                    required
+                                />
+                                <div className='errormessage'>{errors.street_address?.message}</div>
+                            </Form.Group>
+                        </div>
+                        <div>
+                            {/* city input for location */}
+                            <Form.Group controlId='city'>
+                                <Form.Label>City</Form.Label>
+                                <Form.Control
+                                    className={errors.city ? 'inputError' : ''}
+                                    {...register('city')}
+                                    onFocus={() => clearErrors('city')}
+                                    type='text'
+                                    name='city'
+                                    required
+                                />
+                                <div className='errormessage'>{errors.city?.message}</div>
+                            </Form.Group>
+                        </div>
+                        <div className='d-flex justify-content-between'>
+                            {/* state input for location */}
+                            <Form.Group controlId='state'>
+                                <Form.Label>State</Form.Label>
+                                <Form.Control
+                                    className={errors.state ? 'inputError' : ''}
+                                    {...register('state')}
+                                    onFocus={() => clearErrors('state')}
+                                    type='text'
+                                    name='state'
+                                    required
+                                />
+                                <div className='errormessage'>{errors.state?.message}</div>
+                            </Form.Group>
 
-                        <Row>
-                            <Col lg={6}>
-                                <Form.Group controlId='city'>
-                                    <Form.Label>City</Form.Label>
-                                    <Form.Control
-                                        className={errors.city ? 'inputError' : ''}
-                                        {...register('city')}
-                                        onFocus={() => clearErrors('city')}
-                                        type='text'
-                                        name='city'
-                                        required
-                                    />
-                                    <div className='errormessage'>{errors.city?.message}</div>
-                                </Form.Group>
-                            </Col>
-
-                            <Col lg={3}>
-                                <Form.Group controlId='state'>
-                                    <Form.Label>State</Form.Label>
-                                    <Form.Control
-                                        className={errors.state ? 'inputError' : ''}
-                                        {...register('state')}
-                                        onFocus={() => clearErrors('state')}
-                                        type='text'
-                                        name='state'
-                                        required
-                                    />
-                                    <div className='errormessage'>{errors.state?.message}</div>
-                                </Form.Group>
-                            </Col>
-
-                            <Col lg={3}>
-                                <Form.Group controlId='zip'>
-                                    <Form.Label>Zip</Form.Label>
-                                    <Form.Control
-                                        className={errors.zip ? 'inputError' : ''}
-                                        {...register('zip')}
-                                        onFocus={() => clearErrors('zip')}
-                                        type='text'
-                                        name='zip'
-                                        required
-                                    />
-                                    <div className='errormessage'>{errors.zip?.message}</div>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    </Container>
+                            {/* zip code input for location */}
+                            <Form.Group controlId='zip'>
+                                <Form.Label>Zip</Form.Label>
+                                <Form.Control
+                                    className={errors.zip ? 'inputError' : ''}
+                                    {...register('zip')}
+                                    onFocus={() => clearErrors('zip')}
+                                    type='text'
+                                    name='zip'
+                                    required
+                                />
+                                <div className='errormessage'>{errors.zip?.message}</div>
+                            </Form.Group>
+                        </div>
+                    </div>
                 )
             }
             
+            {/* instgram input */}
             <Form.Group controlId='business_instagram'>
                 <Form.Label>Instagram</Form.Label>
                 <Form.Control
@@ -236,6 +240,7 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_instagram?.message}</div>
             </Form.Group>
 
+            {/* website input */}
             <Form.Group controlId='business_website'>
                 <Form.Label>Website</Form.Label>
                 <Form.Control
@@ -248,6 +253,7 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_website?.message}</div>
             </Form.Group>
 
+            {/* facebook input */}
             <Form.Group controlId='business_facebook'>
                 <Form.Label>Facebook</Form.Label>
                 <Form.Control
@@ -260,6 +266,7 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_facebook?.message}</div>
             </Form.Group>
 
+            {/* phone input */}
             <Form.Group controlId='business_phone'>
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
@@ -272,6 +279,7 @@ const CreateBusiness = () => {
                 <div className='errormessage'>{errors.business_phone?.message}</div>
             </Form.Group>
 
+            {/* twitter input */}
             <Form.Group controlId='business_twitter'>
                 <Form.Label>Twitter</Form.Label>
                 <Form.Control

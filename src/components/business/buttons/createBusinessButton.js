@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-import CreateBusiness from '../createBusiness';
+import CreateBusiness from '../businessForms/createBusiness';
+// import BusinessForm from '../businessForm';
 
 const CreateBusinessButton = () => {
     const [ modalShow, setModalShow ] = useState(false);

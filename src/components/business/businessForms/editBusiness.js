@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
-import { UsersContext } from '../../context/users/users.provider';
-import { NotificationsContext } from '../../context/notifications/notifications.provider';
+import { useUpdateBusinessMutation } from '../../../hooks/useBusinessApi';
+import { UsersContext } from '../../../context/users/users.provider';
+import { NotificationsContext } from '../../../context/notifications/notifications.provider';
 
 const Styles = styled.div`
     .errormessage {
@@ -106,8 +106,9 @@ const EditBusiness = ({ business, handleClose }) => {
                     <div className='errormessage'>{errors.business_avatar?.message}</div>
                 </Form.Group> */}
 
+                {/* business description input */}
                 <Form.Group controlId='business_description'>
-                    <Form.Label>Business Bio</Form.Label>
+                    <Form.Label>Business Description</Form.Label>
                     <Form.Control
                         className={errors.business_description ? 'inputError' : ''}
                         {...register('business_description')}
@@ -119,6 +120,7 @@ const EditBusiness = ({ business, handleClose }) => {
                     <div className='errormessage'>{errors.business_description?.message}</div>
                 </Form.Group>
 
+                {/* instagram input */}
                 <Form.Group controlId='business_instagram'>
                     <Form.Label>Instagram</Form.Label>
                     <Form.Control
@@ -131,6 +133,7 @@ const EditBusiness = ({ business, handleClose }) => {
                     <div className='errormessage'>{errors.business_instagram?.message}</div>
                 </Form.Group>
 
+                {/* website input */}
                 <Form.Group controlId='business_website'>
                     <Form.Label>Website</Form.Label>
                     <Form.Control
@@ -143,6 +146,7 @@ const EditBusiness = ({ business, handleClose }) => {
                     <div className='errormessage'>{errors.business_website?.message}</div>
                 </Form.Group>
 
+                {/* facebook input */}
                 <Form.Group controlId='business_facebook'>
                     <Form.Label>Facebook</Form.Label>
                     <Form.Control
@@ -155,6 +159,7 @@ const EditBusiness = ({ business, handleClose }) => {
                     <div className='errormessage'>{errors.business_facebook?.message}</div>
                 </Form.Group>
 
+                {/* phone input */}
                 <Form.Group controlId='business_phone'>
                     <Form.Label>Phone</Form.Label>
                     <Form.Control
@@ -167,6 +172,7 @@ const EditBusiness = ({ business, handleClose }) => {
                     <div className='errormessage'>{errors.business_phone?.message}</div>
                 </Form.Group>
 
+                {/* twitter input */}
                 <Form.Group controlId='business_twitter'>
                     <Form.Label>Twitter</Form.Label>
                     <Form.Control

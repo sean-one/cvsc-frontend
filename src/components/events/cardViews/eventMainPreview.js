@@ -5,11 +5,9 @@ import { Card, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCannabis, faClinicMedical } from '@fortawesome/free-solid-svg-icons';
 
-import { formatTime } from '../../helpers/formatTime';
+import { formatTime } from '../../../helpers/formatTime';
 
-const EventPreview = ({ event }) => {
-
-    
+const EventMainPreview = ({ event }) => {
     return (
         <Card className='my-3'>
             <Card.Img variant='top' src={event.eventmedia} />
@@ -43,11 +41,11 @@ const EventPreview = ({ event }) => {
                             </Col>
                             <Col xs={1} className='text-end'><FontAwesomeIcon icon={faCannabis} /></Col>
                         </Col>
-                    </Row>    
+                    </Row>
                 </Card.Body>
             </Col>
         </Card>
     )
 }
 
-export default withRouter(EventPreview);
+export default withRouter(EventMainPreview);

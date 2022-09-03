@@ -7,7 +7,7 @@ const UserEventsTab = ({ user_events }) => {
     const upcoming_events = user_events.filter(event => event.active_event)
     const inactive_events = user_events.filter(event => !event.active_event)
 
-    console.log(upcoming_events)
+    
     return (
         <div>
             <div className='d-flex justify-content-between align-items-center mb-2'>

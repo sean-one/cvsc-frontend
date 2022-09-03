@@ -8,6 +8,8 @@ import AccountDetails from './accountTab/accountDetails';
 import BusinessList from './managerTab/businessList';
 import RolesTab from './rolesTab/rolesTab';
 import UserEventsTab from './userEventsTab/userEventsTab';
+import CreateBusinessButton from '../business/buttons/createBusinessButton';
+
 
 const Profile = () => {
     const [ user_events, setUserEvents ] = useState([])
@@ -71,6 +73,7 @@ const Profile = () => {
                             </Tab>
                     }
             </Tabs>
+            <CreateBusinessButton />
         </div>
     )
 }

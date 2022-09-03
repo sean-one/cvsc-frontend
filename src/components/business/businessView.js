@@ -31,6 +31,7 @@ const BusinessView = () => {
 
     const current_business = businessFetch.data
 
+    
     return (
         <div>
             <h1 className='mb-0'>{current_business.business_name}</h1>
