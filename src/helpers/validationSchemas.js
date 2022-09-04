@@ -56,29 +56,31 @@ export const createEventSchema = yup.object().shape({
 
     eventstart: yup
         .string()
-        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, 'incorrect time formatting')
-        .required('there must be a beginning'),
+        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
+        .nullable(),
         
     eventend: yup
         .string()
-        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, 'incorrect time formatting')
-        .required('there must be a beginning'),
+        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
+        .nullable(),
     
     venue_id: yup
         .string()
         .uuid()
         .typeError('please select a venue location')
-        .required('event location is required'),
+        .nullable(),
+        // .required('event location is required'),
         
     details: yup
-        .string()
-        .required(),
+        .string(),
+        // .required(),
         
     brand_id: yup
         .string()
         .uuid()
         .typeError('please select a brand')
-        .required('branding is required')
+        .nullable(),
+        // .required('branding is required')
 })
 
 export const addContactSchema = yup.object().shape({

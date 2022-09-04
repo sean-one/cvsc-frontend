@@ -22,7 +22,16 @@ const CreateEvent = () => {
     const business_roles = userActiveRoles()
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(createEventSchema)
+        resolver: yupResolver(createEventSchema),
+        defaultValues: {
+            // eventname: null,
+            // eventdate: null,
+            eventstart: null,
+            eventend: null,
+            venue_id: null,
+            details: '',
+            brand_id: null,
+        }
     });
     
     let history = useHistory();
@@ -35,6 +44,7 @@ const CreateEvent = () => {
     const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
     const createNewEvent = async (data) => {
+        console.log(data)
         try {
             canvas.current.toBlob(async function(blob) {
                 const token = localStorage.getItem('token')
@@ -103,6 +113,7 @@ const CreateEvent = () => {
     return (
         <Form onSubmit={handleSubmit(createNewEvent)}>
 
+            {/* eventname input */}
             <Form.Group controlId='eventname'>
                 <Form.Label>Eventname</Form.Label>
                 <Form.Control
@@ -117,6 +128,7 @@ const CreateEvent = () => {
                 <div className='errormessage'>{errors.eventname?.message}</div>
             </Form.Group>
 
+            {/* eventdate input */}
             <Form.Group controlId='eventdate'>
                 <Form.Label>Event Date</Form.Label>
                 <Form.Control
@@ -130,28 +142,32 @@ const CreateEvent = () => {
                 <div className='errormessage'>{errors.eventdate?.message}</div>
             </Form.Group>
             
+            {/* eventstart input */}
             <Form.Group controlId='eventstart'>
                 <Form.Label>Start</Form.Label>
                 <Form.Control
                     className={errors.eventstart ? 'inputError' : ''}
-                    {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                    {...register('eventstart')}
+                    // {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
                     onFocus={() => clearErrors('eventstart')}
                     type='time'
                     name='eventstart'
-                    required
+                    // required
                 />
                 <div className='errormessage'>{errors.eventstart?.message}</div>
             </Form.Group>
             
+            {/* eventend input */}
             <Form.Group controlId='eventend'>
                 <Form.Label>End</Form.Label>
                 <Form.Control
                     className={errors.eventend ? 'inputError' : ''}
-                    {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                    {...register('eventend')}
+                    // {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
                     onFocus={() => clearErrors('eventend')}
                     type='time'
                     name='eventend'
-                    required
+                    // required
                 />
                 <div className='errormessage'>{errors.eventend?.message}</div>
             </Form.Group>
@@ -168,6 +184,7 @@ const CreateEvent = () => {
                     </Row>
             }
             
+            {/* event image input */}
             <Form.Group controlId='eventmedia'>
                 <Form.Label>Event Image</Form.Label>
                 <Form.Control
@@ -182,6 +199,7 @@ const CreateEvent = () => {
                 <div className='errormessage'>{errors.eventmedia?.message}</div>
             </Form.Group>
             
+            {/* business location selector */}
             <Form.Group controlId='venue_id'>
                 <Form.Label>Location</Form.Label>
                 <Form.Select
@@ -190,7 +208,7 @@ const CreateEvent = () => {
                     onFocus={() => clearErrors([ 'venue_id', 'role_rights' ])}
                     type='text'
                     name='venue_id'
-                    required
+                    // required
                 >
                     <option value='0'>Select...</option>
                     {
@@ -204,6 +222,7 @@ const CreateEvent = () => {
                 <div className='errormessage'>{errors.role_rights?.message}</div>
             </Form.Group>
 
+            {/* event details input */}
             <Form.Group controlId='details'>
                 <Form.Label>Event Details</Form.Label>
                 <Form.Control
@@ -214,11 +233,12 @@ const CreateEvent = () => {
                     as='textarea'
                     row={5}
                     name='details'
-                    required
+                    // required
                 />
                 <div className='errormessage'>{errors.details?.message}</div>
             </Form.Group>
 
+            {/* business brand selector */}
             <Form.Group controlId='brand_id'>
                 <Form.Label>Brand</Form.Label>
                 <Form.Select
@@ -227,7 +247,7 @@ const CreateEvent = () => {
                     onFocus={() => clearErrors([ 'brand_id', 'role_rights' ])}
                     type='text'
                     name='brand_id'
-                    required
+                    // required
                 >
                     <option value='0'>Select...</option>
                     {
