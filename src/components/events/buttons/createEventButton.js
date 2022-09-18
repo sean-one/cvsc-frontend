@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
+// import AddEvent from '../addEvent';
 import CreateEvent from '../createEvent';
 
 const CreateEventButton = () => {
@@ -18,6 +19,7 @@ const CreateEventButton = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <CreateEvent />
+                    {/* <AddEvent /> */}
                 </Modal.Body>
             </Modal>
         </div>

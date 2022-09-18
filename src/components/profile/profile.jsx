@@ -12,8 +12,7 @@ import CreateBusinessButton from '../business/buttons/createBusinessButton';
 
 
 const Profile = () => {
-    const [ user_events, setUserEvents ] = useState([])
-    const { setUser, setUserRoles, setAccountType } = useContext(UsersContext);
+    const { userProfile, setUser, setAccountType } = useContext(UsersContext);
     const account_type = setAccountType();
     const [ loading, setLoading ] = useState(false);
     
@@ -24,11 +23,10 @@ const Profile = () => {
 
         AxiosInstance.get('/auth/login/success')
             .then(response => {
-                setUser(response.data.user)
-                setUserRoles(response.data.roles)
-                setUserEvents(response.data.user_events)
+                setUser(response.data)
             })
             .catch(err => {
+                console.log(err)
                 if(err.response.status === 401) {
                     history.push('/login')
                 }
@@ -64,7 +62,7 @@ const Profile = () => {
                         <RolesTab />
                     </Tab>
                     <Tab eventKey="events" title="Events">
-                        <UserEventsTab user_events={user_events} />
+                        <UserEventsTab user_id={userProfile.id} />
                     </Tab>
                     {
                         (account_type !== 'basic' && account_type !== 'creator') &&

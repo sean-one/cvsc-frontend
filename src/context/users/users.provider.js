@@ -10,16 +10,20 @@ export const UsersContext = createContext({
 
 const UsersProvider = ({ children }) => {
     const [ store, dispatch ] = useReducer(usersReducer, USERS_INITIAL_STATE)
-    const { userProfile, userRoles } = store
+    const { userProfile, userRoles, userEvents } = store
     
     // used at sucessful login & successful registration
     const setUser = userdata => {
         // set up local storage and cleans data payload object
-        userSignIn(userdata)
+        userSignIn(userdata.user)
 
         dispatch({
             type: userTypes.SET_USER,
-            payload: userdata.user
+            payload: {
+                user: userdata.user,
+                roles: userdata.roles,
+                user_events: userdata.user_events
+            }
         })
     }
 
@@ -157,6 +161,7 @@ const UsersProvider = ({ children }) => {
                 
                 userProfile,
                 userRoles,
+                userEvents,
             }
         }>
             {children}

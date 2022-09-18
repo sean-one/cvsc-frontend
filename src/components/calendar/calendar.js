@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import filterEventsByDay from '../../helpers/filterEventsByDay';
 import { useEventsQuery } from '../../hooks/useEvents';
 
+import LoadingSpinner from '../loadingSpinner';
 import Day from './day.jsx';
 
 const Calendar = () => {
@@ -11,7 +12,7 @@ const Calendar = () => {
     let siteSortedEvents = {}
     
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     if(isError) {

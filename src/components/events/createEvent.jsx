@@ -1,36 +1,36 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
+import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createEventSchema } from '../../helpers/validationSchemas';
-import { Button, Form, Row } from 'react-bootstrap';
-import AxiosInstance from '../../helpers/axios';
+import { Button, Form } from 'react-bootstrap';
 
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useAddEventMutation } from '../../hooks/useEvents';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
 import { UsersContext } from '../../context/users/users.provider';
-import useImagePreviewer from '../../hooks/useImagePreviewer';
 
 
 const CreateEvent = () => {
+    const [ imageFile, setImageFile ] = useState('')
     const { data: business_list, isLoading: loadingBusinessList } = useBusinessesQuery()
-    const { editImage, imagePreview, canvas } = useImagePreviewer()
     const { mutateAsync: addEventMutation } = useAddEventMutation()
     const { dispatch } = useContext(NotificationsContext);
     const { userActiveRoles } = useContext(UsersContext)
     const business_roles = userActiveRoles()
-    const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
+    const { register, handleSubmit, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema),
         defaultValues: {
-            // eventname: null,
-            // eventdate: null,
-            eventstart: null,
-            eventend: null,
-            venue_id: null,
+            eventname: null,
+            eventdate: null,
+            eventstart: '',
+            eventend: '',
+            eventmedia: '',
+            venue_id: '',
             details: '',
-            brand_id: null,
+            brand_id: '',
         }
     });
     
@@ -44,95 +44,69 @@ const CreateEvent = () => {
     const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
     const createNewEvent = async (data) => {
-        console.log(data)
-        try {
-            canvas.current.toBlob(async function(blob) {
-                const token = localStorage.getItem('token')
-    
-                // get image url from s3 bucket
-                const url = await AxiosInstance.get('/s3', { headers: { 'Authorization': 'Bearer ' + token } })
-                    .then(response => {
-                        return response.data.url
-                    })
-                    .catch(err => console.log(err))
-                
-                // upload the image to the s3 bucket at the url recieved
-                await AxiosInstance.put(url, blob, { headers: { 'Content-Type': 'multipart/form-data' }})
-    
-                const imageUrl = url.split('?')[0]
-                
-                data.eventmedia = imageUrl
-                
-                const add_event_response = await addEventMutation(data)
+        
+        const formData = new FormData()
+        formData.append('eventname', data.eventname)
+        formData.append('eventdate', format(data.eventdate, 'y-M-d'))
+        formData.append('eventstart', data.eventstart)
+        formData.append('eventend', data.eventend)
+        formData.set('eventmedia', imageFile)
+        formData.append('venue_id', data.venue_id)
+        formData.append('details', data.details)
+        formData.append('brand_id', data.brand_id)
+        
+        const add_event_response = await addEventMutation(formData)
 
-                if(add_event_response.status === 201) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'SUCCESS',
-                            message: `event '${add_event_response.data.eventname}' has been created`
-                        }
-                    })
-                    history.push({
-                        pathname: `/event/${add_event_response.data.event_id}`,
-                        state: {
-                            event: add_event_response.data
-                        }
-                    });
-                } else {
-                    console.log('sumtins no rite')
-                    // dispatch({
-                    //     type: "ADD_NOTIFICATION",
-                    //     payload: {
-                    //         notification_type: 'ERROR',
-                    //         message: 'server error, please wait and try again'
-                    //     }
-                    // })
-
-                    // history.push({
-                    //     pathname: '/login'
-                    // })
-                }
-            })
-        } catch (error) {
-            setError('eventmedia', {
-                type: 'server',
-                message: 'missing image'
-            })
+        if(add_event_response.status === 201) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
-                    notification_type: 'ERROR',
-                    message: `please be sure to add and image`
+                    notification_type: 'SUCCESS',
+                    message: `event '${add_event_response.data.eventname}' has been created`
                 }
             })
+            history.push({
+                pathname: `/event/${add_event_response.data.event_id}`,
+                state: {
+                    event: add_event_response.data
+                }
+            });
+        } else {
+            console.log('sumtins no rite')
+            // dispatch({
+            //     type: "ADD_NOTIFICATION",
+            //     payload: {
+            //         notification_type: 'ERROR',
+            //         message: 'server error, please wait and try again'
+            //     }
+            // })
+
+            // history.push({
+            //     pathname: '/login'
+            // })
         }
-        
     }
 
     return (
-        <Form onSubmit={handleSubmit(createNewEvent)}>
+        <Form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data' className='gy-3'>
 
             {/* eventname input */}
-            <Form.Group controlId='eventname'>
-                <Form.Label>Eventname</Form.Label>
+            <Form.Group controlId='eventname' className='my-3'>
                 <Form.Control
-                    className={errors.eventname ? 'inputError' : ''}
                     {...register('eventname')}
                     autoFocus
                     onFocus={() => clearErrors('eventname')}
                     type='text'
                     name='eventname'
+                    placeholder='Eventname'
                     required
                 />
                 <div className='errormessage'>{errors.eventname?.message}</div>
             </Form.Group>
 
             {/* eventdate input */}
-            <Form.Group controlId='eventdate'>
-                <Form.Label>Event Date</Form.Label>
+            <Form.Group controlId='eventdate' className='my-3'>
                 <Form.Control
-                    className={errors.eventdate ? 'inputError' : ''}
                     {...register('eventdate')}
                     onFocus={() => clearErrors('eventdate')}
                     type='date'
@@ -141,38 +115,33 @@ const CreateEvent = () => {
                 />
                 <div className='errormessage'>{errors.eventdate?.message}</div>
             </Form.Group>
-            
-            {/* eventstart input */}
-            <Form.Group controlId='eventstart'>
-                <Form.Label>Start</Form.Label>
-                <Form.Control
-                    className={errors.eventstart ? 'inputError' : ''}
-                    {...register('eventstart')}
-                    // {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
-                    onFocus={() => clearErrors('eventstart')}
-                    type='time'
-                    name='eventstart'
-                    // required
-                />
-                <div className='errormessage'>{errors.eventstart?.message}</div>
-            </Form.Group>
-            
-            {/* eventend input */}
-            <Form.Group controlId='eventend'>
-                <Form.Label>End</Form.Label>
-                <Form.Control
-                    className={errors.eventend ? 'inputError' : ''}
-                    {...register('eventend')}
-                    // {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
-                    onFocus={() => clearErrors('eventend')}
-                    type='time'
-                    name='eventend'
-                    // required
-                />
-                <div className='errormessage'>{errors.eventend?.message}</div>
-            </Form.Group>
+                
+            <div className='d-flex justify-content-between'>
+                {/* eventstart input */}
+                <Form.Group controlId='eventstart' className='my-3'>
+                    <Form.Control
+                        {...register('eventstart')}
+                        onFocus={() => clearErrors('eventstart')}
+                        type='time'
+                        name='eventstart'
+                    />
+                    <div className='errormessage'>{errors.eventstart?.message}</div>
+                </Form.Group>
+                
+                {/* eventend input */}
+                <Form.Group controlId='eventend' className='my-3'>
+                    <Form.Control
+                        {...register('eventend')}
+                        onFocus={() => clearErrors('eventend')}
+                        type='time'
+                        name='eventend'
+                    />
+                    <div className='errormessage'>{errors.eventend?.message}</div>
+                </Form.Group>
 
-            {
+            </div>
+
+            {/* {
                 editImage &&
                     <Row className='mx-auto'>
                         <canvas
@@ -182,35 +151,30 @@ const CreateEvent = () => {
                             height={480}
                         />
                     </Row>
-            }
+            } */}
             
             {/* event image input */}
-            <Form.Group controlId='eventmedia'>
-                <Form.Label>Event Image</Form.Label>
+            <Form.Group controlId='eventmedia' className='my-3'>
                 <Form.Control
-                    className={errors.eventmedia ? 'inputError' : ''}
                     {...register('eventmedia')}
                     onFocus={() => clearErrors('eventmedia')}
                     type='file'
                     name='eventmedia'
                     accept='image/*'
-                    onChange={imagePreview}
+                    onChange={(e) => setImageFile(e.target.files[0])}
                 />
                 <div className='errormessage'>{errors.eventmedia?.message}</div>
             </Form.Group>
             
             {/* business location selector */}
-            <Form.Group controlId='venue_id'>
-                <Form.Label>Location</Form.Label>
+            <Form.Group controlId='venue_id' className='my-3'>
                 <Form.Select
-                    className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
                     {...register('venue_id')}
                     onFocus={() => clearErrors([ 'venue_id', 'role_rights' ])}
                     type='text'
                     name='venue_id'
-                    // required
                 >
-                    <option value='0'>Select...</option>
+                    <option value=''>Location</option>
                     {
                         venue_list.map(venue => (
                             <option key={venue.id} value={venue.id} style={ business_roles.includes(venue.id) ? { color:'green'} : {} }>{venue.business_name}</option>
@@ -223,33 +187,28 @@ const CreateEvent = () => {
             </Form.Group>
 
             {/* event details input */}
-            <Form.Group controlId='details'>
-                <Form.Label>Event Details</Form.Label>
+            <Form.Group controlId='details' className='my-3'>
                 <Form.Control
-                    className={errors.details ? 'inputError' : ''}
                     {...register('details')}
                     autoFocus
                     onFocus={() => clearErrors('details')}
                     as='textarea'
                     row={5}
                     name='details'
-                    // required
+                    placeholder='event details...'
                 />
                 <div className='errormessage'>{errors.details?.message}</div>
             </Form.Group>
 
             {/* business brand selector */}
-            <Form.Group controlId='brand_id'>
-                <Form.Label>Brand</Form.Label>
+            <Form.Group controlId='brand_id' className='my-3'>
                 <Form.Select
-                    className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
                     {...register('brand_id')}
                     onFocus={() => clearErrors([ 'brand_id', 'role_rights' ])}
                     type='text'
                     name='brand_id'
-                    // required
                 >
-                    <option value='0'>Select...</option>
+                    <option value=''>Brand</option>
                     {
                         brand_list.map(brand => (
                             <option key={brand.id} value={brand.id} style={ business_roles.includes(brand.id) ? { color:'green'} : {} }>{brand.business_name}</option>

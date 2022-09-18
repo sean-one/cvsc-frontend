@@ -43,45 +43,60 @@ export const loginSchema = yup.object().shape({
         .required("password is a required field.")
 })
 
-export const createEventSchema = yup.object().shape({
-    eventname: yup
-        .string()
-        .required(),
-    
-    eventdate: yup
-        .date()
-        .min(todaysDate, 'date should not be in the past')
-        .max(sixtyDaysOut, 'right now we only allow events 60 days out')
-        .required('event date is required'),
+export const createEventSchema = yup.object().shape(
+    {
+        eventname: yup
+            .string()
+            .required(),
+        
+        eventdate: yup
+            .date()
+            .min(todaysDate, 'date should not be in the past')
+            .max(sixtyDaysOut, 'right now we only allow events 60 days out')
+            .required('event date is required'),
 
-    eventstart: yup
-        .string()
-        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-        .nullable(),
+        eventstart: yup
+            .string()
+            .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
+            .nullable(),
+            
+        eventend: yup
+            .string()
+            .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
+            .nullable(),
         
-    eventend: yup
-        .string()
-        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-        .nullable(),
-    
-    venue_id: yup
-        .string()
-        .uuid()
-        .typeError('please select a venue location')
-        .nullable(),
-        // .required('event location is required'),
-        
-    details: yup
-        .string(),
-        // .required(),
-        
-    brand_id: yup
-        .string()
-        .uuid()
-        .typeError('please select a brand')
-        .nullable(),
-        // .required('branding is required')
-})
+        venue_id: yup
+            .string()
+            .nullable()
+            .notRequired()
+            .when('venue_id', {
+                is: (value) => value?.length,
+                then: (rule) => rule.uuid()
+            }),
+            // .typeError('please select a venue location')
+            // .required('event location is required'),
+            
+        details: yup
+            .string(),
+            // .required(),
+            
+        brand_id: yup
+            .string()
+            .nullable()
+            .notRequired()
+            .when('brand_id', {
+                is: (value) => value?.length,
+                then: (rule) => rule.uuid()
+            }),
+            // .typeError('please select a brand')
+            // .required('branding is required')
+        },
+        [
+            // add Cyclic deps here for require itself
+            ['venue_id', 'venue_id'],
+            ['brand_id', 'brand_id' ]
+        ]
+    )
 
 export const addContactSchema = yup.object().shape({
     
