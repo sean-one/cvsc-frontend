@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
+import LoadingSpinner from '../../loadingSpinner';
 import AxiosInstance from '../../../helpers/axios';
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
 import { UsersContext } from '../../../context/users/users.provider';
@@ -24,7 +25,7 @@ const CreatorRequest = () => {
     });
     
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
     
     const request_open = businessList.data.filter(business => business.business_request_open && business.active_business)

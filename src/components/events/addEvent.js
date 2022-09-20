@@ -5,7 +5,7 @@ import { NotificationsContext } from '../../context/notifications/notifications.
 
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useAddEventMutation } from '../../hooks/useEvents';
-
+import LoadingSpinner from '../loadingSpinner';
 
 const AddEvent = () => {
     // event form object
@@ -26,7 +26,7 @@ const AddEvent = () => {
     let history = useHistory()
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)

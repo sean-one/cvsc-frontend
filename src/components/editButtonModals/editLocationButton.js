@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import EditLocation from '../business/location/editLocation';
+import LoadingSpinner from '../loadingSpinner';
 import { useBusinessLocationQuery } from '../../hooks/useBusinessApi';
 
 const EditLocationButton = ({ business_id }) => {
@@ -14,7 +15,7 @@ const EditLocationButton = ({ business_id }) => {
     const handleModalOpen = () => setModalShow(true)
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     return (

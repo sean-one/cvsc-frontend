@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { usePendingRolesQuery } from '../../../hooks/useBusinessApi';
+import LoadingSpinner from '../../loadingSpinner';
 import sortPendingByBusiness from '../../../helpers/sortPendingByBusiness';
 import RolesList from '../../roles/rolesList';
 
@@ -9,7 +10,7 @@ const PendingManagementRoles = () => {
     let sortedByBusiness = {}
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     if(isSuccess) {

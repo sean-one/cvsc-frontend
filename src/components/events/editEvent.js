@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { reformatTime } from '../../helpers/formatTime';
 import { update_event } from '../../helpers/dataCleanUp';
+import LoadingSpinner from '../loadingSpinner';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useEditEventMutation } from '../../hooks/useEvents';
@@ -83,7 +84,7 @@ const EditEvent = ({ event, handleClose }) => {
     }
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import BusinessListItem from './businessList_item';
+import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
 
@@ -10,7 +11,7 @@ const BusinessList = () => {
     const business_ids = userRolesBuinsessManagementIds()
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     const business_list = businesses.data.filter(business => business_ids.includes(business.id))

@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import EventList from '../../events/eventList';
 import { UsersContext } from '../../../context/users/users.provider';
 import { useUserEventsQuery } from '../../../hooks/useEvents';
+import LoadingSpinner from '../../loadingSpinner';
 import CreateEventButton from '../../events/buttons/createEventButton';
 
 const UserEventsTab = () => {
@@ -12,7 +13,7 @@ const UserEventsTab = () => {
     let inactive_events_list
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     if(isSuccess) {

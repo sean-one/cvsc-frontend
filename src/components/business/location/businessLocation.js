@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 
 import EditLocationButton from '../../editButtonModals/editLocationButton';
+import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessLocationQuery } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
 
@@ -13,7 +14,7 @@ const BusinessLocation = ({ business }) => {
     const { userProfile } = useContext(UsersContext);
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     return (

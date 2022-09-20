@@ -3,6 +3,7 @@ import { Accordion, Row } from 'react-bootstrap';
 
 import { useBusinessRolesQuery } from '../../hooks/useBusinessApi';
 import { UsersContext } from '../../context/users/users.provider';
+import LoadingSpinner from '../loadingSpinner';
 import RolesList from '../roles/rolesList';
 
 const BusinessUserRoles = ({ business }) => {
@@ -10,7 +11,7 @@ const BusinessUserRoles = ({ business }) => {
     const { data: business_roles, isLoading } = useBusinessRolesQuery(business.id)
 
     if(isLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     //remove admin from list
