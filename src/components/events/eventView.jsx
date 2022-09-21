@@ -1,14 +1,15 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap'
 import { format } from 'date-fns'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCannabis, faClinicMedical  } from '@fortawesome/free-solid-svg-icons'
 
 import { formatTime } from '../../helpers/formatTime';
 import { useEventQuery, useEventsQuery } from '../../hooks/useEvents';
 
+import LoadingSpinner from '../loadingSpinner';
 import EventList from './eventList';
+import BusinessVenue from '../business/business_venue';
+import BusinessBrand from '../business/business_brand';
 
 const EventView = () => {
     let { event_id } = useParams()
@@ -20,7 +21,7 @@ const EventView = () => {
     const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
 
     if (eventLoading || listLoading) {
-        return <div>loading...</div>
+        return <LoadingSpinner />
     }
 
     if (eventSuccess && listSuccess) {
@@ -45,19 +46,8 @@ const EventView = () => {
             {/* brand and venue names and links */}
             <Row>
                 <Col className='d-flex justify-content-center px-4'>
-                    <Col xs={1}><FontAwesomeIcon icon={faClinicMedical} /></Col>
-                    <Col xs={5} className='border-end'>
-                        <Link to={{ pathname: `/business/${event.data.venue_id}` }}>
-                            {event.data.venue_name}
-                        </Link>
-                    
-                    </Col>
-                    <Col xs={5} className='text-end'>
-                        <Link to={{ pathname: `/business/${event.data.brand_id}` }}>
-                            {event.data.brand_name}
-                        </Link>
-                    </Col>
-                    <Col xs={1} className='text-end'><FontAwesomeIcon icon={faCannabis} /></Col>
+                    <BusinessVenue venue_id={event.data.venue_id} venue_name={event.data.venue_name} borderside='end' />
+                    <BusinessBrand brand_id={event.data.brand_id} brand_name={event.data.brand_name} reverse />
                 </Col>
             </Row>
 

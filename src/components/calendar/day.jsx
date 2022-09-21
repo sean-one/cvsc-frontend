@@ -1,18 +1,16 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 
-import EventMainPreview from '../events/cardViews/eventMainPreview';
+import EventCalendarPreview from '../events/cardViews/eventCalendarPreview';
 
-const Day = (props) => {
-    const daysEvents = props.schedule
+const Day = ({ schedule }) => {
     
     return (
         <>
-            {daysEvents.sort((a,b) => a.eventstart - b.eventstart).map(event => (
-                <EventMainPreview key={event.event_id} event={event}/>
+            {schedule.sort((a,b) => a.eventstart - b.eventstart).map(event => (
+                <EventCalendarPreview key={event.event_id} event={event}/>
             ))}
         </>
     )
 }
 
-export default withRouter(Day);
+export default Day;

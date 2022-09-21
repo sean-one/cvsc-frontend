@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClinicMedical } from '@fortawesome/free-solid-svg-icons';
 
 
-const BusinessVenue = ({ venue_id, venue_name }) => {
+const BusinessVenue = ({ venue_id, venue_name, borderside }) => {
     return (
-        <div className='d-flex align-items-center border-bottom py-1'>
+        <Link to={{ pathname: `/business/${venue_id}` }} className={`d-flex align-items-center py-1 w-100 border-${borderside || 'bottom'}`}>
             <FontAwesomeIcon icon={faClinicMedical} className='me-2' />
-            <Link to={{ pathname: `/business/${venue_id}` }}>{venue_name}</Link>
-        </div>
+            <div>{venue_name}</div>
+        </Link>
     )
 }
 

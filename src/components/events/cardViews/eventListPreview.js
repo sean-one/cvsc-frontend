@@ -16,7 +16,8 @@ const EventListPreview = ({ event }) => {
     
 
     return (
-        <div className='bg-light border border-danger rounded my-1 p-1'>
+        <div className='bg-light rounded my-3 p-1 shadow-sm'>
+            {/* event header */}
             <Link to={{
                 pathname: `/event/${event.event_id}`,
                 state: {
@@ -24,6 +25,8 @@ const EventListPreview = ({ event }) => {
                     from: pathname
                 }
             }}><h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4></Link>
+            
+            {/* event date information */}
             <div className='d-flex justify-content-between border-bottom my-1'>
                 <div>
                     {format(new Date(event.eventdate), 'E, MMM do')}
@@ -33,6 +36,8 @@ const EventListPreview = ({ event }) => {
                         <div>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                 }
             </div>
+
+            {/* event image & details */}
             <div className='d-flex align-items-center my-1'>
                 {
                     (event.eventmedia) &&

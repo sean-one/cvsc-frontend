@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
+import { UsersContext } from '../../context/users/users.provider';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { useEventsQuery } from '../../hooks/useEvents';
 
+import LoadingSpinner from '../loadingSpinner';
 import BusinessLocation from './location/businessLocation';
 // import BusinessControls from './businessControls';
 import BusinessUserRoles from './businessUserRoles';
@@ -15,6 +17,7 @@ import EventList from '../events/eventList';
 
 
 const BusinessView = () => {
+    const { userProfile } = useContext(UsersContext)
     let { business_id } = useParams()
     let business_list = []
 
@@ -22,7 +25,7 @@ const BusinessView = () => {
     const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
 
     if (businessLoading || listLoading) {
-        return <p>loading...</p>
+        return <LoadingSpinner />
     }
 
     if (businessSuccess && listSuccess) {
