@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 
 const ViewBusinessButton = ({ business_id }) => {
@@ -12,7 +13,8 @@ const ViewBusinessButton = ({ business_id }) => {
 
     return (
         <div>
-            <Button variant='outline-dark' onClick={businessLink}>View Business</Button>
+            <FontAwesomeIcon icon={faEye} onClick={businessLink} />
+            {/* <Button variant='outline-dark' onClick={businessLink}>View Business</Button> */}
         </div>
     )
     

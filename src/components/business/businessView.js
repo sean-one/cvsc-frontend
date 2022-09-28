@@ -1,9 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Col, Image, Row } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { Image } from 'react-bootstrap'
 
 import { UsersContext } from '../../context/users/users.provider';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
@@ -11,14 +8,18 @@ import { useEventsQuery } from '../../hooks/useEvents';
 
 import LoadingSpinner from '../loadingSpinner';
 import BusinessLocation from './location/businessLocation';
-// import BusinessControls from './businessControls';
+import BusinessControls from './businessControls';
 import BusinessUserRoles from './businessUserRoles';
 import EventList from '../events/eventList';
 
+import ContactDetails from '../contactDetails'
+
 
 const BusinessView = () => {
-    const { userProfile } = useContext(UsersContext)
     let { business_id } = useParams()
+    const { getBusinessRoleType } = useContext(UsersContext)
+    const [ role_type ] = useState(getBusinessRoleType(business_id) || 'none')
+    
     let business_list = []
 
     const { data: businessFetch, isLoading: businessLoading, isSuccess: businessSuccess } = useBusinessQuery(business_id)
@@ -32,77 +33,40 @@ const BusinessView = () => {
         business_list = events.data.filter(e => e.brand_id === businessFetch.data.id || e.venue_id === businessFetch.data.id)
     }
 
+
     const current_business = businessFetch.data
 
     
     return (
         <div>
-            <h1 className='mb-0'>{current_business.business_name}</h1>
-            {
-                (current_business.business_type !== 'brand') && (
-                    <BusinessLocation business={current_business} />
-                )
-            }
-            <Row className='px-0 mb-3'>
-                <Col xs={5}>
-                    <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
-                </Col>
-                {/* contact section */}
-                <Col xs={7} className='fs-6 py-3 px-2'>
-                    <Row className='px-0'>
-                        <Col xs={1} className='m-0 px-0'><FontAwesomeIcon icon={faEnvelope} /></Col>
-                        <Col xs={11} className='p-0'>{`${current_business.business_email}`}</Col>
-                    </Row>
-                    {/* dynamically add optional contact information */}
-                    {
-                        (current_business.business_phone) && (
-                            <Row>
-                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faPhone} /></Col>
-                                <Col xs={11} className='p-0'>{`${current_business.business_phone}`}</Col>
-                            </Row>
-                        )
-                    }
-                    {
-                        (current_business.business_instagram) && (
-                            <Row>
-                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faInstagram} /></Col>
-                                <Col xs={11} className='p-0'>{`${current_business.business_instagram}`}</Col>
-                            </Row>
-                        )
+            <div>
+                <h1 className='mb-0'>{current_business.business_name}</h1>
+                { current_business.business_type !== 'brand' && <BusinessLocation business={current_business} /> }
+                <div className='d-flex'>
+                    <div className='w-100 px-2'>
+                        <Image src={current_business.business_avatar} alt={current_business.business_name} thumbnail/>
+                    </div>
+                    <div className='w-100'>
+                        <ContactDetails contact_detail={current_business.business_email} contact_type='email' />
 
-                    }
-                    {
-                        (current_business.business_facebook) && (
-                            <Row>
-                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faFacebook} /></Col>
-                                <Col xs={11} className='p-0'>{`${current_business.business_facebook}`}</Col>
-                            </Row>
-                        )
-                    }
-                    {
-                        (current_business.business_website) && (
-                            <Row>
-                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faGlobe} /></Col>
-                                <Col xs={11} className='p-0'>{`${current_business.business_website.split('.')[1]}`}</Col>
-                            </Row>
-                        )
-                    }
-                    {
-                        (current_business.business_twitter) && (
-                            <Row>
-                                <Col xs={1} className='m-0 p-0'><FontAwesomeIcon icon={faTwitter} /></Col>
-                                <Col xs={11} className='p-0'>{`${current_business.business_twitter}`}</Col>
-                            </Row>
-                        )
-                    }
-                </Col>
-            </Row>
-            {/* <BusinessControls business={current_business} /> */}
-            <Row className='px-0 mx-0 fs-6 lh-sm mt-2 pt-2 border-top'>
-                {current_business.business_description}
-            </Row>
+                        {/* dynamically add optional contact information */}
+                        { current_business.business_phone && <ContactDetails contact_detail={current_business.business_phone} contact_type='phone' /> }
+                        { current_business.business_instagram && <ContactDetails contact_detail={current_business.business_instagram} contact_type='instagram' /> }
+                        {current_business.business_facebook && <ContactDetails contact_detail={current_business.business_facebook} contact_type='facebook' /> }
+                        {current_business.business_website && <ContactDetails contact_detail={current_business.business_website} contact_type='website'/> }
+                        {current_business.business_twitter && <ContactDetails contact_detail={current_business.business_twitter} contact_type='twitter' /> }
+                    </div>
+                </div>
+                {
+                    (role_type === 'admin' || role_type === 'manager') &&
+                        <BusinessControls business={current_business} role_type={role_type} />
+                }
+                <div className='fs-6 lh-sm border-top border-dark mt-2 pt-2'>
+                    {current_business.business_description}
+                </div>
+            </div>
             {
-                (current_business.active_business) &&
+                (role_type === 'admin' || role_type === 'manager') &&
                     <BusinessUserRoles business={current_business} />
             }
             <EventList event_list={business_list} business_name={current_business.business_name} />

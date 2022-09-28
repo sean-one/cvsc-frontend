@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarPlus } from '@fortawesome/free-solid-svg-icons';
 
 // import AddEvent from '../addEvent';
 import CreateEvent from '../createEvent';
@@ -12,7 +14,7 @@ const CreateEventButton = () => {
 
     return (
         <div>
-            <Button variant='outline-dark' onClick={handleModalOpen}>Create New Event</Button>
+            <FontAwesomeIcon icon={faCalendarPlus} onClick={handleModalOpen} />
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create new event</Modal.Title>

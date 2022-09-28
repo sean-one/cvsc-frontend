@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 import EditBusiness from '../businessForms/editBusiness';
 
@@ -11,7 +13,7 @@ const EditBusinessButton = ({ business }) => {
 
     return (
         <div>
-            <Button variant='outline-dark' onClick={handleModalOpen}>Edit Business</Button>
+            <FontAwesomeIcon icon={faPen} onClick={handleModalOpen} />
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit business</Modal.Title>

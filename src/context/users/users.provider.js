@@ -57,12 +57,24 @@ const UsersProvider = ({ children }) => {
         const active_roles = userRoles.filter(role => role.active_role)
         if(active_roles.length === 0) {
             // need to send an error
-            console.log('error at getBusinessRole')
+            console.log('user does not have active roles for this business')
             return
         }
         const business_role = active_roles.find(role => role.business_id === business_id)
         
         return business_role
+    }
+
+    const getBusinessRoleType = (business_id) => {
+        const active_roles = userRoles.filter(role => role.active_role)
+        if(active_roles.length === 0) {
+            // send error
+            // console.log('no roles found')
+            return 'none'
+        } else {
+            const business_role = active_roles.find(role => role.business_id === business_id)
+            return business_role.role_type
+        }
     }
 
     // const filterByActiveRoles = (business_list) => {
@@ -150,6 +162,7 @@ const UsersProvider = ({ children }) => {
                 setUserRoles,
                 setAccountType,
                 getBusinessRole,
+                getBusinessRoleType,
                 // filterByActiveRoles,
                 userRolesBusinessIds,
                 userRolesBuinsessManagementIds,

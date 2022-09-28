@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Accordion, Row } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 
 import { useBusinessRolesQuery } from '../../hooks/useBusinessApi';
 import { UsersContext } from '../../context/users/users.provider';
@@ -22,18 +22,18 @@ const BusinessUserRoles = ({ business }) => {
     const manager_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
     
     return (
-        <Row className='px-1 py-3'>
+        <div>
             {
                 (Object.keys(business_roles_minus_admin).length > 1) && (
-                    <h4>Business Roles</h4>
+                    <h6 className='my-2'>Business Roles</h6>
                 )
             }
-            <Accordion className='px-2'>
+            <Accordion>
                 {
                     (pending_roles.length > 0)
                         ? <Accordion.Item eventKey="0">
                             <Accordion.Header>Pending Creator Request</Accordion.Header>
-                            <Accordion.Body className='px-1 py-1'>
+                            <Accordion.Body className='m-0 p-0'>
                                 <RolesList roles_list={pending_roles} list_type='pending' />
                             </Accordion.Body>
                         </Accordion.Item>
@@ -60,7 +60,7 @@ const BusinessUserRoles = ({ business }) => {
                         : null
                 }
             </Accordion>
-        </Row>
+        </div>
     )
 }
 

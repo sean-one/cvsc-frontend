@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Col, ListGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 
@@ -143,51 +143,53 @@ const RolesList = ({ roles_list, list_type }) => {
     }
 
     return (
-        <ListGroup variant='flush'>
+        <div>
           {
               roles_list.map(role =>
-                <ListGroup.Item key={role.id} className='d-flex px-3'>
-                  <Col xs={6}>{role.username}</Col>
-                  <Col xs={3} className='text-center'>
-                    {
-                        (list_type === 'pending') &&
-                            <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={role.id}>
-                                <FontAwesomeIcon icon={faCheck}/>
-                            </Button>
-                    }
+                <div key={role.id} className='d-flex justify-content-between px-3 py-2 border-bottom border-dark rounded-bottom'>
+                  <div>{role.username}</div>
+                  <div className='d-flex'>
+                    <div className='text-center me-4'>
+                        {
+                            (list_type === 'pending') &&
+                                <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={role.id}>
+                                    <FontAwesomeIcon icon={faCheck}/>
+                                </Button>
+                        }
 
-                    {
-                        (list_type === 'creator') &&
-                            <Button size='sm' variant='outline-success' onClick={(e) => upgradeCreator(e)} value={role.id}>upgrade</Button>
-                    }
+                        {
+                            (list_type === 'creator') &&
+                                <Button size='sm' variant='outline-success' onClick={(e) => upgradeCreator(e)} value={role.id}>upgrade</Button>
+                        }
 
-                    {
-                        (list_type === 'manager') &&
-                            <Button size='sm' variant='outline-danger' onClick={(e) => downgradeManagerRole(e)} value={role.id}>downgrade</Button>
-                    }
-                  </Col>
-                  <Col xs={3} className='text-center'>
-                    {
-                        (list_type === 'pending') &&
-                            <Button size='sm' variant='danger' onClick={(e) => removeRole(e)} value={role.id}>
-                                <FontAwesomeIcon icon={faTrash}/>
-                            </Button>
-                    }
+                        {
+                            (list_type === 'manager') &&
+                                <Button size='sm' variant='outline-danger' onClick={(e) => downgradeManagerRole(e)} value={role.id}>downgrade</Button>
+                        }
+                    </div>
+                    <div className='text-center'>
+                        {
+                            (list_type === 'pending') &&
+                                <Button size='sm' variant='danger' onClick={(e) => removeRole(e)} value={role.id}>
+                                    <FontAwesomeIcon icon={faTrash}/>
+                                </Button>
+                        }
 
-                    {
-                        (list_type === 'creator') &&
-                            <Button size='sm' variant='danger' onClick={(e) => removeRole(e)} value={role.id}>remove</Button>
-                    }
+                        {
+                            (list_type === 'creator') &&
+                                <Button size='sm' variant='danger' onClick={(e) => removeRole(e)} value={role.id}>remove</Button>
+                        }
 
-                    {
-                        (list_type === 'manager') &&
-                            <Button size='sm' variant='danger' onClick={(e) => removeManagerRole(e)} value={role.id}>remove</Button>
-                    }
-                  </Col>
-                </ListGroup.Item>
+                        {
+                            (list_type === 'manager') &&
+                                <Button size='sm' variant='danger' onClick={(e) => removeManagerRole(e)} value={role.id}>remove</Button>
+                        }
+                    </div>
+                  </div>
+                </div>
             )
           }
-        </ListGroup>
+        </div>
     )
 }
 
