@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Col, Modal } from 'react-bootstrap';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,6 +11,7 @@ const EventControls = ({ event }) => {
     const { mutateAsync: removeEvent } = useEventRemoveMutation()
     const [ modalShow, setModalShow ] = useState(false)
     let history = useHistory();
+    const { pathname } = useLocation()
 
     const handleModalOpen = () => setModalShow(true)
     const handleModalClose = () => setModalShow(false)
@@ -26,16 +27,21 @@ const EventControls = ({ event }) => {
 
 
     return (
-        <div className='d-flex justify-content-end'>
-            <Col xs={2} className='text-success icon-button border-start border-end border-muted text-center' onClick={() => history.push(`/event/${event.event_id}`)}>
-                <FontAwesomeIcon icon={faEye} size='1x' />
-            </Col>
-            <Col xs={2} className='text-primary icon-button text-center' onClick={handleModalOpen}>
+        <div className='d-flex justify-content-between text-center mt-2'>
+            {/* check to see if viewing event if so remove icon to view */}
+            {
+                pathname.match(/\/event\/[0-9A-Za-z]{8}-[0-9A-Za-z]{4}-4[0-9A-Za-z]{3}-[89ABab][0-9A-Za-z]{3}-[0-9A-Za-z]{12}/)
+                    ? null
+                    : <div className='border w-100 rounded bg-light' onClick={() => history.push(`/event/${event.event_id}`)}>
+                        <FontAwesomeIcon icon={faEye} size='1x' />
+                    </div> 
+            }
+            <div className='border w-100 rounded bg-light' onClick={handleModalOpen}>
                 <FontAwesomeIcon icon={faPenSquare} />
-            </Col>
-            <Col xs={2} className='text-muted icon-button border-start border-end border-muted text-center' onClick={() => deleteEvent(event.event_id)}>
+            </div>
+            <div className='border w-100 rounded bg-light' onClick={() => deleteEvent(event.event_id)}>
                 <FontAwesomeIcon icon={faTrash} />
-            </Col>
+            </div>
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Event</Modal.Title>
