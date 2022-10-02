@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,13 +10,30 @@ import { NotificationsContext } from '../../../context/notifications/notificatio
 import { UsersContext } from '../../../context/users/users.provider';
 
 const CreateBusiness = () => {
+    const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: addBusinessMutation, error: addError } = useAddBusinessMutation()
     const { addUserRole } = useContext(UsersContext)
     const { dispatch } = useContext(NotificationsContext) 
     
     const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(addBusinessSchema)
+        resolver: yupResolver(addBusinessSchema),
+        defaultValues: {
+            business_name: null,
+            business_email: null,
+            business_avatar: '',
+            business_description: null,
+            business_type: '',
+            street_address: '',
+            city: '',
+            state: '',
+            zip: '',
+            business_instagram: '',
+            business_facebook: '',
+            business_website: '',
+            business_twitter: ''
+
+        }
     });
 
     const businessType = watch('business_type', 'brand')
@@ -24,7 +41,24 @@ const CreateBusiness = () => {
 
     const sendRequest = async (business_data) => {
         try {
-            const new_business = await addBusinessMutation(business_data)
+
+            const formData = new FormData()
+            formData.append('business_name', business_data.business_name)
+            formData.append('business_email', business_data.business_email)
+            formData.set('business_avatar', imageFile)
+            formData.append('business_description', business_data.business_description)
+            formData.append('business_type', business_data.business_type)
+            formData.append('street_address', business_data.street_address)
+            formData.append('city', business_data.city)
+            formData.append('state', business_data.state)
+            formData.append('zip', business_data.zip)
+            formData.append('business_instagram', business_data.business_instagram)
+            formData.append('business_facebook', business_data.business_facebook)
+            formData.append('business_website', business_data.business_website)
+            formData.append('business_phone', business_data.business_phone)
+            formData.append('business_twitter', business_data.business_twitter)
+            
+            const new_business = await addBusinessMutation(formData)
             
             if(new_business.status === 201) {
                 
@@ -80,7 +114,7 @@ const CreateBusiness = () => {
 
 
     return (
-        <Form onSubmit={handleSubmit(sendRequest)}>
+        <Form onSubmit={handleSubmit(sendRequest)} encType='multipart/form-data' className='gy-3'>
             {/* business name input */}
             <Form.Group controlId='business_name'>
                 <Form.Label>Business Name</Form.Label>
@@ -119,10 +153,10 @@ const CreateBusiness = () => {
                     className={errors.business_avatar ? 'inputError' : ''}
                     {...register('business_avatar')}
                     onFocus={() => clearErrors('business_avatar')}
-                    type='text'
+                    type='file'
                     name='business_avatar'
-                    value='https://picsum.photos/300'
-                    required
+                    accept='image/*'
+                    onChange={(e) => setImageFile(e.target.files[0])}
                 />
                 <div className='errormessage'>{errors.business_avatar?.message}</div>
             </Form.Group>
