@@ -40,6 +40,12 @@ const removeEvent = async (event_id) => {
     return removed_event_count
 }
 
+const removeBusiness = async ({ event_id, ...event_updates }) => {
+    const updated_event = await AxiosInstance.put(`/events/business/remove/${event_id}`, event_updates)
+
+    return updated_event
+}
+
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
@@ -64,6 +70,21 @@ export const useEditEventMutation = () => {
             queryClient.cancelQueries('events')
         },
         onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('events')
+    })
+}
+
+export const useBusinessRemoveMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(removeBusiness, {
+        onSuccess: ({ data }) => {
+            queryClient.invalidateQueries(['event', data.id])
+            queryClient.invalidateQueries('events')
+        },
+        onError: (error) => {
+            console.log('error inside event business remove mutation')
             console.log(error)
         },
         onSettled: () => queryClient.refetchQueries('events')

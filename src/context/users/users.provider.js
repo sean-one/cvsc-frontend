@@ -55,25 +55,31 @@ const UsersProvider = ({ children }) => {
 
     const getBusinessRole = (business_id) => {
         const active_roles = userRoles.filter(role => role.active_role)
+        console.log(active_roles)
         if(active_roles.length === 0) {
             // need to send an error
             console.log('user does not have active roles for this business')
             return
         }
         const business_role = active_roles.find(role => role.business_id === business_id)
+        console.log(business_role)
         
         return business_role
     }
 
     const getBusinessRoleType = (business_id) => {
         const active_roles = userRoles.filter(role => role.active_role)
-        if(active_roles.length === 0) {
+        if (active_roles.length === 0) {
             // send error
-            // console.log('no roles found')
             return 'none'
         } else {
             const business_role = active_roles.find(role => role.business_id === business_id)
-            return business_role.role_type
+            
+            if(business_role === undefined) {
+                return 'none'
+            } else {
+                return business_role.role_type
+            }
         }
     }
 

@@ -9,8 +9,7 @@ import { UsersContext } from '../../context/users/users.provider';
 
 import LoadingSpinner from '../loadingSpinner';
 import EventList from './eventList';
-import BusinessVenue from '../business/business_venue';
-import BusinessBrand from '../business/business_brand';
+import BusinessInfo from '../business/business_info';
 import EventControls from './eventControls';
 
 const EventView = () => {
@@ -51,8 +50,8 @@ const EventView = () => {
                 </div>
                 {/* brand and venue names and links */}
                 <div className='d-flex'>
-                    <BusinessVenue venue_id={event.data.venue_id} venue_name={event.data.venue_name} borderside='end' />
-                    <BusinessBrand brand_id={event.data.brand_id} brand_name={event.data.brand_name} reverse />
+                    <BusinessInfo business_id={event.data.venue_id} business_name={event.data.venue_name} borderside='end' business_type='venue' />
+                    <BusinessInfo business_id={event.data.brand_id} business_name={event.data.brand_name} business_type='brand' reverse />
                 </div>
                 <div className='fs-6 lh-sm mt-1 pt-2 border-top'>
                     {event.data.details}
