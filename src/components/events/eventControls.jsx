@@ -7,7 +7,7 @@ import { faEye, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import EditEvent from './editEvent'
 import { useEventRemoveMutation } from '../../hooks/useEvents';
 
-const EventControls = ({ event }) => {
+const EventControls = ({ event, inactive }) => {
     const { mutateAsync: removeEvent } = useEventRemoveMutation()
     const [ modalShow, setModalShow ] = useState(false)
     let history = useHistory();
@@ -30,7 +30,7 @@ const EventControls = ({ event }) => {
         <div className='d-flex justify-content-between text-center mt-2'>
             {/* check to see if viewing event if so remove icon to view */}
             {
-                pathname.match(/\/event\/[0-9A-Za-z]{8}-[0-9A-Za-z]{4}-4[0-9A-Za-z]{3}-[89ABab][0-9A-Za-z]{3}-[0-9A-Za-z]{12}/)
+                (pathname.match(/\/event\/[0-9A-Za-z]{8}-[0-9A-Za-z]{4}-4[0-9A-Za-z]{3}-[89ABab][0-9A-Za-z]{3}-[0-9A-Za-z]{12}/) || inactive === true)
                     ? null
                     : <div className='border w-100 rounded bg-light' onClick={() => history.push(`/event/${event.event_id}`)}>
                         <FontAwesomeIcon icon={faEye} size='1x' />

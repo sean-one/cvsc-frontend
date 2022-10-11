@@ -4,10 +4,11 @@ import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import { Image } from 'react-bootstrap';
 
+import EventControls from '../eventControls';
 import BusinessBrand from '../../business/business_brand';
 import BusinessVenue from '../../business/business_venue';
 
-const EventListPreview = ({ event }) => {
+const EventListPreview = ({ event, inactive }) => {
     let { pathname } = useLocation()
 
     const textTruncation = (eventdetails, cutoff) => {
@@ -18,13 +19,20 @@ const EventListPreview = ({ event }) => {
     return (
         <div className='bg-light rounded my-3 p-1 shadow-sm'>
             {/* event header */}
-            <Link to={{
-                pathname: `/event/${event.event_id}`,
-                state: {
-                    event,
-                    from: pathname
-                }
-            }}><h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4></Link>
+            {
+                inactive
+                    ? <h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4>
+                    : <Link to={{
+                        pathname: `/event/${event.event_id}`,
+                        state: {
+                            event,
+                            from: pathname
+                        }
+                    }}><h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4></Link>
+            }
+            {
+                inactive && <EventControls event={event} inactive />
+            }
             
             {/* event date information */}
             <div className='d-flex justify-content-between border-bottom my-1'>

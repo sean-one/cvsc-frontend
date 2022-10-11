@@ -3,7 +3,7 @@ import React from 'react';
 import EventListPreview from './cardViews/eventListPreview';
 
 
-const EventList = ({ event_list, business_name }) => {
+const EventList = ({ event_list, business_name, inactive=false }) => {
 
 
     return (
@@ -18,7 +18,7 @@ const EventList = ({ event_list, business_name }) => {
             {
                 event_list.map(event => {
                     return (
-                        <EventListPreview key={event.event_id} event={event} />
+                        <EventListPreview key={event.event_id} event={event} inactive={inactive} />
                     )
                 })
             }

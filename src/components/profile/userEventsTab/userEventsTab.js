@@ -40,7 +40,7 @@ const UserEventsTab = () => {
             }
             {
                 (inactive_events_list.length > 0) &&
-                    <EventList event_list={inactive_events_list} />
+                    <EventList event_list={inactive_events_list} inactive />
             }
         </div>
     )
