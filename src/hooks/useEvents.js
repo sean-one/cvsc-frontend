@@ -20,6 +20,12 @@ const getAllUserEvents = async (user_id) => {
     return user_event_list;
 }
 
+const getAllBusinessEvents = async (business_id) => {
+    const business_event_list = await AxiosInstance.get(`/events/business/${business_id}`)
+
+    return business_event_list;
+}
+
 const addEvent = async (event) => {
     const new_event = await AxiosInstance.post('/events', event)
 
@@ -49,6 +55,7 @@ const removeBusiness = async ({ event_id, ...event_updates }) => {
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
+export const useBusinessEventsQuery = (business_id) => useQuery(['events', 'business', business_id], () => getAllBusinessEvents(business_id), { staleTime: 6000, refetchOnMount: false })
 
 export const useAddEventMutation = () => {
     const queryClient = useQueryClient()

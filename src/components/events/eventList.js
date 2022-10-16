@@ -3,7 +3,7 @@ import React from 'react';
 import EventListPreview from './cardViews/eventListPreview';
 
 
-const EventList = ({ event_list, business_name, inactive=false }) => {
+const EventList = ({ event_list, business_name, user_id, inactive=false }) => {
 
 
     return (

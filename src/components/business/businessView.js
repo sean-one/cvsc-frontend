@@ -4,13 +4,12 @@ import { Image } from 'react-bootstrap'
 
 import { UsersContext } from '../../context/users/users.provider';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
-import { useEventsQuery } from '../../hooks/useEvents';
 
 import LoadingSpinner from '../loadingSpinner';
 import BusinessLocation from './location/businessLocation';
 import BusinessControls from './businessControls';
 import BusinessUserRoles from './businessUserRoles';
-import EventList from '../events/eventList';
+import BusinessEvents from '../events/eventListing/business.events';
 
 import ContactDetails from '../contactDetails'
 
@@ -20,19 +19,11 @@ const BusinessView = () => {
     const { getBusinessRoleType } = useContext(UsersContext)
     const [ role_type ] = useState(getBusinessRoleType(business_id) || 'none')
     
-    let business_list = []
+    const { data: businessFetch, isLoading: businessLoading } = useBusinessQuery(business_id)
 
-    const { data: businessFetch, isLoading: businessLoading, isSuccess: businessSuccess } = useBusinessQuery(business_id)
-    const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
-
-    if (businessLoading || listLoading) {
+    if (businessLoading) {
         return <LoadingSpinner />
     }
-
-    if (businessSuccess && listSuccess) {
-        business_list = events.data.filter(e => e.brand_id === businessFetch.data.id || e.venue_id === businessFetch.data.id)
-    }
-
 
     const current_business = businessFetch.data
 
@@ -69,7 +60,7 @@ const BusinessView = () => {
                 (role_type === 'admin' || role_type === 'manager') &&
                     <BusinessUserRoles business={current_business} />
             }
-            <EventList event_list={business_list} business_name={current_business.business_name} />
+            <BusinessEvents business_id={business_id} />
         </div>
     )
 }

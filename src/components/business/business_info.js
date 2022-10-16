@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClinicMedical, faCannabis } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,7 +11,8 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
     const { mutateAsync: removeBusinessMutation } = useBusinessRemoveMutation()
     let role_type = 'none'
     const { event_id } = useParams()
-    
+    let history = useHistory()
+
     const business_icon = {
         'brand': faCannabis,
         'venue': faClinicMedical,
@@ -28,9 +29,12 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
         }
 
         const remove_response = await removeBusinessMutation({ ...business_data, event_id })
-
+        
         console.log(remove_response)
 
+        if (remove_response.status === 201) {
+            history.push('/')
+        }
     }
 
     return (
@@ -40,7 +44,7 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
                 <div className='text-truncate'>{business_name}</div>
             </Link>
             {
-                (role_type !== 'none') &&
+                (role_type === 'manager') &&
                     <div className='bg-light w-100 rounded text-center' onClick={() => removeBusinessFromEvent()}>
                         Remove
                     </div>

@@ -52,6 +52,7 @@ const EditEvent = ({ event, handleClose }) => {
         try {
             const { event_id } = event
             const update_data = await update_event(data, dirtyFields)
+            console.log(update_data)
             const edit_event_response = await editEventMutation({ ...update_data, event_id })
             
             if(edit_event_response.status === 201) {
@@ -65,6 +66,7 @@ const EditEvent = ({ event, handleClose }) => {
                 })
             }
         } catch (error) {
+            console.log(error)
             if(error.response.data.error.type === 'role_validation') {
                 setError('brand_id', {
                     type: 'role_validation',
