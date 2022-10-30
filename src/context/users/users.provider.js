@@ -13,10 +13,21 @@ const UsersProvider = ({ children }) => {
     const { userProfile, userRoles, userEvents } = store
     
     // used at sucessful login & successful registration
+    const setProfile = user_details => {
+        
+        userSignIn(user_details)
+
+        dispatch({
+            type: userTypes.SET_PROFILE,
+            payload: user_details
+        })
+    }
+
     const setUser = userdata => {
+
         // set up local storage and cleans data payload object
         userSignIn(userdata.user)
-
+        
         dispatch({
             type: userTypes.SET_USER,
             payload: {
@@ -33,24 +44,6 @@ const UsersProvider = ({ children }) => {
             type: userTypes.SET_USER_ROLES,
             payload: userroles
         })
-    }
-
-    // returns the account type for the logged in user / used in basic & business sections
-    const setAccountType = () => {
-        // remove roles not approved
-        const active_roles = userRoles.filter(role => role.active_role)
-        // if no roles account is basic
-        if (active_roles.length === 0) {
-            return 'basic'
-        } else {
-            if(active_roles.find(role => role.role_type === 'admin')) {
-                return 'admin'
-            } else if(active_roles.find(role => role.role_type === 'manager')) {
-                return 'manager'
-            } else {
-                return 'creator'
-            }
-        }
     }
 
     const getBusinessRole = (business_id) => {
@@ -161,12 +154,13 @@ const UsersProvider = ({ children }) => {
         })
     }
 
+
     return (
         <UsersContext.Provider value={
             {
                 setUser,
+                setProfile,
                 setUserRoles,
-                setAccountType,
                 getBusinessRole,
                 getBusinessRoleType,
                 // filterByActiveRoles,

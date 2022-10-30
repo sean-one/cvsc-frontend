@@ -6,19 +6,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createEventSchema } from '../../helpers/validationSchemas';
 import { Button, Form } from 'react-bootstrap';
 
-import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useAddEventMutation } from '../../hooks/useEvents';
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
-import { UsersContext } from '../../context/users/users.provider';
+import BusinessList from '../business/business_list';
 
 
 const CreateEvent = () => {
     const [ imageFile, setImageFile ] = useState('')
-    const { data: business_list, isLoading: loadingBusinessList } = useBusinessesQuery()
     const { mutateAsync: addEventMutation } = useAddEventMutation()
     const { dispatch } = useContext(NotificationsContext);
-    const { userActiveRoles } = useContext(UsersContext)
-    const business_roles = userActiveRoles()
     const { register, handleSubmit, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema),
@@ -35,13 +31,6 @@ const CreateEvent = () => {
     });
     
     let history = useHistory();
-
-    if(loadingBusinessList) {
-        return <div>loading...</div>
-    }
-
-    const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-    const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
     const createNewEvent = async (data) => {
         
@@ -175,12 +164,7 @@ const CreateEvent = () => {
                     name='venue_id'
                 >
                     <option value=''>Location</option>
-                    {
-                        venue_list.map(venue => (
-                            <option key={venue.id} value={venue.id} style={ business_roles.includes(venue.id) ? { color:'green'} : {} }>{venue.business_name}</option>
-                        ))
-                    }
-
+                    <BusinessList business_type='venue' />
                 </Form.Select>
                 <div className='errormessage'>{errors.venue_id?.message}</div>
                 <div className='errormessage'>{errors.role_rights?.message}</div>
@@ -209,12 +193,7 @@ const CreateEvent = () => {
                     name='brand_id'
                 >
                     <option value=''>Brand</option>
-                    {
-                        brand_list.map(brand => (
-                            <option key={brand.id} value={brand.id} style={ business_roles.includes(brand.id) ? { color:'green'} : {} }>{brand.business_name}</option>
-                        ))
-                    }
-
+                    <BusinessList business_type='brand' />
                 </Form.Select>
                 <div className='errormessage'>{errors.brand_id?.message}</div>
                 <div className='errormessage'>{errors.role_rights?.message}</div>

@@ -15,6 +15,11 @@ const usersReducer = (state, action) => {
                 userRoles: action.payload.roles,
                 userEvents: action.payload.user_events,
             };
+        case userTypes.SET_PROFILE:
+            return {
+                ...state,
+                userProfile: action.payload
+            }
         case userTypes.SET_USER_ROLES:
             return {
                 ...state,

@@ -19,10 +19,6 @@ export const registrationSchema = yup.object().shape({
         .string()
         .required("username is a required field"),
 
-    email: yup
-        .string()
-        .required("email is a required field"),
-
     password: yup
         .string()
         .required("password is a required field"),

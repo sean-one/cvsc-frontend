@@ -6,10 +6,12 @@ import { Col, Form, Button, Row } from 'react-bootstrap';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import AxiosInstance from '../helpers/axios';
+import { UsersContext } from '../context/users/users.provider.js';
 import { NotificationsContext } from '../context/notifications/notifications.provider.js';
 
 
 const Register = () => {
+    const { setUser } = useContext(UsersContext)
     const { dispatch } = useContext(NotificationsContext);
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -22,11 +24,12 @@ const Register = () => {
     const createUser = async (data) =>{
         try {
             delete data['confirmation']
-            data['register'] = true;
+            // data['register'] = true;
             
             const { data: new_user } = await AxiosInstance.post('/auth/local', data)
 
             if(new_user.success) {
+                setUser(new_user)
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -34,7 +37,7 @@ const Register = () => {
                         message: `${new_user.user.username} has been created and logged in`
                     }
                 })
-                history.push('/profile')
+                history.push('/profile', new_user.user.id)
             }
 
             console.log(new_user)
@@ -105,7 +108,7 @@ const Register = () => {
                 </Form.Group>
                 <div className='errormessage'>{errors.username?.message}</div>
 
-                <Form.Group controlId="email">
+                {/* <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         className={errors.email ? 'inputError' : ''}
@@ -117,7 +120,7 @@ const Register = () => {
                         required
                     />
                 </Form.Group>
-                <div className='errormessage'>{errors.email?.message}</div>
+                <div className='errormessage'>{errors.email?.message}</div> */}
 
                 <Row>
                     <Col>

@@ -12,7 +12,7 @@ export const userSignIn = (user) => {
         avatar: user['avatar'],
         email: user['email']
     }
-    localStorage.setItem('token', user.token)
+    // localStorage.setItem('token', user.token)
     localStorage.setItem('userId', user.id)
     localStorage.setItem('user', JSON.stringify(user.user))
     localStorage.setItem('isLoggedIn', true)

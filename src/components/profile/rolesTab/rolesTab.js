@@ -4,13 +4,13 @@ import CreatorRequest from './creatorRequest';
 import UserRoles from './userRoles';
 import PendingManagementRoles from './pendingManagementRoles';
 
-const RolesTab = () => {
-
+const RolesTab = ({ user_id }) => {
+    console.groupCollapsed(user_id)
     return (
         <div>
             <CreatorRequest />
             <UserRoles />
-            <PendingManagementRoles />
+            <PendingManagementRoles user_id={user_id}/>
         </div>
     )
 }

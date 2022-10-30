@@ -7,19 +7,19 @@ import { UsersContext } from '../context/users/users.provider';
 import logobrand from '../assets/cvsc.png'
 import AxiosInstance from '../helpers/axios';
 
-export const NavHeader = (props) => {
+export const NavHeader = () => {
+    const { userSignOut } = useContext(UsersContext)
     const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
-    const { userSignOut } = useContext(UsersContext);
     let history = useHistory()
 
     const logout = async () => {
-        history.push('/')
+        await AxiosInstance.get('/auth/logout')
         
         localStorage.clear()
         
         userSignOut()
         
-        await AxiosInstance.get('/auth/logout')
+        history.push('/')
         
         // document.getElementById('navbarToggle').classList.remove('show')
         // document.getElementById('navbarToggle').classList.add('hide')

@@ -5,8 +5,8 @@ import LoadingSpinner from '../../loadingSpinner';
 import sortPendingByBusiness from '../../../helpers/sortPendingByBusiness';
 import RolesList from '../../roles/rolesList';
 
-const PendingManagementRoles = () => {
-    const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery()
+const PendingManagementRoles = ({ user_id }) => {
+    const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery(user_id)
     let sortedByBusiness = {}
 
     if(isLoading) {

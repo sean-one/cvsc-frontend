@@ -1,19 +1,18 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { Tab, Tabs } from 'react-bootstrap';
 
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
 import AccountDetails from './accountTab/accountDetails';
-import BusinessList from './managerTab/businessList';
-import RolesTab from './rolesTab/rolesTab';
-import UserEventsTab from './userEventsTab/userEventsTab';
+// import BusinessList from './managerTab/businessList';
+// import RolesTab from './rolesTab/rolesTab';
+// import UserEventsTab from './userEventsTab/userEventsTab';
 import CreateBusinessButton from '../business/buttons/createBusinessButton';
 
 
 const Profile = () => {
-    const { userProfile, setUser, setAccountType } = useContext(UsersContext);
-    const account_type = setAccountType();
+    const { userProfile, setProfile } = useContext(UsersContext);
     const [ loading, setLoading ] = useState(false);
     
     let history = useHistory()
@@ -21,12 +20,11 @@ const Profile = () => {
     const getUser = useCallback(() => {
         setLoading(true);
 
-        AxiosInstance.get('/auth/login/success')
+        AxiosInstance.get('/auth/user_profile')
             .then(response => {
-                setUser(response.data)
+                setProfile(response.data)
             })
             .catch(err => {
-                console.log(err)
                 if(err.response.status === 401) {
                     history.push('/login')
                 }
@@ -38,7 +36,10 @@ const Profile = () => {
     }, [])
 
     useEffect(() => {
-        getUser()
+        const user = JSON.parse(localStorage.getItem('user'))
+        if(!user) {
+            getUser()
+        }
         // eslint-disable-next-line 
     }, [])
 
@@ -46,6 +47,7 @@ const Profile = () => {
         return <div>loading...</div>
     }
 
+    // console.log(props)
 
     return (
         <div>
@@ -59,15 +61,18 @@ const Profile = () => {
                         <AccountDetails />
                     </Tab>
                     <Tab eventKey="roles" title="Roles">
-                        <RolesTab />
+                        ROLES
+                        {/* <RolesTab user_id={props.location.state}/> */}
                     </Tab>
                     <Tab eventKey="events" title="Events">
-                        <UserEventsTab user_id={userProfile.id} />
+                        USER EVENTS
+                        {/* <UserEventsTab user_id={props.location.state} /> */}
                     </Tab>
                     {
-                        (account_type !== 'basic' && account_type !== 'creator') &&
+                        (userProfile.account_type !== 'basic' && userProfile.account_type !== 'creator') &&
                             <Tab eventKey="manager" title="Manager">
-                                <BusinessList />
+                                MANAGER
+                                {/* <BusinessList /> */}
                             </Tab>
                     }
             </Tabs>

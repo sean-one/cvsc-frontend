@@ -10,10 +10,12 @@ import { UsersContext } from '../../context/users/users.provider';
 import LoadingSpinner from '../loadingSpinner';
 import EventList from './eventList';
 import BusinessInfo from '../business/business_info';
+import EditEventButton from './buttons/editEventButton';
 import EventControls from './eventControls';
 
 const EventView = () => {
-    const { userProfile } = useContext(UsersContext)
+    const { userProfile, getBusinessRoleType } = useContext(UsersContext)
+    let venue_role, brand_role = 'none'
     let { event_id } = useParams()
     let brand_event_list = []
     let venue_event_list = []
@@ -27,16 +29,26 @@ const EventView = () => {
     }
 
     if (eventSuccess && listSuccess) {
+        venue_role = getBusinessRoleType(event.data.venue_id)
+        brand_role = getBusinessRoleType(event.data.brand_id)
         brand_event_list = events.data.filter(e => e.brand_id === event.data.brand_id && e.event_id !== event.data.event_id)
         venue_event_list = events.data.filter(e => e.venue_id === event.data.venue_id && e.event_id !== event.data.event_id)
         both_event_list = events.data.filter(e => (e.venue_id === event.data.venue_id || e.brand_id === event.data.brand_id) && e.event_id !== event.data.event_id)
     }
 
 
+    console.log(venue_role)
+    console.log(brand_role)
     return (
         <div>
             <div>
-                <h2>{event.data.eventname.toUpperCase()}</h2>
+                <div>
+                    {
+                        ((userProfile.id === event.data.created_by) || (venue_role === 'manager') || (venue_role === 'admin') || (brand_role === 'manager') || (brand_role === 'admin')) &&
+                            <EditEventButton event={event.data} venue_role={venue_role} brand_role={brand_role} />
+                    }
+                    <h2>{event.data.eventname.toUpperCase()}</h2>
+                </div>
                 <div className='d-flex justify-content-between fw-bold fst-italic'>
                     <div>
                         {format(new Date(event.data.eventdate), 'E, MMMM d')}
