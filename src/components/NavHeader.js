@@ -7,6 +7,7 @@ import { UsersContext } from '../context/users/users.provider';
 import logobrand from '../assets/cvsc.png'
 import AxiosInstance from '../helpers/axios';
 
+
 export const NavHeader = () => {
     const { userSignOut } = useContext(UsersContext)
     const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
@@ -37,6 +38,8 @@ export const NavHeader = () => {
             history.push(`/${link}`)
         }
     }
+
+    console.log(isLoggedIn)
 
     return (
         <Navbar expand='sm' bg="light" variant="light" fixed='top' className='py-0'>

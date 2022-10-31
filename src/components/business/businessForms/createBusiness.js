@@ -82,10 +82,13 @@ const CreateBusiness = () => {
                     }
                 })
     
+                // removes user from local storage so it is refetch next time profile is loaded
+                localStorage.removeItem('user')
+
                 reset()
         
                 history.push({
-                    pathname: `/business/manage/${new_business.data.id}`,
+                    pathname: `/business/${new_business.data.id}`,
                     state: {
                         business_id: new_business.data.id,
                     }

@@ -7,12 +7,10 @@ import { Form, Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 
 import AxiosInstance from '../helpers/axios';
-import { UsersContext } from '../context/users/users.provider'
 import { NotificationsContext } from '../context/notifications/notifications.provider';
 
 
 const Login = () => {
-    const { setUser } = useContext(UsersContext)
     const { dispatch } = useContext(NotificationsContext);
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -23,14 +21,9 @@ const Login = () => {
 
     
     const sendLogin = (data) => {
-        // AxiosInstance.post('/auth/local', data)
         AxiosInstance.post('/auth/local', data)
             .then(response => {
-                console.log('returned from login')
-                console.log(response)
                 if(response.status === 200) {
-                    // setUser(response.data)
-                    // send success message
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
@@ -54,7 +47,6 @@ const Login = () => {
                 }
             })
             .catch(err => {
-                console.log('inside send login error')
                 console.log(err)
                 if (err.response.status === 400 ) {
                     setError(`${err.response.data.error.type}`, {

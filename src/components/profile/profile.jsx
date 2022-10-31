@@ -6,7 +6,7 @@ import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
 import AccountDetails from './accountTab/accountDetails';
 // import BusinessList from './managerTab/businessList';
-// import RolesTab from './rolesTab/rolesTab';
+import RolesTab from './rolesTab/rolesTab';
 // import UserEventsTab from './userEventsTab/userEventsTab';
 import CreateBusinessButton from '../business/buttons/createBusinessButton';
 
@@ -22,6 +22,7 @@ const Profile = () => {
 
         AxiosInstance.get('/auth/user_profile')
             .then(response => {
+                console.log(response)
                 setProfile(response.data)
             })
             .catch(err => {
@@ -61,8 +62,7 @@ const Profile = () => {
                         <AccountDetails />
                     </Tab>
                     <Tab eventKey="roles" title="Roles">
-                        ROLES
-                        {/* <RolesTab user_id={props.location.state}/> */}
+                        <RolesTab user_id={userProfile.id} />
                     </Tab>
                     <Tab eventKey="events" title="Events">
                         USER EVENTS

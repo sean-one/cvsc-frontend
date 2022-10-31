@@ -13,8 +13,8 @@ const UsersProvider = ({ children }) => {
     const { userProfile, userRoles, userEvents } = store
     
     // used at sucessful login & successful registration
-    const setProfile = user_details => {
-        
+    const setProfile = (user_details) => {
+        console.log(user_details)
         userSignIn(user_details)
 
         dispatch({
