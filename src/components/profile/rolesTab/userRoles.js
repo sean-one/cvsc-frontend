@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Col } from 'react-bootstrap';
 
 import { UsersContext } from '../../../context/users/users.provider';
-
+import { role_types } from '../../../helpers/dataCleanUp';
 
 const UserRoles = () => {
     const { userRoles } = useContext(UsersContext)
@@ -20,7 +20,8 @@ const UserRoles = () => {
                 userRoles.map(role => (
                     <div key={role.business_id} className={`d-flex justify-content-space-between border-bottom ${!role.active_role && 'text-danger'}`}>
                         <Col xs={1} className=''>
-                            {role.role_type.charAt().toUpperCase()}
+                            {role_types[role.role_type].charAt().toUpperCase()}
+                            {/* {role.role_type.charAt().toUpperCase()} */}
                         </Col>
                         <Col xs={7}>
                             {role.business_name}

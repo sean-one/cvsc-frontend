@@ -12,7 +12,7 @@ import CreateBusinessButton from '../business/buttons/createBusinessButton';
 
 
 const Profile = () => {
-    const { userProfile, setProfile } = useContext(UsersContext);
+    const { userProfile, userRoles, setProfile } = useContext(UsersContext);
     const [ loading, setLoading ] = useState(false);
     
     let history = useHistory()
@@ -37,7 +37,8 @@ const Profile = () => {
     }, [])
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'))
+        const user = localStorage.getItem('user')
+        console.log(user)
         if(!user) {
             getUser()
         }
@@ -48,7 +49,7 @@ const Profile = () => {
         return <div>loading...</div>
     }
 
-    // console.log(props)
+    console.log(userRoles)
 
     return (
         <div>

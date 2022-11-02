@@ -26,3 +26,9 @@ export const update_event = (data, df) => {
 
     return data;
 }
+
+export const role_types = {
+    '789': 'admin',
+    '456': 'manager',
+    '123': 'creator'
+}

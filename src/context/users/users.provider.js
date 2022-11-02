@@ -14,12 +14,23 @@ const UsersProvider = ({ children }) => {
     
     // used at sucessful login & successful registration
     const setProfile = (user_details) => {
-        console.log(user_details)
+        const user_roles = user_details.roles || []
+
+        // remove roles from user details
+        delete user_details['roles']
+
+        // save user details to local storage
         userSignIn(user_details)
+        
+        // delete the token to avoid saving in context
+        delete user_details['token']
 
         dispatch({
             type: userTypes.SET_PROFILE,
-            payload: user_details
+            payload: {
+                user: user_details,
+                roles: user_roles
+            }
         })
     }
 
