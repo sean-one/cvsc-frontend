@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import { 
-    usePendingRoleMutation,
+    // usePendingRoleMutation,
     useUserRoleDeleteMutation,
     useCreatorUpgradeMutation,
     useManagerDowngradeMutation,
@@ -13,11 +13,12 @@ import {
 } from '../../hooks/useBusinessApi';
 
 import { NotificationsContext } from '../../context/notifications/notifications.provider';
+import ApproveRequestButton from './buttons/approveRequestButton';
 
 const RolesList = ({ roles_list, list_type }) => {
     const { dispatch } = useContext(NotificationsContext)
 
-    const { mutateAsync: roleApprovalMutation } = usePendingRoleMutation()
+    // const { mutateAsync: roleApprovalMutation } = usePendingRoleMutation()
     const { mutateAsync: userDeleteMutation } = useUserRoleDeleteMutation()
     const { mutateAsync: creatorUpgradeMutation } = useCreatorUpgradeMutation()
     const { mutateAsync: managerDowngradeMutation } = useManagerDowngradeMutation()
@@ -26,32 +27,32 @@ const RolesList = ({ roles_list, list_type }) => {
     let history = useHistory()
 
     // approve pending role request
-    const approveRequest = async (e) => {
-        const approval_response = await roleApprovalMutation(e.currentTarget.value)
+    // const approveRequest = async (e) => {
+    //     const approval_response = await roleApprovalMutation(e.currentTarget.value)
 
-        if(approval_response.status === 200) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${approval_response.data.username} now has ${approval_response.data.role_type} privileges`
-                }
-            })
+    //     if(approval_response.status === 200) {
+    //         dispatch({
+    //             type: "ADD_NOTIFICATION",
+    //             payload: {
+    //                 notification_type: 'SUCCESS',
+    //                 message: `${approval_response.data.username} now has ${approval_response.data.role_type} privileges`
+    //             }
+    //         })
 
-        } else if(approval_response.status === 401) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: 'token authorization error, please sign in'
-                }
-            })
-            history.push('/login')
+    //     } else if(approval_response.status === 401) {
+    //         dispatch({
+    //             type: "ADD_NOTIFICATION",
+    //             payload: {
+    //                 notification_type: 'ERROR',
+    //                 message: 'token authorization error, please sign in'
+    //             }
+    //         })
+    //         history.push('/login')
 
-        } else {
-            console.log(approval_response)
-        }
-    }
+    //     } else {
+    //         console.log(approval_response)
+    //     }
+    // }
 
     // rejects and deletes pending role request & remove creator role
     const removeRole = async (e) => {
@@ -152,9 +153,10 @@ const RolesList = ({ roles_list, list_type }) => {
                     <div className='text-center me-4'>
                         {
                             (list_type === 'pending') &&
-                                <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={role.id}>
-                                    <FontAwesomeIcon icon={faCheck}/>
-                                </Button>
+                                <ApproveRequestButton role_id={role.id} />
+                                // <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={role.id}>
+                                //     <FontAwesomeIcon icon={faCheck}/>
+                                // </Button>
                         }
 
                         {

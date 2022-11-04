@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { UsersContext } from '../../../context/users/users.provider';
 import { role_types } from '../../../helpers/dataCleanUp';
@@ -23,13 +25,13 @@ const UserRoles = () => {
                             {role_types[role.role_type].charAt().toUpperCase()}
                             {/* {role.role_type.charAt().toUpperCase()} */}
                         </Col>
-                        <Col xs={7}>
+                        <Col xs={8}>
                             {role.business_name}
                         </Col>
                         <Col xs={2}>
                             {role.active_role ? 'Active' : 'pending' }
                         </Col>
-                        <Col xs={1}>delete</Col>
+                        <Col xs={1} className='text-end'><FontAwesomeIcon icon={faTrash} /></Col>
                     </div>
                 ))
             }

@@ -34,29 +34,6 @@ const UsersProvider = ({ children }) => {
         })
     }
 
-    const setUser = userdata => {
-
-        // set up local storage and cleans data payload object
-        userSignIn(userdata.user)
-        
-        dispatch({
-            type: userTypes.SET_USER,
-            payload: {
-                user: userdata.user,
-                roles: userdata.roles,
-                user_events: userdata.user_events
-            }
-        })
-    }
-
-    // sets the userroles object used to figure out account type
-    const setUserRoles = userroles => {
-        dispatch({
-            type: userTypes.SET_USER_ROLES,
-            payload: userroles
-        })
-    }
-
     const getBusinessRole = (business_id) => {
         const active_roles = userRoles.filter(role => role.active_role)
         console.log(active_roles)
@@ -86,24 +63,6 @@ const UsersProvider = ({ children }) => {
             }
         }
     }
-
-    // const filterByActiveRoles = (business_list) => {
-    //     let business_ids = []
-    //     let business_list_filtered = business_list
-        
-    //     // filter out active roles only
-    //     const active_roles = userRoles.filter(role => role.active_role)
-
-    //     active_roles.map(role => {
-    //         return business_ids.push(role.business_id)
-    //     })
-        
-    //     if(business_ids.length > 0) {
-    //         business_list_filtered = business_list_filtered.filter(business => !business_ids.includes(business.id))
-    //     }
-        
-    //     return business_list_filtered
-    // }
 
     const userRolesBusinessIds = () => {
         let business_ids = []
@@ -169,12 +128,9 @@ const UsersProvider = ({ children }) => {
     return (
         <UsersContext.Provider value={
             {
-                setUser,
                 setProfile,
-                setUserRoles,
                 getBusinessRole,
                 getBusinessRoleType,
-                // filterByActiveRoles,
                 userRolesBusinessIds,
                 userRolesBuinsessManagementIds,
                 userActiveRoles,
