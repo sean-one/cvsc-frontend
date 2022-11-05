@@ -17,6 +17,7 @@ const CreatorRequest = () => {
     const { data: businessList, isLoading } = useBusinessesQuery()
     const { userSignOut, addUserRole, userRolesBusinessIds } = useContext(UsersContext)
     const user_roles_business_ids = userRolesBusinessIds()
+    
     let history = useHistory();
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
@@ -27,10 +28,10 @@ const CreatorRequest = () => {
     if(isLoading) {
         return <LoadingSpinner />
     }
-    
+
     const request_open = businessList.data.filter(business => business.business_request_open && business.active_business)
     const business_filtered = request_open.filter(business => !user_roles_business_ids.includes(business.id))
-
+    
     const sendRequest = (data) => {
         const token = localStorage.getItem('token')
 
