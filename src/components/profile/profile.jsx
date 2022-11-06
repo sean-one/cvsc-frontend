@@ -49,7 +49,6 @@ const Profile = () => {
         return <div>loading...</div>
     }
 
-    console.log(userRoles)
 
     return (
         <div>
@@ -62,9 +61,9 @@ const Profile = () => {
                     <Tab eventKey="profile" title="Profile">
                         <AccountDetails />
                     </Tab>
-                    <Tab eventKey="roles" title="Roles">
+                    {/* <Tab eventKey="roles" title="Roles">
                         <RolesTab user_id={userProfile.id} />
-                    </Tab>
+                    </Tab> */}
                     <Tab eventKey="events" title="Events">
                         USER EVENTS
                         {/* <UserEventsTab user_id={props.location.state} /> */}

@@ -1,10 +1,11 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import UserEvents from '../../events/eventListing/user.events';
 import CreateEventButton from '../../events/buttons/createEventButton';
 
-const UserEventsTab = ({ user_id }) => {
-
+const UserEventsTab = () => {
+    const { user_id } = useParams()
 
     return (
         <div>

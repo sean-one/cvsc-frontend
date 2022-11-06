@@ -11,6 +11,8 @@ import Register from './components/register.jsx';
 import Login from './components/login.jsx';
 // import AuthRoute from './components/auth/auth.jsx';
 import Profile from './components/profile/profile.jsx';
+import RolesTab from './components/profile/rolesTab/rolesTab';
+import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
 import EventView from './components/events/eventView';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -37,6 +39,8 @@ const App = () => {
             <Route exact path='/business/:business_id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
             <Route exact path='/profile' component={Profile} />
+            <Route path='/roles/user/:user_id' component={RolesTab} />
+            <Route path='/events/user/:user_id' component={UserEventsTab} />
             {/* <AuthRoute exact path='/profile' component={Profile} /> */}
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />

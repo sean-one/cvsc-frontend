@@ -9,7 +9,7 @@ import AxiosInstance from '../helpers/axios';
 
 
 export const NavHeader = () => {
-    const { userSignOut } = useContext(UsersContext)
+    const { userProfile, userSignOut } = useContext(UsersContext)
     const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
     let history = useHistory()
 
@@ -68,6 +68,18 @@ export const NavHeader = () => {
                                 </Nav.Item>
                                 : <Nav.Item>
                                     <Nav.Link onClick={() => goto('profile')}>Profile</Nav.Link>
+                                </Nav.Item>
+                        }
+                        {
+                            (isLoggedIn) &&
+                                <Nav.Item>
+                                    <Nav.Link onClick={() => goto(`roles/user/${userProfile.id}`)}>User Roles</Nav.Link>
+                                </Nav.Item>
+                        }
+                        {
+                            (isLoggedIn) &&
+                                <Nav.Item>
+                                    <Nav.Link onClick={() => goto(`events/user/${userProfile.id}`)}>User Events</Nav.Link>
                                 </Nav.Item>
                         }
                         {
