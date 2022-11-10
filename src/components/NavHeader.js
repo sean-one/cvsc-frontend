@@ -73,13 +73,13 @@ export const NavHeader = () => {
                         {
                             (isLoggedIn) &&
                                 <Nav.Item>
-                                    <Nav.Link onClick={() => goto(`roles/user/${userProfile.id}`)}>User Roles</Nav.Link>
+                                    <Nav.Link onClick={() => goto(`profile/roles/${userProfile.id}`)}>User Roles</Nav.Link>
                                 </Nav.Item>
                         }
                         {
                             (isLoggedIn) &&
                                 <Nav.Item>
-                                    <Nav.Link onClick={() => goto(`events/user/${userProfile.id}`)}>User Events</Nav.Link>
+                                    <Nav.Link onClick={() => goto(`profile/events/${userProfile.id}`)}>User Events</Nav.Link>
                                 </Nav.Item>
                         }
                         {

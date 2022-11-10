@@ -38,9 +38,10 @@ const App = () => {
             <Route path='/event/:event_id' render={(props) => (<EventView {...props} />)} />
             <Route exact path='/business/:business_id' render={(props) => (<BusinessView {...props} />)} />
             <Route path='/login' component={Login} />
-            <Route exact path='/profile' component={Profile} />
-            <Route path='/roles/user/:user_id' component={RolesTab} />
-            <Route path='/events/user/:user_id' component={UserEventsTab} />
+            <Route path='/profile' component={Profile}>
+              <Route path='/roles/:user_id' component={RolesTab} />
+              <Route path='/events/:user_id' component={UserEventsTab} />
+            </Route>
             {/* <AuthRoute exact path='/profile' component={Profile} /> */}
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />
