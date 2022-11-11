@@ -1,14 +1,14 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 
 const ViewBusinessButton = ({ business_id }) => {
-    let history = useHistory()
+    let navigate = useNavigate()
 
     const businessLink = () => {
-        history.push(`/business/${business_id}`)
+        navigate(`/business/${business_id}`)
     }
 
     return (

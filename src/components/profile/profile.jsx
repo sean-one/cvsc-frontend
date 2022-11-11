@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { withRouter, useHistory } from 'react-router-dom';
 
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
@@ -11,7 +12,7 @@ const Profile = () => {
     const { setProfile } = useContext(UsersContext);
     const [ loading, setLoading ] = useState(false);
     
-    let history = useHistory()
+    let navigate = useNavigate()
 
     const getUser = useCallback(() => {
         setLoading(true);
@@ -23,7 +24,7 @@ const Profile = () => {
             })
             .catch(err => {
                 if(err.response.status === 401) {
-                    history.push('/login')
+                    navigate('/login')
                 }
             })
             .finally(
@@ -54,4 +55,4 @@ const Profile = () => {
     )
 }
 
-export default withRouter(Profile);
+export default Profile;

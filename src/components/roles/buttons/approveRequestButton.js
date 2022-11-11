@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +11,7 @@ import { role_types } from '../../../helpers/dataCleanUp';
 const ApproveRequestButton = ({ role_id }) => {
     const { dispatch } = useContext(NotificationsContext)
     const { mutateAsync: roleApprovalMutation } = usePendingRoleMutation()
-    let history = useHistory()
+    let navigate = useNavigate()
 
 
     const approveRequest = async (e) => {
@@ -33,7 +33,7 @@ const ApproveRequestButton = ({ role_id }) => {
                     message: 'token authoriztion error, please sign in'
                 }
             })
-            history.push('/login')
+            navigate('/login')
         } else {
             console.log(approval_response)
         }

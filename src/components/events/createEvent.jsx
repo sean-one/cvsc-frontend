@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { withRouter, useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -30,7 +31,7 @@ const CreateEvent = () => {
         }
     });
     
-    let history = useHistory();
+    let navigate = useNavigate();
 
     const createNewEvent = async (data) => {
         
@@ -54,12 +55,15 @@ const CreateEvent = () => {
                     message: `event '${add_event_response.data.eventname}' has been created`
                 }
             })
-            history.push({
-                pathname: `/event/${add_event_response.data.event_id}`,
-                state: {
-                    event: add_event_response.data
-                }
-            });
+
+            navigate(`/event/${add_event_response.data.event.id}`)
+
+            // history.push({
+            //     pathname: `/event/${add_event_response.data.event_id}`,
+            //     state: {
+            //         event: add_event_response.data
+            //     }
+            // });
         } else {
             console.log('sumtins no rite')
             // dispatch({
@@ -205,4 +209,4 @@ const CreateEvent = () => {
     )
 }
 
-export default withRouter(CreateEvent);
+export default CreateEvent;

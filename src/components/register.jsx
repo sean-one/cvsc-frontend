@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Col, Form, Button, Row } from 'react-bootstrap';
@@ -17,7 +17,7 @@ const Register = () => {
         resolver: yupResolver(registrationSchema)
     })
     
-    let history = useHistory();
+    let navigate = useNavigate();
 
     const createUser = async (data) =>{
         // remove password confirmation
@@ -35,7 +35,7 @@ const Register = () => {
                     })
 
                     // forward to profile page
-                    history.push('/profile');
+                    navigate('/profile');
                 }
             })
             .catch(error => {

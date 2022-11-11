@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
 import { UsersContext } from '../context/users/users.provider';
@@ -11,7 +11,7 @@ import AxiosInstance from '../helpers/axios';
 export const NavHeader = () => {
     const { userProfile, userSignOut } = useContext(UsersContext)
     const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
-    let history = useHistory()
+    let navigate = useNavigate()
 
     const logout = async () => {
         await AxiosInstance.get('/auth/logout')
@@ -20,7 +20,7 @@ export const NavHeader = () => {
         
         userSignOut()
         
-        history.push('/')
+        navigate('/')
         
         // document.getElementById('navbarToggle').classList.remove('show')
         // document.getElementById('navbarToggle').classList.add('hide')
@@ -33,9 +33,9 @@ export const NavHeader = () => {
         document.getElementById('navbarToggle').classList.add('hide')
         
         if(!link) {
-            history.push('/')
+            navigate('/')
         } else {
-            history.push(`/${link}`)
+            navigate(`/${link}`)
         }
     }
 

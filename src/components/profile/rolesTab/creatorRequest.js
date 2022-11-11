@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { useHistory, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -18,7 +19,7 @@ const CreatorRequest = () => {
     const { userSignOut, addUserRole, userRolesBusinessIds } = useContext(UsersContext)
     const user_roles_business_ids = userRolesBusinessIds()
     
-    let history = useHistory();
+    let navigate = useNavigate();
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -60,7 +61,7 @@ const CreatorRequest = () => {
                 } else {
                     
                     //token error, forward to login screen
-                    history.push('/login');
+                    navigate('/login');
 
                     // clear localstorage and sign out user info
                     localStorage.clear()
@@ -106,4 +107,4 @@ const CreatorRequest = () => {
     )
 }
 
-export default withRouter(CreatorRequest);
+export default CreatorRequest;

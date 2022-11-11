@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools'
 
@@ -33,15 +33,18 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <NavHeader />
           <Layout>
-            <Route exact path='/' render={(props) => (<Calendar {...props} />)} />
-            <Route path='/register' component={Register} />
-            <Route path='/event/:event_id' render={(props) => (<EventView {...props} />)} />
-            <Route exact path='/business/:business_id' render={(props) => (<BusinessView {...props} />)} />
-            <Route path='/login' component={Login} />
-            <Route path='/profile' component={Profile}>
-              <Route path='/roles/:user_id' component={RolesTab} />
-              <Route path='/events/:user_id' component={UserEventsTab} />
-            </Route>
+            <Routes>
+              <Route exact path='/' element={<Calendar />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/event/:event_id' element={<EventView />} />
+              <Route exact path='/business/:business_id' element={<BusinessView />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/profile' element={<Profile />}>
+                  <Route path='/profile/roles/:user_id' element={<RolesTab />} />
+                  <Route path='/profile/events/:user_id' element={<UserEventsTab />} />
+              </Route>
+            </Routes>
+            {/* <Route exact path='/' render={(props) => (<Calendar {...props} />)} /> */}
             {/* <AuthRoute exact path='/profile' component={Profile} /> */}
           </Layout>
           <ReactQueryDevtools initialIsOpen={false} />

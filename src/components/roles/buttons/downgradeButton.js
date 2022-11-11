@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
@@ -10,7 +10,7 @@ const DowngradeButton = ({ role_id }) => {
     const { dispatch } = useContext(NotificationsContext)
     const { mutateAsync: downgradeRoleMutation } = useManagerDowngradeMutation()
 
-    let history = useHistory()
+    let navigate = useNavigate()
 
     const downgradeRole = async (e) => {
         const downgrade_response = await downgradeRoleMutation(e.currentTarget.value)
@@ -34,7 +34,7 @@ const DowngradeButton = ({ role_id }) => {
                 }
             })
 
-            history.push('/login')
+            navigate('/login')
         }
     }
     

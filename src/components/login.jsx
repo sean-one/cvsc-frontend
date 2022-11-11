@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,7 +17,7 @@ const Login = () => {
         mode: "onBlur",
         resolver: yupResolver(loginSchema)
     });
-    let history = useHistory();
+    let navigate = useNavigate();
 
     
     const sendLogin = (data) => {
@@ -33,7 +33,7 @@ const Login = () => {
                     })
 
                     // forward to profile page
-                    history.push('/profile');
+                    navigate('/profile');
 
                 } else {
                     dispatch({

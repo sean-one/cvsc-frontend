@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Form } from 'react-bootstrap';
@@ -37,7 +38,7 @@ const CreateBusiness = () => {
     });
 
     const businessType = watch('business_type', 'brand')
-    let history = useHistory();
+    let navigate = useNavigate();
 
     const sendRequest = async (business_data) => {
         try {
@@ -87,12 +88,13 @@ const CreateBusiness = () => {
 
                 reset()
         
-                history.push({
-                    pathname: `/business/${new_business.data.id}`,
-                    state: {
-                        business_id: new_business.data.id,
-                    }
-                })
+                navigate(`/business/${new_business.data.id}`)
+                // history.push({
+                //     pathname: `/business/${new_business.data.id}`,
+                //     state: {
+                //         business_id: new_business.data.id,
+                //     }
+                // })
     
             }
         } catch (error) {
@@ -334,4 +336,4 @@ const CreateBusiness = () => {
     )
 }
 
-export default withRouter(CreateBusiness);
+export default CreateBusiness;

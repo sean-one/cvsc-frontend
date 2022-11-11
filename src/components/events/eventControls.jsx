@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +10,7 @@ import { useEventRemoveMutation } from '../../hooks/useEvents';
 const EventControls = ({ event, inactive }) => {
     const { mutateAsync: removeEvent } = useEventRemoveMutation()
     const [ modalShow, setModalShow ] = useState(false)
-    let history = useHistory();
+    let navigate = useNavigate();
     const { pathname } = useLocation()
 
     const handleModalOpen = () => setModalShow(true)
@@ -32,7 +32,7 @@ const EventControls = ({ event, inactive }) => {
             {
                 (pathname.match(/\/event\/[0-9A-Za-z]{8}-[0-9A-Za-z]{4}-4[0-9A-Za-z]{3}-[89ABab][0-9A-Za-z]{3}-[0-9A-Za-z]{12}/) || inactive === true)
                     ? null
-                    : <div className='border w-100 rounded bg-light' onClick={() => history.push(`/event/${event.event_id}`)}>
+                    : <div className='border w-100 rounded bg-light' onClick={() => navigate(`/event/${event.event_id}`)}>
                         <FontAwesomeIcon icon={faEye} size='1x' />
                     </div> 
             }

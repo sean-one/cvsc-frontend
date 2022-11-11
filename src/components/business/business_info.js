@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClinicMedical, faCannabis } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,7 +11,7 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
     const { mutateAsync: removeBusinessMutation } = useBusinessRemoveMutation()
     let role_type = 'none'
     const { event_id } = useParams()
-    let history = useHistory()
+    let navigate = useNavigate()
 
     const business_icon = {
         'brand': faCannabis,
@@ -33,7 +33,7 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
         console.log(remove_response)
 
         if (remove_response.status === 201) {
-            history.push('/')
+            navigate('/')
         }
     }
 

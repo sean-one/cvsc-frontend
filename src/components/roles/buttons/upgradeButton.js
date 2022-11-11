@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
 import { NotificationsContext } from '../../../context/notifications/notifications.provider';
@@ -11,7 +11,7 @@ const UpgradeButton = ({ role_id }) => {
     const { dispatch } = useContext(NotificationsContext)
     const { mutateAsync: upgradeRoleMutation } = useCreatorUpgradeMutation()
 
-    let history = useHistory()
+    let navigate = useNavigate()
 
     const upgradeRole = async (e) => {
         const upgrade_response = await upgradeRoleMutation(e.currentTarget.value)
@@ -35,7 +35,7 @@ const UpgradeButton = ({ role_id }) => {
                 }
             })
 
-            history.push('/login')
+            navigate('/login')
         }
     }
 
