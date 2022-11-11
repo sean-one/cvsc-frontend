@@ -1,11 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 // import { withRouter, useHistory } from 'react-router-dom';
 
 import AxiosInstance from '../../helpers/axios';
 import { UsersContext } from '../../context/users/users.provider';
 import AccountDetails from './accountTab/accountDetails';
+import ProfileMenu from './profileMenu';
 import CreateBusinessButton from '../business/buttons/createBusinessButton';
+import CreateEventButton from '../events/buttons/createEventButton';
 
 
 const Profile = () => {
@@ -49,8 +51,13 @@ const Profile = () => {
 
     return (
         <div>
+            <div className='d-flex justify-content-between align-items-center py-2'>
+                <CreateBusinessButton />
+                <CreateEventButton />
+            </div>
             <AccountDetails />
-            <CreateBusinessButton />
+            <ProfileMenu />
+            <Outlet />
         </div>
     )
 }

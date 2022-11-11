@@ -13,6 +13,7 @@ import Login from './components/login.jsx';
 import Profile from './components/profile/profile.jsx';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
+import BusinessList from './components/business/business_list';
 import EventView from './components/events/eventView';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -40,8 +41,10 @@ const App = () => {
               <Route exact path='/business/:business_id' element={<BusinessView />} />
               <Route path='/login' element={<Login />} />
               <Route path='/profile' element={<Profile />}>
-                  <Route path='/profile/roles/:user_id' element={<RolesTab />} />
-                  <Route path='/profile/events/:user_id' element={<UserEventsTab />} />
+                  <Route path='/profile/roles' element={<RolesTab />} />
+                  {/* <Route path='/profile/roles/:user_id' element={<RolesTab />} /> */}
+                  <Route path='/profile/events' element={<UserEventsTab />} />
+                  <Route path='/profile/management' element={<BusinessList />} />
               </Route>
             </Routes>
             {/* <Route exact path='/' render={(props) => (<Calendar {...props} />)} /> */}
