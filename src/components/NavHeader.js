@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
-import { UsersContext } from '../context/users/users.provider';
+import useAuth from '../hooks/useAuth';
 
 import logobrand from '../assets/cvsc.png'
 import AxiosInstance from '../helpers/axios';
 
 
 export const NavHeader = () => {
-    const { userProfile, userSignOut } = useContext(UsersContext)
-    const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
+    const { auth, setAuth } = useAuth()
     let navigate = useNavigate()
 
     const logout = async () => {
@@ -18,13 +17,12 @@ export const NavHeader = () => {
         
         localStorage.clear()
         
-        userSignOut()
+        setAuth({})
+        
+        document.getElementById('navbarToggle').classList.remove('show')
+        document.getElementById('navbarToggle').classList.add('hide')
         
         navigate('/')
-        
-        // document.getElementById('navbarToggle').classList.remove('show')
-        // document.getElementById('navbarToggle').classList.add('hide')
-        
     }
 
     
@@ -39,7 +37,6 @@ export const NavHeader = () => {
         }
     }
 
-    console.log(isLoggedIn)
 
     return (
         <Navbar expand='sm' bg="light" variant="light" fixed='top' className='py-0'>
@@ -62,7 +59,7 @@ export const NavHeader = () => {
                             <Nav.Link onClick={() => goto()}>Calendar</Nav.Link>
                         </Nav.Item>
                         {
-                            (!isLoggedIn)
+                            (Object.keys(auth).length < 1)
                                 ? <Nav.Item>
                                     <Nav.Link onClick={() => goto('register')}>Register</Nav.Link>
                                 </Nav.Item>
@@ -71,19 +68,7 @@ export const NavHeader = () => {
                                 </Nav.Item>
                         }
                         {
-                            (isLoggedIn) &&
-                                <Nav.Item>
-                                    <Nav.Link onClick={() => goto(`profile/roles/${userProfile.id}`)}>User Roles</Nav.Link>
-                                </Nav.Item>
-                        }
-                        {
-                            (isLoggedIn) &&
-                                <Nav.Item>
-                                    <Nav.Link onClick={() => goto(`profile/events/${userProfile.id}`)}>User Events</Nav.Link>
-                                </Nav.Item>
-                        }
-                        {
-                            (isLoggedIn)
+                            (Object.keys(auth).length > 1)
                                 ? <Nav.Item>
                                     <Nav.Link onClick={logout}>Logout</Nav.Link>
                                 </Nav.Item>

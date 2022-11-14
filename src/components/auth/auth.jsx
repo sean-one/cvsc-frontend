@@ -1,16 +1,19 @@
-import { Redirect } from "react-router";
-import { Route } from 'react-router-dom';
+import { useLocation, Navigate, Outlet } from "react-router";
 
-import checkToken from './checkToken';
+import useAuth from "../../hooks/useAuth";
 
-const AuthRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={props => (
-        checkToken() ? (
-            <Component {...props} />    
-        ) : (
-            <Redirect to={{ pathname: '/profile' }} />
-        )
-    )} />
-)
+const AuthRoute = () => {
+    const { auth } = useAuth()
+    const location = useLocation()
+
+
+    return (
+        (Object.keys(auth).length > 0)
+            ? <Outlet />
+            : auth?.id
+                ? <Navigate to="/invalid" state={{ from: location }} replace />
+                : <Navigate to="/login" state={{ from: location }} replace />
+    )
+}
 
 export default AuthRoute;

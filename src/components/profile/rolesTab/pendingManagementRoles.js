@@ -5,8 +5,8 @@ import LoadingSpinner from '../../loadingSpinner';
 import sortPendingByBusiness from '../../../helpers/sortPendingByBusiness';
 import RolesList from '../../roles/rolesList';
 
-const PendingManagementRoles = ({ user_id }) => {
-    console.log(`user id in management roles: ${user_id}`)
+const PendingManagementRoles = () => {
+    const user_id = localStorage.getItem('user')
     const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery(user_id)
     let sortedByBusiness = {}
 

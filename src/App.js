@@ -9,7 +9,7 @@ import BusinessView from './components/business/businessView';
 import { NavHeader } from './components/NavHeader';
 import Register from './components/register.jsx';
 import Login from './components/login.jsx';
-// import AuthRoute from './components/auth/auth.jsx';
+import AuthRoute from './components/auth/auth.jsx';
 import Profile from './components/profile/profile.jsx';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
@@ -27,6 +27,7 @@ const queryClient = new QueryClient()
 
 const App = () => {
   
+  
   return (
     <React.Fragment>
       <ScrollToTop/>
@@ -35,16 +36,20 @@ const App = () => {
           <NavHeader />
           <Layout>
             <Routes>
+              {/* public routes */}
               <Route exact path='/' element={<Calendar />} />
+              <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/event/:event_id' element={<EventView />} />
               <Route exact path='/business/:business_id' element={<BusinessView />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/profile' element={<Profile />}>
-                  <Route path='/profile/roles' element={<RolesTab />} />
-                  {/* <Route path='/profile/roles/:user_id' element={<RolesTab />} /> */}
-                  <Route path='/profile/events' element={<UserEventsTab />} />
-                  <Route path='/profile/management' element={<BusinessList />} />
+              {/* private routes */}
+              <Route element={<AuthRoute />}>
+                <Route path='/profile' element={<Profile />}>
+                    <Route path='/profile/roles' element={<RolesTab />} />
+                    {/* <Route path='/profile/roles/:user_id' element={<RolesTab />} /> */}
+                    <Route path='/profile/events' element={<UserEventsTab />} />
+                    <Route path='/profile/management' element={<BusinessList />} />
+                </Route>
               </Route>
             </Routes>
             {/* <Route exact path='/' render={(props) => (<Calendar {...props} />)} /> */}

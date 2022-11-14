@@ -1,27 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import { AuthProvider } from './context/auth/auth.provider';
 import NotificationsProvider from './context/notifications/notifications.provider';
-// import AxiosInstance from './helpers/axios';
 
 // import './index.css';
 import App from './App';
 
 require('dotenv').config();
 
-// AxiosInstance.interceptors.request.use((request) => {
-//   console.log(request);
-//   return request;
-// })
-
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <NotificationsProvider>
-        <App />
-      </NotificationsProvider>
+      <AuthProvider>
+        <NotificationsProvider>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </NotificationsProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

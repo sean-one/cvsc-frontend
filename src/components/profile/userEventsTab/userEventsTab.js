@@ -1,11 +1,10 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 import UserEvents from '../../events/eventListing/user.events';
 import CreateEventButton from '../../events/buttons/createEventButton';
 
 const UserEventsTab = () => {
-    const { user_id } = useParams()
+    const user_id = localStorage.getItem('user')
 
     return (
         <div>

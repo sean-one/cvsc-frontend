@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { loginSchema } from '../helpers/validationSchemas';
@@ -6,12 +6,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, Button } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 
+import useAuth from '../hooks/useAuth';
+import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
-import { NotificationsContext } from '../context/notifications/notifications.provider';
 
 
 const Login = () => {
-    const { dispatch } = useContext(NotificationsContext);
+    const { setAuth } = useAuth()
+    const { dispatch } = useNotification()
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: "onBlur",
@@ -23,7 +25,10 @@ const Login = () => {
     const sendLogin = (data) => {
         AxiosInstance.post('/auth/local', data)
             .then(response => {
+
                 if(response.status === 200) {
+                    setAuth(response.data)
+
                     dispatch({
                         type: "ADD_NOTIFICATION",
                         payload: {
