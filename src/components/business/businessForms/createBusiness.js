@@ -7,14 +7,14 @@ import { Button, Form } from 'react-bootstrap';
 
 import { addBusinessSchema } from '../../../helpers/validationSchemas';
 import { useAddBusinessMutation } from '../../../hooks/useBusinessApi';
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 import { UsersContext } from '../../../context/users/users.provider';
 
 const CreateBusiness = () => {
     const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: addBusinessMutation, error: addError } = useAddBusinessMutation()
     const { addUserRole } = useContext(UsersContext)
-    const { dispatch } = useContext(NotificationsContext) 
+    const { dispatch } = useNotification() 
     
     const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
         mode: 'onBlur',

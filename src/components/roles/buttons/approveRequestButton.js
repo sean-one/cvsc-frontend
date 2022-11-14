@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { usePendingRoleMutation } from '../../../hooks/useBusinessApi';
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
 const ApproveRequestButton = ({ role_id }) => {
-    const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useNotification()
     const { mutateAsync: roleApprovalMutation } = usePendingRoleMutation()
     let navigate = useNavigate()
 

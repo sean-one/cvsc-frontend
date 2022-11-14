@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { withRouter, useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -8,14 +8,14 @@ import { createEventSchema } from '../../helpers/validationSchemas';
 import { Button, Form } from 'react-bootstrap';
 
 import { useAddEventMutation } from '../../hooks/useEvents';
-import { NotificationsContext } from '../../context/notifications/notifications.provider';
+import useNotification from '../../hooks/useNotification';
 import BusinessList from '../business/business_list';
 
 
 const CreateEvent = () => {
     const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: addEventMutation } = useAddEventMutation()
-    const { dispatch } = useContext(NotificationsContext);
+    const { dispatch } = useNotification();
     const { register, handleSubmit, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema),

@@ -3,11 +3,11 @@ import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 import { useManagerRoleDeleteMutation } from '../../../hooks/useBusinessApi';
 
 const RemoveRoleButton = ({ role_id }) => {
-    const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useNotification()
     const { mutateAsync: roleDeleteMutation } = useManagerRoleDeleteMutation()
 
     const removeRole = async (e) => {

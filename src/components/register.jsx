@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,11 +6,11 @@ import { Col, Form, Button, Row } from 'react-bootstrap';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import AxiosInstance from '../helpers/axios';
-import { NotificationsContext } from '../context/notifications/notifications.provider.js';
+import useNotification from '../hooks/useNotification.js';
 
 
 const Register = () => {
-    const { dispatch } = useContext(NotificationsContext);
+    const { dispatch } = useNotification();
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: "onBlur",

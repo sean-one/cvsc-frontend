@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 import { useLocationMutation } from '../../../hooks/useBusinessApi';
 
 const Styles = styled.div`
@@ -23,7 +23,7 @@ const Styles = styled.div`
 const EditLocation = ({ modalClose, business_location }) => {
     const { id: location_id } = business_location
     const { mutateAsync: editBusinessLocation } = useLocationMutation()
-    const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useNotification()
     
     const { register, handleSubmit, clearErrors, formState: { isDirty, errors } } = useForm({
         defaultValues: {

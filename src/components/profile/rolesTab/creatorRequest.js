@@ -8,13 +8,13 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import LoadingSpinner from '../../loadingSpinner';
 import AxiosInstance from '../../../helpers/axios';
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 import { UsersContext } from '../../../context/users/users.provider';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 
 
 const CreatorRequest = () => {
-    const { dispatch } = useContext(NotificationsContext);
+    const { dispatch } = useNotification();
     const { data: businessList, isLoading } = useBusinessesQuery()
     const { userSignOut, addUserRole, userRolesBusinessIds } = useContext(UsersContext)
     const user_roles_business_ids = userRolesBusinessIds()

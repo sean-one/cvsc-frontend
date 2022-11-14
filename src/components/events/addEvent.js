@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { NotificationsContext } from '../../context/notifications/notifications.provider'
+import useNotification from '../../hooks/useNotification';
 
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useAddEventMutation } from '../../hooks/useEvents';
@@ -21,7 +21,7 @@ const AddEvent = () => {
     const { data: business_list, isLoading } = useBusinessesQuery()
     const { mutateAsync: addEventMutation } = useAddEventMutation()
 
-    const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useNotification()
 
     let history = useHistory()
 

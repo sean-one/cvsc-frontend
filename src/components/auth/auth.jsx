@@ -6,13 +6,12 @@ const AuthRoute = () => {
     const { auth } = useAuth()
     const location = useLocation()
 
+    console.log(auth)
 
     return (
         (Object.keys(auth).length > 0)
             ? <Outlet />
-            : auth?.id
-                ? <Navigate to="/invalid" state={{ from: location }} replace />
-                : <Navigate to="/login" state={{ from: location }} replace />
+            : <Navigate to="/login" state={{ from: location }} replace />
     )
 }
 

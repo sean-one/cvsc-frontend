@@ -10,7 +10,7 @@ import LoadingSpinner from '../loadingSpinner';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useEditEventMutation } from '../../hooks/useEvents';
-import { NotificationsContext } from '../../context/notifications/notifications.provider';
+import useNotification from '../../hooks/useNotification';
 import { UsersContext } from '../../context/users/users.provider';
 
 const Styles = styled.div`
@@ -30,7 +30,7 @@ const Styles = styled.div`
 const EditEvent = ({ event, handleClose }) => {
     const { data: business_list, isLoading } = useBusinessesQuery()
     const { mutateAsync: editEventMutation } = useEditEventMutation()
-    const { dispatch } = useContext(NotificationsContext);
+    const { dispatch } = useNotification();
     const { userProfile, userActiveRoles } = useContext(UsersContext)
     const business_roles = userActiveRoles()
     // const { editImage, imagePreview, canvas } = useImagePreviewer()

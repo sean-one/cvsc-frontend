@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 import { useUserRoleDeleteMutation } from '../../../hooks/useBusinessApi';
 
 
 const DeleteRequestButton = ({ role_id }) => {
-    const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useNotification()
     const { mutateAsync: requestDeleteMutation } = useUserRoleDeleteMutation()
 
     const removeRequest = async (e) => {

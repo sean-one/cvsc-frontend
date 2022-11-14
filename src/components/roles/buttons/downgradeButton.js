@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 import { useManagerDowngradeMutation } from '../../../hooks/useBusinessApi';
 
 
 const DowngradeButton = ({ role_id }) => {
-    const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useNotification()
     const { mutateAsync: downgradeRoleMutation } = useManagerDowngradeMutation()
 
     let navigate = useNavigate()

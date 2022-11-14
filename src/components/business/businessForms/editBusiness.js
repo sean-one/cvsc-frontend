@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { useUpdateBusinessMutation } from '../../../hooks/useBusinessApi';
 import { UsersContext } from '../../../context/users/users.provider';
-import { NotificationsContext } from '../../../context/notifications/notifications.provider';
+import useNotification from '../../../hooks/useNotification';
 
 const Styles = styled.div`
     .errormessage {
@@ -25,7 +25,7 @@ const EditBusiness = ({ business, handleClose }) => {
     const { id: business_id } = business
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { getBusinessRole } = useContext(UsersContext)
-    const { dispatch } = useContext(NotificationsContext)
+    const { dispatch } = useNotification()
     const user_role = getBusinessRole(business_id)
     
     const { register, handleSubmit, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
