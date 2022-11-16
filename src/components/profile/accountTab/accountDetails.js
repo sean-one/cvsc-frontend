@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Image, Row } from 'react-bootstrap';
 import default_profile from '../../../assets/default_user_icon.png'
-
+import { role_types } from '../../../helpers/dataCleanUp';
 import useAuth from '../../../hooks/useAuth';
 
 const AccountDetails = () => {
@@ -16,7 +16,7 @@ const AccountDetails = () => {
             <Col xs={12} className='d-flex flex-column justify-content-center'>
                 <Row className='m-0 ps-3'>{auth?.username}</Row>
                 <Row className='m-0 ps-3'>{auth?.email}</Row>
-                <Row className='m-0 ps-3'>{`Account Type: ${auth.account_type || 'basic'}`}</Row>
+                <Row className='m-0 ps-3'>{`Account Type: ${role_types[auth.account_type]}`}</Row>
             </Col>
         </div>
     )

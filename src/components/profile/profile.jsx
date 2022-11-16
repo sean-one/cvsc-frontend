@@ -5,9 +5,12 @@ import AccountDetails from './accountTab/accountDetails';
 import ProfileMenu from './profileMenu';
 import CreateBusinessButton from '../business/buttons/createBusinessButton';
 import CreateEventButton from '../events/buttons/createEventButton';
-
+import useAuth from '../../hooks/useAuth';
 
 const Profile = () => {
+    const { auth } = useAuth()
+
+    console.log(auth)
 
     return (
         <div>
