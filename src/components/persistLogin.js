@@ -6,18 +6,15 @@ import useAuth from '../hooks/useAuth';
 import LoadingSpinner from './loadingSpinner';
 
 const PersistLogin = () => {
-    console.log('inside persist')
     const [ isLoading, setIsLoading ] = useState(true)
     const refresh = useRefreshToken()
-    const { auth, persist } = useAuth()
+    const { auth } = useAuth()
 
-    console.log(auth)
     useEffect(() => {
         let isMounted = true
 
         const verifyRefreshToken = async () => {
             try {
-                console.log('sending to refresh')
                 await refresh()
             }
             catch (err) {
@@ -28,19 +25,18 @@ const PersistLogin = () => {
             }
         }
 
-        !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false)
+        !auth?.user.accessToken ? verifyRefreshToken() : setIsLoading(false)
 
         return () => isMounted = false
-    }, [])
+    }, [auth, refresh])
+
+    if (isLoading) {
+        return <LoadingSpinner />
+    }
 
     return (
         <>
-            {!persist
-                ? <Outlet />
-                : isLoading
-                    ? <LoadingSpinner />
-                    : <Outlet />
-            }
+            <Outlet />
         </>
     )
 }

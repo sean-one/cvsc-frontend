@@ -13,16 +13,20 @@ export const NavHeader = () => {
     let navigate = useNavigate()
 
     const logout = async () => {
-        await AxiosInstance.get('/auth/logout')
-        
-        localStorage.clear()
-        
-        setAuth({})
+        const response = await AxiosInstance.get('/auth/logout')
+
+        if(response.status === 204) {
+            console.log('got response of 204')
+            localStorage.clear()
+            
+            setAuth({})
+
+        }
         
         document.getElementById('navbarToggle').classList.remove('show')
         document.getElementById('navbarToggle').classList.add('hide')
         
-        navigate('/')
+        navigate('/');
     }
 
     
