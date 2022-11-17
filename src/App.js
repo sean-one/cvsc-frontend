@@ -10,6 +10,7 @@ import { NavHeader } from './components/NavHeader';
 import Register from './components/register.jsx';
 import Login from './components/login.jsx';
 import AuthRoute from './components/auth/auth.jsx';
+import PersistLogin from './components/persistLogin';
 import Profile from './components/profile/profile.jsx';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
@@ -43,12 +44,14 @@ const App = () => {
               <Route path='/event/:event_id' element={<EventView />} />
               <Route exact path='/business/:business_id' element={<BusinessView />} />
               {/* private routes */}
-              <Route element={<AuthRoute />}>
-                <Route path='/profile' element={<Profile />}>
-                    <Route path='/profile/roles' element={<RolesTab />} />
-                    {/* <Route path='/profile/roles/:user_id' element={<RolesTab />} /> */}
-                    <Route path='/profile/events' element={<UserEventsTab />} />
-                    <Route path='/profile/management' element={<BusinessList />} />
+              <Route element={<PersistLogin />}>
+                <Route element={<AuthRoute />}>
+                  <Route path='/profile' element={<Profile />}>
+                      <Route path='/profile/roles' element={<RolesTab />} />
+                      {/* <Route path='/profile/roles/:user_id' element={<RolesTab />} /> */}
+                      <Route path='/profile/events' element={<UserEventsTab />} />
+                      <Route path='/profile/management' element={<BusinessList />} />
+                  </Route>
                 </Route>
               </Route>
             </Routes>

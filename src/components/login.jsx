@@ -12,7 +12,7 @@ import AxiosInstance from '../helpers/axios';
 
 
 const Login = () => {
-    const { setAuth } = useAuth()
+    const { setAuth, persist, setPersist } = useAuth()
     const { dispatch } = useNotification()
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -27,6 +27,8 @@ const Login = () => {
             .then(response => {
 
                 if(response.status === 200) {
+                    console.log('send login')
+                    console.log(response.data)
                     setAuth(response.data)
 
                     dispatch({
