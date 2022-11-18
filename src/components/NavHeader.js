@@ -26,7 +26,7 @@ export const NavHeader = () => {
         document.getElementById('navbarToggle').classList.remove('show')
         document.getElementById('navbarToggle').classList.add('hide')
         
-        navigate('/');
+        navigate('/')
     }
 
     

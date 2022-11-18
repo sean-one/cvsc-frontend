@@ -25,7 +25,13 @@ const PersistLogin = () => {
             }
         }
 
-        !auth?.user.accessToken ? verifyRefreshToken() : setIsLoading(false)
+        if(Object.keys(auth).length > 0) {
+            verifyRefreshToken()
+        } else  {
+            setIsLoading(false)
+        }
+        console.log(auth)
+        // !auth?.user.accessToken ? verifyRefreshToken() : setIsLoading(false)
 
         return () => isMounted = false
     }, [auth, refresh])
@@ -36,7 +42,11 @@ const PersistLogin = () => {
 
     return (
         <>
-            <Outlet />
+            {
+                isLoading
+                    ? <LoadingSpinner />
+                    : <Outlet />
+            }
         </>
     )
 }
