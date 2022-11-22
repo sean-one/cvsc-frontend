@@ -6,7 +6,6 @@ import useAuth from '../../../hooks/useAuth';
 
 const AccountDetails = () => {
     const { auth } = useAuth()
-    console.log(auth)
 
     return (
         <div className='d-flex flex-column align-items-center border mb-3'>

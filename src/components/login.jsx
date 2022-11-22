@@ -25,7 +25,6 @@ const Login = () => {
     const sendLogin = (data) => {
         AxiosInstance.post('/auth/local', data)
             .then(response => {
-                console.log(response.data)
                 if(response.status === 200) {
                     setAuth({ user: response.data.user, roles: response.data.roles })
 

@@ -37,14 +37,14 @@ const App = () => {
           <NavHeader />
           <Layout>
             <Routes>
-              {/* public routes */}
-              <Route exact path='/' element={<Calendar />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/event/:event_id' element={<EventView />} />
-              <Route exact path='/business/:business_id' element={<BusinessView />} />
-              {/* private routes */}
               <Route element={<PersistLogin />}>
+                {/* public routes */}
+                <Route exact path='/' element={<Calendar />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/event/:event_id' element={<EventView />} />
+                <Route exact path='/business/:business_id' element={<BusinessView />} />
+                {/* private routes */}
                 <Route element={<AuthRoute />}>
                   <Route path='/profile' element={<Profile />}>
                       <Route path='/profile/roles' element={<RolesTab />} />

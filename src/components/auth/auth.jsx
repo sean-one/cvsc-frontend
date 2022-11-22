@@ -6,8 +6,7 @@ const AuthRoute = () => {
     const { auth } = useAuth()
     const location = useLocation()
 
-    console.log(auth)
-
+    
     return (
         // <Outlet />
         (Object.keys(auth).length > 0)

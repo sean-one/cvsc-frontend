@@ -25,29 +25,18 @@ const PersistLogin = () => {
             }
         }
 
-        if(Object.keys(auth).length > 0) {
-            verifyRefreshToken()
-        } else  {
-            setIsLoading(false)
-        }
-        console.log(auth)
-        // !auth?.user.accessToken ? verifyRefreshToken() : setIsLoading(false)
+        !auth?.user?.accessToken ? verifyRefreshToken() : setIsLoading(false)
 
         return () => isMounted = false
-    }, [auth, refresh])
+        // eslint-disable-next-line
+    }, [])
 
     if (isLoading) {
         return <LoadingSpinner />
     }
 
     return (
-        <>
-            {
-                isLoading
-                    ? <LoadingSpinner />
-                    : <Outlet />
-            }
-        </>
+        <Outlet />
     )
 }
 
