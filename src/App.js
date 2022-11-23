@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 // components
 import Calendar from './components/calendar/calendar';
 import BusinessView from './components/business/businessView';
-import { NavHeader } from './components/NavHeader';
+import Navbar from './components/navbar';
 import Register from './components/register.jsx';
 import Login from './components/login.jsx';
 import AuthRoute from './components/auth/auth.jsx';
@@ -34,7 +34,7 @@ const App = () => {
       <ScrollToTop/>
       <UsersProvider>
         <QueryClientProvider client={queryClient}>
-          <NavHeader />
+          <Navbar />
           <Layout>
             <Routes>
               <Route element={<PersistLogin />}>
