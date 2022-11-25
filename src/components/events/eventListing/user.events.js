@@ -1,12 +1,15 @@
 import React from 'react';
 
 import { useUserEventsQuery } from '../../../hooks/useEvents';
+import useAuth from '../../../hooks/useAuth';
 
 import LoadingSpinner from '../../loadingSpinner';
 import EventListPreview from '../cardViews/eventListPreview';
 
-const UserEvents = ({ user_id }) => {
-    const { data: usersEvents, isLoading, isSuccess } = useUserEventsQuery(user_id)
+const UserEvents = () => {
+    const { auth } = useAuth()
+    
+    const { data: usersEvents, isLoading, isSuccess } = useUserEventsQuery(auth.user.id)
     let active_events = []
     let inactive_events = []
 

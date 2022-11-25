@@ -14,7 +14,7 @@ import PersistLogin from './components/persistLogin';
 import Profile from './components/profile/profile.jsx';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
-import BusinessList from './components/business/business_list';
+import BusinessList from './components/profile/managerTab/businessList';
 import EventView from './components/events/eventView';
 
 import ScrollToTop from './components/ScrollToTop';

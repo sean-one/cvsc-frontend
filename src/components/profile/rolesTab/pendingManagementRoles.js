@@ -6,8 +6,8 @@ import sortPendingByBusiness from '../../../helpers/sortPendingByBusiness';
 import RolesList from '../../roles/rolesList';
 
 const PendingManagementRoles = () => {
-    const user_id = localStorage.getItem('user')
-    const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery(user_id)
+    
+    const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery()
     let sortedByBusiness = {}
 
     if(isLoading) {

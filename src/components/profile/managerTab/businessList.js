@@ -3,13 +3,16 @@ import React, { useContext } from 'react';
 import BusinessListItem from './businessList_item';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
+import useAuth from '../../../hooks/useAuth';
 import { UsersContext } from '../../../context/users/users.provider';
 
 const BusinessList = () => {
+    const { auth } = useAuth()
     const { data: businesses, isLoading } = useBusinessesQuery()
     const { userRolesBuinsessManagementIds } = useContext(UsersContext)
     const business_ids = userRolesBuinsessManagementIds()
 
+    console.log(auth.roles)
     if(isLoading) {
         return <LoadingSpinner />
     }

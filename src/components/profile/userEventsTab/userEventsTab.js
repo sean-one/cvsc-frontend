@@ -4,7 +4,7 @@ import UserEvents from '../../events/eventListing/user.events';
 import CreateEventButton from '../../events/buttons/createEventButton';
 
 const UserEventsTab = () => {
-    const user_id = localStorage.getItem('user')
+
 
     return (
         <div>
@@ -12,7 +12,7 @@ const UserEventsTab = () => {
                 <h6>Calendar</h6>
                 <CreateEventButton />
             </div>
-            <UserEvents user_id={user_id} />
+            <UserEvents />
         </div>
     )
 }

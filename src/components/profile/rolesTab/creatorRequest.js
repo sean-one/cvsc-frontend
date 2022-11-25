@@ -9,15 +9,18 @@ import { requestBusinessCreator } from '../../../helpers/validationSchemas';
 import LoadingSpinner from '../../loadingSpinner';
 import AxiosInstance from '../../../helpers/axios';
 import useNotification from '../../../hooks/useNotification';
+import useAuth from '../../../hooks/useAuth';
 import { UsersContext } from '../../../context/users/users.provider';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 
 
 const CreatorRequest = () => {
+    const { auth, setAuth } = useAuth()
+    const businessIdList = auth.roles.map(role => role.business_id)
+    
     const { dispatch } = useNotification();
     const { data: businessList, isLoading } = useBusinessesQuery()
-    const { userSignOut, addUserRole, userRolesBusinessIds } = useContext(UsersContext)
-    const user_roles_business_ids = userRolesBusinessIds()
+    const { userSignOut, addUserRole } = useContext(UsersContext)
     
     let navigate = useNavigate();
     
@@ -30,48 +33,57 @@ const CreatorRequest = () => {
         return <LoadingSpinner />
     }
 
+    // filter out businesses that are not currently excepting request
     const request_open = businessList.data.filter(business => business.business_request_open && business.active_business)
-    const business_filtered = request_open.filter(business => !user_roles_business_ids.includes(business.id))
+    // filter out the businesses that the user already has role rights to
+    const business_filtered = request_open.filter(business => !businessIdList.includes(business.id))
     
-    const sendRequest = (data) => {
-        const token = localStorage.getItem('token')
+    const sendRequest = async (data) => {
+        if(!data.business_id) return
 
-        AxiosInstance.post('/roles/create-request', data, {
-            headers: { 'Authorization': 'Bearer ' + token }
-        })
-            .then(response => {
-                addUserRole(response.data[0])
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `your request has been submitted`
-                    }
-                })
-            })
-            .catch(err => {
-                if (err.response.data.error.type !== 'token') {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'error',
-                            message: err.response.data.error.message
-                        }
-                    })
-                } else {
+        const request_response = await AxiosInstance.post(`/roles/request/${data.business_id}`)
+        
+        // if(request_response.status === 201) {
+        //     setAuth({ user: { ...auth.user }, roles: { ...auth.roles, request_response.data }})
+        // }
+        return
+
+        // AxiosInstance.post('/roles/create-request', data, {
+        //     headers: { 'Authorization': 'Bearer ' + token }
+        // })
+        //     .then(response => {
+        //         addUserRole(response.data[0])
+        //         dispatch({
+        //             type: "ADD_NOTIFICATION",
+        //             payload: {
+        //                 notification_type: 'SUCCESS',
+        //                 message: `your request has been submitted`
+        //             }
+        //         })
+        //     })
+        //     .catch(err => {
+        //         if (err.response.data.error.type !== 'token') {
+        //             dispatch({
+        //                 type: "ADD_NOTIFICATION",
+        //                 payload: {
+        //                     notification_type: 'error',
+        //                     message: err.response.data.error.message
+        //                 }
+        //             })
+        //         } else {
                     
-                    //token error, forward to login screen
-                    navigate('/login');
+        //             //token error, forward to login screen
+        //             navigate('/login');
 
-                    // clear localstorage and sign out user info
-                    localStorage.clear()
-                    userSignOut()
+        //             // clear localstorage and sign out user info
+        //             localStorage.clear()
+        //             userSignOut()
 
-                }
-            })
-            .finally(() => {
-                reset()
-            })
+        //         }
+        //     })
+        //     .finally(() => {
+        //         reset()
+        //     })
     }
 
 
