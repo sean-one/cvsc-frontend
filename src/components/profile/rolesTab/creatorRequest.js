@@ -1,6 +1,4 @@
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import { useHistory, withRouter } from 'react-router-dom';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -10,19 +8,15 @@ import LoadingSpinner from '../../loadingSpinner';
 import AxiosInstance from '../../../helpers/axios';
 import useNotification from '../../../hooks/useNotification';
 import useAuth from '../../../hooks/useAuth';
-import { UsersContext } from '../../../context/users/users.provider';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 
 
 const CreatorRequest = () => {
     const { auth, setAuth } = useAuth()
-    const businessIdList = auth.roles.map(role => role.business_id)
+    const businessIdList = auth.roles.map(role => role?.business_id) || []
     
     const { dispatch } = useNotification();
     const { data: businessList, isLoading } = useBusinessesQuery()
-    const { userSignOut, addUserRole } = useContext(UsersContext)
-    
-    let navigate = useNavigate();
     
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -39,51 +33,27 @@ const CreatorRequest = () => {
     const business_filtered = request_open.filter(business => !businessIdList.includes(business.id))
     
     const sendRequest = async (data) => {
-        if(!data.business_id) return
-
-        const request_response = await AxiosInstance.post(`/roles/request/${data.business_id}`)
-        
-        // if(request_response.status === 201) {
-        //     setAuth({ user: { ...auth.user }, roles: { ...auth.roles, request_response.data }})
-        // }
-        return
-
-        // AxiosInstance.post('/roles/create-request', data, {
-        //     headers: { 'Authorization': 'Bearer ' + token }
-        // })
-        //     .then(response => {
-        //         addUserRole(response.data[0])
-        //         dispatch({
-        //             type: "ADD_NOTIFICATION",
-        //             payload: {
-        //                 notification_type: 'SUCCESS',
-        //                 message: `your request has been submitted`
-        //             }
-        //         })
-        //     })
-        //     .catch(err => {
-        //         if (err.response.data.error.type !== 'token') {
-        //             dispatch({
-        //                 type: "ADD_NOTIFICATION",
-        //                 payload: {
-        //                     notification_type: 'error',
-        //                     message: err.response.data.error.message
-        //                 }
-        //             })
-        //         } else {
-                    
-        //             //token error, forward to login screen
-        //             navigate('/login');
-
-        //             // clear localstorage and sign out user info
-        //             localStorage.clear()
-        //             userSignOut()
-
-        //         }
-        //     })
-        //     .finally(() => {
-        //         reset()
-        //     })
+        try {
+            if(!data.business_id) return
+    
+            const request_response = await AxiosInstance.post(`/roles/request/${data.business_id}`)
+            
+            if(request_response.status === 201) {
+                setAuth({ user: auth.user, roles: [ ...auth.roles, request_response.data ] })
+    
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'your request has been submitted for approval'
+                    }
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            reset()
+        }
     }
 
 
