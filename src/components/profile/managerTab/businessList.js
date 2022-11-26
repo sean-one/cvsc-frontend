@@ -7,7 +7,9 @@ import useAuth from '../../../hooks/useAuth';
 
 const BusinessList = () => {
     const { auth } = useAuth()
-    const management_roles = auth.roles.filter(role => role.role_type >= 456)
+    // filter out only management roles
+    const management_roles = auth.roles.filter(role => role.role_type >= 456 && role.active_role)
+    // create an array of business ids from active 
     const businessIdList = management_roles.map(role => role?.business_id) || []
     const { data: businesses, isLoading } = useBusinessesQuery()
 
