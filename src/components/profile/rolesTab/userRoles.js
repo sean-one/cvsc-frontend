@@ -1,32 +1,43 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { UsersContext } from '../../../context/users/users.provider';
+import useAuth from '../../../hooks/useAuth';
 import { role_types } from '../../../helpers/dataCleanUp';
+import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
+import LoadingSpinner from '../../loadingSpinner';
 
 const UserRoles = () => {
-    const { userRoles } = useContext(UsersContext)
+    const { auth } = useAuth()
+    const { data: businessList, isLoading } = useBusinessesQuery()
 
     // sort list to put active roles towards top of the list
-    userRoles.sort((a,b) => b.active_role - a.active_role)
+    auth.roles.sort((a,b) => b.active_role - a.active_role)
+
+    const findBusinessName = (business_id) => {
+        const { business_name } = businessList.data.find(business => business.id === business_id)
+        return business_name
+    }
+
+    if(isLoading) {
+        return <LoadingSpinner />
+    }
 
     return (
         <div className='my-3'>
             {
-                (userRoles.length > 0) &&
+                (auth.roles.length > 0) &&
                     <h6>Current Roles</h6>
             }
             {
-                userRoles.map(role => (
+                auth.roles.map(role => (
                     <div key={role.business_id} className={`d-flex justify-content-space-between border-bottom ${!role.active_role && 'text-danger'}`}>
                         <Col xs={1} className=''>
                             {role_types[role.role_type].charAt().toUpperCase()}
-                            {/* {role.role_type.charAt().toUpperCase()} */}
                         </Col>
                         <Col xs={8}>
-                            {role.business_name}
+                            {findBusinessName(role.business_id)}
                         </Col>
                         <Col xs={2}>
                             {role.active_role ? 'Active' : 'pending' }

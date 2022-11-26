@@ -53,9 +53,8 @@ const downgradeManager = async (role_id) => {
     return updated_role
 }
 
-const approvePendingRole = async (role_id) => {
-    const token = localStorage.getItem('token')
-    const new_creator = await AxiosInstance.post(`/roles/approve_pending/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+const approveRequest = async (role_id) => {
+    const new_creator = await AxiosInstance.post(`/roles/approve_request/${role_id}`)
     
     return new_creator
 }
@@ -177,15 +176,16 @@ export const useBusinessRequestMutation = () => {
 //-----------------------------------------
 
 // approves pending role request and adjust 'active_role: true'
-export const usePendingRoleMutation = () => {
+export const useRequestApprovalMutation = () => {
     const queryClient = useQueryClient()
-    return useMutation(approvePendingRole, {
+    return useMutation(approveRequest, {
         onSuccess: () => {
             queryClient.invalidateQueries('business_roles')
             queryClient.invalidateQueries('pending_roles')
         },
         onError: (error) => {
-            console.log(error)
+            console.log(Object.keys(error))
+            console.log(error.response)
         },
         onSettled: () => {
             queryClient.refetchQueries('business_roles')

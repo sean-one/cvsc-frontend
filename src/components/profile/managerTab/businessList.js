@@ -1,23 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import BusinessListItem from './businessList_item';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import useAuth from '../../../hooks/useAuth';
-import { UsersContext } from '../../../context/users/users.provider';
 
 const BusinessList = () => {
     const { auth } = useAuth()
+    const management_roles = auth.roles.filter(role => role.role_type >= 456)
+    const businessIdList = management_roles.map(role => role?.business_id) || []
     const { data: businesses, isLoading } = useBusinessesQuery()
-    const { userRolesBuinsessManagementIds } = useContext(UsersContext)
-    const business_ids = userRolesBuinsessManagementIds()
 
-    console.log(auth.roles)
     if(isLoading) {
         return <LoadingSpinner />
     }
 
-    const business_list = businesses.data.filter(business => business_ids.includes(business.id))
+    console.log(businessIdList)
+    const business_list = businesses.data.filter(business => businessIdList.includes(business.id))
+
 
     return (
         <div>

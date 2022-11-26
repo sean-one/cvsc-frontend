@@ -4,18 +4,18 @@ import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
-import { usePendingRoleMutation } from '../../../hooks/useBusinessApi';
+import { useRequestApprovalMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
 const ApproveRequestButton = ({ role_id }) => {
     const { dispatch } = useNotification()
-    const { mutateAsync: roleApprovalMutation } = usePendingRoleMutation()
+    const { mutateAsync: requestApprovalMutation } = useRequestApprovalMutation()
     let navigate = useNavigate()
 
 
     const approveRequest = async (e) => {
-        const approval_response = await roleApprovalMutation(e.currentTarget.value)
+        const approval_response = await requestApprovalMutation(e.currentTarget.value)
 
         if (approval_response.status === 200) {
             dispatch({
