@@ -17,7 +17,6 @@ const BusinessList = () => {
         return <LoadingSpinner />
     }
 
-    console.log(businessIdList)
     const business_list = businesses.data.filter(business => businessIdList.includes(business.id))
 
 

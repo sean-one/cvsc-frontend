@@ -60,15 +60,13 @@ const approveRequest = async (role_id) => {
 }
 
 const removeUserRole = async (role_id) => {
-    const token = localStorage.getItem('token')
-    const removed_role_count = await AxiosInstance.delete(`/roles/user_remove/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+    const removed_role_count = await AxiosInstance.delete(`/roles/user_remove/${role_id}`)
 
     return removed_role_count
 }
 
 const removeManagerRole = async (role_id) => {
-    const token = localStorage.getItem('token')
-    const removed_role_count = await AxiosInstance.delete(`/roles/manager_remove/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+    const removed_role_count = await AxiosInstance.delete(`/roles/manager_remove/${role_id}`)
 
     return removed_role_count
 }

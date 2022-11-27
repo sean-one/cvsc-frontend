@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { useUpdateBusinessMutation } from '../../../hooks/useBusinessApi';
-import { UsersContext } from '../../../context/users/users.provider';
 import useNotification from '../../../hooks/useNotification';
 
 const Styles = styled.div`
@@ -21,12 +20,10 @@ const Styles = styled.div`
     }
 `
 
-const EditBusiness = ({ business, handleClose }) => {
+const EditBusiness = ({ business, handleClose, role }) => {
     const { id: business_id } = business
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
-    const { getBusinessRole } = useContext(UsersContext)
     const { dispatch } = useNotification()
-    const user_role = getBusinessRole(business_id)
     
     const { register, handleSubmit, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
@@ -79,7 +76,7 @@ const EditBusiness = ({ business, handleClose }) => {
             <Form onSubmit={handleSubmit(sendBusinessUpdate)}>
 
                 {
-                    (user_role.role_type === 'admin') &&
+                    (role.role_type >= 789) &&
                         <Form.Group controlId='business_email'>
                             <Form.Label>Business Email</Form.Label>
                             <Form.Control

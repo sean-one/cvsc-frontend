@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Col } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-import BusinessContols from '../../business/businessControls';
 
 const BusinessListItem = ({ business }) => {
-    const [ controlShow, setControlShow ] = useState(false)
+    let navigate = useNavigate()
+
+    const business_view = () => {
+        navigate(`/business/${business.id}`)
+    }
 
     return (
         <div>
-            <div className='d-flex border-top border-dark my-2 rounded' onClick={() => setControlShow(!controlShow)}>
+            <div className='d-flex border-top border-dark my-2 rounded' onClick={() => business_view()}>
                 <Col xs={2} className='pe-2'>
                     {business.business_type}
                 </Col>
@@ -19,17 +23,9 @@ const BusinessListItem = ({ business }) => {
                     {business.business_name}
                 </Col>
                 <Col xs={1} className='px-2'>
-                    {
-                        (controlShow)
-                            ? <FontAwesomeIcon icon={faChevronDown} />
-                            : <FontAwesomeIcon icon={faChevronRight} />
-                    }
+                    <FontAwesomeIcon icon={faChevronRight} />
                 </Col>
             </div>
-            {
-                (controlShow) &&
-                    <BusinessContols business={business}/>
-            }
         </div>
     )
 }

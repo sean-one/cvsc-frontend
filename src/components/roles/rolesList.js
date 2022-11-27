@@ -13,7 +13,7 @@ const RolesList = ({ roles_list, list_type }) => {
         <div>
           {
               roles_list.map(role =>
-                <div key={role.id} className='d-flex justify-content-between align-items-end px-3 py-1 border-bottom border-dark rounded-bottom'>
+                <div key={role.id} className='d-flex justify-content-between align-items-end px-3 py-1 border-bottom rounded-bottom'>
                   <div>{role.username}</div>
                   <div className='d-flex'>
                     <div className='text-center me-4'>

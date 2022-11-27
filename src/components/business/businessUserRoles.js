@@ -1,26 +1,27 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Accordion } from 'react-bootstrap';
 
+import useAuth from '../../hooks/useAuth';
 import { useBusinessRolesQuery } from '../../hooks/useBusinessApi';
-import { UsersContext } from '../../context/users/users.provider';
 import LoadingSpinner from '../loadingSpinner';
 import RolesList from '../roles/rolesList';
 
 const BusinessUserRoles = ({ business }) => {
-    const { userProfile } = useContext(UsersContext)
+    const { auth } = useAuth()
     const { data: business_roles, isLoading } = useBusinessRolesQuery(business.id)
 
     if(isLoading) {
         return <LoadingSpinner />
     }
 
-    //remove admin from list
-    const business_roles_minus_admin = business_roles.data.filter(business_role => (business_role.role_type !== 'admin'))
-
+    // remove admin role from list
+    const business_roles_minus_admin = business_roles.data.filter(business_role => (business_role.role_type !== '789'))
+    // separate roles by role type
     const pending_roles = business_roles_minus_admin.filter(business_role => !business_role.active_role)
-    const creator_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === 'creator' && business_role.active_role))
-    const manager_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === 'manager' && business_role.active_role))
-    
+    const creator_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === '123' && business_role.active_role))
+    const manager_roles = business_roles_minus_admin.filter(business_role => (business_role.role_type === '456' && business_role.active_role))
+
+
     return (
         <div>
             {
@@ -50,7 +51,7 @@ const BusinessUserRoles = ({ business }) => {
                         : null
                 }
                 {
-                    (manager_roles.length > 0 && userProfile.id === business.business_admin)
+                    (manager_roles.length > 0 && auth.user.id === business.business_admin)
                         ? <Accordion.Item eventKey="2">
                             <Accordion.Header>Managers</Accordion.Header>
                             <Accordion.Body className='px-1 py-1'>

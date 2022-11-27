@@ -61,7 +61,7 @@ const BusinessView = () => {
                 </div>
                 {
                     (showAdminMenu) &&
-                        <ManagerMenu />
+                        <ManagerMenu business={current_business} role={business_role} />
                 }
                 <div className='fs-6 lh-sm border-top border-dark pt-2'>
                     {current_business.business_description}
