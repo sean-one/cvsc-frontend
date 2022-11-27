@@ -2,12 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 
-const getAllEvents = async () => {
-    const events_api_call = await AxiosInstance.get('/events')
-    
-    return events_api_call
-}
-
 const getEvent = async (id) => {
     const single_event = await AxiosInstance.get(`/events/${id}`)
 
@@ -24,12 +18,6 @@ const getAllBusinessEvents = async (business_id) => {
     const business_event_list = await AxiosInstance.get(`/events/business/${business_id}`)
 
     return business_event_list;
-}
-
-const addEvent = async (event) => {
-    const new_event = await AxiosInstance.post('/events', event)
-
-    return new_event
 }
 
 const updateEvent = async ({ event_id, ...event_updates }) => {
@@ -52,11 +40,24 @@ const removeBusiness = async ({ event_id, ...event_updates }) => {
     return updated_event
 }
 
+//! useEventsQuery - fetch all events
+const getAllEvents = async () => {
+    const events_api_call = await AxiosInstance.get('/events')
+
+    return events_api_call
+}
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
+
 export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
 export const useBusinessEventsQuery = (business_id) => useQuery(['events', 'business', business_id], () => getAllBusinessEvents(business_id), { staleTime: 6000, refetchOnMount: false })
 
+//! useAddEventMutation - create new event
+const addEvent = async (event) => {
+    const new_event = await AxiosInstance.post('/events', event)
+
+    return new_event
+}
 export const useAddEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(addEvent, {

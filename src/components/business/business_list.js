@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { UsersContext } from '../../context/users/users.provider';
+import useAuth from '../../hooks/useAuth';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 
 import LoadingSpinner from '../loadingSpinner';
 
 const BusinessList = ({ business_type }) => {
-    const { userActiveRoles } = useContext(UsersContext)
-    const business_roles = userActiveRoles()
+    const { auth } = useAuth()
+    const businessIdList = auth?.roles.map(role => role?.business_id)
+    
     const business_type_flip = {
         venue: 'brand',
         brand: 'venue'
@@ -29,7 +30,7 @@ const BusinessList = ({ business_type }) => {
         <>
             {
                 business_display_list.map(business => (
-                    <option key={business.id} value={business.id} style={business_roles.includes(business.id) ? { color: 'green' } : {}}>{business.business_name}</option>
+                    <option key={business.id} value={business.id} style={businessIdList.includes(business.id) ? { color: 'green' } : {}}>{business.business_name}</option>
                 ))
             }
         </>
