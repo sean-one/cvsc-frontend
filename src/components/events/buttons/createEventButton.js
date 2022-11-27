@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import CreateEvent from '../createEvent';
 
@@ -14,7 +14,6 @@ const CreateEventButton = () => {
             <div className='w-100' onClick={handleModalOpen}>
                 <div className='text-center py-2'>Create New Event</div>
             </div>
-            {/* <Button variant='link' onClick={handleModalOpen}>Create New Event</Button> */}
             <Modal show={modalShow} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create new event</Modal.Title>

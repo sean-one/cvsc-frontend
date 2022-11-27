@@ -12,11 +12,13 @@ export const LogoutButton = ({ toggle }) => {
 
         if(logoutResponse.status === 204) {
             localStorage.clear()
+            
+            navigate('/')
+            
+            toggle(false)
+            
             setAuth({})
         }
-
-        toggle(false)
-        navigate('/')
     }
 
     return (
