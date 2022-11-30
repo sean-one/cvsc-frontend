@@ -14,5 +14,13 @@ export const MenuLinks = {
     'register': {
         text: 'Register',
         link: '/register'
+    },
+    'new_event': {
+        text: 'Create New Event',
+        link: '/events/new'
+    },
+    'new_business': {
+        text: 'Create New Business',
+        link: '/businesses/new'
     }
 }

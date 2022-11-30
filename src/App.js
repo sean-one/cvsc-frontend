@@ -15,6 +15,8 @@ import Profile from './components/profile/profile.jsx';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
 import BusinessList from './components/profile/managerTab/businessList';
+import CreateEvent from './components/events/createEvent';
+import CreateBusiness from './components/business/businessForms/createBusiness';
 import EventView from './components/events/eventView';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -52,6 +54,8 @@ const App = () => {
                       <Route path='/profile/events' element={<UserEventsTab />} />
                       <Route path='/profile/management' element={<BusinessList />} />
                   </Route>
+                  <Route path='/events/new' element={<CreateEvent />} />
+                  <Route path='/businesses/new' element={<CreateBusiness />} />
                 </Route>
               </Route>
             </Routes>

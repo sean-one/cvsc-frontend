@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { format, add } from 'date-fns';
 
+import useAuth from '../hooks/useAuth';
 const todaysDate = format(new Date(), 'yyyy-MM-dd');
 const sixtyDaysOut = format(add(new Date(), { days: 60 }), 'yyyy-MM-dd');
 
@@ -54,38 +55,40 @@ export const createEventSchema = yup.object().shape(
         eventstart: yup
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .nullable(),
+            .required('event start time is required'),
+            // .nullable(),
             
         eventend: yup
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .nullable(),
+            .required('event end time is required'),
+            // .nullable(),
         
         venue_id: yup
             .string()
-            .nullable()
-            .notRequired()
+            // .nullable()
+            // .notRequired()
             .when('venue_id', {
                 is: (value) => value?.length,
                 then: (rule) => rule.uuid()
-            }),
+            })
+            .required('event location is required'),
             // .typeError('please select a venue location')
-            // .required('event location is required'),
             
         details: yup
-            .string(),
-            // .required(),
+            .string()
+            .required('event details are required'),
             
         brand_id: yup
             .string()
-            .nullable()
-            .notRequired()
+            // .nullable()
+            // .notRequired()
             .when('brand_id', {
                 is: (value) => value?.length,
                 then: (rule) => rule.uuid()
-            }),
+            })
             // .typeError('please select a brand')
-            // .required('branding is required')
+            .required('branding is required')
         },
         [
             // add Cyclic deps here for require itself

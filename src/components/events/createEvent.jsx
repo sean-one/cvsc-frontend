@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createEventSchema } from '../../helpers/validationSchemas';
 import { Button, Form } from 'react-bootstrap';
+import { DevTool } from '@hookform/devtools'
 
 import { useAddEventMutation } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
@@ -16,7 +17,7 @@ const CreateEvent = () => {
     const { mutateAsync: addEventMutation } = useAddEventMutation()
     const { dispatch } = useNotification();
 
-    const { register, handleSubmit, clearErrors, formState:{ errors } } = useForm({
+    const { register, handleSubmit, control, setError, clearErrors, formState:{ isDirty, isValid, errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema),
         defaultValues: {
@@ -34,32 +35,50 @@ const CreateEvent = () => {
     let navigate = useNavigate();
 
     const createNewEvent = async (data) => {
-        
-        const formData = new FormData()
-        formData.append('eventname', data.eventname)
-        formData.append('eventdate', format(data.eventdate, 'y-M-d'))
-        formData.append('eventstart', data.eventstart)
-        formData.append('eventend', data.eventend)
-        formData.set('eventmedia', imageFile)
-        formData.append('venue_id', data.venue_id)
-        formData.append('details', data.details)
-        formData.append('brand_id', data.brand_id)
-        
-        const add_event_response = await addEventMutation(formData)
+        try {
+            const formData = new FormData()
+            formData.append('eventname', data.eventname)
+            formData.append('eventdate', format(data.eventdate, 'y-M-d'))
+            formData.append('eventstart', data.eventstart)
+            formData.append('eventend', data.eventend)
+            formData.set('eventmedia', imageFile)
+            formData.append('venue_id', data.venue_id)
+            formData.append('details', data.details)
+            formData.append('brand_id', data.brand_id)
+            
+            const add_event_response = await addEventMutation(formData)
 
-        if(add_event_response.status === 201) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `event '${add_event_response.data.eventname}' has been created`
-                }
-            })
+            if(add_event_response.status === 201) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${add_event_response.data.eventname} has been created`
+                    }
+                })
 
-            navigate(`/event/${add_event_response.data.event_id}`)
+                navigate(`/event/${add_event_response.data.event_id}`)
+            }
+        } catch (error) {
+            console.log(error.response)
+            if(error?.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error.response.data.error.message}`
+                    }
+                })
 
-        } else {
-            console.log('sumtins no rite')
+                navigate('/login')
+            }
+
+            if(error?.response.status === 400) {
+                setError(`${error.response.data.error.type}`, {
+                    type: 'server',
+                    message: error.response.data.error.message
+                })
+            }
         }
     }
 
@@ -69,13 +88,13 @@ const CreateEvent = () => {
             {/* eventname input */}
             <Form.Group controlId='eventname' className='my-3'>
                 <Form.Control
+                    className={errors.eventname ? 'inputError' : ''}
                     {...register('eventname')}
                     autoFocus
                     onFocus={() => clearErrors('eventname')}
                     type='text'
                     name='eventname'
                     placeholder='Eventname'
-                    required
                 />
                 <div className='errormessage'>{errors.eventname?.message}</div>
             </Form.Group>
@@ -87,7 +106,6 @@ const CreateEvent = () => {
                     onFocus={() => clearErrors('eventdate')}
                     type='date'
                     name='eventdate'
-                    required
                 />
                 <div className='errormessage'>{errors.eventdate?.message}</div>
             </Form.Group>
@@ -164,7 +182,7 @@ const CreateEvent = () => {
                     autoFocus
                     onFocus={() => clearErrors('details')}
                     as='textarea'
-                    row={5}
+                    row={10}
                     name='details'
                     placeholder='event details...'
                 />
@@ -186,7 +204,11 @@ const CreateEvent = () => {
                 <div className='errormessage'>{errors.role_rights?.message}</div>
             </Form.Group>
 
-            <Button type='submit'>Submit</Button>
+            <div className='d-flex justify-content-between'>
+                <Button disabled={!isDirty || !isValid} type='submit'>Submit</Button>
+                <Button type='button'>Save</Button>
+            </div>
+            <DevTool control={control} />
 
         </Form>
     )

@@ -65,7 +65,8 @@ export const useAddEventMutation = () => {
             queryClient.cancelQueries('events')
         },
         onError: (error) => {
-            console.log(error)
+            console.log('error inside add event mutation')
+            // console.log(error)
         },
         onSettled: () => queryClient.refetchQueries('events')
     })

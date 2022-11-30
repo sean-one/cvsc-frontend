@@ -59,6 +59,7 @@ const CreateBusiness = () => {
             formData.append('business_phone', business_data.business_phone)
             formData.append('business_twitter', business_data.business_twitter)
             
+            console.log(formData.entries())
             const new_business = await addBusinessMutation(formData)
             
             if(new_business.status === 201) {

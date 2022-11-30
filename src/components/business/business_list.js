@@ -3,7 +3,6 @@ import React from 'react';
 import useAuth from '../../hooks/useAuth';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 
-import LoadingSpinner from '../loadingSpinner';
 
 const BusinessList = ({ business_type }) => {
     const { auth } = useAuth()
@@ -19,7 +18,7 @@ const BusinessList = ({ business_type }) => {
     let business_display_list = []
 
     if(LoadingBusinessList) {
-        return <LoadingSpinner />
+        return <>loading...</>
     }
 
     if(BusinessListSuccess) {

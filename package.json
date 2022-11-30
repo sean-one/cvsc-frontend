@@ -53,5 +53,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3333"
+  "proxy": "http://localhost:3333",
+  "devDependencies": {
+    "@hookform/devtools": "^4.2.3"
+  }
 }

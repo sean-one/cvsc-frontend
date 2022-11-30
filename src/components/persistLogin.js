@@ -8,9 +8,8 @@ import LoadingSpinner from './loadingSpinner';
 const PersistLogin = () => {
     const [ isLoading, setIsLoading ] = useState(true)
     const refresh = useRefreshToken()
-    const { auth } = useAuth()
+    const { auth, setAuth } = useAuth()
 
-    console.log(auth)
     useEffect(() => {
         let isMounted = true
 
@@ -19,7 +18,7 @@ const PersistLogin = () => {
                 await refresh()
             }
             catch (err) {
-                console.log(err)
+                setAuth({})
             }
             finally {
                 isMounted && setIsLoading(false)

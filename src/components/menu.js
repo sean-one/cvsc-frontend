@@ -3,7 +3,6 @@ import React from 'react';
 import useAuth from '../hooks/useAuth';
 import { SimpleButton } from './menu/buttons/simple.button';
 import { LogoutButton } from './menu/buttons/logout.button';
-import CreateEventButton from './events/buttons/createEventButton';
 
 
 const Menu = ({ toggle }) => {
@@ -19,13 +18,17 @@ const Menu = ({ toggle }) => {
                     : <SimpleButton toggle={toggle} name='register' />
             }
             {
-                (Object.keys(auth).length > 0)
-                    ? <LogoutButton toggle={toggle} />
-                    : <SimpleButton toggle={toggle} name='login' />
+                (auth?.user?.account_type >= 100) &&
+                    <SimpleButton toggle={toggle} name='new_business' />
             }
             {
                 (auth?.user?.account_type >= 123) &&
-                    <div className='w-100 text-center'><CreateEventButton /></div>
+                    <SimpleButton toggle={toggle} name='new_event' />
+            }
+            {
+                (Object.keys(auth).length > 0)
+                    ? <LogoutButton toggle={toggle} />
+                    : <SimpleButton toggle={toggle} name='login' />
             }
         </div>
     )

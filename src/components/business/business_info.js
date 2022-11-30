@@ -1,16 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClinicMedical, faCannabis } from '@fortawesome/free-solid-svg-icons';
 
-import { UsersContext } from '../../context/users/users.provider';
+import useAuth from '../../hooks/useAuth';
 import { useBusinessRemoveMutation } from '../../hooks/useEvents';
 
 const BusinessInfo = ({ business_id, business_name, business_type, reverse=false }) => {
-    const { userProfile, getBusinessRoleType } = useContext(UsersContext)
-    const { mutateAsync: removeBusinessMutation } = useBusinessRemoveMutation()
-    let role_type = 'none'
+    const { auth } = useAuth()
+    let business_role = {}
     const { event_id } = useParams()
+    
+    const { mutateAsync: removeBusinessMutation } = useBusinessRemoveMutation()
     let navigate = useNavigate()
 
     const business_icon = {
@@ -18,8 +19,8 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
         'venue': faClinicMedical,
     }
 
-    if(Object.keys(userProfile).length !== 0) {
-        role_type = getBusinessRoleType(business_id)
+    if(auth?.roles) {
+        business_role = auth?.roles.find(role => role?.business_id === business_id) || {}
     }
 
     const removeBusinessFromEvent = async () => {
@@ -44,7 +45,7 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
                 <div className='text-truncate'>{business_name}</div>
             </Link>
             {
-                (role_type === 'manager') &&
+                (business_role?.role_type >= 456) &&
                     <div className='bg-light w-100 rounded text-center' onClick={() => removeBusinessFromEvent()}>
                         Remove
                     </div>

@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import { format } from 'date-fns'
 
 import { formatTime } from '../../helpers/formatTime';
 import { useEventQuery, useEventsQuery } from '../../hooks/useEvents';
-import { UsersContext } from '../../context/users/users.provider';
+import useAuth from '../../hooks/useAuth';
 
 import LoadingSpinner from '../loadingSpinner';
 import EventList from './eventList';
@@ -14,12 +14,11 @@ import EditEventButton from './buttons/editEventButton';
 import EventControls from './eventControls';
 
 const EventView = () => {
-    const { userProfile, getBusinessRoleType } = useContext(UsersContext)
-    let venue_role, brand_role = 'none'
+    const { auth } = useAuth()
     let { event_id } = useParams()
-    let brand_event_list = []
-    let venue_event_list = []
-    let both_event_list = []
+    
+    let venue_role, brand_role = 'none'
+    let brand_event_list, venue_event_list, both_event_list = []
 
     const { data: event, isLoading: eventLoading, isSuccess: eventSuccess } = useEventQuery(event_id)
     const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
@@ -29,22 +28,24 @@ const EventView = () => {
     }
 
     if (eventSuccess && listSuccess) {
-        venue_role = getBusinessRoleType(event.data.venue_id)
-        brand_role = getBusinessRoleType(event.data.brand_id)
         brand_event_list = events.data.filter(e => e.brand_id === event.data.brand_id && e.event_id !== event.data.event_id)
         venue_event_list = events.data.filter(e => e.venue_id === event.data.venue_id && e.event_id !== event.data.event_id)
         both_event_list = events.data.filter(e => (e.venue_id === event.data.venue_id || e.brand_id === event.data.brand_id) && e.event_id !== event.data.event_id)
     }
+    
+    if(auth?.roles) {
+        // set roles for venue and brand
+        venue_role = auth?.roles.find(role => role?.business_id === event.data.venue_id) || 'none'
+        brand_role = auth?.roles.find(role => role?.business_id === event.data.brand_id) || 'none'
+    }
 
 
-    console.log(venue_role)
-    console.log(brand_role)
     return (
         <div>
             <div>
                 <div>
                     {
-                        ((userProfile.id === event.data.created_by) || (venue_role === 'manager') || (venue_role === 'admin') || (brand_role === 'manager') || (brand_role === 'admin')) &&
+                        ((auth?.user?.id === event.data.created_by) || (venue_role?.role_type >= 456) || (brand_role?.role_type >= 456)) &&
                             <EditEventButton event={event.data} venue_role={venue_role} brand_role={brand_role} />
                     }
                     <h2>{event.data.eventname.toUpperCase()}</h2>
@@ -69,7 +70,7 @@ const EventView = () => {
                     {event.data.details}
                 </div>
                 {
-                    (userProfile.id === event.data.created_by) &&
+                    (auth?.user?.id === event.data.created_by) &&
                         <EventControls event={event.data} />
                 }
             </div>

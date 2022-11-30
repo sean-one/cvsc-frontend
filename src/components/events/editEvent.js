@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -6,12 +6,11 @@ import styled from 'styled-components';
 
 import { reformatTime } from '../../helpers/formatTime';
 import { update_event } from '../../helpers/dataCleanUp';
-import LoadingSpinner from '../loadingSpinner';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
-import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useEditEventMutation } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
-import { UsersContext } from '../../context/users/users.provider';
+import useAuth from '../../hooks/useAuth';
+import BusinessList from '../business/business_list';
 
 const Styles = styled.div`
     .errormessage {
@@ -28,12 +27,11 @@ const Styles = styled.div`
 `
 
 const EditEvent = ({ event, handleClose }) => {
-    const { data: business_list, isLoading } = useBusinessesQuery()
-    const { mutateAsync: editEventMutation } = useEditEventMutation()
+    const { auth } = useAuth()
     const { dispatch } = useNotification();
-    const { userProfile, userActiveRoles } = useContext(UsersContext)
-    const business_roles = userActiveRoles()
     // const { editImage, imagePreview, canvas } = useImagePreviewer()
+    
+    const { mutateAsync: editEventMutation } = useEditEventMutation()
     
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
@@ -85,12 +83,6 @@ const EditEvent = ({ event, handleClose }) => {
         }
     }
 
-    if(isLoading) {
-        return <LoadingSpinner />
-    }
-
-    const venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-    const brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
     return (
         <Styles>
@@ -177,7 +169,7 @@ const EditEvent = ({ event, handleClose }) => {
                 </Form.Group> */}
 
                 {
-                    (event.created_by === userProfile.id) && (
+                    (event.created_by === auth?.user?.id) && (
                         <Form.Group controlId='venue_id'>
                             <Form.Label>Location</Form.Label>
                             <Form.Select
@@ -187,13 +179,8 @@ const EditEvent = ({ event, handleClose }) => {
                                 type='text'
                                 name='venue_id'
                             >
-                                <option value='0'>Select...</option>
-                                {
-                                    venue_list.map(venue => (
-                                        <option key={venue.id} value={venue.id} style={ business_roles.includes(venue.id) ? { color:'green'} : {} }>{venue.business_name}</option>
-                                    ))
-                                }
-
+                                <option value=''>Location</option>
+                                <BusinessList business_type='venue' />
                             </Form.Select>
                             <div className='errormessage'>{errors.venue_id?.message}</div>
                             <div className='errormessage'>{errors.role_rights?.message}</div>
@@ -216,7 +203,7 @@ const EditEvent = ({ event, handleClose }) => {
                 </Form.Group>
 
                 {
-                    (event.created_by === userProfile.id) && (
+                    (event.created_by === auth?.user?.id) && (
                         <Form.Group controlId='brand_id'>
                             <Form.Label>Brand</Form.Label>
                             <Form.Select
@@ -226,13 +213,8 @@ const EditEvent = ({ event, handleClose }) => {
                                 type='text'
                                 name='brand_id'
                             >
-                                <option value='0'>Select...</option>
-                                {
-                                    brand_list.map(brand => (
-                                        <option key={brand.id} value={brand.id} style={ business_roles.includes(brand.id) ? { color:'green'} : {} }>{brand.business_name}</option>
-                                    ))
-                                }
-
+                                <option value=''>Brand</option>
+                                <BusinessList business_type='brand' />
                             </Form.Select>
                             <div className='errormessage'>{errors.brand_id?.message}</div>
                             <div className='errormessage'>{errors.role_rights?.message}</div>
