@@ -18,6 +18,7 @@ import BusinessList from './components/profile/managerTab/businessList';
 import CreateEvent from './components/events/createEvent';
 import CreateBusiness from './components/business/businessForms/createBusiness';
 import EventView from './components/events/eventView';
+import EditEvent from './components/events/editEvent';
 
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
@@ -56,6 +57,7 @@ const App = () => {
                   </Route>
                   <Route path='/events/new' element={<CreateEvent />} />
                   <Route path='/businesses/new' element={<CreateBusiness />} />
+                  <Route path='/events/edit/:event_id' element={<EditEvent />} />
                 </Route>
               </Route>
             </Routes>

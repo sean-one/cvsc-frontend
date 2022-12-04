@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -7,10 +8,10 @@ import styled from 'styled-components';
 import { reformatTime } from '../../helpers/formatTime';
 import { update_event } from '../../helpers/dataCleanUp';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
-import { useEditEventMutation } from '../../hooks/useEvents';
+import { useEditEventMutation, useEventQuery } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
-import useAuth from '../../hooks/useAuth';
 import BusinessList from '../business/business_list';
+import LoadingSpinner from '../loadingSpinner';
 
 const Styles = styled.div`
     .errormessage {
@@ -26,35 +27,39 @@ const Styles = styled.div`
     }
 `
 
-const EditEvent = ({ event, handleClose }) => {
-    const { auth } = useAuth()
+const EditEvent = () => {
+    const { event_id } = useParams()
     const { dispatch } = useNotification();
     // const { editImage, imagePreview, canvas } = useImagePreviewer()
-    
+    let navigate = useNavigate()
+    const { data: event, isLoading: loadingEvent } = useEventQuery(event_id)
     const { mutateAsync: editEventMutation } = useEditEventMutation()
     
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
-            eventname: event.eventname,
-            eventdate: format(new Date(event.eventdate), 'yyyy-MM-dd'),
-            eventstart: reformatTime(event.eventstart),
-            eventend: reformatTime(event.eventend),
-            venue_id: event.venue_id,
-            details: event.details,
-            brand_id: event.brand_id
+            eventname: event.data.eventname,
+            eventdate: format(new Date(event.data.eventdate), 'yyyy-MM-dd'),
+            eventstart: reformatTime(event.data.eventstart),
+            eventend: reformatTime(event.data.eventend),
+            venue_id: event.data.venue_id,
+            details: event.data.details,
+            brand_id: event.data.brand_id
 
         }
     });
     
+    if(loadingEvent) {
+        <LoadingSpinner />
+    }
+
     const sendUpdate = async (data) => {
         try {
-            const { event_id } = event
+            const { event_id } = event.data
             const update_data = await update_event(data, dirtyFields)
             console.log(update_data)
             const edit_event_response = await editEventMutation({ ...update_data, event_id })
             
             if(edit_event_response.status === 201) {
-                handleClose()
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -83,6 +88,7 @@ const EditEvent = ({ event, handleClose }) => {
         }
     }
 
+    
 
     return (
         <Styles>
@@ -168,25 +174,21 @@ const EditEvent = ({ event, handleClose }) => {
                     <div className='errormessage'>{errors.eventmedia?.message}</div>
                 </Form.Group> */}
 
-                {
-                    (event.created_by === auth?.user?.id) && (
-                        <Form.Group controlId='venue_id'>
-                            <Form.Label>Location</Form.Label>
-                            <Form.Select
-                                className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
-                                {...register('venue_id')}
-                                onFocus={() => clearErrors(['venue_id', 'role_rights'])}
-                                type='text'
-                                name='venue_id'
-                            >
-                                <option value=''>Location</option>
-                                <BusinessList business_type='venue' />
-                            </Form.Select>
-                            <div className='errormessage'>{errors.venue_id?.message}</div>
-                            <div className='errormessage'>{errors.role_rights?.message}</div>
-                        </Form.Group>
-                    )
-                }
+                <Form.Group controlId='venue_id'>
+                    <Form.Label>Location</Form.Label>
+                    <Form.Select
+                        className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
+                        {...register('venue_id')}
+                        onFocus={() => clearErrors(['venue_id', 'role_rights'])}
+                        type='text'
+                        name='venue_id'
+                    >
+                        {/* <option value=''>Location</option> */}
+                        <BusinessList business_type='venue' />
+                    </Form.Select>
+                    <div className='errormessage'>{errors.venue_id?.message}</div>
+                    <div className='errormessage'>{errors.role_rights?.message}</div>
+                </Form.Group>
 
                 <Form.Group controlId='details'>
                     <Form.Label>Event Details</Form.Label>
@@ -202,32 +204,28 @@ const EditEvent = ({ event, handleClose }) => {
                     <div className='errormessage'>{errors.details?.message}</div>
                 </Form.Group>
 
-                {
-                    (event.created_by === auth?.user?.id) && (
-                        <Form.Group controlId='brand_id'>
-                            <Form.Label>Brand</Form.Label>
-                            <Form.Select
-                                className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
-                                {...register('brand_id')}
-                                onFocus={() => clearErrors(['brand_id', 'role_rights'])}
-                                type='text'
-                                name='brand_id'
-                            >
-                                <option value=''>Brand</option>
-                                <BusinessList business_type='brand' />
-                            </Form.Select>
-                            <div className='errormessage'>{errors.brand_id?.message}</div>
-                            <div className='errormessage'>{errors.role_rights?.message}</div>
-                        </Form.Group>
-                    )
-                }
+                <Form.Group controlId='brand_id'>
+                    <Form.Label>Brand</Form.Label>
+                    <Form.Select
+                        className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
+                        {...register('brand_id')}
+                        onFocus={() => clearErrors(['brand_id', 'role_rights'])}
+                        type='text'
+                        name='brand_id'
+                    >
+                        {/* <option value=''>Brand</option> */}
+                        <BusinessList business_type='brand' />
+                    </Form.Select>
+                    <div className='errormessage'>{errors.brand_id?.message}</div>
+                    <div className='errormessage'>{errors.role_rights?.message}</div>
+                </Form.Group>
 
                 <Row className='d-flex justify-content-around pt-3'>
                     <Col xs={2}>
                         <Button type='submit' disabled={!isDirty}>Update</Button>
                     </Col>
                     <Col xs={2}>
-                        <Button onClick={handleClose} variant='secondary'>Close</Button>
+                        <Button onClick={() => navigate(`/event/${event_id}`)}variant='secondary'>Close</Button>
                     </Col>
                 </Row>
 

@@ -10,7 +10,7 @@ import { DevTool } from '@hookform/devtools'
 import { useAddEventMutation } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
 import BusinessList from '../business/business_list';
-
+import { reformatTime } from '../../helpers/formatTime';
 
 const CreateEvent = () => {
     const [ imageFile, setImageFile ] = useState('')
@@ -37,14 +37,18 @@ const CreateEvent = () => {
     const createNewEvent = async (data) => {
         try {
             const formData = new FormData()
-            formData.append('eventname', data.eventname)
-            formData.append('eventdate', format(data.eventdate, 'y-M-d'))
-            formData.append('eventstart', data.eventstart)
-            formData.append('eventend', data.eventend)
-            formData.set('eventmedia', imageFile)
-            formData.append('venue_id', data.venue_id)
-            formData.append('details', data.details)
-            formData.append('brand_id', data.brand_id)
+            
+            Object.keys(data).forEach(key => {
+                if(key === 'eventmedia') {
+                    formData.set(key, imageFile)
+                } else if(key === 'eventdate') {
+                    formData.append(key, format(data[key], 'y-M-d'))
+                } else if(key === 'eventstart' || key === 'eventend') {
+                    formData.append(key, data[key].replace(':', ''))
+                } else {
+                    formData.append(key, data[key])
+                }
+            })
             
             const add_event_response = await addEventMutation(formData)
 
@@ -60,7 +64,7 @@ const CreateEvent = () => {
                 navigate(`/event/${add_event_response.data.event_id}`)
             }
         } catch (error) {
-            console.log(error.response)
+            console.log(error)
             if(error?.response.status === 401) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -120,6 +124,7 @@ const CreateEvent = () => {
                         name='eventstart'
                     />
                     <div className='errormessage'>{errors.eventstart?.message}</div>
+                    {/* <div className='errormessage'>{errors.time_format?.message}</div> */}
                 </Form.Group>
                 
                 {/* eventend input */}
@@ -132,8 +137,8 @@ const CreateEvent = () => {
                     />
                     <div className='errormessage'>{errors.eventend?.message}</div>
                 </Form.Group>
-
             </div>
+            <div className='errormessage'>{errors.time_format?.message}</div>
 
             {/* {
                 editImage &&
@@ -179,7 +184,6 @@ const CreateEvent = () => {
             <Form.Group controlId='details' className='my-3'>
                 <Form.Control
                     {...register('details')}
-                    autoFocus
                     onFocus={() => clearErrors('details')}
                     as='textarea'
                     row={10}

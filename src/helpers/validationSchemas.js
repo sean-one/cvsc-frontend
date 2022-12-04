@@ -1,7 +1,6 @@
 import * as yup from 'yup';
 import { format, add } from 'date-fns';
 
-import useAuth from '../hooks/useAuth';
 const todaysDate = format(new Date(), 'yyyy-MM-dd');
 const sixtyDaysOut = format(add(new Date(), { days: 60 }), 'yyyy-MM-dd');
 

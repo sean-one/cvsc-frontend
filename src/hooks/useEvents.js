@@ -20,13 +20,6 @@ const getAllBusinessEvents = async (business_id) => {
     return business_event_list;
 }
 
-const updateEvent = async ({ event_id, ...event_updates }) => {
-    const token = localStorage.getItem('token')
-    const updated_event = await AxiosInstance.put(`/events/${event_id}`, event_updates, { headers: { 'Authorization': 'Bearer ' + token } })
-
-    return updated_event
-}
-
 const removeEvent = async (event_id) => {
     const token = localStorage.getItem('token')
     const removed_event_count = await AxiosInstance.delete(`/events/remove/${event_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
@@ -72,6 +65,10 @@ export const useAddEventMutation = () => {
     })
 }
 
+//! useEditEventMutation - update event
+const updateEvent = async ({ event_id, ...event_updates }) => {
+    return await AxiosInstance.put(`/events/${event_id}`, event_updates)
+}
 export const useEditEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
