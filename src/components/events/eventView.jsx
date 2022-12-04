@@ -11,6 +11,7 @@ import LoadingSpinner from '../loadingSpinner';
 import EventList from './eventList';
 import BusinessInfo from '../business/business_info';
 import { EditButton } from '../menu/buttons/edit.button';
+import { image_link } from '../../helpers/dataCleanUp';
 // import EventControls from './eventControls';
 
 const EventView = () => {
@@ -59,7 +60,7 @@ const EventView = () => {
                     </div>
                 </div>
                 <div className='my-1'>
-                    <Image fluid src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event.data.eventmedia}`} alt={event.data.eventname} className='w-100' />
+                    <Image fluid src={image_link(event.data.eventmedia)} alt={event.data.eventname} className='w-100' />
                 </div>
                 {/* brand and venue names and links */}
                 <div className='d-flex'>

@@ -27,6 +27,11 @@ export const update_event = (data, df) => {
     return data;
 }
 
+export const image_link = (db_image) => {
+    console.log(db_image)
+    return `${process.env.REACT_APP_BACKEND_IMAGE_URL}${db_image}`
+}
+
 export const role_types = {
     '100': 'basic',
     '789': 'admin',
