@@ -23,7 +23,7 @@ const EditEvent = () => {
     const { mutateAsync: editEventMutation } = useEditEventMutation()
     
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
-        mode: 'onSubmit',
+        mode: 'onBlur',
         resolver: yupResolver(updateEventSchema),
         defaultValues: {
             eventname: event.data.eventname,
@@ -42,7 +42,6 @@ const EditEvent = () => {
     }
 
     const sendUpdate = async (data) => {
-        console.log(data)
         try {
             // remove entries that are unchanged
             for (const [key] of Object.entries(data)) {
@@ -92,7 +91,7 @@ const EditEvent = () => {
         }
     }
 
-    console.log('this is the edit page')
+
     return (
         <Form onSubmit={handleSubmit(sendUpdate)}>
 
@@ -105,6 +104,7 @@ const EditEvent = () => {
                     onFocus={() => clearErrors('eventname')}
                     type='text'
                     name='eventname'
+                    required
                 />
                 <div className='errormessage'>{errors.eventname?.message}</div>
             </Form.Group>
@@ -117,6 +117,7 @@ const EditEvent = () => {
                     onFocus={() => clearErrors('eventdate')}
                     type='date'
                     name='eventdate'
+                    required
                 />
                 <div className='errormessage'>{errors.eventdate?.message}</div>
             </Form.Group>
@@ -131,6 +132,7 @@ const EditEvent = () => {
                             onFocus={() => clearErrors('eventstart')}
                             type='time'
                             name='eventstart'
+                            required
                         />
                         <div className='errormessage'>{errors.eventstart?.message}</div>
                     </Form.Group>
@@ -144,6 +146,7 @@ const EditEvent = () => {
                             onFocus={() => clearErrors('eventend')}
                             type='time'
                             name='eventend'
+                            required
                         />
                         <div className='errormessage'>{errors.eventend?.message}</div>
                     </Form.Group>
@@ -184,6 +187,7 @@ const EditEvent = () => {
                     onFocus={() => clearErrors(['venue_id', 'role_rights'])}
                     type='text'
                     name='venue_id'
+                    required
                 >
                     {/* <option value=''>Location</option> */}
                     <BusinessList business_type='venue' />
@@ -202,6 +206,7 @@ const EditEvent = () => {
                     as='textarea'
                     row={15}
                     name='details'
+                    required
                 />
                 <div className='errormessage'>{errors.details?.message}</div>
             </Form.Group>
@@ -214,6 +219,7 @@ const EditEvent = () => {
                     onFocus={() => clearErrors(['brand_id', 'role_rights'])}
                     type='text'
                     name='brand_id'
+                    required
                 >
                     {/* <option value=''>Brand</option> */}
                     <BusinessList business_type='brand' />
