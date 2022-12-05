@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 
 import { formatTime } from '../../../helpers/formatTime';
+import { image_link } from '../../../helpers/dataCleanUp';
 
 import BusinessBrand from '../../business/business_brand';
 import BusinessVenue from '../../business/business_venue';
@@ -17,7 +18,7 @@ const EventCalendarPreview = ({ event }) => {
                     pathname: `/event/${event.event_id}`
                 }}
             >
-                <img src={event.eventmedia} alt={`${event.eventname} information`} className='img-fluid w-100' />
+                <img src={image_link(event.eventmedia)} alt={`${event.eventname} information`} className='img-fluid w-100' />
                 <div className='fw-bold lh-sm fs-5'>{event.eventname.toUpperCase()}</div>
             </Link>
             <div className='d-flex justify-content-between px-1 border-bottom fst-italic'>

@@ -10,26 +10,15 @@ import { DevTool } from '@hookform/devtools'
 import { useAddEventMutation } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
 import BusinessList from '../business/business_list';
-import { reformatTime } from '../../helpers/formatTime';
 
 const CreateEvent = () => {
     const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: addEventMutation } = useAddEventMutation()
     const { dispatch } = useNotification();
 
-    const { register, handleSubmit, control, setError, clearErrors, formState:{ isDirty, isValid, errors } } = useForm({
+    const { register, handleSubmit, control, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema),
-        defaultValues: {
-            eventname: null,
-            eventdate: null,
-            eventstart: '',
-            eventend: '',
-            eventmedia: '',
-            venue_id: '',
-            details: '',
-            brand_id: '',
-        }
     });
     
     let navigate = useNavigate();
@@ -161,6 +150,7 @@ const CreateEvent = () => {
                     name='eventmedia'
                     accept='image/*'
                     onChange={(e) => setImageFile(e.target.files[0])}
+                    required
                 />
                 <div className='errormessage'>{errors.eventmedia?.message}</div>
             </Form.Group>
@@ -208,12 +198,9 @@ const CreateEvent = () => {
                 <div className='errormessage'>{errors.role_rights?.message}</div>
             </Form.Group>
 
-            <div className='d-flex justify-content-between'>
-                <Button disabled={!isDirty || !isValid} type='submit'>Submit</Button>
-                <Button type='button'>Save</Button>
-            </div>
+            <Button type='submit'>Submit</Button>
+            
             <DevTool control={control} />
-
         </Form>
     )
 }

@@ -43,7 +43,7 @@ export const createEventSchema = yup.object().shape(
     {
         eventname: yup
             .string()
-            .required(),
+            .required('event name is required'),
         
         eventdate: yup
             .date()
@@ -55,24 +55,23 @@ export const createEventSchema = yup.object().shape(
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
             .required('event start time is required'),
-            // .nullable(),
             
         eventend: yup
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
             .required('event end time is required'),
-            // .nullable(),
         
+        eventmedia: yup
+            .mixed()
+            .required('event image must be provided'),
+
         venue_id: yup
             .string()
-            // .nullable()
-            // .notRequired()
             .when('venue_id', {
                 is: (value) => value?.length,
                 then: (rule) => rule.uuid()
             })
             .required('event location is required'),
-            // .typeError('please select a venue location')
             
         details: yup
             .string()
@@ -80,13 +79,10 @@ export const createEventSchema = yup.object().shape(
             
         brand_id: yup
             .string()
-            // .nullable()
-            // .notRequired()
             .when('brand_id', {
                 is: (value) => value?.length,
                 then: (rule) => rule.uuid()
             })
-            // .typeError('please select a brand')
             .required('branding is required')
         },
         [

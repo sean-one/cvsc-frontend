@@ -45,7 +45,8 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
                 <div className='text-truncate'>{business_name}</div>
             </Link>
             {
-                (business_role?.role_type >= 456) &&
+                // only viewable to a manager role
+                (business_role?.role_type === 456) &&
                     <div className='bg-light w-100 rounded text-center' onClick={() => removeBusinessFromEvent()}>
                         Remove
                     </div>

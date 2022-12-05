@@ -72,7 +72,9 @@ const updateEvent = async ({ event_id, ...event_updates }) => {
 export const useEditEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
+            console.log(data)
+            queryClient.cancelQueries(['event', data.event_id])
             queryClient.cancelQueries('events')
         },
         onError: (error) => {

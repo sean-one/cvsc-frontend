@@ -5,6 +5,7 @@ import { formatTime } from '../../../helpers/formatTime';
 import { Image } from 'react-bootstrap';
 
 import EventControls from '../eventControls';
+import { image_link } from '../../../helpers/dataCleanUp';
 import BusinessBrand from '../../business/business_brand';
 import BusinessVenue from '../../business/business_venue';
 
@@ -50,7 +51,7 @@ const EventListPreview = ({ event, inactive }) => {
                 {
                     (event.eventmedia) &&
                         <div className='w-50'>
-                            <Image src={event.eventmedia} thumbnail />
+                            <Image src={image_link(event.eventmedia)} thumbnail />
                         </div>
                 }
                 <div className='w-75 d-flex flex-column ps-1'>

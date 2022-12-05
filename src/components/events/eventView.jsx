@@ -10,7 +10,7 @@ import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
 import EventList from './eventList';
 import BusinessInfo from '../business/business_info';
-import { EditButton } from '../menu/buttons/edit.button';
+import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
 // import EventControls from './eventControls';
 
@@ -33,23 +33,19 @@ const EventView = () => {
         venue_event_list = events.data.filter(e => e.venue_id === event.data.venue_id && e.event_id !== event.data.event_id)
         both_event_list = events.data.filter(e => (e.venue_id === event.data.venue_id || e.brand_id === event.data.brand_id) && e.event_id !== event.data.event_id)
     }
+
     
-    // if(auth?.roles) {
-    //     // set roles for venue and brand
-    //     venue_role = auth?.roles.find(role => role?.business_id === event.data.venue_id) || 'none'
-    //     brand_role = auth?.roles.find(role => role?.business_id === event.data.brand_id) || 'none'
-    // }
-
-
     return (
         <div>
             <div>
-                <div>
+                <div className='d-flex align-items-center'>
                     {
                         (auth?.user?.id === event.data.created_by) &&
-                            <EditButton name='edit_event' edit_id={event_id} />
+                            <div className='px-2'>
+                                <EditEventButton event={event.data}/>
+                            </div>
                     }
-                    <h2>{event.data.eventname.toUpperCase()}</h2>
+                    <h2 className='w-100'>{event.data.eventname.toUpperCase()}</h2>
                 </div>
                 <div className='d-flex justify-content-between fw-bold fst-italic'>
                     <div>

@@ -3,29 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import styled from 'styled-components';
 
 import { reformatTime } from '../../helpers/formatTime';
-import { update_event } from '../../helpers/dataCleanUp';
 // import useImagePreviewer from '../../hooks/useImagePreviewer';
 import { useEditEventMutation, useEventQuery } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
 import BusinessList from '../business/business_list';
 import LoadingSpinner from '../loadingSpinner';
 
-const Styles = styled.div`
-    .errormessage {
-        width: 100%;
-        text-align: left;
-        padding: 0.25rem;
-        color: #DAD7CD;
-        /* font-weight: bold; */
-    }
-
-    .inputError {
-        border: 2px solid red;
-    }
-`
 
 const EditEvent = () => {
     const { event_id } = useParams()
@@ -54,10 +39,14 @@ const EditEvent = () => {
 
     const sendUpdate = async (data) => {
         try {
-            const { event_id } = event.data
-            const update_data = await update_event(data, dirtyFields)
-            console.log(update_data)
-            const edit_event_response = await editEventMutation({ ...update_data, event_id })
+            // remove entries that are unchanged
+            for (const [key] of Object.entries(data)) {
+                if (!Object.keys(dirtyFields).includes(key)) {
+                    delete data[key]
+                }
+            }
+
+            const edit_event_response = await editEventMutation({ ...data, event_id })
             
             if(edit_event_response.status === 201) {
                 dispatch({
@@ -67,6 +56,8 @@ const EditEvent = () => {
                         message: `${edit_event_response.data.eventname} has been updated`
                     }
                 })
+
+                navigate(`/event/${event_id}`)
             }
         } catch (error) {
             console.log(error)
@@ -81,156 +72,149 @@ const EditEvent = () => {
                     message: 'must have valid rights for at least one business'
                 })
             }
-            console.log('inside the send update')
-            console.log(Object.keys(error))
-            console.log(error.response)
-            
         }
     }
 
-    
 
     return (
-        <Styles>
-            <Form onSubmit={handleSubmit(sendUpdate)}>
+        <Form onSubmit={handleSubmit(sendUpdate)}>
 
-                <Form.Group controlId='eventname'>
-                    <Form.Label>Eventname</Form.Label>
-                    <Form.Control
-                        className={errors.eventname ? 'inputError' : ''}
-                        {...register('eventname')}
-                        autoFocus
-                        onFocus={() => clearErrors('eventname')}
-                        type='text'
-                        name='eventname'
-                    />
-                    <div className='errormessage'>{errors.eventname?.message}</div>
-                </Form.Group>
+            <Form.Group controlId='eventname'>
+                <Form.Label>Eventname</Form.Label>
+                <Form.Control
+                    className={errors.eventname ? 'inputError' : ''}
+                    {...register('eventname')}
+                    autoFocus
+                    onFocus={() => clearErrors('eventname')}
+                    type='text'
+                    name='eventname'
+                />
+                <div className='errormessage'>{errors.eventname?.message}</div>
+            </Form.Group>
 
-                <Form.Group controlId='eventdate'>
-                    <Form.Label>Event Date</Form.Label>
-                    <Form.Control
-                        className={errors.eventdate ? 'inputError' : ''}
-                        {...register('eventdate')}
-                        onFocus={() => clearErrors('eventdate')}
-                        type='date'
-                        name='eventdate'
-                    />
-                    <div className='errormessage'>{errors.eventdate?.message}</div>
-                </Form.Group>
+            <Form.Group controlId='eventdate'>
+                <Form.Label>Event Date</Form.Label>
+                <Form.Control
+                    className={errors.eventdate ? 'inputError' : ''}
+                    {...register('eventdate')}
+                    onFocus={() => clearErrors('eventdate')}
+                    type='date'
+                    name='eventdate'
+                />
+                <div className='errormessage'>{errors.eventdate?.message}</div>
+            </Form.Group>
 
-                <Row>
-                    <Col>
-                        <Form.Group controlId='eventstart'>
-                            <Form.Label>Start</Form.Label>
-                            <Form.Control
-                                className={errors.eventstart ? 'inputError' : ''}
-                                {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
-                                onFocus={() => clearErrors('eventstart')}
-                                type='time'
-                                name='eventstart'
-                            />
-                            <div className='errormessage'>{errors.eventstart?.message}</div>
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group controlId='eventend'>
-                            <Form.Label>End</Form.Label>
-                            <Form.Control
-                                className={errors.eventend ? 'inputError' : ''}
-                                {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
-                                onFocus={() => clearErrors('eventend')}
-                                type='time'
-                                name='eventend'
-                            />
-                            <div className='errormessage'>{errors.eventend?.message}</div>
-                        </Form.Group>
-                    </Col>
-                </Row>
-
-                {/* {
-                    editImage &&
-                    <Row className='mx-auto'>
-                        <canvas
-                            id={'eventImagePreview'}
-                            ref={canvas}
-                            width={384}
-                            height={480}
+            <Row>
+                <Col>
+                    <Form.Group controlId='eventstart'>
+                        <Form.Label>Start</Form.Label>
+                        <Form.Control
+                            className={errors.eventstart ? 'inputError' : ''}
+                            {...register('eventstart', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                            onFocus={() => clearErrors('eventstart')}
+                            type='time'
+                            name='eventstart'
                         />
-                    </Row>
-                }
+                        <div className='errormessage'>{errors.eventstart?.message}</div>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId='eventend'>
+                        <Form.Label>End</Form.Label>
+                        <Form.Control
+                            className={errors.eventend ? 'inputError' : ''}
+                            {...register('eventend', { setValueAs: v => parseInt(v.replace(":", "")) })}
+                            onFocus={() => clearErrors('eventend')}
+                            type='time'
+                            name='eventend'
+                        />
+                        <div className='errormessage'>{errors.eventend?.message}</div>
+                    </Form.Group>
+                </Col>
+            </Row>
 
-                <Form.Group controlId='eventmedia'>
-                    <Form.Label>Image Link</Form.Label>
-                    <Form.Control
-                        className={errors.eventmedia ? 'inputError' : ''}
-                        {...register('eventmedia')}
-                        onFocus={() => clearErrors('eventmedia')}
-                        type='file'
-                        name='eventmedia'
-                        accept='image/*'
-                        onChange={imagePreview}
+            {/* {
+                editImage &&
+                <Row className='mx-auto'>
+                    <canvas
+                        id={'eventImagePreview'}
+                        ref={canvas}
+                        width={384}
+                        height={480}
                     />
-                    <div className='errormessage'>{errors.eventmedia?.message}</div>
-                </Form.Group> */}
-
-                <Form.Group controlId='venue_id'>
-                    <Form.Label>Location</Form.Label>
-                    <Form.Select
-                        className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
-                        {...register('venue_id')}
-                        onFocus={() => clearErrors(['venue_id', 'role_rights'])}
-                        type='text'
-                        name='venue_id'
-                    >
-                        {/* <option value=''>Location</option> */}
-                        <BusinessList business_type='venue' />
-                    </Form.Select>
-                    <div className='errormessage'>{errors.venue_id?.message}</div>
-                    <div className='errormessage'>{errors.role_rights?.message}</div>
-                </Form.Group>
-
-                <Form.Group controlId='details'>
-                    <Form.Label>Event Details</Form.Label>
-                    <Form.Control
-                        className={errors.details ? 'inputError' : ''}
-                        {...register('details')}
-                        autoFocus
-                        onFocus={() => clearErrors('details')}
-                        as='textarea'
-                        row={15}
-                        name='details'
-                    />
-                    <div className='errormessage'>{errors.details?.message}</div>
-                </Form.Group>
-
-                <Form.Group controlId='brand_id'>
-                    <Form.Label>Brand</Form.Label>
-                    <Form.Select
-                        className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
-                        {...register('brand_id')}
-                        onFocus={() => clearErrors(['brand_id', 'role_rights'])}
-                        type='text'
-                        name='brand_id'
-                    >
-                        {/* <option value=''>Brand</option> */}
-                        <BusinessList business_type='brand' />
-                    </Form.Select>
-                    <div className='errormessage'>{errors.brand_id?.message}</div>
-                    <div className='errormessage'>{errors.role_rights?.message}</div>
-                </Form.Group>
-
-                <Row className='d-flex justify-content-around pt-3'>
-                    <Col xs={2}>
-                        <Button type='submit' disabled={!isDirty}>Update</Button>
-                    </Col>
-                    <Col xs={2}>
-                        <Button onClick={() => navigate(`/event/${event_id}`)}variant='secondary'>Close</Button>
-                    </Col>
                 </Row>
+            }
 
-            </Form>
-        </Styles>
+            <Form.Group controlId='eventmedia'>
+                <Form.Label>Image Link</Form.Label>
+                <Form.Control
+                    className={errors.eventmedia ? 'inputError' : ''}
+                    {...register('eventmedia')}
+                    onFocus={() => clearErrors('eventmedia')}
+                    type='file'
+                    name='eventmedia'
+                    accept='image/*'
+                    onChange={imagePreview}
+                />
+                <div className='errormessage'>{errors.eventmedia?.message}</div>
+            </Form.Group> */}
+
+            <Form.Group controlId='venue_id'>
+                <Form.Label>Location</Form.Label>
+                <Form.Select
+                    className={(errors.venue_id || errors.role_rights) ? 'inputError' : ''}
+                    {...register('venue_id')}
+                    onFocus={() => clearErrors(['venue_id', 'role_rights'])}
+                    type='text'
+                    name='venue_id'
+                >
+                    {/* <option value=''>Location</option> */}
+                    <BusinessList business_type='venue' />
+                </Form.Select>
+                <div className='errormessage'>{errors.venue_id?.message}</div>
+                <div className='errormessage'>{errors.role_rights?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='details'>
+                <Form.Label>Event Details</Form.Label>
+                <Form.Control
+                    className={errors.details ? 'inputError' : ''}
+                    {...register('details')}
+                    autoFocus
+                    onFocus={() => clearErrors('details')}
+                    as='textarea'
+                    row={15}
+                    name='details'
+                />
+                <div className='errormessage'>{errors.details?.message}</div>
+            </Form.Group>
+
+            <Form.Group controlId='brand_id'>
+                <Form.Label>Brand</Form.Label>
+                <Form.Select
+                    className={(errors.brand_id || errors.role_rights) ? 'inputError' : ''}
+                    {...register('brand_id')}
+                    onFocus={() => clearErrors(['brand_id', 'role_rights'])}
+                    type='text'
+                    name='brand_id'
+                >
+                    {/* <option value=''>Brand</option> */}
+                    <BusinessList business_type='brand' />
+                </Form.Select>
+                <div className='errormessage'>{errors.brand_id?.message}</div>
+                <div className='errormessage'>{errors.role_rights?.message}</div>
+            </Form.Group>
+
+            <Row className='d-flex justify-content-around pt-3'>
+                <Col xs={2}>
+                    <Button type='submit' disabled={!isDirty}>Update</Button>
+                </Col>
+                <Col xs={2}>
+                    <Button onClick={() => navigate(`/event/${event_id}`)}variant='secondary'>Close</Button>
+                </Col>
+            </Row>
+
+        </Form>
     )
 }
 
