@@ -19,6 +19,7 @@ import CreateEvent from './components/events/createEvent';
 import CreateBusiness from './components/business/businessForms/createBusiness';
 import EventView from './components/events/eventView';
 import EditEvent from './components/events/editEvent';
+import { ErrorPage } from './components/error/error_404';
 
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
@@ -59,6 +60,7 @@ const App = () => {
                   <Route path='/businesses/new' element={<CreateBusiness />} />
                   <Route path='/events/edit/:event_id' element={<EditEvent />} />
                 </Route>
+                <Route path='/*' element={<ErrorPage />} />
               </Route>
             </Routes>
             {/* <Route exact path='/' render={(props) => (<Calendar {...props} />)} /> */}

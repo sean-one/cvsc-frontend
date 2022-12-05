@@ -84,13 +84,55 @@ export const createEventSchema = yup.object().shape(
                 then: (rule) => rule.uuid()
             })
             .required('branding is required')
-        },
-        [
-            // add Cyclic deps here for require itself
-            ['venue_id', 'venue_id'],
-            ['brand_id', 'brand_id' ]
-        ]
-    )
+    },
+    [
+        // add Cyclic deps here for require itself
+        ['venue_id', 'venue_id'],
+        ['brand_id', 'brand_id' ]
+    ]
+)
+
+export const updateEventSchema = yup.object().shape({
+    eventname: yup
+        .string()
+        .required('event name is required'),
+
+    eventdate: yup
+        .date()
+        .min(todaysDate, 'date should not be in the past')
+        .max(sixtyDaysOut, 'right now we only allow events 60 days out')
+        .required(),
+
+    eventstart: yup
+        .string()
+        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
+        .required(),
+
+    eventend: yup
+        .string()
+        .matches(/([01]?[0-9]|2[0-3])[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
+        .required(),
+    
+    venue_id: yup
+        .string()
+        .when('venue_id', {
+            is: (value) => value?.length,
+            then: (rule) => rule.uuid()
+        })
+        .required(),
+
+    details: yup
+        .string()
+        .required(),
+
+    brand_id: yup
+        .string()
+        .when('brand_id', {
+            is: (value) => value?.length,
+            then: (rule) => rule.uuid()
+        })
+        .required(),
+}, [ ['venue_id', 'venue_id'], ['brand_id', 'brand_id'] ])
 
 export const addContactSchema = yup.object().shape({
     

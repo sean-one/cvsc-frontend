@@ -73,14 +73,16 @@ export const useEditEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
         onSuccess: ({ data }) => {
-            console.log(data)
             queryClient.cancelQueries(['event', data.event_id])
             queryClient.cancelQueries('events')
+            queryClient.refetchQueries(['event', data.event_id])
         },
         onError: (error) => {
             console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries('events')
+        onSettled: () => {
+            queryClient.refetchQueries('events')
+        }
     })
 }
 

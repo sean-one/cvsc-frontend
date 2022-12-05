@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { updateEventSchema } from '../../helpers/validationSchemas';
 import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
@@ -21,6 +23,8 @@ const EditEvent = () => {
     const { mutateAsync: editEventMutation } = useEditEventMutation()
     
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
+        mode: 'onSubmit',
+        resolver: yupResolver(updateEventSchema),
         defaultValues: {
             eventname: event.data.eventname,
             eventdate: format(new Date(event.data.eventdate), 'yyyy-MM-dd'),
@@ -38,6 +42,7 @@ const EditEvent = () => {
     }
 
     const sendUpdate = async (data) => {
+        console.log(data)
         try {
             // remove entries that are unchanged
             for (const [key] of Object.entries(data)) {
@@ -59,23 +64,35 @@ const EditEvent = () => {
 
                 navigate(`/event/${event_id}`)
             }
+
         } catch (error) {
-            console.log(error)
-            if(error.response.data.error.type === 'role_validation') {
-                setError('brand_id', {
-                    type: 'role_validation',
-                    message: 'must have valid rights for at least one business'
+            console.log('inside the send update catch')
+            if(error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error.response.data.error.message}`
+                    }
                 })
 
-                setError('venue_id', {
-                    type: 'role_validation',
-                    message: 'must have valid rights for at least one business'
-                })
+                navigate('/login')
             }
+            // if(error.response.data.error.type === 'role_validation') {
+            //     setError('brand_id', {
+            //         type: 'role_validation',
+            //         message: 'must have valid rights for at least one business'
+            //     })
+
+            //     setError('venue_id', {
+            //         type: 'role_validation',
+            //         message: 'must have valid rights for at least one business'
+            //     })
+            // }
         }
     }
 
-
+    console.log('this is the edit page')
     return (
         <Form onSubmit={handleSubmit(sendUpdate)}>
 
