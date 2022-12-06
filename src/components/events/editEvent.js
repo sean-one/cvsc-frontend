@@ -7,7 +7,6 @@ import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import { reformatTime } from '../../helpers/formatTime';
-// import useImagePreviewer from '../../hooks/useImagePreviewer';
 import { useEditEventMutation, useEventQuery } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
 import BusinessList from '../business/business_list';
@@ -17,7 +16,7 @@ import LoadingSpinner from '../loadingSpinner';
 const EditEvent = () => {
     const { event_id } = useParams()
     const { dispatch } = useNotification();
-    // const { editImage, imagePreview, canvas } = useImagePreviewer()
+    
     let navigate = useNavigate()
     const { data: event, isLoading: loadingEvent } = useEventQuery(event_id)
     const { mutateAsync: editEventMutation } = useEditEventMutation()
@@ -77,17 +76,14 @@ const EditEvent = () => {
 
                 navigate('/login')
             }
-            // if(error.response.data.error.type === 'role_validation') {
-            //     setError('brand_id', {
-            //         type: 'role_validation',
-            //         message: 'must have valid rights for at least one business'
-            //     })
 
-            //     setError('venue_id', {
-            //         type: 'role_validation',
-            //         message: 'must have valid rights for at least one business'
-            //     })
-            // }
+            if(error.response.status === 400) {
+                setError(error.response.data.error.type, {
+                    type: error.response.data.error.type,
+                    message: error.response.data.error.message
+                })
+            }
+
         }
     }
 
@@ -153,32 +149,6 @@ const EditEvent = () => {
                 </Col>
             </Row>
 
-            {/* {
-                editImage &&
-                <Row className='mx-auto'>
-                    <canvas
-                        id={'eventImagePreview'}
-                        ref={canvas}
-                        width={384}
-                        height={480}
-                    />
-                </Row>
-            }
-
-            <Form.Group controlId='eventmedia'>
-                <Form.Label>Image Link</Form.Label>
-                <Form.Control
-                    className={errors.eventmedia ? 'inputError' : ''}
-                    {...register('eventmedia')}
-                    onFocus={() => clearErrors('eventmedia')}
-                    type='file'
-                    name='eventmedia'
-                    accept='image/*'
-                    onChange={imagePreview}
-                />
-                <div className='errormessage'>{errors.eventmedia?.message}</div>
-            </Form.Group> */}
-
             <Form.Group controlId='venue_id'>
                 <Form.Label>Location</Form.Label>
                 <Form.Select
@@ -236,6 +206,7 @@ const EditEvent = () => {
                     <Button onClick={() => navigate(`/event/${event_id}`)}variant='secondary'>Close</Button>
                 </Col>
             </Row>
+            <div className='errormessage'>{errors.server?.message}</div>
 
         </Form>
     )
