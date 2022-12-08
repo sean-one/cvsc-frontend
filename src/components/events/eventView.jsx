@@ -12,7 +12,6 @@ import EventList from './eventList';
 import BusinessInfo from '../business/business_info';
 import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
-// import EventControls from './eventControls';
 
 const EventView = () => {
     const { auth } = useAuth()
@@ -34,7 +33,7 @@ const EventView = () => {
         both_event_list = events.data.filter(e => (e.venue_id === event.data.venue_id || e.brand_id === event.data.brand_id) && e.event_id !== event.data.event_id)
     }
 
-    
+    console.log(event.data)
     return (
         <div>
             <div>
@@ -66,10 +65,6 @@ const EventView = () => {
                 <div className='fs-6 lh-sm mt-1 pt-2 border-top'>
                     {event.data.details}
                 </div>
-                {/* {
-                    (auth?.user?.id === event.data.created_by) &&
-                        <EventControls event={event.data} />
-                } */}
             </div>
             <div>
                 {

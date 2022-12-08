@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import EditEvent from './editEvent'
-import { useEventRemoveMutation } from '../../hooks/useEvents';
+import { useRemoveEventMutation } from '../../hooks/useEvents';
 
 const EventControls = ({ event, inactive }) => {
-    const { mutateAsync: removeEvent } = useEventRemoveMutation()
+    const { mutateAsync: removeEvent } = useRemoveEventMutation()
     const [ modalShow, setModalShow ] = useState(false)
     let navigate = useNavigate();
     const { pathname } = useLocation()

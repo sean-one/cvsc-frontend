@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import { reformatTime } from '../../helpers/formatTime';
-import { useEditEventMutation, useEventQuery } from '../../hooks/useEvents';
+import { useEventQuery, useEditEventMutation, useRemoveEventMutation } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
 import BusinessList from '../business/business_list';
 import LoadingSpinner from '../loadingSpinner';
@@ -19,8 +19,10 @@ const EditEvent = () => {
     const { dispatch } = useNotification();
     
     let navigate = useNavigate()
+
     const { data: event, isLoading: loadingEvent } = useEventQuery(event_id)
     const { mutateAsync: editEventMutation } = useEditEventMutation()
+    const { mutateAsync: removeEventMutation } = useRemoveEventMutation()
     
     const { register, handleSubmit, clearErrors, setError, formState:{ isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -104,6 +106,38 @@ const EditEvent = () => {
         }
     }
 
+    const deleteEvent = async () => {
+        try {
+            const delete_event_response = await removeEventMutation(event_id)
+    
+            if(delete_event_response.status === 204) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `event has been deleted`
+                    }
+                })
+    
+                navigate('/profile')
+            }
+            console.log(delete_event_response)
+            
+        } catch (error) {
+            console.log('error in the deleteEvent')
+            if(error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error.response.data.error.message
+                    }
+                })
+
+                navigate('/login')
+            }
+        }
+    }
 
     return (
         <Form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data'>
@@ -231,6 +265,9 @@ const EditEvent = () => {
             <Row className='d-flex justify-content-around pt-3'>
                 <Col xs={2}>
                     <Button type='submit' disabled={!isDirty}>Update</Button>
+                </Col>
+                <Col xs={2}>
+                    <Button onClick={() => deleteEvent()} variant='danger'>Delete</Button>
                 </Col>
                 <Col xs={2}>
                     <Button onClick={() => navigate(`/event/${event_id}`)}variant='secondary'>Close</Button>

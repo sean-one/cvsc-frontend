@@ -20,18 +20,30 @@ const getAllBusinessEvents = async (business_id) => {
     return business_event_list;
 }
 
-const removeEvent = async (event_id) => {
-    const token = localStorage.getItem('token')
-    const removed_event_count = await AxiosInstance.delete(`/events/remove/${event_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
-
-    return removed_event_count
-}
-
 const removeBusiness = async ({ event_id, ...event_updates }) => {
     const updated_event = await AxiosInstance.put(`/events/business/remove/${event_id}`, event_updates)
 
     return updated_event
 }
+
+export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
+export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
+export const useBusinessEventsQuery = (business_id) => useQuery(['events', 'business', business_id], () => getAllBusinessEvents(business_id), { staleTime: 6000, refetchOnMount: false })
+export const useBusinessRemoveMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(removeBusiness, {
+        onSuccess: ({ data }) => {
+            queryClient.invalidateQueries(['event', data.id])
+            queryClient.invalidateQueries('events')
+        },
+        onError: (error) => {
+            console.log('error inside event business remove mutation')
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('events')
+    })
+}
+
 
 //! useEventsQuery - fetch all events
 const getAllEvents = async () => {
@@ -41,9 +53,7 @@ const getAllEvents = async () => {
 }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 
-export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
-export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
-export const useBusinessEventsQuery = (business_id) => useQuery(['events', 'business', business_id], () => getAllBusinessEvents(business_id), { staleTime: 6000, refetchOnMount: false })
+
 
 //! useAddEventMutation - create new event
 const addEvent = async (event) => {
@@ -64,6 +74,8 @@ export const useAddEventMutation = () => {
         onSettled: () => queryClient.refetchQueries('events')
     })
 }
+
+
 
 //! useEditEventMutation - update event
 const updateEvent = async ({ event_updates, event_id }) => {
@@ -86,22 +98,13 @@ export const useEditEventMutation = () => {
     })
 }
 
-export const useBusinessRemoveMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(removeBusiness, {
-        onSuccess: ({ data }) => {
-            queryClient.invalidateQueries(['event', data.id])
-            queryClient.invalidateQueries('events')
-        },
-        onError: (error) => {
-            console.log('error inside event business remove mutation')
-            console.log(error)
-        },
-        onSettled: () => queryClient.refetchQueries('events')
-    })
-}
 
-export const useEventRemoveMutation = () => {
+
+//! useRemoveEventMutation - remove event
+const removeEvent = async (event_id) => {
+    return await AxiosInstance.delete(`/events/remove/${event_id}`)
+}
+export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeEvent, {
         onSuccess: () => {
@@ -113,3 +116,6 @@ export const useEventRemoveMutation = () => {
         onSettled: () => queryClient.refetchQueries('events')
     })
 }
+
+
+
