@@ -66,12 +66,33 @@ export const useAddEventMutation = () => {
 }
 
 //! useEditEventMutation - update event
-const updateEvent = async ({ event_id, ...event_updates }) => {
-    return await AxiosInstance.put(`/events/${event_id}`, event_updates)
+const updateEvent = async ({ event_updates, event_id }) => {
+    return await AxiosInstance.post(`/events/update/${event_id}`, event_updates)
 }
 export const useEditEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
+        onSuccess: ({ data }) => {
+            queryClient.cancelQueries(['event', data.event_id])
+            queryClient.cancelQueries('events')
+            queryClient.refetchQueries(['event', data.event_id])
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => {
+            queryClient.refetchQueries('events')
+        }
+    })
+}
+
+//! useEventImageUpdateMutation - update event image
+const updateImage = async ({ event_id, ...image_update }) => {
+    return await AxiosInstance.post(`/events/update_image/${event_id}`, image_update)
+}
+export const useEventImageUpdateMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(updateImage, {
         onSuccess: ({ data }) => {
             queryClient.cancelQueries(['event', data.event_id])
             queryClient.cancelQueries('events')

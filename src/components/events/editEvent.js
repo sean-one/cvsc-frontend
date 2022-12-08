@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,6 +14,7 @@ import LoadingSpinner from '../loadingSpinner';
 
 
 const EditEvent = () => {
+    // const [ imageFile, setImageFile ] = useState('')
     const { event_id } = useParams()
     const { dispatch } = useNotification();
     
@@ -29,6 +30,7 @@ const EditEvent = () => {
             eventdate: format(new Date(event.data.eventdate), 'yyyy-MM-dd'),
             eventstart: reformatTime(event.data.eventstart),
             eventend: reformatTime(event.data.eventend),
+            eventmedia: '',
             venue_id: event.data.venue_id,
             details: event.data.details,
             brand_id: event.data.brand_id
@@ -42,6 +44,8 @@ const EditEvent = () => {
 
     const sendUpdate = async (data) => {
         try {
+            const formData = new FormData()
+
             // remove entries that are unchanged
             for (const [key] of Object.entries(data)) {
                 if (!Object.keys(dirtyFields).includes(key)) {
@@ -49,7 +53,19 @@ const EditEvent = () => {
                 }
             }
 
-            const edit_event_response = await editEventMutation({ ...data, event_id })
+            Object.keys(data).forEach(key => {
+                if (key === 'eventmedia') {
+                    formData.set('eventmedia', data['eventmedia'][0])
+                } else if (key === 'eventdate') {
+                    formData.append(key, format(data[key], 'y-M-d'))
+                } else if (key === 'eventstart' || key === 'eventend') {
+                    formData.append(key, data[key].replace(':', ''))
+                } else {
+                    formData.append(key, data[key])
+                }
+            })        
+
+            const edit_event_response = await editEventMutation({ event_id: event_id, event_updates: formData })
             
             if(edit_event_response.status === 201) {
                 dispatch({
@@ -65,6 +81,7 @@ const EditEvent = () => {
 
         } catch (error) {
             console.log('inside the send update catch')
+            console.log(error)
             if(error.response.status === 401) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -89,7 +106,7 @@ const EditEvent = () => {
 
 
     return (
-        <Form onSubmit={handleSubmit(sendUpdate)}>
+        <Form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data'>
 
             <Form.Group controlId='eventname'>
                 <Form.Label>Eventname</Form.Label>
@@ -148,6 +165,19 @@ const EditEvent = () => {
                     </Form.Group>
                 </Col>
             </Row>
+
+            <Form.Group controlId='eventmedia' className='my-3'>
+                <Form.Control 
+                    {...register('eventmedia')}
+                    onFocus={() => clearErrors('eventmedia')}
+                    type='file'
+                    name='eventmedia'
+                    accept='image/*'
+                    // onChange={(e) => setImageFile(e.target.files[0])}
+                    required
+                />
+                <div className='errormessage'>{errors.eventmedia?.message}</div>
+            </Form.Group>
 
             <Form.Group controlId='venue_id'>
                 <Form.Label>Location</Form.Label>

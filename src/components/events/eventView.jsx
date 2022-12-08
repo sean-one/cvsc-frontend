@@ -12,6 +12,7 @@ import EventList from './eventList';
 import BusinessInfo from '../business/business_info';
 import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
+// import UpdateEventImage from './buttons/update_event_image.button';
 // import EventControls from './eventControls';
 
 const EventView = () => {
@@ -55,8 +56,12 @@ const EventView = () => {
                         {`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}
                     </div>
                 </div>
-                <div className='my-1'>
+                <div className='my-1 position-relative'>
                     <Image fluid src={image_link(event.data.eventmedia)} alt={event.data.eventname} className='w-100' />
+                    {/* {
+                        (auth?.user?.id === event.data.created_by) &&
+                            <UpdateEventImage event_id={event.data.event_id} />
+                    } */}
                 </div>
                 {/* brand and venue names and links */}
                 <div className='d-flex'>
