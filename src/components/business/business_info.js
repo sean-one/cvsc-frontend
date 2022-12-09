@@ -21,7 +21,6 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
 
     if(auth?.roles) {
         business_role = auth?.roles.find(role => role?.business_id === business_id) || {}
-        console.log(business_role)
     }
 
     const removeBusinessFromEvent = async () => {
@@ -32,13 +31,12 @@ const BusinessInfo = ({ business_id, business_name, business_type, reverse=false
 
         const remove_response = await removeBusinessMutation({ ...business_data, event_id })
         
-        console.log(remove_response)
-
         if (remove_response.status === 201) {
             navigate('/')
         }
     }
 
+    
     return (
         <div className='w-100'>
             <Link to={{ pathname: `/business/${business_id}` }} className={`d-flex align-items-center pt-1 w-100 ${(reverse) ? 'justify-content-end' : ''}`}>
