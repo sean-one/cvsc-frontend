@@ -4,36 +4,26 @@ import { Image } from 'react-bootstrap'
 import { format } from 'date-fns'
 
 import { formatTime } from '../../helpers/formatTime';
-import { useEventQuery, useEventsQuery } from '../../hooks/useEvents';
+import { useEventQuery } from '../../hooks/useEvents';
 import useAuth from '../../hooks/useAuth';
 
 import LoadingSpinner from '../loadingSpinner';
-import EventList from './eventList';
 import BusinessInfo from '../business/business_info';
 import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
+import EventsRelated from './eventsRelated';
 
 const EventView = () => {
     const { auth } = useAuth()
     let { event_id } = useParams()
-    
-    // let venue_role, brand_role = 'none'
-    let brand_event_list, venue_event_list, both_event_list = []
 
-    const { data: event, isLoading: eventLoading, isSuccess: eventSuccess } = useEventQuery(event_id)
-    const { data: events, isLoading: listLoading, isSuccess: listSuccess } = useEventsQuery()
+    const { data: event, isLoading } = useEventQuery(event_id)
 
-    if (eventLoading || listLoading) {
+    if (isLoading) {
         return <LoadingSpinner />
     }
 
-    if (eventSuccess && listSuccess) {
-        brand_event_list = events.data.filter(e => e.brand_id === event.data.brand_id && e.event_id !== event.data.event_id)
-        venue_event_list = events.data.filter(e => e.venue_id === event.data.venue_id && e.event_id !== event.data.event_id)
-        both_event_list = events.data.filter(e => (e.venue_id === event.data.venue_id || e.brand_id === event.data.brand_id) && e.event_id !== event.data.event_id)
-    }
 
-    console.log(event.data)
     return (
         <div>
             <div>
@@ -46,6 +36,7 @@ const EventView = () => {
                     }
                     <h2 className='w-100'>{event.data.eventname.toUpperCase()}</h2>
                 </div>
+                <div>{event.data.formatted}</div>
                 <div className='d-flex justify-content-between fw-bold fst-italic'>
                     <div>
                         {format(new Date(event.data.eventdate), 'E, MMMM d')}
@@ -67,14 +58,7 @@ const EventView = () => {
                 </div>
             </div>
             <div>
-                {
-                    (event.data.brand_id === event.data.venue_id)
-                        ? <EventList event_list={both_event_list} business_name={event.data.brand_name} />
-                        : <div>
-                            <EventList event_list={brand_event_list} business_name={event.data.brand_name} />
-                            <EventList event_list={venue_event_list} business_name={event.data.venue_name} />
-                        </div>
-                }
+                <EventsRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
             </div>
         </div>
     )

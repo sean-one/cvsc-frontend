@@ -11,7 +11,7 @@ import LoadingSpinner from '../loadingSpinner';
 import BusinessLocation from './location/businessLocation';
 import ContactLink from '../contactLink';
 import ManagerMenu from './managerMenu/managerMenu';
-import BusinessEvents from '../events/eventListing/business.events';
+import EventsRelated from '../events/eventsRelated';
 
 
 const BusinessView = () => {
@@ -67,7 +67,7 @@ const BusinessView = () => {
                     {current_business.business_description}
                 </div>
             </div>
-            <BusinessEvents business_id={business_id} />
+            <EventsRelated business_ids={[business_id]} />
         </div>
     )
 }
