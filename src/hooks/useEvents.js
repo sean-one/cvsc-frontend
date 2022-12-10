@@ -3,18 +3,14 @@ import AxiosInstance from "../helpers/axios";
 
 
 const getAllUserEvents = async (user_id) => {
-    const user_event_list = await AxiosInstance.get(`/events/user/${user_id}`)
-
-    return user_event_list;
+    return await AxiosInstance.get(`/events/user/${user_id}`)
 }
+export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
+
 
 const removeBusiness = async ({ event_id, ...event_updates }) => {
-    const updated_event = await AxiosInstance.put(`/events/business/remove/${event_id}`, event_updates)
-
-    return updated_event
+    return await AxiosInstance.put(`/events/remove_business/${event_id}`, event_updates)
 }
-
-export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
 export const useBusinessRemoveMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeBusiness, {

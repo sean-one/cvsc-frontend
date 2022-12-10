@@ -5,6 +5,7 @@ import useAuth from '../../../hooks/useAuth';
 
 import LoadingSpinner from '../../loadingSpinner';
 import EventListPreview from '../cardViews/eventListPreview';
+import InactiveListPreview from '../cardViews/inactiveEventPreview';
 
 const UserEvents = () => {
     const { auth } = useAuth()
@@ -36,7 +37,7 @@ const UserEvents = () => {
                 (inactive_events.length > 0) &&
                     inactive_events.map(event => {
                         return (
-                            <EventListPreview key={event.event_id} event={event} inactive />
+                            <InactiveListPreview key={event.event_id} event={event} />
                         )
                     })
             }
