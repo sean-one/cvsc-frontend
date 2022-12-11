@@ -13,13 +13,9 @@ const InactiveListPreview = ({ event }) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
     }
 
-    const buttonClick = () => {
-        navigate(`/events/edit/${event.event_id}`)
-    }
-
 
     return (
-        <div className='bg-light rounded my-3 p-1 shadow-sm' onClick={() => buttonClick()}>
+        <div className='bg-light rounded my-3 p-1 shadow-sm' onClick={() => navigate(`/event/edit/${event.event_id}`)}>
             <h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4>
             {/* event date information */}
             <div className='d-flex justify-content-between border-bottom my-1'>

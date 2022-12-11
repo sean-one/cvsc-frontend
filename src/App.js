@@ -58,7 +58,7 @@ const App = () => {
                   </Route>
                   <Route path='/events/new' element={<CreateEvent />} />
                   <Route path='/businesses/new' element={<CreateBusiness />} />
-                  <Route path='/events/edit/:event_id' element={<EditEvent />} />
+                  <Route path='/event/edit/:event_id' element={<EditEvent />} />
                 </Route>
                 {/* catch all for unknown pages */}
                 <Route path='/*' element={<ErrorPage />} />

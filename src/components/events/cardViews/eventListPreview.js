@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import { Image } from 'react-bootstrap';
@@ -7,6 +8,7 @@ import { image_link } from '../../../helpers/dataCleanUp';
 import BusinessInfo from '../../business/business_info';
 
 const EventListPreview = ({ event }) => {
+    let navigate = useNavigate()
 
     const textTruncation = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
@@ -14,7 +16,7 @@ const EventListPreview = ({ event }) => {
     
 
     return (
-        <div className='bg-light rounded my-3 p-1 shadow-sm'>
+        <div className='bg-light rounded my-3 p-1 shadow-sm' onClick={() => navigate(`/event/${event.event_id}`)}>
             <h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4>
             {/* event date information */}
             <div className='d-flex justify-content-between border-bottom my-1'>
