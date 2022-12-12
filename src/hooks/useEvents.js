@@ -39,9 +39,7 @@ export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id),
 
 //! useEventsQuery - fetch all events
 const getAllEvents = async () => {
-    const events_api_call = await AxiosInstance.get('/events')
-
-    return events_api_call
+    return await AxiosInstance.get('/events')
 }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 
@@ -49,9 +47,7 @@ export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetch
 
 //! useAddEventMutation - create new event
 const addEvent = async (event) => {
-    const new_event = await AxiosInstance.post('/events', event)
-
-    return new_event
+    return await AxiosInstance.post('/events', event)
 }
 export const useAddEventMutation = () => {
     const queryClient = useQueryClient()

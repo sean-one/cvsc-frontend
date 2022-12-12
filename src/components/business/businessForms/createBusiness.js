@@ -1,19 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { withRouter, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Form } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import { addBusinessSchema } from '../../../helpers/validationSchemas';
 import { useAddBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
-import { UsersContext } from '../../../context/users/users.provider';
 
 const CreateBusiness = () => {
+    const { auth, setAuth } = useAuth()
     const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: addBusinessMutation, error: addError } = useAddBusinessMutation()
-    const { addUserRole } = useContext(UsersContext)
     const { dispatch } = useNotification() 
     
     const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
@@ -24,7 +23,7 @@ const CreateBusiness = () => {
             business_email: null,
             business_avatar: '',
             business_description: null,
-            business_type: '',
+            business_type: 'brand',
             street_address: '',
             city: '',
             state: '',
@@ -44,22 +43,15 @@ const CreateBusiness = () => {
         try {
 
             const formData = new FormData()
-            formData.append('business_name', business_data.business_name)
-            formData.append('business_email', business_data.business_email)
-            formData.set('business_avatar', imageFile)
-            formData.append('business_description', business_data.business_description)
-            formData.append('business_type', business_data.business_type)
-            formData.append('street_address', business_data.street_address)
-            formData.append('city', business_data.city)
-            formData.append('state', business_data.state)
-            formData.append('zip', business_data.zip)
-            formData.append('business_instagram', business_data.business_instagram)
-            formData.append('business_facebook', business_data.business_facebook)
-            formData.append('business_website', business_data.business_website)
-            formData.append('business_phone', business_data.business_phone)
-            formData.append('business_twitter', business_data.business_twitter)
+
+            Object.keys(business_data).forEach(key => {
+                if(key === 'business_avatar') {
+                    formData.set(key, imageFile)
+                } else {
+                    formData.append(key, business_data[key])
+                }
+            })
             
-            console.log(formData.entries())
             const new_business = await addBusinessMutation(formData)
             
             if(new_business.status === 201) {
@@ -71,10 +63,7 @@ const CreateBusiness = () => {
                     role_type: new_business.data.role_type
                 }
         
-                addUserRole(admin_role)
-        
-                // delete business.data['active_role']
-                // delete business.data['role_type']
+                setAuth({ user: auth.user, roles: { ...auth.roles, admin_role }})
         
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -84,21 +73,14 @@ const CreateBusiness = () => {
                     }
                 })
     
-                // removes user from local storage so it is refetch next time profile is loaded
-                localStorage.removeItem('user')
-
                 reset()
         
                 navigate(`/business/${new_business.data.id}`)
-                // history.push({
-                //     pathname: `/business/${new_business.data.id}`,
-                //     state: {
-                //         business_id: new_business.data.id,
-                //     }
-                // })
     
             }
+
         } catch (error) {
+
             if(addError.response.status === 400) {
                 setError(`${addError.response.data.error.type}`, {
                     type: 'server',
@@ -106,16 +88,22 @@ const CreateBusiness = () => {
                 })
 
             }
+
+            if(error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error.response.data.error.message
+                    }
+                })
+
+                navigate('/login')
+                
+            }
+
         }
 
-        //     dispatch({
-        //         type: "ADD_NOTIFICATION",
-        //         payload: {
-        //             notification_type: 'ERROR',
-        //             message: `something is wrong in new business creation`
-        //         }
-        //     })
-        // }
     }
 
 
@@ -151,9 +139,7 @@ const CreateBusiness = () => {
             </Form.Group>
 
             {/* <Form.Group controlId='business_avatar'> */}
-
-            {/* business avatar random link */}
-            <Form.Group>
+            <Form.Group controlId='business_avatar'>
                 <Form.Label>Business Branding</Form.Label>
                 <Form.Control
                     className={errors.business_avatar ? 'inputError' : ''}

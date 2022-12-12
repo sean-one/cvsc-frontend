@@ -17,10 +17,10 @@ export const MenuLinks = {
     },
     'new_event': {
         text: 'Create New Event',
-        link: '/events/new'
+        link: '/event/new'
     },
     'new_business': {
         text: 'Create New Business',
-        link: '/businesses/new'
+        link: '/business/new'
     }
 }

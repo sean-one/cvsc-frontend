@@ -1,100 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
-
-const getAllBusinesses = async () => {
-    const businesses_api_call = await AxiosInstance.get('/business')
-    
-    return businesses_api_call
+//! useAddBusinessMutation - create new business
+const createBusiness = async (business) => { return await AxiosInstance.post('/business/create', business) }
+export const useAddBusinessMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(createBusiness, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('businesses')
+            queryClient.refetchQueries('businesses')
+        },
+        onError: (error, new_business, context) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries('businesses'),
+    })
 }
 
-const getBusiness = async (id) => {
-    const single_business = await AxiosInstance.get(`/business/${id}`)
-    
-    return single_business
-}
 
-const getBusinessLocation = async (business_id) => {
-    const business_location = await AxiosInstance.get(`/locations/business/${business_id}`)
-
-    return business_location
-}
-
-const updateBusiness = async ({ business_id, ...business_updates }) => {
-    const updated_business = await AxiosInstance.put(`/business/${business_id}`, business_updates)
-
-    return updated_business;
-}
-
-const updateLocation = async ({ location_id, ...location_updates }) => {
-    const updated_location = await AxiosInstance.put(`/locations/${location_id}`, location_updates)
-
-    return updated_location;
-}
-
-const createBusiness = async (business) => {
-    const token = localStorage.getItem('token')
-    const new_business = await AxiosInstance.post('/business/create', business, { headers: { 'Authorization': 'Bearer ' + token } })
-
-    return new_business
-}
-
-const upgradeCreator = async (role_id) => {
-    const token = localStorage.getItem('token')
-    const new_manager = await AxiosInstance.post(`/roles/upgrade_creator/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
-    
-    return new_manager
-}
-
-const downgradeManager = async (role_id) => {
-    const token = localStorage.getItem('token')
-    const updated_role = await AxiosInstance.post(`/roles/downgrade_manager/${role_id}`, { headers: { 'Authorization': 'Bearer ' + token } })
-
-    return updated_role
-}
-
-const approveRequest = async (role_id) => {
-    const new_creator = await AxiosInstance.post(`/roles/approve_request/${role_id}`)
-    
-    return new_creator
-}
-
-const removeUserRole = async (role_id) => {
-    const removed_role_count = await AxiosInstance.delete(`/roles/user_remove/${role_id}`)
-
-    return removed_role_count
-}
-
-const removeManagerRole = async (role_id) => {
-    const removed_role_count = await AxiosInstance.delete(`/roles/manager_remove/${role_id}`)
-
-    return removed_role_count
-}
-
-const getAllPendingRoles = async () => {
-    const pending_roles = await AxiosInstance.get(`/roles/management/pending`)
-
-    return pending_roles
-}
-
-const getAllBusinessRoles = async (id) => {
-    const token = localStorage.getItem('token')
-    const business_roles = await AxiosInstance.get(`/roles/business/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })
-
-    return business_roles
-}
-
-const toggleActiveBusiness = async (id) => {
-    const updated_business = await AxiosInstance.put(`/business/toggle-active/${id}`)
-
-    return updated_business
-}
-
-const toggleBusinessRequestStatus = async (id) => {
-    const updated_business = await AxiosInstance.put(`/business/toggle-request/${id}`)
-
-    return updated_business
-}
+const getAllBusinesses = async () => { return await AxiosInstance.get('/business') }
+const getBusiness = async (id) => { return await AxiosInstance.get(`/business/${id}`) }
+const getBusinessLocation = async (business_id) => { return await AxiosInstance.get(`/locations/business/${business_id}`) }
+const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/business/${business_id}`, business_updates) }
+const updateLocation = async ({ location_id, ...location_updates }) => { return await AxiosInstance.put(`/locations/${location_id}`, location_updates) }
+const upgradeCreator = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade_creator/${role_id}`) }
+const downgradeManager = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade_manager/${role_id}`) }
+const approveRequest = async (role_id) => { return await AxiosInstance.post(`/roles/approve_request/${role_id}`) }
+const removeUserRole = async (role_id) => { return await AxiosInstance.delete(`/roles/user_remove/${role_id}`) }
+const removeManagerRole = async (role_id) => { return await AxiosInstance.delete(`/roles/manager_remove/${role_id}`) }
+const getAllPendingRoles = async () => { return await AxiosInstance.get(`/roles/management/pending`) }
+const getAllBusinessRoles = async (id) => { return await AxiosInstance.get(`/roles/business/${id}`) }
+const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/business/toggle-active/${id}`) }
+const toggleBusinessRequestStatus = async (id) => { return await AxiosInstance.put(`/business/toggle-request/${id}`) }
 
 
 export const useBusinessesQuery = () => useQuery(["businesses"], getAllBusinesses, { refetchOnMount: false })
@@ -104,18 +41,6 @@ export const useBusinessLocationQuery = (business_id) => useQuery(["business_loc
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
 export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())
 
-export const useAddBusinessMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(createBusiness, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('businesses')
-        },
-        onError: (error, new_business, context) => {
-            console.log(error)
-        },
-        onSettled: () => queryClient.refetchQueries('businesses'),
-    })
-}
 
 export const useUpdateBusinessMutation = () => {
     const queryClient = useQueryClient()
