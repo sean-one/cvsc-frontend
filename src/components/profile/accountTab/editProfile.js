@@ -1,14 +1,19 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
 const EditProfile = () => {
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur'
     })
+
+    const updateProfile = async (data) => {
+        console.log('click click')
+        console.log(data)
+    }
     
     return (
-        <Form>
+        <Form onSubmit={handleSubmit(updateProfile)}>
 
             <Form.Group controlId='username'>
                 <Form.Label>Username</Form.Label>
@@ -19,10 +24,9 @@ const EditProfile = () => {
                     type='text'
                     placeholder='username'
                     name='username'
-                    required
                 />
+                <div className='errormessage'>{errors.username?.message}</div>
             </Form.Group>
-            <div className='errormessage'>{errors.username?.message}</div>
 
             <Form.Group controlId='password'>
                 <Form.Label>Password</Form.Label>
@@ -34,8 +38,23 @@ const EditProfile = () => {
                     placehold='Password'
                     name='password'
                 />
+                <div className='errormessage'>{errors.password?.message}</div>
             </Form.Group>
-            <div className='errormessage'>{errors.password?.message}</div>
+
+            <Form.Group controlId='avatar'>
+                <Form.Label>Profile Image</Form.Label>
+                <Form.Control
+                    className={errors.avatar ? 'inputError' : ''}
+                    {...register('avatar')}
+                    onFocus={() => clearErrors('avatar')}
+                    type='file'
+                    name='avatar'
+                    accept='image/*'
+                />
+                <div className='errormessage'>{errors.avatar?.message}</div>
+            </Form.Group>
+
+            <Button type='submit'>Save</Button>
             
         </Form>
     )
