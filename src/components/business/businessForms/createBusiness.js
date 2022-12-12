@@ -12,7 +12,7 @@ import useNotification from '../../../hooks/useNotification';
 const CreateBusiness = () => {
     const { auth, setAuth } = useAuth()
     const [ imageFile, setImageFile ] = useState('')
-    const { mutateAsync: addBusinessMutation, error: addError } = useAddBusinessMutation()
+    const { mutateAsync: addBusinessMutation } = useAddBusinessMutation()
     const { dispatch } = useNotification() 
     
     const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
@@ -63,7 +63,7 @@ const CreateBusiness = () => {
                     role_type: new_business.data.role_type
                 }
         
-                setAuth({ user: auth.user, roles: { ...auth.roles, admin_role }})
+                setAuth({ user: auth.user, roles: [...auth.roles, admin_role] })
         
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -80,11 +80,11 @@ const CreateBusiness = () => {
             }
 
         } catch (error) {
-
-            if(addError.response.status === 400) {
-                setError(`${addError.response.data.error.type}`, {
+            console.log(error)
+            if(error.response.status === 400) {
+                setError(`${error.response.data.error.type}`, {
                     type: 'server',
-                    message: addError.response.data.error.message
+                    message: error.response.data.error.message
                 })
 
             }
@@ -99,7 +99,7 @@ const CreateBusiness = () => {
                 })
 
                 navigate('/login')
-                
+
             }
 
         }

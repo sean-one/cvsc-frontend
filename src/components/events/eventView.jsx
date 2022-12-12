@@ -13,6 +13,7 @@ import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
 import EventsRelated from './eventsRelated';
 
+
 const EventView = () => {
     const { auth } = useAuth()
     let { event_id } = useParams()

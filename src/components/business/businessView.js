@@ -3,48 +3,58 @@ import { useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
+import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 
 import LoadingSpinner from '../loadingSpinner';
+import { EditBusinessButton } from '../menu/buttons/edit_business.button';
 import BusinessLocation from './location/businessLocation';
 import ContactLink from '../contactLink';
 import EventsRelated from '../events/eventsRelated';
 
 
 const BusinessView = () => {
+    const { auth } = useAuth()
     let { business_id } = useParams()
+    let business_role = {}
 
-    const { data: businessFetch, isLoading: businessLoading } = useBusinessQuery(business_id)
+    const { data: business, isLoading } = useBusinessQuery(business_id)
 
-    if (businessLoading) {
+    if (isLoading) {
         return <LoadingSpinner />
     }
 
-    const current_business = businessFetch.data
+    if(auth?.roles) {
+        business_role = auth.roles.find(role => role.business_id === business_id)
+    }
 
 
     return (
         <div>
             <div>
-                <h1 className='mb-0'>{current_business.business_name}</h1>
-                { current_business.business_type !== 'brand' && <BusinessLocation business={current_business} /> }
+                {
+                    (business_role?.role_type > 456 && business_role?.active_role === true) &&
+                        <EditBusinessButton business={business.data} />
+                }
+                <h1 className='mb-0'>{business.data.business_name}</h1>
+                { business.data.business_type !== 'brand' && <BusinessLocation business={business.data} /> }
                 <div className='d-flex flex-column align-items-center'>
                     <div className=''>
-                        <Image src={image_link(current_business.business_avatar)} alt={current_business.business_name} thumbnail/>
+                        <Image src={image_link(business.data.business_avatar)} alt={business.data.business_name} thumbnail/>
                     </div>
                     <div className='d-flex justify-content-evenly py-2 my-2 w-100 bg-light rounded'>
                         <ContactLink contact_type='email' />
 
                         {/* dynamically add optional contact information */}
-                        { current_business.business_phone && <ContactLink contact_type='phone' /> }
-                        { current_business.business_instagram && <ContactLink contact_type='instagram' /> }
-                        {current_business.business_facebook && <ContactLink contact_type='facebook' /> }
-                        {current_business.business_website && <ContactLink contact_type='website'/> }
-                        {current_business.business_twitter && <ContactLink contact_type='twitter' /> }
+                        {business.data.business_phone && <ContactLink contact_type='phone' /> }
+                        {business.data.business_instagram && <ContactLink contact_type='instagram' /> }
+                        {business.data.business_facebook && <ContactLink contact_type='facebook' /> }
+                        {business.data.business_website && <ContactLink contact_type='website'/> }
+                        {business.data.business_twitter && <ContactLink contact_type='twitter' /> }
                     </div>
                 </div>
                 <div className='fs-6 lh-sm border-top border-dark pt-2'>
-                    {current_business.business_description}
+                    {business.data.business_description}
                 </div>
             </div>
             <EventsRelated business_ids={[business_id]} />
