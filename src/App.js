@@ -12,6 +12,7 @@ import Login from './components/login.jsx';
 import AuthRoute from './components/auth/auth.jsx';
 import PersistLogin from './components/persistLogin';
 import Profile from './components/profile/profile.jsx';
+import EditProfile from './components/profile/accountTab/editProfile';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
 import BusinessList from './components/profile/managerTab/businessList';
@@ -56,6 +57,7 @@ const App = () => {
                       {/* <Route path='/profile/roles/:user_id' element={<RolesTab />} /> */}
                       <Route path='/profile/events' element={<UserEventsTab />} />
                       <Route path='/profile/management' element={<BusinessList />} />
+                      <Route path='/profile/edit' element={<EditProfile />} />
                   </Route>
                   <Route path='/event/new' element={<CreateEvent />} />
                   <Route path='/event/edit/:event_id' element={<EditEvent />} />

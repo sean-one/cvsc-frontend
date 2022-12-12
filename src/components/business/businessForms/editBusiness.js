@@ -14,7 +14,7 @@ const EditBusiness = () => {
         <LoadingSpinner />
     }
 
-    console.log(business)
+    
     return (
         <BusinessForm business={business.data} />
     )

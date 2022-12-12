@@ -3,6 +3,8 @@ import { Col, Image, Row } from 'react-bootstrap';
 import default_profile from '../../../assets/default_user_icon.png'
 import { role_types } from '../../../helpers/dataCleanUp';
 import useAuth from '../../../hooks/useAuth';
+import { EditProfileButton } from '../../menu/buttons/edit_profile.button';
+
 
 const AccountDetails = () => {
     const { auth } = useAuth()
@@ -18,6 +20,7 @@ const AccountDetails = () => {
                 <Row className='m-0 ps-3'>{auth?.user.email}</Row>
                 <Row className='m-0 ps-3'>{`Account Type: ${role_types[auth.user.account_type]}`}</Row>
             </Col>
+            <EditProfileButton />
         </div>
     )
 }
