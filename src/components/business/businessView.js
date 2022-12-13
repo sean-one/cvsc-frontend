@@ -32,11 +32,15 @@ const BusinessView = () => {
     return (
         <div>
             <div>
-                {
-                    (business_role?.role_type > 456 && business_role?.active_role === true) &&
-                        <EditBusinessButton business={business.data} />
-                }
-                <h1 className='mb-0'>{business.data.business_name}</h1>
+                <div className='d-flex align-items-center'>
+                    {
+                        (business_role?.role_type > 456 && business_role?.active_role === true) &&
+                            <div className='px-2'>
+                                <EditBusinessButton business={business.data} />
+                            </div>
+                    }
+                    <h1 className='mb-0'>{business.data.business_name}</h1>
+                </div>
                 { business.data.business_type !== 'brand' && <BusinessLocation business={business.data} /> }
                 <div className='d-flex flex-column align-items-center'>
                     <div className=''>
