@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
+import { Button, Col, FloatingLabel, Form, Image, Row } from 'react-bootstrap';
 
+import { image_link } from '../../helpers/dataCleanUp';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 
@@ -84,6 +85,14 @@ const BusinessForm = ({ business }) => {
                     </FloatingLabel>
                     <div className='errormessage'>{errors.business_email?.message}</div>
                 </Form.Group>
+
+                <div className='d-flex justify-content-center mb-2'>
+                    <Image
+                        src={image_link(business.business_avatar)}
+                        alt={business.business_name}
+                        thumbnail
+                    />
+                </div>
 
                 {/* <Form.Group controlId='business_avatar'> */}
                 <Form.Group controlId='business_avatar' className='mb-2'>

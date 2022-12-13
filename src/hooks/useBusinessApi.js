@@ -2,12 +2,14 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 
+//! useBusinessQuery - get single business by id
+const getBusiness = async (id) => { return await AxiosInstance.get(`/business/${id}`) }
+export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
+
+
 //! useBusinessQuery - get all businesses
-export const useBusinessesQuery = () => useQuery(
-    ["businesses"],
-    async () => { return await AxiosInstance.get('/business') },
-    { refetchOnMount: false }
-)
+const getBusinesses = async () => { return await AxiosInstance.get('/business') }
+export const useBusinessesQuery = () => useQuery(["businesses"], getBusinesses,{ refetchOnMount: false })
 
 
 //! useAddBusinessMutation - create new business
@@ -27,7 +29,6 @@ export const useAddBusinessMutation = () => {
 }
 
 
-const getBusiness = async (id) => { return await AxiosInstance.get(`/business/${id}`) }
 const getBusinessLocation = async (business_id) => { return await AxiosInstance.get(`/locations/business/${business_id}`) }
 const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/business/${business_id}`, business_updates) }
 const updateLocation = async ({ location_id, ...location_updates }) => { return await AxiosInstance.put(`/locations/${location_id}`, location_updates) }
@@ -42,7 +43,6 @@ const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/bu
 const toggleBusinessRequestStatus = async (id) => { return await AxiosInstance.put(`/business/toggle-request/${id}`) }
 
 
-export const useBusinessQuery = (id) => useQuery(["business", id], () => getBusiness(id))
 export const useBusinessLocationQuery = (business_id) => useQuery(["business_location", business_id], () => getBusinessLocation(business_id))
 
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
