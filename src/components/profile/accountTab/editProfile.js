@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Form } from 'react-bootstrap';
 
 const EditProfile = () => {
-    const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
+    const { register, handleSubmit, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur'
     })
 

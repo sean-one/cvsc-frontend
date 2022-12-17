@@ -13,21 +13,53 @@ const BusinessForm = ({ business }) => {
 
     let navigate = useNavigate()
 
-    const { register, handleSubmit, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
         defaultValues: {
             business_email: business.business_email,
             business_description: business.business_description,
+            business_avatar: '',
             business_instagram: business?.business_instagram,
             business_website: business?.business_website,
             business_facebook: business?.business_facebook,
             business_phone: business?.business_phone,
             business_twitter: business?.business_twitter,
+            street_address: business?.street_address,
+            city: business?.location_city,
+            state: business?.location_state,
+            zip: business?.zip_code,
         }
     })
+
+    const updateImage = watch('updateImage', false)
+    const updateLocation = watch('updateLocation', false)
 
     const sendBusinessUpdate = async (data) => {
         try {
             const formData = new FormData()
+
+            // if updatelocation is true append new address
+            if(data.updateLocation) {
+                formData.append('location_id', business.location_id)
+                formData.append('street_address', data.street_address)
+                formData.append('city', data.city)
+                formData.append('state', data.state)
+                formData.append('zip', data.zip)    
+            }
+
+            // remove location fields
+            delete data['street_address']
+            delete data['city']
+            delete data['state']
+            delete data['zip']
+            delete data['updateLocation']
+
+            // if updateimage is true set updated file
+            if(data.updateImage) {
+                formData.set('business_avatar', data['business_avatar'][0])
+            }
+
+            delete data['business_avatar']
+            delete data['updateImage']
 
             // remove entries that are unchanged
             for (const [key] of Object.entries(data)) {
@@ -40,12 +72,8 @@ const BusinessForm = ({ business }) => {
             // if(data[key] === '') {
             //     data[key] = null
             // }
-            Object.key(data).forEach(key => {
-                if (key === 'business_avatar') {
-                    formData.set('business_avatar', data['business_avatar'][0])
-                } else {
-                    formData.append(key, data[key])
-                }
+            Object.keys(data).forEach(key => {
+                formData.append(key, data[key])
             })
 
             const updated_business_response = await updateBusiness({ business_updates: formData, business_id: business.id })
@@ -59,6 +87,8 @@ const BusinessForm = ({ business }) => {
     
                     }
                 })
+
+                navigate(`/business/${updated_business_response.data.id}`)
             }
 
         } catch (error) {
@@ -95,17 +125,23 @@ const BusinessForm = ({ business }) => {
                 </div>
 
                 {/* <Form.Group controlId='business_avatar'> */}
-                <Form.Group controlId='business_avatar' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_avatar ? 'inputError' : ''}
-                        {...register('business_avatar')}
-                        onFocus={() => clearErrors('business_avatar')}
-                        type='file'
-                        name='business_avatar'
-                        accept='image/*'
-                    />
-                    <div className='errormessage'>{errors.business_avatar?.message}</div>
+                <Form.Group controlId='updateImage'>
+                    <Form.Check {...register('updateImage')} type='checkbox' label='Update Image' className='mb-2' />
                 </Form.Group>
+                {
+                    (updateImage) &&
+                        <Form.Group controlId='business_avatar' className='mb-2'>
+                            <Form.Control
+                                className={errors.business_avatar ? 'inputError' : ''}
+                                {...register('business_avatar')}
+                                onFocus={() => clearErrors('business_avatar')}
+                                type='file'
+                                name='business_avatar'
+                                accept='image/*'
+                            />
+                            <div className='errormessage'>{errors.business_avatar?.message}</div>
+                        </Form.Group>
+                }
 
                 {/* business description input */}
                 <Form.Group controlId='business_description'>
@@ -121,6 +157,77 @@ const BusinessForm = ({ business }) => {
                     </FloatingLabel>
                     <div className='errormessage'>{errors.business_description?.message}</div>
                 </Form.Group>
+
+                {
+                    (business?.business_type !== 'brand') &&
+                        <>
+                            <Form.Group controlId='updateLocation'>
+                                <Form.Check {...register('updateLocation')} type='checkbox' label='Update Location' className='mb-2' />
+                            </Form.Group>
+                            {
+                                (updateLocation) &&
+                                    <div>
+                                        {/* street address input for location */}
+                                        <Form.Group controlId='street_address'>
+                                            <FloatingLabel controlId='street_address' label='Street Address' className='mb-2'>
+                                                <Form.Control
+                                                    className={errors.street_address ? 'inputError' : ''}
+                                                    {...register('street_address')}
+                                                    onFocus={() => clearErrors('street_address')}
+                                                    type='text'
+                                                    name='street_address'
+                                                />
+                                            </FloatingLabel>
+                                            <div className='errormessage'>{errors.street_address?.message}</div>
+                                        </Form.Group>
+
+                                        {/* city input for location */}
+                                        <Form.Group controlId='city'>
+                                            <FloatingLabel controlId='city' label='City' className='mb-2'>
+                                                <Form.Control
+                                                    className={errors.city ? 'inputError' : ''}
+                                                    {...register('city')}
+                                                    onFocus={() => clearErrors('city')}
+                                                    type='text'
+                                                    name='city'
+                                                />
+                                            </FloatingLabel>
+                                            <div className='errormessage'>{errors.city?.message}</div>
+                                        </Form.Group>
+
+                                        <div className='d-flex justify-content-between'>
+                                            {/* state input for location */}
+                                            <Form.Group controlId='state'>
+                                                <FloatingLabel controlId='state' label='State' className='me-2 mb-2'>
+                                                    <Form.Control
+                                                        className={errors.state ? 'inputError' : ''}
+                                                        {...register('state')}
+                                                        onFocus={() => clearErrors('state')}
+                                                        type='text'
+                                                        name='state'
+                                                    />
+                                                </FloatingLabel>
+                                                <div className='errormessage'>{errors.state?.message}</div>
+                                            </Form.Group>
+
+                                            {/* zip code input for location */}
+                                            <Form.Group controlId='zip'>
+                                                <FloatingLabel controlId='zip' label='Zip Code' className='mb-2'>
+                                                    <Form.Control
+                                                        className={errors.zip ? 'inputError' : ''}
+                                                        {...register('zip')}
+                                                        onFocus={() => clearErrors('zip')}
+                                                        type='text'
+                                                        name='zip'
+                                                    />
+                                                </FloatingLabel>
+                                                <div className='errormessage'>{errors.zip?.message}</div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+                            }
+                        </>
+                }
 
                 {/* instagram input */}
                 <Form.Group controlId='business_instagram'>

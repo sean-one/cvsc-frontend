@@ -28,9 +28,19 @@ export const useAddBusinessMutation = () => {
     })
 }
 
+//! useUpdateBusinessMutation - updated existing business
+const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/business/${business_id}`, business_updates) }
+export const useUpdateBusinessMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(updateBusiness, {
+        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business', data.id]) },
+        onError: (error, updated_business, context) => { console.log(error) },
+        onSettled: ({ data }) => { queryClient.refetchQueries(['business', data.id]) }
+    })
+}
+
 
 const getBusinessLocation = async (business_id) => { return await AxiosInstance.get(`/locations/business/${business_id}`) }
-const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/business/${business_id}`, business_updates) }
 const updateLocation = async ({ location_id, ...location_updates }) => { return await AxiosInstance.put(`/locations/${location_id}`, location_updates) }
 const upgradeCreator = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade_creator/${role_id}`) }
 const downgradeManager = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade_manager/${role_id}`) }
@@ -49,14 +59,6 @@ export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], ()
 export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())
 
 
-export const useUpdateBusinessMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(updateBusiness, {
-        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business', data.id]) },
-        onError: (error, updated_business, context) => { console.log(error) },
-        onSettled: ({ data }) => { queryClient.refetchQueries(['business', data.id]) }
-    })
-}
 
 export const useLocationMutation = () => {
     const queryClient = useQueryClient()

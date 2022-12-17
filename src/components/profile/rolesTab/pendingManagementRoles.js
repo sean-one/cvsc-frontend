@@ -7,7 +7,7 @@ import RolesList from '../../roles/rolesList';
 
 const PendingManagementRoles = () => {
     
-    const { data: pending_roles, isLoading, isSuccess } = usePendingRolesQuery()
+    const { data: pending_roles, isLoading, isSuccess, isError } = usePendingRolesQuery()
     let sortedByBusiness = {}
 
     if(isLoading) {
@@ -18,6 +18,9 @@ const PendingManagementRoles = () => {
         sortedByBusiness = sortPendingByBusiness(pending_roles.data)
     }
 
+    console.log('error')
+    console.log(isError)
+    console.log(pending_roles)
     return (
         <div>
             {
