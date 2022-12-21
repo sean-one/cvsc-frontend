@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, FloatingLabel, Form, FormGroup, Image, Row } from 'react-bootstrap';
 
 import { image_link } from '../../helpers/dataCleanUp';
+import { addBusinessSchema } from '../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 
@@ -17,9 +19,11 @@ const BusinessForm = ({ business }) => {
     const pagename = pathname.split('/').at(-1)
 
     const { register, handleSubmit, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
+        mode: 'onBlur',
+        resolver: yupResolver(addBusinessSchema),
         defaultValues: {
-            business_email: business.business_email,
-            business_description: business.business_description,
+            business_email: business?.business_email,
+            business_description: business?.business_description,
             business_avatar: '',
             business_type: business?.business_type,
             business_instagram: business?.business_instagram,
@@ -37,7 +41,7 @@ const BusinessForm = ({ business }) => {
     const updateImage = watch('updateImage', false)
     const business_location = watch('business_location', false)
 
-    const businessUpdate = async (data) => {
+    const update_business = async (data) => {
         try {
             const formData = new FormData()
 
@@ -98,6 +102,11 @@ const BusinessForm = ({ business }) => {
 
     }
 
+    const create_business = async (data) => {
+        console.log('click')
+        console.log(data)
+    }
+
 
 
     return (
@@ -106,7 +115,7 @@ const BusinessForm = ({ business }) => {
                 (pagename !== 'create') &&
                     <h1>{business?.business_name}</h1>
             }
-            <Form onSubmit={handleSubmit(businessUpdate)}>
+            <Form onSubmit={(pagename === 'create') ? handleSubmit(create_business) : handleSubmit(update_business)}>
                 
                 {
                     (pagename === 'create') &&
@@ -343,7 +352,11 @@ const BusinessForm = ({ business }) => {
 
                 <Row className='d-flex justify-content-around pt-3'>
                     <Col xs={2}>
-                        <Button type='submit' disabled={!isDirty}>Update</Button>
+                        {
+                            (pagename === 'create')
+                                ? <Button type='submit' disabled={!isDirty}>Create</Button>
+                                : <Button type='submit' disabled={!isDirty}>Update</Button>
+                        }
                     </Col>
                     <Col xs={2}>
                         <Button onClick={() => navigate(`/business/${business.id}`)} variant='secondary'>Close</Button>
