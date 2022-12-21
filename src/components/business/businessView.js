@@ -8,7 +8,6 @@ import { image_link } from '../../helpers/dataCleanUp';
 
 import LoadingSpinner from '../loadingSpinner';
 import { EditBusinessButton } from '../menu/buttons/edit_business.button';
-import BusinessLocation from './location/businessLocation';
 import ContactLink from '../contactLink';
 import EventsRelated from '../events/eventsRelated';
 
@@ -29,6 +28,7 @@ const BusinessView = () => {
     }
 
 
+    console.log(business.data)
     return (
         <div>
             <div>
@@ -41,7 +41,12 @@ const BusinessView = () => {
                     }
                     <h1 className='mb-0'>{business.data.business_name}</h1>
                 </div>
-                { business.data.business_type !== 'brand' && <BusinessLocation business={business.data} /> }
+                {
+                    (business.data.location_id !== null) &&
+                        <div>
+                            {`${business.data?.street_address}, ${business.data?.location_city}`}
+                        </div>
+                }
                 <div className='d-flex flex-column align-items-center'>
                     <div className=''>
                         <Image src={image_link(business.data.business_avatar)} alt={business.data.business_name} thumbnail/>

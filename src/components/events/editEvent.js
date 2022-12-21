@@ -20,7 +20,7 @@ const EditEvent = () => {
         selected_event = event.data
     }
     
-    console.log(selected_event)
+    
     return (
         <EventForm selected_event={selected_event} />   
     )

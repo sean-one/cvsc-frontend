@@ -33,7 +33,7 @@ export const useBusinessRemoveMutation = () => {
 const getEvent = async (id) => {
     return await AxiosInstance.get(`/events/${id}`)
 }
-export const useEventQuery = (id) => useQuery(["event", id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
+export const useEventQuery = (id) => useQuery(['events', id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 
 
 

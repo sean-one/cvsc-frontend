@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import LoadingSpinner from '../../loadingSpinner';
-import { useBusinessQuery } from '../../../hooks/useBusinessApi';
-import BusinessForm from '../../forms/business.form';
+import LoadingSpinner from '../loadingSpinner';
+import { useBusinessQuery } from '../../hooks/useBusinessApi';
+import BusinessForm from '../forms/business.form';
 
 
 const EditBusiness = () => {

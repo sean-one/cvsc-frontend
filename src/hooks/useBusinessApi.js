@@ -33,15 +33,17 @@ const updateBusiness = async ({ business_id, business_updates }) => { return awa
 export const useUpdateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateBusiness, {
-        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business', data.id]) },
+        onSuccess: ({ data }) => {
+            queryClient.invalidateQueries(['business', data.id, 'events'])
+        },
         onError: (error, updated_business, context) => { console.log(error) },
-        onSettled: ({ data }) => { queryClient.refetchQueries(['business', data.id]) }
+        onSettled: ({ data }) => {
+            queryClient.refetchQueries(['business', data.id, 'events'])
+        }
     })
 }
 
 
-const getBusinessLocation = async (business_id) => { return await AxiosInstance.get(`/locations/business/${business_id}`) }
-const updateLocation = async ({ location_id, ...location_updates }) => { return await AxiosInstance.put(`/locations/${location_id}`, location_updates) }
 const upgradeCreator = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade_creator/${role_id}`) }
 const downgradeManager = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade_manager/${role_id}`) }
 const approveRequest = async (role_id) => { return await AxiosInstance.post(`/roles/approve_request/${role_id}`) }
@@ -53,21 +55,10 @@ const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/bu
 const toggleBusinessRequestStatus = async (id) => { return await AxiosInstance.put(`/business/toggle-request/${id}`) }
 
 
-export const useBusinessLocationQuery = (business_id) => useQuery(["business_location", business_id], () => getBusinessLocation(business_id))
-
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
 export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())
 
 
-
-export const useLocationMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(updateLocation, {
-        onSuccess: ({ data }) => { queryClient.invalidateQueries(['business_location', data.venue_id])},
-        onError: (error, updated_location, context) => { console.log(error) },
-        onSettled: ({ data }) => { queryClient.refetchQueries(['business_location', data.venue_id]) }
-    })
-}
 
 export const useActiveBusinessMutation = () => {
     const queryClient = useQueryClient()
