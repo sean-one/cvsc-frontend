@@ -5,11 +5,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, FloatingLabel, Form, FormGroup, Image, Row } from 'react-bootstrap';
 
 import { image_link } from '../../helpers/dataCleanUp';
-import { addBusinessSchema } from '../../helpers/validationSchemas';
+import { businessFormSchema } from '../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 
-const BusinessForm = ({ business }) => {
+const BusinessForm = ({ business, action }) => {
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
 
@@ -20,7 +20,7 @@ const BusinessForm = ({ business }) => {
 
     const { register, handleSubmit, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(addBusinessSchema),
+        resolver: yupResolver(businessFormSchema),
         defaultValues: {
             business_email: business?.business_email,
             business_description: business?.business_description,
@@ -38,11 +38,12 @@ const BusinessForm = ({ business }) => {
         }
     })
 
-    const updateImage = watch('updateImage', false)
+    const image_attached = watch('image_attached', false)
     const business_location = watch('business_location', false)
 
     const update_business = async (data) => {
         try {
+            console.log('click!')
             const formData = new FormData()
 
             // if updatelocation is true append new address
@@ -62,12 +63,12 @@ const BusinessForm = ({ business }) => {
             delete data['business_location']
 
             // if updateimage is true set updated file
-            if(data.updateImage) {
+            if(data.image_attached) {
                 formData.set('business_avatar', data['business_avatar'][0])
             }
 
             delete data['business_avatar']
-            delete data['updateImage']
+            delete data['image_attached']
 
             // remove entries that are unchanged
             for (const [key] of Object.entries(data)) {
@@ -83,6 +84,7 @@ const BusinessForm = ({ business }) => {
 
             const update_response = await updateBusiness({ business_updates: formData, business_id: business.id })
 
+            console.log(update_response)
             if (update_response.status === 201) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -107,7 +109,13 @@ const BusinessForm = ({ business }) => {
         console.log(data)
     }
 
-
+    const form_submit = (data) => {
+        if(pagename === 'create') {
+            return create_business(data)
+        } else {
+            return update_business(data)
+        }
+    }
 
     return (
         <>
@@ -115,7 +123,7 @@ const BusinessForm = ({ business }) => {
                 (pagename !== 'create') &&
                     <h1>{business?.business_name}</h1>
             }
-            <Form onSubmit={(pagename === 'create') ? handleSubmit(create_business) : handleSubmit(update_business)}>
+            <Form onSubmit={() => handleSubmit(form_submit)}>
                 
                 {
                     (pagename === 'create') &&
@@ -157,15 +165,11 @@ const BusinessForm = ({ business }) => {
                         </div>
                 }
 
+                <Form.Group controlId='image_attached'>
+                    <Form.Check {...register('image_attached')} type='checkbox' label={pagename === 'create' ? 'Add Image' : 'Update Image'} className='mb-2' />
+                </Form.Group>
                 {
-                    (pagename !== 'create') &&
-                        <Form.Group controlId='updateImage'>
-                            <Form.Check {...register('updateImage')} type='checkbox' label='Update Image' className='mb-2' />
-                        </Form.Group>
-                }
-
-                {
-                    (updateImage) &&
+                    (image_attached) &&
                         <Form.Group controlId='business_avatar' className='mb-2'>
                             <Form.Control
                                 className={errors.business_avatar ? 'inputError' : ''}

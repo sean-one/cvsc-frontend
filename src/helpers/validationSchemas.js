@@ -134,6 +134,88 @@ export const updateEventSchema = yup.object().shape({
         .required(),
 }, [ ['venue_id', 'venue_id'], ['brand_id', 'brand_id'] ])
 
+export const businessFormSchema = yup.object().shape({
+    business_name: yup
+        .string()
+        .required('business name is required'),
+
+    business_email: yup
+        .string()
+        .email()
+        .required('valid business email is required'),
+
+    business_description: yup
+        .string()
+        .required('business description is required'),
+    
+    // need something to check for the file
+    business_avatar: yup
+        .mixed()
+        .required('business image is required'),
+
+    business_type: yup
+        .string()
+        .oneOf(['brand', 'venue', 'both'], 'invalid brand type')
+        .required('business type is required'),
+
+    business_instagram: yup
+        .string()
+        // .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, { message: 'invalid instagram account', excludeEmptyString: true })
+        .notRequired(),
+
+    business_phone: yup
+        .string()
+        // .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
+        .notRequired(),
+
+    business_website: yup
+        .string()
+        .url()
+        .notRequired(),
+    
+    business_twitter: yup
+        .string()
+        .notRequired(),
+
+    business_facebook: yup
+        .string()
+        // .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
+        .notRequired(),
+
+    city: yup
+        .string()
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+    
+    state: yup
+        .string()
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+        
+    street_address: yup
+        .string()
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+        
+    zip: yup
+        .string()
+        .matches(/^\d{5}$/, { message: 'invalid zip code', excludeEmptyString: true })
+        .when('business_type', {
+            is: 'brand',
+            then: yup.string().strip(),
+            otherwise: yup.string().notRequired()
+        }),
+})
+
 export const addBusinessSchema = yup.object().shape({
     business_description: yup
         .string()
