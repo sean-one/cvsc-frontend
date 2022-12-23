@@ -55,30 +55,30 @@ const BusinessCreateForm = () => {
 
             const new_business = await createBusiness(formData)
 
-            // if (new_business.status === 201) {
+            if (new_business.status === 201) {
 
-            //     const admin_role = {
-            //         business_id: new_business.data.id,
-            //         business_name: new_business.data.business_name,
-            //         active_role: new_business.data.active_role,
-            //         role_type: new_business.data.role_type
-            //     }
+                const admin_role = {
+                    business_id: new_business.data.id,
+                    business_name: new_business.data.business_name,
+                    active_role: new_business.data.active_role,
+                    role_type: new_business.data.role_type
+                }
 
-            //     setAuth({ user: auth.user, roles: [...auth.roles, admin_role] })
+                setAuth({ user: auth.user, roles: [...auth.roles, admin_role] })
 
-            //     dispatch({
-            //         type: "ADD_NOTIFICATION",
-            //         payload: {
-            //             notification_type: 'SUCCESS',
-            //             message: `${new_business.data.business_name} business request submitted`
-            //         }
-            //     })
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${new_business.data.business_name} business request submitted`
+                    }
+                })
 
-            //     reset()
+                reset()
 
-            //     navigate(`/business/${new_business.data.id}`)
+                navigate(`/business/${new_business.data.id}`)
 
-            // }
+            }
 
         } catch (error) {
             console.log(error)
