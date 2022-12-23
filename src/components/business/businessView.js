@@ -28,7 +28,6 @@ const BusinessView = () => {
     }
 
 
-    console.log(business.data)
     return (
         <div>
             <div>

@@ -134,7 +134,7 @@ export const updateEventSchema = yup.object().shape({
         .required(),
 }, [ ['venue_id', 'venue_id'], ['brand_id', 'brand_id'] ])
 
-export const businessFormSchema = yup.object().shape({
+export const createBusinessSchema = yup.object().shape({
     business_name: yup
         .string()
         .required('business name is required'),
@@ -158,52 +158,47 @@ export const businessFormSchema = yup.object().shape({
         .oneOf(['brand', 'venue', 'both'], 'invalid brand type')
         .required('business type is required'),
 
-    business_instagram: yup
-        .string()
-        // .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, { message: 'invalid instagram account', excludeEmptyString: true })
-        .notRequired(),
+    // .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, { message: 'invalid instagram account', excludeEmptyString: true })
+    business_instagram: yup.string().notRequired().nullable(),
 
-    business_phone: yup
-        .string()
-        // .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
-        .notRequired(),
+    // .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
+    business_phone: yup.string().notRequired().nullable(),
 
-    business_website: yup
-        .string()
-        .url()
-        .notRequired(),
+    business_website: yup.string().url().notRequired().nullable(),
     
-    business_twitter: yup
-        .string()
-        .notRequired(),
+    business_twitter: yup.string().notRequired().nullable(),
 
-    business_facebook: yup
-        .string()
-        // .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
-        .notRequired(),
+    // .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
+    business_facebook: yup.string().notRequired().nullable(),
+
+    business_location: yup.boolean().when('business_type', {
+        is: 'brand',
+        then: yup.boolean().oneOf([true, false], 'required'),
+        otherwise: yup.boolean().oneOf([true], 'required')
+    }),
 
     city: yup
         .string()
         .when('business_type', {
             is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
+            then: yup.string().notRequired(),
+            otherwise: yup.string().required('required for dispensary')
         }),
     
     state: yup
         .string()
         .when('business_type', {
             is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
+            then: yup.string().notRequired(),
+            otherwise: yup.string().required('required for dispensary')
         }),
         
     street_address: yup
         .string()
         .when('business_type', {
             is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
+            then: yup.string().notRequired(),
+            otherwise: yup.string().required('required for dispensary')
         }),
         
     zip: yup
@@ -211,84 +206,7 @@ export const businessFormSchema = yup.object().shape({
         .matches(/^\d{5}$/, { message: 'invalid zip code', excludeEmptyString: true })
         .when('business_type', {
             is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
+            then: yup.string().notRequired(),
+            otherwise: yup.string().required('required for dispensary')
         }),
 })
-
-export const addBusinessSchema = yup.object().shape({
-    business_description: yup
-        .string()
-        .required('business description is required'),
-
-    business_email: yup
-        .string()
-        .email()
-        .required('valid business email is required'),
-
-    business_name: yup
-        .string()
-        .required('business name is required'),
-
-    business_type: yup
-        .string()
-        .oneOf([ 'brand', 'venue', 'both' ], 'invalid brand type')
-        .required('business type is required'),
-
-    business_instagram: yup
-        .string()
-        // .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, { message: 'invalid instagram account', excludeEmptyString: true })
-        .notRequired(),
-
-    business_phone: yup
-        .string()
-        // .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, { message: 'invalid phone number', excludeEmptyString: true })
-        .notRequired(),
-
-    business_website: yup
-        .string()
-        .url()
-        .notRequired(),
-    
-    business_twitter: yup
-        .string()
-        .notRequired(),
-
-    business_facebook: yup
-        .string()
-        // .matches(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/, { message: 'invalid facebook link'})
-        .notRequired(),
-
-    city: yup
-        .string()
-        .when('business_type', {
-            is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
-        }),
-    
-    state: yup
-        .string()
-        .when('business_type', {
-            is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
-        }),
-        
-    street_address: yup
-        .string()
-        .when('business_type', {
-            is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
-        }),
-        
-    zip: yup
-        .string()
-        .matches(/^\d{5}$/, { message: 'invalid zip code', excludeEmptyString: true })
-        .when('business_type', {
-            is: 'brand',
-            then: yup.string().strip(),
-            otherwise: yup.string().notRequired()
-        }),
-    })

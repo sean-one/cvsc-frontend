@@ -3,21 +3,21 @@ import { useParams } from 'react-router-dom';
 
 import LoadingSpinner from '../loadingSpinner';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
-import BusinessForm from '../forms/business.form';
+import BusinessEditForm from './forms/business.edit.form';
 
-
-const EditBusiness = () => {
+const UpdateBusiness = () => {
     let { business_id } = useParams()
     const { data: business, isLoading } = useBusinessQuery(business_id)
 
+    
     if(isLoading) {
-        <LoadingSpinner />
+        return <LoadingSpinner />
     }
 
-    
-    return (
-        <BusinessForm business={business.data} />
+
+    return(
+        <BusinessEditForm business={business.data} />
     )
 }
 
-export default EditBusiness;
+export default UpdateBusiness;

@@ -12,9 +12,9 @@ const getBusinesses = async () => { return await AxiosInstance.get('/business') 
 export const useBusinessesQuery = () => useQuery(["businesses"], getBusinesses,{ refetchOnMount: false })
 
 
-//! useAddBusinessMutation - create new business
+//! useCreateBusinessMutation - create new business
 const createBusiness = async (business) => { return await AxiosInstance.post('/business/create', business) }
-export const useAddBusinessMutation = () => {
+export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(createBusiness, {
         onSuccess: () => {
