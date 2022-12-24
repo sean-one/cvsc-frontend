@@ -45,6 +45,7 @@ export const useUpdateBusinessMutation = () => {
     })
 }
 
+//! useBusinessRequestToggle - toggle business_request_open
 const toggleBusinessRequest = async (id) => { return await AxiosInstance.put(`/business/toggle-request/${id}`) }
 export const useBusinessRequestToggle = () => {
     const queryClient = useQueryClient()
@@ -60,7 +61,25 @@ export const useBusinessRequestToggle = () => {
     })
 }
 
-
+//! useActiveBusinessToggle - toggle active_business
+const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/business/toggle-active/${id}`) }
+export const useActiveBusinessToggle = () => {
+    const queryClient = useQueryClient()
+    return useMutation(toggleActiveBusiness, {
+        onSuccess: ({ data }) => {
+            queryClient.invalidateQueries(['businesses', 'business', data.id])
+            queryClient.refetchQueries('businesses')
+            // queryClient.invalidateQueries(['business_roles', data.id])
+            // queryClient.invalidateQueries('pending_roles')
+        },
+        onError: (error, updated_business, context) => { console.log(error) },
+        onSettled: ({ data }) => {
+            queryClient.refetchQueries(['businesses', 'business', data.id])
+            // queryClient.refetchQueries(['business_roles', data.id])
+            // queryClient.refetchQueries('pending_roles')
+        }
+    })
+}
 
 const upgradeCreator = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade_creator/${role_id}`) }
 const downgradeManager = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade_manager/${role_id}`) }
@@ -69,7 +88,6 @@ const removeUserRole = async (role_id) => { return await AxiosInstance.delete(`/
 const removeManagerRole = async (role_id) => { return await AxiosInstance.delete(`/roles/manager_remove/${role_id}`) }
 const getAllPendingRoles = async () => { return await AxiosInstance.get(`/roles/management/pending`) }
 const getAllBusinessRoles = async (id) => { return await AxiosInstance.get(`/roles/business/${id}`) }
-const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/business/toggle-active/${id}`) }
 
 
 export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
@@ -77,24 +95,7 @@ export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getA
 
 
 
-export const useActiveBusinessMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(toggleActiveBusiness, {
-        onSuccess: ({ data }) => {
-            queryClient.invalidateQueries(['businesses', data.id])
-            queryClient.invalidateQueries(['businesses'])
-            queryClient.invalidateQueries(['business_roles', data.id])
-            queryClient.invalidateQueries('pending_roles')
-        },
-        onError: (error, updated_business, context) => { console.log(error) },
-        onSettled: ({ data }) => {
-            queryClient.refetchQueries(['businesses', data.id])
-            queryClient.refetchQueries(['businesses'])
-            queryClient.refetchQueries(['business_roles', data.id])
-            queryClient.refetchQueries('pending_roles')
-        }
-    })
-}
+
 
 
 //-----------------------------------------
