@@ -1,26 +1,34 @@
 import React from 'react';
-import { Col, Image, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { Image } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+
 import default_profile from '../../../assets/default_user_icon.png'
 import { role_types } from '../../../helpers/dataCleanUp';
 import useAuth from '../../../hooks/useAuth';
-import { EditProfileButton } from '../../menu/buttons/edit_profile.button';
 
 
 const AccountDetails = () => {
     const { auth } = useAuth()
+    let navigate = useNavigate()
 
-    console.log(auth)
+    
     return (
-        <div className='d-flex flex-column align-items-center border mb-3'>
-            <Col xs={8} className='p-1 text-center'>
+        <div className='d-flex flex-column border mb-3'>
+            <div className='p-1 text-center'>
                 <Image thumbnail roundedCircle src={auth?.user.avatar || default_profile} alt={`user avatar`} />
-            </Col>
-            <Col xs={12} className='d-flex flex-column justify-content-center'>
-                <Row className='m-0 ps-3'>{auth?.user.username}</Row>
-                <Row className='m-0 ps-3'>{auth?.user.email}</Row>
-                <Row className='m-0 ps-3'>{`Account Type: ${role_types[auth.user.account_type]}`}</Row>
-            </Col>
-            <EditProfileButton />
+            </div>
+            <div className='d-flex justify-content-between'>
+                <div className='d-flex flex-column w-100 ps-2'>
+                    <div className='m-0'>{auth?.user.username}</div>
+                    <div className='m-0'>{auth?.user.email}</div>
+                    <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
+                </div>
+                <div className='text-end align-self-end w-25 p-2'>
+                    <FontAwesomeIcon onClick={() => navigate('/profile/edit')} icon={faPen} />
+                </div>
+            </div>
         </div>
     )
 }

@@ -9,6 +9,7 @@ import { image_link } from '../../helpers/dataCleanUp';
 import LoadingSpinner from '../loadingSpinner';
 import { EditBusinessButton } from '../menu/buttons/edit_business.button';
 import ContactLink from '../contactLink';
+import BusinessAdminMenu from './admin/business.admin.menu';
 import EventsRelated from '../events/eventsRelated';
 
 
@@ -27,18 +28,18 @@ const BusinessView = () => {
         business_role = auth.roles.find(role => role.business_id === business_id)
     }
 
-
+    console.log(business.data)
     return (
         <div>
             <div>
                 <div className='d-flex align-items-center'>
                     {
-                        (business_role?.role_type > 456 && business_role?.active_role === true) &&
+                        (business_role?.role_type >= 456 && business_role?.active_role === true) &&
                             <div className='px-2'>
                                 <EditBusinessButton business={business.data} />
                             </div>
                     }
-                    <h1 className='mb-0'>{business.data.business_name}</h1>
+                    <h1 className='mb-2'>{business.data.business_name.toUpperCase()}</h1>
                 </div>
                 {
                     (business.data.location_id !== null) &&
@@ -61,6 +62,10 @@ const BusinessView = () => {
                         {business.data.business_twitter && <ContactLink contact_type='twitter' /> }
                     </div>
                 </div>
+                {
+                    (business_role?.role_type > 456 && business_role?.active_role === true) &&
+                        <BusinessAdminMenu business={business.data} />
+                }
                 <div className='fs-6 lh-sm border-top border-dark pt-2'>
                     {business.data.business_description}
                 </div>

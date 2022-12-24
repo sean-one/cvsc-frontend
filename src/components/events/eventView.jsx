@@ -35,9 +35,9 @@ const EventView = () => {
                                 <EditEventButton event={event.data}/>
                             </div>
                     }
-                    <h2 className='w-100'>{event.data.eventname.toUpperCase()}</h2>
+                    <h2 className='w-100 mb-0'>{event.data.eventname.toUpperCase()}</h2>
                 </div>
-                <div>{event.data.formatted}</div>
+                <div>{`${event.data.street_address}, ${event.data.location_city}`}</div>
                 <div className='d-flex justify-content-between fw-bold fst-italic'>
                     <div>
                         {format(new Date(event.data.eventdate), 'E, MMMM d')}

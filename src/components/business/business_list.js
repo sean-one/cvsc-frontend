@@ -22,7 +22,7 @@ const BusinessList = ({ business_type }) => {
     }
 
     if(BusinessListSuccess) {
-        business_display_list = business_list.data.filter(business => business.business_type !== business_type_flip[business_type] && business.active_business)
+        business_display_list = business_list.data.filter(business => business.business_type !== business_type_flip[business_type] && business.active_business && business.business_request_open)
     }
 
     return (
