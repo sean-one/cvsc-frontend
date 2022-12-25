@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
 import { useBusinessRequestToggle, useActiveBusinessToggle } from '../../../hooks/useBusinessApi';
@@ -9,6 +10,7 @@ const BusinessAdminMenu = ({ business }) => {
     const { mutateAsync: toggleBusinessRequest } = useBusinessRequestToggle()
     const { mutateAsync: toggleActiveBusiness } = useActiveBusinessToggle()
 
+    let navigate = useNavigate()
     const { dispatch } = useNotification()
     
     const toggleRequest = async () => {
@@ -45,8 +47,9 @@ const BusinessAdminMenu = ({ business }) => {
 
     return (
         <div className='d-flex justify-content-between align-items-center bg-light rounded'>
-            <Button onClick={toggleActive} variant={business.active_business ? 'outline-success' : 'outline-danger'} className='text-center w-100 m-1'>{business.active_business ? 'Active' : 'Inactive'}</Button>
-            <Button onClick={toggleRequest} variant={business.business_request_open ? 'outline-success' : 'outline-danger'} className='text-center w-100 m-1'>{business.business_request_open ? 'Request Open' : 'Request Closed'}</Button>
+            <Button onClick={() => navigate(`/business/roles/${business.id}`)} variant='outline-dark' className='text-center flex-fill m-1'>Roles</Button>
+            <Button onClick={toggleActive} variant={business.active_business ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.active_business ? 'Active' : 'Inactive'}</Button>
+            <Button onClick={toggleRequest} variant={business.business_request_open ? 'outline-success' : 'outline-danger'} className='text-center m-1'>{business.business_request_open ? 'Request Open' : 'Request Closed'}</Button>
         </div>
     )
 }

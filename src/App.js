@@ -21,6 +21,7 @@ import BusinessCreateForm from './components/business/forms/business.create.form
 import EventView from './components/events/eventView';
 import EditEvent from './components/events/editEvent';
 import UpdateBusiness from './components/business/update.business';
+import BusinessRoles from './components/roles/business.roles';
 import { ErrorPage } from './components/error/error_404';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -63,6 +64,7 @@ const App = () => {
                   <Route path='/event/edit/:event_id' element={<EditEvent />} />
                   <Route path='/business/create' element={<BusinessCreateForm />} />
                   <Route path='/business/edit/:business_id' element={<UpdateBusiness />} />
+                  <Route path='/business/roles/:business_id' element={<BusinessRoles />} />
                 </Route>
                 {/* catch all for unknown pages */}
                 <Route path='/*' element={<ErrorPage />} />

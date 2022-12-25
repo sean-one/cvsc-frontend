@@ -1,7 +1,6 @@
 import React from 'react';
 
 import ApproveRequestButton from './buttons/approveRequestButton';
-import DeleteRequestButton from './buttons/deleteRequestButton';
 import UpgradeButton from './buttons/upgradeButton';
 import DowngradeButton from './buttons/downgradeButton';
 import RemoveRoleButton from './buttons/removeRoleButton';
@@ -22,9 +21,7 @@ const RolesList = ({ roles_list, list_type }) => {
                         { (list_type === 'manager') && <DowngradeButton role_id={role.id} /> }
                     </div>
                     <div className='text-center'>
-                        { (list_type === 'pending') && <DeleteRequestButton role_id={role.id} /> }
-                        { (list_type === 'creator') && <DeleteRequestButton role_id={role.id} /> }
-                        { (list_type === 'manager') && <RemoveRoleButton role_id={role.id} /> }
+                        <RemoveRoleButton role_id={role.id} />
                     </div>
                   </div>
                 </div>

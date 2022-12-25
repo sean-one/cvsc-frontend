@@ -84,7 +84,6 @@ export const useActiveBusinessToggle = () => {
 const upgradeCreator = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade_creator/${role_id}`) }
 const downgradeManager = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade_manager/${role_id}`) }
 const approveRequest = async (role_id) => { return await AxiosInstance.post(`/roles/approve_request/${role_id}`) }
-const removeUserRole = async (role_id) => { return await AxiosInstance.delete(`/roles/user_remove/${role_id}`) }
 const removeManagerRole = async (role_id) => { return await AxiosInstance.delete(`/roles/manager_remove/${role_id}`) }
 const getAllPendingRoles = async () => { return await AxiosInstance.get(`/roles/management/pending`) }
 const getAllBusinessRoles = async (id) => { return await AxiosInstance.get(`/roles/business/${id}`) }
@@ -150,23 +149,7 @@ export const useManagerDowngradeMutation = () => {
     })
 }
 
-// removes 'creator' and 'active_role: false' roles ONLY
-export const useUserRoleDeleteMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(removeUserRole, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('business_roles')
-            queryClient.invalidateQueries('pending_roles')
-        },
-        onError: (error) => {
-            console.log(error)
-        },
-        onSettled: () => {
-            queryClient.refetchQueries('business_roles')
-            queryClient.refetchQueries('pending_roles')
-        },
-    })
-}
+
 
 // removes 'manager' role
 export const useManagerRoleDeleteMutation = () => {

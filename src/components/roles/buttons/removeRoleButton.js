@@ -1,19 +1,17 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import useNotification from '../../../hooks/useNotification';
-import { useManagerRoleDeleteMutation } from '../../../hooks/useBusinessApi';
+import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
 
 const RemoveRoleButton = ({ role_id }) => {
     const { dispatch } = useNotification()
-    const { mutateAsync: roleDeleteMutation } = useManagerRoleDeleteMutation()
+    const { mutateAsync: removeRole } = useRemoveRoleMutation()
 
-    const removeRole = async (e) => {
-        const removed_role = await roleDeleteMutation(e.currentTarget.value)
+    const roleRemove = async (e) => {
+        const removed_role = await removeRole(e.currentTarget.value)
 
-        if (removed_role.status === 200) {
+        if (removed_role.status === 204) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -34,8 +32,8 @@ const RemoveRoleButton = ({ role_id }) => {
 
 
     return (
-        <Button size='sm' variant='dnager' onClick={(e) => removeRole(e)} value={role_id}>
-            <FontAwesomeIcon icon={faTrash} />
+        <Button size='sm' variant='outline-danger' onClick={(e) => roleRemove(e)} value={role_id}>
+            delete
         </Button>
     )
 }

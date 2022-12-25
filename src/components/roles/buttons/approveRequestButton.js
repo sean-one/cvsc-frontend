@@ -41,8 +41,9 @@ const ApproveRequestButton = ({ role_id }) => {
 
 
     return (
-        <Button size='sm' variant='success' onClick={(e) => approveRequest(e)} value={role_id}>
-            <FontAwesomeIcon icon={faCheck} />
+        <Button size='sm' variant='outline-success' onClick={(e) => approveRequest(e)} value={role_id}>
+            approve
+            {/* <FontAwesomeIcon icon={faCheck} /> */}
         </Button>
     )
 }
