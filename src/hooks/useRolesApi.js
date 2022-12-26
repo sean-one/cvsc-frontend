@@ -93,3 +93,21 @@ export const useRemoveRoleMutation = () => {
         },
     })
 }
+
+// removed current and inactive user roles
+const removeUserRole = async (role_id) => { return await AxiosInstance.delete(`/roles/user_remove/${role_id}`) }
+export const useRemoveUserRoleMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(removeUserRole, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['roles', 'business'])
+            queryClient.refetchQueries('roles')
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => {
+            queryClient.refetchQueries(['roles', 'business'])
+        },
+    })
+}
