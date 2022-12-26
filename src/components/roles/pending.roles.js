@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ApproveRequestButton from './buttons/approveRequestButton';
-import RemoveRoleButton from './buttons/removeRoleButton';
+import ApproveRole from './buttons/approve.role';
+import RemoveRole from './buttons/remove.role';
 import { role_types } from '../../helpers/dataCleanUp';
 
 
@@ -17,10 +17,10 @@ const PendingRoles = ({ roles_list }) => {
                         </div>
                         <div className='d-flex'>
                             <div className='mx-1'>
-                                <ApproveRequestButton role_id={role.id} />
+                                <ApproveRole role_id={role.id} />
                             </div>
                             <div className='mx-1'>
-                                <RemoveRoleButton role_id={role.id} />
+                                <RemoveRole role_id={role.id} />
                             </div>
                         </div>
                     </div>

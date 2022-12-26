@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { role_types } from '../../helpers/dataCleanUp';
-import RemoveRoleButton from './buttons/removeRoleButton';
+import RemoveRole from './buttons/remove.role';
 
 
 const InactiveRoles = ({ roles_list }) => {
@@ -15,7 +15,7 @@ const InactiveRoles = ({ roles_list }) => {
                         <div className='text-danger mx-1'>{role_types[role.role_type]}</div>
                         <div className='text-danger mx-1'>inactive</div>
                         <div className='mx-1'>
-                            <RemoveRoleButton role_id={role.id} />
+                            <RemoveRole role_id={role.id} />
                         </div>
                     </div>
                 )

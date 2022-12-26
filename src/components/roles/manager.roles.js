@@ -1,7 +1,8 @@
 import React from 'react';
 
-import DowngradeButton from './buttons/downgradeButton';
-import RemoveRoleButton from './buttons/removeRoleButton';
+import DowngradeRole from './buttons/downgrade.role';
+import RemoveRole from './buttons/remove.role';
+
 
 const ManagerRoles = ({ roles_list }) => {
     return (
@@ -13,10 +14,10 @@ const ManagerRoles = ({ roles_list }) => {
                         <div className='flex-fill'>{role.username}</div>
                         <div className='d-flex'>
                             <div className='mx-1'>
-                                <DowngradeButton role_id={role.id} />
+                                <DowngradeRole role_id={role.id} />
                             </div>
                             <div className='mx-1'>
-                                <RemoveRoleButton role_id={role.id} />
+                                <RemoveRole role_id={role.id} />
                             </div>
                         </div>
                     </div>

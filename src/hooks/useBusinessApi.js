@@ -81,20 +81,11 @@ export const useActiveBusinessToggle = () => {
     })
 }
 
-const upgradeCreator = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade_creator/${role_id}`) }
-const downgradeManager = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade_manager/${role_id}`) }
 const approveRequest = async (role_id) => { return await AxiosInstance.post(`/roles/approve_request/${role_id}`) }
-const removeManagerRole = async (role_id) => { return await AxiosInstance.delete(`/roles/manager_remove/${role_id}`) }
+
+
 const getAllPendingRoles = async () => { return await AxiosInstance.get(`/roles/management/pending`) }
-const getAllBusinessRoles = async (id) => { return await AxiosInstance.get(`/roles/business/${id}`) }
-
-
-export const useBusinessRolesQuery = (id) => useQuery(['business_roles', id], () => getAllBusinessRoles(id))
 export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())
-
-
-
-
 
 
 //-----------------------------------------
@@ -118,51 +109,3 @@ export const useRequestApprovalMutation = () => {
             queryClient.refetchQueries('pending_roles')
         },
 })}
-
-// upgrades 'creator' role to a 'manager' role
-export const useCreatorUpgradeMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(upgradeCreator, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('business_roles')
-        },
-        onError: (error) => {
-            console.log(Object.keys(error))
-            console.log(error.response)
-        },
-        onSettled: () => queryClient.refetchQueries('business_roles'),
-    })
-}
-
-// downgrades 'manager' role to a 'creator' role
-export const useManagerDowngradeMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(downgradeManager, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('business_roles')
-        },
-        onError: (error) => {
-            console.log(Object.keys(error))
-            console.log(error.response)
-        },
-        onSettled: () => queryClient.refetchQueries('business_roles'),
-    })
-}
-
-
-
-// removes 'manager' role
-export const useManagerRoleDeleteMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(removeManagerRole, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('business_roles')
-        },
-        onError: (error) => {
-            console.log(error)
-        },
-        onSettled: () => {
-            queryClient.refetchQueries('business_roles')
-        },
-    })
-}

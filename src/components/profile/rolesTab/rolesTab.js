@@ -3,7 +3,7 @@ import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import CreatorRequest from './creatorRequest';
 import UserRoles from './userRoles';
-import PendingManagementRoles from './pendingManagementRoles';
+import ManagementRoles from '../../roles/management.roles';
 
 const RolesTab = () => {
     const { auth } = useAuth()
@@ -14,7 +14,7 @@ const RolesTab = () => {
             <UserRoles />
             {
                 (auth?.user?.account_type >= 456) &&
-                    <PendingManagementRoles />
+                    <ManagementRoles />
             }
         </div>
     )

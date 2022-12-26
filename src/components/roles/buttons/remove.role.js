@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import useNotification from '../../../hooks/useNotification';
 import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
 
-const RemoveRoleButton = ({ role_id }) => {
+const RemoveRole = ({ role_id }) => {
     const { dispatch } = useNotification()
     const { mutateAsync: removeRole } = useRemoveRoleMutation()
 
@@ -38,4 +38,4 @@ const RemoveRoleButton = ({ role_id }) => {
     )
 }
 
-export default RemoveRoleButton;
+export default RemoveRole;

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import UpgradeButton from './buttons/upgradeButton';
-import RemoveRoleButton from './buttons/removeRoleButton';
+import UpgradeRole from './buttons/upgrade.role';
+import RemoveRole from './buttons/remove.role';
 
 
 const CreatorRoles = ({ roles_list }) => {
@@ -16,10 +16,10 @@ const CreatorRoles = ({ roles_list }) => {
                         </div>
                         <div className='d-flex'>
                             <div className='mx-1'>
-                                <UpgradeButton role_id={role.id} />
+                                <UpgradeRole role_id={role.id} />
                             </div>
                             <div className='mx-1'>
-                                <RemoveRoleButton role_id={role.id} />
+                                <RemoveRole role_id={role.id} />
                             </div>
                         </div>
                     </div>

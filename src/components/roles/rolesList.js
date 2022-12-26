@@ -1,9 +1,10 @@
 import React from 'react';
 
-import ApproveRequestButton from './buttons/approveRequestButton';
-import UpgradeButton from './buttons/upgradeButton';
-import DowngradeButton from './buttons/downgradeButton';
-import RemoveRoleButton from './buttons/removeRoleButton';
+import ApproveRole from './buttons/approve.role';
+import UpgradeRole from './buttons/upgrade.role';
+import DowngradeRole from './buttons/downgrade.role';
+import RemoveRole from './buttons/remove.role';
+
 
 const RolesList = ({ roles_list, list_type }) => {
 
@@ -16,12 +17,12 @@ const RolesList = ({ roles_list, list_type }) => {
                   <div>{role.username}</div>
                   <div className='d-flex'>
                     <div className='text-center me-4'>
-                        { (list_type === 'pending') && <ApproveRequestButton role_id={role.id} /> }
-                        { (list_type === 'creator') && <UpgradeButton role_id={role.id} /> }
-                        { (list_type === 'manager') && <DowngradeButton role_id={role.id} /> }
+                        { (list_type === 'pending') && <ApproveRole role_id={role.id} /> }
+                        { (list_type === 'creator') && <UpgradeRole role_id={role.id} /> }
+                        { (list_type === 'manager') && <DowngradeRole role_id={role.id} /> }
                     </div>
                     <div className='text-center'>
-                        <RemoveRoleButton role_id={role.id} />
+                        <RemoveRole role_id={role.id} />
                     </div>
                   </div>
                 </div>

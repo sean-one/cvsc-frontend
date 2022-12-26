@@ -1,14 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { useRequestApprovalMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
-const ApproveRequestButton = ({ role_id }) => {
+const ApproveRole = ({ role_id }) => {
     const { dispatch } = useNotification()
     const { mutateAsync: requestApprovalMutation } = useRequestApprovalMutation()
     let navigate = useNavigate()
@@ -48,4 +46,4 @@ const ApproveRequestButton = ({ role_id }) => {
     )
 }
 
-export default ApproveRequestButton;
+export default ApproveRole;
