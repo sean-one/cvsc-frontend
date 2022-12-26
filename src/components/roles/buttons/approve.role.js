@@ -13,27 +13,42 @@ const ApproveRole = ({ role_id }) => {
 
 
     const approveRequest = async (e) => {
-        const approval_response = await requestApprovalMutation(e.currentTarget.value)
+        try {
+            const approval_response = await requestApprovalMutation(e.currentTarget.value)
+    
+            if (approval_response.status === 200) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${approval_response.data.username} now has ${role_types[approval_response.data.role_type]} privileges`
+                    }
+                })
+            }
+            
+        } catch (error) {
+            if (error?.response.status === 400) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error?.response.data.error.message}`
+                    }
+                })
+            }
 
-        if (approval_response.status === 200) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${approval_response.data.username} now has ${role_types[approval_response.data.role_type]} privileges`
-                }
-            })
-        } else if (approval_response.status === 401) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: 'token authoriztion error, please sign in'
-                }
-            })
-            navigate('/login')
-        } else {
-            console.log(approval_response)
+            if (error?.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error?.response.data.error.message}`
+                    }
+                })
+                
+                navigate('/login')
+            }
+            
         }
     }
 
