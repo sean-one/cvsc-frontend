@@ -2,10 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 
 const RemoveUserRole = ({ role_id }) => {
+    const { auth, setAuth } = useAuth()
     const { mutateAsync: removeUserRole } = useRemoveUserRoleMutation()
     const { dispatch } = useNotification()
     
@@ -16,6 +18,8 @@ const RemoveUserRole = ({ role_id }) => {
             const removed_role = await removeUserRole(e.currentTarget.value)
 
             if(removed_role.status === 204) {
+                setAuth({ user: auth.user, roles: auth.roles.filter(role => role.id !== role_id) })
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -24,6 +28,8 @@ const RemoveUserRole = ({ role_id }) => {
                     }
                 })
             }
+
+
             
         } catch (error) {
             

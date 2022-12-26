@@ -9,7 +9,7 @@ const UserRoles = () => {
 
     auth?.roles.sort((a,b) => b.active_role - a.active_role)
 
-    
+
     return (
         <div className='bg-light rounded p-1 mb-2'>
             <h6 className='mb-0'>CURRENT ROLES</h6>
@@ -25,9 +25,12 @@ const UserRoles = () => {
                         <div className='mx-1'>
                             {role.active_role ? 'Active' : 'pending'}
                         </div>
-                        <div className='mx-1'>
-                            <RemoveUserRole role_id={role.id} />
-                        </div>
+                        {
+                            (role.role_type !== '789') &&
+                                <div className='mx-1'>
+                                    <RemoveUserRole role_id={role.id} />
+                                </div>
+                        }
                     </div>
                 ) 
             }
