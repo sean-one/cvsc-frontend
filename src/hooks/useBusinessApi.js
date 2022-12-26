@@ -81,31 +81,6 @@ export const useActiveBusinessToggle = () => {
     })
 }
 
-const approveRequest = async (role_id) => { return await AxiosInstance.post(`/roles/approve_request/${role_id}`) }
-
 
 const getAllPendingRoles = async () => { return await AxiosInstance.get(`/roles/management/pending`) }
 export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())
-
-
-//-----------------------------------------
-//  business role mutations
-//-----------------------------------------
-
-// approves pending role request and adjust 'active_role: true'
-export const useRequestApprovalMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(approveRequest, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('business_roles')
-            queryClient.invalidateQueries('pending_roles')
-        },
-        onError: (error) => {
-            console.log(Object.keys(error))
-            console.log(error.response)
-        },
-        onSettled: () => {
-            queryClient.refetchQueries('business_roles')
-            queryClient.refetchQueries('pending_roles')
-        },
-})}

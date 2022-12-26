@@ -2,19 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
-import { useRequestApprovalMutation } from '../../../hooks/useBusinessApi';
+import { useApproveRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
 const ApproveRole = ({ role_id }) => {
     const { dispatch } = useNotification()
-    const { mutateAsync: requestApprovalMutation } = useRequestApprovalMutation()
+    const { mutateAsync: approveRole } = useApproveRoleMutation()
     let navigate = useNavigate()
 
 
-    const approveRequest = async (e) => {
+    const roleApprove = async (e) => {
         try {
-            const approval_response = await requestApprovalMutation(e.currentTarget.value)
+            const approval_response = await approveRole(e.currentTarget.value)
     
             if (approval_response.status === 200) {
                 dispatch({
@@ -54,7 +54,7 @@ const ApproveRole = ({ role_id }) => {
 
 
     return (
-        <Button size='sm' variant='outline-success' onClick={(e) => approveRequest(e)} value={role_id}>
+        <Button size='sm' variant='outline-success' onClick={(e) => roleApprove(e)} value={role_id}>
             approve
             {/* <FontAwesomeIcon icon={faCheck} /> */}
         </Button>
