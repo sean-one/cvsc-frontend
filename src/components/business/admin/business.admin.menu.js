@@ -6,7 +6,7 @@ import { useBusinessRequestToggle, useActiveBusinessToggle } from '../../../hook
 import useNotification from '../../../hooks/useNotification';
 
 
-const BusinessAdminMenu = ({ business }) => {
+const BusinessAdminMenu = ({ business, business_role }) => {
     const { mutateAsync: toggleBusinessRequest } = useBusinessRequestToggle()
     const { mutateAsync: toggleActiveBusiness } = useActiveBusinessToggle()
 
@@ -48,8 +48,11 @@ const BusinessAdminMenu = ({ business }) => {
     return (
         <div className='d-flex justify-content-between align-items-center bg-light rounded'>
             <Button onClick={() => navigate(`/business/roles/${business.id}`)} variant='outline-dark' className='text-center flex-fill m-1'>Roles</Button>
-            <Button onClick={toggleActive} variant={business.active_business ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.active_business ? 'Active' : 'Inactive'}</Button>
-            <Button onClick={toggleRequest} variant={business.business_request_open ? 'outline-success' : 'outline-danger'} className='text-center m-1'>{business.business_request_open ? 'Request Open' : 'Request Closed'}</Button>
+            {
+                (business_role > 456) &&
+                    <Button onClick={toggleActive} variant={business.active_business ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.active_business ? 'Active' : 'Inactive'}</Button>
+            }
+            <Button onClick={toggleRequest} variant={business.business_request_open ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.business_request_open ? 'Request Open' : 'Request Closed'}</Button>
         </div>
     )
 }

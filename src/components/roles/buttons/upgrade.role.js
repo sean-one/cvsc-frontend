@@ -14,29 +14,46 @@ const UpgradeRole = ({ role_id }) => {
     let navigate = useNavigate()
 
     const roleUpgrade = async (e) => {
-        const upgrade_response = await upgradeRole(e.currentTarget.value)
+        try {
+            const upgrade_response = await upgradeRole(e.currentTarget.value)
+            
+            if (upgrade_response.status === 200) {
+    
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${upgrade_response.data.username} now has ${role_types[upgrade_response.data.role_type]} privileges`
+                    }
+                })
+            }
 
-        if (upgrade_response.status === 200) {
+        } catch (error) {
+            
+            if(error?.response.status === 400) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error?.response.data.error.message}`
+                    }
+                })
+            }
 
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${upgrade_response.data.username} now has ${role_types[upgrade_response.data.role_type]} privileges`
-                }
-            })
-        } else {
-
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: 'token authorization error, please sign in'
-                }
-            })
-
-            navigate('/login')
+            if(error?.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error?.response.data.error.message}`
+                    }
+                })
+    
+                navigate('/login')
+            }
+            
         }
+
     }
 
 

@@ -13,28 +13,44 @@ const DowngradeRole = ({ role_id }) => {
     let navigate = useNavigate()
 
     const roleDowngrade = async (e) => {
-        const downgrade_response = await downgradeRole(e.currentTarget.value)
+        try {
+            const downgrade_response = await downgradeRole(e.currentTarget.value)
+    
+            console.log(downgrade_response)
+            if (downgrade_response.status === 200) {
+    
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${downgrade_response.data.username} has been downgraded to creator privileges`
+                    }
+                })
+            }
+            
+        } catch (error) {
+            
+            if(error?.response.status === 400) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error?.response.data.error.message}`
+                    }
+                })
+            }
+            
+            if(error?.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error?.response.data.error.message}`
+                    }
+                })
 
-        if (downgrade_response.status === 200) {
-
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${downgrade_response.data.username} has been downgraded to creator privileges`
-                }
-            })
-        } else {
-
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: 'something is not right'
-                }
-            })
-
-            navigate('/login')
+                navigate('/login')
+            }
         }
     }
 

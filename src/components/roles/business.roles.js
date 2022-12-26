@@ -27,7 +27,7 @@ const BusinessRoles = () => {
         manager_roles = business_roles.data.filter(business_role => (business_role.role_type === '456' && business_role.active_role))
     }
 
-    console.log(business_roles.data)
+    
     return (
         <div>
             <div className='mb-3' onClick={() => navigate(-1)}>{`< back`}</div>

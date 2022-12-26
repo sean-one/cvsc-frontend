@@ -63,8 +63,8 @@ const BusinessView = () => {
                     </div>
                 </div>
                 {
-                    (business_role?.role_type > 456 && business_role?.active_role === true) &&
-                        <BusinessAdminMenu business={business.data} />
+                    (business_role?.role_type >= 456 && business_role?.active_role === true) &&
+                        <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
                 }
                 <div className='fs-6 lh-sm border-top border-dark pt-2'>
                     {business.data.business_description}
