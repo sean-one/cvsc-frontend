@@ -5,6 +5,10 @@ import AxiosInstance from "../helpers/axios";
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/business/${business_id}`) }
 export const useBusinessRolesQuery = (business_id) => useQuery(['roles', 'business', business_id], () => getBusinessRoles(business_id))
 
+// management.roles - returns pending roles for all businesses with management rights
+const getBusinessPendingRoles = async (user_id) => { return await AxiosInstance.get(`/roles/management/${user_id}`) }
+export const usePendingBusinessRolesQuery = (user_id) => useQuery(['roles', user_id], () => getBusinessPendingRoles(user_id))
+
 // creatorRequest - creates new role request
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/request/${business_id}`) }
 export const useCreateRoleMutation = () => {

@@ -80,7 +80,3 @@ export const useActiveBusinessToggle = () => {
         }
     })
 }
-
-
-const getAllPendingRoles = async () => { return await AxiosInstance.get(`/roles/management/pending`) }
-export const usePendingRolesQuery = () => useQuery(['pending_roles'], () => getAllPendingRoles())

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { usePendingRolesQuery } from '../../hooks/useBusinessApi';
+import { usePendingBusinessRolesQuery } from '../../hooks/useRolesApi';
 import LoadingSpinner from '../loadingSpinner';
 import ApproveRole from './buttons/approve.role';
 import RemoveRole from './buttons/remove.role';
 
 const ManagementRoles = () => {
 
-    const { data: pending_roles, isLoading } = usePendingRolesQuery()
+    const { data: pending_roles, isLoading } = usePendingBusinessRolesQuery()
 
     if (isLoading) {
         return <LoadingSpinner />
