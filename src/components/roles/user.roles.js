@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
 import { role_types } from '../../helpers/dataCleanUp';
@@ -7,6 +8,7 @@ import RemoveUserRole from './buttons/remove.user.role';
 const UserRoles = () => {
     const { auth } = useAuth()
 
+    let navigate = useNavigate()
     auth?.roles.sort((a,b) => b.active_role - a.active_role)
 
 
@@ -19,7 +21,7 @@ const UserRoles = () => {
                         <div className='me-2'>
                             {role_types[role.role_type].charAt().toUpperCase()}
                         </div>
-                        <div className='text-start flex-fill'>
+                        <div onClick={() => navigate(`/business/${role.business_id}`)}className='text-start flex-fill'>
                             {role.business_name}
                         </div>
                         <div className='mx-1'>
