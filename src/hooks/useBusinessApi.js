@@ -2,17 +2,15 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 
-//! useBusinessQuery - get single business by id
-const getBusiness = async (id) => { return await AxiosInstance.get(`/business/${id}`) }
-export const useBusinessQuery = (id) => useQuery(["businesses", 'business' , id], () => getBusiness(id))
+// businessView, update.business
+const getBusiness = async (id) => { return await AxiosInstance.get(`/business/single/${id}`) }
+export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id))
 
-
-//! useBusinessQuery - get all businesses
+// business_list, creatorRequest
 const getBusinesses = async () => { return await AxiosInstance.get('/business') }
-export const useBusinessesQuery = () => useQuery(["businesses"], getBusinesses,{ refetchOnMount: false })
+export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses,{ refetchOnMount: false })
 
-
-//! useCreateBusinessMutation - create new business
+// business.create.form
 const createBusiness = async (business) => { return await AxiosInstance.post('/business/create', business) }
 export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient()
@@ -30,7 +28,7 @@ export const useCreateBusinessMutation = () => {
     })
 }
 
-//! useUpdateBusinessMutation - updated existing business
+// business.edit.form
 const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/business/update/${business_id}`, business_updates) }
 export const useUpdateBusinessMutation = () => {
     const queryClient = useQueryClient()
@@ -45,7 +43,7 @@ export const useUpdateBusinessMutation = () => {
     })
 }
 
-//! useBusinessRequestToggle - toggle business_request_open
+// business.admin.menu
 const toggleBusinessRequest = async (id) => { return await AxiosInstance.put(`/business/toggle-request/${id}`) }
 export const useBusinessRequestToggle = () => {
     const queryClient = useQueryClient()
@@ -61,7 +59,7 @@ export const useBusinessRequestToggle = () => {
     })
 }
 
-//! useActiveBusinessToggle - toggle active_business
+// business.admin.menu
 const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/business/toggle-active/${id}`) }
 export const useActiveBusinessToggle = () => {
     const queryClient = useQueryClient()

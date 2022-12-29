@@ -17,7 +17,7 @@ const RolesTab = () => {
             }
             {
                 (auth?.user?.account_type >= 456) &&
-                    <ManagementRoles />
+                    <ManagementRoles user_id={auth.user.id}/>
             }
         </div>
     )

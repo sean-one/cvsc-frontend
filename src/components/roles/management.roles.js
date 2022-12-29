@@ -5,9 +5,9 @@ import LoadingSpinner from '../loadingSpinner';
 import ApproveRole from './buttons/approve.role';
 import RemoveRole from './buttons/remove.role';
 
-const ManagementRoles = () => {
+const ManagementRoles = ({ user_id }) => {
 
-    const { data: pending_roles, isLoading } = usePendingBusinessRolesQuery()
+    const { data: pending_roles, isLoading } = usePendingBusinessRolesQuery(user_id)
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -17,7 +17,7 @@ const ManagementRoles = () => {
     return (
         <>
             {
-                (pending_roles.length > 0) &&
+                (pending_roles.data.length > 0) &&
                     <div className='bg-light rounded p-1 my-2'>
                         <h6>Pending Business Request</h6>
                         {

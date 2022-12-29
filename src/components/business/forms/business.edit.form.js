@@ -44,7 +44,7 @@ const BusinessEditForm = ({ business }) => {
             const formData = new FormData()
 
             // if updatelocation is true append new address
-            if (data.business_location) {
+            if (data.business_location !== 'false') {
                 formData.append('location_id', business?.location_id || 'new_location')
                 formData.append('street_address', data.street_address)
                 formData.append('city', data.city)

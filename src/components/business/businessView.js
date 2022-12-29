@@ -32,14 +32,14 @@ const BusinessView = () => {
     return (
         <div>
             <div>
-                <div className='d-flex align-items-center'>
+                <div className='d-flex justify-content-between align-items-center'>
+                    <h1 className='mb-1'>{business.data.business_name.toUpperCase()}</h1>
                     {
                         (business_role?.role_type >= 456 && business_role?.active_role === true) &&
                             <div className='px-2'>
                                 <EditBusinessButton business={business.data} />
                             </div>
                     }
-                    <h1 className='mb-2'>{business.data.business_name.toUpperCase()}</h1>
                 </div>
                 {
                     (business.data.location_id !== null) &&

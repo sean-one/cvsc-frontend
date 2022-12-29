@@ -12,6 +12,7 @@ const UserRoles = () => {
     auth?.roles.sort((a,b) => b.active_role - a.active_role)
 
 
+    console.log(auth.roles)
     return (
         <div className='bg-light rounded p-1 mb-2'>
             <h6 className='mb-0'>CURRENT ROLES</h6>

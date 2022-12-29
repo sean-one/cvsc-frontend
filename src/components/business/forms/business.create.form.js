@@ -40,7 +40,6 @@ const BusinessCreateForm = () => {
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
-        console.log(business_data)
         try {
 
             const formData = new FormData()
