@@ -3,21 +3,25 @@ import React from 'react';
 import BusinessListItem from './businessList_item';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
+import { useUserBusinessRoleQuery } from '../../../hooks/useRolesApi';
 import useAuth from '../../../hooks/useAuth';
 
 const BusinessList = () => {
     const { auth } = useAuth()
-    // filter out only management roles
-    const management_roles = auth.roles.filter(role => role.role_type >= 456 && role.active_role)
-    // create an array of business ids from active 
-    const businessIdList = management_roles.map(role => role?.business_id) || []
-    const { data: businesses, isLoading } = useBusinessesQuery()
-
-    if(isLoading) {
+    let business_list = []
+    const { data: user_roles, isLoading: user_roles_loading } = useUserBusinessRoleQuery(auth.id)
+    const { data: businesses, isLoading: businesses_loading } = useBusinessesQuery()
+    
+    if(businesses_loading || user_roles_loading) {
         return <LoadingSpinner />
     }
-
-    const business_list = businesses.data.filter(business => businessIdList.includes(business.id))
+    
+    // filter out only management roles
+    const management_roles = user_roles?.data.filter(role => role.role_type >= 456 && role.active_role)
+    // create an array of business ids from active 
+    const businessIdList = management_roles?.map(role => role?.business_id) || []
+    
+    business_list = businesses.data.filter(business => businessIdList.includes(business.id))
 
 
     return (

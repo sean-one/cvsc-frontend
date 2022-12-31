@@ -16,14 +16,14 @@ export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(createBusiness, {
         onSuccess: () => {
-            queryClient.invalidateQueries('businesses')
+            queryClient.invalidateQueries(['businesses', 'roles'])
             queryClient.refetchQueries('businesses')
         },
         onError: (error, new_business, context) => {
             console.log(error)
         },
         onSettled: () => {
-            queryClient.refetchQueries('businesses')
+            queryClient.refetchQueries(['businesses', 'roles'])
         },
     })
 }
@@ -65,16 +65,12 @@ export const useActiveBusinessToggle = () => {
     const queryClient = useQueryClient()
     return useMutation(toggleActiveBusiness, {
         onSuccess: ({ data }) => {
-            queryClient.invalidateQueries(['businesses', 'business', data.id])
+            queryClient.invalidateQueries(['businesses', 'business', data.id, 'roles'])
             queryClient.refetchQueries('businesses')
-            // queryClient.invalidateQueries(['business_roles', data.id])
-            // queryClient.invalidateQueries('pending_roles')
         },
         onError: (error, updated_business, context) => { console.log(error) },
         onSettled: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'business', data.id])
-            // queryClient.refetchQueries(['business_roles', data.id])
-            // queryClient.refetchQueries('pending_roles')
+            queryClient.refetchQueries(['businesses', 'business', data.id, 'roles'])
         }
     })
 }

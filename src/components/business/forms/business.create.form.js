@@ -4,14 +4,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 
-import useAuth from '../../../hooks/useAuth';
 import { createBusinessSchema } from '../../../helpers/validationSchemas';
 import { useCreateBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
 const BusinessCreateForm = () => {
-    const { auth, setAuth } = useAuth()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
@@ -55,15 +53,6 @@ const BusinessCreateForm = () => {
             const new_business = await createBusiness(formData)
 
             if (new_business.status === 201) {
-
-                const admin_role = {
-                    business_id: new_business.data.id,
-                    business_name: new_business.data.business_name,
-                    active_role: new_business.data.active_role,
-                    role_type: new_business.data.role_type
-                }
-
-                setAuth({ user: auth.user, roles: [...auth.roles, admin_role] })
 
                 dispatch({
                     type: "ADD_NOTIFICATION",

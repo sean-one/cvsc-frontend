@@ -98,20 +98,27 @@ export const useRemoveRoleMutation = () => {
     })
 }
 
+// user.roles
+const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/user/${user_id}`) }
+export const useUserRolesQuery = (user_id) => useQuery(['roles', 'user', user_id], () => getUserRoles(user_id))
+
+const getUserBusinessRole = async(business_id) => { return await AxiosInstance.get(`/roles/user_role/${business_id}`) }
+export const useUserBusinessRoleQuery = (business_id) => useQuery(['roles', 'user', business_id], () => getUserBusinessRole(business_id), { retry: false })
+
 // remove.user.role
 const removeUserRole = async (role_id) => { return await AxiosInstance.delete(`/roles/user_remove/${role_id}`) }
 export const useRemoveUserRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeUserRole, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['roles', 'business'])
+            queryClient.invalidateQueries(['roles', 'user'])
             queryClient.refetchQueries('roles')
         },
         onError: (error) => {
             console.log(error)
         },
         onSettled: () => {
-            queryClient.refetchQueries(['roles', 'business'])
+            queryClient.refetchQueries(['roles', 'user'])
         },
     })
 }

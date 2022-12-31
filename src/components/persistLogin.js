@@ -35,6 +35,7 @@ const PersistLogin = () => {
         return <LoadingSpinner />
     }
 
+    
     return (
         <Outlet />
     )

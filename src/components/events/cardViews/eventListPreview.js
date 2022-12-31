@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import { Image } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClinicMedical, faCannabis } from '@fortawesome/free-solid-svg-icons';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import BusinessInfo from '../../business/business_info';
 
 const EventListPreview = ({ event }) => {
     let navigate = useNavigate()
@@ -37,8 +38,14 @@ const EventListPreview = ({ event }) => {
                 </div>
             </div>
             <div className='d-flex'>
-                <BusinessInfo business_id={event.venue_id} business_name={event.venue_name} borderside='end' business_type='venue' />
-                <BusinessInfo business_id={event.brand_id} business_name={event.brand_name} business_type='brand' reverse />
+                <div className='w-100'>
+                    <FontAwesomeIcon icon={faClinicMedical} className='me-2' />
+                    {event.venue_name}
+                </div>
+                <div className='w-100 text-end'>
+                    {event.brand_name}
+                    <FontAwesomeIcon icon={faCannabis} className='ms-2' />
+                </div>
             </div>
         </div>
     )

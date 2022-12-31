@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClinicMedical, faCannabis } from '@fortawesome/free-solid-svg-icons';
 
 import { formatTime } from '../../../helpers/formatTime';
 import { image_link } from '../../../helpers/dataCleanUp';
-
-import BusinessInfo from '../../business/business_info';
 
 
 const EventCalendarPreview = ({ event }) => {
@@ -25,8 +25,14 @@ const EventCalendarPreview = ({ event }) => {
                 <div className='fw-bold lh-sm fs-5'>{event.eventname.toUpperCase()}</div>
             </Link>
             <div className='d-flex'>
-                <BusinessInfo business_id={event.venue_id} business_name={event.venue_name} borderside='end' business_type='venue' />
-                <BusinessInfo business_id={event.brand_id} business_name={event.brand_name} business_type='brand' reverse />
+                <div className='w-100'>
+                    <FontAwesomeIcon icon={faClinicMedical} className='me-2' />
+                    {event.venue_name}
+                </div>
+                <div className='w-100 text-end'>
+                    {event.brand_name}
+                    <FontAwesomeIcon icon={faCannabis} className='ms-2' />
+                </div>
             </div>
         </div> 
     )

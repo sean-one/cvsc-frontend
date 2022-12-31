@@ -52,7 +52,6 @@ const App = () => {
               <Route element={<AuthRoute />}>
                 <Route path='/profile' element={<Profile />}>
                     <Route path='/profile/roles' element={<RolesTab />} />
-                    {/* <Route path='/profile/roles/:user_id' element={<RolesTab />} /> */}
                     <Route path='/profile/events' element={<UserEventsTab />} />
                     <Route path='/profile/management' element={<BusinessList />} />
                     <Route path='/profile/edit' element={<EditProfile />} />

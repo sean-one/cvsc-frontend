@@ -1,16 +1,34 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import useNotification from '../../hooks/useNotification';
 import { usePendingBusinessRolesQuery } from '../../hooks/useRolesApi';
 import LoadingSpinner from '../loadingSpinner';
 import ApproveRole from './buttons/approve.role';
 import RemoveRole from './buttons/remove.role';
 
 const ManagementRoles = ({ user_id }) => {
+    const { dispatch } = useNotification()
+    const { data: pending_roles, isLoading, error, isError } = usePendingBusinessRolesQuery(user_id)
+    let navigate = useNavigate()
 
-    const { data: pending_roles, isLoading } = usePendingBusinessRolesQuery(user_id)
 
     if (isLoading) {
         return <LoadingSpinner />
+    }
+
+    if(isError) {
+        if(error?.response.status === 401) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${error.response.data.error.message}`
+                }
+            })
+
+            navigate('/login')
+        }
     }
 
 

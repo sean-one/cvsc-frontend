@@ -2,13 +2,13 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import { format } from 'date-fns'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClinicMedical, faCannabis } from '@fortawesome/free-solid-svg-icons';
 
+import useAuth from '../../hooks/useAuth';
 import { formatTime } from '../../helpers/formatTime';
 import { useEventQuery } from '../../hooks/useEvents';
-import useAuth from '../../hooks/useAuth';
-
 import LoadingSpinner from '../loadingSpinner';
-import BusinessInfo from '../business/business_info';
 import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
 import EventsRelated from './eventsRelated';
@@ -51,8 +51,14 @@ const EventView = () => {
                 </div>
                 {/* brand and venue names and links */}
                 <div className='d-flex'>
-                    <BusinessInfo business_id={event.data.venue_id} business_name={event.data.venue_name} borderside='end' business_type='venue' />
-                    <BusinessInfo business_id={event.data.brand_id} business_name={event.data.brand_name} business_type='brand' reverse />
+                    <div className='w-100'>
+                        <FontAwesomeIcon icon={faClinicMedical} className='me-2' />
+                        {event.data.venue_name}
+                    </div>
+                    <div className='w-100 text-end'>
+                        {event.data.brand_name}
+                        <FontAwesomeIcon icon={faCannabis} className='ms-2' />
+                    </div>
                 </div>
                 <div className='fs-6 lh-sm mt-1 pt-2 border-top'>
                     {event.data.details}

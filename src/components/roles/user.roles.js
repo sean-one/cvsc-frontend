@@ -1,23 +1,32 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import useAuth from '../../hooks/useAuth';
 import { role_types } from '../../helpers/dataCleanUp';
+import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import RemoveUserRole from './buttons/remove.user.role';
+import LoadingSpinner from '../loadingSpinner';
 
-const UserRoles = () => {
-    const { auth } = useAuth()
+
+const UserRoles = ({ user_id }) => {
+    const { data: user_roles, isLoading, isSuccess } = useUserRolesQuery(user_id)
 
     let navigate = useNavigate()
-    auth?.roles.sort((a,b) => b.active_role - a.active_role)
+    
+    if(isLoading) {
+        return <LoadingSpinner/>
+    }
+    
+    if(isSuccess) {
+        user_roles.data.sort((a,b) => b.active_role - a.active_role)
+    }
 
 
-    console.log(auth.roles)
+    
     return (
         <div className='bg-light rounded p-1 mb-2'>
             <h6 className='mb-0'>CURRENT ROLES</h6>
             {
-                auth.roles.map(role =>
+                user_roles.data.map(role =>
                     <div key={role.id} className={`d-flex justify-content-between align-items-end ps-2 pb-1 border-bottom rounded-bottom ${role.active_role ? '' : 'text-danger'}`}>
                         <div className='me-2'>
                             {role_types[role.role_type].charAt().toUpperCase()}
