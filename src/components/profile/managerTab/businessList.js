@@ -3,13 +3,13 @@ import React from 'react';
 import BusinessListItem from './businessList_item';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
-import { useUserBusinessRoleQuery } from '../../../hooks/useRolesApi';
+import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import useAuth from '../../../hooks/useAuth';
 
 const BusinessList = () => {
     const { auth } = useAuth()
     let business_list = []
-    const { data: user_roles, isLoading: user_roles_loading } = useUserBusinessRoleQuery(auth.id)
+    const { data: user_roles, isLoading: user_roles_loading } = useUserRolesQuery(auth.id)
     const { data: businesses, isLoading: businesses_loading } = useBusinessesQuery()
     
     if(businesses_loading || user_roles_loading) {
