@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, FloatingLabel, Form, Image, Row } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import { image_link } from '../../../helpers/dataCleanUp';
 // import { businessFormSchema } from '../../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../../hooks/useBusinessApi';
@@ -11,8 +12,11 @@ import useNotification from '../../../hooks/useNotification';
 
 
 const BusinessEditForm = ({ business }) => {
+    const { auth } = useAuth()
+    const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
+    let business_role = {}
 
     let navigate = useNavigate()
 
@@ -38,6 +42,10 @@ const BusinessEditForm = ({ business }) => {
         }
     })
 
+    if(auth?.roles) {
+        business_role = auth.roles.find(role => role.business_id === business_id )
+    }
+
     const image_attached = watch('image_attached', false)
     const business_location = watch('business_location', false)
 
@@ -46,7 +54,7 @@ const BusinessEditForm = ({ business }) => {
             const formData = new FormData()
 
             // if updatelocation is true append new address
-            if (data.business_location !== 'false') {
+            if ((data.business_location !== 'false') && (business_role.role_type === '789')) {
                 formData.append('location_id', business?.location_id || 'new_location')
                 formData.append('street_address', data.street_address)
                 formData.append('city', data.city)
@@ -62,7 +70,7 @@ const BusinessEditForm = ({ business }) => {
             delete data['business_location']
 
             // if updateimage is true set updated file
-            if (data.image_attached) {
+            if (data.image_attached && (business_role.role_type === '789')) {
                 formData.set('business_avatar', data['business_avatar'][0])
             }
 
@@ -103,7 +111,7 @@ const BusinessEditForm = ({ business }) => {
 
     }
 
-
+    console.log(business_role)
     return (
         <>
             <h1>{business?.business_name}</h1>
@@ -130,9 +138,12 @@ const BusinessEditForm = ({ business }) => {
                     />
                 </div>
 
-                <Form.Group controlId='image_attached'>
-                    <Form.Check {...register('image_attached')} type='checkbox' label='Update Image' className='mb-2' />
-                </Form.Group>
+                {
+                    (business_role?.role_type === '789') &&
+                        <Form.Group controlId='image_attached'>
+                            <Form.Check {...register('image_attached')} type='checkbox' label='Update Image' className='mb-2' />
+                        </Form.Group>
+                }
                 {
                     (image_attached) &&
                     <Form.Group controlId='business_avatar' className='mb-2'>
@@ -163,28 +174,31 @@ const BusinessEditForm = ({ business }) => {
                     <div className='errormessage'>{errors.business_description?.message}</div>
                 </Form.Group>
 
-                <div className='d-flex'>
-                    <Form.Group controlId='business_type' className='mb-2 flex-fill'>
-                        <FloatingLabel controlId='business_type' label='Business Type' className='mb-2'>
-                            <Form.Select
-                                className={errors.business_type ? 'inputError' : ''}
-                                {...register('business_type')}
-                                onFocus={() => clearErrors('business_type')}
-                                type='text'
-                                name='business_type'
-                            >
-                                <option value='brand'>Brand</option>
-                                <option value='venue'>Dispensary</option>
-                                <option value='both'>{`Brand & Dispensary`}</option>
-                            </Form.Select>
-                        </FloatingLabel>
-                        <div className='errormessage'>{errors.business_type?.message}</div>
-                    </Form.Group>
+                {
+                    (business_role?.role_type === '789') &&
+                        <div className='d-flex'>
+                            <Form.Group controlId='business_type' className='mb-2 flex-fill'>
+                                <FloatingLabel controlId='business_type' label='Business Type' className='mb-2'>
+                                    <Form.Select
+                                        className={errors.business_type ? 'inputError' : ''}
+                                        {...register('business_type')}
+                                        onFocus={() => clearErrors('business_type')}
+                                        type='text'
+                                        name='business_type'
+                                    >
+                                        <option value='brand'>Brand</option>
+                                        <option value='venue'>Dispensary</option>
+                                        <option value='both'>{`Brand & Dispensary`}</option>
+                                    </Form.Select>
+                                </FloatingLabel>
+                                <div className='errormessage'>{errors.business_type?.message}</div>
+                            </Form.Group>
 
-                    <Form.Group controlId='business_location' className='ms-2 align-self-center'>
-                        <Form.Check {...register('business_location')} type='checkbox' label='Update Location' className='mb-2' />
-                    </Form.Group>
-                </div>
+                            <Form.Group controlId='business_location' className='ms-2 align-self-center'>
+                                <Form.Check {...register('business_location')} type='checkbox' label='Update Location' className='mb-2' />
+                            </Form.Group>
+                        </div>
+                }
 
                 {
                     (business_location) &&

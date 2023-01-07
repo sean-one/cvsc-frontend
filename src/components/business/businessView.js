@@ -29,7 +29,6 @@ const BusinessView = () => {
     }
 
     
-    console.log(business_role)
     return (
         <div>
             <div>
@@ -38,7 +37,7 @@ const BusinessView = () => {
                     {
                         (business_role?.role_type >= 456 && business_role?.active_role === true) &&
                             <div className='px-2'>
-                                <EditBusinessButton business={business.data} />
+                                <EditBusinessButton business={business.data} business_role={business_role}/>
                             </div>
                     }
                 </div>
