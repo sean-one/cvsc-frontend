@@ -2,8 +2,6 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import { format } from 'date-fns'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClinicMedical, faCannabis } from '@fortawesome/free-solid-svg-icons';
 
 import useAuth from '../../hooks/useAuth';
 import { formatTime } from '../../helpers/formatTime';
@@ -12,6 +10,8 @@ import LoadingSpinner from '../loadingSpinner';
 import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
 import EventsRelated from './eventsRelated';
+import VenueLabel from './venue_label';
+import BrandLabel from './brand_label';
 
 
 const EventView = () => {
@@ -51,14 +51,8 @@ const EventView = () => {
                 </div>
                 {/* brand and venue names and links */}
                 <div className='d-flex'>
-                    <div className='w-100'>
-                        <FontAwesomeIcon icon={faClinicMedical} className='me-2' />
-                        {event.data.venue_name}
-                    </div>
-                    <div className='w-100 text-end'>
-                        {event.data.brand_name}
-                        <FontAwesomeIcon icon={faCannabis} className='ms-2' />
-                    </div>
+                    <VenueLabel venue_id={event.data.venue_id} venue_name={event.data.venue_name} />
+                    <BrandLabel brand_id={event.data.brand_id} brand_name={event.data.brand_name} />
                 </div>
                 <div className='fs-6 lh-sm mt-1 pt-2 border-top'>
                     {event.data.details}

@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
-import { useUserBusinessRoleQuery } from '../../hooks/useRolesApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
+import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
 import { EditBusinessButton } from '../menu/buttons/edit_business.button';
 import ContactLink from '../contactLink';
@@ -14,21 +14,22 @@ import EventsRelated from '../events/eventsRelated';
 
 
 const BusinessView = () => {
+    const { auth } = useAuth()
     let { business_id } = useParams()
     let business_role = {}
 
     const { data: business, isLoading } = useBusinessQuery(business_id)
-    const { data: user_role, isSuccess: user_role_success } = useUserBusinessRoleQuery(business_id)
 
     if (isLoading) {
         return <LoadingSpinner />
     }
 
-    if(user_role_success) {
-        business_role = user_role.data
+    if(auth?.roles) {
+        business_role = auth.roles.find(role => role.business_id === business_id)
     }
 
     
+    console.log(business_role)
     return (
         <div>
             <div>

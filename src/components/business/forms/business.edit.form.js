@@ -33,6 +33,8 @@ const BusinessEditForm = ({ business }) => {
             city: business?.location_city,
             state: business?.location_state,
             zip: business?.zip_code,
+            business_location: false,
+            image_attached: false,
         }
     })
 

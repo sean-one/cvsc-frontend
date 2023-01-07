@@ -10,6 +10,7 @@ const PersistLogin = () => {
     const refresh = useRefreshToken()
     const { auth, setAuth } = useAuth()
 
+
     useEffect(() => {
         let isMounted = true
 
@@ -25,8 +26,8 @@ const PersistLogin = () => {
             }
         }
 
-        !auth?.user?.accessToken ? verifyRefreshToken() : setIsLoading(false)
-
+        !auth?.user?.accessToken ? setIsLoading(false) : verifyRefreshToken()
+        
         return () => isMounted = false
         // eslint-disable-next-line
     }, [])
@@ -35,9 +36,11 @@ const PersistLogin = () => {
         return <LoadingSpinner />
     }
 
-    
+    console.log('inside persist')
+    console.log(auth?.roles)
+    console.log('=========================================================')
     return (
-        <Outlet />
+        <Outlet context={auth}/>
     )
 }
 
