@@ -24,7 +24,7 @@ const RolesTab = () => {
                     <UserRoles user_id={auth.user.id} />
             }
             {
-                (auth?.user?.account_type >= 456) &&
+                (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
                     <ManagementRoles user_id={auth.user.id}/>
             }
         </div>

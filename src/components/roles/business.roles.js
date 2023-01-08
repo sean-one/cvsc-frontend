@@ -23,8 +23,8 @@ const BusinessRoles = () => {
     if(isSuccess) {
         inactive_roles = business_roles.data.filter(business_role => !business_role.active_role && business_role.approved_by !== null)
         pending_roles = business_roles.data.filter(business_role => !business_role.active_role && business_role.approved_by === null)
-        creator_roles = business_roles.data.filter(business_role => (business_role.role_type === '123' && business_role.active_role))
-        manager_roles = business_roles.data.filter(business_role => (business_role.role_type === '456' && business_role.active_role))
+        creator_roles = business_roles.data.filter(business_role => (business_role.role_type === process.env.REACT_APP_CREATOR_ACCOUNT && business_role.active_role))
+        manager_roles = business_roles.data.filter(business_role => (business_role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT && business_role.active_role))
     }
 
     

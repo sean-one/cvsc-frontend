@@ -4,12 +4,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import { createBusinessSchema } from '../../../helpers/validationSchemas';
 import { useCreateBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
 const BusinessCreateForm = () => {
+    const { logout_user } = useAuth()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
@@ -87,7 +89,8 @@ const BusinessCreateForm = () => {
                     }
                 })
 
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
 
             }
 

@@ -1,17 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { useUpgradeRoleMutation } from '../../../hooks/useRolesApi';
 import { role_types } from '../../../helpers/dataCleanUp';
 
 
 const UpgradeRole = ({ role_id }) => {
+    const { logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { mutateAsync: upgradeRole } = useUpgradeRoleMutation()
 
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
 
     const roleUpgrade = async (e) => {
         try {
@@ -49,7 +51,8 @@ const UpgradeRole = ({ role_id }) => {
                     }
                 })
     
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
             }
             
         }

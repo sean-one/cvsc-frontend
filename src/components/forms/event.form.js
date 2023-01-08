@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { format } from 'date-fns';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
+import useAuth from '../../hooks/useAuth';
 import { reformatTime } from '../../helpers/formatTime';
 import { updateEventSchema } from '../../helpers/validationSchemas';
 import { useEditEventMutation, useRemoveEventMutation } from '../../hooks/useEvents';
@@ -14,6 +15,7 @@ import BusinessList from '../business/business_list';
 
 
 const EventForm = ({ selected_event }) => {
+    const { logout_user } = useAuth()
     // const [ imageFile, setImageFile ] = useState('')
     const { dispatch } = useNotification()
 
@@ -86,7 +88,8 @@ const EventForm = ({ selected_event }) => {
                     }
                 })
 
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
             }
 
             if (error.response.status === 400) {
@@ -127,7 +130,8 @@ const EventForm = ({ selected_event }) => {
                     }
                 })
 
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
             }
         }
     }

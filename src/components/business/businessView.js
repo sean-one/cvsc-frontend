@@ -35,7 +35,7 @@ const BusinessView = () => {
                 <div className='d-flex justify-content-between align-items-center'>
                     <h1 className='mb-1'>{business.data.business_name.toUpperCase()}</h1>
                     {
-                        (business_role?.role_type >= 456 && business_role?.active_role === true) &&
+                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
                             <div className='px-2'>
                                 <EditBusinessButton business={business.data} business_role={business_role}/>
                             </div>
@@ -63,7 +63,7 @@ const BusinessView = () => {
                     </div>
                 </div>
                 {
-                    (business_role?.role_type >= 456 && business_role?.active_role === true) &&
+                    (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
                         <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
                 }
                 <div className='fs-6 lh-sm border-top border-dark pt-2'>

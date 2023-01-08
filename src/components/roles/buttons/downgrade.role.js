@@ -1,16 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { useDowngradeRoleMutation } from '../../../hooks/useRolesApi';
 
 
 const DowngradeRole = ({ role_id }) => {
+    const { logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { mutateAsync: downgradeRole } = useDowngradeRoleMutation()
 
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
 
     const roleDowngrade = async (e) => {
         try {
@@ -49,7 +51,8 @@ const DowngradeRole = ({ role_id }) => {
                     }
                 })
 
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
             }
         }
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 import BusinessListItem from './businessList_item';
 import LoadingSpinner from '../../loadingSpinner';
@@ -9,13 +9,13 @@ import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 
 const BusinessList = () => {
-    const { auth } = useAuth()
+    const { auth, logout_user } = useAuth()
     const { dispatch } = useNotification()
     let business_list = []
     const { data: user_roles, isLoading: user_roles_loading, isError, error } = useUserRolesQuery(auth.id)
     const { data: businesses, isLoading: businesses_loading } = useBusinessesQuery()
     
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
 
     if(businesses_loading || user_roles_loading) {
         return <LoadingSpinner />
@@ -31,11 +31,12 @@ const BusinessList = () => {
             }
         })
 
-        navigate('/login')
+        logout_user()
+        // navigate('/login')
     }
 
     // filter out only management roles
-    const management_roles = user_roles?.data.filter(role => role.role_type >= 456 && role.active_role)
+    const management_roles = user_roles?.data.filter(role => role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role)
     // create an array of business ids from active 
     const businessIdList = management_roles?.map(role => role?.business_id) || []
     

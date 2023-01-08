@@ -1,15 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
 
 const RemoveRole = ({ role_id }) => {
+    const { logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { mutateAsync: removeRole } = useRemoveRoleMutation()
 
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
 
     const roleRemove = async (e) => {
         try {
@@ -45,7 +47,8 @@ const RemoveRole = ({ role_id }) => {
                     }
                 })
 
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
             }
             
         }

@@ -39,8 +39,8 @@ export const image_link = (db_image) => {
 }
 
 export const role_types = {
-    '100': 'basic',
-    '789': 'admin',
-    '456': 'manager',
-    '123': 'creator'
+    [process.env.REACT_APP_BASIC_ACCOUNT]: 'basic',
+    [process.env.REACT_APP_CREATOR_ACCOUNT]: 'creator',
+    [process.env.REACT_APP_MANAGER_ACCOUNT]: 'manager',
+    [process.env.REACT_APP_ADMIN_ACCOUNT]: 'admin'
 }

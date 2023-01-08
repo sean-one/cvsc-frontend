@@ -7,11 +7,13 @@ import { createEventSchema } from '../../helpers/validationSchemas';
 import { Button, Form } from 'react-bootstrap';
 import { DevTool } from '@hookform/devtools'
 
+import useAuth from '../../hooks/useAuth';
 import { useAddEventMutation } from '../../hooks/useEvents';
 import useNotification from '../../hooks/useNotification';
 import BusinessList from '../business/business_list';
 
 const CreateEvent = () => {
+    const { logout_user } = useAuth()
     const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: addEventMutation } = useAddEventMutation()
     const { dispatch } = useNotification();
@@ -63,7 +65,8 @@ const CreateEvent = () => {
                     }
                 })
 
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
             }
 
             if(error?.response.status === 400) {

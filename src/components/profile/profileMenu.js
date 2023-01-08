@@ -19,7 +19,7 @@ const ProfileMenu = () => {
             <div className={`border border-dark rounded-top w-100 text-center ${menuTab === 'roles' ? 'bg-dark text-white' : ''}`} onClick={(e) => buttonLink(e)}>Roles</div>
             <div className={`border border-dark rounded-top w-100 text-center ${menuTab === 'events' ? 'bg-dark text-white' : ''}`} onClick={(e) => buttonLink(e)}>Events</div>
             {
-                (auth.user.account_type >= 456) &&
+                (auth.user.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
                     <div className={`border border-dark rounded-top w-100 text-center ${menuTab === 'management' ? 'bg-dark text-white' : ''}`} onClick={(e) => buttonLink(e)}>Management</div>
             }
         </div>

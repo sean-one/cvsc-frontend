@@ -1,15 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
+import useAuth from '../../../hooks/useAuth';
 import { useApproveRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
 const ApproveRole = ({ role_id }) => {
+    const { logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { mutateAsync: approveRole } = useApproveRoleMutation()
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
 
 
     const roleApprove = async (e) => {
@@ -46,7 +48,8 @@ const ApproveRole = ({ role_id }) => {
                     }
                 })
                 
-                navigate('/login')
+                logout_user()
+                // navigate('/login')
             }
             
         }

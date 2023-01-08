@@ -54,7 +54,7 @@ const BusinessEditForm = ({ business }) => {
             const formData = new FormData()
 
             // if updatelocation is true append new address
-            if ((data.business_location !== 'false') && (business_role.role_type === '789')) {
+            if ((data.business_location !== 'false') && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
                 formData.append('location_id', business?.location_id || 'new_location')
                 formData.append('street_address', data.street_address)
                 formData.append('city', data.city)
@@ -70,7 +70,7 @@ const BusinessEditForm = ({ business }) => {
             delete data['business_location']
 
             // if updateimage is true set updated file
-            if (data.image_attached && (business_role.role_type === '789')) {
+            if (data.image_attached && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
                 formData.set('business_avatar', data['business_avatar'][0])
             }
 
@@ -111,25 +111,27 @@ const BusinessEditForm = ({ business }) => {
 
     }
 
-    console.log(business_role)
+    
     return (
         <>
             <h1>{business?.business_name}</h1>
             <Form onSubmit={handleSubmit(update_business)} encType='multipart/form-data'>
 
-                <Form.Group controlId='business_email'>
-                    <FloatingLabel controlId='business_email' label='Email' className='mb-2'>
-                        <Form.Control
-                            className={errors.business_email ? 'inputError' : ''}
-                            {...register('business_email')}
-                            onFocus={() => clearErrors('business_email')}
-                            type='text'
-                            name='business_email'
-                        />
-                    </FloatingLabel>
-                    <div className='errormessage'>{errors.business_email?.message}</div>
-                </Form.Group>
-
+                {
+                    (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                        <Form.Group controlId='business_email'>
+                            <FloatingLabel controlId='business_email' label='Email' className='mb-2'>
+                                <Form.Control
+                                    className={errors.business_email ? 'inputError' : ''}
+                                    {...register('business_email')}
+                                    onFocus={() => clearErrors('business_email')}
+                                    type='text'
+                                    name='business_email'
+                                />
+                            </FloatingLabel>
+                            <div className='errormessage'>{errors.business_email?.message}</div>
+                        </Form.Group>
+                }
                 <div className='d-flex justify-content-center mb-2'>
                     <Image
                         src={image_link(business.business_avatar)}
@@ -139,7 +141,7 @@ const BusinessEditForm = ({ business }) => {
                 </div>
 
                 {
-                    (business_role?.role_type === '789') &&
+                    (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <Form.Group controlId='image_attached'>
                             <Form.Check {...register('image_attached')} type='checkbox' label='Update Image' className='mb-2' />
                         </Form.Group>
@@ -175,7 +177,7 @@ const BusinessEditForm = ({ business }) => {
                 </Form.Group>
 
                 {
-                    (business_role?.role_type === '789') &&
+                    (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='d-flex'>
                             <Form.Group controlId='business_type' className='mb-2 flex-fill'>
                                 <FloatingLabel controlId='business_type' label='Business Type' className='mb-2'>

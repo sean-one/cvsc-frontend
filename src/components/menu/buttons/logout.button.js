@@ -1,23 +1,24 @@
 import AxiosInstance from "../../../helpers/axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import useAuth from "../../../hooks/useAuth";
 
 export const LogoutButton = ({ toggle }) => {
-    const { setAuth } = useAuth()
-    let navigate = useNavigate()
+    const { logout_user } = useAuth()
+    // let navigate = useNavigate()
 
     const logoutCall = async () => {
         const logoutResponse = await AxiosInstance.get('/auth/logout')
 
         if(logoutResponse.status === 204) {
-            localStorage.clear()
-            
-            navigate('/')
+            // localStorage.clear()
             
             toggle(false)
             
-            setAuth({})
+            logout_user()
+            // navigate('/')
+            
+            // setAuth({})
         }
     }
 

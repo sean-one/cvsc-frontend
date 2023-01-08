@@ -37,12 +37,9 @@ const UserRoles = ({ user_id }) => {
                         <div className='mx-1'>
                             {role.active_role ? 'Active' : 'pending'}
                         </div>
-                        {
-                            (role.role_type !== '789') &&
-                                <div className='mx-1'>
-                                    <RemoveUserRole role_id={role.id} />
-                                </div>
-                        }
+                        <div className='mx-1'>
+                            <RemoveUserRole role_id={role.id} role_type={role.role_type}/>
+                        </div>
                     </div>
                 ) 
             }

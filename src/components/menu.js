@@ -18,11 +18,11 @@ const Menu = ({ toggle }) => {
                     : <SimpleButton toggle={toggle} name='register' />
             }
             {
-                (auth?.user?.account_type >= 100) &&
+                (auth?.user?.account_type >= process.env.REACT_APP_BASIC_ACCOUNT) &&
                     <SimpleButton toggle={toggle} name='new_business' />
             }
             {
-                (auth?.user?.account_type >= 123) &&
+                (auth?.user?.account_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
                     <SimpleButton toggle={toggle} name='new_event' />
             }
             {
