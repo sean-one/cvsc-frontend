@@ -36,9 +36,7 @@ const PersistLogin = () => {
         return <LoadingSpinner />
     }
 
-    console.log('inside persist')
-    console.log(auth?.roles)
-    console.log('=========================================================')
+    
     return (
         <Outlet context={auth}/>
     )
