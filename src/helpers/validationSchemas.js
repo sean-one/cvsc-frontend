@@ -17,16 +17,16 @@ export const requestBusinessCreator = yup.object().shape({
 export const registrationSchema = yup.object().shape({
     username: yup
         .string()
-        .required("username is a required field"),
+        .required("required field"),
 
     password: yup
         .string()
-        .required("password is a required field"),
+        .required("required field"),
 
     confirmation: yup
         .string()
         .oneOf([yup.ref('password'), null], 'passwords must match')
-        .required('please enter password again')
+        .required('required field')
 })
 
 export const loginSchema = yup.object().shape({

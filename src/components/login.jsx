@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form, Button } from 'react-bootstrap';
-import { Col, Row } from 'react-bootstrap';
+import { Form, Button, FloatingLabel } from 'react-bootstrap';
 
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
@@ -72,53 +71,52 @@ const Login = () => {
 
 
     return (
-        <Row>
+        <div>
             <h2>Login</h2>
-            <Form onSubmit={handleSubmit(sendLogin)}>
-                <Form.Group controlId="username">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        className={errors.username ? 'inputError' : ''}
-                        {...register('username')}
-                        // autoFocus
-                        onFocus={() => clearErrors('username')}
-                        type='text'
-                        name='username'
-                        placeholder='username'
-                        required
-                    />
+            <Form onSubmit={handleSubmit(sendLogin)} className='mt-3'>
+                
+                <Form.Group controlId="username" className='mb-2'>
+                    <FloatingLabel controlId='username' label='Username'>
+                        <Form.Control
+                            className={errors.username ? 'inputError' : ''}
+                            {...register('username')}
+                            // autoFocus
+                            onFocus={() => clearErrors('username')}
+                            type='text'
+                            name='username'
+                            placeholder='username'
+                            required
+                        />
+                    </FloatingLabel>
                     <div className='errormessage'>{errors.username?.message}</div>
                 </Form.Group>
 
-                <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        className={errors.password ? 'inputError' : ''}
-                        {...register('password')}
-                        onFocus={() => clearErrors('password')}
-                        name='password'
-                        type='password'
-                        placeholder='Password'
-                        required
-                    />
+                <Form.Group controlId="password" className='mb-2'>
+                    <FloatingLabel controlId='password' label='Password'>
+                        <Form.Control
+                            className={errors.password ? 'inputError' : ''}
+                            {...register('password')}
+                            onFocus={() => clearErrors('password')}
+                            name='password'
+                            type='password'
+                            placeholder='Password'
+                            required
+                        />
+                    </FloatingLabel>
                     <div className='errormessage'>{errors.password?.message}</div>
+                    <div className='errormessage'>{errors.credentials?.message}</div>
                 </Form.Group>
-                <div className='errormessage'>{errors.credentials?.message}</div>
-                <Row className='text-center'>
-                    <Col xs={6}>
-                        <Button variant="outline-dark" type='submit'>
-                            Submit
-                        </Button>
-                    </Col>
-                    <Col xs={6}>
-                        <Button variant='outline-dark' onClick={googleAuthButton}>Google Login</Button>
-                    </Col>
-                </Row>
+                
+                <div className='d-flex justify-content-between'>
+                    <Button variant="outline-dark" type='submit'>Submit</Button>
+                    <Button variant='outline-dark' onClick={googleAuthButton}>Google Login</Button>
+                </div>
             </Form>
-            <Row className='my-3 text-center'>
+            
+            <div className='my-3 text-center'>
                 <p>New to the club? <Link to={{ pathname: '/register' }}>Register</Link></p>
-            </Row>
-        </Row>
+            </div>
+        </div>
     )
 }
 
