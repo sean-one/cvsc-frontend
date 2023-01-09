@@ -17,7 +17,7 @@ export const MenuLinks = {
     },
     'new_event': {
         text: 'Create New Event',
-        link: '/event/new'
+        link: '/event/create'
     },
     'new_business': {
         text: 'Create New Business',

@@ -16,7 +16,8 @@ import EditProfile from './components/profile/accountTab/editProfile';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
 import BusinessList from './components/profile/managerTab/businessList';
-import CreateEvent from './components/events/createEvent';
+// import CreateEvent from './components/events/createEvent';
+import EventCreateForm from './components/events/forms/event.create.form';
 import BusinessCreateForm from './components/business/forms/business.create.form';
 import EventView from './components/events/eventView';
 import EditEvent from './components/events/editEvent';
@@ -56,7 +57,7 @@ const App = () => {
                     <Route path='/profile/management' element={<BusinessList />} />
                     <Route path='/profile/edit' element={<EditProfile />} />
                 </Route>
-                <Route path='/event/new' element={<CreateEvent />} />
+                <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EditEvent />} />
                 <Route path='/business/create' element={<BusinessCreateForm />} />
                 <Route path='/business/edit/:business_id' element={<UpdateBusiness />} />

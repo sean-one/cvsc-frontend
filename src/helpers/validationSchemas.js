@@ -54,12 +54,12 @@ export const createEventSchema = yup.object().shape(
         eventstart: yup
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .required('event start time is required'),
+            .required('start time is required'),
             
         eventend: yup
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .required('event end time is required'),
+            .required('end time is required'),
         
         eventmedia: yup
             .mixed()

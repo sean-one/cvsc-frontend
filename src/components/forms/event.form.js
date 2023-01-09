@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { format } from 'date-fns';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 
 import useAuth from '../../hooks/useAuth';
 import { reformatTime } from '../../helpers/formatTime';
@@ -141,16 +141,17 @@ const EventForm = ({ selected_event }) => {
         <Form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data'>
 
             <Form.Group controlId='eventname'>
-                <Form.Label>Eventname</Form.Label>
-                <Form.Control
-                    className={errors.eventname ? 'inputError' : ''}
-                    {...register('eventname')}
-                    autoFocus
-                    onFocus={() => clearErrors('eventname')}
-                    type='text'
-                    name='eventname'
-                    required
-                />
+                <FloatingLabel controlId='eventname' label='Event Name' className='mb-2'>
+                    <Form.Control
+                        className={errors.eventname ? 'inputError' : ''}
+                        {...register('eventname')}
+                        autoFocus
+                        onFocus={() => clearErrors('eventname')}
+                        type='text'
+                        name='eventname'
+                        required
+                    />
+                </FloatingLabel>
                 <div className='errormessage'>{errors.eventname?.message}</div>
             </Form.Group>
 

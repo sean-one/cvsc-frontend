@@ -34,7 +34,7 @@ const Styles = styled.div`
     .errormessage {
         width: 100%;
         text-align: left;
-        padding: 0.25rem;
+        /* padding: 0.25rem; */
         color: #DAD7CD;
         /* font-weight: bold; */
     }
