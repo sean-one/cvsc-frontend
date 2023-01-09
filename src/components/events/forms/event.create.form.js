@@ -103,7 +103,6 @@ const EventCreateForm = () => {
     }
 
 
-    console.log(editImage)
     return (
         <Form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data'>
 
@@ -227,8 +226,8 @@ const EventCreateForm = () => {
                         {...register('details')}
                         onFocus={() => clearErrors('details')}
                         as='textarea'
-                        row={10}
                         name='details'
+                        style={{ height: '200px' }}
                     />
                 </FloatingLabel>
                 <div className='errormessage'>{errors.details?.message}</div>

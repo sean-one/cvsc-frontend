@@ -24,19 +24,13 @@ export const useBusinessRemoveMutation = () => {
 
 
 //! useEventQuery - fetch single event
-const getEvent = async (id) => {
-    return await AxiosInstance.get(`/events/${id}`)
-}
+const getEvent = async (id) => { return await AxiosInstance.get(`/events/${id}`) }
 export const useEventQuery = (id) => useQuery(['events', id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 
 
-
 //! useEventsQuery - fetch all events
-const getAllEvents = async () => {
-    return await AxiosInstance.get('/events')
-}
+const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
-
 
 
 // event.create.form
@@ -57,11 +51,8 @@ export const useCreateEventMutation = () => {
 }
 
 
-
 //! useEditEventMutation - update event
-const updateEvent = async ({ event_updates, event_id }) => {
-    return await AxiosInstance.post(`/events/update/${event_id}`, event_updates)
-}
+const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.post(`/events/update/${event_id}`, event_updates) }
 export const useEditEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
@@ -80,11 +71,8 @@ export const useEditEventMutation = () => {
 }
 
 
-
 //! useRemoveEventMutation - remove event
-const removeEvent = async (event_id) => {
-    return await AxiosInstance.delete(`/events/remove/${event_id}`)
-}
+const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/remove/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeEvent, {

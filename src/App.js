@@ -18,9 +18,10 @@ import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
 import BusinessList from './components/profile/managerTab/businessList';
 // import CreateEvent from './components/events/createEvent';
 import EventCreateForm from './components/events/forms/event.create.form';
+import EventEditForm from './components/events/forms/event.edit.form';
 import BusinessCreateForm from './components/business/forms/business.create.form';
 import EventView from './components/events/eventView';
-import EditEvent from './components/events/editEvent';
+// import EditEvent from './components/events/editEvent';
 import UpdateBusiness from './components/business/update.business';
 import BusinessRoles from './components/roles/business.roles';
 import { ErrorPage } from './components/error/error_404';
@@ -58,7 +59,7 @@ const App = () => {
                     <Route path='/profile/edit' element={<EditProfile />} />
                 </Route>
                 <Route path='/event/create' element={<EventCreateForm />} />
-                <Route path='/event/edit/:event_id' element={<EditEvent />} />
+                <Route path='/event/edit/:event_id' element={<EventEditForm />} />
                 <Route path='/business/create' element={<BusinessCreateForm />} />
                 <Route path='/business/edit/:business_id' element={<UpdateBusiness />} />
                 <Route path='/business/roles/:business_id' element={<BusinessRoles />} />

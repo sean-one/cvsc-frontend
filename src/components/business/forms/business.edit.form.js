@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Col, FloatingLabel, Form, Image, Row } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 
 import useAuth from '../../../hooks/useAuth';
 import { image_link } from '../../../helpers/dataCleanUp';
@@ -335,14 +335,10 @@ const BusinessEditForm = ({ business }) => {
                     <div className='errormessage'>{errors.business_twitter?.message}</div>
                 </Form.Group>
 
-                <Row className='d-flex justify-content-around pt-3'>
-                    <Col xs={2}>
-                        <Button type='submit' disabled={!isDirty}>Update</Button>
-                    </Col>
-                    <Col xs={2}>
-                        <Button onClick={() => navigate(`/business/${business.id}`)} variant='secondary'>Close</Button>
-                    </Col>
-                </Row>
+                <div className='d-flex justify-content-around pt-3'>
+                    <Button type='submit' disabled={!isDirty}>Update</Button>
+                    <Button onClick={() => navigate(`/business/${business.id}`)} variant='secondary'>Close</Button>
+                </div>
 
             </Form>
         </>
