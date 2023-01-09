@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
@@ -8,19 +8,18 @@ import { DevTool } from '@hookform/devtools'
 
 import useAuth from '../../../hooks/useAuth';
 import { createEventSchema } from '../../../helpers/validationSchemas';
-import { useAddEventMutation } from '../../../hooks/useEvents';
+import { useCreateEventMutation } from '../../../hooks/useEvents';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
-
+import useImagePreviewer from '../../../hooks/useImagePreviewer';
 
 const EventCreateForm = () => {
     const { logout_user } = useAuth()
-    const [imageFile, setImageFile] = useState('')
-    const { mutateAsync: addEventMutation } = useAddEventMutation()
+    const { editImage, imagePreview, canvas } = useImagePreviewer()
+    const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
-    const default_date = new Date()
 
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
@@ -47,7 +46,7 @@ const EventCreateForm = () => {
 
             Object.keys(data).forEach(key => {
                 if (key === 'eventmedia') {
-                    formData.set(key, imageFile)
+                    formData.set(key, data[key][0])
                 } else if (key === 'eventdate') {
                     formData.append(key, format(data[key], 'y-M-d'))
                 } else if (key === 'eventstart' || key === 'eventend') {
@@ -57,7 +56,7 @@ const EventCreateForm = () => {
                 }
             })
 
-            const add_event_response = await addEventMutation(formData)
+            const add_event_response = await createEvent(formData)
 
             if (add_event_response.status === 201) {
                 dispatch({
@@ -103,7 +102,8 @@ const EventCreateForm = () => {
         brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
     }
 
-    
+
+    console.log(editImage)
     return (
         <Form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data'>
 
@@ -169,17 +169,17 @@ const EventCreateForm = () => {
             </div>
             <div className='errormessage'>{errors.time_format?.message}</div>
 
-            {/* {
+            {
                 editImage &&
-                    <Row className='mx-auto'>
+                    <div className='mx-1'>
                         <canvas
                             id={'eventImagePreview'}
                             ref={canvas}
                             width={384}
                             height={480}
                         />
-                    </Row>
-            } */}
+                    </div>
+            }
 
             {/* event image input */}
             <Form.Group controlId='eventmedia' className='mb-2'>
@@ -191,7 +191,8 @@ const EventCreateForm = () => {
                     name='eventmedia'
                     accept='image/*'
                     size='lg'
-                // onChange={(e) => setImageFile(e.target.files[0])}
+                    onChange={imagePreview}
+                    // onChange={(e) => setImageFile(e.target.files[0])}
                 />
                 <div className='errormessage'>{errors.eventmedia?.message}</div>
             </Form.Group>

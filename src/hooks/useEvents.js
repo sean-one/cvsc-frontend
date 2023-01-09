@@ -2,15 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 
-const getAllUserEvents = async (user_id) => {
-    return await AxiosInstance.get(`/events/user/${user_id}`)
-}
+const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
 
 
-const removeBusiness = async ({ event_id, ...event_updates }) => {
-    return await AxiosInstance.put(`/events/remove_business/${event_id}`, event_updates)
-}
+const removeBusiness = async ({ event_id, ...event_updates }) => { return await AxiosInstance.put(`/events/remove_business/${event_id}`, event_updates) }
 export const useBusinessRemoveMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeBusiness, {
@@ -25,8 +21,6 @@ export const useBusinessRemoveMutation = () => {
         onSettled: () => queryClient.refetchQueries('events')
     })
 }
-
-
 
 
 //! useEventQuery - fetch single event
@@ -45,21 +39,20 @@ export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetch
 
 
 
-//! useAddEventMutation - create new event
-const addEvent = async (event) => {
-    return await AxiosInstance.post('/events', event)
-}
-export const useAddEventMutation = () => {
+// event.create.form
+const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
+export const useCreateEventMutation = () => {
     const queryClient = useQueryClient()
-    return useMutation(addEvent, {
+    return useMutation(createEvent, {
         onSuccess: () => {
-            queryClient.cancelQueries('events')
+            queryClient.invalidateQueries(['events'])
+            queryClient.refetchQueries('events')
         },
         onError: (error) => {
             console.log('error inside add event mutation')
             // console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries('events')
+        onSettled: () => queryClient.refetchQueries(['events'])
     })
 }
 
