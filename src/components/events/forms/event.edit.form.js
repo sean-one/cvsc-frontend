@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import useImagePreviewer from '../../../hooks/useImagePreviewer';
@@ -12,6 +12,7 @@ import { useEventQuery } from '../../../hooks/useEvents';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { updateEventSchema } from '../../../helpers/validationSchemas';
+import { image_link } from '../../../helpers/dataCleanUp';
 
 
 const EventEditForm = () => {
@@ -25,7 +26,7 @@ const EventEditForm = () => {
     const { data: event, isLoading: eventLoading, isSuccess: eventSuccess } = useEventQuery(event_id)
     const { data: business_list, isLoading: listLoading, isSuccess: listSuccess } = useBusinessesQuery()
 
-    const { register, handleSubmit, setError, clearErrors, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, setError, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(updateEventSchema),
         defaultValues: {
@@ -39,6 +40,8 @@ const EventEditForm = () => {
             brand_id: event?.data.brand_id,
         }
     })
+
+    const image_attached = watch('image_attached', false)
 
     const update_event = async (data) => {
         console.log('click')
@@ -71,6 +74,42 @@ const EventEditForm = () => {
                     </FloatingLabel>
                     <div className='errormessage'>{errors.eventname?.message}</div>
                 </Form.Group>
+
+                <div className='d-flex justify-content-center mb-2'>
+                    <Image
+                        src={image_link(event?.data.eventmedia)}
+                        alt={event?.data.eventname}
+                        thumbnail
+                    />
+                </div>
+
+                <Form.Group controlId='image_attached'>
+                    <Form.Check
+                        className='mb-2'
+                        {...register('image_attached')}
+                        type='checkbox'
+                        label='Update Image'
+                    />
+                </Form.Group>
+
+                {/* event image input */}
+                {
+                    (image_attached) &&
+                        <Form.Group controlId='eventmedia' className='mb-2'>
+                            <Form.Control
+                                className={errors.eventmedia ? 'inputError' : ''}
+                                {...register('eventmedia')}
+                                onFocus={() => clearErrors('eventmedia')}
+                                type='file'
+                                name='eventmedia'
+                                accept='image/*'
+                                size='lg'
+                                onChange={imagePreview}
+                            // onChange={(e) => setImageFile(e.target.files[0])}
+                            />
+                            <div className='errormessage'>{errors.eventmedia?.message}</div>
+                        </Form.Group>
+                }
 
                 {/* eventdate input */}
                 <Form.Group controlId='eventdate' className='mb-2'>
@@ -118,34 +157,6 @@ const EventEditForm = () => {
                     </Form.Group>
                 </div>
                 <div className='errormessage'>{errors.time_format?.message}</div>
-
-                {
-                    editImage &&
-                        <div className='mx-1'>
-                            <canvas
-                                id={'eventImagePreview'}
-                                ref={canvas}
-                                width={384}
-                                height={480}
-                            />
-                        </div>
-                }
-
-                {/* event image input */}
-                <Form.Group controlId='eventmedia' className='mb-2'>
-                    <Form.Control
-                        className={errors.eventmedia ? 'inputError' : ''}
-                        {...register('eventmedia')}
-                        onFocus={() => clearErrors('eventmedia')}
-                        type='file'
-                        name='eventmedia'
-                        accept='image/*'
-                        size='lg'
-                        onChange={imagePreview}
-                        // onChange={(e) => setImageFile(e.target.files[0])}
-                    />
-                    <div className='errormessage'>{errors.eventmedia?.message}</div>
-                </Form.Group>
 
                 {/* business location selector */}
                 <Form.Group controlId='venue_id' className='mb-2'>
