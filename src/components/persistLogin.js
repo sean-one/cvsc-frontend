@@ -5,11 +5,11 @@ import useRefreshToken from '../hooks/useRefreshToken';
 import useAuth from '../hooks/useAuth';
 import LoadingSpinner from './loadingSpinner';
 
+
 const PersistLogin = () => {
     const [ isLoading, setIsLoading ] = useState(true)
     const refresh = useRefreshToken()
     const { auth, setAuth } = useAuth()
-
 
     useEffect(() => {
         let isMounted = true
@@ -26,7 +26,7 @@ const PersistLogin = () => {
             }
         }
 
-        !auth?.user?.accessToken ? setIsLoading(false) : verifyRefreshToken()
+        !auth?.user?.accessToken ? verifyRefreshToken() : setIsLoading(false)
         
         return () => isMounted = false
         // eslint-disable-next-line
@@ -38,7 +38,7 @@ const PersistLogin = () => {
 
     
     return (
-        <Outlet context={auth}/>
+        <Outlet />
     )
 }
 

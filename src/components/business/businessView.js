@@ -1,13 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
 import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
-import { EditBusinessButton } from '../menu/buttons/edit_business.button';
 import ContactLink from '../contactLink';
 import BusinessAdminMenu from './admin/business.admin.menu';
 import EventsRelated from '../events/eventsRelated';
@@ -17,6 +18,8 @@ const BusinessView = () => {
     const { auth } = useAuth()
     let { business_id } = useParams()
     let business_role = {}
+
+    let navigate = useNavigate()
 
     const { data: business, isLoading } = useBusinessQuery(business_id)
 
@@ -37,7 +40,7 @@ const BusinessView = () => {
                     {
                         (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
                             <div className='px-2'>
-                                <EditBusinessButton business={business.data} business_role={business_role}/>
+                                <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/business/edit/${business_id}`, { state: business.data })} />
                             </div>
                     }
                 </div>

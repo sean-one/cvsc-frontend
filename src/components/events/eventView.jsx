@@ -1,13 +1,14 @@
 import React from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import { format } from 'date-fns'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 import useAuth from '../../hooks/useAuth';
 import { formatTime } from '../../helpers/formatTime';
-import { useEventQuery } from '../../hooks/useEvents';
+import { useEventQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
-import { EditEventButton } from '../menu/buttons/edit_event.button';
 import { image_link } from '../../helpers/dataCleanUp';
 import EventsRelated from './eventsRelated';
 import VenueLabel from './venue_label';
@@ -18,6 +19,8 @@ const EventView = () => {
     const { auth } = useAuth()
     let { event_id } = useParams()
 
+    let navigate = useNavigate()
+    
     const { data: event, isLoading } = useEventQuery(event_id)
 
     if (isLoading) {
@@ -29,13 +32,13 @@ const EventView = () => {
         <div>
             <div>
                 <div className='d-flex align-items-center'>
+                    <h2 className='w-100 mb-0'>{event.data.eventname.toUpperCase()}</h2>
                     {
                         (auth?.user?.id === event.data.created_by) &&
                             <div className='px-2'>
-                                <EditEventButton event={event.data}/>
+                                <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}/>
                             </div>
                     }
-                    <h2 className='w-100 mb-0'>{event.data.eventname.toUpperCase()}</h2>
                 </div>
                 <div>{`${event.data.street_address}, ${event.data.location_city}`}</div>
                 <div className='d-flex justify-content-between fw-bold fst-italic'>

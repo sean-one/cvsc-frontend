@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
@@ -11,11 +11,12 @@ import { useUpdateBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
-const BusinessEditForm = ({ business }) => {
+const BusinessEditForm = () => {
     const { auth } = useAuth()
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
+    const { state: business } = useLocation()
     let business_role = {}
 
     let navigate = useNavigate()

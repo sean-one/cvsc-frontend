@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUserEventsQuery } from '../../../hooks/useEvents';
+import { useUserEventsQuery } from '../../../hooks/useEventsApi';
 import useAuth from '../../../hooks/useAuth';
 
 import LoadingSpinner from '../../loadingSpinner';

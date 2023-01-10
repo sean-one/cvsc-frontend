@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useEventQuery } from '../../hooks/useEvents';
+import { useEventQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
 import EventForm from '../forms/event.form';
 

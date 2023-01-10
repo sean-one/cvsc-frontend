@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import useImagePreviewer from '../../../hooks/useImagePreviewer';
 import { reformatTime } from '../../../helpers/formatTime';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
-import { useEventQuery } from '../../../hooks/useEvents';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { updateEventSchema } from '../../../helpers/validationSchemas';
@@ -16,28 +15,28 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 
 const EventEditForm = () => {
-    const { event_id } = useParams()
     const { editImage, imagePreview, canvas } = useImagePreviewer();
     const { dispatch } = useNotification()
+    const { state: event } = useLocation()
     let venue_list, brand_list = []
 
     let navigate = useNavigate()
 
-    const { data: event, isLoading: eventLoading, isSuccess: eventSuccess } = useEventQuery(event_id)
-    const { data: business_list, isLoading: listLoading, isSuccess: listSuccess } = useBusinessesQuery()
+    console.log(event)
+    const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(updateEventSchema),
         defaultValues: {
-            eventname: event?.data.eventname,
-            eventdate: format(new Date(event?.data.eventdate), 'yyyy-MM-dd'),
-            eventstart: reformatTime(event?.data.eventstart),
-            eventend: reformatTime(event?.data.eventend),
+            eventname: event?.eventname,
+            eventdate: format(new Date(event?.eventdate), 'yyyy-MM-dd'),
+            eventstart: reformatTime(event?.eventstart),
+            eventend: reformatTime(event?.eventend),
             eventmedia: '',
-            venue_id: event?.data.venue_id,
-            details: event?.data.details,
-            brand_id: event?.data.brand_id,
+            venue_id: event?.venue_id,
+            details: event?.details,
+            brand_id: event?.brand_id,
         }
     })
 
@@ -47,11 +46,11 @@ const EventEditForm = () => {
         console.log('click')
     }
 
-    if(eventLoading || listLoading) {
+    if(isLoading) {
         return <LoadingSpinner />
     }
 
-    if(eventSuccess || listSuccess) {
+    if(isSuccess) {
         venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
         brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
     }
@@ -75,10 +74,11 @@ const EventEditForm = () => {
                     <div className='errormessage'>{errors.eventname?.message}</div>
                 </Form.Group>
 
+                {/* image preview */}
                 <div className='d-flex justify-content-center mb-2'>
                     <Image
-                        src={image_link(event?.data.eventmedia)}
-                        alt={event?.data.eventname}
+                        src={image_link(event?.eventmedia)}
+                        alt={event?.eventname}
                         thumbnail
                     />
                 </div>
@@ -219,7 +219,7 @@ const EventEditForm = () => {
                 
                 <div className='d-flex justify-content-between pt-3'>
                     <Button type='submit' disabled={!isDirty}>Update</Button>
-                    <Button onClick={() => navigate(`/event/${event_id}`)} variant='secondary'>Close</Button>
+                    <Button onClick={() => navigate(`/event/${event?.event_id}`)} variant='secondary'>Close</Button>
                 </div>
             </Form>
         </>

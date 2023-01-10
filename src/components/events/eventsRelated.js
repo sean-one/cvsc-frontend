@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useEventsQuery } from '../../hooks/useEvents';
+import { useEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
 import EventListPreview from './cardViews/eventListPreview';
 

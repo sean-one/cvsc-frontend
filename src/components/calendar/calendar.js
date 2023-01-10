@@ -2,7 +2,7 @@ import React from 'react'
 import { format } from 'date-fns';
 
 import filterEventsByDay from '../../helpers/filterEventsByDay';
-import { useEventsQuery } from '../../hooks/useEvents';
+import { useEventsQuery } from '../../hooks/useEventsApi';
 
 import LoadingSpinner from '../loadingSpinner';
 import Day from './day.jsx';

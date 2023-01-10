@@ -8,7 +8,7 @@ import { DevTool } from '@hookform/devtools'
 
 import useAuth from '../../../hooks/useAuth';
 import { createEventSchema } from '../../../helpers/validationSchemas';
-import { useCreateEventMutation } from '../../../hooks/useEvents';
+import { useCreateEventMutation } from '../../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';

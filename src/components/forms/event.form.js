@@ -8,7 +8,7 @@ import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import useAuth from '../../hooks/useAuth';
 import { reformatTime } from '../../helpers/formatTime';
 import { updateEventSchema } from '../../helpers/validationSchemas';
-import { useEditEventMutation, useRemoveEventMutation } from '../../hooks/useEvents';
+import { useEditEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
 import useNotification from '../../hooks/useNotification';
 
 import BusinessList from '../business/business_list';
