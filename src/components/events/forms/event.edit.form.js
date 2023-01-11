@@ -4,10 +4,14 @@ import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
+import useAuth from '../../../hooks/useAuth';
 import useImagePreviewer from '../../../hooks/useImagePreviewer';
 import { reformatTime } from '../../../helpers/formatTime';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
+import { useUpdateEventMutation, useRemoveEventMutation } from '../../../hooks/useEventsApi';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { updateEventSchema } from '../../../helpers/validationSchemas';
@@ -15,10 +19,14 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 
 const EventEditForm = () => {
+    const { logout_user } = useAuth()
     const { editImage, imagePreview, canvas } = useImagePreviewer();
     const { dispatch } = useNotification()
     const { state: event } = useLocation()
     let venue_list, brand_list = []
+
+    const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
+    const { mutateAsync: removeEventMutation } = useRemoveEventMutation()
 
     let navigate = useNavigate()
 
@@ -43,7 +51,99 @@ const EventEditForm = () => {
     const image_attached = watch('image_attached', false)
 
     const update_event = async (data) => {
-        console.log('click')
+        try {
+            const formData = new FormData()
+
+            // remove entries that are unchanged
+            for (const [key] of Object.entries(data)) {
+                if (!Object.keys(dirtyFields).includes(key)) {
+                    delete data[key]
+                }
+            }
+
+            Object.keys(data).forEach(key => {
+                if (key === 'eventmedia') {
+                    formData.set('eventmedia', data['eventmedia'][0])
+                } else if (key === 'eventdate') {
+                    formData.append(key, format(data[key], 'y-M-d'))
+                } else if (key === 'eventstart' || key === 'eventend') {
+                    formData.append(key, data[key].replace(':', ''))
+                } else {
+                    formData.append(key, data[key])
+                }
+            })
+
+            const edit_event_response = await updateEventMutation({ event_id: event.event_id, event_updates: formData })
+
+            if (edit_event_response.status === 201) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${edit_event_response.data.eventname} has been updated`
+                    }
+                })
+
+                navigate(`/event/${event.event_id}`)
+            }
+
+        } catch (error) {
+            console.log('inside the send update catch')
+            console.log(error)
+            if (error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error.response.data.error.message}`
+                    }
+                })
+
+                logout_user()
+                // navigate('/login')
+            }
+
+            if (error.response.status === 400) {
+                setError(error.response.data.error.type, {
+                    type: error.response.data.error.type,
+                    message: error.response.data.error.message
+                })
+            }
+
+        }
+    }
+
+    const delete_event = async () => {
+        try {
+            const delete_event_response = await removeEventMutation(event.event_id)
+
+            if (delete_event_response.status === 204) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `event has been deleted`
+                    }
+                })
+
+                navigate('/profile')
+            }
+            console.log(delete_event_response)
+
+        } catch (error) {
+            console.log('error in the deleteEvent')
+            if (error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error.response.data.error.message
+                    }
+                })
+
+                logout_user()
+            }
+        }
     }
 
     if(isLoading) {
@@ -57,7 +157,10 @@ const EventEditForm = () => {
 
     return (
         <>
-            <h1>{event?.eventname}</h1>
+            <div className='d-flex justify-content-between align-items-center'>
+                <h1>{event?.eventname}</h1>
+                <FontAwesomeIcon className='mx-1' icon={faTrash} onClick={() => delete_event()} />
+            </div>
             <Form onSubmit={handleSubmit(update_event)} encType='multipart/form-data'>
                 {/* eventname input */}
                 <Form.Group controlId='eventname' className='mb-2'>

@@ -51,9 +51,9 @@ export const useCreateEventMutation = () => {
 }
 
 
-//! useEditEventMutation - update event
+// event.edit.form
 const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.post(`/events/update/${event_id}`, event_updates) }
-export const useEditEventMutation = () => {
+export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
         onSuccess: ({ data }) => {
