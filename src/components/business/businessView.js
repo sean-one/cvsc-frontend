@@ -11,7 +11,7 @@ import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
 import ContactLink from '../contactLink';
 import BusinessAdminMenu from './admin/business.admin.menu';
-import EventsRelated from '../events/eventsRelated';
+import RelatedEvents from '../events/related_events';
 
 
 const BusinessView = () => {
@@ -73,7 +73,7 @@ const BusinessView = () => {
                     {business.data.business_description}
                 </div>
             </div>
-            <EventsRelated business_ids={[business_id]} />
+            <RelatedEvents business_ids={[business_id]} />
         </div>
     )
 }

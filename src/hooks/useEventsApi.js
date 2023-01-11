@@ -28,7 +28,7 @@ const getEvent = async (id) => { return await AxiosInstance.get(`/events/${id}`)
 export const useEventQuery = (id) => useQuery(['events', id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 
 
-//! useEventsQuery - fetch all events
+// eventsRelated
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 
@@ -51,7 +51,7 @@ export const useCreateEventMutation = () => {
 }
 
 
-// event.edit.form
+// event.edit.form - update_event
 const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.post(`/events/update/${event_id}`, event_updates) }
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient()
@@ -71,13 +71,14 @@ export const useUpdateEventMutation = () => {
 }
 
 
-//! useRemoveEventMutation - remove event
+// event.edit.form - remove_envent
 const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/remove/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeEvent, {
         onSuccess: () => {
-            queryClient.cancelQueries('events')
+            queryClient.invalidateQueries(['events'])
+            queryClient.refetchQueries(['events'])
         },
         onError: (error) => {
             console.log(error)

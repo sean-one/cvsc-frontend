@@ -10,9 +10,9 @@ import { formatTime } from '../../helpers/formatTime';
 import { useEventQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
-import EventsRelated from './eventsRelated';
-import VenueLabel from './venue_label';
-import BrandLabel from './brand_label';
+import RelatedEvents from './related_events';
+import VenueLabel from '../business/venue_label';
+import BrandLabel from '../business/brand_label';
 
 
 const EventView = () => {
@@ -62,7 +62,7 @@ const EventView = () => {
                 </div>
             </div>
             <div>
-                <EventsRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
+                <RelatedEvents business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
             </div>
         </div>
     )

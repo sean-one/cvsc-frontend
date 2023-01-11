@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 
-import { requestBusinessCreator } from '../../../helpers/validationSchemas';
+import { roleRequestSchema } from '../../../helpers/validationSchemas';
 import LoadingSpinner from '../../loadingSpinner';
 import useNotification from '../../../hooks/useNotification';
 import useAuth from '../../../hooks/useAuth';
@@ -21,7 +21,7 @@ const CreatorRequest = () => {
 
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(requestBusinessCreator)
+        resolver: yupResolver(roleRequestSchema)
     });
     
     if(isLoading) {

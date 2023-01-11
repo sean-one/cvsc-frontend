@@ -16,7 +16,7 @@ const AccountDetails = () => {
     
     return (
         <div className='d-flex flex-column border mb-3'>
-            <div className='p-1 text-center'>
+            <div className='p-5 text-center'>
                 <Image thumbnail roundedCircle src={auth?.user.avatar || default_profile} alt={`user avatar`} />
             </div>
             <div className='d-flex justify-content-between'>

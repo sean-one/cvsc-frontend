@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
+// import { ReactQueryDevtools } from 'react-query/devtools'
 
 // components
 import Calendar from './components/calendar/calendar';
@@ -15,7 +15,7 @@ import Profile from './components/profile/profile.jsx';
 import EditProfile from './components/profile/accountTab/editProfile';
 import RolesTab from './components/profile/rolesTab/rolesTab';
 import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
-import BusinessList from './components/profile/managerTab/businessList';
+import ManagementList from './components/profile/managerTab/managementList';
 import EventCreateForm from './components/events/forms/event.create.form';
 import EventEditForm from './components/events/forms/event.edit.form';
 import BusinessCreateForm from './components/business/forms/business.create.form';
@@ -53,7 +53,7 @@ const App = () => {
                 <Route path='/profile' element={<Profile />}>
                     <Route path='/profile/roles' element={<RolesTab />} />
                     <Route path='/profile/events' element={<UserEventsTab />} />
-                    <Route path='/profile/management' element={<BusinessList />} />
+                    <Route path='/profile/management' element={<ManagementList />} />
                     <Route path='/profile/edit' element={<EditProfile />} />
                 </Route>
                 <Route path='/event/create' element={<EventCreateForm />} />
@@ -69,7 +69,7 @@ const App = () => {
           {/* <Route exact path='/' render={(props) => (<Calendar {...props} />)} /> */}
           {/* <AuthRoute exact path='/profile' component={Profile} /> */}
         </Layout>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </React.Fragment>
   );

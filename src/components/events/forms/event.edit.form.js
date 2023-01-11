@@ -30,7 +30,6 @@ const EventEditForm = () => {
 
     let navigate = useNavigate()
 
-    console.log(event)
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
@@ -154,6 +153,7 @@ const EventEditForm = () => {
         venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
         brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
     }
+
 
     return (
         <>

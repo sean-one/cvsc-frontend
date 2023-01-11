@@ -102,6 +102,7 @@ export const useRemoveRoleMutation = () => {
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/user/${user_id}`) }
 export const useUserRolesQuery = (user_id) => useQuery(['roles', 'user', user_id], () => getUserRoles(user_id))
 
+
 const getUserBusinessRole = async(business_id) => { return await AxiosInstance.get(`/roles/user_role/${business_id}`) }
 export const useUserBusinessRoleQuery = (business_id) => useQuery(['roles', 'user', business_id], () => getUserBusinessRole(business_id), { retry: false })
 

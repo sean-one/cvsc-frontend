@@ -5,8 +5,8 @@ import { formatTime } from '../../../helpers/formatTime';
 import { Image } from 'react-bootstrap';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import VenueLabel from '../venue_label';
-import BrandLabel from '../brand_label';
+import VenueLabel from '../../business/venue_label';
+import BrandLabel from '../../business/brand_label';
 
 
 const EventListPreview = ({ event }) => {
