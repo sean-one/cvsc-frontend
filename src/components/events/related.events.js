@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
-import EventListPreview from './cardViews/eventListPreview';
+import EventPreview from './views/event.preview';
 
 
 const RelatedEvents = ({ business_ids, event_id = false }) => {
@@ -31,7 +31,7 @@ const RelatedEvents = ({ business_ids, event_id = false }) => {
                     {
                         event_list.map(event => {
                             return (
-                                <EventListPreview key={event.event_id} event={event} />
+                                <EventPreview key={event.event_id} event={event} />
                             )
                         })
                     }

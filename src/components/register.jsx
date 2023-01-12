@@ -72,19 +72,19 @@ const Register = () => {
                     <div className='errormessage'>{errors.username?.message}</div>
                 </Form.Group>
 
-                {/* <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        className={errors.email ? 'inputError' : ''}
-                        onFocus={() => clearErrors('email')}
-                        {...register('email')}
-                        type="email"
-                        placeholder="email"
-                        name='email'
-                        required
-                    />
-                </Form.Group>
-                <div className='errormessage'>{errors.email?.message}</div> */}
+                {/* <Form.Group controlId="email" className='mb-2'>
+                    <FloatingLabel controlId='email' label='Email'>
+                        <Form.Control
+                            className={errors.email ? 'inputError' : ''}
+                            onFocus={() => clearErrors('email')}
+                            {...register('email')}
+                            type="email"
+                            name='email'
+                            required
+                        />
+                    </FloatingLabel>
+                    <div className='errormessage'>{errors.email?.message}</div>
+                </Form.Group> */}
 
                 <div className='d-flex'>
                     <Form.Group controlId="password" className='mb-2'>

@@ -23,7 +23,7 @@ export const useBusinessRemoveMutation = () => {
 }
 
 
-//! useEventQuery - fetch single event
+// event.view
 const getEvent = async (id) => { return await AxiosInstance.get(`/events/${id}`) }
 export const useEventQuery = (id) => useQuery(['events', id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 

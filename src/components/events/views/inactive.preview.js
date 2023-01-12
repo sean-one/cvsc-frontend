@@ -4,21 +4,18 @@ import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import { Image } from 'react-bootstrap';
 
-import { image_link } from '../../../helpers/dataCleanUp';
-import VenueLabel from '../../business/venue_label';
-import BrandLabel from '../../business/brand_label';
+import { image_link } from '../../../helpers/dataCleanUp'
 
-
-const EventListPreview = ({ event }) => {
+const InactivePreview = ({ event }) => {
     let navigate = useNavigate()
 
     const textTruncation = (eventdetails, cutoff) => {
         return (eventdetails.length > cutoff) ? eventdetails.substr(0, cutoff - 1) + '...' : eventdetails;
     }
-    
+
 
     return (
-        <div className='bg-light rounded my-3 p-1 shadow-sm' onClick={() => navigate(`/event/${event.event_id}`)}>
+        <div className='bg-light rounded my-3 p-1 shadow-sm' onClick={() => navigate(`/event/edit/${event.event_id}`)}>
             <h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4>
             {/* event date information */}
             <div className='d-flex justify-content-between border-bottom my-1'>
@@ -38,12 +35,8 @@ const EventListPreview = ({ event }) => {
                     </div>
                 </div>
             </div>
-            <div className='d-flex'>
-                <VenueLabel venue_id={event.venue_id} venue_name={event.venue_name} />
-                <BrandLabel brand_id={event.brand_id} brand_name={event.brand_name} />
-            </div>
         </div>
     )
 }
 
-export default EventListPreview;
+export default InactivePreview;

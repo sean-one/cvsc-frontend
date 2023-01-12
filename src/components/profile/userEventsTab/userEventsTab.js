@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UserEvents from '../../events/eventListing/user.events';
+import UserEvents from '../../events/user.events';
 
 const UserEventsTab = () => {
 
@@ -8,7 +8,7 @@ const UserEventsTab = () => {
     return (
         <div>
             <div className='d-flex justify-content-between align-items-center mb-2'>
-                <h6>Calendar</h6>
+                <h6 className='mb-0'>Calendar</h6>
             </div>
             <UserEvents />
         </div>

@@ -8,7 +8,7 @@ import VenueLabel from '../../business/venue_label';
 import BrandLabel from '../../business/brand_label';
 
 
-const EventCalendarPreview = ({ event }) => {
+const CalendarPreview = ({ event }) => {
 
     
     return (
@@ -32,4 +32,4 @@ const EventCalendarPreview = ({ event }) => {
     )
 }
 
-export default EventCalendarPreview;
+export default CalendarPreview;

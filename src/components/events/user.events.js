@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { useUserEventsQuery } from '../../../hooks/useEventsApi';
-import useAuth from '../../../hooks/useAuth';
+import { useUserEventsQuery } from '../../hooks/useEventsApi';
+import useAuth from '../../hooks/useAuth';
 
-import LoadingSpinner from '../../loadingSpinner';
-import EventListPreview from '../cardViews/eventListPreview';
-import InactiveListPreview from '../cardViews/inactiveEventPreview';
+import LoadingSpinner from '../loadingSpinner';
+import EventPreview from './views/event.preview';
+import InactiveListPreview from './views/inactive.preview';
 
 const UserEvents = () => {
     const { auth } = useAuth()
@@ -29,7 +29,7 @@ const UserEvents = () => {
                 (active_events.length > 0) &&
                     active_events.map(event => {
                         return (
-                            <EventListPreview key={event.event_id} event={event} />
+                            <EventPreview key={event.event_id} event={event} />
                         )
                     })
             }

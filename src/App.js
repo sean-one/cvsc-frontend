@@ -19,7 +19,7 @@ import ManagementList from './components/profile/managerTab/managementList';
 import EventCreateForm from './components/events/forms/event.create.form';
 import EventEditForm from './components/events/forms/event.edit.form';
 import BusinessCreateForm from './components/business/forms/business.create.form';
-import EventView from './components/events/eventView';
+import EventView from './components/events/views/event.view';
 import UpdateBusiness from './components/business/update.business';
 import BusinessRoles from './components/roles/business.roles';
 import { ErrorPage } from './components/error/error_404';

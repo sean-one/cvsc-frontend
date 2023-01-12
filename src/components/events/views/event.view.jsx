@@ -5,14 +5,14 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
-import useAuth from '../../hooks/useAuth';
-import { formatTime } from '../../helpers/formatTime';
-import { useEventQuery } from '../../hooks/useEventsApi';
-import LoadingSpinner from '../loadingSpinner';
-import { image_link } from '../../helpers/dataCleanUp';
-import RelatedEvents from './related_events';
-import VenueLabel from '../business/venue_label';
-import BrandLabel from '../business/brand_label';
+import useAuth from '../../../hooks/useAuth';
+import { formatTime } from '../../../helpers/formatTime';
+import { useEventQuery } from '../../../hooks/useEventsApi';
+import LoadingSpinner from '../../loadingSpinner';
+import { image_link } from '../../../helpers/dataCleanUp';
+import RelatedEvents from '../related.events';
+import VenueLabel from '../../business/venue_label';
+import BrandLabel from '../../business/brand_label';
 
 
 const EventView = () => {

@@ -11,7 +11,7 @@ import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
 import ContactLink from '../contactLink';
 import BusinessAdminMenu from './admin/business.admin.menu';
-import RelatedEvents from '../events/related_events';
+import RelatedEvents from '../events/related.events';
 
 
 const BusinessView = () => {

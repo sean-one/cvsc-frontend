@@ -15,24 +15,44 @@ const EditProfile = () => {
     }
     
     return (
-        <Form onSubmit={handleSubmit(updateProfile)}>
+        <Form onSubmit={handleSubmit(updateProfile)} className='my-2'>
+            
+            <Form.Group controlId='image_attached' className='mb-2'>
+                <Form.Check
+                    {...register('image_attached')}
+                    type='checkbox'
+                    label='Update Profile Image'
+                />
+            </Form.Group>
 
-            <Form.Group controlId='username' className='mb-2'>
-                <FloatingLabel controlId='username' label='Username'>
+            {
+                (image_attached) &&
+                    <Form.Group controlId='avatar' className='mb-2'>
+                        <Form.Control
+                            className={errors.avatar ? 'inputError' : ''}
+                            {...register('avatar')}
+                            onFocus={() => clearErrors('avatar')}
+                            type='file'
+                            name='avatar'
+                            accept='image/*'
+                        />
+                        <div className='errormessage'>{errors.avatar?.message}</div>
+                    </Form.Group>
+            }
+
+            <Form.Group controlId='email' className='mb-2'>
+                <FloatingLabel controlId='email' label='Update Email'>
                     <Form.Control
-                        className={errors.username ? 'inputError' : ''}
-                        onFocus={() => clearErrors('username')}
-                        {...register('username')}
-                        type='text'
-                        placeholder='username'
-                        name='username'
+                        className={errors.email ? 'inputError' : ''}
+                        onFocus={() => clearErrors('email')}
+                        type='email'
+                        name='email'
                     />
                 </FloatingLabel>
-                <div className='errormessage'>{errors.username?.message}</div>
             </Form.Group>
 
             <Form.Group controlId='password' className='mb-2'>
-                <FloatingLabel controlId='password' label='New Password'>
+                <FloatingLabel controlId='password' label='Update Password'>
                     <Form.Control
                         className={errors.password ? 'inputError' : ''}
                         onFocus={() => clearErrors('password')}
@@ -56,29 +76,6 @@ const EditProfile = () => {
                 </FloatingLabel>
                 <div className='errormessage'>{errors.confirmation?.message}</div>
             </Form.Group>
-
-            <Form.Group controlId='image_attached' className='mb-2'>
-                <Form.Check
-                    {...register('image_attached')}
-                    type='checkbox'
-                    label='Update Profile Image'
-                />
-            </Form.Group>
-
-            {
-                (image_attached) &&
-                    <Form.Group controlId='avatar' className='mb-2'>
-                        <Form.Control
-                            className={errors.avatar ? 'inputError' : ''}
-                            {...register('avatar')}
-                            onFocus={() => clearErrors('avatar')}
-                            type='file'
-                            name='avatar'
-                            accept='image/*'
-                        />
-                        <div className='errormessage'>{errors.avatar?.message}</div>
-                    </Form.Group>
-            }
 
             <Button type='submit'>Save</Button>
             
