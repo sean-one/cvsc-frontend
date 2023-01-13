@@ -1,15 +1,15 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import AccountDetails from './accountTab/accountDetails';
-import ProfileMenu from './profileMenu';
+import UserAccount from './account/user.account';
+import ProfileMenu from './profile.menu';
 
 
 const Profile = () => {
 
     return (
         <div>
-            <AccountDetails />
+            <UserAccount />
             <ProfileMenu />
             <Outlet />
         </div>

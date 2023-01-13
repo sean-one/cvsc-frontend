@@ -9,7 +9,7 @@ export const useBusinessRolesQuery = (business_id) => useQuery(['roles', 'busine
 const getBusinessPendingRoles = async (user_id) => { return await AxiosInstance.get(`/roles/management/${user_id}`) }
 export const usePendingBusinessRolesQuery = (user_id) => useQuery(['roles', user_id], () => getBusinessPendingRoles(user_id))
 
-// creatorRequest - creates new role request
+// role.request - creates new role request
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/request/${business_id}`) }
 export const useCreateRoleMutation = () => {
     const queryClient = useQueryClient()

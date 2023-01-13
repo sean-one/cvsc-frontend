@@ -11,7 +11,7 @@ import { useCreateRoleMutation } from '../../../hooks/useRolesApi';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 
 
-const CreatorRequest = () => {
+const RoleRequest = () => {
     const { auth, setAuth } = useAuth()
     const businessIdList = auth.roles.map(role => role?.business_id) || []
     
@@ -92,4 +92,4 @@ const CreatorRequest = () => {
     )
 }
 
-export default CreatorRequest;
+export default RoleRequest;

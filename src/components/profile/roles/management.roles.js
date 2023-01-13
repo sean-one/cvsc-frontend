@@ -1,12 +1,12 @@
 import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 
-import useAuth from '../../hooks/useAuth';
-import useNotification from '../../hooks/useNotification';
-import { usePendingBusinessRolesQuery } from '../../hooks/useRolesApi';
-import LoadingSpinner from '../loadingSpinner';
-import ApproveRole from './buttons/approve.role';
-import RemoveRole from './buttons/remove.role';
+import useAuth from '../../../hooks/useAuth';
+import useNotification from '../../../hooks/useNotification';
+import { usePendingBusinessRolesQuery } from '../../../hooks/useRolesApi';
+import LoadingSpinner from '../../loadingSpinner';
+import ApproveRole from '../../roles/buttons/approve.role';
+import RemoveRole from '../../roles/buttons/remove.role';
 
 const ManagementRoles = ({ user_id }) => {
     const { logout_user } = useAuth()

@@ -4,16 +4,16 @@ import { Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
+import useAuth from '../../../hooks/useAuth';
 import default_profile from '../../../assets/default_user_icon.png'
 import { role_types } from '../../../helpers/dataCleanUp';
-import useAuth from '../../../hooks/useAuth';
 
 
-const AccountDetails = () => {
+const UserAccount = () => {
     const { auth } = useAuth()
     let navigate = useNavigate()
 
-    
+
     return (
         <div className='d-flex flex-column border mb-3'>
             <div className='p-5 text-center'>
@@ -33,4 +33,4 @@ const AccountDetails = () => {
     )
 }
 
-export default AccountDetails;
+export default UserAccount;

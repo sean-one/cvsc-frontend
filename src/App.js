@@ -5,25 +5,30 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 // components
 import Calendar from './components/calendar/calendar';
-import BusinessView from './components/business/businessView';
 import Navbar from './components/navbar';
-import Register from './components/register.jsx';
+
 import Login from './components/login.jsx';
-import AuthRoute from './components/auth/auth.jsx';
-import PersistLogin from './components/persistLogin';
+import Register from './components/register.jsx';
+import BusinessRoles from './components/roles/business.roles';
+
 import Profile from './components/profile/profile.jsx';
-import EditProfile from './components/profile/accountTab/editProfile';
-import RolesTab from './components/profile/rolesTab/rolesTab';
-import UserEventsTab from './components/profile/userEventsTab/userEventsTab';
-import ManagementList from './components/profile/managerTab/managementList';
+import UserEditForm from './components/profile/forms/user.edit.form';
+import RolesTab from './components/profile/roles';
+import UserEvents from './components/profile/events/user.events';
+import ManagementList from './components/profile/management/management.list';
+
+import EventView from './components/events/views/event.view';
 import EventCreateForm from './components/events/forms/event.create.form';
 import EventEditForm from './components/events/forms/event.edit.form';
+
+import BusinessView from './components/business/businessView';
 import BusinessCreateForm from './components/business/forms/business.create.form';
-import EventView from './components/events/views/event.view';
 import UpdateBusiness from './components/business/update.business';
-import BusinessRoles from './components/roles/business.roles';
+
 import { ErrorPage } from './components/error/error_404';
 
+import AuthRoute from './components/auth/auth.jsx';
+import PersistLogin from './components/persistLogin';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 
@@ -52,9 +57,9 @@ const App = () => {
               <Route element={<AuthRoute />}>
                 <Route path='/profile' element={<Profile />}>
                     <Route path='/profile/roles' element={<RolesTab />} />
-                    <Route path='/profile/events' element={<UserEventsTab />} />
+                    <Route path='/profile/events' element={<UserEvents />} />
                     <Route path='/profile/management' element={<ManagementList />} />
-                    <Route path='/profile/edit' element={<EditProfile />} />
+                    <Route path='/profile/edit' element={<UserEditForm />} />
                 </Route>
                 <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EventEditForm />} />

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { role_types } from '../../helpers/dataCleanUp';
-import { useUserRolesQuery } from '../../hooks/useRolesApi';
-import RemoveUserRole from './buttons/remove.user.role';
-import LoadingSpinner from '../loadingSpinner';
+import { role_types } from '../../../helpers/dataCleanUp';
+import { useUserRolesQuery } from '../../../hooks/useRolesApi';
+import RemoveUserRole from '../../roles/buttons/remove.user.role';
+import LoadingSpinner from '../../loadingSpinner';
 
 
 const UserRoles = ({ user_id }) => {
