@@ -18,7 +18,7 @@ const EventPreview = ({ event }) => {
     
 
     return (
-        <div className='bg-light rounded my-3 p-1 shadow-sm' onClick={() => navigate(`/event/${event.event_id}`)}>
+        <div className='bg-light rounded my-2 p-1 shadow-sm' onClick={() => navigate(`/event/${event.event_id}`)}>
             <h4 className='text-truncate my-1'>{event.eventname.toUpperCase()}</h4>
             {/* event date information */}
             <div className='d-flex justify-content-between border-bottom my-1'>

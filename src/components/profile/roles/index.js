@@ -4,7 +4,7 @@ import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import RoleRequest from '../forms/role.request';
 import UserRoles from './user.roles';
-import ManagementRoles from './management.roles';
+import PendingRoleRequest from './pending.role.request';
 import LoadingSpinner from '../../loadingSpinner';
 
 const RolesTab = () => {
@@ -21,11 +21,11 @@ const RolesTab = () => {
             <RoleRequest />
             {
                 (roles.data.length > 0) &&
-                    <UserRoles user_id={auth.user.id} />
+                    <UserRoles roles={roles.data} />
             }
             {
                 (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
-                    <ManagementRoles user_id={auth.user.id}/>
+                    <PendingRoleRequest user_id={auth.user.id}/>
             }
         </div>
     )

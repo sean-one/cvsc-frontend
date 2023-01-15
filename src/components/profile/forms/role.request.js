@@ -63,7 +63,7 @@ const RoleRequest = () => {
             <div className='d-flex justify-content-between align-items-center'>
                 <div className='flex-fill px-0'>
                     <Form.Group controlId='business_id'>
-                        <FloatingLabel controlId='business_id' label='Creator Request' className='mb-2'>
+                        <FloatingLabel controlId='business_id' label='Creator Role Request' className='mb-2'>
                             <Form.Select
                                 className={errors.business_id ? 'inputError' : ''}
                                 onFocus={() => clearErrors('business_id')}
@@ -74,7 +74,7 @@ const RoleRequest = () => {
                             >
                                 {
                                     business_filtered.map(business => (
-                                        <option key={business.id} value={business.id}>{business.business_name}</option>
+                                        <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
                                     ))
                                 }
                             </Form.Select>
