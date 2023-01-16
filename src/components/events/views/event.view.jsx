@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 import useAuth from '../../../hooks/useAuth';
+import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
-import LoadingSpinner from '../../loadingSpinner';
 import { image_link } from '../../../helpers/dataCleanUp';
+import EventManagementMenu from '../management/event.management.menu';
 import RelatedEvents from '../related.events';
 import VenueLabel from '../../business/venue_label';
 import BrandLabel from '../../business/brand_label';
@@ -18,6 +19,7 @@ import BrandLabel from '../../business/brand_label';
 const EventView = () => {
     const { auth } = useAuth()
     let { event_id } = useParams()
+    let brand_role, venue_role = {}
 
     let navigate = useNavigate()
     
@@ -25,6 +27,16 @@ const EventView = () => {
 
     if (isLoading) {
         return <LoadingSpinner />
+    }
+
+    if(auth?.roles) {
+        brand_role = auth.roles.find(role => role.business_id === event.data.brand_id)
+        venue_role = auth.roles.find(role => role.business_id === event.data.venue_id)
+
+        console.log('brand')
+        console.log(brand_role)
+        console.log('venue')
+        console.log(venue_role)
     }
 
 
@@ -52,6 +64,10 @@ const EventView = () => {
                 <div className='my-1 position-relative'>
                     <Image fluid src={image_link(event.data.eventmedia)} alt={event.data.eventname} className='w-100' />
                 </div>
+                {
+                    ((venue_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && venue_role?.active_role === true) || (brand_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && brand_role?.active_role === true)) &&
+                        <EventManagementMenu brand_role={brand_role} venue_role={venue_role} />
+                }
                 {/* brand and venue names and links */}
                 <div className='d-flex'>
                     <VenueLabel venue_id={event.data.venue_id} venue_name={event.data.venue_name} />
