@@ -10,7 +10,6 @@ import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
-import EventManagementMenu from '../management/event.management.menu';
 import RelatedEvents from '../related.events';
 import VenueLabel from '../../business/venue_label';
 import BrandLabel from '../../business/brand_label';
@@ -30,13 +29,8 @@ const EventView = () => {
     }
 
     if(auth?.roles) {
-        brand_role = auth.roles.find(role => role.business_id === event.data.brand_id)
-        venue_role = auth.roles.find(role => role.business_id === event.data.venue_id)
-
-        console.log('brand')
-        console.log(brand_role)
-        console.log('venue')
-        console.log(venue_role)
+        brand_role = auth.roles.find(role => role.business_id === event.data.brand_id) || {}
+        venue_role = auth.roles.find(role => role.business_id === event.data.venue_id) || {}
     }
 
 
@@ -64,14 +58,10 @@ const EventView = () => {
                 <div className='my-1 position-relative'>
                     <Image fluid src={image_link(event.data.eventmedia)} alt={event.data.eventname} className='w-100' />
                 </div>
-                {
-                    ((venue_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && venue_role?.active_role === true) || (brand_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && brand_role?.active_role === true)) &&
-                        <EventManagementMenu brand_role={brand_role} venue_role={venue_role} />
-                }
                 {/* brand and venue names and links */}
-                <div className='d-flex'>
-                    <VenueLabel venue_id={event.data.venue_id} venue_name={event.data.venue_name} />
-                    <BrandLabel brand_id={event.data.brand_id} brand_name={event.data.brand_name} />
+                <div className='d-flex my-2'>
+                    <VenueLabel venue_id={event.data.venue_id} venue_name={event.data.venue_name} business_role={venue_role} />
+                    <BrandLabel brand_id={event.data.brand_id} brand_name={event.data.brand_name} business_role={brand_role} />
                 </div>
                 <div className='fs-6 lh-sm mt-1 pt-2 border-top'>
                     {event.data.details}
