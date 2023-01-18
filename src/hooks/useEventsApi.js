@@ -7,7 +7,7 @@ export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_
 
 
 const removeBusiness = async ({ event_id, ...event_updates }) => { return await AxiosInstance.put(`/events/remove_business/${event_id}`, event_updates) }
-export const useBusinessRemoveMutation = () => {
+export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {

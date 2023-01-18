@@ -20,7 +20,8 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 const EventEditForm = () => {
     const { logout_user } = useAuth()
-    const { editImage, imagePreview, canvas } = useImagePreviewer();
+    const { imagePreview } = useImagePreviewer();
+    // const { editImage, canvas } = useImagePreviewer();
     const { dispatch } = useNotification()
     const { state: event } = useLocation()
     let venue_list, brand_list = []
