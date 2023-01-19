@@ -5,8 +5,7 @@ import { formatTime } from '../../../helpers/formatTime';
 import { Image } from 'react-bootstrap';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import VenueLabel from '../../business/venue_label';
-import BrandLabel from '../../business/brand_label';
+import BusinessLabel from '../../business/business_label';
 
 
 const EventPreview = ({ event }) => {
@@ -39,8 +38,8 @@ const EventPreview = ({ event }) => {
                 </div>
             </div>
             <div className='d-flex'>
-                <VenueLabel venue_id={event.venue_id} venue_name={event.venue_name} />
-                <BrandLabel brand_id={event.brand_id} brand_name={event.brand_name} />
+                <BusinessLabel business_id={event.venue_id} business_name={event.venue_name} business_type='venue' />
+                <BusinessLabel business_id={event.brand_id} business_name={event.brand_name} business_type='brand' />
             </div>
         </div>
     )

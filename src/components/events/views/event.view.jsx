@@ -11,8 +11,7 @@ import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
 import RelatedEvents from '../related.events';
-import VenueLabel from '../../business/venue_label';
-import BrandLabel from '../../business/brand_label';
+import BusinessLabel from '../../business/business_label';
 
 
 const EventView = () => {
@@ -60,8 +59,8 @@ const EventView = () => {
                 </div>
                 {/* brand and venue names and links */}
                 <div className='d-flex my-2'>
-                    <VenueLabel venue_id={event.data.venue_id} venue_name={event.data.venue_name} business_role={venue_role} />
-                    <BrandLabel brand_id={event.data.brand_id} brand_name={event.data.brand_name} business_role={brand_role} />
+                    <BusinessLabel business_id={event.data.venue_id} business_name={event.data.venue_name} business_role={venue_role} business_type='venue'/>
+                    <BusinessLabel business_id={event.data.brand_id} business_name={event.data.brand_name} business_role={brand_role} business_type='brand'/>
                 </div>
                 <div className='fs-6 lh-sm mt-1 pt-2 border-top'>
                     {event.data.details}

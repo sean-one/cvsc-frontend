@@ -28,7 +28,7 @@ const getEvent = async (id) => { return await AxiosInstance.get(`/events/${id}`)
 export const useEventQuery = (id) => useQuery(['events', id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
 
 
-// eventsRelated
+// related.events
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 

@@ -128,7 +128,6 @@ const EventEditForm = () => {
 
                 navigate('/profile')
             }
-            console.log(delete_event_response)
 
         } catch (error) {
             console.log('error in the deleteEvent')
