@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,6 +17,7 @@ const BusinessEditForm = () => {
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
     const { state: business } = useLocation()
+    const [ imageFile, setImageFile ] = useState(business.business_avatar)
     let business_role = {}
 
     let navigate = useNavigate()
@@ -55,7 +56,7 @@ const BusinessEditForm = () => {
             const formData = new FormData()
 
             // if updatelocation is true append new address
-            if ((data.business_location !== 'false') && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
+            if ((data.business_location !== false) && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
                 formData.append('location_id', business?.location_id || 'new_location')
                 formData.append('street_address', data.street_address)
                 formData.append('city', data.city)
@@ -71,7 +72,7 @@ const BusinessEditForm = () => {
             delete data['business_location']
 
             // if updateimage is true set updated file
-            if (data.image_attached && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
+            if (data?.business_avatar[0] && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
                 formData.set('business_avatar', data['business_avatar'][0])
             }
 
@@ -135,7 +136,7 @@ const BusinessEditForm = () => {
                 }
                 <div className='d-flex justify-content-center mb-2'>
                     <Image
-                        src={image_link(business.business_avatar)}
+                        src={image_link(imageFile)}
                         alt={business.business_name}
                         thumbnail
                     />
@@ -157,6 +158,7 @@ const BusinessEditForm = () => {
                             type='file'
                             name='business_avatar'
                             accept='image/*'
+                            onChange={(e) => setImageFile(URL.createObjectURL(e.target.files[0]))}
                         />
                         <div className='errormessage'>{errors.business_avatar?.message}</div>
                     </Form.Group>
