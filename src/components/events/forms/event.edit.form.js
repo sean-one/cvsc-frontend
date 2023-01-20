@@ -20,7 +20,7 @@ import { image_link } from '../../../helpers/dataCleanUp';
 const EventEditForm = () => {
     const { logout_user } = useAuth()
     const { state: event } = useLocation()
-    const [ imageFile, setImageFile ] = useState(event.eventmedia)
+    const [ imageFile, setImageFile ] = useState(event?.eventmedia)
     const { dispatch } = useNotification()
     let venue_list, brand_list = []
 
@@ -148,6 +148,14 @@ const EventEditForm = () => {
         }
     }
 
+    const image_preview = (e) => {
+        if(e.target.files.length !== 0) {
+            setImageFile(URL.createObjectURL(e.target.files[0]))
+        } else {
+            setImageFile(imageFile)
+        }
+    }
+
     if(isLoading) {
         return <LoadingSpinner />
     }
@@ -210,8 +218,7 @@ const EventEditForm = () => {
                                 name='eventmedia'
                                 accept='image/*'
                                 size='lg'
-                                onChange={(e) => setImageFile(URL.createObjectURL(e.target.files[0]))}
-                                // onChange={imagePreview}
+                                onChange={(e) => image_preview(e)}
                             />
                             <div className='errormessage'>{errors.eventmedia?.message}</div>
                         </Form.Group>

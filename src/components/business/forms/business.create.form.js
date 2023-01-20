@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
+import { Button, Col, FloatingLabel, Form, Image, Row } from 'react-bootstrap';
 
 import useAuth from '../../../hooks/useAuth';
 import { createBusinessSchema } from '../../../helpers/validationSchemas';
 import { useCreateBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
+import { image_link } from '../../../helpers/dataCleanUp';
 
 
 const BusinessCreateForm = () => {
     const { logout_user } = useAuth()
+    const [ showImage, setShowImage ] = useState(false)
+    const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
@@ -98,6 +101,13 @@ const BusinessCreateForm = () => {
 
     }
 
+    const image_preview = (e) => {
+        if(e.target.files.length !== 0) {
+            setImageFile(URL.createObjectURL(e.target.files[0]))
+            setShowImage(true)
+        }
+    }
+
 
     return (
         <Form onSubmit={handleSubmit(create_business)} encType='multipart/form-data'>
@@ -128,6 +138,17 @@ const BusinessCreateForm = () => {
                 <div className='errormessage'>{errors.business_email?.message}</div>
             </Form.Group>
 
+            {
+                showImage &&
+                    <div className='d-flex justify-content-center mb-2'>
+                        <Image
+                            src={image_link(imageFile)}
+                            alt='your business branding'
+                            thumbnail
+                        />
+                    </div>
+            }
+
             <Form.Group controlId='business_avatar' className='mb-2'>
                 <Form.Control
                     className={errors.business_avatar ? 'inputError' : ''}
@@ -136,6 +157,7 @@ const BusinessCreateForm = () => {
                     type='file'
                     name='business_avatar'
                     accept='image/*'
+                    onChange={(e) => image_preview(e)}
                 />
                 <div className='errormessage'>{errors.business_avatar?.message}</div>
             </Form.Group>

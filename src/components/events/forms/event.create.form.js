@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 import { DevTool } from '@hookform/devtools'
 
 import useAuth from '../../../hooks/useAuth';
@@ -12,11 +12,13 @@ import { useCreateEventMutation } from '../../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
-import useImagePreviewer from '../../../hooks/useImagePreviewer';
+import { image_link } from '../../../helpers/dataCleanUp';
+
 
 const EventCreateForm = () => {
     const { logout_user } = useAuth()
-    const { editImage, imagePreview, canvas } = useImagePreviewer()
+    const [ showImage, setShowImage ] = useState(false)
+    const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
@@ -90,6 +92,13 @@ const EventCreateForm = () => {
                     message: error.response.data.error.message
                 })
             }
+        }
+    }
+
+    const image_preview = (e) => {
+        if(e.target.files.length !== 0) {
+            setImageFile(URL.createObjectURL(e.target.files[0]))
+            setShowImage(true)
         }
     }
 
@@ -169,13 +178,12 @@ const EventCreateForm = () => {
             <div className='errormessage'>{errors.time_format?.message}</div>
 
             {
-                editImage &&
-                    <div className='mx-1'>
-                        <canvas
-                            id={'eventImagePreview'}
-                            ref={canvas}
-                            width={384}
-                            height={480}
+                showImage &&
+                    <div className='d-flex justify-content-center mb-2'>
+                        <Image
+                            src={image_link(imageFile)}
+                            alt='your event media'
+                            thumbnail
                         />
                     </div>
             }
@@ -190,8 +198,7 @@ const EventCreateForm = () => {
                     name='eventmedia'
                     accept='image/*'
                     size='lg'
-                    onChange={imagePreview}
-                    // onChange={(e) => setImageFile(e.target.files[0])}
+                    onChange={(e) => image_preview(e)}
                 />
                 <div className='errormessage'>{errors.eventmedia?.message}</div>
             </Form.Group>

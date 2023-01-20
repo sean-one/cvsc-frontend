@@ -113,6 +113,14 @@ const BusinessEditForm = () => {
 
     }
 
+    const image_preview = (e) => {
+        if(e.target.files.length !== 0) {
+            setImageFile(URL.createObjectURL(e.target.files[0]))
+        } else {
+            setImageFile(imageFile)
+        }
+    }
+
     
     return (
         <>
@@ -134,6 +142,7 @@ const BusinessEditForm = () => {
                             <div className='errormessage'>{errors.business_email?.message}</div>
                         </Form.Group>
                 }
+                
                 <div className='d-flex justify-content-center mb-2'>
                     <Image
                         src={image_link(imageFile)}
@@ -158,7 +167,7 @@ const BusinessEditForm = () => {
                             type='file'
                             name='business_avatar'
                             accept='image/*'
-                            onChange={(e) => setImageFile(URL.createObjectURL(e.target.files[0]))}
+                            onChange={(e) => image_preview(e)}
                         />
                         <div className='errormessage'>{errors.business_avatar?.message}</div>
                     </Form.Group>
