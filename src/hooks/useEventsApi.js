@@ -6,6 +6,7 @@ const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/e
 export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
 
 
+// business_label - remove_event_business
 const removeBusiness = async ({ event_id, ...event_updates }) => { return await AxiosInstance.put(`/events/remove_business/${event_id}`, event_updates) }
 export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient()

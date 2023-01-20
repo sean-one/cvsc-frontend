@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import useAuth from '../../../hooks/useAuth';
-import useImagePreviewer from '../../../hooks/useImagePreviewer';
 import { reformatTime } from '../../../helpers/formatTime';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import { useUpdateEventMutation, useRemoveEventMutation } from '../../../hooks/useEventsApi';
@@ -20,10 +19,9 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 const EventEditForm = () => {
     const { logout_user } = useAuth()
-    const { imagePreview } = useImagePreviewer();
-    // const { editImage, canvas } = useImagePreviewer();
-    const { dispatch } = useNotification()
     const { state: event } = useLocation()
+    const [ imageFile, setImageFile ] = useState(event.eventmedia)
+    const { dispatch } = useNotification()
     let venue_list, brand_list = []
 
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
@@ -54,6 +52,13 @@ const EventEditForm = () => {
         try {
             const formData = new FormData()
 
+            // if eventmedia has a file set in formData, for some reason it does not show in dirtyFields
+            if(data?.eventmedia[0]) {
+                formData.set('eventmedia', data['eventmedia'][0])
+            }
+
+            delete data['image_attached']
+
             // remove entries that are unchanged
             for (const [key] of Object.entries(data)) {
                 if (!Object.keys(dirtyFields).includes(key)) {
@@ -62,9 +67,7 @@ const EventEditForm = () => {
             }
 
             Object.keys(data).forEach(key => {
-                if (key === 'eventmedia') {
-                    formData.set('eventmedia', data['eventmedia'][0])
-                } else if (key === 'eventdate') {
+                if (key === 'eventdate') {
                     formData.append(key, format(data[key], 'y-M-d'))
                 } else if (key === 'eventstart' || key === 'eventend') {
                     formData.append(key, data[key].replace(':', ''))
@@ -180,7 +183,7 @@ const EventEditForm = () => {
                 {/* image preview */}
                 <div className='d-flex justify-content-center mb-2'>
                     <Image
-                        src={image_link(event?.eventmedia)}
+                        src={image_link(imageFile)}
                         alt={event?.eventname}
                         thumbnail
                     />
@@ -207,8 +210,8 @@ const EventEditForm = () => {
                                 name='eventmedia'
                                 accept='image/*'
                                 size='lg'
-                                onChange={imagePreview}
-                            // onChange={(e) => setImageFile(e.target.files[0])}
+                                onChange={(e) => setImageFile(URL.createObjectURL(e.target.files[0]))}
+                                // onChange={imagePreview}
                             />
                             <div className='errormessage'>{errors.eventmedia?.message}</div>
                         </Form.Group>
