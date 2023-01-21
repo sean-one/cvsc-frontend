@@ -22,6 +22,7 @@ const EventEditForm = () => {
     const { state: event } = useLocation()
     const [ imageFile, setImageFile ] = useState(event?.eventmedia)
     const { dispatch } = useNotification()
+    
     let venue_list, brand_list = []
 
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()

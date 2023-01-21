@@ -17,7 +17,7 @@ const BusinessEditForm = () => {
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
     const { state: business } = useLocation()
-    const [ imageFile, setImageFile ] = useState(business.business_avatar)
+    const [ imageFile, setImageFile ] = useState(business?.business_avatar)
     let business_role = {}
 
     let navigate = useNavigate()
@@ -142,7 +142,7 @@ const BusinessEditForm = () => {
                             <div className='errormessage'>{errors.business_email?.message}</div>
                         </Form.Group>
                 }
-                
+
                 <div className='d-flex justify-content-center mb-2'>
                     <Image
                         src={image_link(imageFile)}
