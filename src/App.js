@@ -12,7 +12,6 @@ import Register from './components/register.jsx';
 import BusinessRoles from './components/roles/business.roles';
 
 import Profile from './components/profile/profile.jsx';
-import UserEditForm from './components/profile/forms/user.edit.form';
 import RolesTab from './components/profile/roles';
 import UserEvents from './components/profile/events/user.events';
 import ManagementList from './components/profile/management/management.list';
@@ -59,7 +58,6 @@ const App = () => {
                     <Route path='/profile/roles' element={<RolesTab />} />
                     <Route path='/profile/events' element={<UserEvents />} />
                     <Route path='/profile/management' element={<ManagementList />} />
-                    <Route path='/profile/edit' element={<UserEditForm />} />
                 </Route>
                 <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EventEditForm />} />

@@ -11,7 +11,7 @@ import AxiosInstance from '../../../helpers/axios';
 
 
 const UserAccount = () => {
-    const [ editView, setEditView ] = useState(true)
+    const [ editView, setEditView ] = useState(false)
     const { auth, setAuth } = useAuth()
     const [ imageFile, setImageFile ] = useState(auth?.user?.avatar)
 
@@ -29,10 +29,11 @@ const UserAccount = () => {
     const update_image = watch('update_image', false)
 
     const image_preview = (e) => {
+        console.log(e.target.files)
         if(e.target.files.length !== 0){
             setImageFile(URL.createObjectURL(e.target.files[0]))
         } else {
-            setImageFile(imageFile)
+            setImageFile(auth?.user?.avatar)
         }
     }
 
