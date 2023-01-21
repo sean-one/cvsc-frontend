@@ -1,41 +1,103 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { FloatingLabel, Form, Image } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 import useAuth from '../../../hooks/useAuth';
 import default_profile from '../../../assets/default_user_icon.png'
-import { role_types } from '../../../helpers/dataCleanUp';
+import { image_link, role_types } from '../../../helpers/dataCleanUp';
+import AxiosInstance from '../../../helpers/axios';
 
 
 const UserAccount = () => {
     const [ editView, setEditView ] = useState(true)
-    const { auth } = useAuth()
-    let navigate = useNavigate()
+    const { auth, setAuth } = useAuth()
+    const [ imageFile, setImageFile ] = useState(auth?.user?.avatar)
 
-    const { register, handleSubmit, clearErrors, watch, formState: { errors } } = useForm({
-        mode: 'onBlur'
+    const { register, handleSubmit, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
+        mode: 'onBlur',
+        defaultValues: {
+            email: auth.user?.email,
+            avatar: '',
+            password: '',
+            confirmation: '',
+        }
     })
 
+    const update_password = watch('update_password', false)
+    const update_image = watch('update_image', false)
+
+    const image_preview = (e) => {
+        if(e.target.files.length !== 0){
+            setImageFile(URL.createObjectURL(e.target.files[0]))
+        } else {
+            setImageFile(imageFile)
+        }
+    }
+
     const update_user = async (data) => {
-        console.log('click')
+        try {
+            const formData = new FormData()
+
+            if(data?.avatar[0] && update_image) {
+                formData.set('avatar', data['avatar'][0])
+            }
+
+            delete data['update_image']
+
+            if(data?.update_password) {
+                formData.append('password', data['password'])
+                delete data['password']
+                delete data['confimation']
+            }
+
+            delete data['update_password']
+
+            // remove entries unchaged
+            for (const [key] of Object.entries(data)) {
+                if (!Object.keys(dirtyFields).includes(key)) {
+                    delete data[key]
+                }
+            }
+
+            // append everything left changed from the form
+            Object.keys(data).forEach(key => {
+                formData.append(key, data[key])
+            })
+
+            const updated_user_response = await AxiosInstance.post('/users/update_user', formData)
+
+            if(updated_user_response.status === 201) {
+                setAuth({ user: updated_user_response.data.user, roles: updated_user_response.data.roles })
+                setEditView(false)
+                setImageFile(updated_user_response.data.user?.avatar)
+            }
+
+            return
+
+        } catch (error) {
+            console.log('error inside update_user in UserAccount')
+            console.log(error)
+        }
     }
 
 
     return (
         <div className='d-flex flex-column border mb-3'>
+            
             <div className='p-5 text-center'>
-                <Image thumbnail roundedCircle src={auth?.user.avatar || default_profile} alt={`user avatar`} />
+                <Image thumbnail roundedCircle src={image_link(imageFile) || default_profile} alt={`user avatar`} />
             </div>
+            
             <div className='d-flex justify-content-between'>
-                <div className='d-flex flex-column w-100 ps-2'>
-                    <Form onSubmit={handleSubmit(update_user)}>
-                        <div className='m-0'>{auth?.user.username}</div>
-                        {
-                            (editView)
-                                ? <Form.Group controlId='email' className='mb-2'>
+                <div className='d-flex flex-column w-100 px-2'>
+                    <h2 className='mb-3'>{auth?.user.username}</h2>
+                    {
+                        (editView)
+                            ? <Form onSubmit={handleSubmit(update_user)} encType='multipart/form-data'>
+
+                                <Form.Group controlId='email' className='mb-2'>
                                     <FloatingLabel controlId='email' label='Update Email'>
                                         <Form.Control
                                             className={errors.email ? 'inputError' : ''}
@@ -47,13 +109,88 @@ const UserAccount = () => {
                                     </FloatingLabel>
                                     <div className='errormessage'>{errors.email?.message}</div>
                                 </Form.Group>
-                                : <div className='m-0'>{auth?.user.email}</div>
-                        }
+
+                                {
+                                    (update_image) &&
+                                        <Form.Group controlId='avatar' className='mb-2'>
+                                            <Form.Control
+                                                className={errors.avatar ? 'inputError' : ''}
+                                                {...register('avatar')}
+                                                onFocus={() => clearErrors('avatar')}
+                                                type='file'
+                                                name='avatar'
+                                                accept='image/*'
+                                                onChange={(e) => image_preview(e)}
+                                            />
+                                            <div className='errormessage'>{errors.profile_image?.message}</div>
+                                        </Form.Group>
+                                }
+
+                                <div className='d-flex justify-content-between align-items-center'>
+                                    <Form.Group controlId='update_password'>
+                                        <Form.Check
+                                            className='mb-2'
+                                            {...register('update_password')}
+                                            type='checkbox'
+                                            label='Update Password'
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group controlId='update_image'>
+                                        <Form.Check
+                                            className='mb-2'
+                                            {...register('update_image')}
+                                            type='checkbox'
+                                            label='Update Image'
+                                        />
+                                    </Form.Group>
+                                </div>
+
+                                {
+                                    (update_password) &&
+                                        <div>
+                                            <Form.Group controlId='password' className='mb-2'>
+                                                <FloatingLabel controlId='password' label='Update Password'>
+                                                    <Form.Control
+                                                        className={errors.password ? 'inputError' : ''}
+                                                        onFocus={() => clearErrors('password')}
+                                                        {...register('password')}
+                                                        type='password'
+                                                        name='password'
+                                                    />
+                                                </FloatingLabel>
+                                                <div className='errormessage'>{errors.password?.message}</div>
+                                            </Form.Group>
+
+                                            <Form.Group controlId='confirmation' className='mb-2'>
+                                                <FloatingLabel controlId='confirmation' label='Confirm New Password'>
+                                                    <Form.Control
+                                                        className={errors.confirmation ? 'inputError' : ''}
+                                                        onFocus={() => clearErrors('confirmation')}
+                                                        {...register('confirmation')}
+                                                        type='password'
+                                                        name='confirmation'
+                                                    />
+                                                </FloatingLabel>
+                                                <div className='errormessage'>{errors.confirmation?.message}</div>
+                                            </Form.Group>
+                                        </div>
+                                }
+
+                                <div className='d-flex justify-content-around pt-3'>
+                                    <Button type='submit' disabled={!isDirty}>Update</Button>
+                                    <Button onClick={() => setEditView(false)} variant='secondary'>Close</Button>
+                                </div>
+
+                            </Form>
+                            : <div className='m-0'>{auth?.user.email}</div>
+                    }
+                    <div className='d-flex justify-content-between align-items-center'>
                         <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
-                    </Form>
-                </div>
-                <div className='text-end align-self-end w-25 p-2'>
-                    <FontAwesomeIcon onClick={() => navigate('/profile/edit')} icon={faPen} />
+                        <div className='text-end align-self-end w-25 p-2'>
+                            <FontAwesomeIcon onClick={() => setEditView(true)} icon={faPen} />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
