@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
+import { FloatingLabel, Form, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faPen, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,13 +15,15 @@ const UserAccount = () => {
     const { auth, setAuth } = useAuth()
     const [ imageFile, setImageFile ] = useState(auth?.user?.avatar)
 
-    const { register, handleSubmit, clearErrors, watch, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, watch, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             email: auth.user?.email,
             avatar: '',
             password: '',
             confirmation: '',
+            update_password: false,
+            update_image: false,
         }
     })
 
@@ -70,9 +72,15 @@ const UserAccount = () => {
             const updated_user_response = await AxiosInstance.post('/users/update_user', formData)
 
             if(updated_user_response.status === 201) {
+                
                 setAuth({ user: updated_user_response.data.user, roles: updated_user_response.data.roles })
+                
                 setEditView(false)
                 setImageFile(updated_user_response.data.user?.avatar)
+                
+                setValue('avatar', '')
+                setValue('update_image', false)
+                setValue('update_password', false)
             }
 
             return
@@ -178,17 +186,11 @@ const UserAccount = () => {
                                         </div>
                                 }
 
-                                {/* <div className='d-flex justify-content-around pt-3'> */}
-                                    {/* <Button type='submit' disabled={!isDirty}>Update</Button> */}
-                                    {/* <Button onClick={() => setEditView(false)} variant='secondary'>Close</Button> */}
-                                {/* </div> */}
-
                             </Form>
                             : <div className='m-0'>{auth?.user.email}</div>
                         }
                     <div className='d-flex justify-content-between align-items-center'>
                         <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
-                        {/* <div className='text-end align-self-end w-25 p-2'> */}
                         <div className='text-end align-self-end p-2'>
                             {
                                 (editView && isDirty) &&
