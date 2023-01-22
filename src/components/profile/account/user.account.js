@@ -15,7 +15,7 @@ const UserAccount = () => {
     const { auth, setAuth } = useAuth()
     const [ imageFile, setImageFile ] = useState(auth?.user?.avatar)
 
-    const { register, handleSubmit, clearErrors, watch, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             email: auth.user?.email,
@@ -78,9 +78,10 @@ const UserAccount = () => {
                 setEditView(false)
                 setImageFile(updated_user_response.data.user?.avatar)
                 
-                setValue('avatar', '')
-                setValue('update_image', false)
-                setValue('update_password', false)
+                reset()
+                // setValue('avatar', '')
+                // setValue('update_image', false)
+                // setValue('update_password', false)
             }
 
             return
@@ -91,17 +92,23 @@ const UserAccount = () => {
         }
     }
 
+    const close_edit_view = () => {
+        setImageFile(auth?.user?.avatar)
+        setEditView(false)
+        reset()
+    }
+
 
     return (
         <div className='d-flex flex-column border mb-3'>
             
             <div className='p-5 text-center'>
-                <Image thumbnail roundedCircle src={image_link(imageFile) || default_profile} alt={`user avatar`} />
+                <Image thumbnail roundedCircle src={(imageFile === null) ? default_profile : image_link(imageFile)} alt={`user avatar`} />
             </div>
             
             <div className='d-flex justify-content-between'>
                 <div className='d-flex flex-column w-100 px-2'>
-                    <h2 className='mb-3'>{auth?.user.username}</h2>
+                    <h2>{auth?.user.username}</h2>
                     {
                         (editView)
                             ? <Form encType='multipart/form-data'>
@@ -187,7 +194,7 @@ const UserAccount = () => {
                                 }
 
                             </Form>
-                            : <div className='m-0'>{auth?.user.email}</div>
+                            : <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
                         }
                     <div className='d-flex justify-content-between align-items-center'>
                         <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
@@ -202,7 +209,7 @@ const UserAccount = () => {
                             }
                             {
                                 (editView) &&
-                                    <FontAwesomeIcon className='ms-1' onClick={() => setEditView(false)} icon={faWindowClose} />
+                                    <FontAwesomeIcon className='ms-1' onClick={() => close_edit_view()} icon={faWindowClose} />
                             }
                         </div>
                     </div>
