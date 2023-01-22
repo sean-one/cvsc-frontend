@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPen, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 import useAuth from '../../../hooks/useAuth';
 import default_profile from '../../../assets/default_user_icon.png'
@@ -96,7 +96,7 @@ const UserAccount = () => {
                     <h2 className='mb-3'>{auth?.user.username}</h2>
                     {
                         (editView)
-                            ? <Form onSubmit={handleSubmit(update_user)} encType='multipart/form-data'>
+                            ? <Form encType='multipart/form-data'>
 
                                 <Form.Group controlId='email' className='mb-2'>
                                     <FloatingLabel controlId='email' label='Update Email'>
@@ -178,18 +178,30 @@ const UserAccount = () => {
                                         </div>
                                 }
 
-                                <div className='d-flex justify-content-around pt-3'>
-                                    <Button type='submit' disabled={!isDirty}>Update</Button>
-                                    <Button onClick={() => setEditView(false)} variant='secondary'>Close</Button>
-                                </div>
+                                {/* <div className='d-flex justify-content-around pt-3'> */}
+                                    {/* <Button type='submit' disabled={!isDirty}>Update</Button> */}
+                                    {/* <Button onClick={() => setEditView(false)} variant='secondary'>Close</Button> */}
+                                {/* </div> */}
 
                             </Form>
                             : <div className='m-0'>{auth?.user.email}</div>
-                    }
+                        }
                     <div className='d-flex justify-content-between align-items-center'>
                         <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
-                        <div className='text-end align-self-end w-25 p-2'>
-                            <FontAwesomeIcon onClick={() => setEditView(true)} icon={faPen} />
+                        {/* <div className='text-end align-self-end w-25 p-2'> */}
+                        <div className='text-end align-self-end p-2'>
+                            {
+                                (editView && isDirty) &&
+                                    <FontAwesomeIcon className='ms-1' onClick={handleSubmit(update_user)} icon={faCheck} />
+                            }
+                            {
+                                (!editView) &&
+                                    <FontAwesomeIcon className='ms-1' onClick={() => setEditView(true)} icon={faPen} />
+                            }
+                            {
+                                (editView) &&
+                                    <FontAwesomeIcon className='ms-1' onClick={() => setEditView(false)} icon={faWindowClose} />
+                            }
                         </div>
                     </div>
                 </div>
