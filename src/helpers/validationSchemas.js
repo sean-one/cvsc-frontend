@@ -8,27 +8,41 @@ const sixtyDaysOut = format(add(new Date(), { days: 60 }), 'yyyy-MM-dd');
 // USER SCHEMAS
 export const registrationSchema = yup.object().shape({
     username: yup
-    .string()
-    .required("required field"),
+        .string()
+        .required("required field"),
     
     password: yup
-    .string()
-    .required("required field"),
+        .string()
+        .required("required field"),
     
     confirmation: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'passwords must match')
-    .required('required field')
+        .string()
+        .oneOf([yup.ref('password'), null], 'passwords must match')
+        .required('required field')
 })
 
 export const loginSchema = yup.object().shape({
     username: yup
-    .string()
-    .required("username is a required field."),
+        .string()
+        .required("username is a required field."),
     
     password: yup
-    .string()
-    .required("password is a required field.")
+        .string()
+        .required("password is a required field.")
+})
+
+export const editUserSchema = yup.object().shape({
+    email: yup
+        .string()
+        .matches(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/, { message: 'invalid email', excludeEmptyString: true })
+        .nullable(),
+    
+    password: yup
+        .string(),
+    
+    confirmation: yup
+        .string()
+        .oneOf([yup.ref('password'), null], 'passwords must match')
 })
 
 

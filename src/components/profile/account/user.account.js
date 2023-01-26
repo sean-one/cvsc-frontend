@@ -3,20 +3,25 @@ import { useForm } from 'react-hook-form';
 import { FloatingLabel, Form, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faPen, faWindowClose } from '@fortawesome/free-solid-svg-icons';
+import { yupResolver } from '@hookform/resolvers/yup'
 
 import useAuth from '../../../hooks/useAuth';
+import useNotification from '../../../hooks/useNotification'
 import default_profile from '../../../assets/default_user_icon.png'
 import { image_link, role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
+import { editUserSchema } from '../../../helpers/validationSchemas';
 
 
 const UserAccount = () => {
+    const { dispatch } = useNotification()
     const [ editView, setEditView ] = useState(false)
     const { auth, setAuth } = useAuth()
-    const [ imageFile, setImageFile ] = useState(auth?.user?.avatar)
+    const [ imagePreview, setImagePreview ] = useState(auth?.user?.avatar)
 
     const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
+        resolver: yupResolver(editUserSchema),
         defaultValues: {
             email: auth.user?.email,
             avatar: '',
@@ -31,20 +36,19 @@ const UserAccount = () => {
     const update_image = watch('update_image', false)
 
     const image_preview = (e) => {
-        console.log(e.target.files)
         if(e.target.files.length !== 0){
-            setImageFile(URL.createObjectURL(e.target.files[0]))
+            setImagePreview(URL.createObjectURL(e.target.files[0]))
         } else {
-            setImageFile(auth?.user?.avatar)
+            setImagePreview(auth?.user?.avatar)
         }
     }
 
     const update_user = async (data) => {
         try {
             const formData = new FormData()
-
-            if(data?.avatar[0] && update_image) {
-                formData.set('avatar', data['avatar'][0])
+            
+            if(update_image) {
+                formData.set('avatar', data.avatar[0])
             }
 
             delete data['update_image']
@@ -52,7 +56,7 @@ const UserAccount = () => {
             if(data?.update_password) {
                 formData.append('password', data['password'])
                 delete data['password']
-                delete data['confimation']
+                delete data['confirmation']
             }
 
             delete data['update_password']
@@ -76,24 +80,35 @@ const UserAccount = () => {
                 setAuth({ user: updated_user_response.data.user, roles: updated_user_response.data.roles })
                 
                 setEditView(false)
-                setImageFile(updated_user_response.data.user?.avatar)
+                setImagePreview(updated_user_response.data.user?.avatar)
                 
                 reset()
-                // setValue('avatar', '')
-                // setValue('update_image', false)
-                // setValue('update_password', false)
             }
 
             return
 
         } catch (error) {
-            console.log('error inside update_user in UserAccount')
-            console.log(error)
+
+            if(error?.response.status === 400) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `error - no changes were made`
+                    }
+                })
+            }
+
+        } finally {
+
+            setEditView(false)
+            reset()
+            
         }
     }
 
     const close_edit_view = () => {
-        setImageFile(auth?.user?.avatar)
+        setImagePreview(auth?.user?.avatar)
         setEditView(false)
         reset()
     }
@@ -103,7 +118,7 @@ const UserAccount = () => {
         <div className='d-flex flex-column border mb-3'>
             
             <div className='p-5 text-center'>
-                <Image thumbnail roundedCircle src={(imageFile === null) ? default_profile : image_link(imageFile)} alt={`user avatar`} />
+                <Image thumbnail roundedCircle src={(imagePreview === null) ? default_profile : image_link(imagePreview)} alt={`user avatar`} />
             </div>
             
             <div className='d-flex justify-content-between'>
@@ -152,14 +167,17 @@ const UserAccount = () => {
                                         />
                                     </Form.Group>
 
-                                    <Form.Group controlId='update_image'>
-                                        <Form.Check
-                                            className='mb-2'
-                                            {...register('update_image')}
-                                            type='checkbox'
-                                            label='Update Image'
-                                        />
-                                    </Form.Group>
+                                    {
+                                        (!update_image) &&
+                                            <Form.Group controlId='update_image'>
+                                                <Form.Check
+                                                    className='mb-2'
+                                                    {...register('update_image')}
+                                                    type='checkbox'
+                                                    label='Update Image'
+                                                />
+                                            </Form.Group>
+                                    }
                                 </div>
 
                                 {
