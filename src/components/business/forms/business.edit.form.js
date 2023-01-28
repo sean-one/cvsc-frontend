@@ -72,7 +72,7 @@ const BusinessEditForm = () => {
             delete data['business_location']
 
             // if updateimage is true set updated file
-            if (data?.business_avatar[0] && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
+            if (image_attached && data?.business_avatar[0] && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
                 formData.set('business_avatar', data['business_avatar'][0])
             }
 
@@ -120,7 +120,7 @@ const BusinessEditForm = () => {
             setImageFile(imageFile)
         }
     }
-
+    
     
     return (
         <>
@@ -152,25 +152,25 @@ const BusinessEditForm = () => {
                 </div>
 
                 {
-                    (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                    ((business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) && !image_attached) &&
                         <Form.Group controlId='image_attached'>
                             <Form.Check {...register('image_attached')} type='checkbox' label='Update Image' className='mb-2' />
                         </Form.Group>
                 }
                 {
                     (image_attached) &&
-                    <Form.Group controlId='business_avatar' className='mb-2'>
-                        <Form.Control
-                            className={errors.business_avatar ? 'inputError' : ''}
-                            {...register('business_avatar')}
-                            onFocus={() => clearErrors('business_avatar')}
-                            type='file'
-                            name='business_avatar'
-                            accept='image/*'
-                            onChange={(e) => image_preview(e)}
-                        />
-                        <div className='errormessage'>{errors.business_avatar?.message}</div>
-                    </Form.Group>
+                        <Form.Group controlId='business_avatar' className='mb-2'>
+                            <Form.Control
+                                className={errors.business_avatar ? 'inputError' : ''}
+                                {...register('business_avatar')}
+                                onFocus={() => clearErrors('business_avatar')}
+                                type='file'
+                                name='business_avatar'
+                                accept='image/*'
+                                onChange={(e) => image_preview(e)}
+                            />
+                            <div className='errormessage'>{errors.business_avatar?.message}</div>
+                        </Form.Group>
                 }
 
                 {/* business description input */}
@@ -216,65 +216,65 @@ const BusinessEditForm = () => {
 
                 {
                     (business_location) &&
-                    <div>
-                        {/* street address input for location */}
-                        <Form.Group controlId='street_address'>
-                            <FloatingLabel controlId='street_address' label='Street Address' className='mb-2'>
-                                <Form.Control
-                                    className={errors.street_address ? 'inputError' : ''}
-                                    {...register('street_address')}
-                                    onFocus={() => clearErrors('street_address')}
-                                    type='text'
-                                    name='street_address'
-                                />
-                            </FloatingLabel>
-                            <div className='errormessage'>{errors.street_address?.message}</div>
-                        </Form.Group>
-
-                        {/* city input for location */}
-                        <Form.Group controlId='city'>
-                            <FloatingLabel controlId='city' label='City' className='mb-2'>
-                                <Form.Control
-                                    className={errors.city ? 'inputError' : ''}
-                                    {...register('city')}
-                                    onFocus={() => clearErrors('city')}
-                                    type='text'
-                                    name='city'
-                                />
-                            </FloatingLabel>
-                            <div className='errormessage'>{errors.city?.message}</div>
-                        </Form.Group>
-
-                        <div className='d-flex justify-content-between'>
-                            {/* state input for location */}
-                            <Form.Group controlId='state'>
-                                <FloatingLabel controlId='state' label='State' className='me-2 mb-2'>
+                        <div>
+                            {/* street address input for location */}
+                            <Form.Group controlId='street_address'>
+                                <FloatingLabel controlId='street_address' label='Street Address' className='mb-2'>
                                     <Form.Control
-                                        className={errors.state ? 'inputError' : ''}
-                                        {...register('state')}
-                                        onFocus={() => clearErrors('state')}
+                                        className={errors.street_address ? 'inputError' : ''}
+                                        {...register('street_address')}
+                                        onFocus={() => clearErrors('street_address')}
                                         type='text'
-                                        name='state'
+                                        name='street_address'
                                     />
                                 </FloatingLabel>
-                                <div className='errormessage'>{errors.state?.message}</div>
+                                <div className='errormessage'>{errors.street_address?.message}</div>
                             </Form.Group>
 
-                            {/* zip code input for location */}
-                            <Form.Group controlId='zip'>
-                                <FloatingLabel controlId='zip' label='Zip Code' className='mb-2'>
+                            {/* city input for location */}
+                            <Form.Group controlId='city'>
+                                <FloatingLabel controlId='city' label='City' className='mb-2'>
                                     <Form.Control
-                                        className={errors.zip ? 'inputError' : ''}
-                                        {...register('zip')}
-                                        onFocus={() => clearErrors('zip')}
+                                        className={errors.city ? 'inputError' : ''}
+                                        {...register('city')}
+                                        onFocus={() => clearErrors('city')}
                                         type='text'
-                                        name='zip'
+                                        name='city'
                                     />
                                 </FloatingLabel>
-                                <div className='errormessage'>{errors.zip?.message}</div>
+                                <div className='errormessage'>{errors.city?.message}</div>
                             </Form.Group>
+
+                            <div className='d-flex justify-content-between'>
+                                {/* state input for location */}
+                                <Form.Group controlId='state'>
+                                    <FloatingLabel controlId='state' label='State' className='me-2 mb-2'>
+                                        <Form.Control
+                                            className={errors.state ? 'inputError' : ''}
+                                            {...register('state')}
+                                            onFocus={() => clearErrors('state')}
+                                            type='text'
+                                            name='state'
+                                        />
+                                    </FloatingLabel>
+                                    <div className='errormessage'>{errors.state?.message}</div>
+                                </Form.Group>
+
+                                {/* zip code input for location */}
+                                <Form.Group controlId='zip'>
+                                    <FloatingLabel controlId='zip' label='Zip Code' className='mb-2'>
+                                        <Form.Control
+                                            className={errors.zip ? 'inputError' : ''}
+                                            {...register('zip')}
+                                            onFocus={() => clearErrors('zip')}
+                                            type='text'
+                                            name='zip'
+                                        />
+                                    </FloatingLabel>
+                                    <div className='errormessage'>{errors.zip?.message}</div>
+                                </Form.Group>
+                            </div>
                         </div>
-                    </div>
                 }
 
                 {/* instagram input */}

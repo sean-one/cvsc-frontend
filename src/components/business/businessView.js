@@ -31,7 +31,7 @@ const BusinessView = () => {
         business_role = auth.roles.find(role => role.business_id === business_id)
     }
 
-    
+
     return (
         <div>
             <div>

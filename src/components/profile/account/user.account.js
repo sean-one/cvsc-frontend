@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { FloatingLabel, Form, Image } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faPen, faWindowClose } from '@fortawesome/free-solid-svg-icons';
+import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification'
+import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user_icon.png'
 import { image_link, role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
@@ -16,8 +16,11 @@ import { editUserSchema } from '../../../helpers/validationSchemas';
 const UserAccount = () => {
     const { dispatch } = useNotification()
     const [ editView, setEditView ] = useState(false)
-    const { auth, setAuth } = useAuth()
+    const { refetch } = useEventsQuery()
+    const { auth, logout_user, setAuth } = useAuth()
     const [ imagePreview, setImagePreview ] = useState(auth?.user?.avatar)
+
+    let navigate = useNavigate()
 
     const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -81,6 +84,14 @@ const UserAccount = () => {
                 
                 setEditView(false)
                 setImagePreview(updated_user_response.data.user?.avatar)
+
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'account has been updated'
+                    }
+                })
                 
                 reset()
             }
@@ -111,6 +122,27 @@ const UserAccount = () => {
         setImagePreview(auth?.user?.avatar)
         setEditView(false)
         reset()
+    }
+
+    const delete_account = async () => {
+
+        const deleted_user_response = await AxiosInstance.delete('/users/remove_user')
+        
+        if(deleted_user_response.status === 204) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: 'user account has been deleted'
+                }
+            })
+
+            logout_user()
+            refetch()
+
+            navigate('/')
+        }
+        
     }
 
 
@@ -213,21 +245,33 @@ const UserAccount = () => {
 
                             </Form>
                             : <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
+                    }
+                    <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
+                    <div className='d-flex justify-content-between align-items-center my-2'>
+                        {
+                            (editView) &&
+                                <Button variant='outline-danger' className={`text-danger ${(!editView) ? 'd-none' : 'w-50'}`} onClick={() => delete_account()}>
+                                    delete account
+                                </Button>
                         }
-                    <div className='d-flex justify-content-between align-items-center'>
-                        <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
-                        <div className='text-end align-self-end p-2'>
+                        <div className='d-flex justify-content-end text-end align-self-end m-0'>
                             {
                                 (editView && isDirty) &&
-                                    <FontAwesomeIcon className='ms-1' onClick={handleSubmit(update_user)} icon={faCheck} />
+                                    <Button variant='outline-dark' className='ms-1' onClick={handleSubmit(update_user)}>
+                                        save
+                                    </Button>
                             }
                             {
                                 (!editView) &&
-                                    <FontAwesomeIcon className='ms-1' onClick={() => setEditView(true)} icon={faPen} />
+                                    <Button variant='outline-dark' onClick={() => setEditView(true)}>
+                                        edit account
+                                    </Button>
                             }
                             {
                                 (editView) &&
-                                    <FontAwesomeIcon className='ms-1' onClick={() => close_edit_view()} icon={faWindowClose} />
+                                    <Button variant='outline-dark' className='ms-1' onClick={() => close_edit_view()}>
+                                        close
+                                    </Button>
                             }
                         </div>
                     </div>

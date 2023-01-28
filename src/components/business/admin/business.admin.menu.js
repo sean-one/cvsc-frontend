@@ -30,6 +30,7 @@ const BusinessAdminMenu = ({ business, business_role }) => {
     }
 
     const toggleActive = async () => {
+        
         const active_toggle = await toggleActiveBusiness(business.id)
 
         if(active_toggle.status === 201) {
@@ -41,18 +42,21 @@ const BusinessAdminMenu = ({ business, business_role }) => {
                 }
             })
         }
-        console.log(active_toggle)
     }
 
 
     return (
-        <div className='d-flex justify-content-between align-items-center bg-light rounded'>
-            <Button onClick={() => navigate(`/business/roles/${business.id}`)} variant='outline-dark' className='text-center flex-fill m-1'>Roles</Button>
-            {
-                (business_role > process.env.REACT_APP_MANAGER_ACCOUNT) &&
-                    <Button onClick={toggleActive} variant={business.active_business ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.active_business ? 'Active' : 'Inactive'}</Button>
-            }
-            <Button onClick={toggleRequest} variant={business.business_request_open ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.business_request_open ? 'Request Open' : 'Request Closed'}</Button>
+        <div>
+            <div className='d-flex justify-content-between align-items-center bg-light rounded'>
+                <Button onClick={() => navigate(`/business/roles/${business.id}`)} variant='outline-dark' className='text-center flex-fill m-1'>Roles</Button>
+                {
+                    (business_role > process.env.REACT_APP_MANAGER_ACCOUNT) &&
+                        <Button onClick={toggleActive} variant={business.active_business ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.active_business ? 'Active' : 'Inactive'}</Button>
+                }
+                <Button onClick={toggleRequest} variant={business.business_request_open ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.business_request_open ? 'Request Open' : 'Request Closed'}</Button>
+            </div>
+            <div className={`w-100 bg-danger rounded text-light my-1 ${(business.active_business) ? 'd-none' : ''}`}>* Business is inactive / does not show in search</div>
+            <div className={`w-100 bg-danger rounded text-light my-1 ${(business.business_request_open) ? 'd-none' : ''}`}>* Business currently not accepting 'Creator' request</div>
         </div>
     )
 }
