@@ -33,13 +33,31 @@ const updateBusiness = async ({ business_id, business_updates }) => { return awa
 export const useUpdateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateBusiness, {
-        onSuccess: ({ data }) => {
-            queryClient.invalidateQueries(['business', data.id, 'events'])
+        onSuccess: () => {
+            queryClient.cancelQueries(['business'])
+            queryClient.cancelQueries(['events'])
+            queryClient.refetchQueries(['events'])
         },
         onError: (error, updated_business, context) => { console.log(error) },
-        onSettled: ({ data }) => {
-            queryClient.refetchQueries(['business', data.id, 'events'])
+        onSettled: () => {
+            queryClient.refetchQueries(['business'])
         }
+    })
+}
+
+// business.admin.menu
+const removeBusiness = async (business_id) => { return await AxiosInstance.delete(`/business/remove/${business_id}`) }
+export const useRemoveBusinessMutation = () => {
+    const queryClient = useQueryClient()
+    return useMutation(removeBusiness, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['business', 'events'])
+            queryClient.refetchQueries(['business', 'events'])
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+        onSettled: () => queryClient.refetchQueries(['business', 'events'])
     })
 }
 
