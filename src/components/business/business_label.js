@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCannabis, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCannabis, faTrash, faStore } from '@fortawesome/free-solid-svg-icons';
 
 import useAuth from '../../hooks/useAuth';
 import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
@@ -58,7 +58,7 @@ const BusinessLabel = ({ business_id, business_name, business_role, business_typ
             {
                 (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT)
                     ? <FontAwesomeIcon onClick={remove_event_business} icon={faTrash} className={`${(business_type === 'brand') ? 'ms-2' : 'me-2'}`} />
-                    : <FontAwesomeIcon onClick={() => navigate(`/business/${business_id}`)} icon={faCannabis} className={`${(business_type === 'brand') ? 'ms-2' : 'me-2'}`} />
+                    : <FontAwesomeIcon onClick={() => navigate(`/business/${business_id}`)} icon={(business_type === 'brand') ? faCannabis : faStore } className={`${(business_type === 'brand') ? 'ms-2' : 'me-2'}`} />
             }
         </div>
     )
