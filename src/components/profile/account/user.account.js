@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
@@ -7,9 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification'
 import { useEventsQuery } from '../../../hooks/useEventsApi';
-// import default_profile from '../../../assets/default_user_icon.png'
+import default_profile from '../../../assets/default_user_icon.png'
 import useAvatarPreview from '../../../hooks/useAvatarPreview';
-import { image_link, role_types } from '../../../helpers/dataCleanUp';
+import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
 import { editUserSchema } from '../../../helpers/validationSchemas';
 
@@ -19,7 +19,7 @@ const UserAccount = () => {
     const [ editView, setEditView ] = useState(false)
     const { refetch } = useEventsQuery()
     const { auth, logout_user, setAuth } = useAuth()
-    const { imagePreview, canvas } = useAvatarPreview(auth?.user?.avatar)
+    const { editImage, imagePreview, imageToUpload, canvas, setEditImage } = useAvatarPreview()
     // const [ imagePreview, setImagePreview ] = useState(auth?.user?.avatar)
 
     let navigate = useNavigate()
@@ -53,7 +53,10 @@ const UserAccount = () => {
             const formData = new FormData()
             
             if(update_image) {
-                formData.set('avatar', data.avatar[0])
+                console.log(canvas)
+                console.log(imageToUpload)
+                formData.set('avatar', imageToUpload)
+                // formData.set('avatar', data.avatar[0])
             }
 
             delete data['update_image']
@@ -123,6 +126,7 @@ const UserAccount = () => {
     const close_edit_view = () => {
         // setImagePreview(auth?.user?.avatar)
         setEditView(false)
+        setEditImage(false)
         reset()
     }
 
@@ -152,14 +156,17 @@ const UserAccount = () => {
         <div className='d-flex flex-column border mb-3'>
             
             <div className='p-5 text-center'>
-                {/* <Image thumbnail roundedCircle src={(imagePreview === null) ? default_profile : image_link(imagePreview)} alt={`user avatar`} /> */}
-                <canvas
-                    className='rounded-circle'
-                    id={'avatarImagePreview'}
-                    ref={canvas}
-                    width={300}
-                    height={300}
-                />
+                {
+                    editImage
+                        ? <canvas
+                            className='rounded-circle'
+                            id={'avatarImagePreview'}
+                            ref={canvas}
+                            width={300}
+                            height={300}
+                        />
+                        : <Image thumbnail roundedCircle src={(auth?.user?.avatar === null) ? default_profile : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`} alt={`user avatar`} /> 
+                }
             </div>
             
             <div className='d-flex justify-content-between'>

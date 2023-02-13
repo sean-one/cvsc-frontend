@@ -1,10 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import default_profile from '../assets/default_user_icon.png';
 
 
-const useAvatarPreview = (user_avatar) => {
-    console.log(user_avatar)
-    console.log(default_profile)
+const useAvatarPreview = () => {
     const [editImage, setEditImage] = useState(false)
     const [imageToUpload, setImageToUpload] = useState()
     const canvas = useRef(null)
@@ -16,7 +13,9 @@ const useAvatarPreview = (user_avatar) => {
         const previewImage = new Image()
         reader.onload = function (e) {
             previewImage.src = e.target.result
-            previewImage.onload = () => setImageToUpload(previewImage)
+            previewImage.onload = () => {
+                setImageToUpload(previewImage)
+            }
         }
         reader.readAsDataURL(fileToUpload[0])
     }
@@ -26,31 +25,50 @@ const useAvatarPreview = (user_avatar) => {
         if (mounted) {
             if (imageToUpload && canvas) {
                 const ctx = canvas.current.getContext('2d')
-                const MAX_WIDTH = canvas.current.width
-                const MAX_HEIGHT = canvas.current.height
+                const MAX_WIDTH = 300
+                // const MAX_WIDTH = canvas.current.width
+                const MAX_HEIGHT = 300
+                // const MAX_HEIGHT = canvas.current.height
                 let width = imageToUpload.width
                 let height = imageToUpload.height
 
-
-                if (width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width
-                    width = MAX_WIDTH
-                } else if (height > MAX_HEIGHT) {
-                    width *= MAX_HEIGHT / height
+                if (width > height) {
                     height = MAX_HEIGHT
+                    width *= MAX_WIDTH / width
+                    // console.log('width bigger')
+                    // console.log(`width: ${width}, height: ${height}`)
+                } else if (height > width) {
+                    width = MAX_WIDTH
+                    height *= MAX_HEIGHT / height
+                    // console.log('height bigger')
+                    // console.log(`width: ${width}, height: ${height}`)
                 } else {
-                    if (width > height) {
-                        width = MAX_WIDTH
-                        height *= width / MAX_WIDTH
-                    } else {
-                        height *= MAX_WIDTH / width
-                        width = MAX_WIDTH
-                    }
+                    width = MAX_WIDTH
+                    height = MAX_HEIGHT
+                    // console.log(`width: ${width}, height: ${height}`)
                 }
+                
+                // if (width > MAX_WIDTH) {
+                //     height *= MAX_WIDTH / width
+                //     width = MAX_WIDTH
+                // } else if (height > MAX_HEIGHT) {
+                //     width *= MAX_HEIGHT / height
+                //     height = MAX_HEIGHT
+                // } else {
+                //     if (width > height) {
+                //         width = MAX_WIDTH
+                //         height *= width / MAX_WIDTH
+                //     } else {
+                //         height *= MAX_WIDTH / width
+                //         width = MAX_WIDTH
+                //     }
+                // }
 
                 // crop canvas to the size of the drawing
-                canvas.current.width = width
-                canvas.current.height = height
+                canvas.current.width = MAX_WIDTH
+                // canvas.current.width = width
+                canvas.current.height = MAX_HEIGHT
+                // canvas.current.height = height
 
                 ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
 
@@ -63,7 +81,7 @@ const useAvatarPreview = (user_avatar) => {
         }
     }, [imageToUpload, canvas])
 
-    return { editImage, imagePreview, imageToUpload, canvas }
+    return { editImage, imagePreview, imageToUpload, canvas, setEditImage }
 }
 
 export default useAvatarPreview;
