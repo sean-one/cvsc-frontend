@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -13,7 +12,15 @@ const Styles = styled.div`
         margin: 0;
         padding: 6.5rem 0.75rem 0 0.75rem;
         background-color: #588157;
+        /* border: 2px solid yellow; */
         /* box-sizing: border-box; */
+    }
+
+    .innerContainer {
+        min-width: 375px;
+        max-width: 850px;
+        border: 2px solid red;
+        /* margin: auto; */
     }
 
     a {
@@ -43,25 +50,18 @@ const Styles = styled.div`
         border: 2px solid red;
     }
 
+    .userAvatar {
+        max-width: 325px;
+    }
+
 `;
 
 export const Layout = (props) => {
     return (
         <Styles>
-            <Container fluid className='app_container d-flex justify-content-center g-2'>
-                {/* add 'd-lg-block' to class name to add to sides on larger screens */}
-                <Col xs={12} lg={3} className='d-none d-lg-block border'>
-                    {/* filter options area */}
-                    ad space
-                </Col>
-                <Col xs={12} sm={12} lg={6}>
-                    {props.children}
-                </Col>
-                <Col xs={12} lg={3} className='d-none d-lg-block border'>
-                    {/* bottom, right ad space area */}
-                    ad space
-                </Col>
-            </Container>
+            <div className='app_container d-flex justify-content-center g-2'>
+                <div>{props.children}</div>
+            </div>
         </Styles>
     )
 }

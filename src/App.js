@@ -42,8 +42,8 @@ const App = () => {
     <React.Fragment>
       <ScrollToTop/>
       <QueryClientProvider client={queryClient}>
-        <Navbar />
         <Layout>
+          <Navbar />
           <Routes>
             <Route element={<PersistLogin />}>
               {/* public routes */}

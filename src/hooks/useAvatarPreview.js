@@ -25,50 +25,27 @@ const useAvatarPreview = () => {
         if (mounted) {
             if (imageToUpload && canvas) {
                 const ctx = canvas.current.getContext('2d')
-                const MAX_WIDTH = 300
-                // const MAX_WIDTH = canvas.current.width
-                const MAX_HEIGHT = 300
-                // const MAX_HEIGHT = canvas.current.height
+                
+                const MAX_WIDTH = 325
+                const MAX_HEIGHT = 325
+                
                 let width = imageToUpload.width
                 let height = imageToUpload.height
 
                 if (width > height) {
+                    width *= MAX_WIDTH / height
                     height = MAX_HEIGHT
-                    width *= MAX_WIDTH / width
-                    // console.log('width bigger')
-                    // console.log(`width: ${width}, height: ${height}`)
                 } else if (height > width) {
+                    height *= MAX_HEIGHT / width
                     width = MAX_WIDTH
-                    height *= MAX_HEIGHT / height
-                    // console.log('height bigger')
-                    // console.log(`width: ${width}, height: ${height}`)
                 } else {
                     width = MAX_WIDTH
                     height = MAX_HEIGHT
-                    // console.log(`width: ${width}, height: ${height}`)
                 }
                 
-                // if (width > MAX_WIDTH) {
-                //     height *= MAX_WIDTH / width
-                //     width = MAX_WIDTH
-                // } else if (height > MAX_HEIGHT) {
-                //     width *= MAX_HEIGHT / height
-                //     height = MAX_HEIGHT
-                // } else {
-                //     if (width > height) {
-                //         width = MAX_WIDTH
-                //         height *= width / MAX_WIDTH
-                //     } else {
-                //         height *= MAX_WIDTH / width
-                //         width = MAX_WIDTH
-                //     }
-                // }
-
                 // crop canvas to the size of the drawing
                 canvas.current.width = MAX_WIDTH
-                // canvas.current.width = width
                 canvas.current.height = MAX_HEIGHT
-                // canvas.current.height = height
 
                 ctx.clearRect(0, 0, canvas.current.width, canvas.current.height)
 

@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification'
+import useWindowSize from '../../../hooks/useWindowSize';
 import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user_icon.png'
 import useAvatarPreview from '../../../hooks/useAvatarPreview';
@@ -19,10 +20,10 @@ const UserAccount = () => {
     const [ editView, setEditView ] = useState(false)
     const { refetch } = useEventsQuery()
     const { auth, logout_user, setAuth } = useAuth()
-    const { editImage, imagePreview, imageToUpload, canvas, setEditImage } = useAvatarPreview()
-    // const [ imagePreview, setImagePreview ] = useState(auth?.user?.avatar)
+    const { editImage, imagePreview, canvas, setEditImage } = useAvatarPreview()
 
     let navigate = useNavigate()
+    const [width] = useWindowSize()
 
     const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -40,23 +41,25 @@ const UserAccount = () => {
     const update_password = watch('update_password', false)
     const update_image = watch('update_image', false)
 
-    // const image_preview = (e) => {
-    //     if(e.target.files.length !== 0){
-    //         setImagePreview(URL.createObjectURL(e.target.files[0]))
-    //     } else {
-    //         setImagePreview(auth?.user?.avatar)
-    //     }
-    // }
-
     const update_user = async (data) => {
         try {
             const formData = new FormData()
             
             if(update_image) {
-                console.log(canvas)
-                console.log(imageToUpload)
-                formData.set('avatar', imageToUpload)
-                // formData.set('avatar', data.avatar[0])
+                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
+                
+                let [mime, image_data] = canvas_image.split(',')
+                mime = mime.match(/:(.*?);/)[1]
+
+                let data_string = atob(image_data)
+                let data_length = data_string.length
+                let image_array = new Uint8Array(data_length)
+
+                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
+
+                let user_avatar = new File([image_array], 'user_avatar.jpeg', { type: mime })
+                
+                formData.set('avatar', user_avatar)
             }
 
             delete data['update_image']
@@ -153,24 +156,29 @@ const UserAccount = () => {
 
 
     return (
-        <div className='d-flex flex-column border mb-3'>
+        // <div className={`d-flex ${(width < 830) ? 'justify-content-between' : 'flex-column'} border mb-3`}>
+        <div className={`d-flex flex-column border mb-3`}>
             
-            <div className='p-5 text-center'>
+            <div className='mt-2 p-2 text-center'>
                 {
                     editImage
                         ? <canvas
                             className='rounded-circle'
                             id={'avatarImagePreview'}
                             ref={canvas}
-                            width={300}
-                            height={300}
                         />
-                        : <Image thumbnail roundedCircle src={(auth?.user?.avatar === null) ? default_profile : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`} alt={`user avatar`} /> 
+                        : <Image
+                            className='userAvatar'
+                            thumbnail
+                            roundedCircle
+                            src={(auth?.user?.avatar === null) ? default_profile : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`}
+                            alt={`user avatar`}
+                        /> 
                 }
             </div>
             
-            <div className='d-flex justify-content-between'>
-                <div className='d-flex flex-column w-100 px-2'>
+            <div className='d-flex justify-content-between w-75'>
+                <div className={`d-flex flex-column ${width > 830 ? 'justify-content-center' : ''} w-100 px-2`}>
                     <h2>{auth?.user.username}</h2>
                     {
                         (editView)

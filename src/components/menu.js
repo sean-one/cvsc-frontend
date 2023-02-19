@@ -10,7 +10,7 @@ const Menu = ({ toggle }) => {
 
 
     return (
-        <div className='bg-light'>
+        <div className='w-100 bg-light'>
             <SimpleButton toggle={toggle} name='home' />
             {
                 (Object.keys(auth).length > 0)

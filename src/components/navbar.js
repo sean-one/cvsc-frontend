@@ -11,22 +11,25 @@ const Navbar = () => {
 
     return (
         <div className='vstack fixed-top'>
-            <div className='d-flex justify-content-between bg-light py-2'>
-                <div>
-                    <img
-                        src={cvsc}
-                        width="85"
-                        height="auto"
-                        className="d-inline-block align-center"
-                        alt="Coachella Valley Smokers Club logo"
-                    />
-                </div>
-                <div className='p-2 me-2' onClick={() => setToggle(!toggle)}>
-                    {
-                        toggle
-                            ? <FontAwesomeIcon icon={faAngleUp} size='3x' />
-                            : <FontAwesomeIcon icon={faBars} size='3x' />
-                    }
+            {/* <div className='d-flex justify-content-between bg-light py-2'> */}
+            <div className='w-100 bg-light py-2'>
+                <div className='innerContainer d-flex justify-content-between'>
+                    <div>
+                        <img
+                            src={cvsc}
+                            width="85"
+                            height="auto"
+                            className="d-inline-block align-center"
+                            alt="Coachella Valley Smokers Club logo"
+                        />
+                    </div>
+                    <div className='p-2 me-2' onClick={() => setToggle(!toggle)}>
+                        {
+                            toggle
+                                ? <FontAwesomeIcon icon={faAngleUp} size='3x' />
+                                : <FontAwesomeIcon icon={faBars} size='3x' />
+                        }
+                    </div>
                 </div>
             </div>
             {
