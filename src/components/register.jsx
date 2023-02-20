@@ -54,7 +54,7 @@ const Register = () => {
     }
     
     return (
-        <>
+        <div className='innerContainer'>
             <h2>Register</h2>
             <Form onSubmit={handleSubmit(createUser)} className='mt-3'>
                 <Form.Group controlId="username" className='mb-2'>
@@ -72,22 +72,8 @@ const Register = () => {
                     <div className='errormessage'>{errors.username?.message}</div>
                 </Form.Group>
 
-                {/* <Form.Group controlId="email" className='mb-2'>
-                    <FloatingLabel controlId='email' label='Email'>
-                        <Form.Control
-                            className={errors.email ? 'inputError' : ''}
-                            onFocus={() => clearErrors('email')}
-                            {...register('email')}
-                            type="email"
-                            name='email'
-                            required
-                        />
-                    </FloatingLabel>
-                    <div className='errormessage'>{errors.email?.message}</div>
-                </Form.Group> */}
-
                 <div className='d-flex'>
-                    <Form.Group controlId="password" className='mb-2'>
+                    <Form.Group controlId="password" className='mb-2 w-100'>
                         <FloatingLabel controlId='Password' label='Password'>
                             <Form.Control
                                 className={errors.password ? 'inputError' : ''}
@@ -102,7 +88,7 @@ const Register = () => {
                         <div className='errormessage'>{errors.password?.message}</div>
                     </Form.Group>
 
-                    <Form.Group controlId="confirmation" className='mb-2'>
+                    <Form.Group controlId="confirmation" className='mb-2 w-100'>
                         <FloatingLabel controlId='confirmation' label='Confirm Password'>
                             <Form.Control
                                 className={errors.confirmation ? 'inputError' : ''}
@@ -132,7 +118,7 @@ const Register = () => {
                     <p>already have a login? <Link to={{ pathname: '/login' }}>Login</Link></p>
                 </Col>
             </Row>
-        </>
+        </div>
     )
 }
 

@@ -71,7 +71,7 @@ const Login = () => {
 
 
     return (
-        <div>
+        <div className='innerContainer'>
             <h2>Login</h2>
             <Form onSubmit={handleSubmit(sendLogin)} className='mt-3'>
                 

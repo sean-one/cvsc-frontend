@@ -17,10 +17,11 @@ const Styles = styled.div`
     }
 
     .innerContainer {
-        min-width: 375px;
+        width: calc(100vw - 1.5rem);
         max-width: 850px;
-        border: 2px solid red;
-        /* margin: auto; */
+        margin: auto;
+        box-sizing: border-box;
+        /* border: 2px solid red; */
     }
 
     a {
