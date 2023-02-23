@@ -7,10 +7,11 @@ const Styles = styled.div`
     }
 
     .app_container {
+        min-width: 250px;
         min-height: 100vh;
         max-width: 100vw;
         margin: 0;
-        padding: 6.5rem 0.75rem 0 0.75rem;
+        padding: 5rem 0.75rem 0 0.75rem;
         background-color: #588157;
         /* border: 2px solid yellow; */
         /* box-sizing: border-box; */
@@ -18,10 +19,30 @@ const Styles = styled.div`
 
     .innerContainer {
         width: calc(100vw - 1.5rem);
+        min-width: 200px;
         max-width: 850px;
         margin: auto;
         box-sizing: border-box;
         /* border: 2px solid red; */
+    }
+
+    .calendarContainer {
+        max-width: 550px;
+        /* border: 2px solid pink; */
+    }
+
+    .fullCalendar {
+        width: calc(100vw - 1.5rem);
+        max-width: 1280px;
+        box-sizing: border-box;
+    }
+
+    .weekDay {
+        height: 145px;
+    }
+
+    .daysPast {
+        background-color: rgba(0,0,0,0.4);
     }
 
     a {
@@ -52,7 +73,11 @@ const Styles = styled.div`
     }
 
     .userAvatar {
+        min-width: 100%;
         max-width: 325px;
+    }
+    .userCanvas {
+        max-width: 100%;
     }
 
 `;

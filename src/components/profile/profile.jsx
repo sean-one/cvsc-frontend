@@ -8,7 +8,7 @@ import ProfileMenu from './profile.menu';
 const Profile = () => {
 
     return (
-        <div>
+        <div className='innerContainer'>
             <UserAccount />
             <ProfileMenu />
             <Outlet />

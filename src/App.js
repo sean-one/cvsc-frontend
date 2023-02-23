@@ -37,7 +37,7 @@ const queryClient = new QueryClient()
 
 const App = () => {
 
-  
+
   return (
     <React.Fragment>
       <ScrollToTop/>
@@ -46,12 +46,14 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route element={<PersistLogin />}>
+              
               {/* public routes */}
               <Route exact path='/' element={<Calendar />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/event/:event_id' element={<EventView />} />
               <Route exact path='/business/:business_id' element={<BusinessView />} />
+              
               {/* private routes */}
               <Route element={<AuthRoute />}>
                 <Route path='/profile' element={<Profile />}>
@@ -65,12 +67,12 @@ const App = () => {
                 <Route path='/business/edit/:business_id' element={<UpdateBusiness />} />
                 <Route path='/business/roles/:business_id' element={<BusinessRoles />} />
               </Route>
+
               {/* catch all for unknown pages */}
               <Route path='/*' element={<ErrorPage />} />
+            
             </Route>
           </Routes>
-          {/* <Route exact path='/' render={(props) => (<Calendar {...props} />)} /> */}
-          {/* <AuthRoute exact path='/profile' component={Profile} /> */}
         </Layout>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>

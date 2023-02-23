@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification'
-import useWindowSize from '../../../hooks/useWindowSize';
+// import useWindowSize from '../../../hooks/useWindowSize';
 import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user_icon.png'
 import useAvatarPreview from '../../../hooks/useAvatarPreview';
@@ -23,7 +23,7 @@ const UserAccount = () => {
     const { editImage, imagePreview, canvas, setEditImage } = useAvatarPreview()
 
     let navigate = useNavigate()
-    const [width] = useWindowSize()
+    // const [width] = useWindowSize()
 
     const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -157,28 +157,30 @@ const UserAccount = () => {
 
     return (
         // <div className={`d-flex ${(width < 830) ? 'justify-content-between' : 'flex-column'} border mb-3`}>
-        <div className={`d-flex flex-column border mb-3`}>
+        <div className={`d-flex align-items-center flex-wrap border mb-3`}>
             
-            <div className='mt-2 p-2 text-center'>
-                {
-                    editImage
-                        ? <canvas
-                            className='rounded-circle'
-                            id={'avatarImagePreview'}
-                            ref={canvas}
-                        />
-                        : <Image
-                            className='userAvatar'
-                            thumbnail
-                            roundedCircle
-                            src={(auth?.user?.avatar === null) ? default_profile : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`}
-                            alt={`user avatar`}
-                        /> 
-                }
+            <div className='mt-2 p-2 text-center m-auto'>
+                <div className='userAvatar'>
+                    {
+                        editImage
+                            ? <canvas
+                                className='rounded-circle userCanvas'
+                                id={'avatarImagePreview'}
+                                ref={canvas}
+                            />
+                            : <Image
+                                fluid
+                                thumbnail
+                                roundedCircle
+                                src={(auth?.user?.avatar === null) ? default_profile : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`}
+                                alt={`user avatar`}
+                            />
+                    }
+                </div>
             </div>
             
-            <div className='d-flex justify-content-between w-75'>
-                <div className={`d-flex flex-column ${width > 830 ? 'justify-content-center' : ''} w-100 px-2`}>
+            <div className='d-flex justify-content-between align-self-center w-100'>
+                <div className={`d-flex flex-column w-100 px-2`}>
                     <h2>{auth?.user.username}</h2>
                     {
                         (editView)

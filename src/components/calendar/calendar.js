@@ -25,19 +25,20 @@ const Calendar = () => {
 
 
     return (
-        <>
+        <div className='calendarContainer'>
             {
                 Object.keys(siteSortedEvents).sort(
                     // sort event list by date
                     (a,b) => new Date(a) - new Date(b)
                 ).map(key => {
+                    console.log(new Date(key))
                     const eventDate = new Date(key)
                     return (
                         <Day key={format(eventDate, 't')} date={eventDate} schedule={siteSortedEvents[key]} />
                     )
                 })
             }
-        </>
+        </div>
     )
 }
 
