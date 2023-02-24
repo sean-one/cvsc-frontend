@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Col, Form, Button, Row, FloatingLabel } from 'react-bootstrap';
+import { Form, Button, FloatingLabel } from 'react-bootstrap';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import AxiosInstance from '../helpers/axios';
@@ -54,10 +54,11 @@ const Register = () => {
     }
     
     return (
-        <div className='innerContainer'>
+        <div>
             <h2>Register</h2>
             <Form onSubmit={handleSubmit(createUser)} className='mt-3'>
-                <Form.Group controlId="username" className='mb-2'>
+
+                <Form.Group controlId="username" className='mb-3'>
                     <FloatingLabel controlId='username' label='Username'>
                         <Form.Control
                             className={errors.username ? 'inputError' : ''}
@@ -73,7 +74,8 @@ const Register = () => {
                 </Form.Group>
 
                 <div className='d-flex'>
-                    <Form.Group controlId="password" className='mb-2 w-100'>
+
+                    <Form.Group controlId="password" className='mb-3 me-1 w-100'>
                         <FloatingLabel controlId='Password' label='Password'>
                             <Form.Control
                                 className={errors.password ? 'inputError' : ''}
@@ -88,7 +90,7 @@ const Register = () => {
                         <div className='errormessage'>{errors.password?.message}</div>
                     </Form.Group>
 
-                    <Form.Group controlId="confirmation" className='mb-2 w-100'>
+                    <Form.Group controlId="confirmation" className='mb-3 ms-2 w-100'>
                         <FloatingLabel controlId='confirmation' label='Confirm Password'>
                             <Form.Control
                                 className={errors.confirmation ? 'inputError' : ''}
@@ -102,22 +104,24 @@ const Register = () => {
                         </FloatingLabel>
                         <div className='errormessage'>{errors.confirmation?.message}</div>
                     </Form.Group>
+
                 </div>
+
                 <div className='errormessage'>{errors.invalid_input?.message}</div>
-                <div className='d-flex justify-content-between'>
-                    <Button variant="outline-dark" type='submit'>
-                        Submit
-                    </Button>
-                    <Button variant="outline-dark" onClick={googleAuthButton}>
-                        Register with Google
-                    </Button>
+                
+                <div className='d-flex justify-content-center w-100'>
+                    <div className='d-flex justify-content-between w-75'>
+                        <Button className='w-50 mx-1' variant="outline-dark" type='submit'>Submit</Button>
+                        <Button className='w-50 mx-1' variant="outline-dark" onClick={googleAuthButton}>Register with Google</Button>
+                    </div>
                 </div>
+            
             </Form>
-            <Row>
-                <Col className='d-flex flex-column justify-content-center align-items-center my-2'>
-                    <p>already have a login? <Link to={{ pathname: '/login' }}>Login</Link></p>
-                </Col>
-            </Row>
+
+            <div className='my-3 text-center'>
+                <p>already have a login? <Link to={{ pathname: '/login' }}>Login</Link></p>
+            </div>
+            
         </div>
     )
 }

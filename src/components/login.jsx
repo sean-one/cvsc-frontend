@@ -71,11 +71,11 @@ const Login = () => {
 
 
     return (
-        <div className='innerContainer'>
+        <div>
             <h2>Login</h2>
             <Form onSubmit={handleSubmit(sendLogin)} className='mt-3'>
                 
-                <Form.Group controlId="username" className='mb-2'>
+                <Form.Group controlId="username" className='mb-3'>
                     <FloatingLabel controlId='username' label='Username'>
                         <Form.Control
                             className={errors.username ? 'inputError' : ''}
@@ -91,7 +91,7 @@ const Login = () => {
                     <div className='errormessage'>{errors.username?.message}</div>
                 </Form.Group>
 
-                <Form.Group controlId="password" className='mb-2'>
+                <Form.Group controlId="password" className='mb-3'>
                     <FloatingLabel controlId='password' label='Password'>
                         <Form.Control
                             className={errors.password ? 'inputError' : ''}
@@ -107,10 +107,13 @@ const Login = () => {
                     <div className='errormessage'>{errors.credentials?.message}</div>
                 </Form.Group>
                 
-                <div className='d-flex justify-content-between'>
-                    <Button variant="outline-dark" type='submit'>Submit</Button>
-                    <Button variant='outline-dark' onClick={googleAuthButton}>Google Login</Button>
+                <div className='d-flex justify-content-center w-100'>
+                    <div className='d-flex justify-content-between w-75'>
+                        <Button className='w-50 mx-1' variant="outline-dark" type='submit'>Submit</Button>
+                        <Button className='w-50 mx-1' variant='outline-dark' onClick={googleAuthButton}>Google Login</Button>
+                    </div>
                 </div>
+            
             </Form>
             
             <div className='my-3 text-center'>

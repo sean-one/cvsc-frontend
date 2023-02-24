@@ -12,23 +12,39 @@ const Styles = styled.div`
         max-width: 100vw;
         margin: 0;
         padding: 5rem 0.75rem 0 0.75rem;
-        background-color: #588157;
+        color: black;
+        /* color: #909590; */
+        /* color: #7B904B; */
+        background-color: #19381F;
+        /* background-color: #588157; */
         /* border: 2px solid yellow; */
         /* box-sizing: border-box; */
     }
 
-    .innerContainer {
+    .navContainer {
         width: calc(100vw - 1.5rem);
         min-width: 200px;
-        max-width: 850px;
-        margin: auto;
+        max-width: 750px;
+    }
+    
+    .innerContainer {
+        min-width: 200px;
+        min-height: calc(100vh - 5rem);
         box-sizing: border-box;
-        /* border: 2px solid red; */
+        
+        @media (min-width: 500px) {
+            padding: 1rem;
+            width: calc(100vw - 1.5rem);
+            max-width: 700px;
+            margin: auto;
+            
+        }
     }
 
-    .calendarContainer {
-        max-width: 550px;
-        /* border: 2px solid pink; */
+    .centerElement {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .fullCalendar {
@@ -72,21 +88,13 @@ const Styles = styled.div`
         border: 2px solid red;
     }
 
-    .userAvatar {
-        min-width: 100%;
-        max-width: 325px;
-    }
-    .userCanvas {
-        max-width: 100%;
-    }
-
 `;
 
 export const Layout = (props) => {
     return (
         <Styles>
-            <div className='app_container d-flex justify-content-center g-2'>
-                <div>{props.children}</div>
+            <div className='app_container d-flex flex-column justify-content-center g-2'>
+                <div className='innerContainer'>{props.children}</div>
             </div>
         </Styles>
     )

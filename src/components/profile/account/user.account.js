@@ -2,17 +2,61 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
-import { yupResolver } from '@hookform/resolvers/yup'
+import { yupResolver } from '@hookform/resolvers/yup';
+import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification'
-// import useWindowSize from '../../../hooks/useWindowSize';
 import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user_icon.png'
 import useAvatarPreview from '../../../hooks/useAvatarPreview';
 import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
 import { editUserSchema } from '../../../helpers/validationSchemas';
+
+const Styles = styled.div`
+
+    .userAccount {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background-color: #A7AAA4;
+        border-radius: 15px;
+        box-sizing: border-box;
+        
+        @media (min-width: 500px) {
+            flex-direction: row;
+        }
+    }
+
+    .userAvatar {
+        width: 100%;
+        max-width: 325px;
+        margin: auto;
+
+        @media (min-width: 500px) {
+            width: 40%;
+        }
+    }
+
+    .userCanvas {
+        max-width: 100%;
+    }
+
+    .userDetails {
+        width: 100%;
+        align-self: start;
+        padding-top: 1rem;
+        
+        @media (min-width: 500px) {
+            width: 50%;
+            padding-top: 0;
+            padding-left: 1rem;
+            align-self: center;
+        }
+    }
+
+`
 
 
 const UserAccount = () => {
@@ -23,7 +67,6 @@ const UserAccount = () => {
     const { editImage, imagePreview, canvas, setEditImage } = useAvatarPreview()
 
     let navigate = useNavigate()
-    // const [width] = useWindowSize()
 
     const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -156,10 +199,9 @@ const UserAccount = () => {
 
 
     return (
-        // <div className={`d-flex ${(width < 830) ? 'justify-content-between' : 'flex-column'} border mb-3`}>
-        <div className={`d-flex align-items-center flex-wrap border mb-3`}>
-            
-            <div className='mt-2 p-2 text-center m-auto'>
+        <Styles>
+            <div className='userAccount'>
+                
                 <div className='userAvatar'>
                     {
                         editImage
@@ -177,11 +219,11 @@ const UserAccount = () => {
                             />
                     }
                 </div>
-            </div>
-            
-            <div className='d-flex justify-content-between align-self-center w-100'>
-                <div className={`d-flex flex-column w-100 px-2`}>
+                
+                <div className='userDetails'>
                     <h2>{auth?.user.username}</h2>
+                    <div>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
+
                     {
                         (editView)
                             ? <Form encType='multipart/form-data'>
@@ -215,7 +257,7 @@ const UserAccount = () => {
                                         </Form.Group>
                                 }
 
-                                <div className='d-flex justify-content-between align-items-center'>
+                                <div className='centerElement'>
                                     <Form.Group controlId='update_password'>
                                         <Form.Check
                                             className='mb-2'
@@ -272,15 +314,15 @@ const UserAccount = () => {
                             </Form>
                             : <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
                     }
-                    <div className='m-0'>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
-                    <div className='d-flex justify-content-between align-items-center my-2'>
+                    
+                    <div className='centerElement'>
                         {
                             (editView) &&
                                 <Button variant='outline-danger' className={`text-danger ${(!editView) ? 'd-none' : 'w-50'}`} onClick={() => delete_account()}>
                                     delete account
                                 </Button>
                         }
-                        <div className='d-flex justify-content-end text-end align-self-end m-0'>
+                        <div>
                             {
                                 (editView && isDirty) &&
                                     <Button variant='outline-dark' className='ms-1' onClick={handleSubmit(update_user)}>
@@ -289,9 +331,7 @@ const UserAccount = () => {
                             }
                             {
                                 (!editView) &&
-                                    <Button variant='outline-dark' onClick={() => setEditView(true)}>
-                                        edit account
-                                    </Button>
+                                    <Button variant='outline-dark' onClick={() => setEditView(true)}>edit account</Button>
                             }
                             {
                                 (editView) &&
@@ -303,7 +343,7 @@ const UserAccount = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Styles>
     )
 }
 

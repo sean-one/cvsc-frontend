@@ -12,8 +12,8 @@ const Navbar = () => {
     return (
         <div className='vstack fixed-top'>
             {/* <div className='d-flex justify-content-between bg-light py-2'> */}
-            <div className='w-100 bg-light py-0'>
-                <div className='innerContainer d-flex justify-content-between'>
+            <div className='d-flex justify-content-center w-100 bg-light py-0'>
+                <div className='navContainer d-flex justify-content-between border border-danger'>
                     <div>
                         <img
                             src={cvsc}
