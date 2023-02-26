@@ -21,8 +21,7 @@ const Styles = styled.div`
         flex-direction: column;
         padding: 1rem;
         background-color: #A7AAA4;
-        border-radius: 15px;
-        box-sizing: border-box;
+        border-radius: 5px;
         
         @media (min-width: 500px) {
             flex-direction: row;
@@ -331,7 +330,7 @@ const UserAccount = () => {
                             }
                             {
                                 (!editView) &&
-                                    <Button variant='outline-dark' onClick={() => setEditView(true)}>edit account</Button>
+                                    <Button variant='outline-dark' className='my-1' onClick={() => setEditView(true)}>edit account</Button>
                             }
                             {
                                 (editView) &&

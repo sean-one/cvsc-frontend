@@ -60,30 +60,32 @@ const RoleRequest = () => {
 
     return (
         <Form onSubmit={handleSubmit(roleCreate)}>
-            <div className='d-flex justify-content-between align-items-center'>
-                <div className='flex-fill px-0'>
-                    <Form.Group controlId='business_id'>
-                        <FloatingLabel controlId='business_id' label='Creator Role Request' className='mb-2'>
-                            <Form.Select
-                                className={errors.business_id ? 'inputError' : ''}
-                                onFocus={() => clearErrors('business_id')}
-                                {...register('business_id')}
-                                type='text'
-                                name='business_id'
-                                required
-                            >
-                                {
-                                    business_filtered.map(business => (
-                                        <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
-                                    ))
-                                }
-                            </Form.Select>
-                        </FloatingLabel>
-                    </Form.Group>
+            <div className='centerElement'>
+                
+                <Form.Group controlId='business_id' className='w-100'>
+                    <FloatingLabel controlId='business_id' label='Creator Role Request' className='mb-2'>
+                        <Form.Select
+                            className={errors.business_id ? 'inputError' : ''}
+                            onFocus={() => clearErrors('business_id')}
+                            {...register('business_id')}
+                            type='text'
+                            name='business_id'
+                            required
+                        >
+                            {
+                                business_filtered.map(business => (
+                                    <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
+                                ))
+                            }
+                        </Form.Select>
+                    </FloatingLabel>
+                </Form.Group>
+
+                {/* <div className='ms-2 align-self-center'> */}
+                <div className='ms-2'>
+                    <Button type='submit'>Request</Button>
                 </div>
-                <div className='ms-2 align-self-center'>
-                    <Button type='submit'> + </Button>
-                </div>
+
             </div>
             <div className='errormessage px-3'>
                 {errors.business_id?.message}
