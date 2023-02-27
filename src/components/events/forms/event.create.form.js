@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,13 +15,15 @@ import LoadingSpinner from '../../loadingSpinner';
 import { image_link } from '../../../helpers/dataCleanUp';
 
 
-const EventCreateForm = () => {
+const EventCreateForm = ({ business_id }) => {
     const { logout_user } = useAuth()
     const [ showImage, setShowImage ] = useState(false)
     const [ imageFile, setImageFile ] = useState('')
     const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
+    let navigate = useNavigate();
+    let location = useLocation()
 
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
@@ -34,13 +36,11 @@ const EventCreateForm = () => {
             eventstart: '',
             eventend: '',
             eventmedia: '',
-            venue_id: '',
+            venue_id: location?.state || '',
             details: '',
-            brand_id: '',
+            brand_id: location?.state || '',
         }
     });
-
-    let navigate = useNavigate();
 
     const createNewEvent = async (data) => {
         try {
