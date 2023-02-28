@@ -25,7 +25,7 @@ const UpgradeRole = ({ role_id }) => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `${upgrade_response.data.username} now has ${role_types[upgrade_response.data.role_type]} privileges`
+                        message: `${upgrade_response.data.username} now has ${role_types[upgrade_response.data.role_type].type} privileges`
                     }
                 })
             }

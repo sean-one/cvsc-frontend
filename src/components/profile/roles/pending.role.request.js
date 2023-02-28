@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion } from 'react-bootstrap';
+// import { Accordion } from 'react-bootstrap';
 import styled from 'styled-components';
 // import { useNavigate } from 'react-router-dom';
 
@@ -17,9 +17,18 @@ const Styles = styled.div`
 
     .pendingRolesHeader {
         display: flex;
+        margin-bottom: 0.5rem;
         justify-content: space-between;
         align-content: center;
         border-bottom: 1px solid black;
+    }
+
+    .pendingRole {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 0.5rem;
+        margin-bottom: 0.25rem;
     }
 `;
 
@@ -59,7 +68,7 @@ const PendingRoleRequest = ({ user_id }) => {
                 <div>
                     {
                         pending_roles.data.map(role => (
-                            <div key={role.id} className='d-flex justify-content-between align-items-center ps-2 mb-1'>
+                            <div key={role.id} className='pendingRole'>
                                 <div className='flex-fill'>{role.business_name}</div>
                                 <div className='flex-fill text-end'>{role.username}</div>
                                 <div className='d-flex ps-2 text-end'>

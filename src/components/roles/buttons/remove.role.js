@@ -1,6 +1,8 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faBong, faTimes } from '@fortawesome/free-solid-svg-icons';
 // import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -13,9 +15,9 @@ const RemoveRole = ({ role_id }) => {
 
     // let navigate = useNavigate()
 
-    const roleRemove = async (e) => {
+    const roleRemove = async () => {
         try {
-            const removed_role = await removeRole(e.currentTarget.value)
+            const removed_role = await removeRole(role_id)
     
             if (removed_role.status === 204) {
                 dispatch({
@@ -56,9 +58,10 @@ const RemoveRole = ({ role_id }) => {
 
 
     return (
-        <Button size='sm' variant='outline-danger' onClick={(e) => roleRemove(e)} value={role_id}>
-            delete
-        </Button>
+        <FontAwesomeIcon icon={faTimes} onClick={(e) => roleRemove(e)} />
+        // <Button size='sm' variant='outline-danger' onClick={(e) => roleRemove(e)} value={role_id}>
+        //     delete
+        // </Button>
     )
 }
 

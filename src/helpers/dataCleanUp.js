@@ -38,9 +38,23 @@ export const image_link = (db_image) => {
     }
 }
 
+// export const role_types = {
+//     [process.env.REACT_APP_BASIC_ACCOUNT]: 'basic',
+//     [process.env.REACT_APP_CREATOR_ACCOUNT]: 'creator',
+//     [process.env.REACT_APP_MANAGER_ACCOUNT]: 'manager',
+//     [process.env.REACT_APP_ADMIN_ACCOUNT]: 'admin'
+// }
+
 export const role_types = {
-    [process.env.REACT_APP_BASIC_ACCOUNT]: 'basic',
-    [process.env.REACT_APP_CREATOR_ACCOUNT]: 'creator',
-    [process.env.REACT_APP_MANAGER_ACCOUNT]: 'manager',
-    [process.env.REACT_APP_ADMIN_ACCOUNT]: 'admin'
+    [process.env.REACT_APP_BASIC_ACCOUNT]: { type: 'basic', color: 'gray' },
+    [process.env.REACT_APP_CREATOR_ACCOUNT]: { type: 'creator', color: 'yellow' },
+    [process.env.REACT_APP_MANAGER_ACCOUNT]: { type: 'manager', color: 'blue' },
+    [process.env.REACT_APP_ADMIN_ACCOUNT]: { type: 'admin', color: 'green' }
+}
+
+export const role_colors = {
+    'basic': 'gray',
+    'creator': 'yellow',
+    'manager': 'blue',
+    'admin': 'green'
 }

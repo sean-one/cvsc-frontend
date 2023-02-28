@@ -12,7 +12,7 @@ const InactiveRoles = ({ roles_list }) => {
                 roles_list.map(role =>
                     <div key={role.id} className='d-flex justify-content-between align-items-end ps-2 py-1 border-bottom rounded-bottom'>
                         <div className='text-danger flex-fill'>{role.username}</div>
-                        <div className='text-danger mx-1'>{role_types[role.role_type]}</div>
+                        <div className='text-danger mx-1'>{role_types[role.role_type].type}</div>
                         <div className='text-danger mx-1'>inactive</div>
                         <div className='mx-1'>
                             <RemoveRole role_id={role.id} />

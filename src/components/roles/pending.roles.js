@@ -13,7 +13,7 @@ const PendingRoles = ({ roles_list }) => {
                 roles_list.map(role =>
                     <div key={role.id} className='d-flex justify-content-between align-items-end ps-2 py-1 border-bottom rounded-bottom'>
                         <div className='flex-fill'>
-                            {`${role.username} - ${role_types[role.role_type]}`}
+                            {`${role.username} - ${role_types[role.role_type].type}`}
                         </div>
                         <div className='d-flex'>
                             <div className='mx-1'>

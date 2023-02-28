@@ -1,10 +1,20 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
+
 
 import useAuth from '../../../hooks/useAuth';
 import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
+
+const Styles = styled.div`
+    .removeButton {
+        color: ${(props) => props.children.props.variant};
+        pointer-events: ${(props) => (props.children.props.type === 'disabled') ? 'none' : ''};
+    }
+`;
+
 
 const RemoveUserRole = ({ role_id, role_type }) => {
     const { auth, logout_user, setAuth } = useAuth()
@@ -60,13 +70,15 @@ const RemoveUserRole = ({ role_id, role_type }) => {
 
 
     return (
-        <div className='border border-danger'>
-            {
-                (role_type === process.env.REACT_APP_ADMIN_ACCOUNT)
-                    ? <FontAwesomeIcon icon={faBan} />
-                    : <FontAwesomeIcon icon={faTrash} onClick={() => userRoleRemove(role_id)} />
-            }
-        </div>
+        <Styles>
+            <FontAwesomeIcon
+                icon={faTrash}
+                className='removeButton'
+                onClick={() => userRoleRemove(role_id)}
+                variant={(role_type === process.env.REACT_APP_ADMIN_ACCOUNT) ? 'grey' : 'black'}
+                type={(role_type === process.env.REACT_APP_ADMIN_ACCOUNT) ? 'disabled' : 'enabled'}
+            />
+        </Styles>
     )
 }
 

@@ -221,7 +221,7 @@ const UserAccount = () => {
                 
                 <div className='userDetails'>
                     <h2>{auth?.user.username}</h2>
-                    <div>{`Account Type: ${role_types[auth.user.account_type]}`}</div>
+                    <div>{`Account Type: ${role_types[auth.user.account_type].type}`}</div>
 
                     {
                         (editView)

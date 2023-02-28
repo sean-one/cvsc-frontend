@@ -1,29 +1,34 @@
 import React from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import { useApproveRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
+const Styles = styled.div`
+    .roleApprove {
+        color: #19381F;
+    }
+`;
+
 const ApproveRole = ({ role_id }) => {
     const { logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { mutateAsync: approveRole } = useApproveRoleMutation()
-    // let navigate = useNavigate()
 
-
-    const roleApprove = async (e) => {
+    const roleApprove = async () => {
         try {
-            const approval_response = await approveRole(e.currentTarget.value)
+            const approval_response = await approveRole(role_id)
     
             if (approval_response.status === 200) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `${approval_response.data.username} now has ${role_types[approval_response.data.role_type]} privileges`
+                        message: `${approval_response.data.username} now has ${role_types[approval_response.data.role_type].type} privileges`
                     }
                 })
             }
@@ -57,10 +62,9 @@ const ApproveRole = ({ role_id }) => {
 
 
     return (
-        <Button size='sm' variant='outline-success' onClick={(e) => roleApprove(e)} value={role_id}>
-            approve
-            {/* <FontAwesomeIcon icon={faCheck} /> */}
-        </Button>
+        <Styles>
+            <FontAwesomeIcon className='roleApprove' icon={faCheck} onClick={(e) => roleApprove(e)} />
+        </Styles>
     )
 }
 
