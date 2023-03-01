@@ -12,12 +12,13 @@ import RemoveRole from '../../roles/buttons/remove.role';
 
 const Styles = styled.div`
     .pendingRoles {
-        padding-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        /* border: 2px solid blue; */
     }
 
     .pendingRolesHeader {
         display: flex;
-        margin-bottom: 0.5rem;
+        /* margin-bottom: 0.5rem; */
         justify-content: space-between;
         align-content: center;
         border-bottom: 1px solid black;
@@ -27,8 +28,9 @@ const Styles = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-left: 0.5rem;
-        margin-bottom: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        /* padding-left: 0.5rem; */
+        /* margin-bottom: 0.25rem; */
     }
 `;
 

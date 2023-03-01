@@ -1,12 +1,19 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faBong, faTimes } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 // import { useNavigate } from 'react-router-dom';
 // import { Button } from 'react-bootstrap';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
+
+const Styles = styled.div`
+    .roleRemove {
+        color: #780000;
+    }
+`;
 
 const RemoveRole = ({ role_id }) => {
     const { logout_user } = useAuth()
@@ -58,10 +65,9 @@ const RemoveRole = ({ role_id }) => {
 
 
     return (
-        <FontAwesomeIcon icon={faTimes} onClick={(e) => roleRemove(e)} />
-        // <Button size='sm' variant='outline-danger' onClick={(e) => roleRemove(e)} value={role_id}>
-        //     delete
-        // </Button>
+        <Styles>
+            <FontAwesomeIcon className='roleRemove' icon={faTimes} onClick={(e) => roleRemove(e)} />
+        </Styles>
     )
 }
 

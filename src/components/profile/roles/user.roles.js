@@ -7,7 +7,7 @@ import RemoveUserRole from '../../roles/buttons/remove.user.role';
 
 const Styles = styled.div`
     .currentRoles {
-        padding-bottom: 1.5rem;
+        padding-bottom: 1rem;
         /* border: 2px solid red; */
     }
 
@@ -63,7 +63,10 @@ const UserRoles = ({ roles }) => {
                     {
                         roles.map(role =>
                             <div key={role.id} className={`role ${(!role.active_role) && 'inactiveRole'}`}>
-                                <CreateEventIcon roletype={role.role_type} business_id={role.business_id} />
+                                {
+                                    (role.active_role) &&
+                                        <CreateEventIcon roletype={role.role_type} business_id={role.business_id} />
+                                }
                                 <div onClick={() => navigate(`/business/${role.business_id}`)} className='text-start flex-fill'>
                                     {role.business_name}
                                 </div>

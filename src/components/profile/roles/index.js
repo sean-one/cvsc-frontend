@@ -29,8 +29,14 @@ const RolesTab = () => {
         <Styles>
             <div className='rolesTab'>
                 <RoleRequest />
+                
+                {/* current user roles */}
                 { (roles.data.length > 0) && <UserRoles roles={roles.data} /> }
-                { (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) && <PendingRoleRequest user_id={auth.user.id}/> }
+                
+                {/* pending roles for businesses managed */}
+                { (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
+                    <PendingRoleRequest user_id={auth.user.id}/>
+                }
             </div>
         </Styles>
     )
