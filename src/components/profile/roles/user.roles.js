@@ -53,11 +53,11 @@ const UserRoles = ({ roles }) => {
             <div className='currentRoles'>
                 <div className='currentRolesHeader'>
                     <div>Current Roles</div>
-                    <div className='roletypes'>
+                    {/* <div className='roletypes'>
                         <div>admin</div>
                         <div>manager</div>
                         <div>creator</div>
-                    </div>
+                    </div> */}
                 </div>
                 <div>
                     {

@@ -1,7 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { roleRequestSchema } from '../../../helpers/validationSchemas';
 import LoadingSpinner from '../../loadingSpinner';
@@ -59,11 +61,13 @@ const RoleRequest = () => {
 
 
     return (
-        <Form onSubmit={handleSubmit(roleCreate)}>
-            <div className='centerElement'>
-                
-                <Form.Group controlId='business_id' className='w-100'>
-                    <FloatingLabel controlId='business_id' label='Creator Role Request' className='mb-2'>
+        <div>
+            <div>Create Business Role Request</div>
+
+            <Form>
+                <div className='centerElement'>
+                    
+                    <Form.Group controlId='business_id' className='w-100'>
                         <Form.Select
                             className={errors.business_id ? 'inputError' : ''}
                             onFocus={() => clearErrors('business_id')}
@@ -78,19 +82,20 @@ const RoleRequest = () => {
                                 ))
                             }
                         </Form.Select>
-                    </FloatingLabel>
-                </Form.Group>
+                    </Form.Group>
 
-                {/* <div className='ms-2 align-self-center'> */}
-                <div className='ms-2'>
-                    <Button type='submit'>Request</Button>
+                    <div className='ms-2'>
+                        <div type='submit' onClick={handleSubmit(roleCreate)}>
+                            <FontAwesomeIcon icon={faCheck} />
+                        </div>
+                    </div>
+
                 </div>
-
-            </div>
-            <div className='errormessage px-3'>
-                {errors.business_id?.message}
-            </div>
-        </Form>
+                <div className='errormessage px-3'>
+                    {errors.business_id?.message}
+                </div>
+            </Form>
+        </div>
     )
 }
 

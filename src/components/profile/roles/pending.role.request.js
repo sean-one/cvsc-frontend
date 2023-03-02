@@ -27,10 +27,16 @@ const Styles = styled.div`
     .pendingRole {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: end;
         padding: 0.25rem 0.5rem;
+        border-bottom: 1px solid black;
         /* padding-left: 0.5rem; */
         /* margin-bottom: 0.25rem; */
+    }
+
+    .roleButtons {
+        display: flex;
+        gap: 10px;
     }
 `;
 
@@ -71,15 +77,11 @@ const PendingRoleRequest = ({ user_id }) => {
                     {
                         pending_roles.data.map(role => (
                             <div key={role.id} className='pendingRole'>
-                                <div className='flex-fill'>{role.business_name}</div>
-                                <div className='flex-fill text-end'>{role.username}</div>
-                                <div className='d-flex ps-2 text-end'>
-                                    <div className='mx-1'>
-                                        <ApproveRole role_id={role.id} />
-                                    </div>
-                                    <div className='mx-1'>
-                                        <RemoveRole role_id={role.id} />
-                                    </div>
+                                <div className='border border-danger w-75'>{role.username}</div>
+                                <div className='border border-success w-100'>{role.business_name}</div>
+                                <div className='roleButtons'>
+                                    <ApproveRole role_id={role.id} />
+                                    <RemoveRole role_id={role.id} />
                                 </div>
                             </div>
                         ))

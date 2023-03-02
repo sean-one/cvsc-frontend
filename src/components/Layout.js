@@ -14,17 +14,10 @@ const Styles = styled.div`
         padding: 5rem 0.75rem 0 0.75rem;
         color: black;
         /* color: #909590; */
-        /* color: #7B904B; */
         background-color: #19381F;
         /* background-color: #588157; */
         /* border: 2px solid yellow; */
         /* box-sizing: border-box; */
-    }
-
-    .navContainer {
-        width: calc(100vw - 1.5rem);
-        min-width: 200px;
-        max-width: 750px;
     }
     
     .innerContainer {
