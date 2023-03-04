@@ -12,6 +12,7 @@ import Register from './components/register.jsx';
 import BusinessRoles from './components/roles/business.roles';
 
 import Profile from './components/profile/profile.jsx';
+import UserAccount from './components/profile/account/user.account';
 import RolesTab from './components/profile/roles';
 import UserEvents from './components/profile/events/user.events';
 import ManagementList from './components/profile/management/management.list';
@@ -57,9 +58,10 @@ const App = () => {
               {/* private routes */}
               <Route element={<AuthRoute />}>
                 <Route path='/profile' element={<Profile />}>
+                    <Route exact path='/profile' element={<UserAccount />} />
                     <Route path='/profile/roles' element={<RolesTab />} />
                     <Route path='/profile/events' element={<UserEvents />} />
-                    <Route path='/profile/management' element={<ManagementList />} />
+                    <Route path='/profile/admin' element={<ManagementList />} />
                 </Route>
                 <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EventEditForm />} />

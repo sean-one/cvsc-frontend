@@ -7,17 +7,16 @@ const Styles = styled.div`
     }
 
     .app_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         min-width: 250px;
         min-height: 100vh;
         max-width: 100vw;
         margin: 0;
-        padding: 5rem 0.75rem 0 0.75rem;
+        padding: 2rem 0.75rem 0 0.75rem;
         color: black;
-        /* color: #909590; */
         background-color: #19381F;
-        /* background-color: #588157; */
-        /* border: 2px solid yellow; */
-        /* box-sizing: border-box; */
     }
     
     .innerContainer {
@@ -86,7 +85,7 @@ const Styles = styled.div`
 export const Layout = (props) => {
     return (
         <Styles>
-            <div className='app_container d-flex flex-column justify-content-center g-2'>
+            <div className='app_container'>
                 <div className='innerContainer'>{props.children}</div>
             </div>
         </Styles>

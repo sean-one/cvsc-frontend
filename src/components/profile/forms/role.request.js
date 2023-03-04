@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 
 import { roleRequestSchema } from '../../../helpers/validationSchemas';
 import LoadingSpinner from '../../loadingSpinner';
@@ -11,6 +12,14 @@ import useNotification from '../../../hooks/useNotification';
 import useAuth from '../../../hooks/useAuth';
 import { useCreateRoleMutation } from '../../../hooks/useRolesApi';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
+
+const Styles = styled.div`
+    .roleRequest {
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid black;
+    }
+`;
 
 
 const RoleRequest = () => {
@@ -61,41 +70,46 @@ const RoleRequest = () => {
 
 
     return (
-        <div>
-            <div>Create Business Role Request</div>
+        <Styles>
+            {
+                (business_filtered.length > 0) &&
+                    <div className='roleRequest'>
+                        <div>Create Business Role Request</div>
 
-            <Form>
-                <div className='centerElement'>
-                    
-                    <Form.Group controlId='business_id' className='w-100'>
-                        <Form.Select
-                            className={errors.business_id ? 'inputError' : ''}
-                            onFocus={() => clearErrors('business_id')}
-                            {...register('business_id')}
-                            type='text'
-                            name='business_id'
-                            required
-                        >
-                            {
-                                business_filtered.map(business => (
-                                    <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
-                                ))
-                            }
-                        </Form.Select>
-                    </Form.Group>
+                        <Form>
+                            <div className='centerElement'>
+                                
+                                <Form.Group controlId='business_id' className='w-100'>
+                                    <Form.Select
+                                        className={errors.business_id ? 'inputError' : ''}
+                                        onFocus={() => clearErrors('business_id')}
+                                        {...register('business_id')}
+                                        type='text'
+                                        name='business_id'
+                                        required
+                                    >
+                                        {
+                                            business_filtered.map(business => (
+                                                <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
+                                            ))
+                                        }
+                                    </Form.Select>
+                                </Form.Group>
 
-                    <div className='ms-2'>
-                        <div type='submit' onClick={handleSubmit(roleCreate)}>
-                            <FontAwesomeIcon icon={faCheck} />
-                        </div>
+                                <div className='ms-2'>
+                                    <div type='submit' onClick={handleSubmit(roleCreate)}>
+                                        <FontAwesomeIcon icon={faCheck} />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div className='errormessage px-3'>
+                                {errors.business_id?.message}
+                            </div>
+                        </Form>
                     </div>
-
-                </div>
-                <div className='errormessage px-3'>
-                    {errors.business_id?.message}
-                </div>
-            </Form>
-        </div>
+            }
+        </Styles>
     )
 }
 
