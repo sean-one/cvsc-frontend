@@ -58,6 +58,15 @@ const Styles = styled.div`
         color: inherit;
     }
 
+    input {
+        border: none;
+        background-color: transparent;
+    }
+
+    input:focus {
+        background-color: #24502c;
+    }
+
     .event-card-title {
         font-weight: bold;
         color: darkgreen;

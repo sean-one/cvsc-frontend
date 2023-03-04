@@ -4,11 +4,17 @@ import { useForm } from 'react-hook-form';
 import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
+import styled from 'styled-components';
 
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
 
+const Styles = styled.div`
+    input {
+        background-color: transparent;
+    }
+`;
 
 const Login = () => {
     const { setAuth } = useAuth()
@@ -71,7 +77,7 @@ const Login = () => {
 
 
     return (
-        <div>
+        <Styles>
             <h2>Login</h2>
             <Form onSubmit={handleSubmit(sendLogin)} className='mt-3'>
                 
@@ -119,7 +125,7 @@ const Login = () => {
             <div className='my-3 text-center'>
                 <p>New to the club? <Link to={{ pathname: '/register' }}>Register</Link></p>
             </div>
-        </div>
+        </Styles>
     )
 }
 
