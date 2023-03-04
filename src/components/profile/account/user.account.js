@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrashAlt, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
@@ -19,8 +21,8 @@ const Styles = styled.div`
     .userAccount {
         display: flex;
         flex-direction: column;
-        padding: 1rem;
-        background-color: #A7AAA4;
+        padding: 3rem 0.5rem;
+        box-shadow: 5px 5px 5px #0D2B12;
         border-radius: 5px;
         
         @media (min-width: 500px) {
@@ -30,25 +32,28 @@ const Styles = styled.div`
 
     .userAvatar {
         width: 100%;
-        max-width: 325px;
+        max-width: 275px;
         margin: auto;
-
+        border: 1px solid red;
+        
         @media (min-width: 500px) {
             width: 40%;
         }
     }
-
+    
     .userCanvas {
+        border-radius: 50%;
         max-width: 100%;
     }
-
+    
     .userDetails {
+        border: 1px solid red;
         width: 100%;
         align-self: start;
         padding-top: 1rem;
         
         @media (min-width: 500px) {
-            width: 50%;
+            width: 60%;
             padding-top: 0;
             padding-left: 1rem;
             align-self: center;
@@ -205,7 +210,7 @@ const UserAccount = () => {
                     {
                         editImage
                             ? <canvas
-                                className='rounded-circle userCanvas'
+                                className='userCanvas'
                                 id={'avatarImagePreview'}
                                 ref={canvas}
                             />
@@ -225,25 +230,21 @@ const UserAccount = () => {
 
                     {
                         (editView)
-                            ? <Form encType='multipart/form-data'>
+                            ? <form encType='multipart/form-data'>
 
-                                <Form.Group controlId='email' className='mb-2'>
-                                    <FloatingLabel controlId='email' label='Update Email'>
-                                        <Form.Control
-                                            className={errors.email ? 'inputError' : ''}
-                                            {...register('email')}
-                                            onFocus={() => clearErrors('email')}
-                                            type='email'
-                                            name='email'
-                                        />
-                                    </FloatingLabel>
-                                    <div className='errormessage'>{errors.email?.message}</div>
-                                </Form.Group>
+                                <input
+                                    className={errors.email ? 'inputError' : ''}
+                                    {...register('email')}
+                                    onFocus={() => clearErrors('email')}
+                                    type='email'
+                                    name='email'
+                                />
+                                <div className='errormessage'>{errors.email?.message}</div>
 
                                 {
                                     (update_image) &&
-                                        <Form.Group controlId='avatar' className='mb-2'>
-                                            <Form.Control
+                                        <div>
+                                            <input
                                                 className={errors.avatar ? 'inputError' : ''}
                                                 {...register('avatar')}
                                                 onFocus={() => clearErrors('avatar')}
@@ -253,92 +254,71 @@ const UserAccount = () => {
                                                 onChange={(e) => imagePreview(e)}
                                             />
                                             <div className='errormessage'>{errors.profile_image?.message}</div>
-                                        </Form.Group>
+                                        </div>
                                 }
 
                                 <div className='centerElement'>
-                                    <Form.Group controlId='update_password'>
-                                        <Form.Check
-                                            className='mb-2'
-                                            {...register('update_password')}
-                                            type='checkbox'
-                                            label='Update Password'
-                                        />
-                                    </Form.Group>
+                                    <input
+                                        {...register('update_password')}
+                                        type='checkbox'
+                                        label='Update Password'
+                                    />
+                                    <label>Update Password</label>
 
                                     {
                                         (!update_image) &&
-                                            <Form.Group controlId='update_image'>
-                                                <Form.Check
-                                                    className='mb-2'
-                                                    {...register('update_image')}
-                                                    type='checkbox'
-                                                    label='Update Image'
-                                                />
-                                            </Form.Group>
+                                            <input
+                                                {...register('update_image')}
+                                                type='checkbox'
+                                                label='Update Image'
+                                            />
                                     }
                                 </div>
 
                                 {
                                     (update_password) &&
                                         <div>
-                                            <Form.Group controlId='password' className='mb-2'>
-                                                <FloatingLabel controlId='password' label='Update Password'>
-                                                    <Form.Control
-                                                        className={errors.password ? 'inputError' : ''}
-                                                        onFocus={() => clearErrors('password')}
-                                                        {...register('password')}
-                                                        type='password'
-                                                        name='password'
-                                                    />
-                                                </FloatingLabel>
-                                                <div className='errormessage'>{errors.password?.message}</div>
-                                            </Form.Group>
+                                            <input
+                                                className={errors.password ? 'inputError' : ''}
+                                                onFocus={() => clearErrors('password')}
+                                                {...register('password')}
+                                                type='password'
+                                                name='password'
+                                            />
+                                            <div className='errormessage'>{errors.password?.message}</div>
 
-                                            <Form.Group controlId='confirmation' className='mb-2'>
-                                                <FloatingLabel controlId='confirmation' label='Confirm New Password'>
-                                                    <Form.Control
-                                                        className={errors.confirmation ? 'inputError' : ''}
-                                                        onFocus={() => clearErrors('confirmation')}
-                                                        {...register('confirmation')}
-                                                        type='password'
-                                                        name='confirmation'
-                                                    />
-                                                </FloatingLabel>
-                                                <div className='errormessage'>{errors.confirmation?.message}</div>
-                                            </Form.Group>
+                                            <input
+                                                className={errors.confirmation ? 'inputError' : ''}
+                                                onFocus={() => clearErrors('confirmation')}
+                                                {...register('confirmation')}
+                                                type='password'
+                                                name='confirmation'
+                                            />
+                                            <div className='errormessage'>{errors.confirmation?.message}</div>
                                         </div>
                                 }
 
-                            </Form>
+                            </form>
                             : <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
                     }
                     
-                    <div className='centerElement'>
+                    <div>
                         {
                             (editView) &&
-                                <Button variant='outline-danger' className={`text-danger ${(!editView) ? 'd-none' : 'w-50'}`} onClick={() => delete_account()}>
-                                    delete account
-                                </Button>
+                                <button onClick={() => delete_account()}><FontAwesomeIcon icon={faTrashAlt}/></button>
                         }
-                        <div>
-                            {
-                                (editView && isDirty) &&
-                                    <Button variant='outline-dark' className='ms-1' onClick={handleSubmit(update_user)}>
-                                        save
-                                    </Button>
-                            }
-                            {
-                                (!editView) &&
-                                    <Button variant='outline-dark' className='my-1' onClick={() => setEditView(true)}>edit account</Button>
-                            }
-                            {
-                                (editView) &&
-                                    <Button variant='outline-dark' className='ms-1' onClick={() => close_edit_view()}>
-                                        close
-                                    </Button>
-                            }
-                        </div>
+                        {
+                            (editView) &&
+                                <button onClick={() => close_edit_view()}><FontAwesomeIcon icon={faTimes}/></button>
+                        }
+                        {
+                            (editView && isDirty) &&
+                                <button onClick={handleSubmit(update_user)}><FontAwesomeIcon icon={faSave}/></button>
+                        }
+                        {
+                            (!editView) &&
+                                <button onClick={() => setEditView(true)}><FontAwesomeIcon icon={faPencilAlt}/></button>
+                        }
                     </div>
                 </div>
             </div>

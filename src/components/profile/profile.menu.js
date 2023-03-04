@@ -6,7 +6,6 @@ import styled from 'styled-components';
 const Styles = styled.div`
     .profileMenu {
         margin: 0.25rem 0;
-        border: 1px solid blue;
     }
 
     .profileTab {
@@ -15,11 +14,9 @@ const Styles = styled.div`
         width: 100%;
         text-align: center;
         padding: 0.5rem 0;
-        background-color: #A7AAA4;
     }
 
     .activeTab {
-        background-color: #19381F;
         color: #A7AAA4;
         border: 1px solid #A7AAA4;
     }

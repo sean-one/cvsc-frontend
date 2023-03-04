@@ -12,9 +12,13 @@ const Styles = styled.div`
         position: fixed;
         top: 0;
         left: 0;
-        background-color: #909590;
+        background-color: #cbd4ba;
+        /* background-color: #0D2B12; */
+        /* background-color: #909590; */
         width: 100vw;
+        height: 4.5rem;
         display: flex;
+        justify-content: center;
         flex-direction: column;
         align-items: center;
         z-index: 999;
@@ -26,7 +30,13 @@ const Styles = styled.div`
         max-width: 750px;
         display: flex;
         justify-content: space-between;
-        border: 1px solid red;
+        /* border: 1px solid red; */
+    }
+
+    .menuToggle {
+        color: #0D2B12;
+        margin-right: 0.5rem;
+        padding: 0.5rem;
     }
 `;
 
@@ -39,14 +49,14 @@ const Navbar = () => {
             {/* <div className='vstack fixed-top'> */}
             <div className='navWrapper'>
                 {/* <div className='d-flex justify-content-center w-100 bg-light py-0'> */}
-                <div className='border border-success'>
+                <div>
                     <div className='navContainer'>
                         <img
                             src={cvsc}
                             height="50"
                             alt="Coachella Valley Smokers Club logo"
                         />
-                        <div className='p-2 me-2' onClick={() => setToggle(!toggle)}>
+                        <div className='menuToggle' onClick={() => setToggle(!toggle)}>
                             {
                                 toggle
                                     ? <FontAwesomeIcon icon={faAngleUp} size='2x' />

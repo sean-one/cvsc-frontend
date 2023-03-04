@@ -7,6 +7,7 @@ const Styles = styled.div`
     }
 
     .app_container {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -14,8 +15,8 @@ const Styles = styled.div`
         min-height: 100vh;
         max-width: 100vw;
         margin: 0;
-        padding: 2rem 0.75rem 0 0.75rem;
-        color: black;
+        padding: 4.5rem 0.75rem 0 0.75rem;
+        color: #DAD7CD;
         background-color: #19381F;
     }
     
@@ -59,12 +60,40 @@ const Styles = styled.div`
     }
 
     input {
+        height: 3rem;
+        margin: 0.5rem 0;
+        width: 100%;
+        padding: 0.5rem;
         border: none;
-        background-color: transparent;
+        color: #010a00;
+        border-radius: 5px;
+        border-bottom: 1px solid black;
+        background-color: #4B6F51;
+        outline: none;
     }
 
-    input:focus {
-        background-color: #24502c;
+    input::placeholder {
+        color: #DAD7CD;
+    }
+
+    button {
+        padding: 0.5rem 1.25rem;
+        border: none;
+        border: 1px solid #010a00;
+        color: #dcdbc4;
+        border-radius: 5px;
+        background-color: transparent;
+        outline: none;
+        /* margin: 0 1rem; */
+    }
+
+    button:hover {
+        background-color: #0D2B12;
+        border: 1px solid #4b6f51;
+    }
+
+    button:active {
+        transform: translate(2px, 4px)
     }
 
     .event-card-title {
@@ -81,12 +110,13 @@ const Styles = styled.div`
         width: 100%;
         text-align: left;
         /* padding: 0.25rem; */
+        /* color: #8f0c0c; */
         color: #DAD7CD;
         /* font-weight: bold; */
     }
 
     .inputError {
-        border: 2px solid red;
+        border-bottom: 2px solid #DAD7CD;
     }
 
 `;

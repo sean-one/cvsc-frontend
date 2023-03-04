@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { loginSchema } from '../helpers/validationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import useAuth from '../hooks/useAuth';
@@ -11,9 +10,31 @@ import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
 
 const Styles = styled.div`
-    input {
-        background-color: transparent;
+    .loginForm {
+        margin-bottom: 2rem;
     }
+
+    .buttonWrapper {
+        margin-top: 1.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .loginInputs {
+        box-shadow: 5px 5px 5px #0D2B12;
+    }
+
+    .loginButtons {
+        margin: 0 1rem;
+    }
+
+    .registerLinkWrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+
 `;
 
 const Login = () => {
@@ -78,52 +99,43 @@ const Login = () => {
 
     return (
         <Styles>
-            <h2>Login</h2>
-            <Form onSubmit={handleSubmit(sendLogin)} className='mt-3'>
-                
-                <Form.Group controlId="username" className='mb-3'>
-                    <FloatingLabel controlId='username' label='Username'>
-                        <Form.Control
-                            className={errors.username ? 'inputError' : ''}
-                            {...register('username')}
-                            // autoFocus
-                            onFocus={() => clearErrors('username')}
-                            type='text'
-                            name='username'
-                            placeholder='username'
-                            required
-                        />
-                    </FloatingLabel>
+            <div>
+                <h2>Login</h2>
+                <form onSubmit={handleSubmit(sendLogin)} className='loginForm'>
+                    <input
+                        className={`loginInputs ${errors.username ? 'inputError' : ''}`}
+                        {...register('username')}
+                        // autoFocus
+                        onFocus={() => clearErrors('username')}
+                        type='text'
+                        name='username'
+                        placeholder='Username'
+                        required
+                    />
                     <div className='errormessage'>{errors.username?.message}</div>
-                </Form.Group>
 
-                <Form.Group controlId="password" className='mb-3'>
-                    <FloatingLabel controlId='password' label='Password'>
-                        <Form.Control
-                            className={errors.password ? 'inputError' : ''}
-                            {...register('password')}
-                            onFocus={() => clearErrors('password')}
-                            name='password'
-                            type='password'
-                            placeholder='Password'
-                            required
-                        />
-                    </FloatingLabel>
+                    <input
+                        className={`loginInputs ${errors.password ? 'inputError' : ''}`}
+                        {...register('password')}
+                        onFocus={() => clearErrors('password')}
+                        name='password'
+                        type='password'
+                        placeholder='Password'
+                        required
+                    />
                     <div className='errormessage'>{errors.password?.message}</div>
                     <div className='errormessage'>{errors.credentials?.message}</div>
-                </Form.Group>
-                
-                <div className='d-flex justify-content-center w-100'>
-                    <div className='d-flex justify-content-between w-75'>
-                        <Button className='w-50 mx-1' variant="outline-dark" type='submit'>Submit</Button>
-                        <Button className='w-50 mx-1' variant='outline-dark' onClick={googleAuthButton}>Google Login</Button>
+
+                    <div className='buttonWrapper'>
+                        <button className='loginButtons' type='submit'>submit</button>
+                        <button className='loginButtons' onClick={googleAuthButton}>google</button>
                     </div>
+
+                </form>
+                
+                <div className='registerLinkWrapper'>
+                    <p onClick={() => navigate('/register')}>New to the club? Register here</p>
                 </div>
-            
-            </Form>
-            
-            <div className='my-3 text-center'>
-                <p>New to the club? <Link to={{ pathname: '/register' }}>Register</Link></p>
             </div>
         </Styles>
     )
