@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 

@@ -13,9 +13,7 @@ const Styles = styled.div`
         top: 0;
         left: 0;
         background-color: #cbd4ba;
-        /* background-color: #0D2B12; */
-        /* background-color: #909590; */
-        width: 100vw;
+        width: 100%;
         height: 4.5rem;
         display: flex;
         justify-content: center;

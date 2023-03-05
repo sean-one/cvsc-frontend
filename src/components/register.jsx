@@ -1,13 +1,38 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form, Button, FloatingLabel } from 'react-bootstrap';
+import styled from 'styled-components';
 
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import AxiosInstance from '../helpers/axios';
 import useNotification from '../hooks/useNotification.js';
 
+const Styles = styled.div`
+    .registerForm {
+        margin-bottom: 2rem;
+    }
+
+    .buttonWrapper {
+        margin-top: 1.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .registerInputs {
+        box-shadow: 5px 5px 5px #0D2B12;
+    }
+
+    .registerButtons {
+        margin: 0 1rem;
+    }
+
+    .loginLinkWrapper {
+        display: flex;
+        justify-content: center;
+    }
+`;
 
 const Register = () => {
     const { dispatch } = useNotification();
@@ -54,75 +79,59 @@ const Register = () => {
     }
     
     return (
-        <div>
-            <h2>Register</h2>
-            <Form onSubmit={handleSubmit(createUser)} className='mt-3'>
+        <Styles>
+            <div>
+                <h2>Register</h2>
+                <form onSubmit={handleSubmit(createUser)} className='registerForm'>
 
-                <Form.Group controlId="username" className='mb-3'>
-                    <FloatingLabel controlId='username' label='Username'>
-                        <Form.Control
-                            className={errors.username ? 'inputError' : ''}
-                            onFocus={() => clearErrors('username')}
-                            {...register('username')}
-                            type="text"
-                            placeholder="username"
-                            name='username'
-                            required
-                        />
-                    </FloatingLabel>
+                    <input
+                        className={`registerInputs ${errors.username ? 'inputError' : ''}`}
+                        onFocus={() => clearErrors('username')}
+                        {...register('username')}
+                        type="text"
+                        placeholder="Username"
+                        name='username'
+                        required
+                    />
                     <div className='errormessage'>{errors.username?.message}</div>
-                </Form.Group>
 
-                <div className='d-flex'>
+                    <input
+                        className={`registerInputs ${errors.password ? 'inputError' : ''}`}
+                        onFocus={() => clearErrors('password')}
+                        {...register('password')}
+                        type="password"
+                        placeholder="Password"
+                        name='password'
+                        required
+                    />
+                    <div className='errormessage'>{errors.password?.message}</div>
 
-                    <Form.Group controlId="password" className='mb-3 me-1 w-100'>
-                        <FloatingLabel controlId='Password' label='Password'>
-                            <Form.Control
-                                className={errors.password ? 'inputError' : ''}
-                                onFocus={() => clearErrors('password')}
-                                {...register('password')}
-                                type="password"
-                                placeholder="Password"
-                                name='password'
-                                required
-                            />
-                        </FloatingLabel>
-                        <div className='errormessage'>{errors.password?.message}</div>
-                    </Form.Group>
-
-                    <Form.Group controlId="confirmation" className='mb-3 ms-2 w-100'>
-                        <FloatingLabel controlId='confirmation' label='Confirm Password'>
-                            <Form.Control
-                                className={errors.confirmation ? 'inputError' : ''}
-                                onFocus={() => clearErrors('confirmation')}
-                                {...register('confirmation')}
-                                type="password"
-                                placeholder="Confirm Password"
-                                name='confirmation'
-                                required
-                            />
-                        </FloatingLabel>
-                        <div className='errormessage'>{errors.confirmation?.message}</div>
-                    </Form.Group>
-
-                </div>
-
-                <div className='errormessage'>{errors.invalid_input?.message}</div>
-                
-                <div className='d-flex justify-content-center w-100'>
-                    <div className='d-flex justify-content-between w-75'>
-                        <Button className='w-50 mx-1' variant="outline-dark" type='submit'>Submit</Button>
-                        <Button className='w-50 mx-1' variant="outline-dark" onClick={googleAuthButton}>Register with Google</Button>
+                    <input
+                        className={`registerInputs ${errors.confirmation ? 'inputError' : ''}`}
+                        onFocus={() => clearErrors('confirmation')}
+                        {...register('confirmation')}
+                        type="password"
+                        placeholder="Confirm Password"
+                        name='confirmation'
+                        required
+                    />
+                    <div className='errormessage'>{errors.confirmation?.message}</div>
+                    
+                    <div className='errormessage'>{errors.invalid_input?.message}</div>
+                    
+                    <div className='buttonWrapper'>
+                        <button className='registerButtons' type='submit'>submit</button>
+                        <button className='registerButtons' onClick={googleAuthButton}>google</button>
                     </div>
-                </div>
-            
-            </Form>
+                
+                </form>
 
-            <div className='my-3 text-center'>
-                <p>already have a login? <Link to={{ pathname: '/login' }}>Login</Link></p>
+                <div className='loginLinkWrapper'>
+                    <p onClick={() => navigate('/login')}>Already have a login? Login here.</p>
+                </div>
+                
             </div>
-            
-        </div>
+        </Styles>
     )
 }
 
