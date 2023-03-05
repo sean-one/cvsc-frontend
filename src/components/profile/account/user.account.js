@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrashAlt, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 
@@ -17,10 +17,10 @@ import { editUserSchema } from '../../../helpers/validationSchemas';
 
 const Styles = styled.div`
 
-    .userAccount {
+    .userProfileWrapper {
         display: flex;
         flex-direction: column;
-        padding: 3rem 0.5rem;
+        padding: 1.5rem 0.5rem;
         box-shadow: 5px 5px 5px #0D2B12;
         border-radius: 5px;
         
@@ -29,13 +29,18 @@ const Styles = styled.div`
         }
     }
 
-    .userAvatar {
+    .profileImage {
         width: 100%;
         max-width: 275px;
         margin: auto;
         
         @media (min-width: 500px) {
             width: 40%;
+        }
+
+        canvas {
+            border-radius: 50%;
+            max-width: 100%;
         }
 
         img {
@@ -47,28 +52,91 @@ const Styles = styled.div`
         }
     }
     
-    .userCanvas {
-        border-radius: 50%;
-        max-width: 100%;
-    }
-    
-    .userDetails {
+    .accountDetails {
         width: 100%;
-        height: 100%;
         align-self: start;
         padding-top: 1rem;
         
         @media (min-width: 500px) {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             width: 60%;
-            height: 100%;
             padding-top: 0;
             padding-left: 1rem;
             align-self: stretch;
         }
     }
+    
+    .profileHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .usernameHeader {
+        font-weight: bold;
+        font-size: 1.5rem;
+        align-self: flex-end;
+    }
+    
+    .accountTypeHeader {
+        align-self: flex-end;
+    }
+
+    .userDetails {
+        height: 100%;
+    }
+
+    .accountButtons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .imageUpdateInput {
+        cursor: pointer;
+        height: 3rem;
+        width: 100%;
+        padding: 0.5rem;
+        border: none;
+        color: #010a00;
+        border-radius: 5px;
+        border-bottom: 1px solid black;
+        background-color: #4B6F51;
+        outline: none;
+        text-align: center;
+
+        .cameraIcon {
+            margin-left: 0.25rem;
+        }
+
+        input {
+            display: none;
+        }
+    }
+
+    .updateWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+    }
+
+    .updateCheckbox {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        
+        input[type=checkbox] {
+            width: 1rem;
+            height: 1rem;
+            margin: 0;
+            margin-right: 0.25rem;
+            padding: 0;
+        }
+    }
+
+
 
 `
 
@@ -214,13 +282,12 @@ const UserAccount = () => {
 
     return (
         <Styles>
-            <div className='userAccount'>
+            <div className='userProfileWrapper'>
                 
-                <div className='userAvatar'>
+                <div className='profileImage'>
                     {
                         editImage
                             ? <canvas
-                                className='userCanvas'
                                 id={'avatarImagePreview'}
                                 ref={canvas}
                             />
@@ -235,20 +302,22 @@ const UserAccount = () => {
                     }
                 </div>
                 
-                <div className='userDetails'>
-                    <div className='border border-primary'>
-                        <h2>{auth?.user.username}</h2>
-                        <div>{`Account Type: ${role_types[auth.user.account_type].type}`}</div>
+                <div className='accountDetails'>
+
+                    <div className='profileHeader'>
+                        <div className='usernameHeader'>{auth?.user.username}</div>
+                        <div className='accountTypeHeader'>{role_types[auth.user.account_type].type}</div>
                     </div>
 
-                    <div className='border border-danger'>
+                    <div className='userDetails'>
                         {
-                            (editView)
-                                ? <form encType='multipart/form-data'>
+                            (!editView)
+                                ? <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
+                                : <form encType='multipart/form-data'>
 
                                     <input
-                                        className={errors.email ? 'inputError' : ''}
                                         {...register('email')}
+                                        className={errors.email ? 'inputError' : ''}
                                         onFocus={() => clearErrors('email')}
                                         type='email'
                                         name='email'
@@ -257,38 +326,50 @@ const UserAccount = () => {
 
                                     {
                                         (update_image) &&
-                                            <div>
+                                            <label for='avatar' className='imageUpdateInput'>
+                                                Select Image
+                                                <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
                                                 <input
-                                                    className={errors.avatar ? 'inputError' : ''}
                                                     {...register('avatar')}
+                                                    className={errors.avatar ? 'inputError' : ''}
                                                     onFocus={() => clearErrors('avatar')}
                                                     type='file'
+                                                    id='avatar'
                                                     name='avatar'
                                                     accept='image/*'
                                                     onChange={(e) => imagePreview(e)}
                                                 />
-                                                <div className='errormessage'>{errors.profile_image?.message}</div>
-                                            </div>
+                                            </label>
                                     }
+                                    <div className='errormessage'>{errors.profile_image?.message}</div>
 
-                                    <div className='centerElement'>
-                                        <input
-                                            {...register('update_password')}
-                                            type='checkbox'
-                                            label='Update Password'
-                                        />
-                                        <label>Update Password</label>
+                                    {/* update image and password checkboxes */}
+                                    <div className='updateWrapper'>
+
+                                        <label for='update_password' className='updateCheckbox'>
+                                            <input
+                                                {...register('update_password')}
+                                                type='checkbox'
+                                                name='update_password'
+                                            />
+                                            Update Password
+                                        </label>
 
                                         {
                                             (!update_image) &&
-                                                <input
-                                                    {...register('update_image')}
-                                                    type='checkbox'
-                                                    label='Update Image'
-                                                />
+                                                <label for='update_image' className='updateCheckbox'>
+                                                    <input
+                                                        {...register('update_image')}
+                                                        type='checkbox'
+                                                        name='update_image'
+                                                    />
+                                                    Update Image
+                                                </label>
                                         }
+
                                     </div>
 
+                                    {/* update password and confirm password fields */}
                                     {
                                         (update_password) &&
                                             <div>
@@ -313,28 +394,28 @@ const UserAccount = () => {
                                     }
 
                                 </form>
-                                : <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
                         }
-                        
-                        <div>
-                            {
-                                (editView) &&
-                                    <button onClick={() => delete_account()}><FontAwesomeIcon icon={faTrashAlt}/></button>
-                            }
-                            {
-                                (editView) &&
-                                    <button onClick={() => close_edit_view()}><FontAwesomeIcon icon={faTimes}/></button>
-                            }
-                            {
-                                (editView && isDirty) &&
-                                    <button onClick={handleSubmit(update_user)}><FontAwesomeIcon icon={faSave}/></button>
-                            }
-                            {
-                                (!editView) &&
-                                    <button onClick={() => setEditView(true)}><FontAwesomeIcon icon={faPencilAlt}/></button>
-                            }
-                        </div>
                     </div>
+
+                    <div className='accountButtons'>
+                        {
+                            (editView) &&
+                                <button onClick={() => delete_account()}><FontAwesomeIcon icon={faTrashAlt}/></button>
+                        }
+                        {
+                            (editView) &&
+                                <button onClick={() => close_edit_view()}><FontAwesomeIcon icon={faTimes}/></button>
+                        }
+                        {
+                            (editView && isDirty) &&
+                                <button onClick={handleSubmit(update_user)}><FontAwesomeIcon icon={faSave}/></button>
+                        }
+                        {
+                            (!editView) &&
+                                <button onClick={() => setEditView(true)}><FontAwesomeIcon icon={faPencilAlt}/></button>
+                        }
+                    </div>
+                    
                 </div>
             </div>
         </Styles>

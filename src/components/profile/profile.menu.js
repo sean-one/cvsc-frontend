@@ -9,6 +9,7 @@ const Styles = styled.div`
     }
 
     .profileTab {
+        cursor: pointer;
         border: 1px solid black;
         border-radius: 5px 5px 0 0;
         width: 100%;

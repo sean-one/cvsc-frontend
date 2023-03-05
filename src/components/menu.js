@@ -26,6 +26,8 @@ const Styles = styled.div`
     }
 
     .navMenuButtons {
+        text-transform: capitalize;
+        letter-spacing: 0.2rem;
         border: none;
     }
 
@@ -62,7 +64,7 @@ const Menu = ({ toggle }) => {
                     {
                         (Object.keys(auth).length > 0)
                             ? <button className='navMenuButtons' onClick={() => navMenuClick('profile')}>profile</button>
-                            : <button className='navMenuButtons' onClick={() => navMenuClick('register')}>reigster</button>
+                            : <button className='navMenuButtons' onClick={() => navMenuClick('register')}>register</button>
                         
                     }
                     {

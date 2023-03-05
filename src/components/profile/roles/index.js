@@ -27,7 +27,8 @@ const RolesTab = () => {
 
     return (
         <Styles>
-            <div className='rolesTab'>
+            {/* <div className='rolesTab'> */}
+            <div>
                 <RoleRequest />
                 
                 {/* current user roles */}
