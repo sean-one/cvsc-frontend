@@ -5,21 +5,28 @@ import styled from 'styled-components';
 
 const Styles = styled.div`
     .profileMenu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin: 0.25rem 0;
     }
 
     .profileTab {
         cursor: pointer;
-        border: 1px solid black;
-        border-radius: 5px 5px 0 0;
+        color: #dcdbc4;
+        border-right: 1px solid black;
         width: 100%;
         text-align: center;
         padding: 0.5rem 0;
     }
 
+    .profileTab:first-child {
+        border-left: 1px solid black;
+    }
+
     .activeTab {
-        color: #A7AAA4;
-        border: 1px solid #A7AAA4;
+        color: #010a00;
+        background-color: #dcdbc4
     }
 `;
 
@@ -32,7 +39,6 @@ const ProfileMenu = () => {
     let menuTab = pathname.split('/')[2] || 'home'
     
     const buttonLink = (e) => {
-        console.log(e.target.textContent.toLowerCase())
         if(e.target.textContent.toLowerCase() === 'home') {
             navigate(`/profile/`)
         } else {
@@ -40,10 +46,9 @@ const ProfileMenu = () => {
         }
     }
 
-    console.log(menuTab)
     return (
         <Styles>
-            <div className='centerElement profileMenu'>
+            <div className='profileMenu'>
                 <div className={`profileTab ${menuTab === 'home' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>
                     Home
                 </div>

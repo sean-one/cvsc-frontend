@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
@@ -9,10 +9,9 @@ import PendingRoleRequest from './pending.role.request';
 import LoadingSpinner from '../../loadingSpinner';
 
 const Styles = styled.div`
-    .rolesTab {
-        border-radius: 5px;
-        background-color: #A7AAA4;
-        padding: 1rem;
+    .roleWrapper {
+        display: flex;
+        flex-direction: column;
     }
 `;
 
@@ -27,8 +26,7 @@ const RolesTab = () => {
 
     return (
         <Styles>
-            {/* <div className='rolesTab'> */}
-            <div>
+            <div className='roleWrapper'>
                 <RoleRequest />
                 
                 {/* current user roles */}

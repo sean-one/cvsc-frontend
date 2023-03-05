@@ -10,7 +10,7 @@ import { role_types } from '../../../helpers/dataCleanUp';
 
 const Styles = styled.div`
     .roleApprove {
-        color: #19381F;
+        color: #0D2B12;
     }
 `;
 

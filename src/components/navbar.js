@@ -25,7 +25,7 @@ const Styles = styled.div`
     .navContainer {
         width: calc(100vw - 1.5rem);
         min-width: 200px;
-        max-width: 750px;
+        max-width: 825px;
         display: flex;
         justify-content: space-between;
         /* border: 1px solid red; */

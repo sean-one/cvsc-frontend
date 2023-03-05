@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
@@ -15,9 +14,24 @@ import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 
 const Styles = styled.div`
     .roleRequest {
-        padding-bottom: 0.5rem;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px solid black;
+        padding: 1.5rem 0.5rem;
+        border-radius: 5px;
+        box-shadow: 5px 5px 5px #0D2B12;
+    }
+
+    .roleRequestHeader {
+        font-weight: bold;
+        letter-spacing: 0.1rem;
+    }
+
+    .roleRequestForm {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        select {
+            margin-right: 0.5rem;
+        }
     }
 `;
 
@@ -35,9 +49,7 @@ const RoleRequest = () => {
         resolver: yupResolver(roleRequestSchema)
     });
     
-    if(isLoading) {
-        return <LoadingSpinner />
-    }
+    if(isLoading) { return <LoadingSpinner /> }
 
     // filter out businesses that are not currently excepting request
     const request_open = businessList.data.filter(business => business.business_request_open && business.active_business)
@@ -74,39 +86,32 @@ const RoleRequest = () => {
             {
                 (business_filtered.length > 0) &&
                     <div className='roleRequest'>
-                        <div>Create Business Role Request</div>
+                        <div className='roleRequestHeader'>
+                            <div>Create Business Role Request</div>
+                        </div>
 
-                        <Form>
-                            <div className='centerElement'>
-                                
-                                <Form.Group controlId='business_id' className='w-100'>
-                                    <Form.Select
-                                        className={errors.business_id ? 'inputError' : ''}
-                                        onFocus={() => clearErrors('business_id')}
-                                        {...register('business_id')}
-                                        type='text'
-                                        name='business_id'
-                                        required
-                                    >
-                                        {
-                                            business_filtered.map(business => (
-                                                <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
-                                            ))
-                                        }
-                                    </Form.Select>
-                                </Form.Group>
+                        <form className='roleRequestForm'>
+                            <select
+                                {...register('business_id')}
+                                className={errors.business_id ? 'inputError' : ''}
+                                onFocus={() => clearErrors('business_id')}
+                                type='text'
+                                name='business_id'
+                                required
+                            >
+                                {
+                                    business_filtered.map(business => (
+                                        <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
+                                    ))
+                                }
+                            </select>
 
-                                <div className='ms-2'>
-                                    <div type='submit' onClick={handleSubmit(roleCreate)}>
-                                        <FontAwesomeIcon icon={faCheck} />
-                                    </div>
-                                </div>
+                            <button type='submit' onClick={handleSubmit(roleCreate)}><FontAwesomeIcon icon={faCheck} /></button>
+                        </form>
 
-                            </div>
-                            <div className='errormessage px-3'>
-                                {errors.business_id?.message}
-                            </div>
-                        </Form>
+                        <div className='errormessage'>
+                            {errors.business_id?.message}
+                        </div>
                     </div>
             }
         </Styles>

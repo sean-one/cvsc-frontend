@@ -10,7 +10,7 @@ const Styles = styled.div`
         position: relative;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         min-width: 250px;
         min-height: 100vh;
         max-width: 100vw;
@@ -22,15 +22,13 @@ const Styles = styled.div`
     
     .innerContainer {
         min-width: 200px;
-        min-height: calc(100vh - 5rem);
         box-sizing: border-box;
         
         @media (min-width: 500px) {
             padding: 1rem;
             width: calc(100vw - 1.5rem);
             max-width: 700px;
-            margin: auto;
-            
+            margin: 0 auto;
         }
     }
 
@@ -59,7 +57,7 @@ const Styles = styled.div`
         color: inherit;
     }
 
-    input {
+    input, select {
         height: 3rem;
         margin: 0.5rem 0;
         width: 100%;

@@ -11,17 +11,18 @@ import ApproveRole from '../../roles/buttons/approve.role';
 import RemoveRole from '../../roles/buttons/remove.role';
 
 const Styles = styled.div`
-    .pendingRoles {
-        padding-bottom: 1rem;
-        /* border: 2px solid blue; */
+    .pendingRolesWrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px #0D2B12;
+        border-radius: 5px;
     }
 
     .pendingRolesHeader {
-        display: flex;
-        /* margin-bottom: 0.5rem; */
-        justify-content: space-between;
-        align-content: center;
-        border-bottom: 1px solid black;
+        font-weight: bold;
+        letter-spacing: 0.1rem;
+        border-bottom: 2px solid black;
     }
 
     .pendingRole {
@@ -29,12 +30,20 @@ const Styles = styled.div`
         justify-content: space-between;
         align-items: end;
         padding: 0.25rem 0.5rem;
+        border-radius: 5px;
         border-bottom: 1px solid black;
-        /* padding-left: 0.5rem; */
-        /* margin-bottom: 0.25rem; */
+    }
+
+    .pendingUsername {
+        width: 50%;
+    }
+
+    .pendingBusinessName {
+        width: 100%;
     }
 
     .roleButtons {
+        margin-left: 0.1rem;
         display: flex;
         gap: 10px;
     }
@@ -46,10 +55,7 @@ const PendingRoleRequest = ({ user_id }) => {
     const { data: pending_roles, isLoading, error, isError } = usePendingBusinessRolesQuery(user_id)
     // let navigate = useNavigate()
 
-
-    if (isLoading) {
-        return <LoadingSpinner />
-    }
+    if (isLoading) { return <LoadingSpinner /> }
 
     if(isError) {
         if(error?.response.status === 401) {
@@ -69,16 +75,18 @@ const PendingRoleRequest = ({ user_id }) => {
 
     return (
         <Styles>
-            <div className='pendingRoles'>
+            <div className='pendingRolesWrapper'>
+
                 <div className='pendingRolesHeader'>
                     <div>Pending Roles</div>
                 </div>
+
                 <div>
                     {
                         pending_roles.data.map(role => (
                             <div key={role.id} className='pendingRole'>
-                                <div className='border border-danger w-75'>{role.username}</div>
-                                <div className='border border-success w-100'>{role.business_name}</div>
+                                <div className='pendingUsername'>{role.username}</div>
+                                <div className='pendingBusinessName'>{role.business_name}</div>
                                 <div className='roleButtons'>
                                     <ApproveRole role_id={role.id} />
                                     <RemoveRole role_id={role.id} />

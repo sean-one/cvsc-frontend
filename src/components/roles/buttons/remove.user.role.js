@@ -75,7 +75,7 @@ const RemoveUserRole = ({ role_id, role_type }) => {
                 icon={faTrash}
                 className='removeButton'
                 onClick={() => userRoleRemove(role_id)}
-                variant={(role_type === process.env.REACT_APP_ADMIN_ACCOUNT) ? 'grey' : '#780000'}
+                variant={(role_type === process.env.REACT_APP_ADMIN_ACCOUNT) ? 'grey' : '#b80c09'}
                 type={(role_type === process.env.REACT_APP_ADMIN_ACCOUNT) ? 'disabled' : 'enabled'}
             />
         </Styles>

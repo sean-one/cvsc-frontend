@@ -99,7 +99,7 @@ const Styles = styled.div`
         width: 100%;
         padding: 0.5rem;
         border: none;
-        color: #010a00;
+        color: #DAD7CD;
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
@@ -107,6 +107,7 @@ const Styles = styled.div`
         text-align: center;
 
         .cameraIcon {
+            color: #DAD7CD;
             margin-left: 0.25rem;
         }
 
@@ -379,6 +380,7 @@ const UserAccount = () => {
                                                     {...register('password')}
                                                     type='password'
                                                     name='password'
+                                                    placeholder='Password'
                                                 />
                                                 <div className='errormessage'>{errors.password?.message}</div>
 
@@ -388,6 +390,7 @@ const UserAccount = () => {
                                                     {...register('confirmation')}
                                                     type='password'
                                                     name='confirmation'
+                                                    placeholder='Confirm Password'
                                                 />
                                                 <div className='errormessage'>{errors.confirmation?.message}</div>
                                             </div>

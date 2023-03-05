@@ -10,8 +10,7 @@ const Styles = styled.div`
     .newEventIcon {
         margin: 0;
         margin-right: 0.5rem;
-        color: #19381F;
-        /* color: ${(props) => props.children.props.variant} */
+        color: #010a00;
     }
 `;
 

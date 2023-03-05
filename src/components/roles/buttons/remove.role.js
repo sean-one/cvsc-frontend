@@ -11,7 +11,7 @@ import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
 
 const Styles = styled.div`
     .roleRemove {
-        color: #780000;
+        color: #b80c09;
     }
 `;
 
