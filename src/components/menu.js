@@ -58,7 +58,7 @@ const Menu = ({ toggle }) => {
         <Styles>
             <div className='menuWrapper' onClick={() => toggle(false)}>
                 <div className='navMenu'>
-                    <button className='navMenuButtons' onClick={() => navMenuClick('home')}>home</button>
+                    <button className='navMenuButtons' onClick={() => navMenuClick('home')}>calendar</button>
                     {
                         (Object.keys(auth).length > 0)
                             ? <button className='navMenuButtons' onClick={() => navMenuClick('profile')}>profile</button>

@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Image } from 'react-bootstrap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification'
 import { useEventsQuery } from '../../../hooks/useEventsApi';
-import default_profile from '../../../assets/default_user_icon.png'
+import default_profile from '../../../assets/default_user.png'
 import useAvatarPreview from '../../../hooks/useAvatarPreview';
 import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
@@ -34,10 +33,17 @@ const Styles = styled.div`
         width: 100%;
         max-width: 275px;
         margin: auto;
-        border: 1px solid red;
         
         @media (min-width: 500px) {
             width: 40%;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 50%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
         }
     }
     
@@ -47,16 +53,20 @@ const Styles = styled.div`
     }
     
     .userDetails {
-        border: 1px solid red;
         width: 100%;
+        height: 100%;
         align-self: start;
         padding-top: 1rem;
         
         @media (min-width: 500px) {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             width: 60%;
+            height: 100%;
             padding-top: 0;
             padding-left: 1rem;
-            align-self: center;
+            align-self: stretch;
         }
     }
 
@@ -214,111 +224,116 @@ const UserAccount = () => {
                                 id={'avatarImagePreview'}
                                 ref={canvas}
                             />
-                            : <Image
-                                fluid
-                                thumbnail
-                                roundedCircle
-                                src={(auth?.user?.avatar === null) ? default_profile : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`}
+                            : <img
+                                src={
+                                    (auth?.user?.avatar === null)
+                                        ? default_profile
+                                        : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`
+                                }
                                 alt={`user avatar`}
                             />
                     }
                 </div>
                 
                 <div className='userDetails'>
-                    <h2>{auth?.user.username}</h2>
-                    <div>{`Account Type: ${role_types[auth.user.account_type].type}`}</div>
+                    <div className='border border-primary'>
+                        <h2>{auth?.user.username}</h2>
+                        <div>{`Account Type: ${role_types[auth.user.account_type].type}`}</div>
+                    </div>
 
-                    {
-                        (editView)
-                            ? <form encType='multipart/form-data'>
+                    <div className='border border-danger'>
+                        {
+                            (editView)
+                                ? <form encType='multipart/form-data'>
 
-                                <input
-                                    className={errors.email ? 'inputError' : ''}
-                                    {...register('email')}
-                                    onFocus={() => clearErrors('email')}
-                                    type='email'
-                                    name='email'
-                                />
-                                <div className='errormessage'>{errors.email?.message}</div>
-
-                                {
-                                    (update_image) &&
-                                        <div>
-                                            <input
-                                                className={errors.avatar ? 'inputError' : ''}
-                                                {...register('avatar')}
-                                                onFocus={() => clearErrors('avatar')}
-                                                type='file'
-                                                name='avatar'
-                                                accept='image/*'
-                                                onChange={(e) => imagePreview(e)}
-                                            />
-                                            <div className='errormessage'>{errors.profile_image?.message}</div>
-                                        </div>
-                                }
-
-                                <div className='centerElement'>
                                     <input
-                                        {...register('update_password')}
-                                        type='checkbox'
-                                        label='Update Password'
+                                        className={errors.email ? 'inputError' : ''}
+                                        {...register('email')}
+                                        onFocus={() => clearErrors('email')}
+                                        type='email'
+                                        name='email'
                                     />
-                                    <label>Update Password</label>
+                                    <div className='errormessage'>{errors.email?.message}</div>
 
                                     {
-                                        (!update_image) &&
-                                            <input
-                                                {...register('update_image')}
-                                                type='checkbox'
-                                                label='Update Image'
-                                            />
+                                        (update_image) &&
+                                            <div>
+                                                <input
+                                                    className={errors.avatar ? 'inputError' : ''}
+                                                    {...register('avatar')}
+                                                    onFocus={() => clearErrors('avatar')}
+                                                    type='file'
+                                                    name='avatar'
+                                                    accept='image/*'
+                                                    onChange={(e) => imagePreview(e)}
+                                                />
+                                                <div className='errormessage'>{errors.profile_image?.message}</div>
+                                            </div>
                                     }
-                                </div>
 
-                                {
-                                    (update_password) &&
-                                        <div>
-                                            <input
-                                                className={errors.password ? 'inputError' : ''}
-                                                onFocus={() => clearErrors('password')}
-                                                {...register('password')}
-                                                type='password'
-                                                name='password'
-                                            />
-                                            <div className='errormessage'>{errors.password?.message}</div>
+                                    <div className='centerElement'>
+                                        <input
+                                            {...register('update_password')}
+                                            type='checkbox'
+                                            label='Update Password'
+                                        />
+                                        <label>Update Password</label>
 
-                                            <input
-                                                className={errors.confirmation ? 'inputError' : ''}
-                                                onFocus={() => clearErrors('confirmation')}
-                                                {...register('confirmation')}
-                                                type='password'
-                                                name='confirmation'
-                                            />
-                                            <div className='errormessage'>{errors.confirmation?.message}</div>
-                                        </div>
-                                }
+                                        {
+                                            (!update_image) &&
+                                                <input
+                                                    {...register('update_image')}
+                                                    type='checkbox'
+                                                    label='Update Image'
+                                                />
+                                        }
+                                    </div>
 
-                            </form>
-                            : <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
-                    }
-                    
-                    <div>
-                        {
-                            (editView) &&
-                                <button onClick={() => delete_account()}><FontAwesomeIcon icon={faTrashAlt}/></button>
+                                    {
+                                        (update_password) &&
+                                            <div>
+                                                <input
+                                                    className={errors.password ? 'inputError' : ''}
+                                                    onFocus={() => clearErrors('password')}
+                                                    {...register('password')}
+                                                    type='password'
+                                                    name='password'
+                                                />
+                                                <div className='errormessage'>{errors.password?.message}</div>
+
+                                                <input
+                                                    className={errors.confirmation ? 'inputError' : ''}
+                                                    onFocus={() => clearErrors('confirmation')}
+                                                    {...register('confirmation')}
+                                                    type='password'
+                                                    name='confirmation'
+                                                />
+                                                <div className='errormessage'>{errors.confirmation?.message}</div>
+                                            </div>
+                                    }
+
+                                </form>
+                                : <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
                         }
-                        {
-                            (editView) &&
-                                <button onClick={() => close_edit_view()}><FontAwesomeIcon icon={faTimes}/></button>
-                        }
-                        {
-                            (editView && isDirty) &&
-                                <button onClick={handleSubmit(update_user)}><FontAwesomeIcon icon={faSave}/></button>
-                        }
-                        {
-                            (!editView) &&
-                                <button onClick={() => setEditView(true)}><FontAwesomeIcon icon={faPencilAlt}/></button>
-                        }
+                        
+                        <div>
+                            {
+                                (editView) &&
+                                    <button onClick={() => delete_account()}><FontAwesomeIcon icon={faTrashAlt}/></button>
+                            }
+                            {
+                                (editView) &&
+                                    <button onClick={() => close_edit_view()}><FontAwesomeIcon icon={faTimes}/></button>
+                            }
+                            {
+                                (editView && isDirty) &&
+                                    <button onClick={handleSubmit(update_user)}><FontAwesomeIcon icon={faSave}/></button>
+                            }
+                            {
+                                (!editView) &&
+                                    <button onClick={() => setEditView(true)}><FontAwesomeIcon icon={faPencilAlt}/></button>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
