@@ -60,7 +60,7 @@ const ProfileMenu = () => {
                 </div>
                 {
                     (auth.user.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
-                        <div className={`profileTab ${menuTab === 'management' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>Admin</div>
+                        <div className={`profileTab ${menuTab === 'admin' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>Admin</div>
                 
                 }
             </div>

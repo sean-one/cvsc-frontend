@@ -23,6 +23,7 @@ const Styles = styled.div`
         padding: 1.5rem 0.5rem;
         box-shadow: 5px 5px 5px #0D2B12;
         border-radius: 5px;
+        background-color: rgba(75,111,81,0.3);
         
         @media (min-width: 500px) {
             flex-direction: row;
