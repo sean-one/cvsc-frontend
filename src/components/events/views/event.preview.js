@@ -15,8 +15,8 @@ const Styles = styled.div`
         flex-direction: column;
         padding: 0.5rem;
         margin: 1.5rem 0;
-        border-top: 1px solid #0D2B12;
-        border-left: 1px solid #0D2B12;
+        /* border-top: 1px solid #0D2B12; */
+        /* border-left: 1px solid #0D2B12; */
         box-shadow: 5px 5px 5px #0D2B12;
         border-radius: 5px;
         /* background-color: rgba(164,22,35,0.6); */
@@ -26,7 +26,8 @@ const Styles = styled.div`
     }
 
     .inactiveEvent {
-        background-color: rgba(164,22,35,0.6)
+        border: 5px solid rgba(164,22,35,0.6);
+        /* background-color: rgba(164,22,35,0.6) */
     }
 
     .eventPreviewHeader {

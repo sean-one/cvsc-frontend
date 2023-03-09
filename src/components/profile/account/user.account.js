@@ -122,24 +122,6 @@ const Styles = styled.div`
         justify-content: space-between;
         align-content: center;
     }
-
-    .updateCheckbox {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        
-        input[type=checkbox] {
-            width: 1rem;
-            height: 1rem;
-            margin: 0;
-            margin-right: 0.25rem;
-            padding: 0;
-        }
-    }
-
-
-
 `
 
 
