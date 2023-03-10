@@ -160,7 +160,20 @@ const BusinessEditForm = () => {
 
             // if updateimage is true set updated file
             if (image_attached && data?.business_avatar[0] && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
-                formData.set('business_avatar', data['business_avatar'][0])
+                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
+
+                let [mime, image_data] = canvas_image.split(',')
+                mime = mime.match(/:(.*?);/)[1]
+
+                let data_string = atob(image_data)
+                let data_length = data_string.length
+                let image_array = new Uint8Array(data_length)
+
+                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
+
+                let business_avatar = new File([image_array], 'business_avatar.jpeg', { type: mime })
+
+                formData.set('business_avatar', business_avatar)
             }
 
             delete data['business_avatar']

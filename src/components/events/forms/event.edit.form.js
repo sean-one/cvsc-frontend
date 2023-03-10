@@ -18,6 +18,13 @@ import { updateEventSchema } from '../../../helpers/validationSchemas';
 import { image_link } from '../../../helpers/dataCleanUp';
 
 const Styles = styled.div`
+    .formHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
     .eventImage {
         width: 100%;
         max-width: 350px;
@@ -39,6 +46,33 @@ const Styles = styled.div`
             border: 1px solid #dcdbc4;
             display: block;
             box-shadow: 5px 5px 5px #010a00;
+        }
+    }
+
+    .dateTimeWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        @media(min-width: 440px) {
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
+    }
+
+    .inputErrorWrapper {
+        width: 100%;
+    }
+
+    .timeWrapper{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        gap: 10px;
+
+        @media(min-width: 440px) {
+            margin-bottom: 0;
         }
     }
 
@@ -86,8 +120,21 @@ const EventEditForm = () => {
             const formData = new FormData()
 
             // if eventmedia has a file set in formData, for some reason it does not show in dirtyFields
-            if(data?.eventmedia[0]) {
-                formData.set('eventmedia', data['eventmedia'][0])
+            if(image_attached) {
+                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
+
+                let [mime, image_data] = canvas_image.split(',')
+                mime = mime.match(/:(.*?);/)[1]
+
+                let data_string = atob(image_data)
+                let data_length = data_string.length
+                let image_array = new Uint8Array(data_length)
+
+                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
+
+                let event_media = new File([image_array], 'eventmedia.jpeg', { type: mime })
+
+                formData.set('eventmedia', event_media)
             }
 
             delete data['image_attached']
@@ -198,22 +245,20 @@ const EventEditForm = () => {
 
     return (
         <Styles>
-            <div className='d-flex justify-content-between align-items-center'>
-                <h1>{event?.eventname}</h1>
-                <FontAwesomeIcon className='mx-1' icon={faTrash} onClick={() => delete_event()} />
-            </div>
-            
             <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data'>
-                
-                {/* eventname input */}
-                <input
-                    className={errors.eventname ? 'inputError' : ''}
-                    {...register('eventname')}
-                    autoFocus
-                    onFocus={() => clearErrors('eventname')}
-                    type='text'
-                    name='eventname'
-                />
+
+                <div className='formHeader'>
+                    {/* eventname input */}
+                    <input
+                        {...register('eventname')}
+                        className={errors.eventname ? 'inputError' : ''}
+                        autoFocus
+                        onFocus={() => clearErrors('eventname')}
+                        type='text'
+                        name='eventname'
+                    />
+                    <FontAwesomeIcon icon={faTrash} onClick={() => delete_event()} siza='2x' />
+                </div>
                 <div className='errormessage'>{errors.eventname?.message}</div>
 
                 {/* image preview */}
@@ -260,41 +305,44 @@ const EventEditForm = () => {
                 }
                 <div className='errormessage'>{errors.eventmedia?.message}</div>
 
-                {/* eventdate input */}
-                <input
-                    className={errors.eventdate ? 'inputError' : ''}
-                    {...register('eventdate')}
-                    onFocus={() => clearErrors('eventdate')}
-                    type='date'
-                    name='eventdate'
-                />
-                <div className='errormessage'>{errors.eventdate?.message}</div>
-
-                {/* start & end */}
-                <div className='d-flex justify-content-between mb-2'>
-                    {/* eventstart input */}
+                <div className='dateTimeWrapper'>
+                    {/* eventdate input */}
                     <div className='inputErrorWrapper'>
                         <input
-                            className={errors.eventstart ? 'inputError' : ''}
-                            {...register('eventstart')}
-                            onFocus={() => clearErrors('eventstart')}
-                            type='time'
-                            name='eventstart'
-                            />
-                        <div className='errormessage'>{errors.eventstart?.message}</div>
-                    </div>
-                    {/* <div className='errormessage'>{errors.time_format?.message}</div> */}
-
-                    {/* eventend input */}
-                    <div className='inputErrorWrapper'>
-                        <input
-                            className={errors.eventend ? 'inputError' : ''}
-                            {...register('eventend')}
-                            onFocus={() => clearErrors('eventend')}
-                            type='time'
-                            name='eventend'
+                            {...register('eventdate')}
+                            className={errors.eventdate ? 'inputError' : ''}
+                            onFocus={() => clearErrors('eventdate')}
+                            type='date'
+                            name='eventdate'
                         />
-                        <div className='errormessage'>{errors.eventend?.message}</div>
+                        <div className='errormessage'>{errors.eventdate?.message}</div>
+                    </div>
+
+                    {/* start & end */}
+                    <div className='timeWrapper'>
+                        {/* eventstart input */}
+                        <div className='inputErrorWrapper'>
+                            <input
+                                {...register('eventstart')}
+                                className={errors.eventstart ? 'inputError' : ''}
+                                onFocus={() => clearErrors('eventstart')}
+                                type='time'
+                                name='eventstart'
+                                />
+                            <div className='errormessage'>{errors.eventstart?.message}</div>
+                        </div>
+
+                        {/* eventend input */}
+                        <div className='inputErrorWrapper'>
+                            <input
+                                {...register('eventend')}
+                                className={errors.eventend ? 'inputError' : ''}
+                                onFocus={() => clearErrors('eventend')}
+                                type='time'
+                                name='eventend'
+                            />
+                            <div className='errormessage'>{errors.eventend?.message}</div>
+                        </div>
                     </div>
                 </div>
                 <div className='errormessage'>{errors.time_format?.message}</div>
