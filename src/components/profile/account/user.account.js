@@ -10,7 +10,7 @@ import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification'
 import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user.png'
-import useAvatarPreview from '../../../hooks/useAvatarPreview';
+import useImagePreview from '../../../hooks/useImagePreview';
 import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
 import { editUserSchema } from '../../../helpers/validationSchemas';
@@ -94,29 +94,6 @@ const Styles = styled.div`
         gap: 10px;
     }
 
-    .imageUpdateInput {
-        cursor: pointer;
-        height: 3rem;
-        width: 100%;
-        padding: 0.5rem;
-        border: none;
-        color: #DAD7CD;
-        border-radius: 5px;
-        border-bottom: 1px solid black;
-        background-color: #4B6F51;
-        outline: none;
-        text-align: center;
-
-        .cameraIcon {
-            color: #DAD7CD;
-            margin-left: 0.25rem;
-        }
-
-        input {
-            display: none;
-        }
-    }
-
     .updateWrapper {
         display: flex;
         justify-content: space-between;
@@ -130,7 +107,7 @@ const UserAccount = () => {
     const [ editView, setEditView ] = useState(false)
     const { refetch } = useEventsQuery()
     const { auth, logout_user, setAuth } = useAuth()
-    const { editImage, imagePreview, canvas, setEditImage } = useAvatarPreview()
+    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
 
     let navigate = useNavigate()
 

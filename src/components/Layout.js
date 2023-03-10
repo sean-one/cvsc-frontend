@@ -57,7 +57,7 @@ const Styles = styled.div`
         color: inherit;
     }
 
-    input, select {
+    input, select, textarea {
         height: 3rem;
         margin: 0.5rem 0;
         width: 100%;
@@ -72,6 +72,10 @@ const Styles = styled.div`
 
     input::placeholder {
         color: #DAD7CD;
+    }
+
+    textarea {
+        height: auto;
     }
 
     button {
@@ -92,6 +96,34 @@ const Styles = styled.div`
 
     button:active {
         transform: translate(2px, 4px)
+    }
+
+    .inputErrorWrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .imageUpdateInput {
+        cursor: pointer;
+        height: 3rem;
+        width: 100%;
+        padding: 0.5rem;
+        border: none;
+        color: #DAD7CD;
+        border-radius: 5px;
+        border-bottom: 1px solid black;
+        background-color: #4B6F51;
+        outline: none;
+        text-align: center;
+
+        .cameraIcon {
+            color: #DAD7CD;
+            margin-left: 0.25rem;
+        }
+
+        input {
+            display: none;
+        }
     }
 
     .updateCheckbox {
