@@ -49,33 +49,6 @@ const Styles = styled.div`
         }
     }
 
-    .dateTimeWrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        @media(min-width: 440px) {
-            flex-direction: row;
-            justify-content: space-between;
-
-        }
-    }
-
-    .inputErrorWrapper {
-        width: 100%;
-    }
-
-    .timeWrapper{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        gap: 10px;
-
-        @media(min-width: 440px) {
-            margin-bottom: 0;
-        }
-    }
-
     .buttonWrapper {
         display: flex;
         justify-content: space-around;

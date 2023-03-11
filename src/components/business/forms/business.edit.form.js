@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faGlobe, faPhone, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 import { faInstagram, faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -60,11 +60,12 @@ const Styles = styled.div`
     .locationWrapper {
         display: flex;
         flex-direction: column;
-
+        
         @media(min-width: 350px) {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
     }
 
@@ -159,7 +160,7 @@ const BusinessEditForm = () => {
             delete data['business_location']
 
             // if updateimage is true set updated file
-            if (image_attached && data?.business_avatar[0] && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
+            if (image_attached && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
                 let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
 
                 let [mime, image_data] = canvas_image.split(',')
@@ -176,7 +177,6 @@ const BusinessEditForm = () => {
                 formData.set('business_avatar', business_avatar)
             }
 
-            delete data['business_avatar']
             delete data['image_attached']
 
             // remove entries that are unchanged

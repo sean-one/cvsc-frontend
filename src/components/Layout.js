@@ -58,7 +58,6 @@ const Styles = styled.div`
     }
 
     input, select, textarea {
-        height: 3rem;
         margin: 0.5rem 0;
         width: 100%;
         padding: 0.5rem;
@@ -68,14 +67,10 @@ const Styles = styled.div`
         border-bottom: 1px solid black;
         background-color: #4B6F51;
         outline: none;
-    }
 
-    input::placeholder {
-        color: #DAD7CD;
-    }
-
-    textarea {
-        height: auto;
+        ::placeholder {
+            color: #DAD7CD;
+        }
     }
 
     button {
@@ -87,15 +82,15 @@ const Styles = styled.div`
         background-color: transparent;
         outline: none;
         /* margin: 0 1rem; */
-    }
 
-    button:hover {
-        background-color: #0D2B12;
-        border: 1px solid #4b6f51;
-    }
+        :hover {
+            background-color: #0D2B12;
+            border: 1px solid #4b6f51;
+        }
 
-    button:active {
-        transform: translate(2px, 4px)
+        :active {
+            transform: translate(2px, 4px)
+        }
     }
 
     .inputErrorWrapper {
@@ -138,6 +133,33 @@ const Styles = styled.div`
             margin: 0;
             margin-right: 0.25rem;
             padding: 0;
+        }
+    }
+
+    .dateTimeWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        @media(min-width: 440px) {
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
+    }
+
+    .inputErrorWrapper {
+        width: 100%;
+    }
+
+    .timeWrapper{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        gap: 10px;
+
+        @media(min-width: 440px) {
+            margin-bottom: 0;
         }
     }
 

@@ -3,10 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FloatingLabel, Form, Image } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 import { DevTool } from '@hookform/devtools'
 
 import useAuth from '../../../hooks/useAuth';
+import { FormInput, BusinessSelect, TextAreaInput } from '../../forms/formInput';
 import { createEventSchema } from '../../../helpers/validationSchemas';
 import { useCreateEventMutation } from '../../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
@@ -14,6 +17,31 @@ import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { image_link } from '../../../helpers/dataCleanUp';
 
+const Styles = styled.div`
+    .eventImage {
+        width: 100%;
+        max-width: 350px;
+        margin: 1rem auto;
+        
+        @media (min-width: 500px) {
+            width: 100%;
+        }
+
+        canvas {
+            max-width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+        }
+
+        img {
+            width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+        }
+    }
+`;
 
 const EventCreateForm = ({ business_id }) => {
     const { logout_user } = useAuth()
@@ -102,9 +130,7 @@ const EventCreateForm = ({ business_id }) => {
         }
     }
 
-    if(isLoading) {
-        return <LoadingSpinner />
-    }
+    if(isLoading) { return <LoadingSpinner /> }
 
     if(isSuccess) {
         venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
@@ -113,159 +139,67 @@ const EventCreateForm = ({ business_id }) => {
 
 
     return (
-        <Form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data'>
+        <Styles>
+            <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data'>
 
-            {/* eventname input */}
-            <Form.Group controlId='eventname' className='mb-2'>
-                <FloatingLabel controlId='eventname' label='Event Name'>
-                    <Form.Control
-                        className={errors.eventname ? 'inputError' : ''}
-                        {...register('eventname')}
-                        autoFocus
-                        onFocus={() => clearErrors('eventname')}
-                        type='text'
-                        name='eventname'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.eventname?.message}</div>
-            </Form.Group>
+                {/* eventname input */}
+                <FormInput register={register} id='eventname' onfocus={() => clearErrors('eventname')} type='text' placeholder='Event Name' error={errors.eventname} />
 
-            {/* eventdate input */}
-            <Form.Group controlId='eventdate' className='mb-2'>
-                <FloatingLabel controlId='eventdate' label='Date'>
-                    <Form.Control
-                        className={errors.eventdate ? 'inputError' : ''}
-                        {...register('eventdate')}
-                        onFocus={() => clearErrors('eventdate')}
-                        type='date'
-                        name='eventdate'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.eventdate?.message}</div>
-            </Form.Group>
+                <div className='dateTimeWrapper'>
+                    {/* eventdate input */}
+                    <FormInput register={register} id='eventdate' onfocus={() => clearErrors('eventdate')} type='date' error={errors.eventdate} />
 
-            {/* start & end */}
-            <div className='d-flex justify-content-between mb-2'>
-                {/* eventstart input */}
-                <Form.Group controlId='eventstart' className='w-100'>
-                    <FloatingLabel controlId='eventstart' label='Start'>
-                        <Form.Control
-                            className={errors.eventstart ? 'inputError' : ''}
-                            {...register('eventstart')}
-                            onFocus={() => clearErrors('eventstart')}
-                            type='time'
-                            name='eventstart'
-                        />
-                    </FloatingLabel>
-                    <div className='errormessage'>{errors.eventstart?.message}</div>
-                    {/* <div className='errormessage'>{errors.time_format?.message}</div> */}
-                </Form.Group>
+                    {/* start & end */}
+                    <div className='timeWrapper'>
+                        {/* eventstart input */}
+                        <FormInput register={register} id='eventstart' onfocus={() => clearErrors('eventstart')} type='time' error={errors.eventstart} />
 
-                {/* eventend input */}
-                <Form.Group controlId='eventend' className='w-100'>
-                    <FloatingLabel controlId='eventend' label='End'>
-                        <Form.Control
-                            className={errors.eventend ? 'inputError' : ''}
-                            {...register('eventend')}
-                            onFocus={() => clearErrors('eventend')}
-                            type='time'
-                            name='eventend'
-                        />
-                    </FloatingLabel>
-                    <div className='errormessage'>{errors.eventend?.message}</div>
-                </Form.Group>
-            </div>
-            <div className='errormessage'>{errors.time_format?.message}</div>
-
-            {
-                showImage &&
-                    <div className='d-flex justify-content-center mb-2'>
-                        <Image
-                            src={image_link(imageFile)}
-                            alt='your event media'
-                            thumbnail
-                        />
+                        {/* eventend input */}
+                        <FormInput register={register} id='eventend' onfocus={() => clearErrors('eventend')} type='time' error={errors.eventend} change={(e) => image_preview(e)} />
                     </div>
-            }
+                </div>
+                <div className='errormessage'>{errors.time_format?.message}</div>
 
-            {/* event image input */}
-            <Form.Group controlId='eventmedia' className='mb-2'>
-                <Form.Control
-                    className={errors.eventmedia ? 'inputError' : ''}
-                    {...register('eventmedia')}
-                    onFocus={() => clearErrors('eventmedia')}
-                    type='file'
-                    name='eventmedia'
-                    accept='image/*'
-                    size='lg'
-                    onChange={(e) => image_preview(e)}
-                />
-                <div className='errormessage'>{errors.eventmedia?.message}</div>
-            </Form.Group>
+                {
+                    showImage &&
+                        <div className='eventImage'>
+                            <img
+                                src={image_link(imageFile)}
+                                alt='your event media'
+                            />
+                        </div>
+                }
 
-            {/* business location selector */}
-            <Form.Group controlId='venue_id' className='mb-2'>
-                <FloatingLabel controlId='venue_id' label='Location'>
-                    <Form.Select
-                        className={errors.venue_id || errors.role_rights ? 'inputError' : ''}
-                        {...register('venue_id')}
-                        onFocus={() => clearErrors(['venue_id', 'role_rights'])}
-                        type='text'
-                        name='venue_id'
-                    >
-                        <option value=''>Location</option>
-                        {
-                            venue_list.map(business => (
-                                <option key={business.id} value={business.id}>{business.business_name}</option>
-                            ))
-                        }
-                    </Form.Select>
-                </FloatingLabel>
-                <div className='errormessage'>{errors.venue_id?.message}</div>
-                <div className='errormessage'>{errors.role_rights?.message}</div>
-            </Form.Group>
-
-            {/* event details input */}
-            <Form.Group controlId='details' className='mb-2'>
-                <FloatingLabel controlId='details' label='Event Details'>
-                    <Form.Control
-                        className={errors.details ? 'inputError' : ''}
-                        {...register('details')}
-                        onFocus={() => clearErrors('details')}
-                        as='textarea'
-                        name='details'
-                        style={{ height: '200px' }}
+                {/* event image input */}
+                <label for='eventmedia' className='imageUpdateInput'>
+                    Select Image
+                    <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
+                    <input
+                        {...register('eventmedia')}
+                        className={errors.eventmedia ? 'inputError' : ''}
+                        onFocus={() => clearErrors('eventmedia')}
+                        type='file'
+                        name='eventmedia'
+                        accept='image/*'
+                        onChange={(e) => image_preview(e)}
                     />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.details?.message}</div>
-            </Form.Group>
+                </label>
+                <div className='errormessage'>{errors.eventmedia?.message}</div>
 
-            {/* business brand selector */}
-            <Form.Group controlId='brand_id' className='mb-2'>
-                <FloatingLabel controlId='brand_id' label='Brand'>
-                    <Form.Select
-                        className={errors.brand_id || errors.role_rights ? 'inputError' : ''}
-                        {...register('brand_id')}
-                        onFocus={() => clearErrors(['brand_id', 'role_rights'])}
-                        type='text'
-                        name='brand_id'
-                    >
-                        <option value=''>Brand</option>
-                        {
-                            brand_list.map(business => (
-                                <option key={business.id} value={business.id}>{business.business_name}</option>
-                            ))
-                        }
-                    </Form.Select>
-                </FloatingLabel>
-                <div className='errormessage'>{errors.brand_id?.message}</div>
-                <div className='errormessage'>{errors.role_rights?.message}</div>
-            </Form.Group>
+                {/* business location selector */}
+                <BusinessSelect register={register} id='venue_id' onfocus={() => clearErrors(['venue_id', 'role_rights'])} role_error={errors.role_rights} business_error={errors.venue_id} business_list={venue_list} selectFor='Location' />
 
-            <Button type='submit'>Submit</Button>
+                {/* event details input */}
+                <TextAreaInput register={register} id='details' onfocus={() => clearErrors('details')} error={errors.details} placeholder='Event details...' />
 
-            <DevTool control={control} />
-        </Form>
+                {/* business brand selector */}
+                <BusinessSelect register={register} id='brand_id' onfocus={() => clearErrors(['brand_id', 'role_rights'])} role_error={errors.role_rights} business_error={errors.brand_id} business_list={brand_list} selectFor='Brand' />
+
+                <button type='submit'>Submit</button>
+
+                <DevTool control={control} />
+            </form>
+        </Styles>
     )
 }
 
