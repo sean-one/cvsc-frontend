@@ -1,20 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Col, FloatingLabel, Form, Image, Row } from 'react-bootstrap';
+import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import { createBusinessSchema } from '../../../helpers/validationSchemas';
 import { useCreateBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
-import { image_link } from '../../../helpers/dataCleanUp';
+import useImagePreview from '../../../hooks/useImagePreview';
+// import { image_link } from '../../../helpers/dataCleanUp';
+import { BusinessTypeSelect, CheckBox, FormInput, ImageInput, TextAreaInput } from '../../forms/formInput';
 
+const Styles = styled.div`
+    .businessImage {
+        width: 100%;
+        max-width: 350px;
+        margin: 1rem auto;
+        
+        @media (min-width: 500px) {
+            width: 100%;
+        }
+
+        canvas {
+            max-width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+        }
+
+        img {
+            width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+        }
+    }
+
+`;
 
 const BusinessCreateForm = () => {
     const { logout_user } = useAuth()
-    const [ showImage, setShowImage ] = useState(false)
-    const [ imageFile, setImageFile ] = useState('')
+    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
@@ -67,6 +94,7 @@ const BusinessCreateForm = () => {
                     }
                 })
 
+                setEditImage(false)
                 reset()
 
                 navigate(`/business/${new_business.data.id}`)
@@ -101,466 +129,75 @@ const BusinessCreateForm = () => {
 
     }
 
-    const image_preview = (e) => {
-        if(e.target.files.length !== 0) {
-            setImageFile(URL.createObjectURL(e.target.files[0]))
-            setShowImage(true)
-        }
-    }
-
 
     return (
-        <Form onSubmit={handleSubmit(create_business)} encType='multipart/form-data'>
-            
-            <Form.Group controlId='business_name'>
-                <FloatingLabel controlId='business_name' label='Business Name' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_name ? 'inputError' : ''}
-                        {...register('business_name')}
-                        onFocus={() => clearErrors('business_name')}
-                        type='text'
-                        name='business_name'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_name?.message}</div>
-            </Form.Group>
+        <Styles>
+            <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data'>
+                
+                <FormInput register={register} id='business_name' onfocus={() => clearErrors('business_name')} type='text' placeholder='Business Name' error={errors.business_name} />
 
-            <Form.Group controlId='business_email'>
-                <FloatingLabel controlId='business_email' label='Email' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_email ? 'inputError' : ''}
-                        {...register('business_email')}
-                        onFocus={() => clearErrors('business_email')}
-                        type='text'
-                        name='business_email'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_email?.message}</div>
-            </Form.Group>
+                <FormInput register={register} id='business_email' onfocus={() => clearErrors('business_email')} type='email' placeholder='Email' error={errors.business_email} />
 
-            {
-                showImage &&
-                    <div className='d-flex justify-content-center mb-2'>
-                        <Image
-                            src={image_link(imageFile)}
-                            alt='your business branding'
-                            thumbnail
-                        />
-                    </div>
-            }
-
-            <Form.Group controlId='business_avatar' className='mb-2'>
-                <Form.Control
-                    className={errors.business_avatar ? 'inputError' : ''}
-                    {...register('business_avatar')}
-                    onFocus={() => clearErrors('business_avatar')}
-                    type='file'
-                    name='business_avatar'
-                    accept='image/*'
-                    onChange={(e) => image_preview(e)}
-                />
-                <div className='errormessage'>{errors.business_avatar?.message}</div>
-            </Form.Group>
-
-            {/* business description input */}
-            <Form.Group controlId='business_description'>
-                <FloatingLabel controlId='business_description' label='Description' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_description ? 'inputError' : ''}
-                        {...register('business_description')}
-                        onFocus={() => clearErrors('business_description')}
-                        as='textarea'
-                        name='business_description'
-                        style={{ height: '200px' }}
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_description?.message}</div>
-            </Form.Group>
-
-            <div className='d-flex'>
-                <Form.Group controlId='business_type' className='mb-2 flex-fill'>
-                    <FloatingLabel controlId='business_type' label='Business Type' className='mb-2'>
-                        <Form.Select
-                            className={errors.business_type ? 'inputError' : ''}
-                            {...register('business_type')}
-                            onFocus={() => clearErrors('business_type')}
-                            type='text'
-                            name='business_type'
-                        >
-                            <option value='brand'>Brand</option>
-                            <option value='venue'>Dispensary</option>
-                            <option value='both'>{`Brand & Dispensary`}</option>
-                        </Form.Select>
-                    </FloatingLabel>
-                    <div className='errormessage'>{errors.business_type?.message}</div>
-                </Form.Group>
-
-                <Form.Group controlId='business_location' className='ms-2 align-self-center'>
-                    <Form.Check
-                        className={errors.business_location ? 'inputError' : ''}
-                        {...register('business_location')}
-                        type='checkbox'
-                        label='Add Location'
-                    />
-                    <div className='errormessage'>{errors.business_location?.message}</div>
-                </Form.Group>
-            </div>
-
-            {
-                (business_location) &&
-                <div>
-                    {/* street address input for location */}
-                    <Form.Group controlId='street_address'>
-                        <FloatingLabel controlId='street_address' label='Street Address' className='mb-2'>
-                            <Form.Control
-                                className={errors.street_address ? 'inputError' : ''}
-                                {...register('street_address')}
-                                onFocus={() => clearErrors('street_address')}
-                                type='text'
-                                name='street_address'
-                            />
-                        </FloatingLabel>
-                        <div className='errormessage'>{errors.street_address?.message}</div>
-                    </Form.Group>
-
-                    {/* city input for location */}
-                    <Form.Group controlId='city'>
-                        <FloatingLabel controlId='city' label='City' className='mb-2'>
-                            <Form.Control
-                                className={errors.city ? 'inputError' : ''}
-                                {...register('city')}
-                                onFocus={() => clearErrors('city')}
-                                type='text'
-                                name='city'
-                            />
-                        </FloatingLabel>
-                        <div className='errormessage'>{errors.city?.message}</div>
-                    </Form.Group>
-
-                    <div className='d-flex justify-content-between'>
-                        {/* state input for location */}
-                        <Form.Group controlId='state'>
-                            <FloatingLabel controlId='state' label='State' className='me-2 mb-2'>
-                                <Form.Control
-                                    className={errors.state ? 'inputError' : ''}
-                                    {...register('state')}
-                                    onFocus={() => clearErrors('state')}
-                                    type='text'
-                                    name='state'
-                                />
-                            </FloatingLabel>
-                            <div className='errormessage'>{errors.state?.message}</div>
-                        </Form.Group>
-
-                        {/* zip code input for location */}
-                        <Form.Group controlId='zip'>
-                            <FloatingLabel controlId='zip' label='Zip Code' className='mb-2'>
-                                <Form.Control
-                                    className={errors.zip ? 'inputError' : ''}
-                                    {...register('zip')}
-                                    onFocus={() => clearErrors('zip')}
-                                    type='text'
-                                    name='zip'
-                                />
-                            </FloatingLabel>
-                            <div className='errormessage'>{errors.zip?.message}</div>
-                        </Form.Group>
-                    </div>
+                <div className='businessImage'>
+                    {
+                        editImage &&
+                            <canvas id={'businessImagePreview'} ref={canvas} />
+                            // : <img src={image_link(imageFile)} alt='your business branding' />
+                    }
                 </div>
-            }
 
-            {/* instagram input */}
-            <Form.Group controlId='business_instagram'>
-                <FloatingLabel controlId='business_instagram' label='Instagram' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_instagram ? 'inputError' : ''}
-                        {...register('business_instagram')}
-                        onFocus={() => clearErrors('business_instagram')}
-                        type='text'
-                        name='business_instagram'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_instagram?.message}</div>
-            </Form.Group>
+                <ImageInput register={register} id='business_avatar' onfocus={() => clearErrors('business_avatar')} error={errors.business_avatar} change={imagePreview} />
 
-            {/* website input */}
-            <Form.Group controlId='business_website'>
-                <FloatingLabel controlId='business_website' label='Website' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_website ? 'inputError' : ''}
-                        {...register('business_website')}
-                        onFocus={() => clearErrors('business_website')}
-                        type='text'
-                        name='business_website'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_website?.message}</div>
-            </Form.Group>
+                {/* business description input */}
+                <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
 
-            {/* facebook input */}
-            <Form.Group controlId='business_facebook'>
-                <FloatingLabel controlId='business_facebook' label='Facebook' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_facebook ? 'inputError' : ''}
-                        {...register('business_facebook')}
-                        onFocus={() => clearErrors('business_facebook')}
-                        type='text'
-                        name='business_facebook'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_facebook?.message}</div>
-            </Form.Group>
+                <div className='d-flex'>
+                    <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
 
-            {/* phone input */}
-            <Form.Group controlId='business_phone'>
-                <FloatingLabel controlId='business_phone' label='Phone' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_phone ? 'inputError' : ''}
-                        {...register('business_phone')}
-                        onFocus={() => clearErrors('business_phone')}
-                        type='text'
-                        name='business_phone'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_phone?.message}</div>
-            </Form.Group>
+                    <CheckBox register={register} id='business_location' boxlabel='Location' />
+                </div>
 
-            {/* twitter input */}
-            <Form.Group controlId='business_twitter'>
-                <FloatingLabel controlId='business_twitter' label='Twitter' className='mb-2'>
-                    <Form.Control
-                        className={errors.business_twitter ? 'inputError' : ''}
-                        {...register('business_twitter')}
-                        onFocus={() => clearErrors('business_twitter')}
-                        type='text'
-                        name='business_twitter'
-                    />
-                </FloatingLabel>
-                <div className='errormessage'>{errors.business_twitter?.message}</div>
-            </Form.Group>
+                {
+                    (business_location) &&
+                    <div>
+                        {/* street address input for location */}
+                        <FormInput register={register} id='street_address' onfocus={() => clearErrors('street_address')} type='text' placeholder='Street Address' error={errors.street_address} />
 
-            <Row className='d-flex justify-content-around pt-3'>
-                <Col xs={2}>
-                    <Button type='submit'>Create</Button>
-                </Col>
-                <Col xs={2}>
-                    <Button onClick={() => navigate(-1)} variant='secondary'>Close</Button>
-                </Col>
-            </Row>
+                        {/* city input for location */}
+                        <FormInput register={register} id='city' onfocus={() => clearErrors('city')} type='text' placeholder='City' error={errors.city} />
 
-        </Form>
-        // <Form onSubmit={handleSubmit(sendRequest)} encType='multipart/form-data' className='gy-3'>
-        //     {/* business name input */}
-        //     <Form.Group controlId='business_name'>
-        //         <Form.Label>Business Name</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_name ? 'inputError' : ''}
-        //             {...register('business_name')}
-        //             autoFocus
-        //             onFocus={() => clearErrors('business_name')}
-        //             type='text'
-        //             name='business_name'
-        //             required
-        //         />
-        //         <div className='errormessage'>{errors.business_name?.message}</div>
-        //     </Form.Group>
+                        <div className='d-flex justify-content-between'>
+                            {/* state input for location */}
+                            <FormInput register={register} id='state' onfocus={() => clearErrors('state')} type='text' placeholder='State' error={errors.state} />
 
-        //     {/* business email input */}
-        //     <Form.Group controlId='business_email'>
-        //         <Form.Label>Business Email</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_email ? 'inputError' : ''}
-        //             {...register('business_email')}
-        //             onFocus={() => clearErrors('business_email')}
-        //             type='text'
-        //             name='business_email'
-        //             required
-        //         />
-        //         <div className='errormessage'>{errors.business_email?.message}</div>
-        //     </Form.Group>
+                            {/* zip code input for location */}
+                            <FormInput register={register} id='zip' onfocus={() => clearErrors('zip')} type='text' placeholder='Zip' error={errors.zip} />
+                        </div>
+                    </div>
+                }
 
-        //     {/* <Form.Group controlId='business_avatar'> */}
-        //     <Form.Group controlId='business_avatar'>
-        //         <Form.Label>Business Branding</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_avatar ? 'inputError' : ''}
-        //             {...register('business_avatar')}
-        //             onFocus={() => clearErrors('business_avatar')}
-        //             type='file'
-        //             name='business_avatar'
-        //             accept='image/*'
-        //             onChange={(e) => setImageFile(e.target.files[0])}
-        //         />
-        //         <div className='errormessage'>{errors.business_avatar?.message}</div>
-        //     </Form.Group>
+                {/* instagram input */}
+                <FormInput register={register} id='business_instagram' onfocus={() => clearErrors('business_instagram')} type='text' placeholder='Instagram' error={errors.business_instagram} />
 
-        //     {/* business description input */}
-        //     <Form.Group controlId='business_description'>
-        //         <Form.Label>Business Description</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_description ? 'inputError' : ''}
-        //             {...register('business_description')}
-        //             onFocus={() => clearErrors('business_description')}
-        //             as='textarea'
-        //             rows={5}
-        //             name='business_description'
-        //             required
-        //         />
-        //         <div className='errormessage'>{errors.business_description?.message}</div>
-        //     </Form.Group>
+                {/* website input */}
+                <FormInput register={register} id='business_website' onfocus={() => clearErrors('business_website')} type='text' placeholder='Website' error={errors.business_website} />
 
-        //     {/* business type option selector */}
-        //     <Form.Group controlId='business_type'>
-        //         <Form.Label>Business Type</Form.Label>
-        //         <Form.Select
-        //             className={errors.business_type ? 'inputError' : ''}
-        //             {...register('business_type')}
-        //             onFocus={() => clearErrors('business_type')}
-        //             type='text'
-        //             name='business_type'
-        //             required
-        //         >
-        //             <option value='brand'>Brand</option>
-        //             <option value='venue'>Dispensary</option>
-        //             <option value='both'>{`Brand & Dispensary`}</option>
-        //         </Form.Select>
-        //         <div className='errormessage'>{errors.business_type?.message}</div>
-        //     </Form.Group>
+                {/* facebook input */}
+                <FormInput register={register} id='business_facebook' onfocus={() => clearErrors('business_facebook')} type='text' placeholder='Facebook' error={errors.business_facebook} />
 
-        //     {/* if business type is dispensary or both, address option will display */}
-        //     {
-        //         (businessType !== 'brand') && (
-        //             <div>
-        //                 <div>
-        //                     {/* street address input for location */}
-        //                     <Form.Group controlId='street_address'>
-        //                         <Form.Label>Street Address</Form.Label>
-        //                         <Form.Control
-        //                             className={errors.street_address ? 'inputError' : ''}
-        //                             {...register('street_address')}
-        //                             onFocus={() => clearErrors('street_address')}
-        //                             type='text'
-        //                             name='street_address'
-        //                             required
-        //                         />
-        //                         <div className='errormessage'>{errors.street_address?.message}</div>
-        //                     </Form.Group>
-        //                 </div>
-        //                 <div>
-        //                     {/* city input for location */}
-        //                     <Form.Group controlId='city'>
-        //                         <Form.Label>City</Form.Label>
-        //                         <Form.Control
-        //                             className={errors.city ? 'inputError' : ''}
-        //                             {...register('city')}
-        //                             onFocus={() => clearErrors('city')}
-        //                             type='text'
-        //                             name='city'
-        //                             required
-        //                         />
-        //                         <div className='errormessage'>{errors.city?.message}</div>
-        //                     </Form.Group>
-        //                 </div>
-        //                 <div className='d-flex justify-content-between'>
-        //                     {/* state input for location */}
-        //                     <Form.Group controlId='state'>
-        //                         <Form.Label>State</Form.Label>
-        //                         <Form.Control
-        //                             className={errors.state ? 'inputError' : ''}
-        //                             {...register('state')}
-        //                             onFocus={() => clearErrors('state')}
-        //                             type='text'
-        //                             name='state'
-        //                             required
-        //                         />
-        //                         <div className='errormessage'>{errors.state?.message}</div>
-        //                     </Form.Group>
+                {/* phone input */}
+                <FormInput register={register} id='business_phone' onfocus={() => clearErrors('business_phone')} type='text' placeholder='Phone' error={errors.business_phone} />
 
-        //                     {/* zip code input for location */}
-        //                     <Form.Group controlId='zip'>
-        //                         <Form.Label>Zip</Form.Label>
-        //                         <Form.Control
-        //                             className={errors.zip ? 'inputError' : ''}
-        //                             {...register('zip')}
-        //                             onFocus={() => clearErrors('zip')}
-        //                             type='text'
-        //                             name='zip'
-        //                             required
-        //                         />
-        //                         <div className='errormessage'>{errors.zip?.message}</div>
-        //                     </Form.Group>
-        //                 </div>
-        //             </div>
-        //         )
-        //     }
+                {/* twitter input */}
+                <FormInput register={register} id='business_twitter' onfocus={() => clearErrors('business_twitter')} type='text' placeholder='Twitter' error={errors.business_twitter} />
 
-        //     {/* instgram input */}
-        //     <Form.Group controlId='business_instagram'>
-        //         <Form.Label>Instagram</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_instagram ? 'inputError' : ''}
-        //             {...register('business_instagram')}
-        //             onFocus={() => clearErrors('business_instagram')}
-        //             type='text'
-        //             name='business_instagram'
-        //         />
-        //         <div className='errormessage'>{errors.business_instagram?.message}</div>
-        //     </Form.Group>
+                <div className='d-flex justify-content-around pt-3'>
+                    <button type='submit'>Create</button>
+                    <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
+                </div>
 
-        //     {/* website input */}
-        //     <Form.Group controlId='business_website'>
-        //         <Form.Label>Website</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_website ? 'inputError' : ''}
-        //             {...register('business_website')}
-        //             onFocus={() => clearErrors('business_website')}
-        //             type='text'
-        //             name='business_website'
-        //         />
-        //         <div className='errormessage'>{errors.business_website?.message}</div>
-        //     </Form.Group>
-
-        //     {/* facebook input */}
-        //     <Form.Group controlId='business_facebook'>
-        //         <Form.Label>Facebook</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_facebook ? 'inputError' : ''}
-        //             {...register('business_facebook')}
-        //             onFocus={() => clearErrors('business_facebook')}
-        //             type='text'
-        //             name='business_facebook'
-        //         />
-        //         <div className='errormessage'>{errors.business_facebook?.message}</div>
-        //     </Form.Group>
-
-        //     {/* phone input */}
-        //     <Form.Group controlId='business_phone'>
-        //         <Form.Label>Phone</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_phone ? 'inputError' : ''}
-        //             {...register('business_phone')}
-        //             onFocus={() => clearErrors('business_phone')}
-        //             type='text'
-        //             name='business_phone'
-        //         />
-        //         <div className='errormessage'>{errors.business_phone?.message}</div>
-        //     </Form.Group>
-
-        //     {/* twitter input */}
-        //     <Form.Group controlId='business_twitter'>
-        //         <Form.Label>Twitter</Form.Label>
-        //         <Form.Control
-        //             className={errors.business_twitter ? 'inputError' : ''}
-        //             {...register('business_twitter')}
-        //             onFocus={() => clearErrors('business_twitter')}
-        //             type='text'
-        //             name='business_twitter'
-        //         />
-        //         <div className='errormessage'>{errors.business_twitter?.message}</div>
-        //     </Form.Group>
-
-        //     <Button type='submit'>Submit</Button>
-        // </Form>
+            </form>
+        </Styles>
     )
 }
 

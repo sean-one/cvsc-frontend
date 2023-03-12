@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
@@ -13,6 +14,18 @@ import ContactLink from '../contactLink';
 import BusinessAdminMenu from './admin/business.admin.menu';
 import RelatedEvents from '../events/related.events';
 
+const Styles = styled.div`
+    .businessViewWrapper {}
+
+    .businessWrapper {}
+
+    .businessHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+`;
 
 const BusinessView = () => {
     const { auth } = useAuth()
@@ -23,58 +36,58 @@ const BusinessView = () => {
 
     const { data: business, isLoading } = useBusinessQuery(business_id)
 
-    if (isLoading) {
-        return <LoadingSpinner />
-    }
+    if (isLoading) { return <LoadingSpinner /> }
 
-    if(auth?.roles) {
-        business_role = auth.roles.find(role => role.business_id === business_id)
-    }
+    if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
 
 
     return (
-        <div>
-            <div>
-                <div className='d-flex justify-content-between align-items-center'>
-                    <h1 className='mb-1'>{business.data.business_name.toUpperCase()}</h1>
+        <Styles>
+            <div className='businessViewWrapper'>
+                <div className='businessWrapper'>
+                    <div className='businessHeader'>
+                        <div>
+                            <h1>{business.data.business_name.toUpperCase()}</h1>
+                        </div>
+                        {
+                            (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
+                                <div>
+                                    <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/business/edit/${business_id}`, { state: business.data })} size='2x' />
+                                </div>
+                        }
+                    </div>
                     {
-                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                            <div className='px-2'>
-                                <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/business/edit/${business_id}`, { state: business.data })} />
+                        (business.data.location_id !== null) &&
+                            <div>
+                                {`${business.data?.street_address}, ${business.data?.location_city}`}
                             </div>
                     }
-                </div>
-                {
-                    (business.data.location_id !== null) &&
-                        <div>
-                            {`${business.data?.street_address}, ${business.data?.location_city}`}
+                    <div className='d-flex flex-column align-items-center'>
+                        <div className=''>
+                            <Image src={image_link(business.data.business_avatar)} alt={business.data.business_name} thumbnail/>
                         </div>
-                }
-                <div className='d-flex flex-column align-items-center'>
-                    <div className=''>
-                        <Image src={image_link(business.data.business_avatar)} alt={business.data.business_name} thumbnail/>
-                    </div>
-                    <div className='d-flex justify-content-evenly py-2 my-2 w-100 bg-light rounded'>
-                        <ContactLink contact_type='email' />
+                        <div className='d-flex justify-content-evenly py-2 my-2 w-100 bg-light rounded'>
+                            <ContactLink contact_type='email' />
 
-                        {/* dynamically add optional contact information */}
-                        {business.data.business_phone && <ContactLink contact_type='phone' /> }
-                        {business.data.business_instagram && <ContactLink contact_type='instagram' /> }
-                        {business.data.business_facebook && <ContactLink contact_type='facebook' /> }
-                        {business.data.business_website && <ContactLink contact_type='website'/> }
-                        {business.data.business_twitter && <ContactLink contact_type='twitter' /> }
+                            {/* dynamically add optional contact information */}
+                            {business.data.business_phone && <ContactLink contact_type='phone' /> }
+                            {business.data.business_instagram && <ContactLink contact_type='instagram' /> }
+                            {business.data.business_facebook && <ContactLink contact_type='facebook' /> }
+                            {business.data.business_website && <ContactLink contact_type='website'/> }
+                            {business.data.business_twitter && <ContactLink contact_type='twitter' /> }
+                        </div>
+                    </div>
+                    {
+                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
+                            <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
+                    }
+                    <div className='fs-6 lh-sm border-top border-dark pt-2'>
+                        {business.data.business_description}
                     </div>
                 </div>
-                {
-                    (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                        <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
-                }
-                <div className='fs-6 lh-sm border-top border-dark pt-2'>
-                    {business.data.business_description}
-                </div>
+                <RelatedEvents business_ids={[business_id]} />
             </div>
-            <RelatedEvents business_ids={[business_id]} />
-        </div>
+        </Styles>
     )
 }
 

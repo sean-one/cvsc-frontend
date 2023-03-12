@@ -19,11 +19,24 @@ export const FormInput = ({ register, id, onfocus, type, placeholder, error }) =
     )
 }
 
+export const CheckBox = ({ register, id, boxlabel }) => {
+    return (
+        <label htmlFor={id} className='updateCheckbox'>
+            <input
+                {...register(id)}
+                type='checkbox'
+                name={id}
+            />
+            {boxlabel}
+        </label>
+    )
+}
+
 //! not working
 export const ImageInput = ({ register, id, onfocus, error, change }) => {
     return (
         <>
-            <label for={id} className='imageUpdateInput'>
+            <label htmlFor={id} className='imageUpdateInput'>
                 Select Image
                 <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
                 <input
@@ -33,7 +46,7 @@ export const ImageInput = ({ register, id, onfocus, error, change }) => {
                     type='file'
                     name={id}
                     accept='image/*'
-                    onChange={change}
+                    onChange={(e) => change(e)}
                 />
             </label>
             <div className='errormessage'>{error?.message}</div>
@@ -60,6 +73,25 @@ export const BusinessSelect = ({ register, id, onfocus, role_error, business_err
             </select>
             <div className='errormessage'>{business_error?.message}</div>
             <div className='errormessage'>{role_error?.message}</div>
+        </>
+    )
+}
+
+export const BusinessTypeSelect = ({register, onfocus, error }) => {
+    return (
+        <>
+            <select
+                className={error ? 'inputError' : ''}
+                {...register('business_type')}
+                onFocus={onfocus}
+                type='text'
+                name='business_type'
+            >
+                <option value='brand'>Brand</option>
+                <option value='venue'>Dispensary</option>
+                <option value='both'>{`Brand & Dispensary`}</option>
+            </select>
+            <div className='errormessage'>{error?.message}</div>
         </>
     )
 }

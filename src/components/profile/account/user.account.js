@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faSave, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrashAlt, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
+import { FormInput, CheckBox, ImageInput } from '../../forms/formInput';
 import useNotification from '../../../hooks/useNotification'
 import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user.png'
@@ -276,83 +277,28 @@ const UserAccount = () => {
                                 ? <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
                                 : <form encType='multipart/form-data'>
 
-                                    <input
-                                        {...register('email')}
-                                        className={errors.email ? 'inputError' : ''}
-                                        onFocus={() => clearErrors('email')}
-                                        type='email'
-                                        name='email'
-                                    />
-                                    <div className='errormessage'>{errors.email?.message}</div>
+                                    <FormInput register={register} id='email' onfocus={() => clearErrors('email')} type='email' error={errors.email} />
 
                                     {
                                         (update_image) &&
-                                            <label for='avatar' className='imageUpdateInput'>
-                                                Select Image
-                                                <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
-                                                <input
-                                                    {...register('avatar')}
-                                                    className={errors.avatar ? 'inputError' : ''}
-                                                    onFocus={() => clearErrors('avatar')}
-                                                    type='file'
-                                                    id='avatar'
-                                                    name='avatar'
-                                                    accept='image/*'
-                                                    onChange={(e) => imagePreview(e)}
-                                                />
-                                            </label>
+                                            <ImageInput register={register} id='avatar' onfocus={() => clearErrors()} error={errors.avatar} change={imagePreview} />
                                     }
-                                    <div className='errormessage'>{errors.profile_image?.message}</div>
 
                                     {/* update image and password checkboxes */}
                                     <div className='updateWrapper'>
+                                        <CheckBox register={register} id='update_password' boxlabel='Update Password' />
 
-                                        <label for='update_password' className='updateCheckbox'>
-                                            <input
-                                                {...register('update_password')}
-                                                type='checkbox'
-                                                name='update_password'
-                                            />
-                                            Update Password
-                                        </label>
-
-                                        {
-                                            (!update_image) &&
-                                                <label for='update_image' className='updateCheckbox'>
-                                                    <input
-                                                        {...register('update_image')}
-                                                        type='checkbox'
-                                                        name='update_image'
-                                                    />
-                                                    Update Image
-                                                </label>
-                                        }
-
+                                        { (!update_image) && <CheckBox register={register} id='update_image' boxlabel='Update Image' /> }
                                     </div>
 
                                     {/* update password and confirm password fields */}
                                     {
                                         (update_password) &&
                                             <div>
-                                                <input
-                                                    className={errors.password ? 'inputError' : ''}
-                                                    onFocus={() => clearErrors('password')}
-                                                    {...register('password')}
-                                                    type='password'
-                                                    name='password'
-                                                    placeholder='Password'
-                                                />
-                                                <div className='errormessage'>{errors.password?.message}</div>
-
-                                                <input
-                                                    className={errors.confirmation ? 'inputError' : ''}
-                                                    onFocus={() => clearErrors('confirmation')}
-                                                    {...register('confirmation')}
-                                                    type='password'
-                                                    name='confirmation'
-                                                    placeholder='Confirm Password'
-                                                />
-                                                <div className='errormessage'>{errors.confirmation?.message}</div>
+                                                
+                                                <FormInput register={register} id='password' onfocus={() => clearErrors('password')} type='password' placeholder='Password' error={errors.password} />
+                                                <FormInput register={register} id='confirmation' onfocus={() => clearErrors('confirmation')} type='password' placeholder='Confirm Password' error={errors.confirmation} />
+                                            
                                             </div>
                                     }
 
