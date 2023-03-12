@@ -9,6 +9,27 @@ import AxiosInstance from '../helpers/axios';
 import useNotification from '../hooks/useNotification.js';
 
 const Styles = styled.div`
+    .registerWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 500px;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px #0D2B12;
+        border-radius: 5px;
+        background-color: rgba(75,111,81,0.3);
+
+        @media(min-width: 500px) {
+            /* border: 1px solid red; */
+        }
+    }
+
+    .registerHeader {
+        padding-left: 1.5rem;
+        padding-bottom: 1.5rem;
+        align-self: flex-start;
+    }
+
     .registerForm {
         margin-bottom: 2rem;
     }
@@ -80,51 +101,57 @@ const Register = () => {
     
     return (
         <Styles>
-            <div>
-                <h2>Register</h2>
-                <form onSubmit={handleSubmit(createUser)} className='registerForm'>
-
-                    <input
-                        className={`registerInputs ${errors.username ? 'inputError' : ''}`}
-                        onFocus={() => clearErrors('username')}
-                        {...register('username')}
-                        type="text"
-                        placeholder="Username"
-                        name='username'
-                        required
-                    />
-                    <div className='errormessage'>{errors.username?.message}</div>
-
-                    <input
-                        className={`registerInputs ${errors.password ? 'inputError' : ''}`}
-                        onFocus={() => clearErrors('password')}
-                        {...register('password')}
-                        type="password"
-                        placeholder="Password"
-                        name='password'
-                        required
-                    />
-                    <div className='errormessage'>{errors.password?.message}</div>
-
-                    <input
-                        className={`registerInputs ${errors.confirmation ? 'inputError' : ''}`}
-                        onFocus={() => clearErrors('confirmation')}
-                        {...register('confirmation')}
-                        type="password"
-                        placeholder="Confirm Password"
-                        name='confirmation'
-                        required
-                    />
-                    <div className='errormessage'>{errors.confirmation?.message}</div>
-                    
-                    <div className='errormessage'>{errors.invalid_input?.message}</div>
-                    
-                    <div className='buttonWrapper'>
-                        <button className='registerButtons' type='submit'>submit</button>
-                        <button className='registerButtons' onClick={googleAuthButton}>google</button>
-                    </div>
+            <div className='registerWrapper'>
                 
-                </form>
+                <div className='registerHeader'>
+                    <h2>Register</h2>
+                </div>
+                
+                <div>
+                    <form onSubmit={handleSubmit(createUser)} className='registerForm'>
+
+                        <input
+                            className={`registerInputs ${errors.username ? 'inputError' : ''}`}
+                            onFocus={() => clearErrors('username')}
+                            {...register('username')}
+                            type="text"
+                            placeholder="Username"
+                            name='username'
+                            required
+                        />
+                        <div className='errormessage'>{errors.username?.message}</div>
+
+                        <input
+                            className={`registerInputs ${errors.password ? 'inputError' : ''}`}
+                            onFocus={() => clearErrors('password')}
+                            {...register('password')}
+                            type="password"
+                            placeholder="Password"
+                            name='password'
+                            required
+                        />
+                        <div className='errormessage'>{errors.password?.message}</div>
+
+                        <input
+                            className={`registerInputs ${errors.confirmation ? 'inputError' : ''}`}
+                            onFocus={() => clearErrors('confirmation')}
+                            {...register('confirmation')}
+                            type="password"
+                            placeholder="Confirm Password"
+                            name='confirmation'
+                            required
+                        />
+                        <div className='errormessage'>{errors.confirmation?.message}</div>
+                        
+                        <div className='errormessage'>{errors.invalid_input?.message}</div>
+                        
+                        <div className='buttonWrapper'>
+                            <button className='registerButtons' type='submit'>submit</button>
+                            <button className='registerButtons' onClick={googleAuthButton}>google</button>
+                        </div>
+                    
+                    </form>
+                </div>
 
                 <div className='loginLinkWrapper'>
                     <p onClick={() => navigate('/login')}>Already have a login? Login here.</p>

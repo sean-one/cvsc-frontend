@@ -10,7 +10,30 @@ import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
 
 const Styles = styled.div`
+    .loginWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 500px;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px #0D2B12;
+        border-radius: 5px;
+        background-color: rgba(75,111,81,0.3);
+
+        @media(min-width: 500px) {
+            /* border: 1px solid red; */
+        }
+    }
+
+    .loginHeader {
+        padding-left: 1.5rem;
+        padding-bottom: 1.5rem;
+        align-self: flex-start;
+    }
+
     .loginForm {
+        align-content: center;
+        max-width: 325px;
         margin-bottom: 2rem;
     }
 
@@ -99,39 +122,43 @@ const Login = () => {
 
     return (
         <Styles>
-            <div>
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit(sendLogin)} className='loginForm'>
-                    <input
-                        className={`loginInputs ${errors.username ? 'inputError' : ''}`}
-                        {...register('username')}
-                        // autoFocus
-                        onFocus={() => clearErrors('username')}
-                        type='text'
-                        name='username'
-                        placeholder='Username'
-                        required
-                    />
-                    <div className='errormessage'>{errors.username?.message}</div>
+            <div className='loginWrapper'>
+                <div className='loginHeader'>
+                    <h2>Login</h2>
+                </div>
+                <div>
+                    <form onSubmit={handleSubmit(sendLogin)} className='loginForm'>
+                        <input
+                            className={`loginInputs ${errors.username ? 'inputError' : ''}`}
+                            {...register('username')}
+                            // autoFocus
+                            onFocus={() => clearErrors('username')}
+                            type='text'
+                            name='username'
+                            placeholder='Username'
+                            required
+                        />
+                        <div className='errormessage'>{errors.username?.message}</div>
 
-                    <input
-                        className={`loginInputs ${errors.password ? 'inputError' : ''}`}
-                        {...register('password')}
-                        onFocus={() => clearErrors('password')}
-                        name='password'
-                        type='password'
-                        placeholder='Password'
-                        required
-                    />
-                    <div className='errormessage'>{errors.password?.message}</div>
-                    <div className='errormessage'>{errors.credentials?.message}</div>
+                        <input
+                            className={`loginInputs ${errors.password ? 'inputError' : ''}`}
+                            {...register('password')}
+                            onFocus={() => clearErrors('password')}
+                            name='password'
+                            type='password'
+                            placeholder='Password'
+                            required
+                        />
+                        <div className='errormessage'>{errors.password?.message}</div>
+                        <div className='errormessage'>{errors.credentials?.message}</div>
 
-                    <div className='buttonWrapper'>
-                        <button className='loginButtons' type='submit'>submit</button>
-                        <button className='loginButtons' onClick={googleAuthButton}>google</button>
-                    </div>
+                        <div className='buttonWrapper'>
+                            <button className='loginButtons' type='submit'>submit</button>
+                            <button className='loginButtons' onClick={googleAuthButton}>google</button>
+                        </div>
 
-                </form>
+                    </form>
+                </div>
                 
                 <div className='registerLinkWrapper'>
                     <p onClick={() => navigate('/register')}>New to the club? Register here</p>
