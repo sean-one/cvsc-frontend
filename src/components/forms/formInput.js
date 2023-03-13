@@ -44,14 +44,14 @@ export const CheckBox = ({ register, id, boxlabel }) => {
 //! not working
 export const ImageInput = ({ register, id, onfocus, error, change }) => {
     return (
-        <>
+        <div onClick={onfocus}>
             <label htmlFor={`${id}`} className='imageUpdateInput'>
                 Select Image
                 <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
                 <input
                     {...register(id)}
                     className={error ? 'inputError' : ''}
-                    onFocus={onfocus}
+                    // onFocus={onfocus}
                     type='file'
                     id={id}
                     accept='image/*'
@@ -59,7 +59,7 @@ export const ImageInput = ({ register, id, onfocus, error, change }) => {
                 />
             </label>
             <div className='errormessage'>{error?.message}</div>
-        </>
+        </div>
     )
 }
 

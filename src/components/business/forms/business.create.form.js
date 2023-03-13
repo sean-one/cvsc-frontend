@@ -71,15 +71,30 @@ const BusinessCreateForm = () => {
 
     const create_business = async (business_data) => {
         try {
-
             const formData = new FormData()
 
+            if(canvas.current === null) {
+                throw new Error('missing_image')
+                // setError('business_avatar', { message: 'business image required' })
+            } else {
+                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
+
+                let [mime, image_data] = canvas_image.split(',')
+                mime = mime.match(/:(.*?);/)[1]
+
+                let data_string = atob(image_data)
+                let data_length = data_string.length
+                let image_array = new Uint8Array(data_length)
+
+                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
+
+                let business_avatar = new File([image_array], 'business_avatar.jpeg', { type: mime })
+                
+                formData.set('business_avatar', business_avatar)
+            }
+
             Object.keys(business_data).forEach(key => {
-                if (key === 'business_avatar') {
-                    formData.set(key, business_data[key][0])
-                } else {
-                    formData.append(key, business_data[key])
-                }
+                formData.append(key, business_data[key])
             })
 
             const new_business = await createBusiness(formData)
@@ -102,13 +117,17 @@ const BusinessCreateForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
+            // console.log(error)
+            if (error.message === 'missing_image') {
+                setError('business_avatar', { message: 'required'})
+                throw('error')
+            }
+
             if (error.response.status === 400) {
                 setError(`${error.response.data.error.type}`, {
                     type: 'server',
                     message: error.response.data.error.message
                 })
-
             }
 
             if (error.response.status === 401) {

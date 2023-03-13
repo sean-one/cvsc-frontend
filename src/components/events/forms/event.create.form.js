@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { DevTool } from '@hookform/devtools'
 
 import useAuth from '../../../hooks/useAuth';
-import { FormInput, BusinessSelect, TextAreaInput } from '../../forms/formInput';
+import { FormInput, BusinessSelect, TextAreaInput, ImageInput } from '../../forms/formInput';
+import useImagePreview from '../../../hooks/useImagePreview';
 import { createEventSchema } from '../../../helpers/validationSchemas';
 import { useCreateEventMutation } from '../../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
-import { image_link } from '../../../helpers/dataCleanUp';
 
 const Styles = styled.div`
     .eventImage {
@@ -45,8 +43,7 @@ const Styles = styled.div`
 
 const EventCreateForm = ({ business_id }) => {
     const { logout_user } = useAuth()
-    const [ showImage, setShowImage ] = useState(false)
-    const [ imageFile, setImageFile ] = useState('')
+    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
@@ -55,7 +52,7 @@ const EventCreateForm = ({ business_id }) => {
 
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
-    const { register, handleSubmit, control, setError, clearErrors, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, setError, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(createEventSchema),
         defaultValues: {
@@ -74,10 +71,27 @@ const EventCreateForm = ({ business_id }) => {
         try {
             const formData = new FormData()
 
+            if(canvas.current === null) {
+                throw new Error('missing_image')
+            } else {
+                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
+
+                let [mime,image_data] = canvas_image.split(',')
+                mime = mime.match(/:(.*?);/)[1]
+
+                let data_string = atob(image_data)
+                let data_length = data_string.length
+                let image_array = new Uint8Array(data_length)
+
+                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
+
+                let event_image = new File([image_array], 'event_image.jpeg', { type: mime })
+
+                formData.set('eventmedia', event_image)
+            }
+
             Object.keys(data).forEach(key => {
-                if (key === 'eventmedia') {
-                    formData.set(key, data[key][0])
-                } else if (key === 'eventdate') {
+                if (key === 'eventdate') {
                     formData.append(key, format(data[key], 'y-M-d'))
                 } else if (key === 'eventstart' || key === 'eventend') {
                     formData.append(key, data[key].replace(':', ''))
@@ -97,10 +111,18 @@ const EventCreateForm = ({ business_id }) => {
                     }
                 })
 
+                setEditImage(false)
+                reset()
+
                 navigate(`/event/${add_event_response.data.event_id}`)
             }
         } catch (error) {
             console.log(error)
+            if (error?.message === 'missing_image') {
+                setError('eventmedia', { message: 'required' })
+                throw Error;
+            }
+
             if (error?.response.status === 401) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -120,13 +142,6 @@ const EventCreateForm = ({ business_id }) => {
                     message: error.response.data.error.message
                 })
             }
-        }
-    }
-
-    const image_preview = (e) => {
-        if(e.target.files.length !== 0) {
-            setImageFile(URL.createObjectURL(e.target.files[0]))
-            setShowImage(true)
         }
     }
 
@@ -155,36 +170,20 @@ const EventCreateForm = ({ business_id }) => {
                         <FormInput register={register} id='eventstart' onfocus={() => clearErrors('eventstart')} type='time' error={errors.eventstart} />
 
                         {/* eventend input */}
-                        <FormInput register={register} id='eventend' onfocus={() => clearErrors('eventend')} type='time' error={errors.eventend} change={(e) => image_preview(e)} />
+                        <FormInput register={register} id='eventend' onfocus={() => clearErrors('eventend')} type='time' error={errors.eventend} />
                     </div>
                 </div>
                 <div className='errormessage'>{errors.time_format?.message}</div>
 
-                {
-                    showImage &&
-                        <div className='eventImage'>
-                            <img
-                                src={image_link(imageFile)}
-                                alt='your event media'
-                            />
-                        </div>
-                }
+                <div className='eventImage'>
+                    {
+                        editImage &&
+                                <canvas id={'eventImagePreview'} ref={canvas} />
+                    }
+                </div>
 
                 {/* event image input */}
-                <label for='eventmedia' className='imageUpdateInput'>
-                    Select Image
-                    <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
-                    <input
-                        {...register('eventmedia')}
-                        className={errors.eventmedia ? 'inputError' : ''}
-                        onFocus={() => clearErrors('eventmedia')}
-                        type='file'
-                        name='eventmedia'
-                        accept='image/*'
-                        onChange={(e) => image_preview(e)}
-                    />
-                </label>
-                <div className='errormessage'>{errors.eventmedia?.message}</div>
+                <ImageInput register={register} id='eventmedia' onfocus={() => clearErrors('eventmedia')} error={errors.eventmedia} change={imagePreview} />
 
                 {/* business location selector */}
                 <BusinessSelect register={register} id='venue_id' onfocus={() => clearErrors(['venue_id', 'role_rights'])} role_error={errors.role_rights} business_error={errors.venue_id} business_list={venue_list} selectFor='Location' />

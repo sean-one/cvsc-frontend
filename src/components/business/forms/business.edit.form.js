@@ -123,9 +123,7 @@ const BusinessEditForm = () => {
         }
     })
 
-    if(auth?.roles) {
-        business_role = auth.roles.find(role => role.business_id === business_id )
-    }
+    if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
 
     const image_attached = watch('image_attached', false)
     const business_location = watch('business_location', false)

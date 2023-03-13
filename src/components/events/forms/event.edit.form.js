@@ -16,7 +16,7 @@ import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { updateEventSchema } from '../../../helpers/validationSchemas';
 import { image_link } from '../../../helpers/dataCleanUp';
-import { ImageInput } from '../../forms/formInput';
+import { BusinessSelect, CheckBox, FormInput, ImageInput, TextAreaInput } from '../../forms/formInput';
 
 const Styles = styled.div`
     .formHeader {
@@ -223,17 +223,10 @@ const EventEditForm = () => {
 
                 <div className='formHeader'>
                     {/* eventname input */}
-                    <input
-                        {...register('eventname')}
-                        className={errors.eventname ? 'inputError' : ''}
-                        autoFocus
-                        onFocus={() => clearErrors('eventname')}
-                        type='text'
-                        name='eventname'
-                    />
+                    <FormInput register={register} id='eventname' onfocus={() => clearErrors('eventname')} type='text' error={errors.eventname} />
+                    
                     <FontAwesomeIcon icon={faTrash} onClick={() => delete_event()} siza='2x' />
                 </div>
-                <div className='errormessage'>{errors.eventname?.message}</div>
 
                 {/* image preview */}
                 <div className='eventImage'>
@@ -250,109 +243,36 @@ const EventEditForm = () => {
                     }
                 </div>
 
-                <label for='image_attached' className='updateCheckbox'>
-                    <input
-                        {...register('image_attached')}
-                        type='checkbox'
-                        name='image_attached'
-                    />
-                    Update Image
-                </label>
+                <CheckBox register={register} id='image_attached' boxlabel='Update Image' />
 
                 {/* event image input */}
                 {
                     (image_attached) &&
                         <ImageInput register={register} id='eventmedia' onfocus={() => clearErrors('eventmedia')} error={errors.eventmedia} change={imagePreview} />
                 }
-                <div className='errormessage'>{errors.eventmedia?.message}</div>
 
                 <div className='dateTimeWrapper'>
                     {/* eventdate input */}
-                    <div className='inputErrorWrapper'>
-                        <input
-                            {...register('eventdate')}
-                            className={errors.eventdate ? 'inputError' : ''}
-                            onFocus={() => clearErrors('eventdate')}
-                            type='date'
-                            name='eventdate'
-                        />
-                        <div className='errormessage'>{errors.eventdate?.message}</div>
-                    </div>
+                    <FormInput register={register} id='eventdate' onfocus={() => clearErrors('eventdate')} type='date' error={errors.eventdate} />
 
                     {/* start & end */}
                     <div className='timeWrapper'>
                         {/* eventstart input */}
-                        <div className='inputErrorWrapper'>
-                            <input
-                                {...register('eventstart')}
-                                className={errors.eventstart ? 'inputError' : ''}
-                                onFocus={() => clearErrors('eventstart')}
-                                type='time'
-                                name='eventstart'
-                                />
-                            <div className='errormessage'>{errors.eventstart?.message}</div>
-                        </div>
+                        <FormInput register={register} id='eventstart' onfocus={() => clearErrors('eventstart')} type='time' error={errors.eventstart} />
 
                         {/* eventend input */}
-                        <div className='inputErrorWrapper'>
-                            <input
-                                {...register('eventend')}
-                                className={errors.eventend ? 'inputError' : ''}
-                                onFocus={() => clearErrors('eventend')}
-                                type='time'
-                                name='eventend'
-                            />
-                            <div className='errormessage'>{errors.eventend?.message}</div>
-                        </div>
+                        <FormInput register={register} id='eventend' onfocus={() => clearErrors('eventend')} type='time' error={errors.eventend} />
                     </div>
                 </div>
-                <div className='errormessage'>{errors.time_format?.message}</div>
 
                 {/* business location selector */}
-                <select
-                    className={errors.venue_id || errors.role_rights ? 'inputError' : ''}
-                    {...register('venue_id')}
-                    onFocus={() => clearErrors(['venue_id', 'role_rights'])}
-                    type='text'
-                    name='venue_id'
-                >
-                    <option value=''>Location</option>
-                    {
-                        venue_list.map(business => (
-                            <option key={business.id} value={business.id}>{business.business_name}</option>
-                        ))
-                    }
-                </select>
-                <div className='errormessage'>{errors.venue_id?.message}</div>
-                <div className='errormessage'>{errors.role_rights?.message}</div>
+                <BusinessSelect register={register} id='venue_id' onfocus={() => clearErrors('venue_id')} role_error={errors.role_rights} business_error={errors.venue_id} business_list={venue_list} selectFor='Location' />
 
                 {/* event details input */}
-                <textarea
-                    {...register('details')}
-                    className={errors.details ? 'inputError' : ''}
-                    onFocus={() => clearErrors('details')}
-                    name='details'
-                    rows='8'
-                />
-                <div className='errormessage'>{errors.details?.message}</div>
+                <TextAreaInput register={register} id='details' onfocus={() => clearErrors('details')} error={errors.details} placeholder='Event details...' />
 
                 {/* business brand selector */}
-                <select
-                    {...register('brand_id')}
-                    className={errors.brand_id || errors.role_rights ? 'inputError' : ''}
-                    onFocus={() => clearErrors(['brand_id', 'role_rights'])}
-                    type='text'
-                    name='brand_id'
-                >
-                    <option value=''>Brand</option>
-                    {
-                        brand_list.map(business => (
-                            <option key={business.id} value={business.id}>{business.business_name}</option>
-                        ))
-                    }
-                </select>
-                <div className='errormessage'>{errors.brand_id?.message}</div>
-                <div className='errormessage'>{errors.role_rights?.message}</div>
+                <BusinessSelect register={register} id='brand_id' onfocus={() => clearErrors('brand_id')} role_error={errors.role_rights} business_error={errors.brand_id} business_list={brand_list} selectFor='Brand' />
                 
                 <div className='buttonWrapper d-flex justify-content-between pt-3'>
                     <button type='submit' disabled={!isDirty}>Update</button>
