@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
@@ -16,6 +16,7 @@ import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { updateEventSchema } from '../../../helpers/validationSchemas';
 import { image_link } from '../../../helpers/dataCleanUp';
+import { ImageInput } from '../../forms/formInput';
 
 const Styles = styled.div`
     .formHeader {
@@ -261,20 +262,7 @@ const EventEditForm = () => {
                 {/* event image input */}
                 {
                     (image_attached) &&
-                        <label for='eventmedia' className='imageUpdateInput'>
-                            Select Image
-                            <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
-                            <input
-                                {...register('eventmedia')}
-                                className={errors.eventmedia ? 'inputError' : ''}
-                                onFocus={() => clearErrors('eventmedia')}
-                                type='file'
-                                id='eventmedia'
-                                name='eventmedia'
-                                accept='image/*'
-                                onChange={(e) => imagePreview(e)}
-                            />
-                        </label>
+                        <ImageInput register={register} id='eventmedia' onfocus={() => clearErrors('eventmedia')} error={errors.eventmedia} change={imagePreview} />
                 }
                 <div className='errormessage'>{errors.eventmedia?.message}</div>
 

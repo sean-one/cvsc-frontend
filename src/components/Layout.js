@@ -66,13 +66,14 @@ const Styles = styled.div`
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
+        box-shadow: 5px 5px 5px #0D2B12;
         outline: none;
-
+        
         ::placeholder {
             color: #DAD7CD;
         }
     }
-
+    
     button {
         padding: 0.5rem 1.25rem;
         border: none;
@@ -82,7 +83,7 @@ const Styles = styled.div`
         background-color: transparent;
         outline: none;
         /* margin: 0 1rem; */
-
+        
         :hover {
             background-color: #0D2B12;
             border: 1px solid #4b6f51;
@@ -92,15 +93,15 @@ const Styles = styled.div`
             transform: translate(2px, 4px)
         }
     }
-
+    
     .inputErrorWrapper {
         display: flex;
         flex-direction: column;
     }
-
+    
     .imageUpdateInput {
+        margin: 0.25rem 0;
         cursor: pointer;
-        height: 3rem;
         width: 100%;
         padding: 0.5rem;
         border: none;
@@ -108,6 +109,7 @@ const Styles = styled.div`
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
+        box-shadow: 5px 5px 5px #0D2B12;
         outline: none;
         text-align: center;
 

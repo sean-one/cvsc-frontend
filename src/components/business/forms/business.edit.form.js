@@ -1,8 +1,5 @@
 import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faInstagram, faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
@@ -13,6 +10,7 @@ import useImagePreview from '../../../hooks/useImagePreview';
 // import { businessFormSchema } from '../../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
+import { BusinessTypeSelect, CheckBox, ContactInput, FormInput, ImageInput, TextAreaInput } from '../../forms/formInput';
 
 const Styles = styled.div`
     .businessImage {
@@ -39,19 +37,21 @@ const Styles = styled.div`
         }
     }
 
+    /* used in contact input of forminput.js */
     .labelWrapper {
         display: flex;
         align-items: center;
-
+        
         div {
             width: 15%;
-
+            
             @media(min-width: 400px) {
                 width: 10%;
             }
         }
     }
-
+    
+    /* used in contact input of forminput.js */
     .labelIcon {
         margin: 0 0.5rem;
         width: 1rem;
@@ -67,15 +67,6 @@ const Styles = styled.div`
             align-items: center;
             gap: 10px;
         }
-    }
-
-    .selectWrapper {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .locationUpdate {
-        padding-right: 0.5rem;
     }
 
     .stateZipWrapper {
@@ -228,15 +219,8 @@ const BusinessEditForm = () => {
 
                 {
                     (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                        <input
-                            {...register('business_email')}
-                            className={errors.business_email ? 'inputError' : ''}
-                            onFocus={() => clearErrors('business_email')}
-                            type='text'
-                            name='business_email'
-                        />
+                        <FormInput register={register} id='business_email' onfocus={() => clearErrors('business_email')} error={errors?.business_email} />
                 }
-                <div className='errormessage'>{errors.business_email?.message}</div>
 
                 <div className='businessImage'>
                     {
@@ -254,73 +238,23 @@ const BusinessEditForm = () => {
 
                 {
                     ((business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) && !image_attached) &&
-                        <label for='image_attached' className='updateCheckbox'>
-                            <input
-                                {...register('image_attached')}
-                                type='checkbox'
-                                name='image_attached'
-                            />
-                            Update Image
-                        </label>
+                        <CheckBox register={register} id='image_attached' boxlabel='Update Image' />
                 }
 
                 {
                     (image_attached) &&
-                        <label for='business_avatar' className='imageUpdateInput'>
-                            Select Image
-                            <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
-                            <input
-                                {...register('business_avatar')}
-                                className={errors.business_avatar ? 'inputError' : ''}
-                                onFocus={() => clearErrors('business_avatar')}
-                                type='file'
-                                id='business_avatar'
-                                name='business_avatar'
-                                accept='image/*'
-                                onChange={(e) => imagePreview(e)}
-                            />
-                        </label>
+                        <ImageInput register={register} id='business_avatar' onfocus={() => clearErrors('business_avatar')} error={errors.business_avatar} change={imagePreview} />
                 }
-                <div className='errormessage'>{errors.business_avatar?.message}</div>
 
                 {/* business description input */}
-                <textarea
-                    {...register('business_description')}
-                    className={errors.business_description ? 'inputError' : ''}
-                    onFocus={() => clearErrors('business_description')}
-                    name='business_description'
-                    rows='8'
-                />
-                <div className='errormessage'>{errors.business_description?.message}</div>
+                <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placehold='Business details...' />
 
                 {
                     (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='locationWrapper'>
-                            <div className='inputErrorWrapper'>
-                                <select
-                                    {...register('business_type')}
-                                    className={errors.business_type ? 'inputError' : ''}
-                                    onFocus={() => clearErrors('business_type')}
-                                    type='text'
-                                    name='business_type'
-                                >
-                                    <option value='brand'>Brand</option>
-                                    <option value='venue'>Dispensary</option>
-                                    <option value='both'>{`Brand & Dispensary`}</option>
-                                </select>
-                                <div className='errormessage'>{errors.business_type?.message}</div>
-                            </div>
+                            <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
 
-                            <div className='locationUpdate'>
-                                <label for='business_location' className='updateCheckbox'>
-                                    <input
-                                        {...register('business_location')}
-                                        type='checkbox'
-                                        name='business_location'
-                                    />
-                                    Update Location
-                                </label>
-                            </div>
+                            <CheckBox register={register} id='business_location' boxlabel='Update Location' />
                         </div>
                 }
 
@@ -328,127 +262,35 @@ const BusinessEditForm = () => {
                     (business_location) &&
                         <div>
                             {/* street address input for location */}
-                            <input
-                                {...register('street_address')}
-                                className={errors.street_address ? 'inputError' : ''}
-                                onFocus={() => clearErrors('street_address')}
-                                type='text'
-                                name='street_address'
-                            />
-                            <div className='errormessage'>{errors.street_address?.message}</div>
+                            <FormInput register={register} id='street_address' onfocus={() => clearErrors('street_address')} type='text' error={errors.street_address} />
 
                             {/* city input for location */}
-                            <input
-                                {...register('city')}
-                                className={errors.city ? 'inputError' : ''}
-                                onFocus={() => clearErrors('city')}
-                                type='text'
-                                name='city'
-                            />
-                            <div className='errormessage'>{errors.city?.message}</div>
+                            <FormInput register={register} id='city' onfocus={() => clearErrors('city')} type='text' error={errors.city} />
 
                             <div className='stateZipWrapper'>
                                 {/* state input for location */}
-                                <div className='inputErrorWrapper'>
-                                    <input
-                                        {...register('state')}
-                                        className={errors.state ? 'inputError' : ''}
-                                        onFocus={() => clearErrors('state')}
-                                        type='text'
-                                        name='state'
-                                    />
-                                    <div className='errormessage'>{errors.state?.message}</div>
-                                </div>
+                                <FormInput register={register} id='state' onfocus={() => clearErrors('state')} type='text' error={errors.state} />
 
                                 {/* zip code input for location */}
-                                <div className='inputErrorWrapper'>
-                                    <input
-                                        {...register('zip')}
-                                        className={errors.zip ? 'inputError' : ''}
-                                        onFocus={() => clearErrors('zip')}
-                                        type='text'
-                                        name='zip'
-                                    />
-                                    <div className='errormessage'>{errors.zip?.message}</div>
-                                </div>
+                                <FormInput register={register} id='zip' onfocus={() => clearErrors('zip')} type='text' error={errors.zip} />
                             </div>
                         </div>
                 }
 
                 {/* instagram input */}
-                <label for='business_instagram' className='labelWrapper'>
-                    <div className='labelIcon'>
-                        <FontAwesomeIcon icon={faInstagram} size='2x' />
-                    </div>
-                    <input
-                        {...register('business_instagram')}
-                        className={errors.business_instagram ? 'inputError' : ''}
-                        onFocus={() => clearErrors('business_instagram')}
-                        type='text'
-                        name='business_instagram'
-                    />
-                </label>
-                <div className='errormessage'>{errors.business_instagram?.message}</div>
+                <ContactInput register={register} id='instagram' onfocus={() => clearErrors('business_instagram')} error={errors.business_instagram} placeholder='Instagram' />
 
                 {/* website input */}
-                <label for='business_website' className='labelWrapper'>
-                    <div className='labelIcon'>
-                        <FontAwesomeIcon icon={faGlobe} size='2x' />
-                    </div>
-                    <input
-                        {...register('business_website')}
-                        className={errors.business_website ? 'inputError' : ''}
-                        onFocus={() => clearErrors('business_website')}
-                        type='text'
-                        name='business_website'
-                    />
-                </label>
-                <div className='errormessage'>{errors.business_website?.message}</div>
+                <ContactInput register={register} id='website' onfocus={() => clearErrors('business_website')} error={errors.business_website} placehold='Website' />
 
                 {/* facebook input */}
-                <label for='business_facebook' className='labelWrapper'>
-                    <div className='labelIcon'>
-                        <FontAwesomeIcon icon={faFacebook} size='2x' />
-                    </div>
-                    <input
-                        {...register('business_facebook')}
-                        className={errors.business_facebook ? 'inputError' : ''}
-                        onFocus={() => clearErrors('business_facebook')}
-                        type='text'
-                        name='business_facebook'
-                    />
-                </label>
-                <div className='errormessage'>{errors.business_facebook?.message}</div>
+                <ContactInput register={register} id='facebook' onfocus={() => clearErrors('business_facebook')} error={errors.business_facebook} placeholder='Facebook' />
 
                 {/* phone input */}
-                <label for='business_phone' className='labelWrapper'>
-                    <div className='labelIcon'>
-                        <FontAwesomeIcon icon={faPhone} size='2x' />
-                    </div>
-                    <input
-                        {...register('business_phone')}
-                        className={errors.business_phone ? 'inputError' : ''}
-                        onFocus={() => clearErrors('business_phone')}
-                        type='text'
-                        name='business_phone'
-                    />
-                </label>
-                <div className='errormessage'>{errors.business_phone?.message}</div>
+                <ContactInput register={register} id='phone' onfocus={() => clearErrors('business_phone')} error={errors.business_phone} placeholder='Phone' />
 
                 {/* twitter input */}
-                <label for='business_twitter' className='labelWrapper'>
-                    <div className='labelIcon'>
-                        <FontAwesomeIcon icon={faTwitter} size='2x' />
-                    </div>
-                    <input
-                        {...register('business_twitter')}
-                        className={errors.business_twitter ? 'inputError' : ''}
-                        onFocus={() => clearErrors('business_twitter')}
-                        type='text'
-                        name='business_twitter'
-                    />
-                </label>
-                <div className='errormessage'>{errors.business_twitter?.message}</div>
+                <ContactInput register={register} id='twitter' onfocus={() => clearErrors('business_twitter')} error={errors.business_twitter} placeholder='Twitter' />
 
                 <div className='buttonWrapper'>
                     <button type='submit' disabled={!isDirty}>Update</button>
