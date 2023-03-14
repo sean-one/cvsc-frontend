@@ -10,7 +10,7 @@ import { useCreateBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 import useImagePreview from '../../../hooks/useImagePreview';
 // import { image_link } from '../../../helpers/dataCleanUp';
-import { BusinessTypeSelect, CheckBox, FormInput, ImageInput, TextAreaInput } from '../../forms/formInput';
+import { BusinessTypeSelect, CheckBox, ContactInput, FormInput, ImageInput, TextAreaInput } from '../../forms/formInput';
 
 const Styles = styled.div`
     .businessImage {
@@ -120,7 +120,7 @@ const BusinessCreateForm = () => {
             // console.log(error)
             if (error.message === 'missing_image') {
                 setError('business_avatar', { message: 'required'})
-                throw('error')
+                throw Error;
             }
 
             if (error.response.status === 400) {
@@ -153,62 +153,116 @@ const BusinessCreateForm = () => {
         <Styles>
             <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data'>
                 
-                <FormInput register={register} id='business_name' onfocus={() => clearErrors('business_name')} type='text' placeholder='Business Name' error={errors.business_name} />
+                <FormInput id='business_name'
+                    register={register}
+                    onfocus={clearErrors}
+                    placeholder='Business Name'
+                    error={errors.business_name}
+                />
+                <FormInput id='business_email'
+                    register={register}
+                    onfocus={clearErrors}
+                    type='email'
+                    placeholder='Email'
+                    error={errors.business_email}
+                />
 
-                <FormInput register={register} id='business_email' onfocus={() => clearErrors('business_email')} type='email' placeholder='Email' error={errors.business_email} />
-
-                <div className='businessImage'>
-                    {
-                        editImage &&
+                {/* once image has been created it will show here */}
+                {
+                    editImage &&
+                        <div className='businessImage'>
                             <canvas id={'businessImagePreview'} ref={canvas} />
-                            // : <img src={image_link(imageFile)} alt='your business branding' />
-                    }
-                </div>
+                        </div>
+                }
 
-                <ImageInput register={register} id='business_avatar' onfocus={() => clearErrors('business_avatar')} error={errors.business_avatar} change={imagePreview} />
+                <ImageInput id='business_avatar'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_avatar}
+                    change={imagePreview}
+                />
 
                 {/* business description input */}
                 <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
 
                 <div className='d-flex'>
-                    <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
-
-                    <CheckBox register={register} id='business_location' boxlabel='Location' />
+                    <BusinessTypeSelect
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_type}
+                    />
+                    <CheckBox id='business_location'
+                        register={register}
+                        boxlabel='Location'
+                    />
                 </div>
 
                 {
                     (business_location) &&
                     <div>
                         {/* street address input for location */}
-                        <FormInput register={register} id='street_address' onfocus={() => clearErrors('street_address')} type='text' placeholder='Street Address' error={errors.street_address} />
-
+                        <FormInput id='street_address'
+                            register={register}
+                            onfocus={clearErrors}
+                            placeholder='Street Address'
+                            error={errors.street_address}
+                        />
                         {/* city input for location */}
-                        <FormInput register={register} id='city' onfocus={() => clearErrors('city')} type='text' placeholder='City' error={errors.city} />
-
+                        <FormInput id='city'
+                            register={register}
+                            onfocus={clearErrors}
+                            placeholder='City'
+                            error={errors.city}
+                        />
                         <div className='d-flex justify-content-between'>
                             {/* state input for location */}
-                            <FormInput register={register} id='state' onfocus={() => clearErrors('state')} type='text' placeholder='State' error={errors.state} />
-
+                            <FormInput id='state'
+                                register={register}
+                                onfocus={clearErrors}
+                                placeholder='State'
+                                error={errors.state}
+                            />
                             {/* zip code input for location */}
-                            <FormInput register={register} id='zip' onfocus={() => clearErrors('zip')} type='text' placeholder='Zip' error={errors.zip} />
+                            <FormInput id='zip'
+                                register={register}
+                                onfocus={clearErrors}
+                                placeholder='Zip'
+                                error={errors.zip}
+                            />
                         </div>
                     </div>
                 }
 
                 {/* instagram input */}
-                <FormInput register={register} id='business_instagram' onfocus={() => clearErrors('business_instagram')} type='text' placeholder='Instagram' error={errors.business_instagram} />
-
+                <ContactInput id='instagram'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_instagram}
+                />
                 {/* website input */}
-                <FormInput register={register} id='business_website' onfocus={() => clearErrors('business_website')} type='text' placeholder='Website' error={errors.business_website} />
-
+                <ContactInput id='website'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_website}
+                />
                 {/* facebook input */}
-                <FormInput register={register} id='business_facebook' onfocus={() => clearErrors('business_facebook')} type='text' placeholder='Facebook' error={errors.business_facebook} />
-
+                <ContactInput id='facebook'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_facebook}
+                />
                 {/* phone input */}
-                <FormInput register={register} id='business_phone' onfocus={() => clearErrors('business_phone')} type='text' placeholder='Phone' error={errors.business_phone} />
-
+                <ContactInput id='phone'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_phone}
+                />
                 {/* twitter input */}
-                <FormInput register={register} id='business_twitter' onfocus={() => clearErrors('business_twitter')} type='text' placeholder='Twitter' error={errors.business_twitter} />
+                <ContactInput id='twitter'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_twitter}
+                />
 
                 <div className='d-flex justify-content-around pt-3'>
                     <button type='submit'>Create</button>

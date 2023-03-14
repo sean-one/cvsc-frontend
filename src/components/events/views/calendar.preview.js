@@ -31,6 +31,7 @@ const Styles = styled.div`
         align-items: center;
         letter-spacing: 0.1rem;
         margin: 0.5rem 0;
+        border-bottom: 1px solid #dcdbc4;
     }
 
     .timeDateDetails {
@@ -47,14 +48,14 @@ const CalendarPreview = ({ event }) => {
     return (
         <Styles>
             <div className='calendarPreviewWrapper'>
-                <div className='timeDateDetails'>
-                    <div>{format(new Date(event.eventdate), 'E, MMM d')}</div>
-                    <div>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
-                </div>
                 <Link to={{ pathname: `/event/${event.event_id}` }}>
                     <img src={image_link(event.eventmedia)} alt={`${event.eventname} information`} className='img-fluid w-100' />
                     <div className='calendarPreviewHeader'>
                         <div>{event.eventname.toUpperCase()}</div>
+                    </div>
+                    <div className='timeDateDetails'>
+                        <div>{format(new Date(event.eventdate), 'E, MMM d')}</div>
+                        <div>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                     </div>
                 </Link>
                 <div className='d-flex'>

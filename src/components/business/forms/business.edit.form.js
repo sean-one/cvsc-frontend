@@ -37,26 +37,6 @@ const Styles = styled.div`
         }
     }
 
-    /* used in contact input of forminput.js */
-    .labelWrapper {
-        display: flex;
-        align-items: center;
-        
-        div {
-            width: 15%;
-            
-            @media(min-width: 400px) {
-                width: 10%;
-            }
-        }
-    }
-    
-    /* used in contact input of forminput.js */
-    .labelIcon {
-        margin: 0 0.5rem;
-        width: 1rem;
-    }
-
     .locationWrapper {
         display: flex;
         flex-direction: column;
@@ -217,7 +197,7 @@ const BusinessEditForm = () => {
 
                 {
                     (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                        <FormInput register={register} id='business_email' onfocus={() => clearErrors('business_email')} error={errors?.business_email} />
+                        <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
                 }
 
                 <div className='businessImage'>
@@ -241,7 +221,12 @@ const BusinessEditForm = () => {
 
                 {
                     (image_attached) &&
-                        <ImageInput register={register} id='business_avatar' onfocus={() => clearErrors('business_avatar')} error={errors.business_avatar} change={imagePreview} />
+                        <ImageInput id='business_avatar'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_avatar}
+                            change={imagePreview}
+                        />
                 }
 
                 {/* business description input */}
@@ -260,35 +245,64 @@ const BusinessEditForm = () => {
                     (business_location) &&
                         <div>
                             {/* street address input for location */}
-                            <FormInput register={register} id='street_address' onfocus={() => clearErrors('street_address')} type='text' error={errors.street_address} />
-
+                            <FormInput id='street_address'
+                                register={register}
+                                onfocus={clearErrors}
+                                error={errors.street_address}
+                            />
                             {/* city input for location */}
-                            <FormInput register={register} id='city' onfocus={() => clearErrors('city')} type='text' error={errors.city} />
-
+                            <FormInput id='city'
+                                register={register}
+                                onfocus={clearErrors}
+                                error={errors.city}
+                            />
                             <div className='stateZipWrapper'>
                                 {/* state input for location */}
-                                <FormInput register={register} id='state' onfocus={() => clearErrors('state')} type='text' error={errors.state} />
-
+                                <FormInput id='state'
+                                    register={register}
+                                    onfocus={clearErrors}
+                                    error={errors.state}
+                                />
                                 {/* zip code input for location */}
-                                <FormInput register={register} id='zip' onfocus={() => clearErrors('zip')} type='text' error={errors.zip} />
+                                <FormInput id='zip'
+                                    register={register}
+                                    onfocus={clearErrors}
+                                    error={errors.zip}
+                                />
                             </div>
                         </div>
                 }
 
                 {/* instagram input */}
-                <ContactInput register={register} id='instagram' onfocus={() => clearErrors('business_instagram')} error={errors.business_instagram} placeholder='Instagram' />
-
+                <ContactInput id='instagram'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_instagram}
+                />
                 {/* website input */}
-                <ContactInput register={register} id='website' onfocus={() => clearErrors('business_website')} error={errors.business_website} placehold='Website' />
-
+                <ContactInput id='website'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_website}
+                />
                 {/* facebook input */}
-                <ContactInput register={register} id='facebook' onfocus={() => clearErrors('business_facebook')} error={errors.business_facebook} placeholder='Facebook' />
-
+                <ContactInput id='facebook'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_facebook}
+                />
                 {/* phone input */}
-                <ContactInput register={register} id='phone' onfocus={() => clearErrors('business_phone')} error={errors.business_phone} placeholder='Phone' />
-
+                <ContactInput id='phone'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_phone}
+                />
                 {/* twitter input */}
-                <ContactInput register={register} id='twitter' onfocus={() => clearErrors('business_twitter')} error={errors.business_twitter} placeholder='Twitter' />
+                <ContactInput id='twitter'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.business_twitter}
+                />
 
                 <div className='buttonWrapper'>
                     <button type='submit' disabled={!isDirty}>Update</button>

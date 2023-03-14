@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { registrationSchema } from '../helpers/validationSchemas.js';
 import AxiosInstance from '../helpers/axios';
 import useNotification from '../hooks/useNotification.js';
+import { FormInput } from './forms/formInput.js';
 
 const Styles = styled.div`
     .registerWrapper {
@@ -110,38 +111,26 @@ const Register = () => {
                 <div>
                     <form onSubmit={handleSubmit(createUser)} className='registerForm'>
 
-                        <input
-                            className={`registerInputs ${errors.username ? 'inputError' : ''}`}
-                            onFocus={() => clearErrors('username')}
-                            {...register('username')}
-                            type="text"
-                            placeholder="Username"
-                            name='username'
-                            required
+                        <FormInput id='username'
+                            register={register}
+                            onfocus={clearErrors}
+                            placeholder='Username'
+                            error={errors.username}
                         />
-                        <div className='errormessage'>{errors.username?.message}</div>
 
-                        <input
-                            className={`registerInputs ${errors.password ? 'inputError' : ''}`}
-                            onFocus={() => clearErrors('password')}
-                            {...register('password')}
-                            type="password"
-                            placeholder="Password"
-                            name='password'
-                            required
+                        <FormInput id='password'
+                            register={register}
+                            onfocus={clearErrors}
+                            placeholder='Password'
+                            error={errors.password}
                         />
-                        <div className='errormessage'>{errors.password?.message}</div>
-
-                        <input
-                            className={`registerInputs ${errors.confirmation ? 'inputError' : ''}`}
-                            onFocus={() => clearErrors('confirmation')}
-                            {...register('confirmation')}
-                            type="password"
-                            placeholder="Confirm Password"
-                            name='confirmation'
-                            required
+                        
+                        <FormInput id='confirmation'
+                            register={register}
+                            onfocus={clearErrors}
+                            placeholder='Confirm Password'
+                            error={errors.confirmation}
                         />
-                        <div className='errormessage'>{errors.confirmation?.message}</div>
                         
                         <div className='errormessage'>{errors.invalid_input?.message}</div>
                         

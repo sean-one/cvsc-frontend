@@ -93,6 +93,26 @@ const Styles = styled.div`
             transform: translate(2px, 4px)
         }
     }
+
+    /* used in contact input of forminput.js */
+    .labelWrapper {
+        display: flex;
+        align-items: center;
+        
+        div {
+            width: 15%;
+            
+            @media(min-width: 400px) {
+                width: 10%;
+            }
+        }
+    }
+    
+    /* used in contact input of forminput.js */
+    .labelIcon {
+        margin: 0 0.5rem;
+        width: 1rem;
+    }
     
     .inputErrorWrapper {
         display: flex;

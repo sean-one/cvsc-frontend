@@ -158,19 +158,19 @@ const EventCreateForm = ({ business_id }) => {
             <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data'>
 
                 {/* eventname input */}
-                <FormInput register={register} id='eventname' onfocus={() => clearErrors('eventname')} type='text' placeholder='Event Name' error={errors.eventname} />
+                <FormInput register={register} id='eventname' onfocus={clearErrors} placeholder='Event Name' error={errors.eventname} />
 
                 <div className='dateTimeWrapper'>
                     {/* eventdate input */}
-                    <FormInput register={register} id='eventdate' onfocus={() => clearErrors('eventdate')} type='date' error={errors.eventdate} />
+                    <FormInput register={register} id='eventdate' onfocus={clearErrors} type='date' error={errors.eventdate} />
 
                     {/* start & end */}
                     <div className='timeWrapper'>
                         {/* eventstart input */}
-                        <FormInput register={register} id='eventstart' onfocus={() => clearErrors('eventstart')} type='time' error={errors.eventstart} />
+                        <FormInput register={register} id='eventstart' onfocus={clearErrors} type='time' error={errors.eventstart} />
 
                         {/* eventend input */}
-                        <FormInput register={register} id='eventend' onfocus={() => clearErrors('eventend')} type='time' error={errors.eventend} />
+                        <FormInput register={register} id='eventend' onfocus={clearErrors} type='time' error={errors.eventend} />
                     </div>
                 </div>
                 <div className='errormessage'>{errors.time_format?.message}</div>
@@ -183,16 +183,35 @@ const EventCreateForm = ({ business_id }) => {
                 </div>
 
                 {/* event image input */}
-                <ImageInput register={register} id='eventmedia' onfocus={() => clearErrors('eventmedia')} error={errors.eventmedia} change={imagePreview} />
+                <ImageInput id='eventmedia'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.eventmedia}
+                    change={imagePreview}
+                />
 
                 {/* business location selector */}
-                <BusinessSelect register={register} id='venue_id' onfocus={() => clearErrors(['venue_id', 'role_rights'])} role_error={errors.role_rights} business_error={errors.venue_id} business_list={venue_list} selectFor='Location' />
+                <BusinessSelect id='venue_id'
+                    register={register}
+                    onfocus={() => clearErrors(['venue_id', 'role_rights'])}
+                    role_error={errors.role_rights}
+                    business_error={errors.venue_id}
+                    business_list={venue_list}
+                    selectFor='Location'
+                />
 
                 {/* event details input */}
                 <TextAreaInput register={register} id='details' onfocus={() => clearErrors('details')} error={errors.details} placeholder='Event details...' />
 
                 {/* business brand selector */}
-                <BusinessSelect register={register} id='brand_id' onfocus={() => clearErrors(['brand_id', 'role_rights'])} role_error={errors.role_rights} business_error={errors.brand_id} business_list={brand_list} selectFor='Brand' />
+                <BusinessSelect id='brand_id'
+                    register={register}
+                    onfocus={() => clearErrors(['brand_id', 'role_rights'])}
+                    role_error={errors.role_rights}
+                    business_error={errors.brand_id}
+                    business_list={brand_list}
+                    selectFor='Brand'
+                />
 
                 <button type='submit'>Submit</button>
 

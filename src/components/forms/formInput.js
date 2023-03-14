@@ -12,13 +12,13 @@ const contact_icons = {
 }
 
 
-export const FormInput = ({ register, id, onfocus, type, placeholder, error }) => {
+export const FormInput = ({ register, id, onfocus, type='text', placeholder, error }) => {
     return (
         <div className='inputErrorWrapper'>
             <input
                 {...register(id)}
                 className={error ? 'inputError' : ''}
-                onFocus={onfocus}
+                onFocus={() => onfocus(id)}
                 type={type}
                 name={id}
                 placeholder={placeholder}
@@ -41,17 +41,15 @@ export const CheckBox = ({ register, id, boxlabel }) => {
     )
 }
 
-//! not working
 export const ImageInput = ({ register, id, onfocus, error, change }) => {
     return (
-        <div onClick={onfocus}>
+        <div onClick={() => onfocus(id)}>
             <label htmlFor={`${id}`} className='imageUpdateInput'>
                 Select Image
                 <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
                 <input
                     {...register(id)}
                     className={error ? 'inputError' : ''}
-                    // onFocus={onfocus}
                     type='file'
                     id={id}
                     accept='image/*'
@@ -92,7 +90,7 @@ export const BusinessTypeSelect = ({register, onfocus, error }) => {
             <select
                 className={error ? 'inputError' : ''}
                 {...register('business_type')}
-                onFocus={onfocus}
+                onFocus={() => onfocus('business_type')}
                 type='text'
                 name='business_type'
             >
@@ -111,7 +109,7 @@ export const TextAreaInput = ({ register, id, onfocus, error, placeholder }) => 
             <textarea
                 {...register(id)}
                 className={error ? 'inputError' : ''}
-                onFocus={onfocus}
+                onFocus={() => onfocus(id)}
                 name={id}
                 rows='8'
                 placeholder={placeholder}
@@ -121,7 +119,7 @@ export const TextAreaInput = ({ register, id, onfocus, error, placeholder }) => 
     )
 }
 
-export const ContactInput = ({ register, id, onfocus, error, placeholder }) => {
+export const ContactInput = ({ register, id, onfocus, error }) => {
     return (
         <>
             <label htmlFor={`business_${id}'`} className='labelWrapper'>
@@ -131,10 +129,10 @@ export const ContactInput = ({ register, id, onfocus, error, placeholder }) => {
                 <input
                 {...register(`business_${id}`)}
                 className={error ? 'inputError' : ''}
-                onFocus={onfocus}
+                onFocus={() => onfocus(`business_${id}`)}
                 type='text'
                 id={`business_${id}`}
-                placeholder={placeholder}
+                placeholder={id.charAt(0).toUpperCase() + id.slice(1)}
                 />
             </label>
             <div className='errormessage'>{error?.message}</div>

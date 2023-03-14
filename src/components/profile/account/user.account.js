@@ -274,34 +274,60 @@ const UserAccount = () => {
                     <div className='userDetails'>
                         {
                             (!editView)
-                                ? <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>{auth?.user.email}</div>
+                                ? <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
+                                    {auth?.user.email}
+                                </div>
                                 : <form encType='multipart/form-data'>
-
-                                    <FormInput register={register} id='email' onfocus={() => clearErrors('email')} type='email' error={errors.email} />
-
+                                    <FormInput id='email'
+                                        register={register}
+                                        onfocus={clearErrors}
+                                        type='email'
+                                        error={errors.email}
+                                    />
                                     {
                                         (update_image) &&
-                                            <ImageInput register={register} id='avatar' onfocus={() => clearErrors()} error={errors.avatar} change={imagePreview} />
+                                            <ImageInput id='avatar'
+                                                register={register}
+                                                onfocus={clearErrors}
+                                                error={errors.avatar}
+                                                change={imagePreview}
+                                            />
                                     }
-
                                     {/* update image and password checkboxes */}
                                     <div className='updateWrapper'>
-                                        <CheckBox register={register} id='update_password' boxlabel='Update Password' />
-
-                                        { (!update_image) && <CheckBox register={register} id='update_image' boxlabel='Update Image' /> }
+                                        <CheckBox id='update_password'
+                                            register={register}
+                                            boxlabel='Update Password'
+                                        />
+                                        {
+                                            (!update_image) &&
+                                                <CheckBox id='update_image'
+                                                    register={register}
+                                                    boxlabel='Update Image'
+                                                />
+                                        }
                                     </div>
-
                                     {/* update password and confirm password fields */}
                                     {
                                         (update_password) &&
                                             <div>
-                                                
-                                                <FormInput register={register} id='password' onfocus={() => clearErrors('password')} type='password' placeholder='Password' error={errors.password} />
-                                                <FormInput register={register} id='confirmation' onfocus={() => clearErrors('confirmation')} type='password' placeholder='Confirm Password' error={errors.confirmation} />
-                                            
+                                                <FormInput id='password'
+                                                    register={register}
+                                                    onfocus={clearErrors}
+                                                    type='password'
+                                                    placeholder='Password'
+                                                    error={errors.password}
+                                                />
+
+                                                <FormInput id='confirmation'
+                                                    register={register}
+                                                    onfocus={clearErrors}
+                                                    type='password'
+                                                    placeholder='Confirm Password'
+                                                    error={errors.confirmation}
+                                                />
                                             </div>
                                     }
-
                                 </form>
                         }
                     </div>
@@ -309,19 +335,27 @@ const UserAccount = () => {
                     <div className='accountButtons'>
                         {
                             (editView) &&
-                                <button onClick={() => delete_account()}><FontAwesomeIcon icon={faTrashAlt}/></button>
+                                <button onClick={() => delete_account()}>
+                                    <FontAwesomeIcon icon={faTrashAlt}/>
+                                </button>
                         }
                         {
                             (editView) &&
-                                <button onClick={() => close_edit_view()}><FontAwesomeIcon icon={faTimes}/></button>
+                                <button onClick={() => close_edit_view()}>
+                                    <FontAwesomeIcon icon={faTimes}/>
+                                </button>
                         }
                         {
                             (editView && isDirty) &&
-                                <button onClick={handleSubmit(update_user)}><FontAwesomeIcon icon={faSave}/></button>
+                                <button onClick={handleSubmit(update_user)}>
+                                    <FontAwesomeIcon icon={faSave}/>
+                                </button>
                         }
                         {
                             (!editView) &&
-                                <button onClick={() => setEditView(true)}><FontAwesomeIcon icon={faPencilAlt}/></button>
+                                <button onClick={() => setEditView(true)}>
+                                    <FontAwesomeIcon icon={faPencilAlt}/>
+                                </button>
                         }
                     </div>
                     

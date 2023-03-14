@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
+import { FormInput } from './forms/formInput';
 
 const Styles = styled.div`
     .loginWrapper {
@@ -128,29 +129,20 @@ const Login = () => {
                 </div>
                 <div>
                     <form onSubmit={handleSubmit(sendLogin)} className='loginForm'>
-                        <input
-                            className={`loginInputs ${errors.username ? 'inputError' : ''}`}
-                            {...register('username')}
-                            // autoFocus
-                            onFocus={() => clearErrors('username')}
-                            type='text'
-                            name='username'
+                        <FormInput id='username'
+                            register={register}
+                            onfocus={clearErrors}
                             placeholder='Username'
-                            required
+                            error={errors.username}
                         />
-                        <div className='errormessage'>{errors.username?.message}</div>
 
-                        <input
-                            className={`loginInputs ${errors.password ? 'inputError' : ''}`}
-                            {...register('password')}
-                            onFocus={() => clearErrors('password')}
-                            name='password'
-                            type='password'
+                        <FormInput id='password'
+                            register={register}
+                            onfocus={clearErrors}
                             placeholder='Password'
-                            required
+                            type='password'
+                            error={errors.password}
                         />
-                        <div className='errormessage'>{errors.password?.message}</div>
-                        <div className='errormessage'>{errors.credentials?.message}</div>
 
                         <div className='buttonWrapper'>
                             <button className='loginButtons' type='submit'>submit</button>

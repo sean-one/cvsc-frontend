@@ -223,8 +223,11 @@ const EventEditForm = () => {
 
                 <div className='formHeader'>
                     {/* eventname input */}
-                    <FormInput register={register} id='eventname' onfocus={() => clearErrors('eventname')} type='text' error={errors.eventname} />
-                    
+                    <FormInput id='eventname'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.eventname}
+                    />
                     <FontAwesomeIcon icon={faTrash} onClick={() => delete_event()} siza='2x' />
                 </div>
 
@@ -243,36 +246,74 @@ const EventEditForm = () => {
                     }
                 </div>
 
-                <CheckBox register={register} id='image_attached' boxlabel='Update Image' />
-
+                <CheckBox id='image_attached'
+                    register={register}
+                    boxlabel='Update Image'
+                />
                 {/* event image input */}
                 {
                     (image_attached) &&
-                        <ImageInput register={register} id='eventmedia' onfocus={() => clearErrors('eventmedia')} error={errors.eventmedia} change={imagePreview} />
+                        <ImageInput id='eventmedia'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.eventmedia}
+                            change={imagePreview}
+                        />
                 }
 
                 <div className='dateTimeWrapper'>
                     {/* eventdate input */}
-                    <FormInput register={register} id='eventdate' onfocus={() => clearErrors('eventdate')} type='date' error={errors.eventdate} />
+                    <FormInput id='eventdate'
+                        register={register}
+                        onfocus={clearErrors}
+                        type='date'
+                        error={errors.eventdate}
+                    />
 
                     {/* start & end */}
                     <div className='timeWrapper'>
                         {/* eventstart input */}
-                        <FormInput register={register} id='eventstart' onfocus={() => clearErrors('eventstart')} type='time' error={errors.eventstart} />
-
+                        <FormInput id='eventstart'
+                            register={register}
+                            onfocus={clearErrors}
+                            type='time'
+                            error={errors.eventstart}
+                        />
                         {/* eventend input */}
-                        <FormInput register={register} id='eventend' onfocus={() => clearErrors('eventend')} type='time' error={errors.eventend} />
+                        <FormInput id='eventend'
+                            register={register}
+                            onfocus={clearErrors}
+                            type='time'
+                            error={errors.eventend}
+                        />
                     </div>
                 </div>
 
                 {/* business location selector */}
-                <BusinessSelect register={register} id='venue_id' onfocus={() => clearErrors('venue_id')} role_error={errors.role_rights} business_error={errors.venue_id} business_list={venue_list} selectFor='Location' />
-
+                <BusinessSelect id='venue_id'
+                    register={register}
+                    onfocus={() => clearErrors(['venue_id','role_rights'])}
+                    role_error={errors.role_rights}
+                    business_error={errors.venue_id}
+                    business_list={venue_list}
+                    selectFor='Location'
+                />
                 {/* event details input */}
-                <TextAreaInput register={register} id='details' onfocus={() => clearErrors('details')} error={errors.details} placeholder='Event details...' />
-
+                <TextAreaInput id='details'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.details}
+                    placeholder='Event details...'
+                />
                 {/* business brand selector */}
-                <BusinessSelect register={register} id='brand_id' onfocus={() => clearErrors('brand_id')} role_error={errors.role_rights} business_error={errors.brand_id} business_list={brand_list} selectFor='Brand' />
+                <BusinessSelect id='brand_id'
+                    register={register}
+                    onfocus={() => clearErrors(['brand_id','role_rights'])}
+                    role_error={errors.role_rights}
+                    business_error={errors.brand_id}
+                    business_list={brand_list}
+                    selectFor='Brand'
+                />
                 
                 <div className='buttonWrapper d-flex justify-content-between pt-3'>
                     <button type='submit' disabled={!isDirty}>Update</button>
