@@ -5,12 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
-import { roleRequestSchema } from '../../../helpers/validationSchemas';
-import LoadingSpinner from '../../loadingSpinner';
-import useNotification from '../../../hooks/useNotification';
-import useAuth from '../../../hooks/useAuth';
-import { useCreateRoleMutation } from '../../../hooks/useRolesApi';
-import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
+import { roleRequestSchema } from '../../helpers/validationSchemas';
+import LoadingSpinner from '../loadingSpinner';
+import useNotification from '../../hooks/useNotification';
+import useAuth from '../../hooks/useAuth';
+import { useCreateRoleMutation } from '../../hooks/useRolesApi';
+import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 
 const Styles = styled.div`
     .roleRequest {

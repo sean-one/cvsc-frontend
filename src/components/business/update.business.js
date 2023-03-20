@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import LoadingSpinner from '../loadingSpinner';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
-import BusinessEditForm from './forms/business.edit.form';
+import BusinessEditForm from '../forms/business.edit.form';
 
 const UpdateBusiness = () => {
     let { business_id } = useParams()

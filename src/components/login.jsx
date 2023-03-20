@@ -11,51 +11,16 @@ import AxiosInstance from '../helpers/axios';
 import { FormInput } from './forms/formInput';
 
 const Styles = styled.div`
-    .loginWrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 500px;
-        padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px #0D2B12;
-        border-radius: 5px;
-        background-color: rgba(75,111,81,0.3);
-
-        @media(min-width: 500px) {
-            /* border: 1px solid red; */
-        }
-    }
-
     .loginHeader {
         padding-left: 1.5rem;
         padding-bottom: 1.5rem;
         align-self: flex-start;
     }
 
-    .loginForm {
-        align-content: center;
-        max-width: 325px;
-        margin-bottom: 2rem;
-    }
-
-    .buttonWrapper {
-        margin-top: 1.5rem;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    .loginInputs {
-        box-shadow: 5px 5px 5px #0D2B12;
-    }
-
-    .loginButtons {
-        margin: 0 1rem;
-    }
-
     .registerLinkWrapper {
         display: flex;
         justify-content: center;
+        margin-top: 2rem;
     }
 
 
@@ -123,12 +88,12 @@ const Login = () => {
 
     return (
         <Styles>
-            <div className='loginWrapper'>
+            <div className='pageWrapper'>
                 <div className='loginHeader'>
                     <h2>Login</h2>
                 </div>
-                <div>
-                    <form onSubmit={handleSubmit(sendLogin)} className='loginForm'>
+                <div onClick={() => clearErrors('credentials')}>
+                    <form onSubmit={handleSubmit(sendLogin)}>
                         <FormInput id='username'
                             register={register}
                             onfocus={clearErrors}
@@ -144,9 +109,11 @@ const Login = () => {
                             error={errors.password}
                         />
 
-                        <div className='buttonWrapper'>
-                            <button className='loginButtons' type='submit'>submit</button>
-                            <button className='loginButtons' onClick={googleAuthButton}>google</button>
+                        <div className='errormessage'>{errors?.credentials?.message}</div>
+
+                        <div className='formButtonWrapper'>
+                            <button className='formButton' type='submit'>submit</button>
+                            <button className='formButton' onClick={googleAuthButton}>google</button>
                         </div>
 
                     </form>

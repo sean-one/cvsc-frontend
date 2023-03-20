@@ -18,12 +18,12 @@ import UserEvents from './components/profile/events/user.events';
 import ManagementList from './components/profile/management/management.list';
 
 import EventView from './components/events/views/event.view';
-import EventCreateForm from './components/events/forms/event.create.form';
-import EventEditForm from './components/events/forms/event.edit.form';
+import EventCreateForm from './components/forms/event.create.form';
+import EventEditForm from './components/forms/event.edit.form';
 
 import BusinessView from './components/business/businessView';
-import BusinessCreateForm from './components/business/forms/business.create.form';
-import UpdateBusiness from './components/business/update.business';
+import BusinessCreateForm from './components/forms/business.create.form';
+import BusinessEditForm from './components/forms/business.edit.form';
 
 import { ErrorPage } from './components/error/error_404';
 
@@ -66,7 +66,7 @@ const App = () => {
                 <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EventEditForm />} />
                 <Route path='/business/create' element={<BusinessCreateForm />} />
-                <Route path='/business/edit/:business_id' element={<UpdateBusiness />} />
+                <Route path='/business/edit/:business_id' element={<BusinessEditForm />} />
                 <Route path='/business/roles/:business_id' element={<BusinessRoles />} />
               </Route>
 

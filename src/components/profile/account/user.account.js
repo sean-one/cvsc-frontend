@@ -15,6 +15,7 @@ import useImagePreview from '../../../hooks/useImagePreview';
 import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
 import { editUserSchema } from '../../../helpers/validationSchemas';
+import UserEditForm from '../../forms/user.edit.form';
 
 const Styles = styled.div`
 
@@ -277,58 +278,59 @@ const UserAccount = () => {
                                 ? <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
                                     {auth?.user.email}
                                 </div>
-                                : <form encType='multipart/form-data'>
-                                    <FormInput id='email'
-                                        register={register}
-                                        onfocus={clearErrors}
-                                        type='email'
-                                        error={errors.email}
-                                    />
-                                    {
-                                        (update_image) &&
-                                            <ImageInput id='avatar'
-                                                register={register}
-                                                onfocus={clearErrors}
-                                                error={errors.avatar}
-                                                change={imagePreview}
-                                            />
-                                    }
-                                    {/* update image and password checkboxes */}
-                                    <div className='updateWrapper'>
-                                        <CheckBox id='update_password'
-                                            register={register}
-                                            boxlabel='Update Password'
-                                        />
-                                        {
-                                            (!update_image) &&
-                                                <CheckBox id='update_image'
-                                                    register={register}
-                                                    boxlabel='Update Image'
-                                                />
-                                        }
-                                    </div>
-                                    {/* update password and confirm password fields */}
-                                    {
-                                        (update_password) &&
-                                            <div>
-                                                <FormInput id='password'
-                                                    register={register}
-                                                    onfocus={clearErrors}
-                                                    type='password'
-                                                    placeholder='Password'
-                                                    error={errors.password}
-                                                />
+                                : <UserEditForm imagepreview={imagePreview} />
+                                // : <form encType='multipart/form-data'>
+                                //     <FormInput id='email'
+                                //         register={register}
+                                //         onfocus={clearErrors}
+                                //         type='email'
+                                //         error={errors.email}
+                                //     />
+                                //     {
+                                //         (update_image) &&
+                                //             <ImageInput id='avatar'
+                                //                 register={register}
+                                //                 onfocus={clearErrors}
+                                //                 error={errors.avatar}
+                                //                 change={imagePreview}
+                                //             />
+                                //     }
+                                //     {/* update image and password checkboxes */}
+                                //     <div className='updateWrapper'>
+                                //         <CheckBox id='update_password'
+                                //             register={register}
+                                //             boxlabel='Update Password'
+                                //         />
+                                //         {
+                                //             (!update_image) &&
+                                //                 <CheckBox id='update_image'
+                                //                     register={register}
+                                //                     boxlabel='Update Image'
+                                //                 />
+                                //         }
+                                //     </div>
+                                //     {/* update password and confirm password fields */}
+                                //     {
+                                //         (update_password) &&
+                                //             <div>
+                                //                 <FormInput id='password'
+                                //                     register={register}
+                                //                     onfocus={clearErrors}
+                                //                     type='password'
+                                //                     placeholder='Password'
+                                //                     error={errors.password}
+                                //                 />
 
-                                                <FormInput id='confirmation'
-                                                    register={register}
-                                                    onfocus={clearErrors}
-                                                    type='password'
-                                                    placeholder='Confirm Password'
-                                                    error={errors.confirmation}
-                                                />
-                                            </div>
-                                    }
-                                </form>
+                                //                 <FormInput id='confirmation'
+                                //                     register={register}
+                                //                     onfocus={clearErrors}
+                                //                     type='password'
+                                //                     placeholder='Confirm Password'
+                                //                     error={errors.confirmation}
+                                //                 />
+                                //             </div>
+                                //     }
+                                // </form>
                         }
                     </div>
 

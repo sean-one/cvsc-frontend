@@ -52,7 +52,7 @@ const BusinessView = () => {
                         {
                             (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
                                 <div>
-                                    <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/business/edit/${business_id}`, { state: business.data })} size='2x' />
+                                    <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/business/edit/${business_id}`, { state: business?.data })} size='2x' />
                                 </div>
                         }
                     </div>

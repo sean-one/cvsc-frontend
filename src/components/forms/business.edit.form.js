@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 
-import useAuth from '../../../hooks/useAuth';
-import { image_link } from '../../../helpers/dataCleanUp';
-import useImagePreview from '../../../hooks/useImagePreview';
+import useAuth from '../../hooks/useAuth';
+import { image_link } from '../../helpers/dataCleanUp';
+import useImagePreview from '../../hooks/useImagePreview';
 // import { businessFormSchema } from '../../../helpers/validationSchemas';
-import { useUpdateBusinessMutation } from '../../../hooks/useBusinessApi';
-import useNotification from '../../../hooks/useNotification';
-import { BusinessTypeSelect, CheckBox, ContactInput, FormInput, ImageInput, TextAreaInput } from '../../forms/formInput';
+import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
+import useNotification from '../../hooks/useNotification';
+import { BusinessTypeSelect, CheckBox, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
 
 const Styles = styled.div`
     .businessImage {

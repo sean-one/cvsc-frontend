@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
-import RoleRequest from '../forms/role.request';
+import RoleRequest from '../../forms/role.request';
 import UserRoles from './user.roles';
 import PendingRoleRequest from './pending.role.request';
 import LoadingSpinner from '../../loadingSpinner';

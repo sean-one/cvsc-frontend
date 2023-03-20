@@ -8,9 +8,6 @@ const Styles = styled.div`
 
     .app_container {
         position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
         min-width: 250px;
         min-height: 100vh;
         max-width: 100vw;
@@ -21,8 +18,9 @@ const Styles = styled.div`
     }
     
     .innerContainer {
-        min-width: 200px;
+        width: 100%;
         box-sizing: border-box;
+        border: 1px solid red;
         
         @media (min-width: 500px) {
             padding: 1rem;
@@ -30,6 +28,18 @@ const Styles = styled.div`
             max-width: 700px;
             margin: 0 auto;
         }
+    }
+
+    .pageWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px #0D2B12;
+        border-radius: 5px;
+        background-color: rgba(75,111,81,0.3);
     }
 
     .centerElement {
@@ -92,6 +102,17 @@ const Styles = styled.div`
         :active {
             transform: translate(2px, 4px)
         }
+    }
+
+    .formButtonWrapper {
+        margin-top: 1.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .formButton {
+        margin: 0 1rem;
     }
 
     /* used in contact input of forminput.js */
