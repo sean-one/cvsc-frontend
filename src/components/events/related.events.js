@@ -23,7 +23,7 @@ const RelatedEvents = ({ business_ids, event_id = false }) => {
 
 
     return (
-        <div className='border-top my-2'>
+        <div>
             {
                 (event_list.length > 0) &&
                 <div className='mt-3'>

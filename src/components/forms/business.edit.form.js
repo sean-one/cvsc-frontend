@@ -13,30 +13,6 @@ import useNotification from '../../hooks/useNotification';
 import { BusinessTypeSelect, CheckBox, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
 
 const Styles = styled.div`
-    .businessImage {
-        width: 100%;
-        max-width: 350px;
-        margin: 1rem auto;
-        
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-
-        canvas {
-            max-width: 100%;
-            border: 1px solid #dcdbc4;
-            display: block;
-            box-shadow: 5px 5px 5px #010a00;
-        }
-
-        img {
-            width: 100%;
-            border: 1px solid #dcdbc4;
-            display: block;
-            box-shadow: 5px 5px 5px #010a00;
-        }
-    }
-
     .locationWrapper {
         display: flex;
         flex-direction: column;
@@ -200,7 +176,7 @@ const BusinessEditForm = () => {
                         <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
                 }
 
-                <div className='businessImage'>
+                <div className='formImage formCirclePreview'>
                     {
                         editImage
                             ? <canvas

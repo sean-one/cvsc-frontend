@@ -5,14 +5,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { editUserSchema } from '../../helpers/validationSchemas';
 
 import useAuth from '../../hooks/useAuth';
-// import useImagePreview from '../../hooks/useImagePreview';
 
 
 const UserEditForm = ({ imagepreview }) => {
     const { auth } = useAuth()
-    // const { imagePreview } = useImagePreview()
 
-    const { register, clearErrors, watch, formState: { isDirty, errors } } = useForm({
+    const { register, clearErrors, watch, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(editUserSchema),
         defaultValues: {

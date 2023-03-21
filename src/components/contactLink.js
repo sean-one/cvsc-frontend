@@ -9,7 +9,7 @@ const ContactLink = ({ contact_type }) => {
     return (
         <div className='p-0 m-0' style={{ color: `${ContactLinkType[contact_type].color}`}}>
             <a href={ContactLinkType[contact_type].link} target='_blank' rel='noreferrer'>
-                <FontAwesomeIcon icon={ContactLinkType[contact_type].icon} />
+                <FontAwesomeIcon icon={ContactLinkType[contact_type].icon} size='2x' />
             </a>
         </div>
     )

@@ -1,14 +1,34 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers, faUserPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 
-import { useBusinessRequestToggle, useActiveBusinessToggle, useRemoveBusinessMutation } from '../../../hooks/useBusinessApi';
+import { useBusinessRequestToggle, useRemoveBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
+import ActiveBusinessToggle from './active.business.toggle';
 
+const Styles = styled.div`
+    .adminMenu {
+        width: 100%;
+        padding: 0.5rem 0
+    }
+
+    .adminButtonWrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hideError {
+        display: none;
+    }
+`;
 
 const BusinessAdminMenu = ({ business, business_role }) => {
     const { mutateAsync: toggleBusinessRequest } = useBusinessRequestToggle()
-    const { mutateAsync: toggleActiveBusiness } = useActiveBusinessToggle()
     const { mutateAsync: removeBusiness } = useRemoveBusinessMutation()
 
     let navigate = useNavigate()
@@ -27,21 +47,6 @@ const BusinessAdminMenu = ({ business, business_role }) => {
             })
         } else {
             console.log('incorrect return')
-        }
-    }
-
-    const toggleActive = async () => {
-        
-        const active_toggle = await toggleActiveBusiness(business.id)
-
-        if(active_toggle.status === 201) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${active_toggle.data.business_name} has been updated to ${active_toggle.data.active_business ? 'active' : 'inactive'}`
-                }
-            })
         }
     }
 
@@ -64,22 +69,39 @@ const BusinessAdminMenu = ({ business, business_role }) => {
 
 
     return (
-        <div>
-            <div className='d-flex justify-content-between align-items-center bg-light rounded'>
-                <Button onClick={() => navigate(`/business/roles/${business.id}`)} variant='outline-dark' className='text-center flex-fill m-1'>Roles</Button>
-                {
-                    (business_role > process.env.REACT_APP_MANAGER_ACCOUNT) &&
-                        <Button onClick={toggleActive} variant={business.active_business ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.active_business ? 'Active' : 'Inactive'}</Button>
-                }
-                <Button onClick={toggleRequest} variant={business.business_request_open ? 'outline-success' : 'outline-danger'} className='text-center flex-fill m-1'>{business.business_request_open ? 'Request Open' : 'Request Closed'}</Button>
-                {
-                    (business_role > process.env.REACT_APP_MANAGER_ACCOUNT) &&
-                        <Button onClick={delete_business} variant='outline-danger' className='text-center flex-fill m-1'>delete</Button>
-                }
+        <Styles>
+            <div className='adminMenu'>
+                <div className='adminButtonWrapper'>
+                    
+                    <button onClick={() => navigate(`/business/roles/${business.id}`)}>
+                        <FontAwesomeIcon icon={faUsers} />
+                    </button>
+                    
+                    {
+                        (business_role > process.env.REACT_APP_MANAGER_ACCOUNT) &&
+                            <ActiveBusinessToggle business_id={business.id} active_business={business.active_business} />
+                    }
+
+                    <button onClick={toggleRequest}>
+                        {
+                            business.business_request_open
+                                ? <FontAwesomeIcon icon={faUserPlus} />
+                                : <FontAwesomeIcon icon={faUserPlus} color='red' />
+                        }
+                    </button>
+
+                    {
+                        (business_role > process.env.REACT_APP_MANAGER_ACCOUNT) &&
+                            <button onClick={delete_business}>
+                                <FontAwesomeIcon icon={faTrash}/>
+                            </button>
+                    }
+
+                </div>
+                <div className={`errormessage ${(business.active_business) ? 'hideError' : ''}`}>* Business is inactive / does not show in search</div>
+                <div className={`errormessage ${(business.business_request_open) ? 'hideError' : ''}`}>* Business currently not accepting 'Creator' request</div>
             </div>
-            <div className={`w-100 bg-danger rounded text-light my-1 ${(business.active_business) ? 'd-none' : ''}`}>* Business is inactive / does not show in search</div>
-            <div className={`w-100 bg-danger rounded text-light my-1 ${(business.business_request_open) ? 'd-none' : ''}`}>* Business currently not accepting 'Creator' request</div>
-        </div>
+        </Styles>
     )
 }
 

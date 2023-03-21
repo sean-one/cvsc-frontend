@@ -104,6 +104,40 @@ const Styles = styled.div`
         }
     }
 
+    .formImage {
+        width: 100%;
+        max-width: 350px;
+        margin: 1rem auto;
+        
+        @media (min-width: 500px) {
+            width: 100%;
+        }
+
+        canvas {
+            max-width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+        }
+
+        img {
+            width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+        }
+    }
+
+    .formCirclePreview {
+        canvas {
+            border-radius: 50%;
+        }
+
+        img {
+            border-radius: 50%;
+        }
+    }
+
     .formButtonWrapper {
         margin-top: 1.5rem;
         width: 100%;

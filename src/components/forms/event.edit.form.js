@@ -26,30 +26,6 @@ const Styles = styled.div`
         gap: 10px;
     }
 
-    .eventImage {
-        width: 100%;
-        max-width: 350px;
-        margin: 1rem auto;
-        
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-
-        canvas {
-            max-width: 100%;
-            border: 1px solid #dcdbc4;
-            display: block;
-            box-shadow: 5px 5px 5px #010a00;
-        }
-
-        img {
-            width: 100%;
-            border: 1px solid #dcdbc4;
-            display: block;
-            box-shadow: 5px 5px 5px #010a00;
-        }
-    }
-
     .buttonWrapper {
         display: flex;
         justify-content: space-around;
@@ -232,7 +208,7 @@ const EventEditForm = () => {
                 </div>
 
                 {/* image preview */}
-                <div className='eventImage'>
+                <div className='formImage'>
                     {
                         editImage
                             ? <canvas

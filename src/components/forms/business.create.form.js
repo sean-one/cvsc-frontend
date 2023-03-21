@@ -2,42 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import { createBusinessSchema } from '../../helpers/validationSchemas';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import useImagePreview from '../../hooks/useImagePreview';
-// import { image_link } from '../../../helpers/dataCleanUp';
 import { BusinessTypeSelect, CheckBox, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
-
-const Styles = styled.div`
-    .businessImage {
-        width: 100%;
-        max-width: 350px;
-        margin: 1rem auto;
-        
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-
-        canvas {
-            max-width: 100%;
-            border: 1px solid #dcdbc4;
-            display: block;
-            box-shadow: 5px 5px 5px #010a00;
-        }
-
-        img {
-            width: 100%;
-            border: 1px solid #dcdbc4;
-            display: block;
-            box-shadow: 5px 5px 5px #010a00;
-        }
-    }
-
-`;
 
 const BusinessCreateForm = () => {
     const { logout_user } = useAuth()
@@ -150,127 +121,125 @@ const BusinessCreateForm = () => {
 
 
     return (
-        <Styles>
-            <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data'>
-                
-                <FormInput id='business_name'
+        <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data'>
+            
+            <FormInput id='business_name'
+                register={register}
+                onfocus={clearErrors}
+                placeholder='Business Name'
+                error={errors.business_name}
+            />
+            <FormInput id='business_email'
+                register={register}
+                onfocus={clearErrors}
+                type='email'
+                placeholder='Email'
+                error={errors.business_email}
+            />
+
+            {/* once image has been created it will show here */}
+            {
+                editImage &&
+                    <div className='formImage formCirclePreview'>
+                        <canvas id={'businessImagePreview'} ref={canvas} />
+                    </div>
+            }
+
+            <ImageInput id='business_avatar'
+                register={register}
+                onfocus={clearErrors}
+                error={errors.business_avatar}
+                change={imagePreview}
+            />
+
+            {/* business description input */}
+            <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
+
+            <div className='d-flex'>
+                <BusinessTypeSelect
                     register={register}
                     onfocus={clearErrors}
-                    placeholder='Business Name'
-                    error={errors.business_name}
+                    error={errors.business_type}
                 />
-                <FormInput id='business_email'
+                <CheckBox id='business_location'
                     register={register}
-                    onfocus={clearErrors}
-                    type='email'
-                    placeholder='Email'
-                    error={errors.business_email}
+                    boxlabel='Location'
                 />
+            </div>
 
-                {/* once image has been created it will show here */}
-                {
-                    editImage &&
-                        <div className='businessImage'>
-                            <canvas id={'businessImagePreview'} ref={canvas} />
-                        </div>
-                }
-
-                <ImageInput id='business_avatar'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_avatar}
-                    change={imagePreview}
-                />
-
-                {/* business description input */}
-                <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
-
-                <div className='d-flex'>
-                    <BusinessTypeSelect
+            {
+                (business_location) &&
+                <div>
+                    {/* street address input for location */}
+                    <FormInput id='street_address'
                         register={register}
                         onfocus={clearErrors}
-                        error={errors.business_type}
+                        placeholder='Street Address'
+                        error={errors.street_address}
                     />
-                    <CheckBox id='business_location'
+                    {/* city input for location */}
+                    <FormInput id='city'
                         register={register}
-                        boxlabel='Location'
+                        onfocus={clearErrors}
+                        placeholder='City'
+                        error={errors.city}
                     />
-                </div>
-
-                {
-                    (business_location) &&
-                    <div>
-                        {/* street address input for location */}
-                        <FormInput id='street_address'
+                    <div className='d-flex justify-content-between'>
+                        {/* state input for location */}
+                        <FormInput id='state'
                             register={register}
                             onfocus={clearErrors}
-                            placeholder='Street Address'
-                            error={errors.street_address}
+                            placeholder='State'
+                            error={errors.state}
                         />
-                        {/* city input for location */}
-                        <FormInput id='city'
+                        {/* zip code input for location */}
+                        <FormInput id='zip'
                             register={register}
                             onfocus={clearErrors}
-                            placeholder='City'
-                            error={errors.city}
+                            placeholder='Zip'
+                            error={errors.zip}
                         />
-                        <div className='d-flex justify-content-between'>
-                            {/* state input for location */}
-                            <FormInput id='state'
-                                register={register}
-                                onfocus={clearErrors}
-                                placeholder='State'
-                                error={errors.state}
-                            />
-                            {/* zip code input for location */}
-                            <FormInput id='zip'
-                                register={register}
-                                onfocus={clearErrors}
-                                placeholder='Zip'
-                                error={errors.zip}
-                            />
-                        </div>
                     </div>
-                }
-
-                {/* instagram input */}
-                <ContactInput id='instagram'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_instagram}
-                />
-                {/* website input */}
-                <ContactInput id='website'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_website}
-                />
-                {/* facebook input */}
-                <ContactInput id='facebook'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_facebook}
-                />
-                {/* phone input */}
-                <ContactInput id='phone'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_phone}
-                />
-                {/* twitter input */}
-                <ContactInput id='twitter'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_twitter}
-                />
-
-                <div className='d-flex justify-content-around pt-3'>
-                    <button type='submit'>Create</button>
-                    <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
                 </div>
+            }
 
-            </form>
-        </Styles>
+            {/* instagram input */}
+            <ContactInput id='instagram'
+                register={register}
+                onfocus={clearErrors}
+                error={errors.business_instagram}
+            />
+            {/* website input */}
+            <ContactInput id='website'
+                register={register}
+                onfocus={clearErrors}
+                error={errors.business_website}
+            />
+            {/* facebook input */}
+            <ContactInput id='facebook'
+                register={register}
+                onfocus={clearErrors}
+                error={errors.business_facebook}
+            />
+            {/* phone input */}
+            <ContactInput id='phone'
+                register={register}
+                onfocus={clearErrors}
+                error={errors.business_phone}
+            />
+            {/* twitter input */}
+            <ContactInput id='twitter'
+                register={register}
+                onfocus={clearErrors}
+                error={errors.business_twitter}
+            />
+
+            <div className='d-flex justify-content-around pt-3'>
+                <button type='submit'>Create</button>
+                <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
+            </div>
+
+        </form>
     )
 }
 
