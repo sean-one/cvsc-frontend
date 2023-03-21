@@ -1,7 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
@@ -14,6 +12,14 @@ import BusinessAdminMenu from './admin/business.admin.menu';
 import RelatedEvents from '../events/related.events';
 
 const Styles = styled.div`
+    .businessView {
+        max-width: 1080px;
+        
+        @media (min-width: 768px) {
+            padding: 1.5rem;
+        }
+    }
+
     .businessHeader {
         width: 100%;
         display: flex;
@@ -27,7 +33,7 @@ const Styles = styled.div`
         align-items: center;
     }
 
-    .businessDetails {
+    .businessDetailWrapper {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -35,17 +41,47 @@ const Styles = styled.div`
         padding: 0.75rem 0 1.25rem;
         border-bottom: 1px solid #DAD7CD;
         
-        @media (min-width: 500px) {
+        @media (min-width: 768px) {
             flex-direction: row;
-            gap: 10px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            /* gap: 10px; */
         }
 
     }
 
     .businessImage {
-        @media (min-width: 500px) {
-            max-width: 200px;
-            margin: 0 0.25rem;
+        width: 100%;
+        max-width: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        @media (min-width: 768px) {
+            flex-basis: 35%;
+            align-self: center;
+            height: auto;
+        }
+
+        img {
+            width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 5px 5px 5px #010a00;
+
+            @media (min-width: 768px) {
+                width: 200px;
+            }
+        }
+    }
+
+    .businessDetails {
+        width: 100%;
+
+        @media (min-width: 768px) {
+            flex-basis: 65%;
+            padding: 2rem 0;
         }
     }
 
@@ -54,11 +90,11 @@ const Styles = styled.div`
         justify-content: space-evenly;
         padding: 0.5rem 0;
         margin: 0.5rem 0;
-        width: 100%;
+        /* width: 100%; */
         border-top: 1px solid #DAD7CD;
         border-bottom: 1px solid #DAD7CD;
 
-        @media (min-width: 500px) {
+        @media (min-width: 768px) {
             border: none;
             align-self: flex-start;
         }
@@ -72,8 +108,6 @@ const BusinessView = () => {
     let { business_id } = useParams()
     let business_role = {}
 
-    let navigate = useNavigate()
-
     const { data: business, isLoading } = useBusinessQuery(business_id)
 
     if (isLoading) { return <LoadingSpinner /> }
@@ -83,17 +117,16 @@ const BusinessView = () => {
 
     return (
         <Styles>
-            <div className='pageWrapper'>
+            <div className='pageWrapper businessView'>
+
+                {
+                    (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
+                        <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
+                }
 
                 <div className='businessHeader'>
                     <div className='businessName'>
                         <h2>{business.data.business_name.toUpperCase()}</h2>
-                        {
-                            (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                                <div>
-                                    <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/business/edit/${business_id}`, { state: business?.data })} size='2x' />
-                                </div>
-                        }
                     </div>
                     {
                         (business.data.location_id !== null) &&
@@ -103,16 +136,16 @@ const BusinessView = () => {
                     }
                 </div>
 
-                <div className='businessDetails'>
+                <div className='businessDetailWrapper'>
 
-                    <div className='formImage formCirclePreview businessImage'>
+                    <div className='businessImage'>
                         <img
                             src={image_link(business.data.business_avatar)}
                             alt={business.data.business_name}
                         />
                     </div>
 
-                    <div className='w-100'>
+                    <div className='businessDetails'>
                         <div className='businessContacts'>
                             <ContactLink contact_type='email' />
 
@@ -128,11 +161,6 @@ const BusinessView = () => {
                         </div>
                     </div>
                 </div>
-                {
-                    (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                        <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
-                }
-
 
                 <RelatedEvents business_ids={[business_id]} />
             </div>

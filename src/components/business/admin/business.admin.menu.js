@@ -7,11 +7,16 @@ import styled from 'styled-components';
 import ActiveBusinessToggle from './active.business.toggle';
 import RequestStatusToggle from './request.status.toggle';
 import DeleteBusiness from './delete.business';
+import EditBusinessButton from './edit.business.button';
 
 const Styles = styled.div`
     .adminMenu {
         width: 100%;
-        padding: 0.5rem 0
+        padding: 0.5rem 0;
+
+        @media (min-width: 768px) {
+            align-self: flex-end;
+        }
     }
 
     .adminButtonWrapper {
@@ -51,6 +56,11 @@ const BusinessAdminMenu = ({ business, business_role }) => {
                     {
                         (business_role > process.env.REACT_APP_MANAGER_ACCOUNT) &&
                             <DeleteBusiness business_id={business.id} business_name={business.business_name}/>
+                    }
+
+                    {
+                        (business_role >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
+                         <EditBusinessButton business={business} />
                     }
 
                 </div>

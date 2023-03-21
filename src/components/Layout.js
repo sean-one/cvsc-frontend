@@ -25,7 +25,7 @@ const Styles = styled.div`
         @media (min-width: 500px) {
             padding: 1rem;
             width: calc(100vw - 1.5rem);
-            max-width: 700px;
+            /* max-width: 700px; */
             margin: 0 auto;
         }
     }
@@ -34,7 +34,8 @@ const Styles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        max-width: 700px;
+        width: 100%;
+        /* max-width: 700px; */
         margin: 0 auto;
         padding: 1.5rem 0.5rem;
         box-shadow: 5px 5px 5px #0D2B12;
