@@ -15,14 +15,11 @@ const Styles = styled.div`
         flex-direction: column;
         padding: 0.5rem;
         margin: 1.5rem 0;
-        /* border-top: 1px solid #0D2B12; */
-        /* border-left: 1px solid #0D2B12; */
-        box-shadow: 5px 5px 5px #0D2B12;
+        box-shadow: 
+            -3px -2px 1px 0 rgba(218, 215, 205, 0.2),
+            3px 2px 1px 0 #0D2B12;
         border-radius: 5px;
-        /* background-color: rgba(164,22,35,0.6); */
-        /* background-color: #a41623 */
         background-color: rgba(75,111,81,0.3);
-        /* background-color: #4B6F51; */
     }
 
     .inactiveEvent {
@@ -31,12 +28,9 @@ const Styles = styled.div`
     }
 
     .eventPreviewHeader {
-        font-size: 1.25rem;
-        font-weight: bold;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        letter-spacing: 0.1rem;
     }
 
     .eventDetailWrapper {
@@ -51,15 +45,21 @@ const Styles = styled.div`
     }
     
     .eventDetailWrapper {
+        display: flex;
+        justify-content: space-between;
         padding: 0.5rem 0;
         border-top: 1px solid #dcdbc4;
         border-bottom: 1px solid #dcdbc4;
+        
+        @media (min-width: 768px) {
+            padding: 0.5rem 2.5rem;
+        }
     }
 
     .eventImage {
         width: 50%;
-        max-width: 150px;
-        height: 100%;
+        max-width: 250px;
+        height: auto;
         padding: 0.25rem;
 
         img {
@@ -82,6 +82,10 @@ const Styles = styled.div`
         font-weight: thin;
         overflow: hidden;
     }
+
+    .businessLabelWrapper {
+        display: flex;
+    }
 `;
 
 const EventPreview = ({ event }) => {
@@ -93,7 +97,7 @@ const EventPreview = ({ event }) => {
             <div className={`eventPreviewWrapper ${(event.active_event) ? '' : 'inactiveEvent'}`} onClick={(event.active_event) ? () => navigate(`/event/${event.event_id}`) : null}>
 
                 <div className='eventPreviewHeader'>
-                    <div>{event.eventname.toUpperCase()}</div>
+                    <h2>{event.eventname.toUpperCase()}</h2>
                     {
                         (!event.active_event) &&
                             <FontAwesomeIcon icon={faPencilAlt} onClick={() => navigate(`/event/edit/${event.event_id}`, { state: event })}/>
@@ -102,21 +106,25 @@ const EventPreview = ({ event }) => {
                 
                 {/* event date information */}
                 <div className='eventDateWrapper'>
-                    <div>{format(new Date(event.eventdate), 'E, MMM do')}</div>
-                    <div>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
+                    <h5>{format(new Date(event.eventdate), 'E, MMM do')}</h5>
+                    <h5>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</h5>
                 </div>
                 
                 {/* event image & details */}
                 <div className='eventDetailWrapper'>
+
                     <div className='eventImage'>
-                        <img src={image_link(event.eventmedia)} alt={event.eventname}/>
+                        <img
+                            src={image_link(event.eventmedia)}
+                            alt={event.eventname}
+                        />
                     </div>
                     <div className='eventDetails'>
                         <div>{event.details}</div>
                     </div>
                 </div>
 
-                <div className='d-flex'>
+                <div className='businessLabelWrapper'>
                     <BusinessLabel business_id={event.venue_id} business_name={event.venue_name} business_type='venue' />
                     <BusinessLabel business_id={event.brand_id} business_name={event.brand_name} business_type='brand' />
                 </div>

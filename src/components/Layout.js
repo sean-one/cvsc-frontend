@@ -6,9 +6,14 @@ const Styles = styled.div`
         box-sizing: border-box;
     }
 
-    h2 {
+    h2, h5 {
         margin-bottom: 0;
     }
+
+    h5 {
+        font-weight: normal;
+    }
+
     .app_container {
         position: relative;
         min-width: 250px;
