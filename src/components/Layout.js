@@ -77,7 +77,7 @@ const Styles = styled.div`
     }
 
     input, select, textarea {
-        margin: 0.5rem 0;
+        /* margin: 0.5rem 0; */
         width: 100%;
         padding: 0.5rem;
         border: none;
@@ -85,7 +85,7 @@ const Styles = styled.div`
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
-        box-shadow: 5px 5px 5px #0D2B12;
+        box-shadow: 3px 2px 1px 0 #0D2B12;
         outline: none;
         
         ::placeholder {
@@ -183,8 +183,8 @@ const Styles = styled.div`
         flex-direction: column;
     }
     
-    .imageUpdateInput {
-        margin: 0.25rem 0;
+    .imageLabel {
+        /* margin: 0.5rem 0; */
         cursor: pointer;
         width: 100%;
         padding: 0.5rem;
@@ -193,14 +193,9 @@ const Styles = styled.div`
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
-        box-shadow: 5px 5px 5px #0D2B12;
+        box-shadow: 3px 2px 1px 0 #0D2B12;
         outline: none;
         text-align: center;
-
-        .cameraIcon {
-            color: #DAD7CD;
-            margin-left: 0.25rem;
-        }
 
         input {
             display: none;

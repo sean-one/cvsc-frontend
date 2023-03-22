@@ -44,9 +44,8 @@ export const CheckBox = ({ register, id, boxlabel }) => {
 export const ImageInput = ({ register, id, onfocus, error, change }) => {
     return (
         <div onClick={() => onfocus(id)}>
-            <label htmlFor={`${id}`} className='imageUpdateInput'>
-                Select Image
-                <FontAwesomeIcon icon={faCamera} className='cameraIcon' />
+            <label htmlFor={`${id}`} className='imageLabel'>
+                <FontAwesomeIcon icon={faCamera} />
                 <input
                     {...register(id)}
                     className={error ? 'inputError' : ''}
@@ -65,7 +64,7 @@ export const BusinessSelect = ({ register, id, onfocus, role_error, business_err
     return (
         <>
             <select
-                className={business_error || role_error ? 'inputError' : ''}
+                className={`inputErrorWrapper ${business_error || role_error ? 'inputError' : ''}`}
                 {...register(id)}
                 onFocus={onfocus}
                 type='text'
@@ -86,7 +85,7 @@ export const BusinessSelect = ({ register, id, onfocus, role_error, business_err
 
 export const BusinessTypeSelect = ({register, onfocus, error }) => {
     return (
-        <>
+        <div className='inputErrorWrapper'>
             <select
                 className={error ? 'inputError' : ''}
                 {...register('business_type')}
@@ -99,7 +98,7 @@ export const BusinessTypeSelect = ({register, onfocus, error }) => {
                 <option value='both'>{`Brand & Dispensary`}</option>
             </select>
             <div className='errormessage'>{error?.message}</div>
-        </>
+        </div>
     )
 }
 
