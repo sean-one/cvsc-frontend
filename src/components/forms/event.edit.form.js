@@ -8,7 +8,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
-import useImagePreview from '../../hooks/useImagePreview';
+import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { reformatTime } from '../../helpers/formatTime';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
@@ -36,7 +36,7 @@ const Styles = styled.div`
 const EventEditForm = () => {
     const { logout_user } = useAuth()
     const { state: event } = useLocation()
-    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
+    const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()
     
     let venue_list, brand_list = []

@@ -7,7 +7,7 @@ import { DevTool } from '@hookform/devtools'
 
 import useAuth from '../../hooks/useAuth';
 import { FormInput, BusinessSelect, TextAreaInput, ImageInput } from './formInput';
-import useImagePreview from '../../hooks/useImagePreview';
+import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { createEventSchema } from '../../helpers/validationSchemas';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
@@ -16,7 +16,7 @@ import LoadingSpinner from '../loadingSpinner';
 
 const EventCreateForm = ({ business_id }) => {
     const { logout_user } = useAuth()
-    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
+    const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
