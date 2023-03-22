@@ -24,7 +24,11 @@ const Styles = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        gap: 5px;
+
+        @media (min-width: 380px) {
+            gap: 10px;
+        }
     }
 
     .hideError {

@@ -6,6 +6,9 @@ const Styles = styled.div`
         box-sizing: border-box;
     }
 
+    h2 {
+        margin-bottom: 0;
+    }
     .app_container {
         position: relative;
         min-width: 250px;

@@ -29,11 +29,25 @@ const Styles = styled.div`
     .businessName {
         width: 100%;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        /* justify-content: space-between; */
+        /* align-items: center; */
+        flex-direction: column;
+
+        @media (min-width: 768px) {
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+
+        }
     }
 
-    .businessDetailWrapper {
+    .businessName h2 {
+        @media (min-width: 768px) {
+            align-self: flex-end;
+        }
+    }
+
+    .businessDetails {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -50,18 +64,26 @@ const Styles = styled.div`
 
     }
 
+    .firstBusinessSection {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 0 0.5rem;
+
+        @media (min-width: 768px) {
+            flex-basis: 35%;
+        }
+
+    }
+
     .businessImage {
         width: 100%;
         max-width: 350px;
         display: flex;
         justify-content: center;
         align-items: center;
-        
-        @media (min-width: 768px) {
-            flex-basis: 35%;
-            align-self: center;
-            height: auto;
-        }
+        margin: 0.75rem 0;
 
         img {
             width: 100%;
@@ -76,7 +98,7 @@ const Styles = styled.div`
         }
     }
 
-    .businessDetails {
+    .secondBusinessSection {
         width: 100%;
 
         @media (min-width: 768px) {
@@ -86,19 +108,28 @@ const Styles = styled.div`
     }
 
     .businessContacts {
+        width: 100%;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
         padding: 0.5rem 0;
         margin: 0.5rem 0;
-        /* width: 100%; */
-        border-top: 1px solid #DAD7CD;
-        border-bottom: 1px solid #DAD7CD;
-
+        background-color: rgba(218, 215, 205, 0.2);
+        border-radius: 5px;
+        gap: 10px;
+        
         @media (min-width: 768px) {
             border: none;
             align-self: flex-start;
         }
 
+    }
+
+    .businessDescription {
+        text-align: justify;
+
+        @media (min-width: 768px) {
+            text-align: left;
+        }
     }
 
 `;
@@ -119,33 +150,31 @@ const BusinessView = () => {
         <Styles>
             <div className='pageWrapper businessView'>
 
-                {
-                    (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                        <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
-                }
 
                 <div className='businessHeader'>
                     <div className='businessName'>
+                        {
+                            (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
+                                <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
+                        }
                         <h2>{business.data.business_name.toUpperCase()}</h2>
                     </div>
                     {
                         (business.data.location_id !== null) &&
-                            <h4>
-                                {`${business.data?.street_address}, ${business.data?.location_city}`}
-                            </h4>
+                            <div>{`${business.data?.street_address}, ${business.data?.location_city}`}</div>
                     }
                 </div>
 
-                <div className='businessDetailWrapper'>
+                <div className='businessDetails'>
 
-                    <div className='businessImage'>
-                        <img
-                            src={image_link(business.data.business_avatar)}
-                            alt={business.data.business_name}
-                        />
-                    </div>
-
-                    <div className='businessDetails'>
+                    <div className='firstBusinessSection'>
+                        
+                        <div className='businessImage'>
+                            <img
+                                src={image_link(business.data.business_avatar)}
+                                alt={business.data.business_name}
+                            />
+                        </div>
                         <div className='businessContacts'>
                             <ContactLink contact_type='email' />
 
@@ -156,7 +185,11 @@ const BusinessView = () => {
                             {business.data.business_website && <ContactLink contact_type='website'/> }
                             {business.data.business_twitter && <ContactLink contact_type='twitter' /> }
                         </div>
-                        <div>
+
+                    </div>
+
+                    <div className='secondBusinessSection'>
+                        <div className='businessDescription'>
                             {business.data.business_description}
                         </div>
                     </div>
