@@ -8,6 +8,7 @@ import { DevTool } from '@hookform/devtools'
 import useAuth from '../../hooks/useAuth';
 import { FormInput, BusinessSelect, TextAreaInput, ImageInput } from './formInput';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
+import { setImageForForm } from '../../helpers/setImageForForm';
 import { createEventSchema } from '../../helpers/validationSchemas';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
@@ -47,18 +48,7 @@ const EventCreateForm = ({ business_id }) => {
             if(canvas.current === null) {
                 throw new Error('missing_image')
             } else {
-                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
-
-                let [mime,image_data] = canvas_image.split(',')
-                mime = mime.match(/:(.*?);/)[1]
-
-                let data_string = atob(image_data)
-                let data_length = data_string.length
-                let image_array = new Uint8Array(data_length)
-
-                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
-
-                let event_image = new File([image_array], 'event_image.jpeg', { type: mime })
+                let event_image = setImageForForm(canvas)
 
                 formData.set('eventmedia', event_image)
             }

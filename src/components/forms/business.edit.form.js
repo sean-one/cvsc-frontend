@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
+import { setImageForForm } from '../../helpers/setImageForForm';
 // import { businessFormSchema } from '../../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
@@ -106,18 +107,8 @@ const BusinessEditForm = () => {
 
             // if updateimage is true set updated file
             if (image_attached && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
-                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
-
-                let [mime, image_data] = canvas_image.split(',')
-                mime = mime.match(/:(.*?);/)[1]
-
-                let data_string = atob(image_data)
-                let data_length = data_string.length
-                let image_array = new Uint8Array(data_length)
-
-                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
-
-                let business_avatar = new File([image_array], 'business_avatar.jpeg', { type: mime })
+                
+                let business_avatar = setImageForForm(canvas)
 
                 formData.set('business_avatar', business_avatar)
             }

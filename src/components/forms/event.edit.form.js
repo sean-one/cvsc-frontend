@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
+import { setImageForForm } from '../../helpers/setImageForForm';
 import { reformatTime } from '../../helpers/formatTime';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
@@ -71,18 +72,7 @@ const EventEditForm = () => {
 
             // if eventmedia has a file set in formData, for some reason it does not show in dirtyFields
             if(image_attached) {
-                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
-
-                let [mime, image_data] = canvas_image.split(',')
-                mime = mime.match(/:(.*?);/)[1]
-
-                let data_string = atob(image_data)
-                let data_length = data_string.length
-                let image_array = new Uint8Array(data_length)
-
-                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
-
-                let event_media = new File([image_array], 'eventmedia.jpeg', { type: mime })
+                let event_media = setImageForForm(canvas)
 
                 formData.set('eventmedia', event_media)
             }

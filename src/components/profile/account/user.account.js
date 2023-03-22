@@ -15,6 +15,7 @@ import useImagePreview from '../../../hooks/useImagePreview';
 import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
 import { editUserSchema } from '../../../helpers/validationSchemas';
+import { setImageForForm } from '../../../helpers/setImageForForm';
 
 const Styles = styled.div`
 
@@ -112,18 +113,7 @@ const UserAccount = () => {
             const formData = new FormData()
             
             if(update_image) {
-                let canvas_image = canvas.current.toDataURL("image/webp", 1.0)
-                
-                let [mime, image_data] = canvas_image.split(',')
-                mime = mime.match(/:(.*?);/)[1]
-
-                let data_string = atob(image_data)
-                let data_length = data_string.length
-                let image_array = new Uint8Array(data_length)
-
-                while(data_length--) { image_array[data_length] = data_string.charCodeAt(data_length) }
-
-                let user_avatar = new File([image_array], 'user_avatar.jpeg', { type: mime })
+                let user_avatar = setImageForForm(canvas)
                 
                 formData.set('avatar', user_avatar)
             }
