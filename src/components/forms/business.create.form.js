@@ -15,13 +15,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 
 const Styles = styled.div`
-    .fullForm {
-        display: flex;
-        flex-direction: column;
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-        gap: 10px;
+    .businessCreateForm {
+        width: 100%;
     }
+
     .formRow {
         display: flex;
         justify-content: space-between;
@@ -148,137 +145,139 @@ const BusinessCreateForm = () => {
 
     return (
         <Styles>
-            <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data' className='fullForm'>
-                
-                {/* once image has been created it will show here */}
-                {
-                    editImage &&
-                        <div className='formImage formCirclePreview'>
-                            <canvas id={'businessImagePreview'} ref={canvas} />
-                        </div>
-                }
+            <div className='pageWrapper'>
+                <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data' className='businessCreateForm'>
+                    
+                    {/* once image has been created it will show here */}
+                    {
+                        editImage &&
+                            <div className='formImage formCirclePreview'>
+                                <canvas id={'businessImagePreview'} ref={canvas} />
+                            </div>
+                    }
 
-                <div className='formRow'>
-                    <FormInput id='business_name'
-                        register={register}
-                        onfocus={clearErrors}
-                        placeholder='Business Name'
-                        error={errors.business_name}
-                    />
-
-                    <ImageInput id='business_avatar'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_avatar}
-                        change={imagePreview}
-                    />
-
-                </div>
-
-                <FormInput id='business_email'
-                    register={register}
-                    onfocus={clearErrors}
-                    type='email'
-                    placeholder='Email'
-                    error={errors.business_email}
-                />
-
-                {/* business description input */}
-                <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
-
-                <div className='formRow'>
-                    <BusinessTypeSelect
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_type}
-                    />
-                    <label htmlFor='business_location' className='locationCheckbox'>
-                        <input
-                            {...register('business_location')}
-                            type='checkbox'
-                            name='business_location'
-                        />
-                        <FontAwesomeIcon icon={faLocationArrow} />
-                    </label>
-                    {/* <CheckBox id='business_location'
-                        register={register}
-                        boxlabel='Location'
-                    /> */}
-                </div>
-
-                {
-                    (business_location) &&
-                    <div>
-                        {/* street address input for location */}
-                        <FormInput id='street_address'
+                    <div className='formRow'>
+                        <FormInput id='business_name'
                             register={register}
                             onfocus={clearErrors}
-                            placeholder='Street Address'
-                            error={errors.street_address}
+                            placeholder='Business Name'
+                            error={errors.business_name}
                         />
-                        {/* city input for location */}
-                        <FormInput id='city'
+
+                        <ImageInput id='business_avatar'
                             register={register}
                             onfocus={clearErrors}
-                            placeholder='City'
-                            error={errors.city}
+                            error={errors.business_avatar}
+                            change={imagePreview}
                         />
-                        <div className='d-flex justify-content-between'>
-                            {/* state input for location */}
-                            <FormInput id='state'
-                                register={register}
-                                onfocus={clearErrors}
-                                placeholder='State'
-                                error={errors.state}
-                            />
-                            {/* zip code input for location */}
-                            <FormInput id='zip'
-                                register={register}
-                                onfocus={clearErrors}
-                                placeholder='Zip'
-                                error={errors.zip}
-                            />
-                        </div>
+
                     </div>
-                }
 
-                {/* instagram input */}
-                <ContactInput id='instagram'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_instagram}
-                />
-                {/* website input */}
-                <ContactInput id='website'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_website}
-                />
-                {/* facebook input */}
-                <ContactInput id='facebook'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_facebook}
-                />
-                {/* phone input */}
-                <ContactInput id='phone'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_phone}
-                />
-                {/* twitter input */}
-                <ContactInput id='twitter'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_twitter}
-                />
+                    <FormInput id='business_email'
+                        register={register}
+                        onfocus={clearErrors}
+                        type='email'
+                        placeholder='Email'
+                        error={errors.business_email}
+                    />
 
-                <div className='d-flex justify-content-around pt-3'>
-                    <button type='submit'>Create</button>
-                    <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
-                </div>
+                    {/* business description input */}
+                    <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
 
-            </form>
+                    <div className='formRow'>
+                        <BusinessTypeSelect
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_type}
+                        />
+                        <label htmlFor='business_location' className='locationCheckbox'>
+                            <input
+                                {...register('business_location')}
+                                type='checkbox'
+                                name='business_location'
+                            />
+                            <FontAwesomeIcon icon={faLocationArrow} />
+                        </label>
+                        {/* <CheckBox id='business_location'
+                            register={register}
+                            boxlabel='Location'
+                        /> */}
+                    </div>
+
+                    {
+                        (business_location) &&
+                        <div>
+                            {/* street address input for location */}
+                            <FormInput id='street_address'
+                                register={register}
+                                onfocus={clearErrors}
+                                placeholder='Street Address'
+                                error={errors.street_address}
+                            />
+                            {/* city input for location */}
+                            <FormInput id='city'
+                                register={register}
+                                onfocus={clearErrors}
+                                placeholder='City'
+                                error={errors.city}
+                            />
+                            <div className='d-flex justify-content-between'>
+                                {/* state input for location */}
+                                <FormInput id='state'
+                                    register={register}
+                                    onfocus={clearErrors}
+                                    placeholder='State'
+                                    error={errors.state}
+                                />
+                                {/* zip code input for location */}
+                                <FormInput id='zip'
+                                    register={register}
+                                    onfocus={clearErrors}
+                                    placeholder='Zip'
+                                    error={errors.zip}
+                                />
+                            </div>
+                        </div>
+                    }
+
+                    {/* instagram input */}
+                    <ContactInput id='instagram'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_instagram}
+                    />
+                    {/* website input */}
+                    <ContactInput id='website'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_website}
+                    />
+                    {/* facebook input */}
+                    <ContactInput id='facebook'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_facebook}
+                    />
+                    {/* phone input */}
+                    <ContactInput id='phone'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_phone}
+                    />
+                    {/* twitter input */}
+                    <ContactInput id='twitter'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_twitter}
+                    />
+
+                    <div className='d-flex justify-content-around pt-3'>
+                        <button type='submit'>Create</button>
+                        <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
+                    </div>
+
+                </form>
+            </div>
         </Styles>
     )
 }

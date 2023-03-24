@@ -76,6 +76,13 @@ const Styles = styled.div`
         color: inherit;
     }
 
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
     input, select, textarea {
         /* margin: 0.5rem 0; */
         width: 100%;
