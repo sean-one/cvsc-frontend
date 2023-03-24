@@ -94,6 +94,7 @@ const Login = () => {
                 </div>
                 <div onClick={() => clearErrors('credentials')}>
                     <form onSubmit={handleSubmit(sendLogin)}>
+                        
                         <FormInput id='username'
                             register={register}
                             onfocus={clearErrors}
