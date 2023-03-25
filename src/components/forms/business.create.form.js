@@ -26,6 +26,7 @@ const Styles = styled.div`
         gap: 10px;
 
     }
+    
     .locationCheckbox {
         cursor: pointer;
         padding: 0.5rem;

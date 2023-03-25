@@ -46,21 +46,28 @@ const Styles = styled.div`
     
     .eventDetailWrapper {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         padding: 0.5rem 0;
         border-top: 1px solid #dcdbc4;
         border-bottom: 1px solid #dcdbc4;
         
-        @media (min-width: 768px) {
+        @media (min-width: 550px) {
+            flex-direction: row;
+            justify-content: space-between;
             padding: 0.5rem 2.5rem;
         }
     }
 
     .eventImage {
-        width: 50%;
-        max-width: 250px;
+        width: 100%;
+        /* max-width: 250px; */
         height: auto;
         padding: 0.25rem;
+
+        @media (min-width: 550px) {
+            width: 50%;
+            max-width: 250px;
+        }
 
         img {
             width: 100%;
@@ -69,6 +76,10 @@ const Styles = styled.div`
             border-radius: 5px;
             border: 1px solid #dcdbc4;
             display: block;
+
+            @media (min-width: 550px){
+                
+            }
         }
     }
 
@@ -76,11 +87,15 @@ const Styles = styled.div`
         display: flex;
         flex-direction: column;
         padding-left: 0.25rem;
-        width: 75%;
+        width: 100%;
         max-height: 8rem;
         font-size: 14px;
         font-weight: thin;
         overflow: hidden;
+
+        @media (min-width: 550px) {
+            width: 75%;
+        }
     }
 
     .businessLabelWrapper {

@@ -28,8 +28,10 @@ const Styles = styled.div`
 
     .profileImage {
         margin: auto;
+        max-width: 275px;
         
         @media (min-width: 500px) {
+            margin: 0.5rem 0;
             width: 40%;
         }
     }

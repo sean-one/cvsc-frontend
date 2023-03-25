@@ -28,7 +28,6 @@ const Styles = styled.div`
     .innerContainer {
         width: 100%;
         box-sizing: border-box;
-        border: 1px solid red;
         
         @media (min-width: 500px) {
             padding: 1rem;
@@ -49,6 +48,7 @@ const Styles = styled.div`
         box-shadow: 5px 5px 5px #0D2B12;
         border-radius: 5px;
         background-color: rgba(75,111,81,0.3);
+        border: 1px purple solid;
     }
 
     .centerElement {

@@ -2,23 +2,23 @@ import React from 'react'
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
-import filterEventsByDay from '../../helpers/filterEventsByDay';
 import { useEventsQuery } from '../../hooks/useEventsApi';
 
 import LoadingSpinner from '../loadingSpinner';
-import Day from './day.jsx';
+import EventPreview from '../events/views/event.preview';
 
 const Styles = styled.div`
-    .calendarContainer {
-        margin: auto;
-        max-width: 500px;
+    .calendarView {
+        box-shadow: none;
+        border-radius: 0;
+        background-color: inherit;
     }   
 `
 
 const Calendar = () => {
     const { data: eventList, isLoading, isError, isSuccess } = useEventsQuery()
-    let siteSortedEvents = {}
-    
+    let sortedEvents = []
+
     if(isLoading) {
         return <LoadingSpinner />
     }
@@ -28,22 +28,30 @@ const Calendar = () => {
     }
 
     if(isSuccess) {
-        siteSortedEvents = filterEventsByDay(eventList.data)
+        sortedEvents = eventList.data.sort((a,b) => {
+            if (format(new Date(a.eventdate), 't') > format(new Date(b.eventdate), 't')) {
+                return 1;
+            } else if (format(new Date(a.eventdate), 't') < format(new Date(b.eventdate), 't')) {
+                return -1;
+            } else {
+                if (a.eventstart > b.eventstart) {
+                    return 1
+                } else {
+                    return -1
+                }
+            }
+        })
     }
-
+    
 
     return (
         <Styles>
 
-            <div className='calendarContainer'>
+            <div className='pageWrapper calendarView'>
                 {
-                    Object.keys(siteSortedEvents).sort(
-                        // sort event list by date
-                        (a,b) => new Date(a) - new Date(b)
-                    ).map(key => {
-                        const eventDate = new Date(key)
+                    sortedEvents.map(event => {
                         return (
-                            <Day key={format(eventDate, 't')} date={eventDate} schedule={siteSortedEvents[key]} />
+                            <EventPreview key={event.event_id} event={event} />
                         )
                     })
                 }

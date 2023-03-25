@@ -39,7 +39,7 @@ const ProfileMenu = () => {
     let menuTab = pathname.split('/')[2] || 'home'
     
     const buttonLink = (e) => {
-        if(e.target.textContent.toLowerCase() === 'home') {
+        if(e.target.textContent.toLowerCase() === 'account') {
             navigate(`/profile/`)
         } else {
             navigate(`/profile/${e.target.textContent.toLowerCase()}`)
@@ -50,7 +50,7 @@ const ProfileMenu = () => {
         <Styles>
             <div className='profileMenu'>
                 <div className={`profileTab ${menuTab === 'home' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>
-                    Home
+                    Account
                 </div>
                 <div className={`profileTab ${menuTab === 'roles' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>
                     Roles
