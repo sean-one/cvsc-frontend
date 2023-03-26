@@ -8,11 +8,11 @@ import LoadingSpinner from '../loadingSpinner';
 import EventPreview from '../events/views/event.preview';
 
 const Styles = styled.div`
-    .calendarView {
+    /* .calendarView {
         box-shadow: none;
         border-radius: 0;
-        background-color: inherit;
-    }   
+        background-color: transparent;
+    }    */
 `
 
 const Calendar = () => {

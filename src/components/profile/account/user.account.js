@@ -20,6 +20,7 @@ import { setImageForForm } from '../../../helpers/setImageForForm';
 const Styles = styled.div`
 
     .userAccountPage {
+        width: 100%;
         
         @media (min-width: 500px) {
             flex-direction: row;
