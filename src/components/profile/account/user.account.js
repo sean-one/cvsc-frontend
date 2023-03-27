@@ -24,15 +24,16 @@ const Styles = styled.div`
         
         @media (min-width: 500px) {
             flex-direction: row;
+            justify-content: space-between;
+            padding: 1.5rem;
         }
     }
 
     .profileImage {
-        margin: auto;
         max-width: 275px;
         
         @media (min-width: 500px) {
-            margin: 0.5rem 0;
+            margin: 0.5rem;
             width: 40%;
         }
     }

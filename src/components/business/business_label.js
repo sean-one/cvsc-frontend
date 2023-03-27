@@ -1,66 +1,131 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCannabis, faTrash, faStore } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+// import { faCannabis, faTrash, faStore } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
+import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
 import useNotification from '../../hooks/useNotification';
+import LoadingSpinner from '../loadingSpinner';
+
+const BusinessLabelStyles = styled.div`
+    .businessLabelStylesWrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid red;
+
+        @media (min-width: 360px) {
+            border-bottom: none;
+        }
+    }
+
+    .businessLogoContainer {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.25rem 0.5rem;
+
+        img {
+            display: block;
+            width: 100%;
+            max-width: 60px;
+            border-radius: 50%;
+        }
+    }
+
+    .businessDetailsWrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        div {
+            padding-right: 0.5rem;
+        }
+
+        .trashIcon {
+            margin: 0.25rem;
+        }
+    }
+`;
 
 
-const BusinessLabel = ({ business_id, business_name, business_role, business_type }) => {
-    const { logout_user } = useAuth()
+const BusinessLabel = ({ business_id }) => {
+    const { data: businessList, isLoading, isSuccess } = useBusinessesQuery()
+    let business = {}
+    let business_role = {}
+
+    const { auth, logout_user } = useAuth()
     const { mutateAsync: removeEventBusinessMutation } = useRemoveEventBusinessMutation()
     const { event_id } = useParams()
     const { dispatch } = useNotification()
 
     let navigate = useNavigate()
 
-    const remove_event_business = async () => {
-        try {
-            const remove_business_response = await removeEventBusinessMutation({ event_id, event_updates: { business_id, business_type } })
+    // const remove_event_business = async () => {
+    //     try {
+    //         const remove_business_response = await removeEventBusinessMutation({ event_id, event_updates: { business_id, business_type } })
 
-            if (remove_business_response.status === 202) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${business_name} has been removed`
-                    }
-                })
+    //         if (remove_business_response.status === 202) {
+    //             dispatch({
+    //                 type: "ADD_NOTIFICATION",
+    //                 payload: {
+    //                     notification_type: 'SUCCESS',
+    //                     message: `${business?.business_name} has been removed`
+    //                 }
+    //             })
 
-                navigate('/profile')
-            }
+    //             navigate('/profile')
+    //         }
 
-        } catch (error) {
-            console.log(error)
-            if (error.response.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error.response.data.error.message
-                    }
-                })
+    //     } catch (error) {
+    //         console.log(error)
+    //         if (error.response.status === 401) {
+    //             dispatch({
+    //                 type: "ADD_NOTIFICATION",
+    //                 payload: {
+    //                     notification_type: 'ERROR',
+    //                     message: error.response.data.error.message
+    //                 }
+    //             })
 
 
-            }
+    //         }
 
-            logout_user()
+    //         logout_user()
+    //     }
+
+    // }
+
+    if(isLoading) { <LoadingSpinner /> }
+
+    if(isSuccess) {
+        business = businessList?.data.find(business => business.id === business_id)
+        if(auth?.roles) {
+            business_role = auth?.roles.find(role => role.business_id === business_id)
         }
-
     }
 
 
     return (
-        <div className={`d-flex justify-content-end ${(business_type === 'brand') ? 'text-end' : 'flex-row-reverse text-start'} align-items-center w-100`}>
-            <div onClick={() => navigate(`/business/${business_id}`)}>{business_name}</div>
-            {
-                (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT)
-                    ? <FontAwesomeIcon onClick={remove_event_business} icon={faTrash} className={`${(business_type === 'brand') ? 'ms-2' : 'me-2'}`} />
-                    : <FontAwesomeIcon onClick={() => navigate(`/business/${business_id}`)} icon={(business_type === 'brand') ? faCannabis : faStore } className={`${(business_type === 'brand') ? 'ms-2' : 'me-2'}`} />
-            }
-        </div>
+        <BusinessLabelStyles>
+            <div className='businessLabelStylesWrapper'>
+                <div className='businessLogoContainer' onClick={() => navigate(`/business/${business_id}`)}>
+                    <img src={business.business_avatar} alt='business branding' />
+                </div>
+                <div className='businessDetailsWrapper'>
+                    <div onClick={() => navigate(`/business/${business_id}`)}>{business.business_name}</div>
+                    {
+                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT)
+                            ? <FontAwesomeIcon icon={faTrash} className='trashIcon'/>
+                            : null
+                    }
+                </div>
+            </div>
+        </BusinessLabelStyles>
     )
 }
 

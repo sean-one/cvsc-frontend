@@ -99,7 +99,16 @@ const Styles = styled.div`
     }
 
     .businessLabelWrapper {
+        width: 100%;
         display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        @media (min-width: 360px) {
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
     }
 `;
 
@@ -140,8 +149,8 @@ const EventPreview = ({ event }) => {
                 </div>
 
                 <div className='businessLabelWrapper'>
-                    <BusinessLabel business_id={event.venue_id} business_name={event.venue_name} business_type='venue' />
-                    <BusinessLabel business_id={event.brand_id} business_name={event.brand_name} business_type='brand' />
+                    <BusinessLabel business_id={event.venue_id} />
+                    <BusinessLabel business_id={event.brand_id} />
                 </div>
             </div>
         </Styles>
