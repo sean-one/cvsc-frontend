@@ -12,14 +12,15 @@ export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
-            queryClient.invalidateQueries(['event', data.id])
-            queryClient.invalidateQueries('events')
+            queryClient.cancelQueries(['event', data.id])
+            queryClient.cancelQueries(['businesses'])
+            queryClient.refetchQueries(['businesses'])
         },
         onError: (error) => {
             console.log('error inside event business remove mutation')
             console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries('events')
+        onSettled: () => queryClient.refetchQueries(['events'])
     })
 }
 

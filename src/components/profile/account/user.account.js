@@ -20,14 +20,21 @@ import { setImageForForm } from '../../../helpers/setImageForForm';
 const Styles = styled.div`
 
     .userAccountPage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         width: 100%;
+        margin: 0 auto;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px #0D2B12;
+        border-radius: 5px;
+        background-color: rgba(75,111,81,0.3);
         
         @media (min-width: 500px) {
             flex-direction: row;
             justify-content: space-between;
             padding: 1.5rem;
-        }
-    }
+        }}
 
     .profileImage {
         max-width: 275px;
@@ -36,7 +43,22 @@ const Styles = styled.div`
             margin: 0.5rem;
             width: 40%;
         }
-    }
+
+        canvas {
+            max-width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+            border-radius: 50%;
+        }
+        
+        img {
+            width: 100%;
+            border: 1px solid #dcdbc4;
+            display: block;
+            box-shadow: 5px 5px 5px #010a00;
+            border-radius: 50%;
+        }}
     
     .accountDetails {
         width: 100%;
@@ -50,42 +72,34 @@ const Styles = styled.div`
             padding-top: 0;
             padding-left: 1rem;
             align-self: stretch;
-        }
-    }
+        }}
     
     .profileHeader {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
-    }
+        align-items: flex-start;}
     
     .usernameHeader {
         font-weight: bold;
         font-size: 1.5rem;
-        align-self: flex-end;
-    }
+        align-self: flex-end;}
     
     .accountTypeHeader {
-        align-self: flex-end;
-    }
+        align-self: flex-end;}
 
     .userDetails {
-        height: 100%;
-    }
+        height: 100%;}
 
     .accountButtons {
         display: flex;
         justify-content: flex-end;
-        gap: 10px;
-    }
+        gap: 10px;}
 
     .updateWrapper {
         display: flex;
         justify-content: space-between;
-        align-content: center;
-    }
+        align-content: center;}
 `
-
 
 const UserAccount = () => {
     const { dispatch } = useNotification()
@@ -217,9 +231,9 @@ const UserAccount = () => {
 
     return (
         <Styles>
-            <div className='pageWrapper userAccountPage'>
+            <div className='userAccountPage'>
                 
-                <div className='formImage formCirclePreview profileImage'>
+                <div className='profileImage'>
                     {
                         editImage
                             ? <canvas

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 // import { faCannabis, faTrash, faStore } from '@fortawesome/free-solid-svg-icons';
@@ -47,63 +47,65 @@ const BusinessLabelStyles = styled.div`
         }
 
         .trashIcon {
-            margin: 0.25rem;
+            margin: 0.25rem 0.5rem;
         }
     }
 `;
 
 
-const BusinessLabel = ({ business_id }) => {
+const BusinessLabel = ({ business_id, event_id, business_type }) => {
     const { data: businessList, isLoading, isSuccess } = useBusinessesQuery()
     let business = {}
+    let business_name = ''
     let business_role = {}
 
     const { auth, logout_user } = useAuth()
     const { mutateAsync: removeEventBusinessMutation } = useRemoveEventBusinessMutation()
-    const { event_id } = useParams()
+    // const { event_id } = useParams()
     const { dispatch } = useNotification()
 
     let navigate = useNavigate()
 
-    // const remove_event_business = async () => {
-    //     try {
-    //         const remove_business_response = await removeEventBusinessMutation({ event_id, event_updates: { business_id, business_type } })
+    const remove_event_business = async () => {
+        try {
+            const remove_business_response = await removeEventBusinessMutation({ event_id, event_updates: { business_id, business_type } })
 
-    //         if (remove_business_response.status === 202) {
-    //             dispatch({
-    //                 type: "ADD_NOTIFICATION",
-    //                 payload: {
-    //                     notification_type: 'SUCCESS',
-    //                     message: `${business?.business_name} has been removed`
-    //                 }
-    //             })
+            if (remove_business_response.status === 202) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${business_name} has been removed`
+                    }
+                })
 
-    //             navigate('/profile')
-    //         }
+                navigate('/profile')
+            }
 
-    //     } catch (error) {
-    //         console.log(error)
-    //         if (error.response.status === 401) {
-    //             dispatch({
-    //                 type: "ADD_NOTIFICATION",
-    //                 payload: {
-    //                     notification_type: 'ERROR',
-    //                     message: error.response.data.error.message
-    //                 }
-    //             })
+        } catch (error) {
+            console.log(error)
+            if (error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error.response.data.error.message
+                    }
+                })
 
 
-    //         }
+            }
 
-    //         logout_user()
-    //     }
+            logout_user()
+        }
 
-    // }
+    }
 
     if(isLoading) { <LoadingSpinner /> }
 
     if(isSuccess) {
         business = businessList?.data.find(business => business.id === business_id)
+        business_name = business?.business_name
         if(auth?.roles) {
             business_role = auth?.roles.find(role => role.business_id === business_id)
         }
@@ -114,13 +116,15 @@ const BusinessLabel = ({ business_id }) => {
         <BusinessLabelStyles>
             <div className='businessLabelStylesWrapper'>
                 <div className='businessLogoContainer' onClick={() => navigate(`/business/${business_id}`)}>
-                    <img src={business.business_avatar} alt='business branding' />
+                    <img src={business?.business_avatar} alt='business branding' />
                 </div>
                 <div className='businessDetailsWrapper'>
                     <div onClick={() => navigate(`/business/${business_id}`)}>{business.business_name}</div>
                     {
                         (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT)
-                            ? <FontAwesomeIcon icon={faTrash} className='trashIcon'/>
+                            ? <div onClick={remove_event_business}>
+                                <FontAwesomeIcon icon={faTrash} className='trashIcon'/>
+                            </div>
                             : null
                     }
                 </div>

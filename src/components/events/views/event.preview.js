@@ -118,10 +118,10 @@ const EventPreview = ({ event }) => {
 
     return (
         <Styles>
-            <div className={`eventPreviewWrapper ${(event.active_event) ? '' : 'inactiveEvent'}`} onClick={(event.active_event) ? () => navigate(`/event/${event.event_id}`) : null}>
+            <div className={`eventPreviewWrapper ${(event.active_event) ? '' : 'inactiveEvent'}`}>
 
                 <div className='eventPreviewHeader'>
-                    <h2>{event.eventname.toUpperCase()}</h2>
+                    <h2 onClick={(event.active_event) ? () => navigate(`/event/${event.event_id}`) : null}>{event.eventname.toUpperCase()}</h2>
                     {
                         (!event.active_event) &&
                             <FontAwesomeIcon icon={faPencilAlt} onClick={() => navigate(`/event/edit/${event.event_id}`, { state: event })}/>
@@ -135,7 +135,7 @@ const EventPreview = ({ event }) => {
                 </div>
                 
                 {/* event image & details */}
-                <div className='eventDetailWrapper'>
+                <div className='eventDetailWrapper' onClick={(event.active_event) ? () => navigate(`/event/${event.event_id}`) : null}>
 
                     <div className='eventImage'>
                         <img
@@ -148,10 +148,14 @@ const EventPreview = ({ event }) => {
                     </div>
                 </div>
 
-                <div className='businessLabelWrapper'>
-                    <BusinessLabel business_id={event.venue_id} />
-                    <BusinessLabel business_id={event.brand_id} />
-                </div>
+                {
+                    (event.active_event)
+                        ? <div className='businessLabelWrapper'>
+                            <BusinessLabel business_id={event.venue_id} event_id={event.event_id} business_type='venue' />
+                            <BusinessLabel business_id={event.brand_id} event_id={event.event_id} business_type='brand' />
+                        </div>
+                        : null
+                }
             </div>
         </Styles>
     )
