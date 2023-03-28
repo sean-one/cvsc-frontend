@@ -10,6 +10,7 @@ import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
+import { image_link } from '../../helpers/dataCleanUp';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelStylesWrapper {
@@ -115,7 +116,7 @@ const BusinessLabel = ({ business_id, event_id, business_type }) => {
         <BusinessLabelStyles>
             <div className='businessLabelStylesWrapper'>
                 <div className='businessLogoContainer' onClick={() => navigate(`/business/${business_id}`)}>
-                    <img src={business?.business_avatar} alt='business branding' />
+                    <img src={image_link(business?.business_avatar)} alt='business branding' />
                 </div>
                 <div className='businessDetailsWrapper'>
                     <div onClick={() => navigate(`/business/${business_id}`)}>{business.business_name}</div>

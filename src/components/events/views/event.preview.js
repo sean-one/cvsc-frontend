@@ -7,7 +7,8 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import BusinessLabel from '../../business/business_label';
+import useTextTruncate from '../../../hooks/useTextTruncate';
+import BusinessLabels from '../../business/business.labels';
 
 const EventPreviewStyles = styled.div`
     .eventPreviewWrapper {
@@ -35,6 +36,7 @@ const EventPreviewStyles = styled.div`
 
     .eventDetailWrapper {
         display: flex;
+        max-height: 700px;
         margin: 0.25rem 0;
     }
 
@@ -54,6 +56,7 @@ const EventPreviewStyles = styled.div`
         @media (min-width: 550px) {
             flex-direction: row;
             justify-content: space-between;
+            align-items: center;
             padding: 0.5rem 2.5rem;
         }
     }
@@ -86,28 +89,16 @@ const EventPreviewStyles = styled.div`
     .eventDetails {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         padding-left: 0.25rem;
         width: 100%;
-        max-height: 8rem;
+        /* max-height: 8rem; */
         font-size: 14px;
         font-weight: thin;
-        overflow: hidden;
+        /* overflow: hidden; */
 
         @media (min-width: 550px) {
             width: 75%;
-        }
-    }
-
-    .businessLabelWrapper {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-
-        @media (min-width: 360px) {
-            flex-direction: row;
-            justify-content: space-between;
-
         }
     }
 `;
@@ -144,18 +135,15 @@ const EventPreview = ({ event }) => {
                         />
                     </div>
                     <div className='eventDetails'>
-                        <div>{event.details}</div>
+                        <div>{useTextTruncate(event.details, 300)}</div>
+                        {
+                            (event.active_event)
+                                ? <BusinessLabels brand_id={event.brand_id} venue_id={event.venue_id} />
+                                : null
+                        }
                     </div>
                 </div>
 
-                {
-                    (event.active_event)
-                        ? <div className='businessLabelWrapper'>
-                            <BusinessLabel business_id={event.venue_id} event_id={event.event_id} business_type='venue' />
-                            <BusinessLabel business_id={event.brand_id} event_id={event.event_id} business_type='brand' />
-                        </div>
-                        : null
-                }
             </div>
         </EventPreviewStyles>
     )

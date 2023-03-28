@@ -11,7 +11,8 @@ import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
 import RelatedEvents from '../related.events';
-import BusinessLabel from '../../business/business_label';
+// import BusinessLabel from '../../business/business_label';
+import BusinessLabel from '../../business/business.label';
 
 const EventViewStyles = styled.div`
     .eventViewWrapper {
@@ -171,8 +172,8 @@ const EventView = () => {
                     <div className='linksAndInfo'>
                         {/* brand and venue names and links */}
                         <div className='businessLabelLinks'>
-                            <BusinessLabel business_id={event.data.venue_id} business_name={event.data.venue_name} business_role={venue_role} business_type='venue'/>
-                            <BusinessLabel business_id={event.data.brand_id} business_name={event.data.brand_name} business_role={brand_role} business_type='brand'/>
+                            <BusinessLabel business_id={event.data.venue_id} />
+                            <BusinessLabel business_id={event.data.brand_id} reverse={true} />
                         </div>
 
                         {/* <div className='fs-6 lh-sm mt-1 pt-2 border-top'> */}
