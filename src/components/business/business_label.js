@@ -17,11 +17,6 @@ const BusinessLabelStyles = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid red;
-
-        @media (min-width: 360px) {
-            border-bottom: none;
-        }
     }
 
     .businessLogoContainer {
@@ -42,6 +37,10 @@ const BusinessLabelStyles = styled.div`
         display: flex;
         justify-content: center;
 
+        @media (min-width: 768px) {
+            justify-content: flex-start;
+        }
+
         div {
             padding-right: 0.5rem;
         }
@@ -50,6 +49,7 @@ const BusinessLabelStyles = styled.div`
             margin: 0.25rem 0.5rem;
         }
     }
+
 `;
 
 
@@ -110,7 +110,6 @@ const BusinessLabel = ({ business_id, event_id, business_type }) => {
             business_role = auth?.roles.find(role => role.business_id === business_id)
         }
     }
-
 
     return (
         <BusinessLabelStyles>

@@ -13,18 +13,25 @@ import RelatedEvents from '../events/related.events';
 
 const Styles = styled.div`
     .businessView {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
         max-width: 1080px;
+        margin: 0 auto;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px #0D2B12;
+        border-radius: 5px;
+        background-color: rgba(75,111,81,0.3);
         
         @media (min-width: 768px) {
             padding: 1.5rem;
-        }
-    }
+        }}
 
     .businessHeader {
         width: 100%;
         display: flex;
-        flex-direction: column;
-    }
+        flex-direction: column;}
 
     .businessName {
         width: 100%;
@@ -38,14 +45,12 @@ const Styles = styled.div`
             justify-content: space-between;
             align-items: center;
 
-        }
-    }
+        }}
 
     .businessName h2 {
         @media (min-width: 768px) {
             align-self: flex-end;
-        }
-    }
+        }}
 
     .businessDetails {
         width: 100%;
@@ -60,9 +65,7 @@ const Styles = styled.div`
             justify-content: space-between;
             flex-wrap: wrap;
             /* gap: 10px; */
-        }
-
-    }
+        }}
 
     .firstBusinessSection {
         width: 100%;
@@ -73,9 +76,7 @@ const Styles = styled.div`
 
         @media (min-width: 768px) {
             flex-basis: 35%;
-        }
-
-    }
+        }}
 
     .businessImage {
         width: 100%;
@@ -95,8 +96,7 @@ const Styles = styled.div`
             @media (min-width: 768px) {
                 width: 200px;
             }
-        }
-    }
+        }}
 
     .secondBusinessSection {
         width: 100%;
@@ -104,8 +104,7 @@ const Styles = styled.div`
         @media (min-width: 768px) {
             flex-basis: 65%;
             padding: 2rem 0;
-        }
-    }
+        }}
 
     .businessContacts {
         width: 100%;
@@ -120,17 +119,14 @@ const Styles = styled.div`
         @media (min-width: 768px) {
             border: none;
             align-self: flex-start;
-        }
-
-    }
+        }}
 
     .businessDescription {
         text-align: justify;
 
         @media (min-width: 768px) {
             text-align: left;
-        }
-    }
+        }}
 
 `;
 
@@ -148,7 +144,7 @@ const BusinessView = () => {
 
     return (
         <Styles>
-            <div className='pageWrapper businessView'>
+            <div className='businessView'>
 
 
                 <div className='businessHeader'>
@@ -194,9 +190,8 @@ const BusinessView = () => {
                         </div>
                     </div>
                 </div>
-
-                <RelatedEvents business_ids={[business_id]} />
             </div>
+            <RelatedEvents business_ids={[business_id]} />
         </Styles>
     )
 }

@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { image_link } from '../../../helpers/dataCleanUp';
 import BusinessLabel from '../../business/business_label';
 
-const Styles = styled.div`
+const EventPreviewStyles = styled.div`
     .eventPreviewWrapper {
         display: flex;
         flex-direction: column;
@@ -117,7 +117,7 @@ const EventPreview = ({ event }) => {
     
 
     return (
-        <Styles>
+        <EventPreviewStyles>
             <div className={`eventPreviewWrapper ${(event.active_event) ? '' : 'inactiveEvent'}`}>
 
                 <div className='eventPreviewHeader'>
@@ -157,7 +157,7 @@ const EventPreview = ({ event }) => {
                         : null
                 }
             </div>
-        </Styles>
+        </EventPreviewStyles>
     )
 }
 
