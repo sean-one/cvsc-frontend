@@ -1,5 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+const theme = {
+
+}
+
+const GlobalStyle = createGlobalStyle`
+    :root {
+        --background-color: #19381f;
+    }
+`;
 
 const Styles = styled.div`
     * {
@@ -22,7 +32,7 @@ const Styles = styled.div`
         margin: 0;
         padding: 4.5rem 0.75rem 0 0.75rem;
         color: #DAD7CD;
-        background-color: #19381F;
+        background-color: var(--background-color);
     }
     
     .innerContainer {
@@ -283,7 +293,8 @@ const Styles = styled.div`
 
 export const Layout = (props) => {
     return (
-        <Styles>
+        <Styles theme={theme}>
+            <GlobalStyle />
             <div className='app_container'>
                 <div className='innerContainer'>{props.children}</div>
             </div>

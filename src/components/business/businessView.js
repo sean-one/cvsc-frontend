@@ -11,6 +11,8 @@ import ContactLink from '../contactLink';
 import BusinessAdminMenu from './admin/business.admin.menu';
 import RelatedEvents from '../events/related.events';
 
+import { InstagramIcon } from '../icons/instagramIcon';
+
 const Styles = styled.div`
     .businessView {
         display: flex;
@@ -176,7 +178,7 @@ const BusinessView = () => {
 
                             {/* dynamically add optional contact information */}
                             {business.data.business_phone && <ContactLink contact_type='phone' /> }
-                            {business.data.business_instagram && <ContactLink contact_type='instagram' /> }
+                            {business.data.business_instagram && <InstagramIcon /> }
                             {business.data.business_facebook && <ContactLink contact_type='facebook' /> }
                             {business.data.business_website && <ContactLink contact_type='website'/> }
                             {business.data.business_twitter && <ContactLink contact_type='twitter' /> }
