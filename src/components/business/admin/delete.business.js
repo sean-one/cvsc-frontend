@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
+import { DeleteIcon } from '../../icons/siteIcons';
 import { useRemoveBusinessMutation } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
+
 
 const DeleteBusiness = ({ business_id, business_name }) => {
 
@@ -33,7 +33,7 @@ const DeleteBusiness = ({ business_id, business_name }) => {
 
     return (
         <button onClick={delete_business}>
-            <FontAwesomeIcon icon={faTrash}/>
+            <DeleteIcon />
         </button>
     )
 }

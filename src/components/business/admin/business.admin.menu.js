@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
+import { UsersGroupIcon } from '../../icons/siteIcons';
+
 import ActiveBusinessToggle from './active.business.toggle';
 import RequestStatusToggle from './request.status.toggle';
 import DeleteBusiness from './delete.business';
@@ -47,7 +49,7 @@ const BusinessAdminMenu = ({ business, business_role }) => {
                 <div className='adminButtonWrapper'>
                     
                     <button onClick={() => navigate(`/business/roles/${business.id}`)}>
-                        <FontAwesomeIcon icon={faUsers} />
+                        <UsersGroupIcon />
                     </button>
                     
                     {

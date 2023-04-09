@@ -1,9 +1,9 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 
+import { DispensaryIcon, ClosedIcon } from '../../icons/siteIcons';
 import { useActiveBusinessToggle } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
+
 
 const ActiveBusinessToggle = ({ business_id, active_business }) => {
     const { dispatch } = useNotification()
@@ -23,12 +23,14 @@ const ActiveBusinessToggle = ({ business_id, active_business }) => {
             })
         }
     }
+
+    
     return (
         <button onClick={toggleActive}>
             {
                 active_business
-                    ? <FontAwesomeIcon icon={faBuilding} />
-                    : <FontAwesomeIcon icon={faBuilding} color='gray' />
+                    ? <DispensaryIcon />
+                    : <ClosedIcon />
             }
         </button>
     )

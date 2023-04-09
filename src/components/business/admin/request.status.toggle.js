@@ -1,7 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
+import { ClosedRequestIcon, OpenRequestIcon } from '../../icons/siteIcons';
 import { useBusinessRequestToggle } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
@@ -31,8 +30,8 @@ const RequestStatusToggle = ({ business_id, request_status }) => {
         <button onClick={toggleRequest}>
             {
                 request_status
-                    ? <FontAwesomeIcon icon={faUserPlus} />
-                    : <FontAwesomeIcon icon={faUserPlus} color='gray' />
+                    ? <OpenRequestIcon />
+                    : <ClosedRequestIcon />
             }
         </button>
     )
