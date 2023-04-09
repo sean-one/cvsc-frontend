@@ -180,7 +180,7 @@ const BusinessView = () => {
                             {business.data.business_phone && <a href={`tel:${business.data.business_phone}`}><PhoneIcon /></a> }
                             {business.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank'><InstagramIcon /></a> }
                             {business.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank'><FacebookIcon /></a> }
-                            {business.data.business_website && <a href={`${business.data.business_website}`} target='_blank'><WebSiteIcon /></a> }
+                            {business.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank'><WebSiteIcon /></a> }
                             {business.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank'><TwitterIcon /></a> }
                         </div>
 
