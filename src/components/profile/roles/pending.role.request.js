@@ -15,7 +15,7 @@ const Styles = styled.div`
         display: flex;
         flex-direction: column;
         padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px #0D2B12;
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
     }
 

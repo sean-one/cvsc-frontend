@@ -31,11 +31,11 @@ const Styles = styled.div`
         cursor: pointer;
         padding: 0.5rem;
         border: none;
-        color: #DAD7CD;
+        color: var(--main-text-color);
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
-        box-shadow: 3px 2px 1px 0 #0D2B12;
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
         text-align: center;
 

@@ -8,6 +8,9 @@ const theme = {
 const GlobalStyle = createGlobalStyle`
     :root {
         --background-color: #19381f;
+        --main-text-color: #DAD7CD;
+        --error-text-color: #DAD7CD;
+        --box-shadow-color: #0D2B12;
     }
 `;
 
@@ -31,7 +34,7 @@ const Styles = styled.div`
         max-width: 100vw;
         margin: 0;
         padding: 4.5rem 0.75rem 0 0.75rem;
-        color: #DAD7CD;
+        color: var(--main-text-color);
         background-color: var(--background-color);
     }
     
@@ -55,7 +58,7 @@ const Styles = styled.div`
         /* max-width: 700px; */
         margin: 0 auto;
         padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px #0D2B12;
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
         background-color: rgba(75,111,81,0.3);
     }
@@ -107,11 +110,11 @@ const Styles = styled.div`
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
-        box-shadow: 3px 2px 1px 0 #0D2B12;
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
         
         ::placeholder {
-            color: #DAD7CD;
+            color: var(--main-text-color);
         }
     }
     
@@ -212,11 +215,11 @@ const Styles = styled.div`
         width: 100%;
         padding: 0.5rem;
         border: none;
-        color: #DAD7CD;
+        color: var(--main-text-color);
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: #4B6F51;
-        box-shadow: 3px 2px 1px 0 #0D2B12;
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
         text-align: center;
 
@@ -267,12 +270,6 @@ const Styles = styled.div`
         }
     }
 
-    .event-card-title {
-        font-weight: bold;
-        color: darkgreen;
-        text-transform: capitalize;
-    }
-
     .icon-button {
         cursor: pointer;
     }
@@ -282,12 +279,12 @@ const Styles = styled.div`
         text-align: left;
         /* padding: 0.25rem; */
         /* color: #8f0c0c; */
-        color: #DAD7CD;
+        color: var(--error-text-color);
         /* font-weight: bold; */
     }
 
     .inputError {
-        border-bottom: 2px solid #DAD7CD;
+        border-bottom: 2px solid var(--error-text-color);
     }
 
 `;

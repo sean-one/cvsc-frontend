@@ -22,7 +22,7 @@ const Styles = styled.div`
         max-width: 1080px;
         margin: 0 auto;
         padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px #0D2B12;
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
         background-color: rgba(75,111,81,0.3);
         
@@ -60,7 +60,7 @@ const Styles = styled.div`
         flex-direction: column;
         align-items: center;
         padding: 0.75rem 0 1.25rem;
-        border-bottom: 1px solid #DAD7CD;
+        border-bottom: 1px solid var(--main-text-color);
         
         @media (min-width: 768px) {
             flex-direction: row;

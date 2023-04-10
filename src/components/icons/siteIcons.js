@@ -4,6 +4,7 @@ import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos
 import { Phone } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
 import { BuildingRetail, Edit, Delete, Mail, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
+import { CameraAdd } from "@styled-icons/fluentui-system-regular";
 // import { PersonDelete } from "@styled-icons/fluentui-system-filled"
 // import { Create } from "@styled-icons/ionicons-outline"
 import { Cannabis, Users } from "@styled-icons/fa-solid"
@@ -22,6 +23,7 @@ export const ClosedIcon = styled(Prohibited)`color: red; width: 22px;`
 export const BrandIcon = styled(Cannabis)`color: green; width: 22px;`
 
 export const EditIcon = styled(Edit)`color: darkcyan; width: 22px;`
+export const AddImageIcon = styled(CameraAdd)`color: pink; width: 22px;`
 export const DeleteIcon = styled(Delete)`color: red; width: 22px;`
 
 export const UsersGroupIcon = styled(Users)`color: aqua; width: 22px;`

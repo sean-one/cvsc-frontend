@@ -1,9 +1,14 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
-// import { faCamera, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
-// import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { 
+    AddImageIcon,
+    InstagramIcon,
+    WebSiteIcon,
+    FacebookIcon,
+    PhoneIcon,
+    TwitterIcon
+} from '../icons/siteIcons';
 
 const contact_icons = {
     'instagram' : <InstagramIcon />,
@@ -12,14 +17,6 @@ const contact_icons = {
     'phone' : <PhoneIcon />,
     'twitter' : <TwitterIcon />
 }
-// const contact_icons = {
-//     'instagram' : faInstagram,
-//     'website' : faGlobe,
-//     'facebook' : faFacebook,
-//     'phone' : faPhone,
-//     'twitter' : faTwitter
-// }
-
 
 export const FormInput = ({ register, id, onfocus, type='text', placeholder, error }) => {
     return (
@@ -54,7 +51,8 @@ export const ImageInput = ({ register, id, onfocus, error, change }) => {
     return (
         <div onClick={() => onfocus(id)}>
             <label htmlFor={`${id}`} className='imageLabel'>
-                <FontAwesomeIcon icon={faCamera} />
+                <AddImageIcon />
+                {/* <FontAwesomeIcon icon={faCamera} /> */}
                 <input
                     {...register(id)}
                     className={error ? 'inputError' : ''}

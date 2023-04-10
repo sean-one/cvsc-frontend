@@ -16,7 +16,7 @@ const Styles = styled.div`
     .roleRequest {
         padding: 1.5rem 0.5rem;
         border-radius: 5px;
-        box-shadow: 5px 5px 5px #0D2B12;
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
     }
 
     .roleRequestHeader {
