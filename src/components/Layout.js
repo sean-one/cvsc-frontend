@@ -186,18 +186,19 @@ const Styles = styled.div`
         align-items: center;
         
         div {
-            width: 15%;
+            border: 1px solid red;
+            /* width: 15%;
             
             @media(min-width: 400px) {
                 width: 10%;
-            }
+            } */
         }
     }
     
     /* used in contact input of forminput.js */
     .labelIcon {
-        margin: 0 0.5rem;
-        width: 1rem;
+        padding: 0.5rem;
+        /* width: 1rem; */
     }
     
     .inputErrorWrapper {

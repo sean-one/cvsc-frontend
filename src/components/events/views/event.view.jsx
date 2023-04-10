@@ -1,17 +1,15 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
+import { EditIcon } from '../../icons/siteIcons';
 import useAuth from '../../../hooks/useAuth';
 import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
 import RelatedEvents from '../related.events';
-// import BusinessLabel from '../../business/business_label';
 import BusinessLabel from '../../business/business.label';
 
 const EventViewStyles = styled.div`
@@ -125,7 +123,6 @@ const EventViewStyles = styled.div`
 const EventView = () => {
     const { auth } = useAuth()
     let { event_id } = useParams()
-    let brand_role, venue_role = {}
 
     let navigate = useNavigate()
     
@@ -133,11 +130,6 @@ const EventView = () => {
 
     if (isLoading) {
         return <LoadingSpinner />
-    }
-
-    if(auth?.roles) {
-        brand_role = auth.roles.find(role => role.business_id === event.data.brand_id) || {}
-        venue_role = auth.roles.find(role => role.business_id === event.data.venue_id) || {}
     }
 
 
@@ -149,8 +141,8 @@ const EventView = () => {
                     <h2>{event.data.eventname.toUpperCase()}</h2>
                     {
                         (auth?.user?.id === event.data.created_by)
-                            ? <div>
-                                <FontAwesomeIcon icon={faPen} onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}/>
+                            ? <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>
+                                <EditIcon />
                             </div>
                             : null
                     }

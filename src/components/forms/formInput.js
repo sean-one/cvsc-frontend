@@ -1,15 +1,24 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
+// import { faCamera, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
+// import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 
 const contact_icons = {
-    'instagram' : faInstagram,
-    'website' : faGlobe,
-    'facebook' : faFacebook,
-    'phone' : faPhone,
-    'twitter' : faTwitter
+    'instagram' : <InstagramIcon />,
+    'website' : <WebSiteIcon />,
+    'facebook' : <FacebookIcon />,
+    'phone' : <PhoneIcon />,
+    'twitter' : <TwitterIcon />
 }
+// const contact_icons = {
+//     'instagram' : faInstagram,
+//     'website' : faGlobe,
+//     'facebook' : faFacebook,
+//     'phone' : faPhone,
+//     'twitter' : faTwitter
+// }
 
 
 export const FormInput = ({ register, id, onfocus, type='text', placeholder, error }) => {
@@ -121,9 +130,12 @@ export const TextAreaInput = ({ register, id, onfocus, error, placeholder }) => 
 export const ContactInput = ({ register, id, onfocus, error }) => {
     return (
         <>
+            {/* <label htmlFor={`business_${id}'`}> */}
             <label htmlFor={`business_${id}'`} className='labelWrapper'>
+                {/* <div> */}
                 <div className='labelIcon'>
-                    <FontAwesomeIcon icon={contact_icons[id]} size='2x' />
+                    {contact_icons[id]}
+                    {/* <FontAwesomeIcon icon={contact_icons[id]} size='2x' /> */}
                 </div>
                 <input
                 {...register(`business_${id}`)}

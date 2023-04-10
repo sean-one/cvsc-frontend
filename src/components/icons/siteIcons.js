@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
 import { Phone } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
-import { BuildingRetail, Edit, Delete, Mail, PersonDelete, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
-import { Create } from "@styled-icons/ionicons-outline"
-import { Bars, Cannabis, Users, UsersSlash } from "@styled-icons/fa-solid"
+import { BuildingRetail, Edit, Delete, Mail, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
+// import { PersonDelete } from "@styled-icons/fluentui-system-filled"
+// import { Create } from "@styled-icons/ionicons-outline"
+import { Cannabis, Users } from "@styled-icons/fa-solid"
+// import { Bars, UsersSlash } from "@styled-icons/fa-solid"
 
 export const MailIcon = styled(Mail)`color: yellow; width: 22px;`
 export const InstagramIcon = styled(Instagram)`color: purple; width: 22px;`

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
@@ -7,7 +7,7 @@ import { image_link } from '../../helpers/dataCleanUp';
 
 import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
-import ContactLink from '../contactLink';
+// import ContactLink from '../contactLink';
 import BusinessAdminMenu from './admin/business.admin.menu';
 import RelatedEvents from '../events/related.events';
 
@@ -174,14 +174,14 @@ const BusinessView = () => {
                             />
                         </div>
                         <div className='businessContacts'>
-                            <a href={`mailto:${business.data.business_email}`} target='_blank'><MailIcon /></a>
+                            <a href={`mailto:${business.data.business_email}`} target='_blank' rel='noreferrer'><MailIcon /></a>
 
                             {/* dynamically add optional contact information */}
                             {business.data.business_phone && <a href={`tel:${business.data.business_phone}`}><PhoneIcon /></a> }
-                            {business.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank'><InstagramIcon /></a> }
-                            {business.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank'><FacebookIcon /></a> }
-                            {business.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank'><WebSiteIcon /></a> }
-                            {business.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank'><TwitterIcon /></a> }
+                            {business.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank' rel='noreferrer'><InstagramIcon /></a> }
+                            {business.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank' rel='noreferrer'><FacebookIcon /></a> }
+                            {business.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><WebSiteIcon /></a> }
+                            {business.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><TwitterIcon /></a> }
                         </div>
 
                     </div>
