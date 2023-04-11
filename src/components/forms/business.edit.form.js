@@ -46,31 +46,37 @@ const Styles = styled.div`
     }
 
     .formContainer {
-        /* width: 100%; */
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        background-color: red;
     }
 
     .leftFormColumn, .rightFormColumn {
-        max-width: 50%;
+        max-width: 100%;
+    }
+
+    .leftFormColumn {
+        align-self: flex-start;
+        background-color: blue;
     }
 
     .imageParent {
         /* width: 100%; */
         /* display: flex; */
-        /* max-width: 350px; */
+        max-width: 350px;
         /* margin: 1rem auto; */
         /* position: relative;
         top: 0;
         left: 0; */
-        background-color: pink;
+        /* background-color: pink; */
         
         @media (min-width: 500px) {
-            /* width: 100%; */
+            width: 100%;
         }
         
         img, canvas {
-            /* max-width: 100%; */
+            max-width: 100%;
             border: 1px solid #DCDBC4;
             border-radius: 50%;
             display: block;
@@ -197,9 +203,9 @@ const BusinessEditForm = () => {
     return (
         <Styles>
             <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data'>
+                <h1>{business?.business_name}</h1>
                 <div className='formContainer'>
                     <div className='leftFormColumn'>
-                        <h1>{business?.business_name}</h1>
                         <div className='imageParent'>
                             {
                                 editImage
@@ -278,37 +284,40 @@ const BusinessEditForm = () => {
                                 </div>
                         }
 
-                        {/* instagram input */}
-                        <ContactInput id='instagram'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_instagram}
-                        />
-                        {/* website input */}
-                        <ContactInput id='website'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_website}
-                        />
-                        {/* facebook input */}
-                        <ContactInput id='facebook'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_facebook}
-                        />
-                        {/* phone input */}
-                        <ContactInput id='phone'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_phone}
-                        />
-                        {/* twitter input */}
-                        <ContactInput id='twitter'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_twitter}
-                        />
                     </div>
+                </div>
+                <div className='businessContacts'>
+                    {/* instagram input */}
+                    <ContactInput id='instagram'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_instagram}
+                    />
+                    {/* website input */}
+                    <ContactInput id='website'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_website}
+                    />
+                    {/* facebook input */}
+                    <ContactInput id='facebook'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_facebook}
+                    />
+                    {/* phone input */}
+                    <ContactInput id='phone'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_phone}
+                    />
+                    {/* twitter input */}
+                    <ContactInput id='twitter'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.business_twitter}
+                    />
+
                 </div>
 
                 <div className='buttonWrapper'>
