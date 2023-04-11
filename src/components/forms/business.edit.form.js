@@ -45,6 +45,43 @@ const Styles = styled.div`
         padding-top: 0.75rem;
     }
 
+    .formContainer {
+        /* width: 100%; */
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .leftFormColumn, .rightFormColumn {
+        max-width: 50%;
+    }
+
+    .imageParent {
+        /* width: 100%; */
+        /* display: flex; */
+        /* max-width: 350px; */
+        /* margin: 1rem auto; */
+        /* position: relative;
+        top: 0;
+        left: 0; */
+        background-color: pink;
+        
+        @media (min-width: 500px) {
+            /* width: 100%; */
+        }
+        
+        img, canvas {
+            /* max-width: 100%; */
+            border: 1px solid #DCDBC4;
+            border-radius: 50%;
+            display: block;
+            box-shadow: 5px 5px 5px #010A00;
+        }
+
+        div {
+            background-color: blue;
+        }
+    }
+
 `;
 
 const BusinessEditForm = () => {
@@ -159,117 +196,120 @@ const BusinessEditForm = () => {
     
     return (
         <Styles>
-            <h1>{business?.business_name}</h1>
             <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data'>
-
-                {
-                    (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                        <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
-                }
-
-                <div className='formImage formCirclePreview'>
-                    {
-                        editImage
-                            ? <canvas
-                                id={'avatarImagePreview'}
-                                ref={canvas}
+                <div className='formContainer'>
+                    <div className='leftFormColumn'>
+                        <h1>{business?.business_name}</h1>
+                        <div className='imageParent'>
+                            {
+                                editImage
+                                    ? <canvas
+                                        // className=''
+                                        id={'avatarImagePreview'}
+                                        ref={canvas}
+                                    />
+                                    : <img
+                                        // className=''
+                                        src={image_link(business?.business_avatar)}
+                                        alt={business.business_name}
+                                    />
+                            }
+                            <ImageInput id='business_avatar'
+                                register={register}
+                                onfocus={clearErrors}
+                                error={errors.business_avatar}
+                                change={imagePreview}
                             />
-                            : <img
-                                src={image_link(business?.business_avatar)}
-                                alt={business.business_name}
-                            />
-                    }
-                </div>
+                        </div>
+                    </div>
+                    <div className='rigthFormColumn'>
+                        {
+                            (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                                <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
+                        }
 
-                {
-                    ((business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) && !image_attached) &&
-                        <CheckBox register={register} id='image_attached' boxlabel='Update Image' />
-                }
 
-                {
-                    (image_attached) &&
-                        <ImageInput id='business_avatar'
+                        {
+                            ((business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) && !image_attached) &&
+                                <CheckBox register={register} id='image_attached' boxlabel='Update Image' />
+                        }
+
+                        {/* business description input */}
+                        <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placehold='Business details...' />
+
+                        {
+                            (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                                <div className='locationWrapper'>
+                                    <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
+
+                                    <CheckBox register={register} id='business_location' boxlabel='Update Location' />
+                                </div>
+                        }
+
+                        {
+                            (business_location) &&
+                                <div>
+                                    {/* street address input for location */}
+                                    <FormInput id='street_address'
+                                        register={register}
+                                        onfocus={clearErrors}
+                                        error={errors.street_address}
+                                    />
+                                    {/* city input for location */}
+                                    <FormInput id='city'
+                                        register={register}
+                                        onfocus={clearErrors}
+                                        error={errors.city}
+                                    />
+                                    <div className='stateZipWrapper'>
+                                        {/* state input for location */}
+                                        <FormInput id='state'
+                                            register={register}
+                                            onfocus={clearErrors}
+                                            error={errors.state}
+                                        />
+                                        {/* zip code input for location */}
+                                        <FormInput id='zip'
+                                            register={register}
+                                            onfocus={clearErrors}
+                                            error={errors.zip}
+                                        />
+                                    </div>
+                                </div>
+                        }
+
+                        {/* instagram input */}
+                        <ContactInput id='instagram'
                             register={register}
                             onfocus={clearErrors}
-                            error={errors.business_avatar}
-                            change={imagePreview}
+                            error={errors.business_instagram}
                         />
-                }
-
-                {/* business description input */}
-                <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placehold='Business details...' />
-
-                {
-                    (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                        <div className='locationWrapper'>
-                            <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
-
-                            <CheckBox register={register} id='business_location' boxlabel='Update Location' />
-                        </div>
-                }
-
-                {
-                    (business_location) &&
-                        <div>
-                            {/* street address input for location */}
-                            <FormInput id='street_address'
-                                register={register}
-                                onfocus={clearErrors}
-                                error={errors.street_address}
-                            />
-                            {/* city input for location */}
-                            <FormInput id='city'
-                                register={register}
-                                onfocus={clearErrors}
-                                error={errors.city}
-                            />
-                            <div className='stateZipWrapper'>
-                                {/* state input for location */}
-                                <FormInput id='state'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    error={errors.state}
-                                />
-                                {/* zip code input for location */}
-                                <FormInput id='zip'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    error={errors.zip}
-                                />
-                            </div>
-                        </div>
-                }
-
-                {/* instagram input */}
-                <ContactInput id='instagram'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_instagram}
-                />
-                {/* website input */}
-                <ContactInput id='website'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_website}
-                />
-                {/* facebook input */}
-                <ContactInput id='facebook'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_facebook}
-                />
-                {/* phone input */}
-                <ContactInput id='phone'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_phone}
-                />
-                {/* twitter input */}
-                <ContactInput id='twitter'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.business_twitter}
-                />
+                        {/* website input */}
+                        <ContactInput id='website'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_website}
+                        />
+                        {/* facebook input */}
+                        <ContactInput id='facebook'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_facebook}
+                        />
+                        {/* phone input */}
+                        <ContactInput id='phone'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_phone}
+                        />
+                        {/* twitter input */}
+                        <ContactInput id='twitter'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_twitter}
+                        />
+                    </div>
+                </div>
 
                 <div className='buttonWrapper'>
                     <button type='submit' disabled={!isDirty}>Update</button>

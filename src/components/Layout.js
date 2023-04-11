@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
         --main-text-color: #DAD7CD;
         --error-text-color: #DAD7CD;
         --box-shadow-color: #0D2B12;
+        --input-background-color: #4B6F51;
     }
 `;
 
@@ -109,7 +110,7 @@ const Styles = styled.div`
         color: #010a00;
         border-radius: 5px;
         border-bottom: 1px solid black;
-        background-color: #4B6F51;
+        background-color: var(--input-background-color);
         box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
         
@@ -212,13 +213,13 @@ const Styles = styled.div`
     .imageLabel {
         /* margin: 0.5rem 0; */
         cursor: pointer;
-        width: 100%;
+        /* width: 100%; */
         padding: 0.5rem;
         border: none;
         color: var(--main-text-color);
-        border-radius: 5px;
+        border-radius: 50%;
         border-bottom: 1px solid black;
-        background-color: #4B6F51;
+        background-color: var(--input-background-color);
         box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
         text-align: center;
