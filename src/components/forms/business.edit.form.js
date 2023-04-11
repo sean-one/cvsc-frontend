@@ -49,16 +49,20 @@ const Styles = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: red;
     }
 
     .leftFormColumn, .rightFormColumn {
+        padding: 0.5rem;
         max-width: 100%;
     }
 
     .leftFormColumn {
+        width: 35%;
         align-self: flex-start;
-        background-color: blue;
+    }
+    
+    .rightFormColumn {
+        width: 65%;
     }
 
     .imageParent {
@@ -82,10 +86,11 @@ const Styles = styled.div`
             display: block;
             box-shadow: 5px 5px 5px #010A00;
         }
+    }
 
-        div {
-            background-color: blue;
-        }
+    .businessContacts {
+        background-color: purple;
+        border: 1px solid yellow;
     }
 
 `;
@@ -228,7 +233,7 @@ const BusinessEditForm = () => {
                             />
                         </div>
                     </div>
-                    <div className='rigthFormColumn'>
+                    <div className='rightFormColumn'>
                         {
                             (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                                 <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
