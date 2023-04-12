@@ -1,6 +1,5 @@
 import React from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 import { 
     AddImageIcon,
     InstagramIcon,
@@ -9,6 +8,47 @@ import {
     PhoneIcon,
     TwitterIcon
 } from '../icons/siteIcons';
+
+const InputStyles = styled.div`
+    input, select, textarea {
+        /* margin: 0.5rem 0; */
+        width: 100%;
+        padding: 0.5rem;
+        border: none;
+        color: #010a00;
+        /* border-radius: 5px;
+        border-bottom: 1px solid black; */
+        background-color: var(--input-background-color);
+        /* box-shadow: 3px 2px 1px 0 var(--box-shadow-color); */
+        outline: none;
+        
+        ::placeholder {
+            color: var(--main-text-color);
+        }
+    }
+    
+    .inputWrapper {
+        border-radius: 5px;
+        border-bottom: 1px solid black;
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
+        display: flex;
+        flex-direction: column;
+        margin: 0.5rem 0;
+    }
+
+    .inputError {
+        border-bottom: 2px solid var(--error-text-color);
+    }
+
+    .errormessage {
+        width: 100%;
+        text-align: left;
+        /* padding: 0.25rem; */
+        /* color: #8f0c0c; */
+        color: var(--error-text-color);
+        /* font-weight: bold; */
+    }
+`;
 
 const contact_icons = {
     'instagram' : <InstagramIcon />,
@@ -20,58 +60,64 @@ const contact_icons = {
 
 export const FormInput = ({ register, id, onfocus, type='text', placeholder, error }) => {
     return (
-        <div className='inputErrorWrapper'>
-            <input
-                {...register(id)}
-                className={error ? 'inputError' : ''}
-                onFocus={() => onfocus(id)}
-                type={type}
-                name={id}
-                placeholder={placeholder}
-            />
-            <div className='errormessage'>{error?.message}</div>
-        </div>
+        <InputStyles>
+            <div className='inputWrapper'>
+                <input
+                    {...register(id)}
+                    className={error ? 'inputError' : ''}
+                    onFocus={() => onfocus(id)}
+                    type={type}
+                    name={id}
+                    placeholder={placeholder}
+                />
+                <div className='errormessage'>{error?.message}</div>
+            </div>
+        </InputStyles>
     )
 }
 
 export const CheckBox = ({ register, id, boxlabel }) => {
     return (
-        <label htmlFor={id} className='updateCheckbox'>
-            <input
-                {...register(id)}
-                type='checkbox'
-                name={id}
-            />
-            {boxlabel}
-        </label>
+        <InputStyles>
+            <label htmlFor={id} className='updateCheckbox'>
+                <input
+                    {...register(id)}
+                    type='checkbox'
+                    name={id}
+                />
+                {boxlabel}
+            </label>
+        </InputStyles>
     )
 }
 
 export const ImageInput = ({ register, id, onfocus, error, change }) => {
     return (
-        <div onClick={() => onfocus(id)}>
-            <label htmlFor={`${id}`} className='imageLabel'>
-                <AddImageIcon />
-                {/* <FontAwesomeIcon icon={faCamera} /> */}
-                <input
-                    {...register(id)}
-                    className={error ? 'inputError' : ''}
-                    type='file'
-                    id={id}
-                    accept='image/*'
-                    onChange={(e) => change(e)}
-                />
-            </label>
-            <div className='errormessage'>{error?.message}</div>
-        </div>
+        <InputStyles>
+            <div onClick={() => onfocus(id)}>
+                <label htmlFor={`${id}`} className='imageLabel'>
+                    <AddImageIcon />
+                    {/* <FontAwesomeIcon icon={faCamera} /> */}
+                    <input
+                        {...register(id)}
+                        className={error ? 'inputError' : ''}
+                        type='file'
+                        id={id}
+                        accept='image/*'
+                        onChange={(e) => change(e)}
+                    />
+                </label>
+                <div className='errormessage'>{error?.message}</div>
+            </div>
+        </InputStyles>
     )
 }
 
 export const BusinessSelect = ({ register, id, onfocus, role_error, business_error, business_list, selectFor }) => {
     return (
-        <>
+        <InputStyles>
             <select
-                className={`inputErrorWrapper ${business_error || role_error ? 'inputError' : ''}`}
+                className={`inputWrapper ${business_error || role_error ? 'inputError' : ''}`}
                 {...register(id)}
                 onFocus={onfocus}
                 type='text'
@@ -86,65 +132,68 @@ export const BusinessSelect = ({ register, id, onfocus, role_error, business_err
             </select>
             <div className='errormessage'>{business_error?.message}</div>
             <div className='errormessage'>{role_error?.message}</div>
-        </>
+        </InputStyles>
     )
 }
 
 export const BusinessTypeSelect = ({register, onfocus, error }) => {
     return (
-        <div className='inputErrorWrapper'>
-            <select
-                className={error ? 'inputError' : ''}
-                {...register('business_type')}
-                onFocus={() => onfocus('business_type')}
-                type='text'
-                name='business_type'
-            >
-                <option value='brand'>Brand</option>
-                <option value='venue'>Dispensary</option>
-                <option value='both'>{`Brand & Dispensary`}</option>
-            </select>
-            <div className='errormessage'>{error?.message}</div>
-        </div>
+        <InputStyles>
+            <div className='inputWrapper'>
+                <select
+                    className={error ? 'inputError' : ''}
+                    {...register('business_type')}
+                    onFocus={() => onfocus('business_type')}
+                    type='text'
+                    name='business_type'
+                >
+                    <option value='brand'>Brand</option>
+                    <option value='venue'>Dispensary</option>
+                    <option value='both'>{`Brand & Dispensary`}</option>
+                </select>
+                <div className='errormessage'>{error?.message}</div>
+            </div>
+        </InputStyles>
     )
 }
 
 export const TextAreaInput = ({ register, id, onfocus, error, placeholder }) => {
     return (
-        <>
-            <textarea
-                {...register(id)}
-                className={error ? 'inputError' : ''}
-                onFocus={() => onfocus(id)}
-                name={id}
-                rows='8'
-                placeholder={placeholder}
-            />
-            <div className='errormessage'>{error?.message}</div>
-        </>
+        <InputStyles>
+            <div className='inputWrapper'>
+                <textarea
+                    {...register(id)}
+                    className={error ? 'inputError' : ''}
+                    onFocus={() => onfocus(id)}
+                    name={id}
+                    rows='8'
+                    placeholder={placeholder}
+                />
+                <div className='errormessage'>{error?.message}</div>
+            </div>
+        </InputStyles>
     )
 }
 
 export const ContactInput = ({ register, id, onfocus, error }) => {
     return (
-        <>
-            {/* <label htmlFor={`business_${id}'`}> */}
-            <label htmlFor={`business_${id}'`} className='labelWrapper'>
-                {/* <div> */}
-                <div className='labelIcon'>
-                    {contact_icons[id]}
-                    {/* <FontAwesomeIcon icon={contact_icons[id]} size='2x' /> */}
-                </div>
-                <input
-                {...register(`business_${id}`)}
-                className={error ? 'inputError' : ''}
-                onFocus={() => onfocus(`business_${id}`)}
-                type='text'
-                id={`business_${id}`}
-                placeholder={id.charAt(0).toUpperCase() + id.slice(1)}
-                />
-            </label>
-            <div className='errormessage'>{error?.message}</div>
-        </>
+        <InputStyles>
+            <div className='inputWrapper'>
+                <label htmlFor={`business_${id}'`} className='labelWrapper'>
+                    <div className='labelIcon'>
+                        {contact_icons[id]}
+                    </div>
+                    <input
+                    {...register(`business_${id}`)}
+                    className={error ? 'inputError' : ''}
+                    onFocus={() => onfocus(`business_${id}`)}
+                    type='text'
+                    id={`business_${id}`}
+                    placeholder={id.charAt(0).toUpperCase() + id.slice(1)}
+                    />
+                </label>
+                <div className='errormessage'>{error?.message}</div>
+            </div>
+        </InputStyles>
     )
 }

@@ -102,8 +102,8 @@ const Styles = styled.div`
         gap: 10px;
     }
 
-    input, select, textarea {
-        /* margin: 0.5rem 0; */
+    /* input, select, textarea {
+        margin: 0.5rem 0;
         width: 100%;
         padding: 0.5rem;
         border: none;
@@ -117,7 +117,7 @@ const Styles = styled.div`
         ::placeholder {
             color: var(--main-text-color);
         }
-    }
+    } */
     
     button {
         padding: 0.5rem 1.25rem;
@@ -190,7 +190,7 @@ const Styles = styled.div`
         align-items: center;
         
         div {
-            border: 1px solid red;
+            /* border: 1px solid red; */
             /* width: 15%;
             
             @media(min-width: 400px) {

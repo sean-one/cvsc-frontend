@@ -89,7 +89,7 @@ const Styles = styled.div`
     }
 
     .businessContacts {
-        background-color: purple;
+        background-color: var(--input-background-color);
         border: 1px solid yellow;
     }
 
