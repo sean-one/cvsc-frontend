@@ -9,8 +9,9 @@ const GlobalStyle = createGlobalStyle`
     :root {
         --background-color: #19381f;
         --main-text-color: #DAD7CD;
-        --error-text-color: #DAD7CD;
+        --error-text-color: #58C46E;
         --box-shadow-color: #0D2B12;
+        --input-text-color: #010A00;
         --input-background-color: #4B6F51;
     }
 `;
@@ -101,23 +102,6 @@ const Styles = styled.div`
         justify-content: space-between;
         gap: 10px;
     }
-
-    /* input, select, textarea {
-        margin: 0.5rem 0;
-        width: 100%;
-        padding: 0.5rem;
-        border: none;
-        color: #010a00;
-        border-radius: 5px;
-        border-bottom: 1px solid black;
-        background-color: var(--input-background-color);
-        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
-        outline: none;
-        
-        ::placeholder {
-            color: var(--main-text-color);
-        }
-    } */
     
     button {
         padding: 0.5rem 1.25rem;
@@ -184,66 +168,6 @@ const Styles = styled.div`
         margin: 0 1rem;
     }
 
-    /* used in contact input of forminput.js */
-    .labelWrapper {
-        display: flex;
-        align-items: center;
-        
-        div {
-            /* border: 1px solid red; */
-            /* width: 15%;
-            
-            @media(min-width: 400px) {
-                width: 10%;
-            } */
-        }
-    }
-    
-    /* used in contact input of forminput.js */
-    .labelIcon {
-        padding: 0.5rem;
-        /* width: 1rem; */
-    }
-    
-    .inputErrorWrapper {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .imageLabel {
-        /* margin: 0.5rem 0; */
-        cursor: pointer;
-        /* width: 100%; */
-        padding: 0.5rem;
-        border: none;
-        color: var(--main-text-color);
-        border-radius: 50%;
-        border-bottom: 1px solid black;
-        background-color: var(--input-background-color);
-        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
-        outline: none;
-        text-align: center;
-
-        input {
-            display: none;
-        }
-    }
-
-    .updateCheckbox {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        
-        input[type=checkbox] {
-            width: 1rem;
-            height: 1rem;
-            margin: 0;
-            margin-right: 0.25rem;
-            padding: 0;
-        }
-    }
-
     .dateTimeWrapper {
         display: flex;
         flex-direction: column;
@@ -254,10 +178,6 @@ const Styles = styled.div`
             justify-content: space-between;
 
         }
-    }
-
-    .inputErrorWrapper {
-        width: 100%;
     }
 
     .timeWrapper{
@@ -282,10 +202,6 @@ const Styles = styled.div`
         /* color: #8f0c0c; */
         color: var(--error-text-color);
         /* font-weight: bold; */
-    }
-
-    .inputError {
-        border-bottom: 2px solid var(--error-text-color);
     }
 
 `;

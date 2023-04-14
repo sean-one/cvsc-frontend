@@ -10,13 +10,13 @@ import { CameraAdd } from "@styled-icons/fluentui-system-regular";
 import { Cannabis, Users } from "@styled-icons/fa-solid"
 // import { Bars, UsersSlash } from "@styled-icons/fa-solid"
 
-export const MailIcon = styled(Mail)`color: yellow; width: 22px;`
-export const InstagramIcon = styled(Instagram)`color: purple; width: 22px;`
-export const TwitterIcon = styled(Twitter)`color: blue; width: 22px;`
-export const FacebookIcon = styled(FacebookCircle)`color: deepskyblue; width: 22px;`
+export const MailIcon = styled(Mail)`color: var(--background-color); width: 24px;`
+export const InstagramIcon = styled(Instagram)`color: var(--background-color); width: 24px;`
+export const TwitterIcon = styled(Twitter)`color: var(--background-color); width: 24px;`
+export const FacebookIcon = styled(FacebookCircle)`color: var(--background-color); width: 24px;`
 
-export const PhoneIcon = styled(Phone)`color: white; width: 22px;`
-export const WebSiteIcon = styled(Web)`color: red; width: 22px;`
+export const PhoneIcon = styled(Phone)`color: var(--background-color); width: 24px;`
+export const WebSiteIcon = styled(Web)`color: var(--background-color); width: 24px;`
 
 export const DispensaryIcon = styled(BuildingRetail)`color: teal; width: 22px;`
 export const ClosedIcon = styled(Prohibited)`color: red; width: 22px;`

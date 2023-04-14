@@ -15,11 +15,11 @@ const InputStyles = styled.div`
         width: 100%;
         padding: 0.5rem;
         border: none;
-        color: #010a00;
-        /* border-radius: 5px;
-        border-bottom: 1px solid black; */
+        color: var(--input-text-color);
+        border-radius: 5px;
+        border-bottom: 1px solid black;
         background-color: var(--input-background-color);
-        /* box-shadow: 3px 2px 1px 0 var(--box-shadow-color); */
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
         
         ::placeholder {
@@ -34,6 +34,76 @@ const InputStyles = styled.div`
         display: flex;
         flex-direction: column;
         margin: 0.5rem 0;
+    }
+
+    .updateCheckbox {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        
+        input[type=checkbox] {
+            width: 1rem;
+            height: 1rem;
+            margin: 0;
+            margin-right: 0.25rem;
+            padding: 0;
+        }
+    }
+
+    .imageLabel {
+        /* margin: 0.5rem 0; */
+        cursor: pointer;
+        /* width: 100%; */
+        padding: 0.5rem;
+        border: none;
+        color: var(--main-text-color);
+        border-radius: 5px;
+        /* border-radius: 50%; */
+        border-bottom: 1px solid black;
+        background-color: var(--input-background-color);
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
+        outline: none;
+        text-align: center;
+
+        input {
+            display: none;
+        }
+    }
+
+    .labelWrapper {
+        display: flex;
+        align-items: center;
+        
+        div {
+            /* border: 1px solid red; */
+            /* width: 15%;
+            
+            @media(min-width: 400px) {
+                width: 10%;
+            } */
+        }
+    }
+    
+    .labelIcon {
+        padding: 0.5rem;
+        /* width: 1rem; */
+    }
+
+    .contactWrapper {
+        background-color: var(--input-background-color);
+        border-radius: 5px;
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
+        border-bottom: 1px solid black;
+
+        input {
+            border-bottom: none;
+            box-shadow: none;
+        }
+    }
+
+    .inputIcon {
+
     }
 
     .inputError {
@@ -61,17 +131,15 @@ const contact_icons = {
 export const FormInput = ({ register, id, onfocus, type='text', placeholder, error }) => {
     return (
         <InputStyles>
-            <div className='inputWrapper'>
-                <input
-                    {...register(id)}
-                    className={error ? 'inputError' : ''}
-                    onFocus={() => onfocus(id)}
-                    type={type}
-                    name={id}
-                    placeholder={placeholder}
-                />
-                <div className='errormessage'>{error?.message}</div>
-            </div>
+            <input
+                {...register(id)}
+                className={error ? 'inputError' : ''}
+                onFocus={() => onfocus(id)}
+                type={type}
+                name={id}
+                placeholder={placeholder}
+            />
+            <div className='errormessage'>{error?.message}</div>
         </InputStyles>
     )
 }
@@ -178,7 +246,7 @@ export const TextAreaInput = ({ register, id, onfocus, error, placeholder }) => 
 export const ContactInput = ({ register, id, onfocus, error }) => {
     return (
         <InputStyles>
-            <div className='inputWrapper'>
+            <div className='contactWrapper'>
                 <label htmlFor={`business_${id}'`} className='labelWrapper'>
                     <div className='labelIcon'>
                         {contact_icons[id]}

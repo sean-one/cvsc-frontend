@@ -47,33 +47,53 @@ const Styles = styled.div`
 
     .formContainer {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+
+        @media (min-width: 500px) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
     }
 
     .leftFormColumn, .rightFormColumn {
+        width: 100%;
         padding: 0.5rem;
         max-width: 100%;
     }
 
     .leftFormColumn {
-        width: 35%;
-        align-self: flex-start;
+        display: flex;
+        justify-content: center;
+
+        @media (min-width: 500px) {
+            width: 35%;
+        }
     }
     
     .rightFormColumn {
-        width: 65%;
+
+        @media (min-width: 500px) {
+            width: 65%;
+        }
+    }
+
+    .rightTopRow {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .businessEmail {
+        flex-grow: 1;
+    }
+
+    .businessAvatarInput {
+        flex-shrink: 0;
     }
 
     .imageParent {
-        /* width: 100%; */
-        /* display: flex; */
         max-width: 350px;
-        /* margin: 1rem auto; */
-        /* position: relative;
-        top: 0;
-        left: 0; */
-        /* background-color: pink; */
         
         @media (min-width: 500px) {
             width: 100%;
@@ -89,8 +109,25 @@ const Styles = styled.div`
     }
 
     .businessContacts {
-        background-color: var(--input-background-color);
+        display: flex;
+        flex-direction: column;
         border: 1px solid yellow;
+
+        @media (min-width: 500px) {
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+    }
+
+    .businessContact {
+        margin-bottom: 0.5rem;
+        width: 100%;
+        
+        @media (min-width: 500px) {
+            width: 49%;
+            flex-basis: 50;
+        }
     }
 
 `;
@@ -225,24 +262,24 @@ const BusinessEditForm = () => {
                                         alt={business.business_name}
                                     />
                             }
-                            <ImageInput id='business_avatar'
-                                register={register}
-                                onfocus={clearErrors}
-                                error={errors.business_avatar}
-                                change={imagePreview}
-                            />
                         </div>
                     </div>
                     <div className='rightFormColumn'>
                         {
                             (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
-                        }
-
-
-                        {
-                            ((business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) && !image_attached) &&
-                                <CheckBox register={register} id='image_attached' boxlabel='Update Image' />
+                                <div className='rightTopRow'>
+                                    <div className='businessEmail'>
+                                        <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
+                                    </div>
+                                    <div className='businessAvatarInput'>
+                                        <ImageInput id='business_avatar'
+                                            register={register}
+                                            onfocus={clearErrors}
+                                            error={errors.business_avatar}
+                                            change={imagePreview}
+                                        />
+                                    </div>
+                                </div>
                         }
 
                         {/* business description input */}
@@ -293,36 +330,45 @@ const BusinessEditForm = () => {
                 </div>
                 <div className='businessContacts'>
                     {/* instagram input */}
-                    <ContactInput id='instagram'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_instagram}
-                    />
+                    <div className='businessContact'>
+                        <ContactInput id='instagram'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_instagram}
+                        />
+                    </div>
                     {/* website input */}
-                    <ContactInput id='website'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_website}
-                    />
+                    <div className='businessContact'>
+                        <ContactInput id='website'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_website}
+                        />
+                    </div>
                     {/* facebook input */}
-                    <ContactInput id='facebook'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_facebook}
-                    />
+                    <div className='businessContact'>
+                        <ContactInput id='facebook'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_facebook}
+                        />
+                    </div>
                     {/* phone input */}
-                    <ContactInput id='phone'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_phone}
-                    />
+                    <div className='businessContact'>
+                        <ContactInput id='phone'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_phone}
+                        />
+                    </div>
                     {/* twitter input */}
-                    <ContactInput id='twitter'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_twitter}
-                    />
-
+                    <div className='businessContact'>
+                        <ContactInput id='twitter'
+                            register={register}
+                            onfocus={clearErrors}
+                            error={errors.business_twitter}
+                        />
+                    </div>
                 </div>
 
                 <div className='buttonWrapper'>
