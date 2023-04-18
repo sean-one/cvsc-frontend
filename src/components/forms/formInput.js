@@ -11,7 +11,7 @@ import {
 
 const InputStyles = styled.div`
     input, select, textarea {
-        /* margin: 0.5rem 0; */
+        margin: 0.25rem 0;
         width: 100%;
         padding: 0.5rem;
         border: none;
@@ -25,15 +25,6 @@ const InputStyles = styled.div`
         ::placeholder {
             color: var(--main-text-color);
         }
-    }
-    
-    .inputWrapper {
-        border-radius: 5px;
-        border-bottom: 1px solid black;
-        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
-        display: flex;
-        flex-direction: column;
-        margin: 0.5rem 0;
     }
 
     .updateCheckbox {
@@ -52,14 +43,11 @@ const InputStyles = styled.div`
     }
 
     .imageLabel {
-        /* margin: 0.5rem 0; */
         cursor: pointer;
-        /* width: 100%; */
         padding: 0.5rem;
         border: none;
         color: var(--main-text-color);
         border-radius: 5px;
-        /* border-radius: 50%; */
         border-bottom: 1px solid black;
         background-color: var(--input-background-color);
         box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
@@ -73,21 +61,11 @@ const InputStyles = styled.div`
 
     .labelWrapper {
         display: flex;
-        align-items: center;
-        
-        div {
-            /* border: 1px solid red; */
-            /* width: 15%;
-            
-            @media(min-width: 400px) {
-                width: 10%;
-            } */
-        }
+        align-items: center;        
     }
     
     .labelIcon {
         padding: 0.5rem;
-        /* width: 1rem; */
     }
 
     .contactWrapper {
@@ -102,10 +80,6 @@ const InputStyles = styled.div`
         }
     }
 
-    .inputIcon {
-
-    }
-
     .inputError {
         border-bottom: 2px solid var(--error-text-color);
     }
@@ -113,10 +87,7 @@ const InputStyles = styled.div`
     .errormessage {
         width: 100%;
         text-align: left;
-        /* padding: 0.25rem; */
-        /* color: #8f0c0c; */
         color: var(--error-text-color);
-        /* font-weight: bold; */
     }
 `;
 
@@ -165,7 +136,6 @@ export const ImageInput = ({ register, id, onfocus, error, change }) => {
             <div onClick={() => onfocus(id)}>
                 <label htmlFor={`${id}`} className='imageLabel'>
                     <AddImageIcon />
-                    {/* <FontAwesomeIcon icon={faCamera} /> */}
                     <input
                         {...register(id)}
                         className={error ? 'inputError' : ''}
@@ -174,6 +144,7 @@ export const ImageInput = ({ register, id, onfocus, error, change }) => {
                         accept='image/*'
                         onChange={(e) => change(e)}
                     />
+                    {/* <FontAwesomeIcon icon={faCamera} /> */}
                 </label>
                 <div className='errormessage'>{error?.message}</div>
             </div>
@@ -185,7 +156,7 @@ export const BusinessSelect = ({ register, id, onfocus, role_error, business_err
     return (
         <InputStyles>
             <select
-                className={`inputWrapper ${business_error || role_error ? 'inputError' : ''}`}
+                className={`${business_error || role_error ? 'inputError' : ''}`}
                 {...register(id)}
                 onFocus={onfocus}
                 type='text'
@@ -207,20 +178,18 @@ export const BusinessSelect = ({ register, id, onfocus, role_error, business_err
 export const BusinessTypeSelect = ({register, onfocus, error }) => {
     return (
         <InputStyles>
-            <div className='inputWrapper'>
-                <select
-                    className={error ? 'inputError' : ''}
-                    {...register('business_type')}
-                    onFocus={() => onfocus('business_type')}
-                    type='text'
-                    name='business_type'
-                >
-                    <option value='brand'>Brand</option>
-                    <option value='venue'>Dispensary</option>
-                    <option value='both'>{`Brand & Dispensary`}</option>
-                </select>
-                <div className='errormessage'>{error?.message}</div>
-            </div>
+            <select
+                className={error ? 'inputError' : ''}
+                {...register('business_type')}
+                onFocus={() => onfocus('business_type')}
+                type='text'
+                name='business_type'
+            >
+                <option value='brand'>Brand</option>
+                <option value='venue'>Dispensary</option>
+                <option value='both'>{`Brand & Dispensary`}</option>
+            </select>
+            <div className='errormessage'>{error?.message}</div>
         </InputStyles>
     )
 }
@@ -228,17 +197,15 @@ export const BusinessTypeSelect = ({register, onfocus, error }) => {
 export const TextAreaInput = ({ register, id, onfocus, error, placeholder }) => {
     return (
         <InputStyles>
-            <div className='inputWrapper'>
-                <textarea
-                    {...register(id)}
-                    className={error ? 'inputError' : ''}
-                    onFocus={() => onfocus(id)}
-                    name={id}
-                    rows='8'
-                    placeholder={placeholder}
-                />
-                <div className='errormessage'>{error?.message}</div>
-            </div>
+            <textarea
+                {...register(id)}
+                className={error ? 'inputError' : ''}
+                onFocus={() => onfocus(id)}
+                name={id}
+                rows='8'
+                placeholder={placeholder}
+            />
+            <div className='errormessage'>{error?.message}</div>
         </InputStyles>
     )
 }

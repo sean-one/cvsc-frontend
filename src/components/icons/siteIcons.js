@@ -7,7 +7,7 @@ import { BuildingRetail, Edit, Delete, Mail, PeopleTeam, PeopleTeamDelete, Prohi
 import { CameraAdd } from "@styled-icons/fluentui-system-regular";
 // import { PersonDelete } from "@styled-icons/fluentui-system-filled"
 // import { Create } from "@styled-icons/ionicons-outline"
-import { Cannabis, Users } from "@styled-icons/fa-solid"
+import { Cannabis, MapLocationDot, Users } from "@styled-icons/fa-solid"
 // import { Bars, UsersSlash } from "@styled-icons/fa-solid"
 
 export const MailIcon = styled(Mail)`color: var(--background-color); width: 24px;`
@@ -19,6 +19,7 @@ export const PhoneIcon = styled(Phone)`color: var(--background-color); width: 24
 export const WebSiteIcon = styled(Web)`color: var(--background-color); width: 24px;`
 
 export const DispensaryIcon = styled(BuildingRetail)`color: teal; width: 22px;`
+export const LocationIcon = styled(MapLocationDot)`color: orange; width: 22px;`
 export const ClosedIcon = styled(Prohibited)`color: red; width: 22px;`
 export const BrandIcon = styled(Cannabis)`color: green; width: 22px;`
 

@@ -13,10 +13,11 @@ const Styles = styled.div`
     .adminMenu {
         width: 100%;
         padding: 0.5rem 0;
+        border: 1px solid yellow;
 
-        @media (min-width: 768px) {
+        /* @media (min-width: 500px) {
             align-self: flex-end;
-        }
+        } */
     }
 
     .adminButtonWrapper {

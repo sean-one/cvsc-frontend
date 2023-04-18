@@ -30,30 +30,27 @@ const Styles = styled.div`
             padding: 1.5rem;
         }}
 
-    .businessHeader {
+    .businessViewHeader {
         width: 100%;
         display: flex;
         flex-direction: column;}
 
-    .businessName {
+    .businessHeader {
         width: 100%;
         display: flex;
-        /* justify-content: space-between; */
-        /* align-items: center; */
         flex-direction: column;
 
         @media (min-width: 768px) {
             flex-direction: row-reverse;
             justify-content: space-between;
-            align-items: center;
-
+            align-items: flex-start;
         }}
 
-    .businessName h2 {
+    .businessHeader h2 {
         @media (min-width: 768px) {
-            align-self: flex-end;
+            align-self: center;
         }}
-
+    
     .businessDetails {
         width: 100%;
         display: flex;
@@ -149,12 +146,14 @@ const BusinessView = () => {
             <div className='businessView'>
 
 
-                <div className='businessHeader'>
-                    <div className='businessName'>
-                        {
-                            (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                                <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
-                        }
+                <div className='businessViewHeader'>
+                    <div className='businessHeader'>
+                        <div>
+                            {
+                                (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
+                                    <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
+                            }
+                        </div>
                         <h2>{business.data.business_name.toUpperCase()}</h2>
                     </div>
                     {

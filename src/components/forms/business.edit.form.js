@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,7 +11,8 @@ import { setImageForForm } from '../../helpers/setImageForForm';
 // import { businessFormSchema } from '../../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
-import { BusinessTypeSelect, CheckBox, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
+import { LocationIcon } from '../icons/siteIcons';
+import { BusinessTypeSelect, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
 
 const Styles = styled.div`
     .locationWrapper {
@@ -78,18 +79,32 @@ const Styles = styled.div`
         }
     }
 
-    .rightTopRow {
+    .sectionRow {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 10px;
     }
 
-    .businessEmail {
+    .sectionRowLeft {
         flex-grow: 1;
     }
 
-    .businessAvatarInput {
+    .sectionRowRight {
         flex-shrink: 0;
+    }
+
+    .locationIconWrapper {
+        cursor: pointer;
+        padding: 0.5rem;
+        border: none;
+        color: var(--main-text-color);
+        border-radius: 5px;
+        border-bottom: 1px solid black;
+        background-color: var(--input-background-color);
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
+        outline: none;
+        text-align: center;
     }
 
     .imageParent {
@@ -112,6 +127,7 @@ const Styles = styled.div`
         display: flex;
         flex-direction: column;
         border: 1px solid yellow;
+        padding: 0 0.5rem;
 
         @media (min-width: 500px) {
             flex-direction: row;
@@ -130,9 +146,15 @@ const Styles = styled.div`
         }
     }
 
+    .noclick {
+        color: grey;
+        pointer-events: none;
+    }
+
 `;
 
 const BusinessEditForm = () => {
+    const [ showLocation, setShowLocation ] = useState(false)
     const { auth } = useAuth()
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
@@ -168,20 +190,21 @@ const BusinessEditForm = () => {
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
 
     const image_attached = watch('image_attached', false)
-    const business_location = watch('business_location', false)
+    const business_type = watch('business_type')
 
     const update_business = async (data) => {
         try {
             const formData = new FormData()
 
+            //! check for address
             // if updatelocation is true append new address
-            if ((data.business_location !== false) && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
-                formData.append('location_id', business?.location_id || 'new_location')
-                formData.append('street_address', data.street_address)
-                formData.append('city', data.city)
-                formData.append('state', data.state)
-                formData.append('zip', data.zip)
-            }
+            // if ((data.business_location !== false) && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
+            //     formData.append('location_id', business?.location_id || 'new_location')
+            //     formData.append('street_address', data.street_address)
+            //     formData.append('city', data.city)
+            //     formData.append('state', data.state)
+            //     formData.append('zip', data.zip)
+            // }
 
             // remove location fields
             delete data['street_address']
@@ -241,7 +264,7 @@ const BusinessEditForm = () => {
         navigate(`/business/${business.id}`)
     }
     
-    
+
     return (
         <Styles>
             <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data'>
@@ -267,11 +290,11 @@ const BusinessEditForm = () => {
                     <div className='rightFormColumn'>
                         {
                             (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                <div className='rightTopRow'>
-                                    <div className='businessEmail'>
+                                <div className='sectionRow'>
+                                    <div className='sectionRowLeft'>
                                         <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
                                     </div>
-                                    <div className='businessAvatarInput'>
+                                    <div className='sectionRowRight'>
                                         <ImageInput id='business_avatar'
                                             register={register}
                                             onfocus={clearErrors}
@@ -287,27 +310,35 @@ const BusinessEditForm = () => {
 
                         {
                             (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                <div className='locationWrapper'>
-                                    <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
+                                <div className='sectionRow'>
+                                    <div className='sectionRowLeft'>
+                                        <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
+                                    </div>
 
-                                    <CheckBox register={register} id='business_location' boxlabel='Update Location' />
+                                    <div className={`sectionRowRight ${(business_type !== 'brand') ? 'noclick' : ''}`} onClick={() => setShowLocation(!showLocation)} >
+                                        <div className='locationIconWrapper'>
+                                            <LocationIcon />
+                                        </div>
+                                    </div>
                                 </div>
                         }
 
                         {
-                            (business_location) &&
+                            (showLocation || business_type === 'venue' || business_type === 'both') &&
                                 <div>
                                     {/* street address input for location */}
                                     <FormInput id='street_address'
                                         register={register}
                                         onfocus={clearErrors}
                                         error={errors.street_address}
+                                        placeholder='Street Address'
                                     />
                                     {/* city input for location */}
                                     <FormInput id='city'
                                         register={register}
                                         onfocus={clearErrors}
                                         error={errors.city}
+                                        placeholder='City'
                                     />
                                     <div className='stateZipWrapper'>
                                         {/* state input for location */}
@@ -315,12 +346,14 @@ const BusinessEditForm = () => {
                                             register={register}
                                             onfocus={clearErrors}
                                             error={errors.state}
+                                            placeholder='State'
                                         />
                                         {/* zip code input for location */}
                                         <FormInput id='zip'
                                             register={register}
                                             onfocus={clearErrors}
                                             error={errors.zip}
+                                            placeholder='Zip'
                                         />
                                     </div>
                                 </div>
