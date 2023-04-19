@@ -193,6 +193,7 @@ const BusinessEditForm = () => {
     const business_type = watch('business_type')
 
     const update_business = async (data) => {
+        console.log(data)
         try {
             const formData = new FormData()
 
