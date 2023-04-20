@@ -23,7 +23,7 @@ const EventViewStyles = styled.div`
         padding: 1.5rem 0.5rem;
         box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
-        background-color: rgba(75,111,81,0.3);
+        background-color: var(--page-wrapper-background-color);
         
         @media (min-width: 768px) {
             padding: 1.5rem;

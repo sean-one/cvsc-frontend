@@ -20,7 +20,7 @@ const EventPreviewStyles = styled.div`
             -3px -2px 1px 0 rgba(218, 215, 205, 0.2),
             3px 2px 1px 0 var(--box-shadow-color);
         border-radius: 5px;
-        background-color: rgba(75,111,81,0.3);
+        background-color: var(--page-wrapper-background-color);
     }
 
     .inactiveEvent {

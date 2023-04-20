@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
         --box-shadow-color: #0D2B12;
         --input-text-color: #010A00;
         --input-background-color: #4B6F51;
+        --page-wrapper-background-color: rgba(75,111,81,0.3);
     }
 `;
 
@@ -96,12 +97,12 @@ const Styles = styled.div`
         color: inherit;
     }
 
-    form {
+    /* form {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         gap: 10px;
-    }
+    } */
     
     button {
         padding: 0.5rem 1.25rem;
@@ -120,6 +121,12 @@ const Styles = styled.div`
 
         :active {
             transform: translate(2px, 4px)
+        }
+
+        :disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            /* background-color: red; */
         }
     }
 
