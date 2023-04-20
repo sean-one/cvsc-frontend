@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DevTool } from '@hookform/devtools'
+import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import { FormInput, BusinessSelect, TextAreaInput, ImageInput } from './formInput';
@@ -14,6 +14,13 @@ import { useCreateEventMutation } from '../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
+
+const CreateEventFormStyles = styled.div`
+    .createEventForm {
+        background-color: red;
+    }
+`;
+
 
 const EventCreateForm = ({ business_id }) => {
     const { logout_user } = useAuth()
@@ -117,68 +124,69 @@ const EventCreateForm = ({ business_id }) => {
 
 
     return (
-        <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data'>
+        <CreateEventFormStyles>
+            <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data' className='createEventForm'>
 
-            {/* eventname input */}
-            <FormInput register={register} id='eventname' onfocus={clearErrors} placeholder='Event Name' error={errors.eventname} />
+                {/* eventname input */}
+                <FormInput register={register} id='eventname' onfocus={clearErrors} placeholder='Event Name' error={errors.eventname} />
 
-            <div className='dateTimeWrapper'>
-                {/* eventdate input */}
-                <FormInput register={register} id='eventdate' onfocus={clearErrors} type='date' error={errors.eventdate} />
+                <div className='dateTimeWrapper'>
+                    {/* eventdate input */}
+                    <FormInput register={register} id='eventdate' onfocus={clearErrors} type='date' error={errors.eventdate} />
 
-                {/* start & end */}
-                <div className='timeWrapper'>
-                    {/* eventstart input */}
-                    <FormInput register={register} id='eventstart' onfocus={clearErrors} type='time' error={errors.eventstart} />
+                    {/* start & end */}
+                    <div className='timeWrapper'>
+                        {/* eventstart input */}
+                        <FormInput register={register} id='eventstart' onfocus={clearErrors} type='time' error={errors.eventstart} />
 
-                    {/* eventend input */}
-                    <FormInput register={register} id='eventend' onfocus={clearErrors} type='time' error={errors.eventend} />
+                        {/* eventend input */}
+                        <FormInput register={register} id='eventend' onfocus={clearErrors} type='time' error={errors.eventend} />
+                    </div>
                 </div>
-            </div>
-            <div className='errormessage'>{errors.time_format?.message}</div>
+                <div className='errormessage'>{errors.time_format?.message}</div>
 
-            <div className='formImage'>
-                {
-                    editImage &&
-                            <canvas id={'eventImagePreview'} ref={canvas} />
-                }
-            </div>
+                <div className='formImage'>
+                    {
+                        editImage &&
+                                <canvas id={'eventImagePreview'} ref={canvas} />
+                    }
+                </div>
 
-            {/* event image input */}
-            <ImageInput id='eventmedia'
-                register={register}
-                onfocus={clearErrors}
-                error={errors.eventmedia}
-                change={imagePreview}
-            />
+                {/* event image input */}
+                <ImageInput id='eventmedia'
+                    register={register}
+                    onfocus={clearErrors}
+                    error={errors.eventmedia}
+                    change={imagePreview}
+                />
 
-            {/* business location selector */}
-            <BusinessSelect id='venue_id'
-                register={register}
-                onfocus={() => clearErrors(['venue_id', 'role_rights'])}
-                role_error={errors.role_rights}
-                business_error={errors.venue_id}
-                business_list={venue_list}
-                selectFor='Location'
-            />
+                {/* business location selector */}
+                <BusinessSelect id='venue_id'
+                    register={register}
+                    onfocus={() => clearErrors(['venue_id', 'role_rights'])}
+                    role_error={errors.role_rights}
+                    business_error={errors.venue_id}
+                    business_list={venue_list}
+                    selectFor='Location'
+                />
 
-            {/* event details input */}
-            <TextAreaInput register={register} id='details' onfocus={() => clearErrors('details')} error={errors.details} placeholder='Event details...' />
+                {/* event details input */}
+                <TextAreaInput register={register} id='details' onfocus={() => clearErrors('details')} error={errors.details} placeholder='Event details...' />
 
-            {/* business brand selector */}
-            <BusinessSelect id='brand_id'
-                register={register}
-                onfocus={() => clearErrors(['brand_id', 'role_rights'])}
-                role_error={errors.role_rights}
-                business_error={errors.brand_id}
-                business_list={brand_list}
-                selectFor='Brand'
-            />
+                {/* business brand selector */}
+                <BusinessSelect id='brand_id'
+                    register={register}
+                    onfocus={() => clearErrors(['brand_id', 'role_rights'])}
+                    role_error={errors.role_rights}
+                    business_error={errors.brand_id}
+                    business_list={brand_list}
+                    selectFor='Brand'
+                />
 
-            <button type='submit'>Submit</button>
+                <button type='submit'>Submit</button>
 
-            <DevTool control={control} />
-        </form>
+            </form>
+        </CreateEventFormStyles>
     )
 }
 
