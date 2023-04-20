@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
         --input-text-color: #010A00;
         --input-background-color: #4B6F51;
         --page-wrapper-background-color: rgba(75,111,81,0.3);
+        --max-page-width: 1280px;
     }
 `;
 

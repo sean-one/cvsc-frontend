@@ -17,7 +17,7 @@ const Styles = styled.div`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        /* max-width: 700px; */
+        max-width: var(--max-page-width);
         margin: 0 auto;
         padding: 1.5rem 0.5rem;
         box-shadow: 5px 5px 5px var(--box-shadow-color);

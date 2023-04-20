@@ -11,6 +11,19 @@ import AxiosInstance from '../helpers/axios';
 import { FormInput } from './forms/formInput';
 
 const Styles = styled.div`
+    .loginWrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: var(--max-page-width);
+        margin: 0 auto;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
+        border-radius: 5px;
+        background-color: var(--page-wrapper-background-color);
+    }
+
     .loginHeader {
         padding-left: 1.5rem;
         padding-bottom: 1.5rem;
@@ -97,10 +110,12 @@ const Login = () => {
 
     return (
         <Styles>
-            <div className='pageWrapper'>
+            <div className='loginWrap'>
+                
                 <div className='loginHeader'>
                     <h2>Login</h2>
                 </div>
+
                 <form onSubmit={handleSubmit(sendLogin)} className='loginForm' onClick={() => clearErrors('credentials')}>
                     
                     <FormInput id='username'
@@ -124,10 +139,7 @@ const Login = () => {
                         <button className='formButton' type='submit'>submit</button>
                         <button className='formButton' onClick={googleAuthButton}>google</button>
                     </div>
-
                 </form>
-                {/* <div onClick={() => clearErrors('credentials')}>
-                </div> */}
                 
                 <div className='registerLinkWrapper'>
                     <p onClick={() => navigate('/register')}>New to the club? Register here</p>
