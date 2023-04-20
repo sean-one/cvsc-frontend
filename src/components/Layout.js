@@ -13,8 +13,11 @@ const GlobalStyle = createGlobalStyle`
         --box-shadow-color: #0D2B12;
         --input-text-color: #010A00;
         --input-background-color: #4B6F51;
+        --image-border-color: #DCDBC4;
+        --image-box-shadow-color: #010A00;
         --page-wrapper-background-color: rgba(75,111,81,0.3);
-        --max-page-width: 1280px;
+        --max-page-width: 825px;
+        --main-break-width: 500px;
     }
 `;
 

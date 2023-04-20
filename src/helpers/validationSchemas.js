@@ -86,48 +86,54 @@ export const roleRequestSchema = yup.object().shape({
 export const createEventSchema = yup.object().shape(
     {
         eventname: yup
-        .string()
-        .required('event name is required'),
+            .string()
+            .required('required')
+            .min(2, 'Eventname must be at least 2 characters long')
+            .max(50, 'Eventname cannot be more than 50 characters long')
+            .matches(/^[a-zA-Z0-9\s@$!().-&]*$/, 'may contain only letters, numbers, spaces, and @ $ ! . ( ) - &'),
         
         eventdate: yup
-        .date()
-        .min(todaysDate, 'date should not be in the past')
+            .date()
+            .min(todaysDate, 'date should not be in the past')
             .max(sixtyDaysOut, 'right now we only allow events 60 days out')
-            .required('event date is required'),
+            .required('required'),
             
-            eventstart: yup
+        eventstart: yup
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .required('start time is required'),
+            .required('required'),
             
-            eventend: yup
+        eventend: yup
             .string()
             .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .required('end time is required'),
+            .required('required'),
             
         eventmedia: yup
-        .mixed()
-            .required('event image must be provided'),
+            .mixed()
+            .test('fileFormat', 'Unsupported file format', (value) => {
+                return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+            })
+            .required('required'),
             
-            venue_id: yup
+        venue_id: yup
             .string()
             .when('venue_id', {
                 is: (value) => value?.length,
                 then: (rule) => rule.uuid()
             })
-            .required('event location is required'),
+            .required('required'),
             
-            details: yup
+        details: yup
             .string()
-            .required('event details are required'),
+            .required('required'),
             
-            brand_id: yup
+        brand_id: yup
             .string()
             .when('brand_id', {
                 is: (value) => value?.length,
                 then: (rule) => rule.uuid()
             })
-            .required('branding is required')
+            .required('required')
         },
         [
         // add Cyclic deps here for require itself
