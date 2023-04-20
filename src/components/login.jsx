@@ -17,6 +17,15 @@ const Styles = styled.div`
         align-self: flex-start;
     }
 
+    .loginForm {
+        width: 100%;
+        max-width: 425px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
     .registerLinkWrapper {
         display: flex;
         justify-content: center;
@@ -92,33 +101,33 @@ const Login = () => {
                 <div className='loginHeader'>
                     <h2>Login</h2>
                 </div>
-                <div onClick={() => clearErrors('credentials')}>
-                    <form onSubmit={handleSubmit(sendLogin)}>
-                        
-                        <FormInput id='username'
-                            register={register}
-                            onfocus={clearErrors}
-                            placeholder='Username'
-                            error={errors.username}
-                        />
+                <form onSubmit={handleSubmit(sendLogin)} className='loginForm' onClick={() => clearErrors('credentials')}>
+                    
+                    <FormInput id='username'
+                        register={register}
+                        onfocus={clearErrors}
+                        placeholder='Username'
+                        error={errors.username}
+                    />
 
-                        <FormInput id='password'
-                            register={register}
-                            onfocus={clearErrors}
-                            placeholder='Password'
-                            type='password'
-                            error={errors.password}
-                        />
+                    <FormInput id='password'
+                        register={register}
+                        onfocus={clearErrors}
+                        placeholder='Password'
+                        type='password'
+                        error={errors.password}
+                    />
 
-                        <div className='errormessage'>{errors?.credentials?.message}</div>
+                    <div className='errormessage'>{errors?.credentials?.message}</div>
 
-                        <div className='formButtonWrapper'>
-                            <button className='formButton' type='submit'>submit</button>
-                            <button className='formButton' onClick={googleAuthButton}>google</button>
-                        </div>
+                    <div className='formButtonWrapper'>
+                        <button className='formButton' type='submit'>submit</button>
+                        <button className='formButton' onClick={googleAuthButton}>google</button>
+                    </div>
 
-                    </form>
-                </div>
+                </form>
+                {/* <div onClick={() => clearErrors('credentials')}>
+                </div> */}
                 
                 <div className='registerLinkWrapper'>
                     <p onClick={() => navigate('/register')}>New to the club? Register here</p>

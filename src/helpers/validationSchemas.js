@@ -41,11 +41,20 @@ export const registrationSchema = yup.object().shape({
 export const loginSchema = yup.object().shape({
     username: yup
         .string()
-        .required("username is a required field."),
+        .required("required field.")
+        .min(4, "must be at least 4 characters")
+        .max(20, 'must be 20 characters or less')
+        .matches(/^[a-zA-Z0-9*@_.\-!$]+$/, 'can only contain alphanumeric, *, _, -, ., $, !, and @')
+        .matches(/^(?!.*([*@_.\-!$])\1)[a-zA-Z0-9*@_.\-!$]+$/, 'Special characters cannot be repeated back to back'),
     
     password: yup
         .string()
-        .required("password is a required field.")
+        .required("required field"),
+        // .min(8, 'Password must be at least 8 characters long')
+        // .max(50, 'Password cannot be more than 50 characters long')
+        // .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+-=,./?;:'"[\]{}|\\]).{8,}$/,
+        //     'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+        // ),
 })
 
 export const editUserSchema = yup.object().shape({
