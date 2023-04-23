@@ -19,12 +19,82 @@ import { updateEventSchema } from '../../helpers/validationSchemas';
 import { image_link } from '../../helpers/dataCleanUp';
 import { BusinessSelect, CheckBox, FormInput, ImageInput, TextAreaInput } from './formInput';
 
-const Styles = styled.div`
-    .formHeader {
+const EditEventFormStyles = styled.div`
+    .editEventFormWrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .editEventForm {
+        width: 100%;
+        max-width: var(--max-page-width);
+    }
+
+    .editEventFormRow {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 10px;
+    }
+
+    .dateTimeRow {
+        flex-direction: column;
+
+        @media(min-width: 500px) {
+            flex-direction: row;
+        }
+    }
+
+    .editEventFormImage {
+        width: 100%;
+        max-width: 450px;
+        margin: 1rem auto;
+        
+        @media (min-width: 500px) {
+            width: 100%;
+        }
+
+        canvas {
+            max-width: 100%;
+            border: 1px solid var(--image-border-color);
+            display: block;
+            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
+        }
+
+        img {
+            width: 100%;
+            border: 1px solid var(--image-border-color);
+            display: block;
+            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
+        }
+    }
+
+    .eventnameSection {
+        flex-grow: 1;
+    }
+
+    .imageUploadSection {
+        flex-shrink: 0;
+    }
+
+    .dateSection {
+        width: 100%;
+        flex-grow: 1;
+    }
+
+    .timeSection {
+        width: 100%;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        column-gap: 10px;
+    
+        @media(min-width: 500px) {
+            width: auto;
+            flex-direction: row;
+        }
     }
 
     .buttonWrapper {
@@ -184,109 +254,112 @@ const EventEditForm = () => {
 
 
     return (
-        <Styles>
-            <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data'>
+        <EditEventFormStyles>
+            <div className='editEventFormWrapper'>
+                <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data' className='editEventForm'>
 
-                <div className='formHeader'>
-                    {/* eventname input */}
-                    <FormInput id='eventname'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.eventname}
-                    />
-                    <FontAwesomeIcon icon={faTrash} onClick={() => delete_event()} siza='2x' />
-                </div>
+                    <div className='editEventFormRow'>
 
-                {/* image preview */}
-                <div className='formImage'>
-                    {
-                        editImage
-                            ? <canvas
-                                id={'avatarImagePreview'}
-                                ref={canvas}
+                        <div className='eventnameSection'>
+                            <FormInput id='eventname'
+                                register={register}
+                                onfocus={clearErrors}
+                                error={errors.eventname}
                             />
-                            : <img
-                                src={image_link(event?.eventmedia)}
-                                alt={event?.eventname}
+                        </div>
+
+                        <div className='imageUploadSection'>
+                            <ImageInput id='eventmedia'
+                                register={register}
+                                onfocus={clearErrors}
+                                error={errors.eventmedia}
+                                change={imagePreview}
                             />
-                    }
-                </div>
+                        </div>
 
-                <CheckBox id='image_attached'
-                    register={register}
-                    boxlabel='Update Image'
-                />
-                {/* event image input */}
-                {
-                    (image_attached) &&
-                        <ImageInput id='eventmedia'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.eventmedia}
-                            change={imagePreview}
-                        />
-                }
-
-                <div className='dateTimeWrapper'>
-                    {/* eventdate input */}
-                    <FormInput id='eventdate'
-                        register={register}
-                        onfocus={clearErrors}
-                        type='date'
-                        error={errors.eventdate}
-                    />
-
-                    {/* start & end */}
-                    <div className='timeWrapper'>
-                        {/* eventstart input */}
-                        <FormInput id='eventstart'
-                            register={register}
-                            onfocus={clearErrors}
-                            type='time'
-                            error={errors.eventstart}
-                        />
-                        {/* eventend input */}
-                        <FormInput id='eventend'
-                            register={register}
-                            onfocus={clearErrors}
-                            type='time'
-                            error={errors.eventend}
-                        />
                     </div>
-                </div>
 
-                {/* business location selector */}
-                <BusinessSelect id='venue_id'
-                    register={register}
-                    onfocus={() => clearErrors(['venue_id','role_rights'])}
-                    role_error={errors.role_rights}
-                    business_error={errors.venue_id}
-                    business_list={venue_list}
-                    selectFor='Location'
-                />
-                {/* event details input */}
-                <TextAreaInput id='details'
-                    register={register}
-                    onfocus={clearErrors}
-                    error={errors.details}
-                    placeholder='Event details...'
-                />
-                {/* business brand selector */}
-                <BusinessSelect id='brand_id'
-                    register={register}
-                    onfocus={() => clearErrors(['brand_id','role_rights'])}
-                    role_error={errors.role_rights}
-                    business_error={errors.brand_id}
-                    business_list={brand_list}
-                    selectFor='Brand'
-                />
-                
-                <div className='buttonWrapper d-flex justify-content-between pt-3'>
-                    <button type='submit' disabled={!isDirty}>Update</button>
-                    <button onClick={() => close_edit_event()} variant='secondary'>Close</button>
-                </div>
-            </form>
-        </Styles>
+                    <div className='editEventFormImage'>
+                        {
+                            editImage
+                                ? <canvas
+                                    id={'avatarImagePreview'}
+                                    ref={canvas}
+                                />
+                                : <img
+                                    src={image_link(event?.eventmedia)}
+                                    alt={event?.eventname}
+                                />
+                        }
+                    </div>
+
+                    <div className='editEventFormRow dateTimeRow'>
+                        <div className='dateSection'>
+                            <FormInput id='eventdate'
+                                register={register}
+                                onfocus={clearErrors}
+                                type='date'
+                                error={errors.eventdate}
+                            />
+                        </div>
+
+                        <div className='timeSection'>
+                            
+                            <div className='eventStart'>
+                                <FormInput id='eventstart'
+                                    register={register}
+                                    onfocus={clearErrors}
+                                    type='time'
+                                    error={errors.eventstart}
+                                />
+                            </div>
+                            
+                            <div className='eventEnd'>
+                                <FormInput id='eventend'
+                                    register={register}
+                                    onfocus={clearErrors}
+                                    type='time'
+                                    error={errors.eventend}
+                                />
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {/* business location selector */}
+                    <BusinessSelect id='venue_id'
+                        register={register}
+                        onfocus={() => clearErrors(['venue_id','role_rights'])}
+                        role_error={errors.role_rights}
+                        business_error={errors.venue_id}
+                        business_list={venue_list}
+                        selectFor='Location'
+                    />
+                    {/* event details input */}
+                    <TextAreaInput id='details'
+                        register={register}
+                        onfocus={clearErrors}
+                        error={errors.details}
+                        placeholder='Event details...'
+                    />
+                    {/* business brand selector */}
+                    <BusinessSelect id='brand_id'
+                        register={register}
+                        onfocus={() => clearErrors(['brand_id','role_rights'])}
+                        role_error={errors.role_rights}
+                        business_error={errors.brand_id}
+                        business_list={brand_list}
+                        selectFor='Brand'
+                    />
+                    
+                    <div className='buttonWrapper d-flex justify-content-between pt-3'>
+                        <button type='submit' disabled={!isDirty}>Update</button>
+                        <FontAwesomeIcon icon={faTrash} onClick={() => delete_event()} siza='2x' />
+                        <button onClick={() => close_edit_event()} variant='secondary'>Close</button>
+                    </div>
+                </form>
+            </div>
+        </EditEventFormStyles>
     )
 }
 
