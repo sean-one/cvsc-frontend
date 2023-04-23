@@ -3,8 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -17,7 +15,7 @@ import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { updateEventSchema } from '../../helpers/validationSchemas';
 import { image_link } from '../../helpers/dataCleanUp';
-import { BusinessSelect, CheckBox, FormInput, ImageInput, TextAreaInput } from './formInput';
+import { BusinessSelect, FormInput, ImageInput, TextAreaInput } from './formInput';
 
 const EditEventFormStyles = styled.div`
     .editEventFormWrapper {
@@ -97,9 +95,9 @@ const EditEventFormStyles = styled.div`
         }
     }
 
-    .buttonWrapper {
+    .editEventFormButtonWrapper {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         padding-top: 0.75rem;
     }
 `;
@@ -119,7 +117,7 @@ const EventEditForm = () => {
 
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
-    const { register, handleSubmit, setError, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, setError, setValue, clearErrors, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(updateEventSchema),
         defaultValues: {
@@ -127,27 +125,25 @@ const EventEditForm = () => {
             eventdate: format(new Date(event?.eventdate), 'yyyy-MM-dd'),
             eventstart: reformatTime(event?.eventstart),
             eventend: reformatTime(event?.eventend),
-            eventmedia: '',
+            eventmedia: null,
             venue_id: event?.venue_id,
             details: event?.details,
             brand_id: event?.brand_id,
         }
     })
 
-    const image_attached = watch('image_attached', false)
-
     const update_event = async (data) => {
         try {
             const formData = new FormData()
 
             // if eventmedia has a file set in formData, for some reason it does not show in dirtyFields
-            if(image_attached) {
+            if(canvas.current !== null) {
                 let event_media = setImageForForm(canvas)
 
                 formData.set('eventmedia', event_media)
             }
 
-            delete data['image_attached']
+            delete data['eventmedia']
 
             // remove entries that are unchanged
             for (const [key] of Object.entries(data)) {
@@ -253,6 +249,7 @@ const EventEditForm = () => {
     }
 
 
+    console.log(dirtyFields)
     return (
         <EditEventFormStyles>
             <div className='editEventFormWrapper'>
@@ -268,7 +265,9 @@ const EventEditForm = () => {
                             />
                         </div>
 
-                        <div className='imageUploadSection'>
+                        <div className='imageUploadSection' onClick={() => {
+                            setValue('eventmedia', '', { shouldDirty: true })
+                        }}>
                             <ImageInput id='eventmedia'
                                 register={register}
                                 onfocus={clearErrors}
@@ -294,6 +293,7 @@ const EventEditForm = () => {
                     </div>
 
                     <div className='editEventFormRow dateTimeRow'>
+                        
                         <div className='dateSection'>
                             <FormInput id='eventdate'
                                 register={register}
@@ -324,9 +324,9 @@ const EventEditForm = () => {
                             </div>
 
                         </div>
+
                     </div>
 
-                    {/* business location selector */}
                     <BusinessSelect id='venue_id'
                         register={register}
                         onfocus={() => clearErrors(['venue_id','role_rights'])}
@@ -335,14 +335,14 @@ const EventEditForm = () => {
                         business_list={venue_list}
                         selectFor='Location'
                     />
-                    {/* event details input */}
+
                     <TextAreaInput id='details'
                         register={register}
                         onfocus={clearErrors}
                         error={errors.details}
                         placeholder='Event details...'
                     />
-                    {/* business brand selector */}
+
                     <BusinessSelect id='brand_id'
                         register={register}
                         onfocus={() => clearErrors(['brand_id','role_rights'])}
@@ -352,11 +352,12 @@ const EventEditForm = () => {
                         selectFor='Brand'
                     />
                     
-                    <div className='buttonWrapper d-flex justify-content-between pt-3'>
+                    <div className='editEventFormButtonWrapper'>
                         <button type='submit' disabled={!isDirty}>Update</button>
-                        <FontAwesomeIcon icon={faTrash} onClick={() => delete_event()} siza='2x' />
+                        <button onClick={() => delete_event()}>Delete</button>
                         <button onClick={() => close_edit_event()} variant='secondary'>Close</button>
                     </div>
+
                 </form>
             </div>
         </EditEventFormStyles>
