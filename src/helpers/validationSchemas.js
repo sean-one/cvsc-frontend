@@ -90,30 +90,40 @@ export const createEventSchema = yup.object().shape(
             .required('required')
             .min(2, 'Eventname must be at least 2 characters long')
             .max(50, 'Eventname cannot be more than 50 characters long')
-            .matches(/^[a-zA-Z0-9\s@$!().-&]*$/, 'may contain only letters, numbers, spaces, and @ $ ! . ( ) - &'),
+            .matches(/^[a-zA-Z0-9\s@$!.()\-&]*$/, 'Event name must contain only letters, numbers, spaces, and @ $ ! . ( ) - &'),
         
         eventdate: yup
             .date()
+            .typeError('invalid date')
+            .required('required')
             .min(todaysDate, 'date should not be in the past')
-            .max(sixtyDaysOut, 'right now we only allow events 60 days out')
-            .required('required'),
+            .max(sixtyDaysOut, 'right now we only allow events 60 days out'),
             
         eventstart: yup
             .string()
-            .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .required('required'),
+            .required('required')
+            .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true }),
             
         eventend: yup
             .string()
-            .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true })
-            .required('required'),
+            .required('required')
+            .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'incorrect time formatting', excludeEmptyString: true }),
             
-        eventmedia: yup
-            .mixed()
-            .test('fileFormat', 'Unsupported file format', (value) => {
-                return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-            })
-            .required('required'),
+        // hasImage: yup.boolean(),
+        
+        // eventmedia: yup
+        //     .mixed()
+        //     .when('hasImage', {
+        //         is: true,
+        //         then: yup.mixed().notRequired(),
+        //         otherwise: yup.mixed()
+        //             .required('required')
+        //             .test('fileFormat', 'missing or unsupported image (accepts jpeg, png, webp)', (value) => {
+        //                 console.log(value)
+        //                 return value && ['image/jpeg', 'image/png', 'image/webp'].includes(value.type);
+        //             }),
+        //     }),
+        
             
         venue_id: yup
             .string()
@@ -125,7 +135,9 @@ export const createEventSchema = yup.object().shape(
             
         details: yup
             .string()
-            .required('required'),
+            .required('required')
+            .min(10, 'need more details')
+            .max(1500, 'details must be less then 1500 characters'),
             
         brand_id: yup
             .string()
@@ -133,9 +145,9 @@ export const createEventSchema = yup.object().shape(
                 is: (value) => value?.length,
                 then: (rule) => rule.uuid()
             })
-            .required('required')
-        },
-        [
+            .required('required'),
+    },
+    [
         // add Cyclic deps here for require itself
         ['venue_id', 'venue_id'],
         ['brand_id', 'brand_id' ]
@@ -143,27 +155,27 @@ export const createEventSchema = yup.object().shape(
     )
     
 export const updateEventSchema = yup.object().shape({
-        eventname: yup
+    eventname: yup
         .string()
         .required('event name is required'),
         
-        eventdate: yup
+    eventdate: yup
         .date()
         .min(todaysDate, 'date should not be in the past')
         .max(sixtyDaysOut, 'right now we only allow events 60 days out')
         .required(),
         
-        eventstart: yup
+    eventstart: yup
         .string()
         .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'invalid format', excludeEmptyString: true })
         .required(),
         
-        eventend: yup
+    eventend: yup
         .string()
         .matches(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, { message: 'invalid format', excludeEmptyString: true })
         .required(),
         
-        venue_id: yup
+    venue_id: yup
         .string()
         .when('venue_id', {
             is: (value) => value?.length,
@@ -172,16 +184,16 @@ export const updateEventSchema = yup.object().shape({
         .required(),
         
     details: yup
-    .string()
-    .required(),
+        .string()
+        .required(),
     
     brand_id: yup
-    .string()
-    .when('brand_id', {
-        is: (value) => value?.length,
-        then: (rule) => rule.uuid()
-    })
-    .required(),
+        .string()
+        .when('brand_id', {
+            is: (value) => value?.length,
+            then: (rule) => rule.uuid()
+        })
+        .required(),
 }, [ ['venue_id', 'venue_id'], ['brand_id', 'brand_id'] ])
 
 

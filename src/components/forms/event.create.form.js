@@ -21,14 +21,12 @@ const CreateEventFormStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        border: 1px solid blue;
 
     }
 
     .createEventForm {
         width: 100%;
         max-width: var(--max-page-width);
-        background-color: red;
     }
 
     .createEventFormImage {
@@ -45,13 +43,6 @@ const CreateEventFormStyles = styled.div`
             border: 1px solid var(--image-border-color);
             display: block;
             box-shadow: 5px 5px 5px var(--image-box-shadow-color);
-        }
-
-        img {
-            width: 100%;
-            /* border: 1px solid #dcdbc4; */
-            display: block;
-            /* box-shadow: 5px 5px 5px #010a00; */
         }
     }
 
@@ -96,6 +87,10 @@ const CreateEventFormStyles = styled.div`
             flex-direction: row;
         }
     }
+
+    .createEventFormButton {
+        margin-top: 0.5rem;
+    }
 `;
 
 
@@ -126,6 +121,7 @@ const EventCreateForm = ({ business_id }) => {
     });
 
     const createNewEvent = async (data) => {
+        console.log(data)
         try {
             const formData = new FormData()
 
@@ -166,7 +162,7 @@ const EventCreateForm = ({ business_id }) => {
         } catch (error) {
             console.log(error)
             if (error?.message === 'missing_image') {
-                setError('eventmedia', { message: 'required' })
+                setError('eventmedia', { message: 'missing required event image' })
                 throw Error;
             }
 
@@ -199,7 +195,6 @@ const EventCreateForm = ({ business_id }) => {
         brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
     }
 
-
     return (
         <CreateEventFormStyles>
             <div className='createEventFormWrapper'>
@@ -227,6 +222,7 @@ const EventCreateForm = ({ business_id }) => {
                         </div>
 
                     </div>
+                    <div className='errormessage'>{errors.eventmedia?.message}</div>
 
                     <div className='createEventFormImage'>
                         {
@@ -248,6 +244,7 @@ const EventCreateForm = ({ business_id }) => {
                         </div>
 
                         <div className='timeSection'>
+
                             <div className='eventStart'>
                                 <FormInput
                                     id='eventstart'
@@ -257,6 +254,7 @@ const EventCreateForm = ({ business_id }) => {
                                     error={errors.eventstart}
                                 />
                             </div>
+                            
                             <div className='eventEnd'>
                                 <FormInput
                                     id='eventend'
@@ -266,19 +264,12 @@ const EventCreateForm = ({ business_id }) => {
                                     error={errors.eventend}
                                 />
                             </div>
+
                         </div>
                     
                     </div>
                     <div className='errormessage'>{errors.time_format?.message}</div>
-
-                    {/* <ImageInput id='eventmedia'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.eventmedia}
-                        change={imagePreview}
-                    /> */}
-
-                    {/* business location selector */}
+                    
                     <BusinessSelect id='venue_id'
                         register={register}
                         onfocus={() => clearErrors(['venue_id', 'role_rights'])}
@@ -288,10 +279,13 @@ const EventCreateForm = ({ business_id }) => {
                         selectFor='Location'
                     />
 
-                    {/* event details input */}
-                    <TextAreaInput register={register} id='details' onfocus={() => clearErrors('details')} error={errors.details} placeholder='Event details...' />
+                    <TextAreaInput id='details'
+                        register={register}
+                        onfocus={() => clearErrors('details')}
+                        error={errors.details}
+                        placeholder='Event details...'
+                    />
 
-                    {/* business brand selector */}
                     <BusinessSelect id='brand_id'
                         register={register}
                         onfocus={() => clearErrors(['brand_id', 'role_rights'])}
@@ -301,7 +295,9 @@ const EventCreateForm = ({ business_id }) => {
                         selectFor='Brand'
                     />
 
-                    <button type='submit'>Submit</button>
+                    <div className='createEventFormButton'>
+                        <button type='submit'>Submit</button>
+                    </div>
 
                 </form>
             </div>

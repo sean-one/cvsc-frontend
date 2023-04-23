@@ -25,6 +25,10 @@ const InputStyles = styled.div`
         ::placeholder {
             color: var(--main-text-color);
         }
+
+        ::autofill {
+            background-color: blue;
+        }
     }
 
     .updateCheckbox {
@@ -146,7 +150,7 @@ export const ImageInput = ({ register, id, onfocus, error, change }) => {
                     />
                     {/* <FontAwesomeIcon icon={faCamera} /> */}
                 </label>
-                <div className='errormessage'>{error?.message}</div>
+                {/* <div className='errormessage'>{error?.message}</div> */}
             </div>
         </InputStyles>
     )
