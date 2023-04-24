@@ -9,8 +9,9 @@ import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
-import RelatedEvents from '../related.events';
+// import RelatedEvents from '../related.events';
 import BusinessLabel from '../../business/business.label';
+import EventViewRelated from '../event.view.related';
 
 const EventViewStyles = styled.div`
     .eventViewWrapper {
@@ -177,7 +178,7 @@ const EventView = () => {
                 </div>
             </div>
             <div>
-                <RelatedEvents business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
+                <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
             </div>
         </EventViewStyles>
     )
