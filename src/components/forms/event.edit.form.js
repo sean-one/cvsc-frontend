@@ -47,7 +47,7 @@ const EditEventFormStyles = styled.div`
 
     .editEventFormImage {
         width: 100%;
-        max-width: 450px;
+        max-width: 400px;
         margin: 1rem auto;
         
         @media (min-width: 500px) {
@@ -55,7 +55,7 @@ const EditEventFormStyles = styled.div`
         }
 
         canvas {
-            max-width: 100%;
+            width: 100%;
             border: 1px solid var(--image-border-color);
             display: block;
             box-shadow: 5px 5px 5px var(--image-box-shadow-color);
@@ -249,7 +249,6 @@ const EventEditForm = () => {
     }
 
 
-    console.log(dirtyFields)
     return (
         <EditEventFormStyles>
             <div className='editEventFormWrapper'>

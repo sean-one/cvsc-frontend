@@ -10,30 +10,31 @@ const BusinessLabelStyles = styled.div`
     .businessLabelWrapper {
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
     }
 
-    .businessLogoContainer {
-        display: flex;
-        justify-content: space-between;
+    .businessLabelLogo {
+        width: 100%;
+        max-width: 50px;
         margin: 0.25rem 0.5rem;
 
         img {
             display: block;
             width: 100%;
-            max-width: 60px;
+            border: 1px solid var(--image-border-color);
             border-radius: 50%;
+            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
         }
     }
 
-    .reverseRow {
-        flex-direction: row-reverse;
+    .businessLabelName {
+        padding-left: 0.5rem;
     }
 `;
 
 
-const BusinessLabel = ({ business_id, reverse = false }) => {
+const BusinessLabel = ({ business_id }) => {
     const { data: businessList, isLoading, isSuccess } = useBusinessesQuery()
     let navigate = useNavigate()
     let business = {}
@@ -47,11 +48,13 @@ const BusinessLabel = ({ business_id, reverse = false }) => {
 
     return (
         <BusinessLabelStyles>
-            <div onClick={() => navigate(`/business/${business_id}`)} className={`businessLabelWrapper ${(reverse) ? 'reverseRow' : ''}`}>
-                <div className='businessLogoContainer'>
-                    <img src={image_link(business?.business_avatar)} alt='business branding' />
+            <div className='businessLabelWrapper' onClick={() => navigate(`/business/${business_id}`)}>
+                <div className='businessLabelLogo'>
+                    <img src={image_link(business?.business_avatar)} alt={`${business?.business_name} branding`} />
                 </div>
-                <div>{business?.business_name}</div>
+                <div className='businessLabelName'>
+                    {business?.business_name}
+                </div>
             </div>
         </BusinessLabelStyles>
     )

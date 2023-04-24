@@ -31,7 +31,7 @@ const CreateEventFormStyles = styled.div`
 
     .createEventFormImage {
         width: 100%;
-        max-width: 450px;
+        max-width: 400px;
         margin: 1rem auto;
         
         @media (min-width: 500px) {
@@ -39,7 +39,7 @@ const CreateEventFormStyles = styled.div`
         }
 
         canvas {
-            max-width: 100%;
+            width: 100%;
             border: 1px solid var(--image-border-color);
             display: block;
             box-shadow: 5px 5px 5px var(--image-box-shadow-color);

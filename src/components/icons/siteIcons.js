@@ -10,23 +10,23 @@ import { CameraAdd } from "@styled-icons/fluentui-system-regular";
 import { Cannabis, MapLocationDot, Users } from "@styled-icons/fa-solid"
 // import { Bars, UsersSlash } from "@styled-icons/fa-solid"
 
-export const MailIcon = styled(Mail)`color: var(--background-color); width: 24px;`
-export const InstagramIcon = styled(Instagram)`color: var(--background-color); width: 24px;`
-export const TwitterIcon = styled(Twitter)`color: var(--background-color); width: 24px;`
-export const FacebookIcon = styled(FacebookCircle)`color: var(--background-color); width: 24px;`
+export const MailIcon = styled(Mail)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const InstagramIcon = styled(Instagram)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const TwitterIcon = styled(Twitter)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const FacebookIcon = styled(FacebookCircle)`color: var(--site-icon-color); width: var(--site-icon-size);`
 
-export const PhoneIcon = styled(Phone)`color: var(--background-color); width: 24px;`
-export const WebSiteIcon = styled(Web)`color: var(--background-color); width: 24px;`
+export const PhoneIcon = styled(Phone)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const WebSiteIcon = styled(Web)`color: var(--site-icon-color); width: var(--site-icon-size);`
 
-export const DispensaryIcon = styled(BuildingRetail)`color: teal; width: 22px;`
-export const LocationIcon = styled(MapLocationDot)`color: orange; width: 22px;`
-export const ClosedIcon = styled(Prohibited)`color: red; width: 22px;`
-export const BrandIcon = styled(Cannabis)`color: green; width: 22px;`
+export const DispensaryIcon = styled(BuildingRetail)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const LocationIcon = styled(MapLocationDot)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const ClosedIcon = styled(Prohibited)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const BrandIcon = styled(Cannabis)`color: var(--site-icon-color); width: var(--site-icon-size);`
 
-export const EditIcon = styled(Edit)`color: darkcyan; width: 22px;`
-export const AddImageIcon = styled(CameraAdd)`color: pink; width: 22px;`
-export const DeleteIcon = styled(Delete)`color: red; width: 22px;`
+export const EditIcon = styled(Edit)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const AddImageIcon = styled(CameraAdd)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const DeleteIcon = styled(Delete)`color: var(--site-icon-color); width: var(--site-icon-size);`
 
-export const UsersGroupIcon = styled(Users)`color: aqua; width: 22px;`
-export const OpenRequestIcon = styled(PeopleTeam)`color: coral; width: 22px;`
-export const ClosedRequestIcon = styled(PeopleTeamDelete)`color: red; width: 22px;`
+export const UsersGroupIcon = styled(Users)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const OpenRequestIcon = styled(PeopleTeam)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const ClosedRequestIcon = styled(PeopleTeamDelete)`color: var(--site-icon-color); width: var(--site-icon-size);`

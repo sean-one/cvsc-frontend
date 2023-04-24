@@ -18,6 +18,8 @@ const GlobalStyle = createGlobalStyle`
         --page-wrapper-background-color: rgba(75,111,81,0.3);
         --max-page-width: 825px;
         --main-break-width: 500px;
+        --site-icon-color: #58C46E;
+        --site-icon-size: 24px;
     }
 `;
 

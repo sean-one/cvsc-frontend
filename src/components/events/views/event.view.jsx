@@ -29,13 +29,20 @@ const EventViewStyles = styled.div`
             padding: 1.5rem;
         }}
 
-    .eventHeader {
+    .eventViewRow {
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: space-between;}
+        justify-content: space-between;
+        gap: 10px;}
+
+    .eventViewEventname {
+        flex-grow: 1;}
+
+    .eventViewEditButton {
+        flex-shrink: 0;}
     
-    .eventAddress {
+    .eventViewAddress {
         align-self: flex-start;
     }
 
@@ -47,7 +54,7 @@ const EventViewStyles = styled.div`
         font-weight: bold;
         font-style: italic;}
     
-    .eventViewDetails {
+    .eventViewDetailsRow {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -57,35 +64,33 @@ const EventViewStyles = styled.div`
         }
     }
     
-    .eventImage {
+    .eventViewImage {
         width: 100%;
-        /* max-width: 350px; */
+        max-width: 500px;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0.75rem 0;
+        margin: 0.75rem auto;
 
         @media (min-width: 768px) {
             margin: 0.5rem;
-            width: 40%;
         }
 
         img {
             width: 100%;
-            border: 1px solid #dcdbc4;
+            border: 1px solid var(--image-border-color);
             display: block;
-            box-shadow: 5px 5px 5px #010a00;
+            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
 
-            @media (min-width: 768px) {
-                width: 300px;
-            }
         }}
     
     .linksAndInfo {
+        align-self: center;
         width: 100%;
         display: flex;
         flex-direction: column;
         padding-top: 0.5rem;
+        flex-grow: 1;
 
         @media (min-width: 768px) {
             padding-top: 0;
@@ -98,24 +103,16 @@ const EventViewStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-
+        margin-bottom: 0.5rem;
+        
         > div {
             width: 100%;
             border-bottom: 1px solid white;
+            padding-bottom: 0.5rem;
+            margin: 0.25rem 0;
             border-radius: 5px;
-            
-            @media (min-width: 450px) {
-                padding: 0.5rem 0;
-                border-bottom: none;
-            }
         }
         
-        @media (min-width: 450px) {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
-
-        }
     }
 `;
 
@@ -137,39 +134,42 @@ const EventView = () => {
         <EventViewStyles>
             <div className='eventViewWrapper'>
 
-                <div className='eventHeader'>
-                    <h2>{event.data.eventname.toUpperCase()}</h2>
+                <div className='eventViewRow'>
+                    
+                    <div className='eventViewEventname'>
+                        <h2>{event.data.eventname.toUpperCase()}</h2>
+                    </div>
+
                     {
                         (auth?.user?.id === event.data.created_by)
-                            ? <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>
+                            ? <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })} className='eventViewEditButton'>
                                 <EditIcon />
                             </div>
                             : null
                     }
                 </div>
                 
-                <div className='eventAddress'>{`${event.data.street_address}, ${event.data.location_city}`}</div>
+                <div className='eventViewAddress'>{`${event.data.street_address}, ${event.data.location_city}`}</div>
                 
                 <div className='eventViewDateWrapper'>
                     <h5>{format(new Date(event.data.eventdate), 'E, MMMM d')}</h5>
                     <h5>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</h5>
                 </div>
 
-                <div className='eventViewDetails'>
+                <div className='eventViewDetailsRow'>
 
-                    <div className='eventImage'>
+                    <div className='eventViewImage'>
                         <img src={image_link(event.data.eventmedia)} alt={event.data.eventname} />
                     </div>
 
                     <div className='linksAndInfo'>
-                        {/* brand and venue names and links */}
+
                         <div className='businessLabelLinks'>
                             <BusinessLabel business_id={event.data.venue_id} />
                             <BusinessLabel business_id={event.data.brand_id} reverse={true} />
                         </div>
 
-                        {/* <div className='fs-6 lh-sm mt-1 pt-2 border-top'> */}
-                        <div>
+                        <div className='eventViewDetails'>
                             {event.data.details}
                         </div>
 
