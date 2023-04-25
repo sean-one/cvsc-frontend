@@ -115,6 +115,12 @@ const EventViewStyles = styled.div`
         }
         
     }
+
+    .eventViewRelatedSection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 
@@ -167,7 +173,7 @@ const EventView = () => {
 
                         <div className='businessLabelLinks'>
                             <BusinessLabel business_id={event.data.venue_id} />
-                            <BusinessLabel business_id={event.data.brand_id} reverse={true} />
+                            <BusinessLabel business_id={event.data.brand_id} />
                         </div>
 
                         <div className='eventViewDetails'>
@@ -177,7 +183,7 @@ const EventView = () => {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className='eventViewRelatedSection'>
                 <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
             </div>
         </EventViewStyles>

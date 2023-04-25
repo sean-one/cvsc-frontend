@@ -31,10 +31,14 @@ const BusinessLabelStyles = styled.div`
     .businessLabelName {
         padding-left: 0.5rem;
     }
+
+    .businessLabelReverse {
+        flex-direction: row-reverse;
+    }
 `;
 
 
-const BusinessLabel = ({ business_id }) => {
+const BusinessLabel = ({ business_id, size=50, reverse=false}) => {
     const { data: businessList, isLoading, isSuccess } = useBusinessesQuery()
     let navigate = useNavigate()
     let business = {}
@@ -48,8 +52,8 @@ const BusinessLabel = ({ business_id }) => {
 
     return (
         <BusinessLabelStyles>
-            <div className='businessLabelWrapper' onClick={() => navigate(`/business/${business_id}`)}>
-                <div className='businessLabelLogo'>
+            <div className={`businessLabelWrapper ${reverse ? 'businessLabelReverse' : ''}`} onClick={() => navigate(`/business/${business_id}`)}>
+                <div className='businessLabelLogo' style={{ maxWidth: `${size}px` }}>
                     <img src={image_link(business?.business_avatar)} alt={`${business?.business_name} branding`} />
                 </div>
                 <div className='businessLabelName'>
