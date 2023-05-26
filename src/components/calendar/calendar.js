@@ -7,12 +7,15 @@ import { useEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
 import EventPreview from '../events/views/event.preview';
 
-const Styles = styled.div`
-    /* .calendarView {
-        box-shadow: none;
-        border-radius: 0;
-        background-color: transparent;
-    }    */
+const CalendarStyles = styled.div`
+    .calendarWrapper {
+        width: 100%;
+        max-width: var(--max-page-width);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid yellow;
+    }
 `
 
 const Calendar = () => {
@@ -45,9 +48,9 @@ const Calendar = () => {
     
 
     return (
-        <Styles>
+        <CalendarStyles>
 
-            <div className='pageWrapper calendarView'>
+            <div className='calendarWrapper'>
                 {
                     sortedEvents.map(event => {
                         return (
@@ -57,7 +60,7 @@ const Calendar = () => {
                 }
             </div>
 
-        </Styles>
+        </CalendarStyles>
     )
 }
 

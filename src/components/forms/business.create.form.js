@@ -146,7 +146,7 @@ const BusinessCreateForm = () => {
 
     return (
         <Styles>
-            <div className='pageWrapper'>
+            <div>
                 <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data' className='businessCreateForm'>
                     
                     {/* once image has been created it will show here */}

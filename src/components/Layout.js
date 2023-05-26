@@ -7,8 +7,10 @@ const theme = {
 
 const GlobalStyle = createGlobalStyle`
     :root {
-        --background-color: #19381f;
+        --header-height: 4.5rem;
+        --header-background-color: #CBD4BA;
         --main-text-color: #DAD7CD;
+        --background-color: #19381f;
         --error-text-color: #58C46E;
         --box-shadow-color: #0D2B12;
         --input-text-color: #010A00;
@@ -24,91 +26,26 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Styles = styled.div`
-    * {
-        box-sizing: border-box;
-    }
-
-    h2, h5 {
-        margin-bottom: 0;
-    }
-
-    h5 {
-        font-weight: normal;
-    }
-
     .app_container {
-        position: relative;
         min-width: 250px;
         min-height: 100vh;
         max-width: 100vw;
-        margin: 0;
-        padding: 4.5rem 0.75rem 0 0.75rem;
         color: var(--main-text-color);
         background-color: var(--background-color);
     }
     
     .innerContainer {
-        width: 100%;
+        padding: calc(var(--header-height) + 0.75rem) 0 0.5rem 0;
+        display: flex;
+        justify-content: center;
         box-sizing: border-box;
         
         @media (min-width: 500px) {
-            padding: 1rem;
-            width: calc(100vw - 1.5rem);
-            /* max-width: 700px; */
+            padding: calc(var(--header-height) + 0.75rem) 0.5rem 0.5rem;
+            max-width: var(--max-page-width);
             margin: 0 auto;
         }
     }
-
-    .pageWrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        /* max-width: 700px; */
-        margin: 0 auto;
-        padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
-        border-radius: 5px;
-        background-color: rgba(75,111,81,0.3);
-    }
-
-    .calendarView {
-        box-shadow: none;
-        border-radius: 0;
-        background-color: transparent;
-    }
-
-    .centerElement {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .fullCalendar {
-        width: calc(100vw - 1.5rem);
-        max-width: 1280px;
-        box-sizing: border-box;
-    }
-
-    .weekDay {
-        height: 145px;
-    }
-
-    .daysPast {
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    /* form {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 10px;
-    } */
     
     button {
         padding: 0.5rem 1.25rem;

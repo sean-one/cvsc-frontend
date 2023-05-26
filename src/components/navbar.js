@@ -12,9 +12,9 @@ const Styles = styled.div`
         position: fixed;
         top: 0;
         left: 0;
-        background-color: #cbd4ba;
+        background-color: var(--header-background-color);
         width: 100%;
-        height: 4.5rem;
+        height: var(--header-height);
         display: flex;
         justify-content: center;
         flex-direction: column;

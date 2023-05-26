@@ -15,7 +15,7 @@ const EventPreviewStyles = styled.div`
         display: flex;
         flex-direction: column;
         padding: 0.5rem;
-        margin: 1.5rem 0;
+        /* margin: 1.5rem 0; */
         box-shadow: 
             -3px -2px 1px 0 rgba(218, 215, 205, 0.2),
             3px 2px 1px 0 var(--box-shadow-color);

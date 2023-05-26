@@ -1,88 +1,92 @@
-/* css variables */
-:root {
-  --headerHeight: 3rem;
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-
-body {
+/* Remove default margin and padding */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+header,
+footer,
+fieldset,
+figure,
+blockquote,
+dl,
+div,
+dd {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  padding: 0;
+}
+
+/* Set default font size and line height */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 100vw;
+  max-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: auto;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
 }
 
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-
-html {
-  font-size: 62.5%;
-  /* font-family: 'Comfortaa'; */
-}
-
-body {
-  font-size: 1.6rem;
-	line-height: 1;
-}
-
+/* Remove hyperlink styles */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-ol, ul {
-	list-style: none;
+/* Remove form element styles */
+button,
+input,
+select,
+textarea {
+  font-size: inherit;
+  margin: 0;
 }
 
-blockquote, q {
-	quotes: none;
+/* Reset images to display as block elements */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-* {
+/* Set a default border box for all elements */
+html {
+  font-size: 62.5%;
   box-sizing: border-box;
+}
+
+/* Reset default button styles */
+button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* Reset default input styles */
+input {
+  background-color: transparent;
+  border: none;
+  padding: 0;
 }
