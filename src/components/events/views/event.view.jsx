@@ -14,6 +14,7 @@ import BusinessLabel from '../../business/business.label';
 import EventViewRelated from '../event.view.related';
 
 const EventViewStyles = styled.div`
+
     .eventViewWrapper {
         display: flex;
         flex-direction: column;
@@ -28,20 +29,24 @@ const EventViewStyles = styled.div`
         
         @media (min-width: 768px) {
             padding: 1.5rem;
-        }}
+        }
+    }
 
     .eventViewRow {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;}
+        gap: 10px;
+    }
 
     .eventViewEventname {
-        flex-grow: 1;}
+        flex-grow: 1;
+    }
 
     .eventViewEditButton {
-        flex-shrink: 0;}
+        flex-shrink: 0;
+    }
     
     .eventViewAddress {
         align-self: flex-start;
@@ -53,7 +58,8 @@ const EventViewStyles = styled.div`
         justify-content: space-between;
         margin: 0.25rem 0;
         font-weight: bold;
-        font-style: italic;}
+        font-style: italic;
+    }
     
     .eventViewDetailsRow {
         width: 100%;
@@ -83,7 +89,8 @@ const EventViewStyles = styled.div`
             display: block;
             box-shadow: 5px 5px 5px var(--image-box-shadow-color);
 
-        }}
+        }
+    }
     
     .linksAndInfo {
         align-self: center;
@@ -114,12 +121,6 @@ const EventViewStyles = styled.div`
             border-radius: 5px;
         }
         
-    }
-
-    .eventViewRelatedSection {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 `;
 
@@ -183,9 +184,9 @@ const EventView = () => {
                     </div>
                 </div>
             </div>
-            <div className='eventViewRelatedSection'>
-                <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
-            </div>
+
+            <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
+        
         </EventViewStyles>
     )
 }

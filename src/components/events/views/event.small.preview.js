@@ -8,7 +8,8 @@ import BusinessLabel from '../../business/business.label';
 
 const EventSmallPreviewStyles = styled.div`
     .eventSmallPreviewWrapper {
-        max-width: 750px;
+        width: 100%;
+        /* max-width: 750px; */
         display: flex;
         justify-content: space-between;
         padding: 0.5rem;
@@ -16,8 +17,12 @@ const EventSmallPreviewStyles = styled.div`
         background-color: var(--page-wrapper-background-color);
         box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
-        /* border: 1px solid red; */
+        border: 1px solid blue;
         gap: 10px;
+
+        @media (min-width: 768px) {
+            padding: 1.5rem;
+        }
     }
 
     .eventSmallPreviewLeftSection {
