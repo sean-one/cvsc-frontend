@@ -10,7 +10,6 @@ const EventViewRelatedStyles = styled.div`
         display: flex;
         flex-direction: column;
         width: 100%;
-        max-width: 1080px;
         border: 1px solid red;
         margin: 0 auto;
         padding-top: 1.5rem;

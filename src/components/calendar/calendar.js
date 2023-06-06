@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useEventsQuery } from '../../hooks/useEventsApi';
 
 import LoadingSpinner from '../loadingSpinner';
-import EventPreview from '../events/views/event.preview';
+import EventCard from '../events/views/event.card';
 
 const CalendarStyles = styled.div`
     .calendarWrapper {
@@ -13,7 +13,6 @@ const CalendarStyles = styled.div`
         max-width: var(--max-page-width);
         display: flex;
         flex-direction: column;
-        align-items: center;
     }
 `
 
@@ -53,7 +52,7 @@ const Calendar = () => {
                 {
                     sortedEvents.map(event => {
                         return (
-                            <EventPreview key={event.event_id} event={event} />
+                            <EventCard key={event.event_id} event={event} />
                         )
                     })
                 }

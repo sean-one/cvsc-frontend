@@ -9,8 +9,6 @@ import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
-// import RelatedEvents from '../related.events';
-import BusinessLabel from '../../business/business.label';
 import EventViewRelated from '../event.view.related';
 
 const EventViewStyles = styled.div`
@@ -20,28 +18,26 @@ const EventViewStyles = styled.div`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 1080px;
-        margin: 0 auto;
-        padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
-        border-radius: 5px;
-        background-color: var(--page-wrapper-background-color);
         
         @media (min-width: 768px) {
-            padding: 1.5rem;
+            padding: 0.75rem;
         }
     }
 
-    .eventViewRow {
+    .eventViewHeaderRow {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
     }
-
+    
     .eventViewEventname {
         flex-grow: 1;
+        font-size: 1.6rem;
+        line-height: 1.2;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 
     .eventViewEditButton {
@@ -56,12 +52,11 @@ const EventViewStyles = styled.div`
         width: 100%;
         display: flex;
         justify-content: space-between;
-        margin: 0.25rem 0;
         font-weight: bold;
         font-style: italic;
     }
     
-    .eventViewDetailsRow {
+    .eventViewBody {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -71,7 +66,7 @@ const EventViewStyles = styled.div`
         }
     }
     
-    .eventViewImage {
+    .eventViewImageContainer {
         width: 100%;
         max-width: 500px;
         display: flex;
@@ -82,45 +77,31 @@ const EventViewStyles = styled.div`
         @media (min-width: 768px) {
             margin: 0.5rem;
         }
-
-        img {
-            width: 100%;
-            border: 1px solid var(--image-border-color);
-            display: block;
-            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
-
-        }
     }
     
-    .linksAndInfo {
+    .eventViewImage {
+        width: 100%;
+        border: 1px solid var(--image-border-color);
+        display: block;
+    }
+
+    .eventViewDetails {
         align-self: center;
         width: 100%;
         display: flex;
         flex-direction: column;
-        padding-top: 0.5rem;
         flex-grow: 1;
-
+    
         @media (min-width: 768px) {
             padding-top: 0;
             padding-left: 1rem;
         }
     }
 
-    .businessLabelLinks {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 0.5rem;
-        
-        > div {
-            width: 100%;
-            border-bottom: 1px solid white;
-            padding-bottom: 0.5rem;
-            margin: 0.25rem 0;
-            border-radius: 5px;
-        }
-        
+    .eventViewBusiness {
+        margin: 0.25rem;
+        font-size: 1.2rem;
+        font-weight: bold;
     }
 `;
 
@@ -141,13 +122,8 @@ const EventView = () => {
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
-
-                <div className='eventViewRow'>
-                    
-                    <div className='eventViewEventname'>
-                        <h2>{event.data.eventname.toUpperCase()}</h2>
-                    </div>
-
+                <div className='eventViewHeaderRow'>
+                    <div className='eventViewEventname'>{event.data.eventname}</div>
                     {
                         (auth?.user?.id === event.data.created_by)
                             ? <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })} className='eventViewEditButton'>
@@ -156,37 +132,29 @@ const EventView = () => {
                             : null
                     }
                 </div>
-                
                 <div className='eventViewAddress'>{`${event.data.street_address}, ${event.data.location_city}`}</div>
-                
                 <div className='eventViewDateWrapper'>
-                    <h5>{format(new Date(event.data.eventdate), 'E, MMMM d')}</h5>
-                    <h5>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</h5>
+                    <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
+                    <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
                 </div>
-
-                <div className='eventViewDetailsRow'>
-
-                    <div className='eventViewImage'>
-                        <img src={image_link(event.data.eventmedia)} alt={event.data.eventname} />
+                <div className='eventViewBody'>
+                    <div className='eventViewImageContainer'>
+                        <img className='eventViewImage' src={image_link(event.data.eventmedia)} alt={event.data.eventname} />
                     </div>
-
-                    <div className='linksAndInfo'>
-
-                        <div className='businessLabelLinks'>
-                            <BusinessLabel business_id={event.data.venue_id} />
-                            <BusinessLabel business_id={event.data.brand_id} />
+                    <div className='eventViewDetails'>
+                        <div>{event.data.details}</div>
+                        <div>
+                            <div className='eventViewBusiness' onClick={() => navigate(`/business/${event.data.venue_id}`)}>
+                                {`Location: ${event.data.venue_name}`}
+                            </div>
+                            <div className='eventViewBusiness' onClick={() => navigate(`/business/${event.data.brand_id}`)}>
+                                {`Brand: ${event.data.brand_name}`}
+                            </div>
                         </div>
-
-                        <div className='eventViewDetails'>
-                            {event.data.details}
-                        </div>
-
                     </div>
                 </div>
             </div>
-
             <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
-        
         </EventViewStyles>
     )
 }

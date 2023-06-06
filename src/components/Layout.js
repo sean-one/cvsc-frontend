@@ -8,7 +8,8 @@ const theme = {
 const GlobalStyle = createGlobalStyle`
     :root {
         --header-height: 4.5rem;
-        --header-background-color: #CBD4BA;
+        --header-background-color: #DAD7CD;
+        /* --header-background-color: #CBD4BA; */
         --main-text-color: #DAD7CD;
         --background-color: #19381f;
         --error-text-color: #58C46E;
@@ -26,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Styles = styled.div`
-    .app_container {
+    .appContainer {
         min-width: 250px;
         min-height: 100vh;
         max-width: 100vw;
@@ -36,8 +37,6 @@ const Styles = styled.div`
     
     .innerContainer {
         padding: calc(var(--header-height) + 0.75rem) 0 0.5rem 0;
-        display: flex;
-        justify-content: center;
         box-sizing: border-box;
         
         @media (min-width: 500px) {
@@ -160,7 +159,7 @@ export const Layout = (props) => {
     return (
         <Styles theme={theme}>
             <GlobalStyle />
-            <div className='app_container'>
+            <div className='appContainer'>
                 <div className='innerContainer'>{props.children}</div>
             </div>
         </Styles>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
@@ -40,6 +41,7 @@ const Styles = styled.div`
 
 const Navbar = () => {
     const [ toggle, setToggle ] = useState(false)
+    let navigate = useNavigate()
 
 
     return (
@@ -53,6 +55,7 @@ const Navbar = () => {
                             src={cvsc}
                             height="50"
                             alt="Coachella Valley Smokers Club logo"
+                            onClick={() => navigate('/')}
                         />
                         <div className='menuToggle' onClick={() => setToggle(!toggle)}>
                             {

@@ -1,131 +1,72 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-// import { faCannabis, faTrash, faStore } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
-import useAuth from '../../hooks/useAuth';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
-import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
-import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 
 const BusinessLabelStyles = styled.div`
-    .businessLabelStylesWrapper {
+    .businessLabelsContainer {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        align-items: center;
     }
 
     .businessLogoContainer {
         display: flex;
         justify-content: space-between;
-        margin: 0.25rem 0.5rem;
-
-        img {
-            display: block;
-            width: 100%;
-            max-width: 60px;
-            border-radius: 50%;
-        }
+    }
+    
+    .businessLogo {
+        width: 100%;
+        max-width: 3.4rem;
+        border: 2px solid black;
+        border-radius: 50%;
     }
 
-    .businessDetailsWrapper {
-        width: 100%;
+    .businessListing {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
+        align-items: center;
+        
+        @media (max-width: 350px) {
+            width: 100%;
+            justify-content: center;
+        }
 
         @media (min-width: 768px) {
-            justify-content: flex-start;
-        }
-
-        div {
-            padding-right: 0.5rem;
-        }
-
-        .trashIcon {
-            margin: 0.25rem 0.5rem;
+            align-self: flex-end;
         }
     }
 
+    .businessName {
+        @media (max-width: 350px) {
+            display: none;
+        }
+    }
 `;
 
 
-const BusinessLabel = ({ business_id, event_id, business_type }) => {
+const BusinessLabel = ({ businessId, imageOnly=false }) => {
     const { data: businessList, isLoading, isSuccess } = useBusinessesQuery()
     let business = {}
-    let business_name = ''
-    let business_role = {}
 
-    const { auth, logout_user } = useAuth()
-    const { mutateAsync: removeEventBusinessMutation } = useRemoveEventBusinessMutation()
-    // const { event_id } = useParams()
-    const { dispatch } = useNotification()
+    if (isLoading) { return <LoadingSpinner /> }
 
-    let navigate = useNavigate()
-
-    const remove_event_business = async () => {
-        try {
-            const remove_business_response = await removeEventBusinessMutation({ event_id, event_updates: { business_id, business_type } })
-
-            if (remove_business_response.status === 202) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${business_name} has been removed`
-                    }
-                })
-
-                navigate('/profile')
-            }
-
-        } catch (error) {
-            console.log(error)
-            if (error.response.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error.response.data.error.message
-                    }
-                })
-
-
-            }
-
-            logout_user()
-        }
-
+    if (isSuccess) {
+        business = businessList?.data.find(business => business.id === businessId)
     }
 
-    if(isLoading) { <LoadingSpinner /> }
-
-    if(isSuccess) {
-        business = businessList?.data.find(business => business.id === business_id)
-        business_name = business?.business_name
-        if(auth?.roles) {
-            business_role = auth?.roles.find(role => role.business_id === business_id)
-        }
-    }
 
     return (
         <BusinessLabelStyles>
-            <div className='businessLabelStylesWrapper'>
-                <div className='businessLogoContainer' onClick={() => navigate(`/business/${business_id}`)}>
-                    <img src={image_link(business?.business_avatar)} alt='business branding' />
-                </div>
-                <div className='businessDetailsWrapper'>
-                    <div onClick={() => navigate(`/business/${business_id}`)}>{business.business_name}</div>
+            <div className='businessLabelsContainer'>
+                <div className='businessListing'>
+                    <div className='businessLogoContainer'>
+                        <img className='businessLogo' src={image_link(business?.business_avatar)} alt={`${business.businessname} logo`} />
+                    </div>
                     {
-                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT)
-                            ? <div onClick={remove_event_business}>
-                                <FontAwesomeIcon icon={faTrash} className='trashIcon'/>
-                            </div>
-                            : null
+                        (!imageOnly) && <div className='businessName'>{business?.business_name}</div>
                     }
                 </div>
             </div>

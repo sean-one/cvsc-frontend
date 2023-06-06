@@ -21,6 +21,7 @@ const EventPreviewStyles = styled.div`
             3px 2px 1px 0 var(--box-shadow-color);
         border-radius: 5px;
         background-color: var(--page-wrapper-background-color);
+        border: 1px solid red;
     }
 
     .inactiveEvent {
