@@ -1,16 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { loginSchema } from '../helpers/validationSchemas';
-import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
-import { FormInput } from './forms/formInput';
+import { validatePassword, validateUsername } from './forms/form.validations';
 
-const Styles = styled.div`
+const LoginStyles = styled.div`
     .loginWrap {
         display: flex;
         flex-direction: column;
@@ -19,24 +17,21 @@ const Styles = styled.div`
         max-width: var(--max-page-width);
         margin: 0 auto;
         padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
-        border-radius: 5px;
-        background-color: var(--page-wrapper-background-color);
     }
 
     .loginHeader {
-        padding-left: 1.5rem;
-        padding-bottom: 1.5rem;
+        width: 100%;
+        font-size: 1.8rem;
+        font-weight: bold;
         align-self: flex-start;
     }
 
     .loginForm {
         width: 100%;
-        max-width: 425px;
+        margin-top: 0.5rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: 10px;
     }
 
     .registerLinkWrapper {
@@ -54,7 +49,6 @@ const Login = () => {
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: "onBlur",
-        resolver: yupResolver(loginSchema)
     });
     let navigate = useNavigate();
 
@@ -109,30 +103,37 @@ const Login = () => {
 
 
     return (
-        <Styles>
+        <LoginStyles>
             <div className='loginWrap'>
                 
-                <div className='loginHeader'>
-                    <h2>Login</h2>
-                </div>
+                <div className='loginHeader'>Login</div>
 
                 <form onSubmit={handleSubmit(sendLogin)} className='loginForm' onClick={() => clearErrors('credentials')}>
                     
-                    <FormInput id='username'
-                        register={register}
-                        onfocus={clearErrors}
-                        placeholder='Username'
-                        error={errors.username}
-                    />
-
-                    <FormInput id='password'
-                        register={register}
-                        onfocus={clearErrors}
-                        placeholder='Password'
-                        type='password'
-                        error={errors.password}
-                    />
-
+                    <div className='inputWrapper'>
+                        <input {...register('username', {
+                            required: 'username is required',
+                            minLength: {
+                                value: 4,
+                                message: 'must be at least 4 letters'
+                            },
+                            maxLength: {
+                                value: 20,
+                                message: 'too long, must be 20 characters or less'
+                            },
+                            validate: validateUsername,
+                        })} className='formInput' type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                        {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
+                    </div>
+                    
+                    <div className='inputWrapper'>
+                        <input {...register('password', {
+                            required: 'password is required',
+                            validate: validatePassword
+                        })} className='formInput' type='password' onFocus={() => clearErrors('password')} placeholder='Password' />
+                        {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
+                    </div>
+                    
                     <div className='errormessage'>{errors?.credentials?.message}</div>
 
                     <div className='formButtonWrapper'>
@@ -145,7 +146,7 @@ const Login = () => {
                     <p onClick={() => navigate('/register')}>New to the club? Register here</p>
                 </div>
             </div>
-        </Styles>
+        </LoginStyles>
     )
 }
 

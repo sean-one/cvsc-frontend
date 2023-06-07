@@ -6,57 +6,6 @@ const sixtyDaysOut = format(add(new Date(), { days: 60 }), 'yyyy-MM-dd');
 
 
 // USER SCHEMAS
-export const registrationSchema = yup.object().shape({
-    username: yup
-        .string()
-        .required("required field")
-        .min(4, "must be at least 4 characters")
-        .max(20, 'must be 20 characters or less')
-        .matches(/^[a-zA-Z0-9*@_.\-!$]+$/, 'can only contain alphanumeric, *, _, -, ., $, !, and @')
-        .matches(/^(?!.*([*@_.\-!$])\1)[a-zA-Z0-9*@_.\-!$]+$/, 'Special characters cannot be repeated back to back'),
-
-    email: yup
-        .string()
-        .email('invalid email format')
-        .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-            'invalid email format'
-        )
-        .required('valid email is required'),
-    
-    password: yup
-        .string()
-        .required("required field")
-        .min(8, 'Password must be at least 8 characters long')
-        .max(50, 'Password cannot be more than 50 characters long')
-        .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+-=,./?;:'"[\]{}|\\]).{8,}$/,
-            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-        ),
-    
-    confirmation: yup
-        .string()
-        .oneOf([yup.ref('password'), null], 'passwords must match')
-        .required('required field')
-})
-
-export const loginSchema = yup.object().shape({
-    username: yup
-        .string()
-        .required("required field.")
-        .min(4, "must be at least 4 characters")
-        .max(20, 'must be 20 characters or less')
-        .matches(/^[a-zA-Z0-9*@_.\-!$]+$/, 'can only contain alphanumeric, *, _, -, ., $, !, and @')
-        .matches(/^(?!.*([*@_.\-!$])\1)[a-zA-Z0-9*@_.\-!$]+$/, 'Special characters cannot be repeated back to back'),
-    
-    password: yup
-        .string()
-        .required("required field"),
-        // .min(8, 'Password must be at least 8 characters long')
-        // .max(50, 'Password cannot be more than 50 characters long')
-        // .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+-=,./?;:'"[\]{}|\\]).{8,}$/,
-        //     'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-        // ),
-})
-
 export const editUserSchema = yup.object().shape({
     email: yup
         .string()

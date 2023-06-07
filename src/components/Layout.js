@@ -21,8 +21,9 @@ const GlobalStyle = createGlobalStyle`
         --page-wrapper-background-color: rgba(75,111,81,0.3);
         --max-page-width: 825px;
         --main-break-width: 500px;
-        --site-icon-color: #58C46E;
-        --site-icon-size: 24px;
+        --site-icon-color: #DAD7CD;
+        /* --site-icon-color: #58C46E; */
+        --site-icon-size: 22px;
     }
 `;
 
@@ -144,13 +145,48 @@ const Styles = styled.div`
         cursor: pointer;
     }
 
+    // global form input styling
+    .inputWrapper {
+        margin: 0.5rem 0;
+    }
+
+    .formInput {
+        width: 100%;
+        padding: 0.5rem;
+        border: none;
+        color: var(--input-text-color);
+        border-radius: 5px;
+        border-bottom: 1px solid black;
+        background-color: var(--input-background-color);
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
+        outline: none;
+
+        ::placeholder {
+            color: var(--main-text-color);
+        }
+
+        ::autofill {
+            background-color: blue;
+        } 
+    }
+
+    .imageLabel {
+        width: auto;
+        margin: 0.5rem 0;
+        cursor: pointer;
+    }
+
+    .imageLabelInput {
+        display: none;
+    }
+
     .errormessage {
         width: 100%;
+        font-size: 0.8rem;
         text-align: left;
-        /* padding: 0.25rem; */
-        /* color: #8f0c0c; */
+        letter-spacing: 0.05rem;
+        font-weight: bold;
         color: var(--error-text-color);
-        /* font-weight: bold; */
     }
 
 `;

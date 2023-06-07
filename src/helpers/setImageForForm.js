@@ -4,7 +4,6 @@ export const setImageForForm = (imageCanvas) => {
     let [mime, image_data] = canvas_image.split(',')
     mime = mime.match(/:(.*?);/)[1]
 
-    console.log(mime)
     let data_string = atob(image_data)
     let data_length = data_string.length
     let image_array = new Uint8Array(data_length)

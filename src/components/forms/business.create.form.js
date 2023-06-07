@@ -158,45 +158,19 @@ const BusinessCreateForm = () => {
                     }
 
                     <div className='formRow'>
-                        <FormInput id='business_name'
-                            register={register}
-                            onfocus={clearErrors}
-                            placeholder='Business Name'
-                            error={errors.business_name}
-                        />
-
-                        <ImageInput id='business_avatar'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_avatar}
-                            change={imagePreview}
-                        />
-
+                        <FormInput id='business_name' register={register} onfocus={clearErrors} placeholder='Business Name' error={errors.business_name} />
+                        <ImageInput id='business_avatar' register={register} onfocus={clearErrors} error={errors.business_avatar} change={imagePreview} />
                     </div>
 
-                    <FormInput id='business_email'
-                        register={register}
-                        onfocus={clearErrors}
-                        type='email'
-                        placeholder='Email'
-                        error={errors.business_email}
-                    />
+                    <FormInput id='business_email' register={register} onfocus={clearErrors} type='email' placeholder='Email' error={errors.business_email} />
 
                     {/* business description input */}
                     <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
 
                     <div className='formRow'>
-                        <BusinessTypeSelect
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_type}
-                        />
+                        <BusinessTypeSelect register={register} onfocus={clearErrors} error={errors.business_type} />
                         <label htmlFor='business_location' className='locationCheckbox'>
-                            <input
-                                {...register('business_location')}
-                                type='checkbox'
-                                name='business_location'
-                            />
+                            <input {...register('business_location')} type='checkbox' name='business_location' />
                             <FontAwesomeIcon icon={faLocationArrow} />
                         </label>
                         {/* <CheckBox id='business_location'
@@ -209,68 +183,29 @@ const BusinessCreateForm = () => {
                         (business_location) &&
                         <div>
                             {/* street address input for location */}
-                            <FormInput id='street_address'
-                                register={register}
-                                onfocus={clearErrors}
-                                placeholder='Street Address'
-                                error={errors.street_address}
-                            />
+                            <FormInput id='street_address' register={register} onfocus={clearErrors} placeholder='Street Address' error={errors.street_address} />
                             {/* city input for location */}
-                            <FormInput id='city'
-                                register={register}
-                                onfocus={clearErrors}
-                                placeholder='City'
-                                error={errors.city}
-                            />
+                            <FormInput id='city' register={register} onfocus={clearErrors} placeholder='City' error={errors.city} />
+                            
                             <div className='d-flex justify-content-between'>
                                 {/* state input for location */}
-                                <FormInput id='state'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    placeholder='State'
-                                    error={errors.state}
-                                />
+                                <FormInput id='state' register={register} onfocus={clearErrors} placeholder='State' error={errors.state} />
                                 {/* zip code input for location */}
-                                <FormInput id='zip'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    placeholder='Zip'
-                                    error={errors.zip}
-                                />
+                                <FormInput id='zip' register={register} onfocus={clearErrors} placeholder='Zip' error={errors.zip} />
                             </div>
                         </div>
                     }
 
                     {/* instagram input */}
-                    <ContactInput id='instagram'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_instagram}
-                    />
+                    <ContactInput id='instagram' register={register} onfocus={clearErrors} error={errors.business_instagram} />
                     {/* website input */}
-                    <ContactInput id='website'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_website}
-                    />
+                    <ContactInput id='website' register={register} onfocus={clearErrors} error={errors.business_website} />
                     {/* facebook input */}
-                    <ContactInput id='facebook'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_facebook}
-                    />
+                    <ContactInput id='facebook' register={register} onfocus={clearErrors} error={errors.business_facebook} />
                     {/* phone input */}
-                    <ContactInput id='phone'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_phone}
-                    />
+                    <ContactInput id='phone' register={register} onfocus={clearErrors} error={errors.business_phone} />
                     {/* twitter input */}
-                    <ContactInput id='twitter'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.business_twitter}
-                    />
+                    <ContactInput id='twitter' register={register} onfocus={clearErrors} error={errors.business_twitter} />
 
                     <div className='d-flex justify-content-around pt-3'>
                         <button type='submit'>Create</button>
