@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import { image_link } from '../../../helpers/dataCleanUp';
 
-import BusinessLabel from '../../business/business_label';
+import BusinessLabel from '../../business/business.label';
 
 const EventCardStyles = styled.div`
     .eventCardWrapper {

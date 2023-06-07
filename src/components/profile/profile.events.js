@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import { useUserEventsQuery } from '../../hooks/useEventsApi';
 
 import LoadingSpinner from '../loadingSpinner';
-import EventPreview from '../events/views/event.preview';
+import EventCard from '../events/views/event.card';
 
 
 const ProfileEvents = () => {
@@ -23,7 +23,7 @@ const ProfileEvents = () => {
                 (events_list.length > 0)
                     ? events_list.map(event => {
                         return (
-                            <EventPreview key={event.event_id} event={event} />
+                            <EventCard key={event.event_id} event={event} />
                         )
                     })
                     : null
