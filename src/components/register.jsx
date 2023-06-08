@@ -88,8 +88,9 @@ const Register = () => {
                 formData.append(key, data[key])
             })
             
-            const response = await AxiosInstance.post('/auth/local', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            const response = await AxiosInstance.post('/auth/register', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
             
+            console.log(response)
             if (response.status === 200) {
                 setAuth({ user: response.data.user, roles: response.data.roles })
                 
