@@ -152,7 +152,8 @@ const Styles = styled.div`
 
     .formInput {
         width: 100%;
-        padding: 0.5rem;
+        font-size: 1.4rem;
+        padding: 1rem;
         border: none;
         color: var(--input-text-color);
         border-radius: 5px;

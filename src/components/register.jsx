@@ -211,7 +211,6 @@ const Register = () => {
                     </div>
                     
                     {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
-                    <div className='errormessage'>{errors.invalid_input?.message}</div>
                     
                     <div className='formButtonWrapper'>
                         <button className='formButton' type='submit'>submit</button>

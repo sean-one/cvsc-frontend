@@ -54,7 +54,7 @@ const Login = () => {
 
     
     const sendLogin = (data) => {
-        AxiosInstance.post('/auth/local', data)
+        AxiosInstance.post('/auth/login', data)
             .then(response => {
                 if(response.status === 200) {
                     setAuth({ user: response.data.user, roles: response.data.roles })
@@ -134,7 +134,7 @@ const Login = () => {
                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                     </div>
                     
-                    <div className='errormessage'>{errors?.credentials?.message}</div>
+                    {errors.credentials ? <div className='errormessage'>{errors?.credentials?.message}</div> : null}
 
                     <div className='formButtonWrapper'>
                         <button className='formButton' type='submit'>submit</button>
