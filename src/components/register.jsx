@@ -38,6 +38,24 @@ const RegisterStyles = styled.div`
         justify-content: space-between;
     }
 
+    .registerImagePreview {
+        width: 100%;
+        max-width: 350px;
+        margin: 1rem auto;
+
+        @media (min-width: 500px) {
+            width: 100%;
+        }
+
+        canvas {
+            max-width: 100%;
+            border: 1px solid #DCDBC4;
+            border-radius: 50%;
+            display: block;
+            box-shadow: 5px 5px 5px #010A00;
+        }
+    }
+
     .emailImageRow {
         display: flex;
         justify-content: space-between;
@@ -57,7 +75,7 @@ const RegisterStyles = styled.div`
 
 const Register = () => {
     const { setAuth } = useAuth();
-    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
+    const { editImage, imagePreview, canvas } = useImagePreview()
     const { dispatch } = useNotification();
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -67,31 +85,30 @@ const Register = () => {
     let navigate = useNavigate();
 
     const createUser = async (data) =>{
-        console.log(data)
         try {
             const formData = new FormData()
 
             if(canvas.current !== null) {
                 let avatar = setImageForForm(canvas)
-
                 formData.set('avatar', avatar)
             }
 
+            // confirm password and delete extra confirmation field
             if(data.password !== data.confirmation) {
                 setError('credentials', { message: 'password and confirmation must match' })
             } else {
-                // remove password confirmation
                 delete data['confirmation']
             }
 
+            // add data fields to formData object for post request
             Object.keys(data).forEach(key => {
                 formData.append(key, data[key])
             })
             
             const response = await AxiosInstance.post('/auth/register', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
             
-            console.log(response)
-            if (response.status === 200) {
+            // if successful add newly loggen in user to auth and forward to profile
+            if (response.status === 201) {
                 setAuth({ user: response.data.user, roles: response.data.roles })
                 
                 dispatch({
@@ -106,7 +123,17 @@ const Register = () => {
                 navigate('/profile');
             }
         } catch (error) {
-            console.log(error)
+            
+            if(error?.response?.status === 409) {
+                setError(error.response.data.error.type, { message: error.response.data.error.message })
+
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    notification_type: 'ERROR',
+                    message: 'something went wrong - uncaught error'
+                })
+            }
         }
         
     }
@@ -143,7 +170,7 @@ const Register = () => {
 
                     {
                         editImage &&
-                            <div className='formImage formCirclePreview'>
+                            <div className='registerImagePreview'>
                                 <canvas id={'userAvatarPreview'} ref={canvas} />
                             </div>
                     }
