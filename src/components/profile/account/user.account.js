@@ -206,6 +206,14 @@ const UserAccount = () => {
                         message: `error - no changes were made`
                     }
                 })
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'user update server error'
+                    }
+                })
             }
 
         }
@@ -219,22 +227,40 @@ const UserAccount = () => {
     }
 
     const delete_account = async () => {
-
-        const deleted_user_response = await AxiosInstance.delete('/users/remove_user')
-        
-        if(deleted_user_response.status === 204) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: 'user account has been deleted'
-                }
-            })
-
-            logout_user()
-            refetch()
-
-            navigate('/')
+        try {
+            const deleted_user_response = await AxiosInstance.delete('/users/delete')
+            
+            if(deleted_user_response.status === 204) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'user account has been deleted'
+                    }
+                })
+    
+                logout_user()
+                refetch()
+    
+                navigate('/')
+            }
+        } catch (error) {
+            if(error?.response?.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'credentials not found - please login'
+                    }
+                })
+                
+                logout_user()
+                refetch()
+                
+                navigate('/login')
+            } else {
+                console.log(error)
+            }
         }
         
     }
