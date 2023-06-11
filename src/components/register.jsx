@@ -75,7 +75,7 @@ const RegisterStyles = styled.div`
 
 const Register = () => {
     const { setAuth } = useAuth();
-    const { editImage, imagePreview, canvas } = useImagePreview()
+    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { dispatch } = useNotification();
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -91,6 +91,9 @@ const Register = () => {
             if(canvas.current !== null) {
                 let avatar = setImageForForm(canvas)
                 formData.set('avatar', avatar)
+
+                canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
+                setEditImage(false)
             }
 
             // confirm password and delete extra confirmation field

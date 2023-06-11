@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import styled from 'styled-components';
 
-const Styles = styled.div`
+const ProfileMenuStyles = styled.div`
     .profileMenu {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0.25rem 0;
+        /* margin: 0.25rem 0; */
     }
 
     .profileTab {
@@ -47,7 +47,7 @@ const ProfileMenu = () => {
     }
 
     return (
-        <Styles>
+        <ProfileMenuStyles>
             <div className='profileMenu'>
                 <div className={`profileTab ${menuTab === 'home' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>
                     Account
@@ -65,7 +65,7 @@ const ProfileMenu = () => {
                 }
             </div>
 
-        </Styles>
+        </ProfileMenuStyles>
     )
 }
 

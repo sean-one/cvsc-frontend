@@ -3,21 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
-import { FormInput, CheckBox, ImageInput } from '../../forms/formInput';
 import useNotification from '../../../hooks/useNotification'
 import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user.png'
 import useImagePreview from '../../../hooks/useImagePreview';
 import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
-import { editUserSchema } from '../../../helpers/validationSchemas';
 import { setImageForForm } from '../../../helpers/setImageForForm';
+import { validateEmail, validatePassword } from '../../forms/form.validations';
+import { AddImageIcon } from '../../icons/siteIcons';
 
-const Styles = styled.div`
+const UserAccountStyles = styled.div`
 
     .userAccountPage {
         display: flex;
@@ -90,6 +89,15 @@ const Styles = styled.div`
     .userDetails {
         height: 100%;}
 
+    .emailImageRow {
+        display: flex;
+        justify-content: space-between;
+
+        div {
+            flex-grow: 1;
+            margin-right: 0.5rem;
+        }}
+
     .accountButtons {
         display: flex;
         justify-content: flex-end;
@@ -110,55 +118,63 @@ const UserAccount = () => {
 
     let navigate = useNavigate()
 
-    const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, setError, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(editUserSchema),
         defaultValues: {
             email: auth.user?.email,
             avatar: '',
-            password: '',
-            confirmation: '',
-            update_password: false,
-            update_image: false,
         }
     })
-
-    const update_password = watch('update_password', false)
-    const update_image = watch('update_image', false)
 
     const update_user = async (data) => {
         try {
             const formData = new FormData()
             
-            if(update_image) {
+            // remove avatar field, if image is attached will be taken from canvas
+            delete data['avatar']
+
+            // confirm changes made to email
+            if(auth.user?.email === data.email) { delete data['email'] }
+
+            // confirm password and confirmation match - EMPTY STRING WILL MATCH
+            if(data.password !== data.confirmation) {
+                setError('credentials', { message: 'password and confirmation must match' })
+            } else { delete data['confirmation'] }
+            
+            // delete password if it is only an empty string
+            if(data.password === '') { delete data['password'] }
+            
+            if((Object.keys(data).length === 0) && (canvas.current === null)) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `error - no changes were found`
+                    }
+                })
+
+                setEditImage(false)
+                reset()
+
+                return
+            } else {
+
+                Object.keys(data).forEach(key => {
+                    formData.append(key, data[key])
+                })
+            }
+            
+            if(canvas.current !== null) {
+                // get the image ready and set it to formData
                 let user_avatar = setImageForForm(canvas)
-                
                 formData.set('avatar', user_avatar)
+
+                // clear the canvas
+                canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
+                setEditImage(false)
             }
 
-            delete data['update_image']
-
-            if(data?.update_password) {
-                formData.append('password', data['password'])
-                delete data['password']
-                delete data['confirmation']
-            }
-
-            delete data['update_password']
-
-            // remove entries unchaged
-            for (const [key] of Object.entries(data)) {
-                if (!Object.keys(dirtyFields).includes(key)) {
-                    delete data[key]
-                }
-            }
-
-            // append everything left changed from the form
-            Object.keys(data).forEach(key => {
-                formData.append(key, data[key])
-            })
-
-            const updated_user_response = await AxiosInstance.post('/users/update_user', formData)
+            const updated_user_response = await AxiosInstance.post('/users/update', formData)
 
             if(updated_user_response.status === 201) {
                 
@@ -192,11 +208,6 @@ const UserAccount = () => {
                 })
             }
 
-        } finally {
-
-            setEditView(false)
-            reset()
-            
         }
     }
 
@@ -230,7 +241,7 @@ const UserAccount = () => {
 
 
     return (
-        <Styles>
+        <UserAccountStyles>
             <div className='userAccountPage'>
                 
                 <div className='profileImage'>
@@ -265,56 +276,37 @@ const UserAccount = () => {
                                     {auth?.user.email}
                                 </div>
                                 : <form encType='multipart/form-data'>
-                                    <FormInput id='email'
-                                        register={register}
-                                        onfocus={clearErrors}
-                                        type='email'
-                                        error={errors.email}
-                                    />
-                                    {
-                                        (update_image) &&
-                                            <ImageInput id='avatar'
-                                                register={register}
-                                                onfocus={clearErrors}
-                                                error={errors.avatar}
-                                                change={imagePreview}
-                                            />
-                                    }
-                                    {/* update image and password checkboxes */}
-                                    <div className='updateWrapper'>
-                                        <CheckBox id='update_password'
-                                            register={register}
-                                            boxlabel='Update Password'
-                                        />
-                                        {
-                                            (!update_image) &&
-                                                <CheckBox id='update_image'
-                                                    register={register}
-                                                    boxlabel='Update Image'
-                                                />
-                                        }
-                                    </div>
-                                    {/* update password and confirm password fields */}
-                                    {
-                                        (update_password) &&
-                                            <div>
-                                                <FormInput id='password'
-                                                    register={register}
-                                                    onfocus={clearErrors}
-                                                    type='password'
-                                                    placeholder='Password'
-                                                    error={errors.password}
-                                                />
+                                    
+                                    <div className='emailImageRow'>
+                                        <div className='inputWrapper'>
+                                            <input {...register('email', {
+                                                validate: validateEmail
+                                            })} className='formInput' type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
+                                            {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
+                                        </div>
 
-                                                <FormInput id='confirmation'
-                                                    register={register}
-                                                    onfocus={clearErrors}
-                                                    type='password'
-                                                    placeholder='Confirm Password'
-                                                    error={errors.confirmation}
-                                                />
-                                            </div>
-                                    }
+                                        <label htmlFor='avatar' className='formInput imageLabel'>
+                                            <AddImageIcon />
+                                            <input {...register('avatar')} id='avatar' className='imageLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                                        </label>
+                                    </div>
+                                    
+                                    <div className='inputWrapper'>
+                                        <input {...register('password', {
+                                            validate: validatePassword
+                                        })} className='formInput' type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
+                                        {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
+                                    </div>
+
+                                    <div className='inputWrapper'>
+                                        <input {...register('confirmation', {
+                                            validate: validatePassword
+                                        })} className='formInput' type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
+                                        {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
+                                    </div>
+
+                                    {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
+
                                 </form>
                         }
                     </div>
@@ -333,7 +325,7 @@ const UserAccount = () => {
                                 </button>
                         }
                         {
-                            (editView && isDirty) &&
+                            (editView) &&
                                 <button onClick={handleSubmit(update_user)}>
                                     <FontAwesomeIcon icon={faSave}/>
                                 </button>
@@ -348,7 +340,7 @@ const UserAccount = () => {
                     
                 </div>
             </div>
-        </Styles>
+        </UserAccountStyles>
     )
 }
 

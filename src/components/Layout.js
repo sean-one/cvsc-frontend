@@ -8,7 +8,8 @@ const theme = {
 const GlobalStyle = createGlobalStyle`
     :root {
         --header-height: 4.5rem;
-        --header-background-color: #DAD7CD;
+        --header-background-color: #DCDBC4;
+        /* --header-background-color: #DAD7CD; */
         /* --header-background-color: #CBD4BA; */
         --main-text-color: #DAD7CD;
         --background-color: #19381f;
