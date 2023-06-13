@@ -146,15 +146,45 @@ const Styles = styled.div`
         cursor: pointer;
     }
 
-    // global form input styling
+    // global form styling
+    .standardForm {
+        width: 95%;
+        margin: 0.5rem auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 5px;
+    }
+
     .inputWrapper {
-        margin: 0.5rem 0;
+        margin: 0.1rem 0;
+    }
+
+    .contactWrapper {
+        background-color: var(--input-background-color);
+        border-radius: 5px;
+        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
+        border-bottom: 1px solid black;
+
+        input {
+            border-bottom: none;
+            box-shadow: none;
+        }
+    }
+
+    .contactLabelWrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .contactIcon {
+        padding: 0.5rem;
     }
 
     .formInput {
         width: 100%;
         font-size: 1.4rem;
-        padding: 1rem;
+        padding: 0.5rem 1rem;
         border: none;
         color: var(--input-text-color);
         border-radius: 5px;
@@ -172,13 +202,29 @@ const Styles = styled.div`
         } 
     }
 
-    .imageLabel {
+    .formRowSplit {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .formRowInputIcon {
+        display: flex;
+        justify-content: space-between;
+
+        div {
+            flex-grow: 1;
+            margin-right: 0.5rem;
+        }
+    }
+
+    .inputLabel {
         width: auto;
-        margin: 0.5rem 0;
+        /* margin: 0.5rem 0; */
         cursor: pointer;
     }
 
-    .imageLabelInput {
+    .inputLabelInput {
         display: none;
     }
 

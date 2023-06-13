@@ -89,15 +89,6 @@ const UserAccountStyles = styled.div`
     .userDetails {
         height: 100%;}
 
-    .emailImageRow {
-        display: flex;
-        justify-content: space-between;
-
-        div {
-            flex-grow: 1;
-            margin-right: 0.5rem;
-        }}
-
     .accountButtons {
         display: flex;
         justify-content: flex-end;
@@ -301,9 +292,10 @@ const UserAccount = () => {
                                 ? <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
                                     {auth?.user.email}
                                 </div>
-                                : <form encType='multipart/form-data'>
+                                : <form encType='multipart/form-data' className='standardForm'>
                                     
-                                    <div className='emailImageRow'>
+                                    <div className='formRowInputIcon'>
+                                        {/* EMAIL */}
                                         <div className='inputWrapper'>
                                             <input {...register('email', {
                                                 validate: validateEmail
@@ -311,12 +303,14 @@ const UserAccount = () => {
                                             {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
                                         </div>
 
-                                        <label htmlFor='avatar' className='formInput imageLabel'>
+                                        {/* AVATAR UPLOAD */}
+                                        <label htmlFor='avatar' className='formInput inputLabel'>
                                             <AddImageIcon />
-                                            <input {...register('avatar')} id='avatar' className='imageLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                                            <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                                         </label>
                                     </div>
                                     
+                                    {/* PASSWORD */}
                                     <div className='inputWrapper'>
                                         <input {...register('password', {
                                             validate: validatePassword
@@ -324,6 +318,7 @@ const UserAccount = () => {
                                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                                     </div>
 
+                                    {/* CONFIRMATION */}
                                     <div className='inputWrapper'>
                                         <input {...register('confirmation', {
                                             validate: validatePassword

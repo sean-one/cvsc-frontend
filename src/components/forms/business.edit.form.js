@@ -11,7 +11,7 @@ import { setImageForForm } from '../../helpers/setImageForForm';
 // import { businessFormSchema } from '../../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
-import { LocationIcon } from '../icons/siteIcons';
+import { AddLocationIcon } from '../icons/siteIcons';
 import { BusinessTypeSelect, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
 
 const Styles = styled.div`
@@ -318,7 +318,7 @@ const BusinessEditForm = () => {
 
                                     <div className={`sectionRowRight ${(business_type !== 'brand') ? 'noclick' : ''}`} onClick={() => setShowLocation(!showLocation)} >
                                         <div className='locationIconWrapper'>
-                                            <LocationIcon />
+                                            <AddLocationIcon />
                                         </div>
                                     </div>
                                 </div>

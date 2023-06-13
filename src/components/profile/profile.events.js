@@ -15,7 +15,9 @@ const ProfileEvents = () => {
 
     if(isLoading) { return <LoadingSpinner /> }
 
-    if(isSuccess) { events_list = profileEvents.data}
+    if(isSuccess) {
+        events_list = profileEvents.data
+    }
 
     return (
         <div>

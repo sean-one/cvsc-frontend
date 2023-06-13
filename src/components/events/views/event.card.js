@@ -110,7 +110,9 @@ const EventCard = ({ event }) => {
                 <img className='eventCardBackground' src={image_link(event.eventmedia)} alt={`${event.eventname} event flyer`} />
                 <div className="eventCardOverlay">
                     <div className='eventCardRow eventCardTopRow'>
-                        <BusinessLabel businessId={event.brand_id} imageOnly={true}/>
+                        {
+                            event.active_event && <BusinessLabel businessId={event.brand_id} imageOnly={true}/>
+                        }
                         <div className='eventCardDateContainer'>
                             <div className='eventCardDate'>{format(new Date(event.eventdate), 'dd')}</div>
                             <div className='eventCardMonth'>{format(new Date(event.eventdate), 'MMM')}</div>
@@ -119,10 +121,13 @@ const EventCard = ({ event }) => {
                     <div className='eventCardRow eventCardBottomRow'>
                         <div className='eventCardTime'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                         <div className='eventCardEventname'>{event.eventname}</div>
-                        <div className='eventCardVenueRow'>
-                            <div>{event.venue_name}</div>
-                            <BusinessLabel businessId={event.venue_id} imageOnly={true} />
-                        </div>
+                        {
+                            event.active_event &&
+                                <div className='eventCardVenueRow'>
+                                    <div>{event.venue_name}</div>
+                                    <BusinessLabel businessId={event.venue_id} imageOnly={true} />
+                                </div>
+                        }
                     </div>
                 </div>
             </div>

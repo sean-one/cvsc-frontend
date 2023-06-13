@@ -26,14 +26,6 @@ const LoginStyles = styled.div`
         align-self: flex-start;
     }
 
-    .loginForm {
-        width: 100%;
-        margin-top: 0.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
     .registerLinkWrapper {
         display: flex;
         justify-content: center;
@@ -51,7 +43,6 @@ const Login = () => {
         mode: "onBlur",
     });
     let navigate = useNavigate();
-
     
     const sendLogin = (data) => {
         AxiosInstance.post('/auth/login', data)
@@ -108,7 +99,7 @@ const Login = () => {
                 
                 <div className='loginHeader'>Login</div>
 
-                <form onSubmit={handleSubmit(sendLogin)} className='loginForm' onClick={() => clearErrors('credentials')}>
+                <form onSubmit={handleSubmit(sendLogin)} className='standardForm' onClick={() => clearErrors('credentials')}>
                     
                     <div className='inputWrapper'>
                         <input {...register('username', {

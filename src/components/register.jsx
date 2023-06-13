@@ -30,14 +30,6 @@ const RegisterStyles = styled.div`
         align-self: flex-start;
     }
 
-    .registerForm {
-        width: 100%;
-        margin-top: 0.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
     .registerImagePreview {
         width: 100%;
         max-width: 350px;
@@ -53,16 +45,6 @@ const RegisterStyles = styled.div`
             border-radius: 50%;
             display: block;
             box-shadow: 5px 5px 5px #010A00;
-        }
-    }
-
-    .emailImageRow {
-        display: flex;
-        justify-content: space-between;
-
-        div {
-            flex-grow: 1;
-            margin-right: 0.5rem;
         }
     }
 
@@ -152,7 +134,7 @@ const Register = () => {
                 
                 <div className='registerHeader'>Register</div>
                 
-                <form onSubmit={handleSubmit(createUser)} className='registerForm'>
+                <form onSubmit={handleSubmit(createUser)} className='standardForm'>
 
                     {/* USERNAME */}
                     <div className='inputWrapper'>
@@ -178,7 +160,7 @@ const Register = () => {
                             </div>
                     }
 
-                    <div className='emailImageRow'>
+                    <div className='formRowInputIcon'>
                         {/* EMAIL */}
                         <div className='inputWrapper'>
                             <input {...register('email', {
@@ -189,9 +171,9 @@ const Register = () => {
                         </div>
                         
                         {/* AVATAR IMAGE UPLOAD */}
-                        <label htmlFor='avatar' className='formInput imageLabel'>
+                        <label htmlFor='avatar' className='formInput inputLabel'>
                             <AddImageIcon />
-                            <input {...register('avatar')} id='avatar' className='imageLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                            <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
                     </div>
 

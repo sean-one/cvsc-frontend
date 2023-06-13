@@ -10,39 +10,9 @@ import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-import { BusinessTypeSelect, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+import { AddImageIcon, AddLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 
-const Styles = styled.div`
-    .businessCreateForm {
-        width: 100%;
-    }
-
-    .formRow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-
-    }
-    
-    .locationCheckbox {
-        cursor: pointer;
-        padding: 0.5rem;
-        border: none;
-        color: var(--main-text-color);
-        border-radius: 5px;
-        border-bottom: 1px solid black;
-        background-color: var(--input-background-color);
-        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
-        outline: none;
-        text-align: center;
-
-        input {
-            display: none;
-        }
-    }
+const BusinessCreateFormStyles = styled.div`
 `;
 
 const BusinessCreateForm = () => {
@@ -72,7 +42,7 @@ const BusinessCreateForm = () => {
         }
     });
 
-    const business_location = watch('business_location', false)
+    const business_location = watch('business_location', false) || watch('business_type') !== 'brand';
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
@@ -145,10 +115,26 @@ const BusinessCreateForm = () => {
 
 
     return (
-        <Styles>
+        <BusinessCreateFormStyles>
             <div>
-                <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data' className='businessCreateForm'>
+                <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data' className='standardForm'>
                     
+                    {/* BUSINESS NAME */}
+                    <div className='inputWrapper'>
+                        <input {...register('business_name', {
+                            required: 'business name is required',
+                            minLength: {
+                                value: 4,
+                                message: 'business name must be at least 4 characters'
+                            },
+                            maxLength: {
+                                value: 25,
+                                message: 'business name too long'
+                            }
+                        })} className='formInput' type='text' onFocus={() => clearErrors('business_name')} placeholder='Business Name' />
+                        {errors.business_name ? <div className='errormessage'>{errors.business_name?.message}</div> : null}
+                    </div>
+
                     {/* once image has been created it will show here */}
                     {
                         editImage &&
@@ -157,64 +143,131 @@ const BusinessCreateForm = () => {
                             </div>
                     }
 
-                    <div className='formRow'>
-                        <FormInput id='business_name' register={register} onfocus={clearErrors} placeholder='Business Name' error={errors.business_name} />
-                        <ImageInput id='business_avatar' register={register} onfocus={clearErrors} error={errors.business_avatar} change={imagePreview} />
+                    <div className='formRowInputIcon'>
+                        {/* EMAIL */}
+                        <div className='inputWrapper'>
+                            <input {...register('business_email')} className='formInput' type='text' onFocus={() => clearErrors('business_email')} placeholder='Email' />
+                            {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
+                        </div>
+
+                        {/* BUSINESS AVATAR UPLOAD */}
+                        <label htmlFor='business_avatar' className='formInput inputLabel'>
+                            <AddImageIcon />
+                            <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                        </label>
                     </div>
 
-                    <FormInput id='business_email' register={register} onfocus={clearErrors} type='email' placeholder='Email' error={errors.business_email} />
+                    {/* BUSINESS DESCRIPTION */}
+                    <div className='inputWrapper'>
+                        <textarea {...register('business_description')} className='formInput' rows='8' onFocus={() => clearErrors('business_description')} placeholder='Business details' />
+                        {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
+                    </div>
 
-                    {/* business description input */}
-                    <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placeholder='Business details...' />
-
-                    <div className='formRow'>
-                        <BusinessTypeSelect register={register} onfocus={clearErrors} error={errors.business_type} />
-                        <label htmlFor='business_location' className='locationCheckbox'>
-                            <input {...register('business_location')} type='checkbox' name='business_location' />
-                            <FontAwesomeIcon icon={faLocationArrow} />
+                    <div className='formRowInputIcon'>
+                        {/* BUSINESS TYPE SELECTOR */}
+                        <div className='inputWrapper'>
+                            <select {...register('business_type')} className='formInput' onFocus={() => clearErrors('business_type')} type='text'>
+                                <option value='brand'>Brand</option>
+                                <option value='venue'>Dispensary</option>
+                                <option value='both'>{`Brand & Dispensary`}</option>
+                            </select>
+                            {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
+                        </div>
+                        
+                        {/* BUSINESS LOCATION CHECKBOX */}
+                        <label htmlFor='business_location' className='formInput inputLabel'>
+                            <AddLocationIcon />
+                            <input {...register('business_location')} id='business_location' className='inputLabelInput' type='checkbox' name='business_location' />
                         </label>
-                        {/* <CheckBox id='business_location'
-                            register={register}
-                            boxlabel='Location'
-                        /> */}
                     </div>
 
                     {
                         (business_location) &&
-                        <div>
-                            {/* street address input for location */}
-                            <FormInput id='street_address' register={register} onfocus={clearErrors} placeholder='Street Address' error={errors.street_address} />
-                            {/* city input for location */}
-                            <FormInput id='city' register={register} onfocus={clearErrors} placeholder='City' error={errors.city} />
-                            
-                            <div className='d-flex justify-content-between'>
-                                {/* state input for location */}
-                                <FormInput id='state' register={register} onfocus={clearErrors} placeholder='State' error={errors.state} />
-                                {/* zip code input for location */}
-                                <FormInput id='zip' register={register} onfocus={clearErrors} placeholder='Zip' error={errors.zip} />
+                            <div className='standardForm'>
+                                <div>Business Location Details:</div>
+                                {/* STREET ADDRESS */}
+                                <div className='inputWrapper'>
+                                    <input {...register('street_address')} className='formInput' type='text' onFocus={() => clearErrors('street_address')} placeholder='Street Address' />
+                                    {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
+                                </div>
+
+                                {/* CITY */}
+                                <div className='inputWrapper'>
+                                    <input {...register('city')} className='formInput' type='text' onFocus={() => clearErrors('city')} placeholder='City' />
+                                    {errors.city ? <div className='errormessage'>{errors.city?.message}</div> : null}
+                                </div>
+
+                                <div className='formRowSplit'>
+                                    {/* STATE */}
+                                    <div className='inputWrapper'>
+                                        <input {...register('state')} className='formInput' type='text' onFocus={() => clearErrors('state')} placeholder='State' />
+                                        {errors.state ? <div className='errormessage'>{errors.state?.message}</div> : null}
+                                    </div>
+
+                                    {/* ZIP */}
+                                    <div className='inputWrapper'>
+                                        <input {...register('zip')} className='formInput' type='text' onFocus={() => clearErrors('zip')} placeholder='Zip' />
+                                        {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
                     }
 
-                    {/* instagram input */}
-                    <ContactInput id='instagram' register={register} onfocus={clearErrors} error={errors.business_instagram} />
-                    {/* website input */}
-                    <ContactInput id='website' register={register} onfocus={clearErrors} error={errors.business_website} />
-                    {/* facebook input */}
-                    <ContactInput id='facebook' register={register} onfocus={clearErrors} error={errors.business_facebook} />
-                    {/* phone input */}
-                    <ContactInput id='phone' register={register} onfocus={clearErrors} error={errors.business_phone} />
-                    {/* twitter input */}
-                    <ContactInput id='twitter' register={register} onfocus={clearErrors} error={errors.business_twitter} />
+                    <div>Business Contacts & Social Media:</div>
+                    {/* INSTAGRAM */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_instagram' className='contactLabelWrapper'>
+                            <div className='contactIcon'><InstagramIcon /></div>
+                            <input {...register('business_instagram')} className='formInput' type='text' onFocus={() => clearErrors('business_instagram')} placeholder='Instagram' />
+                        </label>
+                        {errors.business_instagram ? <div className='errormessage'>{errors.business_instagram?.message}</div> : null}
+                    </div>
 
-                    <div className='d-flex justify-content-around pt-3'>
+                    {/* WEBSITE */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_website' className='contactLabelWrapper'>
+                            <div className='contactIcon'><WebSiteIcon /></div>
+                            <input {...register('business_website')} className='formInput' type='text' onFocus={() => clearErrors('business_website')} placeholder='Website' />
+                        </label>
+                        {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
+                    </div>
+                    
+                    {/* FACEBOOK */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_facebook' className='contactLabelWrapper'>
+                            <div className='contactIcon'><FacebookIcon /></div>
+                            <input {...register('business_facebook')} className='formInput' type='text' onFocus={() => clearErrors('business_facebook')} placeholder='Facebook' />
+                        </label>
+                        {errors.business_facebook ? <div className='errormessage'>{errors.business_facebook?.message}</div> : null}
+                    </div>
+                    
+                    {/* PHONE NUMBER */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_phone' className='contactLabelWrapper'>
+                            <div className='contactIcon'><PhoneIcon /></div>
+                            <input {...register('business_phone')} className='formInput' type='text' onFocus={() => clearErrors('business_phone')} placeholder='Phone' />
+                        </label>
+                        {errors.business_phone ? <div className='errormessage'>{errors.business_phone?.message}</div> : null}
+                    </div>
+                    
+                    {/* TWITTER */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_twitter' className='contactLabelWrapper'>
+                            <div className='contactIcon'><TwitterIcon /></div>
+                            <input {...register('business_twitter')} className='formInput' type='text' onFocus={() => clearErrors('business_twitter')} placeholder='Twitter' />
+                        </label>
+                        {errors.business_twitter ? <div className='errormessage'>{errors.business_twitter?.message}</div> : null}
+                    </div>
+
+                    {/* <div className='d-flex justify-content-around pt-3'> */}
+                    <div>
                         <button type='submit'>Create</button>
                         <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
                     </div>
 
                 </form>
             </div>
-        </Styles>
+        </BusinessCreateFormStyles>
     )
 }
 

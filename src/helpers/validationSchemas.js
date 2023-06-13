@@ -5,22 +5,6 @@ const todaysDate = format(new Date(), 'yyyy-MM-dd');
 const sixtyDaysOut = format(add(new Date(), { days: 60 }), 'yyyy-MM-dd');
 
 
-// USER SCHEMAS
-export const editUserSchema = yup.object().shape({
-    email: yup
-        .string()
-        .matches(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/, { message: 'invalid email', excludeEmptyString: true })
-        .nullable(),
-    
-    password: yup
-        .string(),
-    
-    confirmation: yup
-        .string()
-        .oneOf([yup.ref('password'), null], 'passwords must match')
-})
-
-
 // ROLE SCHEMAS
 export const roleRequestSchema = yup.object().shape({
     business_id: yup
