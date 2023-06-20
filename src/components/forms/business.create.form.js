@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+// import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components'
 
 import useAuth from '../../hooks/useAuth';
-import { createBusinessSchema } from '../../helpers/validationSchemas';
+// import { createBusinessSchema } from '../../helpers/validationSchemas';
+import { validateEmail, validateBusinessType, validateStreetAddress, validateCity, validateZip } from '../forms/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import useImagePreview from '../../hooks/useImagePreview';
@@ -23,7 +24,7 @@ const BusinessCreateForm = () => {
 
     const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(createBusinessSchema),
+        // resolver: yupResolver(createBusinessSchema),
         defaultValues: {
             business_name: null,
             business_email: null,
@@ -146,7 +147,10 @@ const BusinessCreateForm = () => {
                     <div className='formRowInputIcon'>
                         {/* EMAIL */}
                         <div className='inputWrapper'>
-                            <input {...register('business_email')} className='formInput' type='text' onFocus={() => clearErrors('business_email')} placeholder='Email' />
+                            <input {...register('business_email', {
+                                required: 'business email required',
+                                validate: validateEmail,
+                            })} className='formInput' type='text' onFocus={() => clearErrors('business_email')} placeholder='Email' />
                             {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
                         </div>
 
@@ -159,14 +163,19 @@ const BusinessCreateForm = () => {
 
                     {/* BUSINESS DESCRIPTION */}
                     <div className='inputWrapper'>
-                        <textarea {...register('business_description')} className='formInput' rows='8' onFocus={() => clearErrors('business_description')} placeholder='Business details' />
+                        <textarea {...register('business_description', {
+                            required: 'business description is required'
+                        })} className='formInput' rows='8' onFocus={() => clearErrors('business_description')} placeholder='Business details' />
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
                     <div className='formRowInputIcon'>
                         {/* BUSINESS TYPE SELECTOR */}
                         <div className='inputWrapper'>
-                            <select {...register('business_type')} className='formInput' onFocus={() => clearErrors('business_type')} type='text'>
+                            <select {...register('business_type', {
+                                required: 'business type required',
+                                validate: validateBusinessType
+                            })} className='formInput' onFocus={() => clearErrors('business_type')} type='text'>
                                 <option value='brand'>Brand</option>
                                 <option value='venue'>Dispensary</option>
                                 <option value='both'>{`Brand & Dispensary`}</option>
@@ -187,13 +196,19 @@ const BusinessCreateForm = () => {
                                 <div>Business Location Details:</div>
                                 {/* STREET ADDRESS */}
                                 <div className='inputWrapper'>
-                                    <input {...register('street_address')} className='formInput' type='text' onFocus={() => clearErrors('street_address')} placeholder='Street Address' />
+                                    <input {...register('street_address', {
+                                        required: business_location !== false ? 'Street address is required' : undefined,
+                                        validate: validateStreetAddress
+                                    })} className='formInput' type='text' onFocus={() => clearErrors('street_address')} placeholder='Street Address' />
                                     {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
                                 </div>
 
                                 {/* CITY */}
                                 <div className='inputWrapper'>
-                                    <input {...register('city')} className='formInput' type='text' onFocus={() => clearErrors('city')} placeholder='City' />
+                                    <input {...register('city', {
+                                        required: business_location !== false ? 'City is required' : undefined,
+                                        validate: validateCity
+                                    })} className='formInput' type='text' onFocus={() => clearErrors('city')} placeholder='City' />
                                     {errors.city ? <div className='errormessage'>{errors.city?.message}</div> : null}
                                 </div>
 
@@ -206,7 +221,10 @@ const BusinessCreateForm = () => {
 
                                     {/* ZIP */}
                                     <div className='inputWrapper'>
-                                        <input {...register('zip')} className='formInput' type='text' onFocus={() => clearErrors('zip')} placeholder='Zip' />
+                                        <input {...register('zip', {
+                                            require: business_location !== false ? 'Zip code is required' : undefined,
+                                            validate: validateZip
+                                        })} className='formInput' type='text' onFocus={() => clearErrors('zip')} placeholder='Zip' />
                                         {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
                                     </div>
                                 </div>
