@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import AxiosInstance from '../helpers/axios';
 import useNotification from '../hooks/useNotification.js';
 import useAuth from '../hooks/useAuth.js';
-import { validateEmail, validatePassword, validateUsername } from './forms/form.validations.js';
+import { emailformat, validatePassword, validateUsername } from './forms/form.validations.js';
 import useImagePreview from '../hooks/useImagePreview';
 import { AddImageIcon } from './icons/siteIcons';
 import { setImageForForm } from '../helpers/setImageForForm';
@@ -165,7 +165,10 @@ const Register = () => {
                         <div className='inputWrapper'>
                             <input {...register('email', {
                                 required: 'valid email is required',
-                                validate: validateEmail,
+                                pattern: {
+                                    value: emailformat,
+                                    message: 'invalid email format'
+                                }
                             })} className='formInput' type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
                             {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
                         </div>

@@ -1,30 +1,27 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components'
 
 import useAuth from '../../hooks/useAuth';
-// import { createBusinessSchema } from '../../helpers/validationSchemas';
-import { validateEmail, validateBusinessType, validateStreetAddress, validateCity, validateZip } from '../forms/form.validations';
+import { businessTypeList, cityFormat, emailformat, facebookFormat, instagramFormat, phoneFormat, stateList, streetAddressFormat, twitterFormat, websiteFormat, zipFormat } from '../forms/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-import { AddImageIcon, AddLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
+import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 
 const BusinessCreateFormStyles = styled.div`
 `;
 
 const BusinessCreateForm = () => {
-    const { logout_user } = useAuth()
+    const { auth, logout_user, setAuth } = useAuth()
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
     const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
         mode: 'onBlur',
-        // resolver: yupResolver(createBusinessSchema),
         defaultValues: {
             business_name: null,
             business_email: null,
@@ -50,23 +47,54 @@ const BusinessCreateForm = () => {
         try {
             const formData = new FormData()
 
+            // check for current canvas and set it to formData
             if(canvas.current === null) {
                 throw new Error('missing_image')
-                // setError('business_avatar', { message: 'business image required' })
             } else {
                 let business_avatar = setImageForForm(canvas)
 
                 formData.set('business_avatar', business_avatar)
             }
 
-            Object.keys(business_data).forEach(key => {
-                formData.append(key, business_data[key])
+            // if business type is brand  but the location is false, remove address incase it was entered by accident
+            if((business_data.business_location === false) && (business_data.business_type === 'brand')) {
+                delete business_data['street_address']
+                delete business_data['city']
+                delete business_data['state']
+                delete business_data['zip']
+            }
+
+            // remove any empty strings and append to formData
+            // also removes the @ symbol from the front of any inputs (twitter & instagram) if they are present
+            Object.keys(business_data).forEach((key) => {
+                let value = business_data[key]
+                
+                if(value !== '') {
+                    if(typeof value === 'string' && value.startsWith('@')) {
+                        value = value.slice(1)
+                    }
+
+                    formData.append(key, value)
+                }
             })
 
             const new_business = await createBusiness(formData)
 
             if (new_business.status === 201) {
 
+                // add new business to user auth roles
+                setAuth({ ...auth, roles: [
+                    ...auth.roles, 
+                    { 
+                        active_role: true,
+                        business_id: new_business.data.id,
+                        business_name: new_business.data.business_name,
+                        id: new_business.data.admin_role_id,
+                        role_type: new_business.data.role_type,
+                    }
+                ]})
+
+                // alert user of successful business creation
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -75,40 +103,42 @@ const BusinessCreateForm = () => {
                     }
                 })
 
+                // clear the setEditImage & reset the create business form
                 setEditImage(false)
                 reset()
 
+                // navigate to the newly created business page
                 navigate(`/business/${new_business.data.id}`)
 
             }
 
         } catch (error) {
-            // console.log(error)
+            console.log(error)
             if (error.message === 'missing_image') {
-                setError('business_avatar', { message: 'required'})
-                throw Error;
+                setError('business_avatar', { message: 'business brand logo is required' }, { shouldFocus: true })
+                // throw Error;
             }
 
-            if (error.response.status === 400) {
-                setError(`${error.response.data.error.type}`, {
-                    type: 'server',
-                    message: error.response.data.error.message
-                })
-            }
+            // if (error.response.status === 400) {
+            //     setError(`${error.response.data.error.type}`, {
+            //         type: 'server',
+            //         message: error.response.data.error.message
+            //     })
+            // }
 
-            if (error.response.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error.response.data.error.message
-                    }
-                })
+            // if (error.response.status === 401) {
+            //     dispatch({
+            //         type: "ADD_NOTIFICATION",
+            //         payload: {
+            //             notification_type: 'ERROR',
+            //             message: error.response.data.error.message
+            //         }
+            //     })
 
-                logout_user()
-                // navigate('/login')
+            //     logout_user()
+            //     // navigate('/login')
 
-            }
+            // }
 
         }
 
@@ -144,12 +174,16 @@ const BusinessCreateForm = () => {
                             </div>
                     }
 
+                    {errors.business_avatar ? <div className='errormessage'>{errors.business_avatar?.message}</div> : null}
                     <div className='formRowInputIcon'>
                         {/* EMAIL */}
                         <div className='inputWrapper'>
                             <input {...register('business_email', {
                                 required: 'business email required',
-                                validate: validateEmail,
+                                pattern: {
+                                    value: emailformat,
+                                    message: 'invalid email format'
+                                }
                             })} className='formInput' type='text' onFocus={() => clearErrors('business_email')} placeholder='Email' />
                             {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
                         </div>
@@ -174,7 +208,10 @@ const BusinessCreateForm = () => {
                         <div className='inputWrapper'>
                             <select {...register('business_type', {
                                 required: 'business type required',
-                                validate: validateBusinessType
+                                pattern: {
+                                    value: businessTypeList,
+                                    message: 'invalid business type'
+                                }
                             })} className='formInput' onFocus={() => clearErrors('business_type')} type='text'>
                                 <option value='brand'>Brand</option>
                                 <option value='venue'>Dispensary</option>
@@ -185,7 +222,9 @@ const BusinessCreateForm = () => {
                         
                         {/* BUSINESS LOCATION CHECKBOX */}
                         <label htmlFor='business_location' className='formInput inputLabel'>
-                            <AddLocationIcon />
+                            {
+                                business_location ? <RemoveLocationIcon /> : <AddLocationIcon />
+                            }
                             <input {...register('business_location')} id='business_location' className='inputLabelInput' type='checkbox' name='business_location' />
                         </label>
                     </div>
@@ -198,7 +237,10 @@ const BusinessCreateForm = () => {
                                 <div className='inputWrapper'>
                                     <input {...register('street_address', {
                                         required: business_location !== false ? 'Street address is required' : undefined,
-                                        validate: validateStreetAddress
+                                        pattern: {
+                                            value: streetAddressFormat,
+                                            message: 'invalid street address'
+                                        }
                                     })} className='formInput' type='text' onFocus={() => clearErrors('street_address')} placeholder='Street Address' />
                                     {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
                                 </div>
@@ -207,7 +249,10 @@ const BusinessCreateForm = () => {
                                 <div className='inputWrapper'>
                                     <input {...register('city', {
                                         required: business_location !== false ? 'City is required' : undefined,
-                                        validate: validateCity
+                                        pattern: {
+                                            value: cityFormat,
+                                            message: 'invalid city'
+                                        }
                                     })} className='formInput' type='text' onFocus={() => clearErrors('city')} placeholder='City' />
                                     {errors.city ? <div className='errormessage'>{errors.city?.message}</div> : null}
                                 </div>
@@ -215,7 +260,13 @@ const BusinessCreateForm = () => {
                                 <div className='formRowSplit'>
                                     {/* STATE */}
                                     <div className='inputWrapper'>
-                                        <input {...register('state')} className='formInput' type='text' onFocus={() => clearErrors('state')} placeholder='State' />
+                                        <input {...register('state', {
+                                            required: business_location !== false ? 'State is required' : undefined,
+                                            pattern: {
+                                                value: stateList,
+                                                message: 'invalid state'
+                                            }
+                                        })} className='formInput' type='text' onFocus={() => clearErrors('state')} placeholder='State' />
                                         {errors.state ? <div className='errormessage'>{errors.state?.message}</div> : null}
                                     </div>
 
@@ -223,7 +274,10 @@ const BusinessCreateForm = () => {
                                     <div className='inputWrapper'>
                                         <input {...register('zip', {
                                             require: business_location !== false ? 'Zip code is required' : undefined,
-                                            validate: validateZip
+                                            pattern: {
+                                                value: zipFormat,
+                                                message: 'invalid zip code'
+                                            }
                                         })} className='formInput' type='text' onFocus={() => clearErrors('zip')} placeholder='Zip' />
                                         {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
                                     </div>
@@ -236,7 +290,12 @@ const BusinessCreateForm = () => {
                     <div className='inputWrapper contactWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>
                             <div className='contactIcon'><InstagramIcon /></div>
-                            <input {...register('business_instagram')} className='formInput' type='text' onFocus={() => clearErrors('business_instagram')} placeholder='Instagram' />
+                            <input {...register('business_instagram', {
+                                pattern: {
+                                    value: instagramFormat,
+                                    message: 'invalid Instagram format'
+                                }
+                            })} className='formInput' type='text' onFocus={() => clearErrors('business_instagram')} placeholder='@Instagram' />
                         </label>
                         {errors.business_instagram ? <div className='errormessage'>{errors.business_instagram?.message}</div> : null}
                     </div>
@@ -245,7 +304,12 @@ const BusinessCreateForm = () => {
                     <div className='inputWrapper contactWrapper'>
                         <label htmlFor='business_website' className='contactLabelWrapper'>
                             <div className='contactIcon'><WebSiteIcon /></div>
-                            <input {...register('business_website')} className='formInput' type='text' onFocus={() => clearErrors('business_website')} placeholder='Website' />
+                            <input {...register('business_website', {
+                                pattern: {
+                                    value: websiteFormat,
+                                    message: 'invalid website format'
+                                }
+                            })} className='formInput' type='text' onFocus={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                         </label>
                         {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
                     </div>
@@ -254,7 +318,12 @@ const BusinessCreateForm = () => {
                     <div className='inputWrapper contactWrapper'>
                         <label htmlFor='business_facebook' className='contactLabelWrapper'>
                             <div className='contactIcon'><FacebookIcon /></div>
-                            <input {...register('business_facebook')} className='formInput' type='text' onFocus={() => clearErrors('business_facebook')} placeholder='Facebook' />
+                            <input {...register('business_facebook', {
+                                pattern: {
+                                    value: facebookFormat,
+                                    message: 'only need username portion (exp. https://www.facebook.com/{USERNAME}'
+                                }
+                            })} className='formInput' type='text' onFocus={() => clearErrors('business_facebook')} placeholder='Facebook username' />
                         </label>
                         {errors.business_facebook ? <div className='errormessage'>{errors.business_facebook?.message}</div> : null}
                     </div>
@@ -263,7 +332,12 @@ const BusinessCreateForm = () => {
                     <div className='inputWrapper contactWrapper'>
                         <label htmlFor='business_phone' className='contactLabelWrapper'>
                             <div className='contactIcon'><PhoneIcon /></div>
-                            <input {...register('business_phone')} className='formInput' type='text' onFocus={() => clearErrors('business_phone')} placeholder='Phone' />
+                            <input {...register('business_phone', {
+                                pattern: {
+                                    value: phoneFormat,
+                                    message: 'invalid phone number format'
+                                }
+                            })} className='formInput' type='text' onFocus={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
                         </label>
                         {errors.business_phone ? <div className='errormessage'>{errors.business_phone?.message}</div> : null}
                     </div>
@@ -272,7 +346,12 @@ const BusinessCreateForm = () => {
                     <div className='inputWrapper contactWrapper'>
                         <label htmlFor='business_twitter' className='contactLabelWrapper'>
                             <div className='contactIcon'><TwitterIcon /></div>
-                            <input {...register('business_twitter')} className='formInput' type='text' onFocus={() => clearErrors('business_twitter')} placeholder='Twitter' />
+                            <input {...register('business_twitter', {
+                                pattern: {
+                                    value: twitterFormat,
+                                    message: 'invalid Twitter format'
+                                }
+                            })} className='formInput' type='text' onFocus={() => clearErrors('business_twitter')} placeholder='@Twitter' />
                         </label>
                         {errors.business_twitter ? <div className='errormessage'>{errors.business_twitter?.message}</div> : null}
                     </div>

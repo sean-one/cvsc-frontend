@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
 import { Phone } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
-import { BuildingRetail, Edit, Delete, LocationAdd, Mail, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
+import { BuildingRetail, Edit, Delete, LocationAdd, LocationDismiss, Mail, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
 import { CameraAdd } from "@styled-icons/fluentui-system-regular";
 // import { PersonDelete } from "@styled-icons/fluentui-system-filled"
 // import { Create } from "@styled-icons/ionicons-outline"
@@ -20,6 +20,7 @@ export const WebSiteIcon = styled(Web)`color: var(--site-icon-color); width: var
 
 export const DispensaryIcon = styled(BuildingRetail)`color: var(--site-icon-color); width: var(--site-icon-size);`
 export const AddLocationIcon = styled(LocationAdd)`color: var(--site-icon-color); width: var(--site-icon-size);`
+export const RemoveLocationIcon = styled(LocationDismiss)`color: var(--site-icon-color); width: var(--site-icon-size);`
 export const ClosedIcon = styled(Prohibited)`color: var(--site-icon-color); width: var(--site-icon-size);`
 export const BrandIcon = styled(Cannabis)`color: var(--site-icon-color); width: var(--site-icon-size);`
 

@@ -13,7 +13,7 @@ import useImagePreview from '../../../hooks/useImagePreview';
 import { role_types } from '../../../helpers/dataCleanUp';
 import AxiosInstance from '../../../helpers/axios';
 import { setImageForForm } from '../../../helpers/setImageForForm';
-import { validateEmail, validatePassword } from '../../forms/form.validations';
+import { validatePassword, emailformat } from '../../forms/form.validations';
 import { AddImageIcon } from '../../icons/siteIcons';
 
 const UserAccountStyles = styled.div`
@@ -257,6 +257,7 @@ const UserAccount = () => {
     }
 
 
+    console.log(auth)
     return (
         <UserAccountStyles>
             <div className='userAccountPage'>
@@ -298,7 +299,10 @@ const UserAccount = () => {
                                         {/* EMAIL */}
                                         <div className='inputWrapper'>
                                             <input {...register('email', {
-                                                validate: validateEmail
+                                                pattern: {
+                                                    value: emailformat,
+                                                    message: 'invalid email format'
+                                                }
                                             })} className='formInput' type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
                                             {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
                                         </div>
