@@ -71,11 +71,16 @@ const Register = () => {
             const formData = new FormData()
 
             if(canvas.current !== null) {
-                let avatar = setImageForForm(canvas)
-                formData.set('avatar', avatar)
+                try {
+                    let avatar = setImageForForm(canvas)
+                    formData.set('avatar', avatar)
+    
+                    canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
+                    setEditImage(false)
 
-                canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
-                setEditImage(false)
+                } catch (error) {
+                    setError('avatar', { message: 'image upload error' })
+                }
             }
 
             // confirm password and delete extra confirmation field
@@ -108,6 +113,8 @@ const Register = () => {
                 navigate('/profile');
             }
         } catch (error) {
+            console.log('inside register create catch')
+            console.log(error)
             
             if(error?.response?.status === 409) {
                 setError(error.response.data.error.type, { message: error.response.data.error.message })

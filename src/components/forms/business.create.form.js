@@ -56,12 +56,45 @@ const BusinessCreateForm = () => {
                 formData.set('business_avatar', business_avatar)
             }
 
-            // if business type is brand  but the location is false, remove address incase it was entered by accident
-            if((business_data.business_location === false) && (business_data.business_type === 'brand')) {
-                delete business_data['street_address']
-                delete business_data['city']
-                delete business_data['state']
-                delete business_data['zip']
+            // delete business_location boolean - no longer needed
+            delete business_data.business_location
+
+            // check business type and confirm business address when required
+            // if business address is found sets varibale to 'business_data.address'
+            if (business_data.business_type === 'both' || business_data.business_type === 'venue') {
+                // if business type is not brand business address is required
+                if(!business_data.street_address || !business_data.city || !business_data.state || !business_data.zip) {
+                    throw new Error('location_required')
+                }
+
+                business_data.address = `${business_data.street_address}, ${business_data.city}, ${business_data.state} ${business_data.zip}`;
+                
+                delete business_data.street_address
+                delete business_data.city
+                delete business_data.state
+                delete business_data.zip
+
+            } else if (business_data.business_type === 'brand') {
+                // if business type is brand address may be included but is nor required
+                if (business_data.street_address && business_data.city && business_data.state && business_data.zip) {
+                    business_data.address = `${business_data.street_address}, ${business_data.city}, ${business_data.state} ${business_data.zip}`;
+                    
+                    delete business_data.street_address
+                    delete business_data.city
+                    delete business_data.state
+                    delete business_data.zip
+
+                } else {
+                    
+                    delete business_data.street_address
+                    delete business_data.city
+                    delete business_data.state
+                    delete business_data.zip
+
+                }
+            } else {
+                // if not brand, venue or both throw error
+                throw new Error('invalid_business_type')
             }
 
             // remove any empty strings and append to formData
@@ -113,32 +146,54 @@ const BusinessCreateForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
+            console.log(Object.keys(error))
+            console.log(error.response)
+            // missing required business branding logo image
             if (error.message === 'missing_image') {
-                setError('business_avatar', { message: 'business brand logo is required' }, { shouldFocus: true })
-                // throw Error;
+                setError('business_avatar', {
+                    message: 'business brand logo is required'
+                }, { shouldFocus: true })
+            }
+            // business type was venue or both but did not include required address components
+            else if (error.message === 'location_required') {
+                setError('location', {
+                    message: 'address required for business venues'
+                })
+            }
+            // invalid business type attempted to be submitted
+            else if (error.message === 'invalid_business_type') {
+                setError('business_type', {
+                    message: 'invalid business type'
+                }, { shouldFocus: true })
+            }
+            // business name was sent to server and does not meet unique requirements
+            else if (error.response.status === 409) {
+                setError(`${error.response.data.error.type}`, {
+                    message: error.response.data.error.message
+                }, { shouldFocus: true })
+            }
+            // 
+            else if (error.response.status === 400) {
+                setError(`${error.response.data.error.type}`, {
+                    message: 'invalid formating or missing information'
+                }, { shouldFocus: true })
             }
 
-            // if (error.response.status === 400) {
-            //     setError(`${error.response.data.error.type}`, {
-            //         type: 'server',
-            //         message: error.response.data.error.message
-            //     })
-            // }
+            else if (error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error.response.data.error.message
+                    }
+                })
 
-            // if (error.response.status === 401) {
-            //     dispatch({
-            //         type: "ADD_NOTIFICATION",
-            //         payload: {
-            //             notification_type: 'ERROR',
-            //             message: error.response.data.error.message
-            //         }
-            //     })
+                logout_user()
+            }
 
-            //     logout_user()
-            //     // navigate('/login')
-
-            // }
+            else {
+                console.log(`uncaught error: ${error}`)
+            }
 
         }
 
@@ -162,7 +217,7 @@ const BusinessCreateForm = () => {
                                 value: 25,
                                 message: 'business name too long'
                             }
-                        })} className='formInput' type='text' onFocus={() => clearErrors('business_name')} placeholder='Business Name' />
+                        })} className='formInput' onClick={() => clearErrors('business_name')} type='text' placeholder='Business Name' />
                         {errors.business_name ? <div className='errormessage'>{errors.business_name?.message}</div> : null}
                     </div>
 
@@ -184,12 +239,12 @@ const BusinessCreateForm = () => {
                                     value: emailformat,
                                     message: 'invalid email format'
                                 }
-                            })} className='formInput' type='text' onFocus={() => clearErrors('business_email')} placeholder='Email' />
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_email')} placeholder='Email' />
                             {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
                         </div>
 
                         {/* BUSINESS AVATAR UPLOAD */}
-                        <label htmlFor='business_avatar' className='formInput inputLabel'>
+                        <label htmlFor='business_avatar' className='formInput inputLabel' onClick={() => clearErrors('business_avatar')}>
                             <AddImageIcon />
                             <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
@@ -199,7 +254,7 @@ const BusinessCreateForm = () => {
                     <div className='inputWrapper'>
                         <textarea {...register('business_description', {
                             required: 'business description is required'
-                        })} className='formInput' rows='8' onFocus={() => clearErrors('business_description')} placeholder='Business details' />
+                        })} className='formInput' rows='8' onClick={() => clearErrors('business_description')} placeholder='Business details' />
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
@@ -212,7 +267,7 @@ const BusinessCreateForm = () => {
                                     value: businessTypeList,
                                     message: 'invalid business type'
                                 }
-                            })} className='formInput' onFocus={() => clearErrors('business_type')} type='text'>
+                            })} className='formInput' onClick={() => clearErrors('business_type')} type='text'>
                                 <option value='brand'>Brand</option>
                                 <option value='venue'>Dispensary</option>
                                 <option value='both'>{`Brand & Dispensary`}</option>
@@ -241,7 +296,7 @@ const BusinessCreateForm = () => {
                                             value: streetAddressFormat,
                                             message: 'invalid street address'
                                         }
-                                    })} className='formInput' type='text' onFocus={() => clearErrors('street_address')} placeholder='Street Address' />
+                                    })} className='formInput' type='text' onClick={() => clearErrors('street_address')} placeholder='Street Address' />
                                     {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
                                 </div>
 
@@ -253,7 +308,7 @@ const BusinessCreateForm = () => {
                                             value: cityFormat,
                                             message: 'invalid city'
                                         }
-                                    })} className='formInput' type='text' onFocus={() => clearErrors('city')} placeholder='City' />
+                                    })} className='formInput' type='text' onClick={() => clearErrors('city')} placeholder='City' />
                                     {errors.city ? <div className='errormessage'>{errors.city?.message}</div> : null}
                                 </div>
 
@@ -266,7 +321,7 @@ const BusinessCreateForm = () => {
                                                 value: stateList,
                                                 message: 'invalid state'
                                             }
-                                        })} className='formInput' type='text' onFocus={() => clearErrors('state')} placeholder='State' />
+                                        })} className='formInput' type='text' onClick={() => clearErrors('state')} placeholder='State' />
                                         {errors.state ? <div className='errormessage'>{errors.state?.message}</div> : null}
                                     </div>
 
@@ -278,10 +333,11 @@ const BusinessCreateForm = () => {
                                                 value: zipFormat,
                                                 message: 'invalid zip code'
                                             }
-                                        })} className='formInput' type='text' onFocus={() => clearErrors('zip')} placeholder='Zip' />
+                                        })} className='formInput' type='text' onClick={() => clearErrors('zip')} placeholder='Zip' />
                                         {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
                                     </div>
                                 </div>
+                                {errors.location ? <div className='errormessage'>{errors.location?.message}</div> : null}
                             </div>
                     }
 
@@ -295,7 +351,7 @@ const BusinessCreateForm = () => {
                                     value: instagramFormat,
                                     message: 'invalid Instagram format'
                                 }
-                            })} className='formInput' type='text' onFocus={() => clearErrors('business_instagram')} placeholder='@Instagram' />
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_instagram')} placeholder='@Instagram' />
                         </label>
                         {errors.business_instagram ? <div className='errormessage'>{errors.business_instagram?.message}</div> : null}
                     </div>
@@ -309,7 +365,7 @@ const BusinessCreateForm = () => {
                                     value: websiteFormat,
                                     message: 'invalid website format'
                                 }
-                            })} className='formInput' type='text' onFocus={() => clearErrors('business_website')} placeholder='https://www.website.com' />
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                         </label>
                         {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
                     </div>
@@ -323,7 +379,7 @@ const BusinessCreateForm = () => {
                                     value: facebookFormat,
                                     message: 'only need username portion (exp. https://www.facebook.com/{USERNAME}'
                                 }
-                            })} className='formInput' type='text' onFocus={() => clearErrors('business_facebook')} placeholder='Facebook username' />
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_facebook')} placeholder='Facebook username' />
                         </label>
                         {errors.business_facebook ? <div className='errormessage'>{errors.business_facebook?.message}</div> : null}
                     </div>
@@ -337,7 +393,7 @@ const BusinessCreateForm = () => {
                                     value: phoneFormat,
                                     message: 'invalid phone number format'
                                 }
-                            })} className='formInput' type='text' onFocus={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
                         </label>
                         {errors.business_phone ? <div className='errormessage'>{errors.business_phone?.message}</div> : null}
                     </div>
@@ -351,11 +407,12 @@ const BusinessCreateForm = () => {
                                     value: twitterFormat,
                                     message: 'invalid Twitter format'
                                 }
-                            })} className='formInput' type='text' onFocus={() => clearErrors('business_twitter')} placeholder='@Twitter' />
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_twitter')} placeholder='@Twitter' />
                         </label>
                         {errors.business_twitter ? <div className='errormessage'>{errors.business_twitter?.message}</div> : null}
                     </div>
 
+                    {errors.server ? <div className='errormessage'>{errors.server?.message}</div> : null}
                     {/* <div className='d-flex justify-content-around pt-3'> */}
                     <div>
                         <button type='submit'>Create</button>

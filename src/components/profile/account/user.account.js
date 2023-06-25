@@ -257,7 +257,6 @@ const UserAccount = () => {
     }
 
 
-    console.log(auth)
     return (
         <UserAccountStyles>
             <div className='userAccountPage'>
