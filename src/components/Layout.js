@@ -108,13 +108,6 @@ const Styles = styled.div`
         }
     }
 
-    .formButtonWrapper {
-        margin-top: 1.5rem;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
     .formButton {
         margin: 0 1rem;
     }
@@ -235,6 +228,12 @@ const Styles = styled.div`
         letter-spacing: 0.05rem;
         font-weight: bold;
         color: var(--error-text-color);
+    }
+
+    .formButtonWrapper {
+        display: flex;
+        justify-content: space-around;
+        padding-top: 0.75rem;
     }
 
 `;

@@ -146,8 +146,6 @@ const BusinessCreateForm = () => {
             }
 
         } catch (error) {
-            console.log(Object.keys(error))
-            console.log(error.response)
             // missing required business branding logo image
             if (error.message === 'missing_image') {
                 setError('business_avatar', {
@@ -413,8 +411,8 @@ const BusinessCreateForm = () => {
                     </div>
 
                     {errors.server ? <div className='errormessage'>{errors.server?.message}</div> : null}
-                    {/* <div className='d-flex justify-content-around pt-3'> */}
-                    <div>
+                    
+                    <div className='formButtonWrapper'>
                         <button type='submit'>Create</button>
                         <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
                     </div>

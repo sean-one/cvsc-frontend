@@ -1,160 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-// import { businessFormSchema } from '../../../helpers/validationSchemas';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
-import { AddLocationIcon } from '../icons/siteIcons';
-import { BusinessTypeSelect, ContactInput, FormInput, ImageInput, TextAreaInput } from './formInput';
+import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
+import { businessTypeList, emailformat, streetAddressFormat, cityFormat, stateList, zipFormat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
 
-const Styles = styled.div`
-    .locationWrapper {
-        display: flex;
-        flex-direction: column;
-        
-        @media(min-width: 350px) {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-    }
-
-    .stateZipWrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: space-between;
-
-        @media(min-width: 275px) {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-    }
-
-    .buttonWrapper {
-        display: flex;
-        justify-content: space-around;
-        padding-top: 0.75rem;
-    }
-
-    .formContainer {
-        display: flex;
-        flex-direction: column;
-
-        @media (min-width: 500px) {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-        }
-    }
-
-    .leftFormColumn, .rightFormColumn {
-        width: 100%;
-        padding: 0.5rem;
-        max-width: 100%;
-    }
-
-    .leftFormColumn {
-        display: flex;
-        justify-content: center;
-
-        @media (min-width: 500px) {
-            width: 35%;
-        }
-    }
-    
-    .rightFormColumn {
-
-        @media (min-width: 500px) {
-            width: 65%;
-        }
-    }
-
-    .sectionRow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .sectionRowLeft {
-        flex-grow: 1;
-    }
-
-    .sectionRowRight {
-        flex-shrink: 0;
-    }
-
-    .locationIconWrapper {
-        cursor: pointer;
-        padding: 0.5rem;
-        border: none;
-        color: var(--main-text-color);
-        border-radius: 5px;
-        border-bottom: 1px solid black;
-        background-color: var(--input-background-color);
-        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
-        outline: none;
-        text-align: center;
-    }
-
-    .imageParent {
-        max-width: 350px;
-        
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-        
-        img, canvas {
-            max-width: 100%;
-            border: 1px solid #DCDBC4;
-            border-radius: 50%;
-            display: block;
-            box-shadow: 5px 5px 5px #010A00;
-        }
-    }
-
-    .businessContacts {
-        display: flex;
-        flex-direction: column;
-        border: 1px solid yellow;
-        padding: 0 0.5rem;
-
-        @media (min-width: 500px) {
-            flex-direction: row;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-    }
-
-    .businessContact {
-        margin-bottom: 0.5rem;
-        width: 100%;
-        
-        @media (min-width: 500px) {
-            width: 49%;
-            flex-basis: 50;
-        }
-    }
-
-    .noclick {
-        color: grey;
-        pointer-events: none;
-    }
-
+const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = () => {
-    const [ showLocation, setShowLocation ] = useState(false)
     const { auth } = useAuth()
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
@@ -165,7 +26,7 @@ const BusinessEditForm = () => {
 
     let navigate = useNavigate()
 
-    const { register, handleSubmit, clearErrors, watch, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, watch, reset, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         // resolver: yupResolver(businessFormSchema),
         defaultValues: {
@@ -173,87 +34,99 @@ const BusinessEditForm = () => {
             business_description: business?.business_description,
             business_avatar: '',
             business_type: business?.business_type,
-            business_instagram: business?.business_instagram,
-            business_website: business?.business_website,
-            business_facebook: business?.business_facebook,
-            business_phone: business?.business_phone,
-            business_twitter: business?.business_twitter,
-            street_address: business?.street_address,
-            city: business?.location_city,
-            state: business?.location_state,
-            zip: business?.zip_code,
+            business_instagram: business?.business_instagram || '',
+            business_website: business?.business_website || '',
+            business_facebook: business?.business_facebook || '',
+            business_phone: business?.business_phone || '',
+            business_twitter: business?.business_twitter || '',
+            street_address: business?.street_address || '',
+            city: business?.location_city || '',
+            state: business?.location_state || '',
+            zip: business?.zip_code || '',
             business_location: false,
-            image_attached: false,
         }
     })
 
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
 
-    const image_attached = watch('image_attached', false)
-    const business_type = watch('business_type')
+    const business_location = watch('business_location', false) || watch('business_type') !== 'brand';
 
-    const update_business = async (data) => {
-        console.log(data)
+    const update_business = async (business_updates) => {
         try {
             const formData = new FormData()
+            
+            // check business address for any upodates make to any of the fields
+            let business_address = null
+            const addressFields = ['street_address', 'city', 'state', 'zip']
+            const isAnyAddressFieldDirty = addressFields.some(field => dirtyFields[field])
+            
+            // if any field has been updated make sure all are there and save address, and delete address components
+            if (isAnyAddressFieldDirty) {
+                // make sure all needed address components are included
+                if (!business_updates.street_address || !business_updates.city || !business_updates.state || !business_updates.zip) {
+                    throw new Error('location_required')
+                }
 
-            //! check for address
-            // if updatelocation is true append new address
-            // if ((data.business_location !== false) && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
-            //     formData.append('location_id', business?.location_id || 'new_location')
-            //     formData.append('street_address', data.street_address)
-            //     formData.append('city', data.city)
-            //     formData.append('state', data.state)
-            //     formData.append('zip', data.zip)
-            // }
-
-            // remove location fields
-            delete data['street_address']
-            delete data['city']
-            delete data['state']
-            delete data['zip']
-            delete data['business_location']
-
-            // if updateimage is true set updated file
-            if (image_attached && (business_role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) {
+                business_address = `${business_updates.street_address}, ${business_updates.city}, ${business_updates.state} ${business_updates.zip}`;
                 
-                let business_avatar = setImageForForm(canvas)
-
-                formData.set('business_avatar', business_avatar)
+                delete business_updates.street_address
+                delete business_updates.city
+                delete business_updates.state
+                delete business_updates.zip
             }
 
-            delete data['image_attached']
-
             // remove entries that are unchanged
-            for (const [key] of Object.entries(data)) {
+            for (const [key] of Object.entries(business_updates)) {
                 if (!Object.keys(dirtyFields).includes(key)) {
-                    delete data[key]
+                    delete business_updates[key]
                 }
             }
 
+            // if an address was created above add it to the business updates
+            if (business_address !== null) { business_updates.address = business_address }
+
+            // if current cavas set image to business_avatar if not do nothing
+            if (canvas.current !== null) {
+                let business_avatar = setImageForForm(canvas)
+                formData.set('business_avatar', business_avatar)
+            }
+
+            console.log(business_updates)
+            
+            // delete business_location boolean - no longer needed
+            delete business_updates.business_location
+
+            console.log(business_updates)
+
             // append eveything left changed to formData
-            Object.keys(data).forEach(key => {
-                formData.append(key, data[key])
+            Object.keys(business_updates).forEach(key => {
+                formData.append(key, business_updates[key])
             })
 
             const update_response = await updateBusiness({ business_updates: formData, business_id: business.id })
             
-            if (update_response.status === 201) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${update_response.data.business_name} has been updated`
+            console.log(update_response)
+            // if (update_response.status === 201) {
+            //     dispatch({
+            //         type: "ADD_NOTIFICATION",
+            //         payload: {
+            //             notification_type: 'SUCCESS',
+            //             message: `${update_response.data.business_name} has been updated`
 
-                    }
+            //         }
+            //     })
+
+            //     navigate(`/business/${update_response.data.id}`)
+            // }
+
+        } catch (error) {
+            console.log(error)
+            // missing all or portion of address
+            if(error.message === 'location_required') {
+                setError('location', {
+                    message: 'address is required for business venues'
                 })
-
-                navigate(`/business/${update_response.data.id}`)
             }
-
-        } catch (err) {
-            console.log('inside the catch of the update function')
-            console.log(err)
         }
 
     }
@@ -267,151 +140,221 @@ const BusinessEditForm = () => {
     
 
     return (
-        <Styles>
-            <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data'>
-                <h1>{business?.business_name}</h1>
-                <div className='formContainer'>
-                    <div className='leftFormColumn'>
-                        <div className='imageParent'>
-                            {
-                                editImage
-                                    ? <canvas
-                                        // className=''
-                                        id={'avatarImagePreview'}
-                                        ref={canvas}
-                                    />
-                                    : <img
-                                        // className=''
-                                        src={image_link(business?.business_avatar)}
-                                        alt={business.business_name}
-                                    />
-                            }
-                        </div>
-                    </div>
-                    <div className='rightFormColumn'>
+        <BusinessEditFormStyles>
+            <div>
+                <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
+                    <h1>{business?.business_name}</h1>
+                    
+                    <div className='formImage formCirclePreview'>
                         {
-                            (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                <div className='sectionRow'>
-                                    <div className='sectionRowLeft'>
-                                        <FormInput register={register} id='business_email' onfocus={clearErrors} error={errors?.business_email} />
+                            editImage
+                                ? <canvas
+                                    // className=''
+                                    id={'avatarImagePreview'}
+                                    ref={canvas}
+                                />
+                                : <img
+                                    // className=''
+                                    src={image_link(business?.business_avatar)}
+                                    alt={business.business_name}
+                                />
+                        }
+                    </div>
+
+                    {
+                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                            <div className='formRowInputIcon'>
+                                {/* EMAIL */}
+                                <div className='inputWrapper'>
+                                    <input {...register('business_email', {
+                                        pattern: {
+                                            value: emailformat,
+                                            message: 'invalid email format'
+                                        }
+                                    })} className='formInput' type='text' onClick={() => clearErrors('business_email')} />
+                                    {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
+                                </div>
+
+                                {/* BUSINESS AVATAR UPLOAD */}
+                                <label htmlFor='business_avatar' className='formInput inputLabel' onClick={() => clearErrors('business_avatar')}>
+                                    <AddImageIcon />
+                                    <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                                </label>
+                            </div>
+                    }
+
+                    {/* BUSINESS DESCRIPTION */}
+                    <div className='inputWrapper'>
+                        <textarea {...register('business_description')} className='formInput' rows='8' onClick={() => clearErrors('business_description')} />
+                        {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
+                    </div>
+
+                    {
+                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                            <div className='formRowInputIcon'>
+                                {/* BUSINESS TYPE SELECTOR */}
+                                <div className='inputWrapper'>
+                                    <select {...register('business_type', {
+                                        patter: {
+                                            value: businessTypeList,
+                                            message: 'invalid business type'
+                                        }
+                                    })} className='formInput' onClick={() => clearErrors('business_type')} type='text'>
+                                        <option value='brand'>Brand</option>
+                                        <option value='venue'>Dispensary</option>
+                                        <option value='both'>{`Brand & Dispensary`}</option>
+                                    </select>
+                                    {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
+                                </div>
+
+                                {/* BUSINESS LOCATION CHECKBOX */}
+                                <label htmlFor='business_location' className='formInput inputLabel'>
+                                    {
+                                        business_location ? <RemoveLocationIcon /> : <AddLocationIcon />
+                                    }
+                                    <input {...register('business_location')} id='business_location' className='inputLabelInput' type='checkbox' name='business_location' />
+                                </label>
+                            </div>
+                    }
+
+                    {
+                        (business_location) &&
+                            <div className='standardForm'>
+                                <div>Business Location Details:</div>
+                                {/* STREET ADDRESS */}
+                                <div className='inputWrapper'>
+                                    <input {...register('street_address', {
+                                        required: business_location !== false ? 'Street address is required' : undefined,
+                                        pattern: {
+                                            value: streetAddressFormat,
+                                            message: 'invalid street address'
+                                        }
+                                    })} className='formInput' type='text' onClick={() => clearErrors('street_address')} placeholder='Street Address' />
+                                    {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
+                                </div>
+
+                                {/* CITY */}
+                                <div className='inputWrapper'>
+                                    <input {...register('city', {
+                                        required: business_location !== false ? 'City is required' : undefined,
+                                        pattern: {
+                                            value: cityFormat,
+                                            message: 'invalid city'
+                                        }
+                                    })} className='formInput' type='text' onClick={() => clearErrors('city')} placeholder='City' />
+                                    {errors.city ? <div className='errormessage'>{errors.city?.message}</div> : null}
+                                </div>
+
+                                <div className='formRowSplit'>
+                                    {/* STATE */}
+                                    <div className='inputWrapper'>
+                                        <input {...register('state', {
+                                            required: business_location !== false ? 'State is required' : undefined,
+                                            pattern: {
+                                                value: stateList,
+                                                message: 'invalid state'
+                                            }
+                                        })} className='formInput' type='text' onClick={() => clearErrors('state')} placeholder='State' />
+                                        {errors.state ? <div className='errormessage'>{errors.state?.message}</div> : null}
                                     </div>
-                                    <div className='sectionRowRight'>
-                                        <ImageInput id='business_avatar'
-                                            register={register}
-                                            onfocus={clearErrors}
-                                            error={errors.business_avatar}
-                                            change={imagePreview}
-                                        />
+
+                                    {/* ZIP */}
+                                    <div className='inputWrapper'>
+                                        <input {...register('zip', {
+                                            require: business_location !== false ? 'Zip code is required' : undefined,
+                                            pattern: {
+                                                value: zipFormat,
+                                                message: 'invalid zip code'
+                                            }
+                                        })} className='formInput' type='text' onClick={() => clearErrors('zip')} placeholder='Zip' />
+                                        {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
                                     </div>
                                 </div>
-                        }
-
-                        {/* business description input */}
-                        <TextAreaInput register={register} id='business_description' onfocus={() => clearErrors('business_description')} error={errors.business_description} placehold='Business details...' />
-
-                        {
-                            (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                <div className='sectionRow'>
-                                    <div className='sectionRowLeft'>
-                                        <BusinessTypeSelect register={register} onfocus={() => clearErrors('business_type')} error={errors.business_type} />
-                                    </div>
-
-                                    <div className={`sectionRowRight ${(business_type !== 'brand') ? 'noclick' : ''}`} onClick={() => setShowLocation(!showLocation)} >
-                                        <div className='locationIconWrapper'>
-                                            <AddLocationIcon />
-                                        </div>
-                                    </div>
-                                </div>
-                        }
-
-                        {
-                            (showLocation || business_type === 'venue' || business_type === 'both') &&
-                                <div>
-                                    {/* street address input for location */}
-                                    <FormInput id='street_address'
-                                        register={register}
-                                        onfocus={clearErrors}
-                                        error={errors.street_address}
-                                        placeholder='Street Address'
-                                    />
-                                    {/* city input for location */}
-                                    <FormInput id='city'
-                                        register={register}
-                                        onfocus={clearErrors}
-                                        error={errors.city}
-                                        placeholder='City'
-                                    />
-                                    <div className='stateZipWrapper'>
-                                        {/* state input for location */}
-                                        <FormInput id='state'
-                                            register={register}
-                                            onfocus={clearErrors}
-                                            error={errors.state}
-                                            placeholder='State'
-                                        />
-                                        {/* zip code input for location */}
-                                        <FormInput id='zip'
-                                            register={register}
-                                            onfocus={clearErrors}
-                                            error={errors.zip}
-                                            placeholder='Zip'
-                                        />
-                                    </div>
-                                </div>
-                        }
-
+                                {errors.location ? <div className='errormessage'>{errors.location?.message}</div> : null}
+                            </div>
+                    }
+                    
+                    <div>Business Contacts & Social Media:</div>
+                    {/* INSTAGRAM */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_instagram' className='contactLabelWrapper'>
+                            <div className='contactIcon'><InstagramIcon /></div>
+                            <input {...register('business_instagram', {
+                                pattern: {
+                                    value: instagramFormat,
+                                    message: 'invalid Instagram format'
+                                }
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_instagram')} placeholder='@Instagram' />
+                        </label>
+                        {errors.business_instagram ? <div className='errormessage'>{errors.business_instagram?.message}</div> : null}
                     </div>
-                </div>
-                <div className='businessContacts'>
-                    {/* instagram input */}
-                    <div className='businessContact'>
-                        <ContactInput id='instagram'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_instagram}
-                        />
-                    </div>
-                    {/* website input */}
-                    <div className='businessContact'>
-                        <ContactInput id='website'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_website}
-                        />
-                    </div>
-                    {/* facebook input */}
-                    <div className='businessContact'>
-                        <ContactInput id='facebook'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_facebook}
-                        />
-                    </div>
-                    {/* phone input */}
-                    <div className='businessContact'>
-                        <ContactInput id='phone'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_phone}
-                        />
-                    </div>
-                    {/* twitter input */}
-                    <div className='businessContact'>
-                        <ContactInput id='twitter'
-                            register={register}
-                            onfocus={clearErrors}
-                            error={errors.business_twitter}
-                        />
-                    </div>
-                </div>
 
-                <div className='buttonWrapper'>
-                    <button type='submit' disabled={!isDirty}>Update</button>
-                    <button onClick={() => close_edit_view()}>Close</button>
-                </div>
+                    {/* WEBSITE */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_website' className='contactLabelWrapper'>
+                            <div className='contactIcon'><WebSiteIcon /></div>
+                            <input {...register('business_website', {
+                                pattern: {
+                                    value: websiteFormat,
+                                    message: 'invalid website format'
+                                }
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
+                        </label>
+                        {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
+                    </div>
 
-            </form>
-        </Styles>
+                    {/* FACEBOOK */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_facebook' className='contactLabelWrapper'>
+                            <div className='contactIcon'><FacebookIcon /></div>
+                            <input {...register('business_facebook', {
+                                pattern: {
+                                    value: facebookFormat,
+                                    message: 'only need username portion (exp. https://www.facebook.com/{USERNAME}'
+                                }
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_facebook')} placeholder='Facebook username' />
+                        </label>
+                        {errors.business_facebook ? <div className='errormessage'>{errors.business_facebook?.message}</div> : null}
+                    </div>
+
+                    {/* PHONE NUMBER */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_phone' className='contactLabelWrapper'>
+                            <div className='contactIcon'><PhoneIcon /></div>
+                            <input {...register('business_phone', {
+                                pattern: {
+                                    value: phoneFormat,
+                                    message: 'invalid phone number format'
+                                }
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
+                        </label>
+                        {errors.business_phone ? <div className='errormessage'>{errors.business_phone?.message}</div> : null}
+                    </div>
+
+                    {/* TWITTER */}
+                    <div className='inputWrapper contactWrapper'>
+                        <label htmlFor='business_twitter' className='contactLabelWrapper'>
+                            <div className='contactIcon'><TwitterIcon /></div>
+                            <input {...register('business_twitter', {
+                                pattern: {
+                                    value: twitterFormat,
+                                    message: 'invalid Twitter format'
+                                }
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_twitter')} placeholder='@Twitter' />
+                        </label>
+                        {errors.business_twitter ? <div className='errormessage'>{errors.business_twitter?.message}</div> : null}
+                    </div>
+
+                    {errors.server ? <div className='errormessage'>{errors.server?.message}</div> : null}
+
+                    <div className='formButtonWrapper'>
+                        <button type='submit' disabled={!isDirty && (canvas.current === null)}>Update</button>
+                        <button onClick={() => close_edit_view()}>Close</button>
+                    </div>
+
+                </form>
+            </div>
+        </BusinessEditFormStyles>
     )
 }
 
