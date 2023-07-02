@@ -113,13 +113,17 @@ const Register = () => {
                 navigate('/profile');
             }
         } catch (error) {
-            console.log('inside register create catch')
-            console.log(error)
             
-            if(error?.response?.status === 409) {
+            if(error?.response?.status === 400) {
+                setError(error.response.data.error.type, { message: error.response.data.error.message })
+            }
+            
+            else if(error?.response?.status === 409) {
                 setError(error.response.data.error.type, { message: error.response.data.error.message })
 
-            } else {
+            }
+            
+            else {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     notification_type: 'ERROR',

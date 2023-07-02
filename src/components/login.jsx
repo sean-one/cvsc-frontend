@@ -101,11 +101,12 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit(sendLogin)} className='standardForm' onClick={() => clearErrors('credentials')}>
                     
+                    {/* USERNAME */}
                     <div className='inputWrapper'>
                         <input {...register('username', {
                             required: 'username is required',
                             minLength: {
-                                value: 4,
+                                value: 3,
                                 message: 'must be at least 4 letters'
                             },
                             maxLength: {
@@ -117,6 +118,7 @@ const Login = () => {
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
                     
+                    {/* PASSWORD */}
                     <div className='inputWrapper'>
                         <input {...register('password', {
                             required: 'password is required',
