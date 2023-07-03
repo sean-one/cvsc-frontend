@@ -97,6 +97,10 @@ const BusinessCreateForm = () => {
                 throw new Error('invalid_business_type')
             }
 
+            if(business_data.business_phone !== undefined) {
+                business_data.business_phone = business_data.business_phone.replace(/\D/g, '').slice(-10)
+            }
+
             // remove any empty strings and append to formData
             // also removes the @ symbol from the front of any inputs (twitter & instagram) if they are present
             Object.keys(business_data).forEach((key) => {
@@ -154,7 +158,7 @@ const BusinessCreateForm = () => {
             }
             // business type was venue or both but did not include required address components
             else if (error.message === 'location_required') {
-                setError('location', {
+                setError('address', {
                     message: 'address required for business venues'
                 })
             }
@@ -164,16 +168,10 @@ const BusinessCreateForm = () => {
                     message: 'invalid business type'
                 }, { shouldFocus: true })
             }
-            // business name was sent to server and does not meet unique requirements
-            else if (error.response.status === 409) {
-                setError(`${error.response.data.error.type}`, {
-                    message: error.response.data.error.message
-                }, { shouldFocus: true })
-            }
             // 
             else if (error.response.status === 400) {
                 setError(`${error.response.data.error.type}`, {
-                    message: 'invalid formating or missing information'
+                    message: error.response.data.error.message
                 }, { shouldFocus: true })
             }
 
@@ -335,7 +333,8 @@ const BusinessCreateForm = () => {
                                         {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
                                     </div>
                                 </div>
-                                {errors.location ? <div className='errormessage'>{errors.location?.message}</div> : null}
+
+                                {errors.address ? <div className='errormessage'>{errors.address?.message}</div> : null}
                             </div>
                     }
 
