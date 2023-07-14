@@ -97,6 +97,7 @@ const BusinessCreateForm = () => {
                 throw new Error('invalid_business_type')
             }
 
+            // clean phone number to consist of 10 numbers only
             if(business_data.business_phone !== undefined) {
                 business_data.business_phone = business_data.business_phone.replace(/\D/g, '').slice(-10)
             }

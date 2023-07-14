@@ -52,11 +52,14 @@ const BusinessEditForm = () => {
     const business_location = watch('business_location', false) || watch('business_type') !== 'brand';
 
     const update_business = async (business_updates) => {
+        let business_address = null
         try {
             const formData = new FormData()
             
+            // delete business_location boolean - no longer needed
+            delete business_updates.business_location
+            
             // check business address for any upodates make to any of the fields
-            let business_address = null
             const addressFields = ['street_address', 'city', 'state', 'zip']
             const isAnyAddressFieldDirty = addressFields.some(field => dirtyFields[field])
             
@@ -85,45 +88,50 @@ const BusinessEditForm = () => {
             // if an address was created above add it to the business updates
             if (business_address !== null) { business_updates.address = business_address }
 
+            // clean phone number to consist of 10 numbers only
+            if (business_updates.business_phone !== undefined) {
+                business_updates.business_phone = business_updates.business_phone.replace(/\D/g, '').slice(-10)
+            }
             // if current cavas set image to business_avatar if not do nothing
             if (canvas.current !== null) {
                 let business_avatar = setImageForForm(canvas)
                 formData.set('business_avatar', business_avatar)
             }
 
-            console.log(business_updates)
             
-            // delete business_location boolean - no longer needed
-            delete business_updates.business_location
-
-            console.log(business_updates)
-
             // append eveything left changed to formData
             Object.keys(business_updates).forEach(key => {
-                formData.append(key, business_updates[key])
+                let value = business_updates[key]
+
+                if(value !== '') {
+                    if(typeof value === 'string' && value.startsWith('@')) {
+                        value = value.slice(1)
+                    }
+
+                    formData.append(key, value)
+                }
             })
 
             const update_response = await updateBusiness({ business_updates: formData, business_id: business.id })
             
-            console.log(update_response)
-            // if (update_response.status === 201) {
-            //     dispatch({
-            //         type: "ADD_NOTIFICATION",
-            //         payload: {
-            //             notification_type: 'SUCCESS',
-            //             message: `${update_response.data.business_name} has been updated`
+            if (update_response.status === 201) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${update_response.data.business_name} has been updated`
 
-            //         }
-            //     })
+                    }
+                })
 
-            //     navigate(`/business/${update_response.data.id}`)
-            // }
+                navigate(`/business/${update_response.data.id}`)
+            }
 
         } catch (error) {
             console.log(error)
             // missing all or portion of address
             if(error.message === 'location_required') {
-                setError('location', {
+                setError('address', {
                     message: 'address is required for business venues'
                 })
             }
@@ -270,7 +278,7 @@ const BusinessEditForm = () => {
                                         {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
                                     </div>
                                 </div>
-                                {errors.location ? <div className='errormessage'>{errors.location?.message}</div> : null}
+                                {errors.address ? <div className='errormessage'>{errors.location?.message}</div> : null}
                             </div>
                     }
                     
