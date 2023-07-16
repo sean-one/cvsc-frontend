@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import GooglePlacesAutocorrect from 'react-google-places-autocomplete';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -17,6 +18,7 @@ const BusinessEditFormStyles = styled.div`
 
 const BusinessEditForm = () => {
     const { auth } = useAuth()
+    const [ address, setAddress ] = useState(null)
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
@@ -146,7 +148,8 @@ const BusinessEditForm = () => {
         navigate(`/business/${business.id}`)
     }
     
-
+    console.log('address')
+    console.log(address)
     return (
         <BusinessEditFormStyles>
             <div>
@@ -224,20 +227,36 @@ const BusinessEditForm = () => {
                                 </label>
                             </div>
                     }
-
                     {
                         (business_location) &&
                             <div className='standardForm'>
                                 <div>Business Location Details:</div>
                                 {/* STREET ADDRESS */}
-                                <div className='inputWrapper'>
-                                    <input {...register('street_address', {
-                                        required: business_location !== false ? 'Street address is required' : undefined,
-                                        pattern: {
-                                            value: streetAddressFormat,
-                                            message: 'invalid street address'
-                                        }
-                                    })} className='formInput' type='text' onClick={() => clearErrors('street_address')} placeholder='Street Address' />
+                                {/* <div className='inputWrapper'> */}
+                                <div className='formInput'>
+                                    <GooglePlacesAutocorrect
+                                        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+                                        selectProps={{ address, onChange: setAddress, placeholder: 'Street Address' }}
+                                        {...register('street_address', {
+                                            required: business_location !== false ? 'Street address is required' : undefined,
+                                            pattern: {
+                                                value: streetAddressFormat,
+                                                message: 'invalid street address'
+                                            }
+                                        })}
+                                        autocompletionRequest={{
+                                            types: ['address'],
+                                            componentRestrictions: {
+                                                country: 'us'
+                                            }
+                                        }}
+                                        // onSelect={addressSelected}
+                                        // searchOptions={{ types: ['address'], componentRestrictions: { country: 'us' } }}
+                                        // className='formInput'
+                                        // type='text'
+                                        // onClick={() => clearErrors('street_address')}
+                                        // placeholder='Street Address'
+                                    />
                                     {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
                                 </div>
 
