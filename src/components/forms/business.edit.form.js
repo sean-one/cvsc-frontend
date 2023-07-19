@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import GooglePlacesAutocorrect from 'react-google-places-autocomplete';
+// import GooglePlacesAutocorrect from 'react-google-places-autocomplete';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -11,14 +11,16 @@ import { setImageForForm } from '../../helpers/setImageForForm';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
-import { businessTypeList, emailformat, streetAddressFormat, cityFormat, stateList, zipFormat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
+import { businessTypeList, emailformat, cityFormat, stateList, zipFormat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
+
+import AddressAutocomplete from '../../helpers/AddressAutocomplete';
 
 const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = () => {
     const { auth } = useAuth()
-    const [ address, setAddress ] = useState(null)
+    // const [ address, setAddress ] = useState(null)
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
@@ -28,7 +30,7 @@ const BusinessEditForm = () => {
 
     let navigate = useNavigate()
 
-    const { register, handleSubmit, clearErrors, watch, reset, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, watch, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         // resolver: yupResolver(businessFormSchema),
         defaultValues: {
@@ -54,6 +56,8 @@ const BusinessEditForm = () => {
     const business_location = watch('business_location', false) || watch('business_type') !== 'brand';
 
     const update_business = async (business_updates) => {
+        console.log(business_updates)
+        return
         let business_address = null
         try {
             const formData = new FormData()
@@ -148,8 +152,6 @@ const BusinessEditForm = () => {
         navigate(`/business/${business.id}`)
     }
     
-    console.log('address')
-    console.log(address)
     return (
         <BusinessEditFormStyles>
             <div>
@@ -233,8 +235,9 @@ const BusinessEditForm = () => {
                                 <div>Business Location Details:</div>
                                 {/* STREET ADDRESS */}
                                 {/* <div className='inputWrapper'> */}
-                                <div className='formInput'>
-                                    <GooglePlacesAutocorrect
+                                <div>
+                                    <AddressAutocomplete register={register} clearErrors={clearErrors} onAddressChange={(address) => setValue('address', address)} />
+                                    {/* <GooglePlacesAutocorrect
                                         apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
                                         selectProps={{ address, onChange: setAddress, placeholder: 'Street Address' }}
                                         {...register('street_address', {
@@ -256,7 +259,7 @@ const BusinessEditForm = () => {
                                         // type='text'
                                         // onClick={() => clearErrors('street_address')}
                                         // placeholder='Street Address'
-                                    />
+                                    /> */}
                                     {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
                                 </div>
 
