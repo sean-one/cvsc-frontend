@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-// import GooglePlacesAutocorrect from 'react-google-places-autocomplete';
+import GooglePlacesAutocorrect from 'react-google-places-autocomplete';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -11,16 +11,14 @@ import { setImageForForm } from '../../helpers/setImageForForm';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
-import { businessTypeList, emailformat, cityFormat, stateList, zipFormat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
-
-import AddressAutocomplete from '../../helpers/AddressAutocomplete';
+import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
 
 const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = () => {
     const { auth } = useAuth()
-    // const [ address, setAddress ] = useState(null)
+    const [ address, setAddress ] = useState(null)
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
@@ -43,10 +41,6 @@ const BusinessEditForm = () => {
             business_facebook: business?.business_facebook || '',
             business_phone: business?.business_phone || '',
             business_twitter: business?.business_twitter || '',
-            street_address: business?.street_address || '',
-            city: business?.location_city || '',
-            state: business?.location_state || '',
-            zip: business?.zip_code || '',
             business_location: false,
         }
     })
@@ -231,77 +225,9 @@ const BusinessEditForm = () => {
                     }
                     {
                         (business_location) &&
-                            <div className='standardForm'>
-                                <div>Business Location Details:</div>
-                                {/* STREET ADDRESS */}
-                                {/* <div className='inputWrapper'> */}
-                                <div>
-                                    <AddressAutocomplete register={register} clearErrors={clearErrors} onAddressChange={(address) => setValue('address', address)} />
-                                    {/* <GooglePlacesAutocorrect
-                                        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                                        selectProps={{ address, onChange: setAddress, placeholder: 'Street Address' }}
-                                        {...register('street_address', {
-                                            required: business_location !== false ? 'Street address is required' : undefined,
-                                            pattern: {
-                                                value: streetAddressFormat,
-                                                message: 'invalid street address'
-                                            }
-                                        })}
-                                        autocompletionRequest={{
-                                            types: ['address'],
-                                            componentRestrictions: {
-                                                country: 'us'
-                                            }
-                                        }}
-                                        // onSelect={addressSelected}
-                                        // searchOptions={{ types: ['address'], componentRestrictions: { country: 'us' } }}
-                                        // className='formInput'
-                                        // type='text'
-                                        // onClick={() => clearErrors('street_address')}
-                                        // placeholder='Street Address'
-                                    /> */}
-                                    {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
-                                </div>
-
-                                {/* CITY */}
-                                <div className='inputWrapper'>
-                                    <input {...register('city', {
-                                        required: business_location !== false ? 'City is required' : undefined,
-                                        pattern: {
-                                            value: cityFormat,
-                                            message: 'invalid city'
-                                        }
-                                    })} className='formInput' type='text' onClick={() => clearErrors('city')} placeholder='City' />
-                                    {errors.city ? <div className='errormessage'>{errors.city?.message}</div> : null}
-                                </div>
-
-                                <div className='formRowSplit'>
-                                    {/* STATE */}
-                                    <div className='inputWrapper'>
-                                        <input {...register('state', {
-                                            required: business_location !== false ? 'State is required' : undefined,
-                                            pattern: {
-                                                value: stateList,
-                                                message: 'invalid state'
-                                            }
-                                        })} className='formInput' type='text' onClick={() => clearErrors('state')} placeholder='State' />
-                                        {errors.state ? <div className='errormessage'>{errors.state?.message}</div> : null}
-                                    </div>
-
-                                    {/* ZIP */}
-                                    <div className='inputWrapper'>
-                                        <input {...register('zip', {
-                                            require: business_location !== false ? 'Zip code is required' : undefined,
-                                            pattern: {
-                                                value: zipFormat,
-                                                message: 'invalid zip code'
-                                            }
-                                        })} className='formInput' type='text' onClick={() => clearErrors('zip')} placeholder='Zip' />
-                                        {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
-                                    </div>
-                                </div>
-                                {errors.address ? <div className='errormessage'>{errors.location?.message}</div> : null}
-                            </div>
+                            <GooglePlacesAutocorrect
+                                apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+                            />
                     }
                     
                     <div>Business Contacts & Social Media:</div>

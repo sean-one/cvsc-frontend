@@ -29,11 +29,10 @@ const AddressAutocomplete = ({ register, clearErrors, onAddressChange }) => {
         autocomplete.addListener('place_changed', handlePlaceChanged);
 
         // clear form errors on input focus
-        const inputElement = inputRef.current;
-        inputElement?.addEventListener('focus', clearFormErrors);
+        inputRef?.current?.addEventListener('focus', clearFormErrors);
 
         return () => {
-            inputElement?.removeEventListener('focus', clearFormErrors);
+            inputRef?.current?.removeEventListener('focus', clearFormErrors);
         };
     }, [onAddressChange, clearFormErrors]);
 
@@ -44,7 +43,9 @@ const AddressAutocomplete = ({ register, clearErrors, onAddressChange }) => {
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
                 script.async = true;
                 script.defer = true;
-                script.onload = initializeAutocomplete;
+                script.onload = () => { initializeAutocomplete() };
+
+                script.onerror = () => { console.error('Failed to load Google Maps JavaScript API') };
                 document.head.appendChild(script);
             } else {
                 initializeAutocomplete()
