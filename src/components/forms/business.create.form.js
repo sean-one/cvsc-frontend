@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components'
@@ -38,27 +38,14 @@ const BusinessCreateForm = () => {
         }
     });
 
-    const business_location = watch('business_location', false) || watch('business_type') !== 'brand';
+    const business_location = watch('business_location', false);
+    const watchBusinessType = watch('business_type')
 
-    const toggleBusinessLocation = (checked) => {
-        console.log(`toggle toggle: ${checked}`)
-        if(!checked) {
-            setValue('address', '')
-        }
-    }
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
         try {
             const formData = new FormData()
-
-            console.log(business_data)
-            // if(business_data.business_location === false) {
-            //     console.log(`business_location: ${business_data.business_location}`)
-            //     console.log(business_data.address)
-            //     console.log('deleted address')
-            //     delete business_data.address                
-            // }
 
             // check for current canvas and set it to formData
             if(canvas.current === null) {
@@ -73,9 +60,7 @@ const BusinessCreateForm = () => {
             delete business_data.business_location
 
             // check business type and confirm business address when required
-            if (business_data.business_type === 'both' || business_data.business_type === 'venue' && (!business_data.address)) {
-                console.log(business_data.business_type)
-                console.log(business_data.address)
+            if (business_data.business_type === 'both' || business_data.business_type === 'venue' && !business_data.address) {
                 // if business type is not brand business address is required
                 throw new Error('location_required')
             }
@@ -179,6 +164,15 @@ const BusinessCreateForm = () => {
 
     }
 
+    useEffect(() => {
+        if (watchBusinessType !== 'brand') {
+            setValue('business_location', true); // Set business_location to true for non-'brand' type
+        } else {
+            setValue('business_location', false); // Reset business_location for 'brand' type
+            setValue('address', ''); // Reset address field when business_type changes to 'brand'
+        }
+    }, [watchBusinessType, setValue])
+
 
     return (
         <BusinessCreateFormStyles>
@@ -266,7 +260,7 @@ const BusinessCreateForm = () => {
                                 className='inputLabelInput'
                                 type='checkbox'
                                 name='business_location'
-                                onChange={(e) => toggleBusinessLocation(e.target.checked)}
+                                disabled={watchBusinessType !== 'brand'}
                             />
                         </label>
                     </div>
