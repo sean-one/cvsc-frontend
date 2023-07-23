@@ -4,12 +4,14 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components'
 
 import useAuth from '../../hooks/useAuth';
-import { businessTypeList, cityFormat, emailformat, facebookFormat, instagramFormat, phoneFormat, stateList, streetAddressFormat, twitterFormat, websiteFormat, zipFormat } from '../forms/form.validations';
+import { businessTypeList, emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
+
+import AddressForm from './address.form';
 
 const BusinessCreateFormStyles = styled.div`
 `;
@@ -20,7 +22,7 @@ const BusinessCreateForm = () => {
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
-    const { register, handleSubmit, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             business_name: null,
@@ -28,10 +30,6 @@ const BusinessCreateForm = () => {
             business_avatar: '',
             business_description: null,
             business_type: 'brand',
-            street_address: '',
-            city: '',
-            state: '',
-            zip: '',
             business_instagram: '',
             business_facebook: '',
             business_website: '',
@@ -41,11 +39,26 @@ const BusinessCreateForm = () => {
     });
 
     const business_location = watch('business_location', false) || watch('business_type') !== 'brand';
+
+    const toggleBusinessLocation = (checked) => {
+        console.log(`toggle toggle: ${checked}`)
+        if(!checked) {
+            setValue('address', '')
+        }
+    }
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
         try {
             const formData = new FormData()
+
+            console.log(business_data)
+            // if(business_data.business_location === false) {
+            //     console.log(`business_location: ${business_data.business_location}`)
+            //     console.log(business_data.address)
+            //     console.log('deleted address')
+            //     delete business_data.address                
+            // }
 
             // check for current canvas and set it to formData
             if(canvas.current === null) {
@@ -60,41 +73,11 @@ const BusinessCreateForm = () => {
             delete business_data.business_location
 
             // check business type and confirm business address when required
-            // if business address is found sets varibale to 'business_data.address'
-            if (business_data.business_type === 'both' || business_data.business_type === 'venue') {
+            if (business_data.business_type === 'both' || business_data.business_type === 'venue' && (!business_data.address)) {
+                console.log(business_data.business_type)
+                console.log(business_data.address)
                 // if business type is not brand business address is required
-                if(!business_data.street_address || !business_data.city || !business_data.state || !business_data.zip) {
-                    throw new Error('location_required')
-                }
-
-                business_data.address = `${business_data.street_address}, ${business_data.city}, ${business_data.state} ${business_data.zip}`;
-                
-                delete business_data.street_address
-                delete business_data.city
-                delete business_data.state
-                delete business_data.zip
-
-            } else if (business_data.business_type === 'brand') {
-                // if business type is brand address may be included but is nor required
-                if (business_data.street_address && business_data.city && business_data.state && business_data.zip) {
-                    business_data.address = `${business_data.street_address}, ${business_data.city}, ${business_data.state} ${business_data.zip}`;
-                    
-                    delete business_data.street_address
-                    delete business_data.city
-                    delete business_data.state
-                    delete business_data.zip
-
-                } else {
-                    
-                    delete business_data.street_address
-                    delete business_data.city
-                    delete business_data.state
-                    delete business_data.zip
-
-                }
-            } else {
-                // if not brand, venue or both throw error
-                throw new Error('invalid_business_type')
+                throw new Error('location_required')
             }
 
             // clean phone number to consist of 10 numbers only
@@ -277,66 +260,20 @@ const BusinessCreateForm = () => {
                             {
                                 business_location ? <RemoveLocationIcon /> : <AddLocationIcon />
                             }
-                            <input {...register('business_location')} id='business_location' className='inputLabelInput' type='checkbox' name='business_location' />
+                            <input
+                                {...register('business_location')}
+                                id='business_location'
+                                className='inputLabelInput'
+                                type='checkbox'
+                                name='business_location'
+                                onChange={(e) => toggleBusinessLocation(e.target.checked)}
+                            />
                         </label>
                     </div>
 
                     {
                         (business_location) &&
-                            <div className='standardForm'>
-                                <div>Business Location Details:</div>
-                                {/* STREET ADDRESS */}
-                                <div className='inputWrapper'>
-                                    <input {...register('street_address', {
-                                        required: business_location !== false ? 'Street address is required' : undefined,
-                                        pattern: {
-                                            value: streetAddressFormat,
-                                            message: 'invalid street address'
-                                        }
-                                    })} className='formInput' type='text' onClick={() => clearErrors('street_address')} placeholder='Street Address' />
-                                    {errors.street_address ? <div className='errormessage'>{errors.street_address?.message}</div> : null}
-                                </div>
-
-                                {/* CITY */}
-                                <div className='inputWrapper'>
-                                    <input {...register('city', {
-                                        required: business_location !== false ? 'City is required' : undefined,
-                                        pattern: {
-                                            value: cityFormat,
-                                            message: 'invalid city'
-                                        }
-                                    })} className='formInput' type='text' onClick={() => clearErrors('city')} placeholder='City' />
-                                    {errors.city ? <div className='errormessage'>{errors.city?.message}</div> : null}
-                                </div>
-
-                                <div className='formRowSplit'>
-                                    {/* STATE */}
-                                    <div className='inputWrapper'>
-                                        <input {...register('state', {
-                                            required: business_location !== false ? 'State is required' : undefined,
-                                            pattern: {
-                                                value: stateList,
-                                                message: 'invalid state'
-                                            }
-                                        })} className='formInput' type='text' onClick={() => clearErrors('state')} placeholder='State' />
-                                        {errors.state ? <div className='errormessage'>{errors.state?.message}</div> : null}
-                                    </div>
-
-                                    {/* ZIP */}
-                                    <div className='inputWrapper'>
-                                        <input {...register('zip', {
-                                            require: business_location !== false ? 'Zip code is required' : undefined,
-                                            pattern: {
-                                                value: zipFormat,
-                                                message: 'invalid zip code'
-                                            }
-                                        })} className='formInput' type='text' onClick={() => clearErrors('zip')} placeholder='Zip' />
-                                        {errors.zip ? <div className='errormessage'>{errors.zip?.message}</div> : null}
-                                    </div>
-                                </div>
-
-                                {errors.address ? <div className='errormessage'>{errors.address?.message}</div> : null}
-                            </div>
+                            <AddressForm register={register} setValue={setValue} errors={errors} clearErrors={clearErrors} />
                     }
 
                     <div>Business Contacts & Social Media:</div>

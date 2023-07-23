@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import GooglePlacesAutocorrect from 'react-google-places-autocomplete';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -13,12 +12,13 @@ import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
 
+import AddressForm from './address.form';
+
 const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = () => {
     const { auth } = useAuth()
-    const [ address, setAddress ] = useState(null)
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
@@ -225,9 +225,7 @@ const BusinessEditForm = () => {
                     }
                     {
                         (business_location) &&
-                            <GooglePlacesAutocorrect
-                                apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                            />
+                            <AddressForm register={register} setValue={setValue} errors={errors} />
                     }
                     
                     <div>Business Contacts & Social Media:</div>

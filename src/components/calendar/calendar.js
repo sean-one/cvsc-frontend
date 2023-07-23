@@ -25,7 +25,7 @@ const Calendar = () => {
     }
 
     if(isError) {
-        return <div>Error...something is wrong</div>
+        return <div>Server is offline</div>
     }
 
     if(isSuccess) {

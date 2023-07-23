@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import React from 'react';
+import AutoComplete from 'react-google-autocomplete';
 
 
-const AddressForm = ({ register }) => {
-    const [ value, setValue ] = useState(null)
+const AddressForm = ({ register, setValue, errors, clearErrors }) => {
 
-    const handleAddressSelect = (data) => {
-        console.log(data)
-        setValue(data.label)
-    }
 
     return (
-        <div>
-            <div>
+        <div className='standardForm'>
+            <div className='inputWrapper'>
                 <label htmlFor="address">Address Search:</label>
-                <GooglePlacesAutocomplete
+                <AutoComplete
                     apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
                     {...register('address')}
-                    selectProps={{
-                        value,
-                        onChange: handleAddressSelect,
+                    className='formInput'
+                    onClick={() => clearErrors('address')}
+                    onPlaceSelected={(place) => {
+                        if(place && place.formatted_address) {
+                            setValue('address', place.place_id)
+                        }
                     }}
-                    debounce={300}
-                    types={['address']}
+                    options={{
+                        types: ['address'],
+                    }}
                 />
+                {errors.address ? <div className='errormessage'>{errors.address?.message}</div> : null}
             </div>
         </div>
     )
