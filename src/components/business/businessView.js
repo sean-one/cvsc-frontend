@@ -157,8 +157,8 @@ const BusinessView = () => {
                         <h2>{business.data.business_name.toUpperCase()}</h2>
                     </div>
                     {
-                        (business.data.location_id !== null) &&
-                            <div>{`${business.data?.street_address}, ${business.data?.location_city}`}</div>
+                        (business.data.formatted_address !== null) &&
+                            <div>{business.data?.formatted_address}</div>
                     }
                 </div>
 

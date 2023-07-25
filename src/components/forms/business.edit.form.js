@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -34,6 +34,8 @@ const BusinessEditForm = () => {
         defaultValues: {
             business_email: business?.business_email,
             business_description: business?.business_description,
+            place_id: business?.place_id,
+            formatted_address: business?.formatted_address,
             business_avatar: '',
             business_type: business?.business_type,
             business_instagram: business?.business_instagram || '',
@@ -47,7 +49,10 @@ const BusinessEditForm = () => {
 
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
 
-    const business_location = watch('business_location', false) || watch('business_type') !== 'brand';
+    console.log(isDirty)
+    console.log(dirtyFields)
+    const business_location = watch('business_location');
+    const watchBusinessType = watch('business_type');
 
     const update_business = async (business_updates) => {
         console.log(business_updates)
@@ -59,34 +64,12 @@ const BusinessEditForm = () => {
             // delete business_location boolean - no longer needed
             delete business_updates.business_location
             
-            // check business address for any upodates make to any of the fields
-            const addressFields = ['street_address', 'city', 'state', 'zip']
-            const isAnyAddressFieldDirty = addressFields.some(field => dirtyFields[field])
-            
-            // if any field has been updated make sure all are there and save address, and delete address components
-            if (isAnyAddressFieldDirty) {
-                // make sure all needed address components are included
-                if (!business_updates.street_address || !business_updates.city || !business_updates.state || !business_updates.zip) {
-                    throw new Error('location_required')
-                }
-
-                business_address = `${business_updates.street_address}, ${business_updates.city}, ${business_updates.state} ${business_updates.zip}`;
-                
-                delete business_updates.street_address
-                delete business_updates.city
-                delete business_updates.state
-                delete business_updates.zip
-            }
-
             // remove entries that are unchanged
             for (const [key] of Object.entries(business_updates)) {
                 if (!Object.keys(dirtyFields).includes(key)) {
                     delete business_updates[key]
                 }
             }
-
-            // if an address was created above add it to the business updates
-            if (business_address !== null) { business_updates.address = business_address }
 
             // clean phone number to consist of 10 numbers only
             if (business_updates.business_phone !== undefined) {
@@ -98,7 +81,6 @@ const BusinessEditForm = () => {
                 formData.set('business_avatar', business_avatar)
             }
 
-            
             // append eveything left changed to formData
             Object.keys(business_updates).forEach(key => {
                 let value = business_updates[key]
@@ -145,6 +127,17 @@ const BusinessEditForm = () => {
 
         navigate(`/business/${business.id}`)
     }
+
+    useEffect(() => {
+        if(watchBusinessType !== 'brand') {
+            setValue('business_location', true)
+        } else {
+            console.log('reseting place_id')
+            setValue('business_location', false)
+            setValue('place_id', business?.place_id)
+        }
+    }, [watchBusinessType, setValue])
+
     
     return (
         <BusinessEditFormStyles>
@@ -219,13 +212,27 @@ const BusinessEditForm = () => {
                                     {
                                         business_location ? <RemoveLocationIcon /> : <AddLocationIcon />
                                     }
-                                    <input {...register('business_location')} id='business_location' className='inputLabelInput' type='checkbox' name='business_location' />
+                                    <input
+                                        {...register('business_location')}
+                                        id='business_location'
+                                        className='inputLabelInput'
+                                        type='checkbox'
+                                        name='business_location'
+                                        disabled={watchBusinessType !== 'brand'}
+                                    />
                                 </label>
                             </div>
                     }
                     {
                         (business_location) &&
-                            <AddressForm register={register} setValue={setValue} errors={errors} />
+                            <AddressForm
+                                register={register}
+                                setValue={setValue}
+                                clearErrors={clearErrors}
+                                errors={errors}
+                                defaultValue={business?.formatted_address}
+                                place_id={business?.place_id}
+                            />
                     }
                     
                     <div>Business Contacts & Social Media:</div>
@@ -302,7 +309,7 @@ const BusinessEditForm = () => {
                     {errors.server ? <div className='errormessage'>{errors.server?.message}</div> : null}
 
                     <div className='formButtonWrapper'>
-                        <button type='submit' disabled={!isDirty && (canvas.current === null)}>Update</button>
+                        <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
                         <button onClick={() => close_edit_view()}>Close</button>
                     </div>
 

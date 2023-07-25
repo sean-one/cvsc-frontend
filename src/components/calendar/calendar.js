@@ -17,7 +17,7 @@ const CalendarStyles = styled.div`
 `
 
 const Calendar = () => {
-    const { data: eventList, isLoading, isError, isSuccess } = useEventsQuery()
+    const { data: eventList, isLoading, error, isError, isSuccess } = useEventsQuery()
     let sortedEvents = []
 
     if(isLoading) {
@@ -25,6 +25,7 @@ const Calendar = () => {
     }
 
     if(isError) {
+        console.log(error)
         return <div>Server is offline</div>
     }
 

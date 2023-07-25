@@ -132,7 +132,7 @@ const EventView = () => {
                             : null
                     }
                 </div>
-                <div className='eventViewAddress'>{`${event.data.street_address}, ${event.data.location_city}`}</div>
+                <div className='eventViewAddress'>{event.data.venue_location}</div>
                 <div className='eventViewDateWrapper'>
                     <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
                     <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>

@@ -60,7 +60,7 @@ const BusinessCreateForm = () => {
             delete business_data.business_location
 
             // check business type and confirm business address when required
-            if (business_data.business_type === 'both' || business_data.business_type === 'venue' && !business_data.address) {
+            if (business_data.business_type === 'both' || business_data.business_type === 'venue' && !business_data.place_id) {
                 // if business type is not brand business address is required
                 throw new Error('location_required')
             }
@@ -169,7 +169,7 @@ const BusinessCreateForm = () => {
             setValue('business_location', true); // Set business_location to true for non-'brand' type
         } else {
             setValue('business_location', false); // Reset business_location for 'brand' type
-            setValue('address', ''); // Reset address field when business_type changes to 'brand'
+            setValue('place_id', ''); // Reset place_id field when business_type changes to 'brand'
         }
     }, [watchBusinessType, setValue])
 
