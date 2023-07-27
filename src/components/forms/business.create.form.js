@@ -44,7 +44,6 @@ const BusinessCreateForm = () => {
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
-        console.log(business_data)
         try {
             const formData = new FormData()
 
@@ -174,8 +173,6 @@ const BusinessCreateForm = () => {
         }
     }, [watchBusinessType, setValue])
 
-    console.log('errors')
-    console.log(errors)
 
     return (
         <BusinessCreateFormStyles>
@@ -270,7 +267,12 @@ const BusinessCreateForm = () => {
 
                     {
                         (business_location) &&
-                            <AddressForm register={register} setValue={setValue} errors={errors} clearErrors={clearErrors} />
+                            <AddressForm
+                                register={register}
+                                setValue={setValue}
+                                errors={errors}
+                                clearErrors={clearErrors}
+                            />
                     }
 
                     <div>Business Contacts & Social Media:</div>
