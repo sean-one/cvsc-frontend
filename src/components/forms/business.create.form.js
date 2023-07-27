@@ -44,6 +44,7 @@ const BusinessCreateForm = () => {
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
+        console.log(business_data)
         try {
             const formData = new FormData()
 
@@ -127,7 +128,7 @@ const BusinessCreateForm = () => {
             }
             // business type was venue or both but did not include required address components
             else if (error.message === 'location_required') {
-                setError('address', {
+                setError('formatted_address', {
                     message: 'address required for business venues'
                 })
             }
@@ -173,6 +174,8 @@ const BusinessCreateForm = () => {
         }
     }, [watchBusinessType, setValue])
 
+    console.log('errors')
+    console.log(errors)
 
     return (
         <BusinessCreateFormStyles>

@@ -231,7 +231,6 @@ const BusinessEditForm = () => {
                                 clearErrors={clearErrors}
                                 errors={errors}
                                 defaultValue={business?.formatted_address}
-                                place_id={business?.place_id}
                             />
                     }
                     

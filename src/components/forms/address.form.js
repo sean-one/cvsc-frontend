@@ -1,42 +1,43 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import AutoComplete from 'react-google-autocomplete';
 
 
-const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=null, place_id=null}) => {
-    const inputValue = useRef(defaultValue)
+const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=null}) => {
+    const [ inputValue, setInputValue ] = useState(defaultValue)
 
+    useEffect(() => {
+        setValue('formatted_address', inputValue)
+    }, [setValue, inputValue])
+
+    const handleSelect = (place) => {
+        setValue('formatted_address', place.formatted_address);
+        setValue('place_id', place.place_id);
+        setInputValue(place.formatted_address);
+        clearErrors('formatted_address');
+    }
 
     return (
         <div className='standardForm'>
+            {
+                (defaultValue !== null) &&
+                    <div>
+                        <div>{`Current address: ${defaultValue}`}</div>
+                    </div>
+            }
             <div className='inputWrapper'>
-                <label htmlFor="place_id">{(defaultValue !== null) ? 'Current Address:' : 'Address Search:'}</label>
+                <label htmlFor="formatted_address">Address Search:</label>
                 <AutoComplete
                     apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                    {...register('place_id')}
-                    name='place_id'
-                    onBlur={(e) => {
-                        console.log('left the input')
-                        if(e.target.value === '') {
-                            setValue('place_id', place_id)
-                            console.log('empty string')
-                        }
-                        console.log(e.target.value)
-                    }}
+                    {...register('formatted_address')}
+                    name='formatted_address'
                     className='formInput'
-                    onClick={() => clearErrors('place_id')}
-                    ref={inputValue}
-                    onPlaceSelected={(place, inputRef) => {
-                        if(place && place.formatted_address) {
-                            setValue('place_id', place.place_id)
-                            setValue('formatted_address', place.formatted_address)
-                        }
-                    }}
-                    // placeholder={(defaultValue !== null) ? `${defaultValue}` : 'Enter a location'}
+                    onClick={() => clearErrors('formatted_address')}
+                    onPlaceSelected={handleSelect}
                     options={{
                         types: ['address'],
                     }}
                 />
-                {errors.place_id ? <div className='errormessage'>{errors.place_id?.message}</div> : null}
+                {errors.formatted_address ? <div className='errormessage'>{errors.formatted_address?.message}</div> : null}
             </div>
         </div>
     )
