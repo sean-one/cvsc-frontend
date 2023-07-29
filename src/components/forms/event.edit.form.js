@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { format } from 'date-fns';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { format, parseISO } from 'date-fns';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -13,93 +12,10 @@ import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
-import { updateEventSchema } from '../../helpers/validationSchemas';
 import { image_link } from '../../helpers/dataCleanUp';
-import { BusinessSelect, FormInput, ImageInput, TextAreaInput } from './formInput';
+import { AddImageIcon } from '../icons/siteIcons';
 
 const EditEventFormStyles = styled.div`
-    .editEventFormWrapper {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .editEventForm {
-        width: 100%;
-        max-width: var(--max-page-width);
-    }
-
-    .editEventFormRow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .dateTimeRow {
-        flex-direction: column;
-
-        @media(min-width: 500px) {
-            flex-direction: row;
-        }
-    }
-
-    .editEventFormImage {
-        width: 100%;
-        max-width: 400px;
-        margin: 1rem auto;
-        
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-
-        canvas {
-            width: 100%;
-            border: 1px solid var(--image-border-color);
-            display: block;
-            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
-        }
-
-        img {
-            width: 100%;
-            border: 1px solid var(--image-border-color);
-            display: block;
-            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
-        }
-    }
-
-    .eventnameSection {
-        flex-grow: 1;
-    }
-
-    .imageUploadSection {
-        flex-shrink: 0;
-    }
-
-    .dateSection {
-        width: 100%;
-        flex-grow: 1;
-    }
-
-    .timeSection {
-        width: 100%;
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        column-gap: 10px;
-    
-        @media(min-width: 500px) {
-            width: auto;
-            flex-direction: row;
-        }
-    }
-
-    .editEventFormButtonWrapper {
-        display: flex;
-        justify-content: space-between;
-        padding-top: 0.75rem;
-    }
 `;
 
 const EventEditForm = () => {
@@ -117,9 +33,8 @@ const EventEditForm = () => {
 
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
-    const { register, handleSubmit, setError, setValue, clearErrors, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, setError, clearErrors, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(updateEventSchema),
         defaultValues: {
             eventname: event?.eventname,
             eventdate: format(new Date(event?.eventdate), 'yyyy-MM-dd'),
@@ -154,7 +69,7 @@ const EventEditForm = () => {
 
             Object.keys(data).forEach(key => {
                 if (key === 'eventdate') {
-                    formData.append(key, format(data[key], 'y-M-d'))
+                    formData.append(key, format(parseISO(data[key]), 'y-M-d'))
                 } else if (key === 'eventstart' || key === 'eventend') {
                     formData.append(key, data[key].replace(':', ''))
                 } else {
@@ -251,107 +166,92 @@ const EventEditForm = () => {
 
     return (
         <EditEventFormStyles>
-            <div className='editEventFormWrapper'>
-                <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data' className='editEventForm'>
+            <div>
+                <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data' className='standardForm'>
 
-                    <div className='editEventFormRow'>
+                    {/* EVENT NAME AND MEDIA IMAGE */}
+                    <div className='formRowInputIcon'>
 
-                        <div className='eventnameSection'>
-                            <FormInput id='eventname'
-                                register={register}
-                                onfocus={clearErrors}
-                                error={errors.eventname}
-                            />
+                        {/* EVENT NAME */}
+                        <div className='inputWrapper'>
+                            <input {...register('eventname')} className='formInput' type='text' onClick={() => clearErrors('eventname')} />
                         </div>
 
-                        <div className='imageUploadSection' onClick={() => {
-                            setValue('eventmedia', '', { shouldDirty: true })
-                        }}>
-                            <ImageInput id='eventmedia'
-                                register={register}
-                                onfocus={clearErrors}
-                                error={errors.eventmedia}
-                                change={imagePreview}
-                            />
-                        </div>
+                        {/* EVENT MEDIA UPDATE */}
+                        <label htmlFor='eventmedia' className='formInput inputLabel' onClick={() => clearErrors('eventmedia')}>
+                            <AddImageIcon />
+                            <input {...register('eventmedia')} id='eventmedia' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                        </label>
 
                     </div>
 
-                    <div className='editEventFormImage'>
-                        {
-                            editImage
-                                ? <canvas
+                    {
+                        editImage
+                            ? <div className='formImage'>
+                                <canvas
                                     id={'avatarImagePreview'}
                                     ref={canvas}
                                 />
-                                : <img
+                            </div>
+                            : <div className='formImage'>
+                                <img
                                     src={image_link(event?.eventmedia)}
                                     alt={event?.eventname}
                                 />
-                        }
+                            </div>
+                    }
+
+                    {/* EVENT DATE */}
+                    <div className='inputWrapper'>
+                        <input {...register('eventdate')} className='formInput' type='date' onClick={() => clearErrors('eventdate')} />
+                        {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
                     </div>
 
-                    <div className='editEventFormRow dateTimeRow'>
-                        
-                        <div className='dateSection'>
-                            <FormInput id='eventdate'
-                                register={register}
-                                onfocus={clearErrors}
-                                type='date'
-                                error={errors.eventdate}
-                            />
-                        </div>
-
-                        <div className='timeSection'>
-                            
-                            <div className='eventStart'>
-                                <FormInput id='eventstart'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    type='time'
-                                    error={errors.eventstart}
-                                />
-                            </div>
-                            
-                            <div className='eventEnd'>
-                                <FormInput id='eventend'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    type='time'
-                                    error={errors.eventend}
-                                />
-                            </div>
-
-                        </div>
-
+                    {/* EVENT START TIME */}
+                    <div className='inputWrapper'>
+                        <input {...register('eventstart')} className='formInput' type='time' onClick={() => clearErrors('eventstart')} />
+                        {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
                     </div>
 
-                    <BusinessSelect id='venue_id'
-                        register={register}
-                        onfocus={() => clearErrors(['venue_id','role_rights'])}
-                        role_error={errors.role_rights}
-                        business_error={errors.venue_id}
-                        business_list={venue_list}
-                        selectFor='Location'
-                    />
+                    {/* EVENT END TIME */}
+                    <div className='inputWrapper'>
+                        <input {...register('eventend')} className='formInput' type='time' onClick={() => clearErrors('eventend')} />
+                        {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
+                    </div>
 
-                    <TextAreaInput id='details'
-                        register={register}
-                        onfocus={clearErrors}
-                        error={errors.details}
-                        placeholder='Event details...'
-                    />
+                    {/* VENUE ID / EVENT LOCATION */}
+                    <div className='inputWrapper'>
+                        <select {...register('venue_id')} className='formInput' type='text' onClick={() => clearErrors(['venue_id', 'role_rights'])}>
+                            {
+                                venue_list.map(venue => (
+                                    <option key={venue.id} value={venue.id}>{venue.business_name}</option>
+                                ))
+                            }
+                        </select>
+                        {errors.venue_id ? <div className='errormessage'>{errors.venue_id?.message}</div> : null}
+                        {errors.role_rights ? <div className='errormessage'>{errors.role_rights?.message}</div> : null}
+                    </div>
 
-                    <BusinessSelect id='brand_id'
-                        register={register}
-                        onfocus={() => clearErrors(['brand_id','role_rights'])}
-                        role_error={errors.role_rights}
-                        business_error={errors.brand_id}
-                        business_list={brand_list}
-                        selectFor='Brand'
-                    />
+                    {/* EVENT DETAILS */}
+                    <div className='inputWrapper'>
+                        <textarea {...register('details')} className='formInput' rows='8' onClick={() => clearErrors('details')} />
+                        {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
+                    </div>
+
+                    {/* EVENT BUSINESS BRANDING */}
+                    <div className='inputWrapper'>
+                        <select {...register('brand_id')} className='formInput' type='text' onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                            {
+                                brand_list.map(brand => (
+                                    <option key={brand.id} value={brand.id}>{brand.business_name}</option>
+                                ))
+                            }
+                        </select>
+                        {errors.brand_id ? <div className='errormessage'>{errors.brand_id?.message}</div> : null}
+                        {errors.role_rights ? <div className='errormessage'>{errors.role_rights?.message}</div> : null}
+                    </div>
                     
-                    <div className='editEventFormButtonWrapper'>
+                    <div className='formButtonWrapper'>
                         <button type='submit' disabled={!isDirty}>Update</button>
                         <button onClick={() => delete_event()}>Delete</button>
                         <button onClick={() => close_edit_event()} variant='secondary'>Close</button>
