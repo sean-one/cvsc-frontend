@@ -53,7 +53,6 @@ const BusinessEditForm = () => {
     const watchBusinessType = watch('business_type');
 
     const update_business = async (business_updates) => {
-        let business_address = null
         try {
             const formData = new FormData()
             
@@ -131,7 +130,7 @@ const BusinessEditForm = () => {
             setValue('business_location', false)
             setValue('place_id', business?.place_id)
         }
-    }, [watchBusinessType, setValue])
+    }, [watchBusinessType, setValue, business.place_id])
 
     
     return (

@@ -60,7 +60,7 @@ const BusinessCreateForm = () => {
             delete business_data.business_location
 
             // check business type and confirm business address when required
-            if (business_data.business_type === 'both' || business_data.business_type === 'venue' && !business_data.place_id) {
+            if ((business_data.business_type === 'both' || business_data.business_type === 'venue') && !business_data.place_id) {
                 // if business type is not brand business address is required
                 throw new Error('location_required')
             }
@@ -350,7 +350,7 @@ const BusinessCreateForm = () => {
                     
                     <div className='formButtonWrapper'>
                         <button type='submit'>Create</button>
-                        <button onClick={() => navigate(-1)} variant='secondary'>Close</button>
+                        <button onClick={() => navigate(-1)}>Close</button>
                     </div>
 
                 </form>

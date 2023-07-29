@@ -2,95 +2,18 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { createEventSchema } from '../../helpers/validationSchemas';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
-import { FormInput, BusinessSelect, TextAreaInput, ImageInput } from './formInput';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
+import { AddImageIcon } from '../icons/siteIcons';
 
 const CreateEventFormStyles = styled.div`
-    .createEventFormWrapper {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-    }
-
-    .createEventForm {
-        width: 100%;
-        max-width: var(--max-page-width);
-    }
-
-    .createEventFormImage {
-        width: 100%;
-        max-width: 400px;
-        margin: 1rem auto;
-        
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-
-        canvas {
-            width: 100%;
-            border: 1px solid var(--image-border-color);
-            display: block;
-            box-shadow: 5px 5px 5px var(--image-box-shadow-color);
-        }
-    }
-
-    .createEventFormRow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-
-    }
-
-    .dateTimeRow {
-        flex-direction: column;
-
-        @media(min-width: 500px) {
-            flex-direction: row;
-        }
-    }
-
-    .eventnameSection {
-        flex-grow: 1;
-    }
-
-    .imageUploadSection {
-        flex-shrink: 0;
-    }
-
-    .dateSection {
-        width: 100%;
-        flex-grow: 1;
-    }
-
-    .timeSection {
-        width: 100%;
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        column-gap: 10px;
-    
-        @media(min-width: 500px) {
-            width: auto;
-            flex-direction: row;
-        }
-    }
-
-    .createEventFormButton {
-        margin-top: 0.5rem;
-    }
 `;
 
 
@@ -107,7 +30,6 @@ const EventCreateForm = ({ business_id }) => {
 
     const { register, handleSubmit, setError, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(createEventSchema),
         defaultValues: {
             eventname: '',
             eventdate: '',
@@ -197,106 +119,103 @@ const EventCreateForm = ({ business_id }) => {
 
     return (
         <CreateEventFormStyles>
-            <div className='createEventFormWrapper'>
-                <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data' className='createEventForm'>
+            <div>
+                <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data' className='standardForm'>
                     
-                    <div className='createEventFormRow'>
+                    {/* EVENT NAME AND MEDIA IMAGE */}
+                    <div className='formRowInputIcon'>
                         
-                        <div className='eventnameSection'>
-                            <FormInput
-                                id='eventname'
-                                register={register}
-                                onfocus={clearErrors}
-                                placeholder='Event Name'
-                                error={errors.eventname}
-                            />
+                        {/* EVENT NAME */}
+                        <div className='inputWrapper'>
+                            <input {...register('eventname', {
+                                required: 'event name is required',
+                                minLength: {
+                                    value: 2,
+                                    message: 'event name must be at least 2 characters'
+                                },
+                                maxLength: {
+                                    value: 50,
+                                    message: 'event name too long'
+                                }
+                            })} className='formInput' type='text' onClick={() => clearErrors('eventname')} placeholder='Event name' />
                         </div>
 
-                        <div className='imageUploadSection'>
-                            <ImageInput id='eventmedia'
-                                register={register}
-                                onfocus={clearErrors}
-                                error={errors.eventmedia}
-                                change={imagePreview}
-                            />
-                        </div>
+                        {/* EVENT MEDIA UPLOAD */}
+                        <label htmlFor='eventmedia' className='formInput inputLabel' onClick={() => clearErrors('eventmedia')}>
+                            <AddImageIcon />
+                            <input {...register('eventmedia')} id='eventmedia' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                        </label>
 
                     </div>
-                    <div className='errormessage'>{errors.eventmedia?.message}</div>
+                    {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
 
-                    <div className='createEventFormImage'>
-                        {
-                            editImage &&
+                    {
+                        editImage &&
+                                <div className='formImage'>
                                     <canvas id={'eventImagePreview'} ref={canvas} />
-                        }
+                                </div>
+                    }
+
+                    {/* EVENT DATE */}
+                    <div className='inputWrapper'>
+                        <input {...register('eventdate', { required: 'event date is required' })} className='formInput' type='date' onClick={() => clearErrors('eventdate')} />
+                        {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
                     </div>
 
-                    <div className='createEventFormRow dateTimeRow'>
-                        
-                        <div className='dateSection'>
-                            <FormInput
-                                id='eventdate'
-                                register={register}
-                                onfocus={clearErrors}
-                                type='date'
-                                error={errors.eventdate}
-                            />
-                        </div>
-
-                        <div className='timeSection'>
-
-                            <div className='eventStart'>
-                                <FormInput
-                                    id='eventstart'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    type='time'
-                                    error={errors.eventstart}
-                                />
-                            </div>
-                            
-                            <div className='eventEnd'>
-                                <FormInput
-                                    id='eventend'
-                                    register={register}
-                                    onfocus={clearErrors}
-                                    type='time'
-                                    error={errors.eventend}
-                                />
-                            </div>
-
-                        </div>
+                    {/* EVENT START */}
+                    <div className='inputWrapper'>
+                        <input {...register('eventstart', { required: 'event start time is required' })} className='formInput' type='time' onClick={() => clearErrors('eventstart')} />
+                        {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
+                    </div>
                     
+                    {/* EVENT END */}
+                    <div className='inputWrapper'>
+                        <input {...register('eventend', { required: 'event end time is required' })} className='formInput' type='time' onClick={() => clearErrors('eventend')} />
+                        {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
                     </div>
                     <div className='errormessage'>{errors.time_format?.message}</div>
                     
-                    <BusinessSelect id='venue_id'
-                        register={register}
-                        onfocus={() => clearErrors(['venue_id', 'role_rights'])}
-                        role_error={errors.role_rights}
-                        business_error={errors.venue_id}
-                        business_list={venue_list}
-                        selectFor='Location'
-                    />
+                    {/* VENUE ID / EVENT LOCATION */}
+                    <div className='inputWrapper'>
+                        <select {...register('venue_id', {
+                            required: 'event location / venue is required'
+                        })} className='formInput' type='text' defaultValue='venueDefault' onClick={() => clearErrors(['venue_id', 'role_rights'])}>
+                            <option value='venueDefault' disabled>Venue / Location</option>
+                            {
+                                venue_list.map(venue => (
+                                    <option key={venue.id} value={venue.id}>{venue.business_name}</option>
+                                    ))
+                                }
+                        </select>
+                        {errors.venue_id ? <div className='errormessage'>{errors.venue_id?.message}</div> : null}
+                        {errors.role_rights ? <div className='errormessage'>{errors.role_rights?.message}</div> : null}
+                    </div>
 
-                    <TextAreaInput id='details'
-                        register={register}
-                        onfocus={() => clearErrors('details')}
-                        error={errors.details}
-                        placeholder='Event details...'
-                    />
+                    {/* EVENT DETAILS */}
+                    <div className='inputWrapper'>
+                        <textarea {...register('details', { required: 'event details are required' })} className='formInput' rows='8' onClick={() => clearErrors('details')} placeholder='Event details ...'/>
+                        {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
+                    </div>
 
-                    <BusinessSelect id='brand_id'
-                        register={register}
-                        onfocus={() => clearErrors(['brand_id', 'role_rights'])}
-                        role_error={errors.role_rights}
-                        business_error={errors.brand_id}
-                        business_list={brand_list}
-                        selectFor='Brand'
-                    />
+                    {/* EVENT BUSINESS BRANDING */}
+                    <div className='inputWrapper'>
+                        <select {...register('brand_id', {
+                            required: 'branding business is required'
+                        })} className='formInput' type='text' defaultValue='brandDefault' onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                            <option value='brandDefault' disabled>Brand</option>
+                            {
+                                brand_list.map(brand => (
+                                    <option key={brand.id} value={brand.id}>{brand.business_name}</option>
+                                    ))
+                                }
+                        </select>
+                        {errors.brand_id ? <div className='errormessage'>{errors.brand_id?.message}</div> : null}
+                        {errors.role_rights ? <div className='errormessage'>{errors.role_rights?.message}</div> : null}
+                    </div>
 
-                    <div className='createEventFormButton'>
-                        <button type='submit'>Submit</button>
+                    <div className='formButtonWrapper'>
+                        <button type='submit'>Create</button>
+                        <button onClick={() => navigate(-1)}>Close</button>
                     </div>
 
                 </form>
