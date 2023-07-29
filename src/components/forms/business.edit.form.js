@@ -49,14 +49,10 @@ const BusinessEditForm = () => {
 
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
 
-    console.log(isDirty)
-    console.log(dirtyFields)
     const business_location = watch('business_location');
     const watchBusinessType = watch('business_type');
 
     const update_business = async (business_updates) => {
-        console.log(business_updates)
-        return
         let business_address = null
         try {
             const formData = new FormData()
@@ -132,7 +128,6 @@ const BusinessEditForm = () => {
         if(watchBusinessType !== 'brand') {
             setValue('business_location', true)
         } else {
-            console.log('reseting place_id')
             setValue('business_location', false)
             setValue('place_id', business?.place_id)
         }

@@ -10,8 +10,8 @@ const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=nul
     }, [setValue, inputValue])
 
     const handleSelect = (place) => {
-        setValue('formatted_address', place.formatted_address);
-        setValue('place_id', place.place_id);
+        setValue('formatted_address', place.formatted_address, { shouldDirty: true });
+        setValue('place_id', place.place_id, { shouldDirty: true });
         setInputValue(place.formatted_address);
         clearErrors('formatted_address');
     }
