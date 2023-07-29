@@ -1,18 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
-import { roleRequestSchema } from '../../helpers/validationSchemas';
 import LoadingSpinner from '../loadingSpinner';
 import useNotification from '../../hooks/useNotification';
 import useAuth from '../../hooks/useAuth';
 import { useCreateRoleMutation } from '../../hooks/useRolesApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 
-const Styles = styled.div`
+const RoleRequestStyles = styled.div`
     .roleRequest {
         padding: 1.5rem 0.5rem;
         border-radius: 5px;
@@ -46,7 +42,6 @@ const RoleRequest = () => {
 
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(roleRequestSchema)
     });
     
     if(isLoading) { return <LoadingSpinner /> }
@@ -82,7 +77,7 @@ const RoleRequest = () => {
 
 
     return (
-        <Styles>
+        <RoleRequestStyles>
             {
                 (business_filtered.length > 0) &&
                     <div className='roleRequest'>
@@ -90,15 +85,8 @@ const RoleRequest = () => {
                             <div>Create Business Role Request</div>
                         </div>
 
-                        <form className='roleRequestForm'>
-                            <select
-                                {...register('business_id')}
-                                className={errors.business_id ? 'inputError' : ''}
-                                onFocus={() => clearErrors('business_id')}
-                                type='text'
-                                name='business_id'
-                                required
-                            >
+                        <form className='standardForm'>
+                            <select {...register('business_id')} className='formInput' type='text' onClick={() => clearErrors('business_id')}>
                                 {
                                     business_filtered.map(business => (
                                         <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
@@ -106,7 +94,7 @@ const RoleRequest = () => {
                                 }
                             </select>
 
-                            <button type='submit' onClick={handleSubmit(roleCreate)}><FontAwesomeIcon icon={faCheck} /></button>
+                            <button type='submit' onClick={handleSubmit(roleCreate)}>Submit Role Request</button>
                         </form>
 
                         <div className='errormessage'>
@@ -114,7 +102,7 @@ const RoleRequest = () => {
                         </div>
                     </div>
             }
-        </Styles>
+        </RoleRequestStyles>
     )
 }
 

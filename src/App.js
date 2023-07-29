@@ -13,7 +13,7 @@ import BusinessRoles from './components/roles/business.roles';
 
 import Profile from './components/profile/profile.jsx';
 import UserAccount from './components/profile/account/user.account';
-import RolesTab from './components/profile/roles';
+import RolesTab from './components/profile/roles/rolesTab';
 import ProfileEvents from './components/profile/profile.events';
 import ManagementList from './components/profile/management/management.list';
 
