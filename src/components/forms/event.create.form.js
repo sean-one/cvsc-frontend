@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -57,7 +57,7 @@ const EventCreateForm = ({ business_id }) => {
 
             Object.keys(data).forEach(key => {
                 if (key === 'eventdate') {
-                    formData.append(key, format(data[key], 'y-M-d'))
+                    formData.append(key, format(parseISO(data[key]), 'y-M-d'))
                 } else if (key === 'eventstart' || key === 'eventend') {
                     formData.append(key, data[key].replace(':', ''))
                 } else {
