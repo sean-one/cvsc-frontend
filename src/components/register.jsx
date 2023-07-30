@@ -212,8 +212,8 @@ const Register = () => {
                     {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
                     
                     <div className='formButtonWrapper'>
-                        <button className='formButton' type='submit'>submit</button>
-                        <button className='formButton' onClick={googleAuthButton} disabled={true} >google</button>
+                        <button type='submit'>submit</button>
+                        <button onClick={googleAuthButton} disabled={true} >google</button>
                     </div>
                 
                 </form>

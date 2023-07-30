@@ -73,7 +73,7 @@ const Styles = styled.div`
             /* background-color: red; */
         }
     }
-
+    
     .formImage {
         width: 100%;
         max-width: 350px;
@@ -108,38 +108,6 @@ const Styles = styled.div`
         }
     }
 
-    .formButton {
-        margin: 0 1rem;
-    }
-
-    .dateTimeWrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        @media(min-width: 440px) {
-            flex-direction: row;
-            justify-content: space-between;
-
-        }
-    }
-
-    .timeWrapper{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        gap: 10px;
-
-        @media(min-width: 440px) {
-            margin-bottom: 0;
-        }
-    }
-
-    .icon-button {
-        cursor: pointer;
-    }
-
-    // global form styling
     .standardForm {
         width: 95%;
         margin: 0.5rem auto;
