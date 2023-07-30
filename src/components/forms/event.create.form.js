@@ -43,7 +43,6 @@ const EventCreateForm = ({ business_id }) => {
     });
 
     const createNewEvent = async (data) => {
-        console.log(data)
         try {
             const formData = new FormData()
 

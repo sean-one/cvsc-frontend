@@ -1,0 +1,222 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
+import useNotification from '../../hooks/useNotification';
+import { useEventsQuery } from '../../hooks/useEventsApi';
+import { AddImageIcon } from '../icons/siteIcons';
+import { validatePassword, emailformat } from './form.validations';
+import { setImageForForm } from '../../helpers/setImageForForm';
+import AxiosInstance from '../../helpers/axios';
+
+const UserEditForm =({ imagePreview, canvas, setEditImage, setEditView }) => {
+    const { auth, setAuth, logout_user } = useAuth()
+    const { dispatch } = useNotification()
+    const { refetch } = useEventsQuery()
+    const { register, handleSubmit, clearErrors, setError, reset, formState: { errors } } = useForm({
+        mode: 'onBlur',
+        defaultValues: {
+            email: auth?.email,
+            avatar: null,
+            password: '',
+            confirmation: ''
+        }
+    })
+
+    let navigate = useNavigate()
+
+    const sendUpdate = async (data) => {
+        try {
+            const formData = new FormData()
+    
+            // remove avatar field, if image is attached it will be taken from canvas
+            delete['avatar']
+    
+            // check for password update
+            if(data.password === '' && data.confirmatino === '') {
+                delete['password']
+                delete['confirmation']
+            }
+    
+            // if passwords dont match throw error else delete confirmation
+            if(data.password !== data.confirmation) {
+                setError('credentials', { message: 'password and confirmation must match' })
+            } else {
+                delete['confirmation']
+            }
+    
+            if((Object.keys(data).length === 0) && (canvas.current === null)) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `error - no changes were found`
+                    }
+                })
+    
+                setEditImage(false)
+                reset()
+    
+                return
+            } else {
+                
+                Object.keys(data).forEach(key => {
+                    formData.append(key, data[key])
+                })
+            }
+    
+            if(canvas.current !== null) {
+                // get the image ready and set it to formData
+                let user_avatar = setImageForForm(canvas)
+                formData.set('avatar', user_avatar)
+    
+                // clear the canvas
+                canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
+                setEditImage(false)
+            }
+    
+            const userUpdateResponse = await AxiosInstance.post('/users/update', formData)
+    
+            if(userUpdateResponse.status === 201) {
+                setAuth({ user: userUpdateResponse.data.user, roles: userUpdateResponse.data.roles })
+    
+                setEditView(false)
+    
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'account has been updated'
+                    }
+                })
+    
+                reset()
+            }
+    
+            return
+            
+        } catch (error) {
+            
+            if(error?.response.status === 400) {
+                dispatch({
+                    type:"ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `error - no changes were made`
+                    }
+                })
+
+            } else {
+
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'user update server error'
+                    }
+                })
+            }
+        }
+    }
+
+    const cancelEdit = () => {
+        setEditView(false)
+        setEditImage(false)
+        reset()
+    }
+
+    const deleteUser = async () => {
+        try {
+            const deleteUserResponse = await AxiosInstance.delete('/users/delete')
+
+            if(deleteUserResponse.status === 204) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: 'user account has been delete'
+                    }
+                })
+            }
+
+            logout_user()
+            refetch()
+
+            navigate('/')
+
+        } catch (error) {
+            
+            if(error?.response?.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'credentials not found - please login'
+                    }
+                })
+
+                logout_user()
+                refetch()
+
+                navigate('/login')
+            } else {
+                console.log(error)
+            }
+        }
+    }
+
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data' className='standardForm'>
+
+                {/* EVENT AND PROFILE IMAGE UPDATE */}
+                <div className='formRowInputIcon'>
+
+                    {/* EMAIL */}
+                    <div className='inputWrapper'>
+                        <input {...register('email', {
+                            pattern: {
+                                value: emailformat,
+                                message: 'invalid email format'
+                            }
+                        })} className='formInput' type='text' onClick={() => clearErrors('email')} placeholder='Email' />
+                    </div>
+
+                    {/* AVATAR / PROFILE IMAGE UPDATE */}
+                    <label htmlFor='avatar' className='formInput inputLabel'>
+                        <AddImageIcon />
+                        <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                    </label>
+                </div>
+                {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
+
+                {/* PASSWORD */}
+                <div className='inputWrapper'>
+                    <input {...register('password', {
+                        validate: validatePassword
+                    })} className='formInput' type='password' onClick={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
+                    {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
+                </div>
+
+                {/* CONFIRM PASSWORD */}
+                <div className='inputWrapper'>
+                    <input {...register('confirmation', {
+                        validate: validatePassword
+                    })} className='formInput' type='password' onClick={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
+                    {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
+                </div>
+                {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
+            
+                <div className='formButtonWrapper'>
+                    <button type='submit'>Create</button>
+                    <button onClick={cancelEdit}>Close</button>
+                    <button onClick={deleteUser}>Delete</button>
+                </div>
+
+            </form>
+        </div>
+    )
+}
+
+export default UserEditForm;

@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
-import useNotification from '../../../hooks/useNotification'
-import { useEventsQuery } from '../../../hooks/useEventsApi';
 import default_profile from '../../../assets/default_user.png'
 import useImagePreview from '../../../hooks/useImagePreview';
+import UserEditForm from '../../forms/user.edit.form';
 import { role_types } from '../../../helpers/dataCleanUp';
-import AxiosInstance from '../../../helpers/axios';
-import { setImageForForm } from '../../../helpers/setImageForForm';
-import { validatePassword, emailformat } from '../../forms/form.validations';
-import { AddImageIcon } from '../../icons/siteIcons';
 
 const UserAccountStyles = styled.div`
 
@@ -101,165 +94,14 @@ const UserAccountStyles = styled.div`
 `
 
 const UserAccount = () => {
-    const { dispatch } = useNotification()
     const [ editView, setEditView ] = useState(false)
-    const { refetch } = useEventsQuery()
-    const { auth, logout_user, setAuth } = useAuth()
+    const { auth } = useAuth()
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
-
-    let navigate = useNavigate()
-
-    const { register, handleSubmit, clearErrors, setError, reset, formState: { errors } } = useForm({
-        mode: 'onBlur',
-        defaultValues: {
-            email: auth.user?.email,
-            avatar: '',
-        }
-    })
-
-    const update_user = async (data) => {
-        try {
-            const formData = new FormData()
-            
-            // remove avatar field, if image is attached will be taken from canvas
-            delete data['avatar']
-
-            // confirm changes made to email
-            if(auth.user?.email === data.email) { delete data['email'] }
-
-            // confirm password and confirmation match - EMPTY STRING WILL MATCH
-            if(data.password !== data.confirmation) {
-                setError('credentials', { message: 'password and confirmation must match' })
-            } else { delete data['confirmation'] }
-            
-            // delete password if it is only an empty string
-            if(data.password === '') { delete data['password'] }
-            
-            if((Object.keys(data).length === 0) && (canvas.current === null)) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `error - no changes were found`
-                    }
-                })
-
-                setEditImage(false)
-                reset()
-
-                return
-            } else {
-
-                Object.keys(data).forEach(key => {
-                    formData.append(key, data[key])
-                })
-            }
-            
-            if(canvas.current !== null) {
-                // get the image ready and set it to formData
-                let user_avatar = setImageForForm(canvas)
-                formData.set('avatar', user_avatar)
-
-                // clear the canvas
-                canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
-                setEditImage(false)
-            }
-
-            const updated_user_response = await AxiosInstance.post('/users/update', formData)
-
-            if(updated_user_response.status === 201) {
-                
-                setAuth({ user: updated_user_response.data.user, roles: updated_user_response.data.roles })
-                
-                setEditView(false)
-                // setImagePreview(updated_user_response.data.user?.avatar)
-
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: 'account has been updated'
-                    }
-                })
-                
-                reset()
-            }
-
-            return
-
-        } catch (error) {
-
-            if(error?.response.status === 400) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `error - no changes were made`
-                    }
-                })
-            } else {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: 'user update server error'
-                    }
-                })
-            }
-
-        }
-    }
-
-    const close_edit_view = () => {
-        // setImagePreview(auth?.user?.avatar)
-        setEditView(false)
-        setEditImage(false)
-        reset()
-    }
-
-    const delete_account = async () => {
-        try {
-            const deleted_user_response = await AxiosInstance.delete('/users/delete')
-            
-            if(deleted_user_response.status === 204) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: 'user account has been deleted'
-                    }
-                })
-    
-                logout_user()
-                refetch()
-    
-                navigate('/')
-            }
-        } catch (error) {
-            if(error?.response?.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: 'credentials not found - please login'
-                    }
-                })
-                
-                logout_user()
-                refetch()
-                
-                navigate('/login')
-            } else {
-                console.log(error)
-            }
-        }
-        
-    }
-
 
     return (
         <UserAccountStyles>
-            <div className='userAccountPage'>
+            {/* <div className='userAccountPage'> */}
+            <div>
                 
                 <div className='profileImage'>
                     {
@@ -288,72 +130,14 @@ const UserAccount = () => {
 
                     <div className='userDetails'>
                         {
-                            (!editView)
-                                ? <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
+                            (!editView) &&
+                                <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
                                     {auth?.user.email}
                                 </div>
-                                : <form encType='multipart/form-data' className='standardForm'>
-                                    
-                                    <div className='formRowInputIcon'>
-                                        {/* EMAIL */}
-                                        <div className='inputWrapper'>
-                                            <input {...register('email', {
-                                                pattern: {
-                                                    value: emailformat,
-                                                    message: 'invalid email format'
-                                                }
-                                            })} className='formInput' type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
-                                            {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
-                                        </div>
-
-                                        {/* AVATAR UPLOAD */}
-                                        <label htmlFor='avatar' className='formInput inputLabel'>
-                                            <AddImageIcon />
-                                            <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
-                                        </label>
-                                    </div>
-                                    
-                                    {/* PASSWORD */}
-                                    <div className='inputWrapper'>
-                                        <input {...register('password', {
-                                            validate: validatePassword
-                                        })} className='formInput' type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
-                                        {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
-                                    </div>
-
-                                    {/* CONFIRMATION */}
-                                    <div className='inputWrapper'>
-                                        <input {...register('confirmation', {
-                                            validate: validatePassword
-                                        })} className='formInput' type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
-                                        {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
-                                    </div>
-
-                                    {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
-
-                                </form>
                         }
                     </div>
 
                     <div className='accountButtons'>
-                        {
-                            (editView) &&
-                                <button onClick={() => delete_account()}>
-                                    <FontAwesomeIcon icon={faTrashAlt}/>
-                                </button>
-                        }
-                        {
-                            (editView) &&
-                                <button onClick={() => close_edit_view()}>
-                                    <FontAwesomeIcon icon={faTimes}/>
-                                </button>
-                        }
-                        {
-                            (editView) &&
-                                <button onClick={handleSubmit(update_user)}>
-                                    <FontAwesomeIcon icon={faSave}/>
-                                </button>
-                        }
                         {
                             (!editView) &&
                                 <button onClick={() => setEditView(true)}>
@@ -364,6 +148,14 @@ const UserAccount = () => {
                     
                 </div>
             </div>
+            {
+                editView &&
+                    <UserEditForm
+                        imagePreview={imagePreview}
+                        setEditImage={setEditImage}
+                        setEditView={setEditView}
+                    />
+            }
         </UserAccountStyles>
     )
 }
