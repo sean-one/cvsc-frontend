@@ -23,7 +23,7 @@ const useImagePreview = () => {
     useEffect(() => {
         let mounted = true
         if (mounted) {
-            if (imageToUpload && canvas) {
+            if (imageToUpload && canvas.current) {
                 const ctx = canvas.current.getContext('2d')
 
                 const MAX_WIDTH = 350

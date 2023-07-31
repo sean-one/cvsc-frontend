@@ -30,7 +30,6 @@ const BusinessEditForm = () => {
 
     const { register, handleSubmit, clearErrors, watch, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
-        // resolver: yupResolver(businessFormSchema),
         defaultValues: {
             business_email: business?.business_email,
             business_description: business?.business_description,

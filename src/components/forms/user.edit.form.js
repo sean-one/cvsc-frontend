@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
+import useImagePreview from '../../hooks/useImagePreview';
 import useNotification from '../../hooks/useNotification';
 import { useEventsQuery } from '../../hooks/useEventsApi';
 import { AddImageIcon } from '../icons/siteIcons';
@@ -9,14 +10,15 @@ import { validatePassword, emailformat } from './form.validations';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import AxiosInstance from '../../helpers/axios';
 
-const UserEditForm =({ imagePreview, canvas, setEditImage, setEditView }) => {
+const UserEditForm =({ setEditView }) => {
     const { auth, setAuth, logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { refetch } = useEventsQuery()
-    const { register, handleSubmit, clearErrors, setError, reset, formState: { errors } } = useForm({
+    const { editImage, canvas, imagePreview, setEditImage } = useImagePreview()
+    const { register, handleSubmit, clearErrors, setError, reset, formState: { dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
-            email: auth?.email,
+            email: auth?.user?.email,
             avatar: null,
             password: '',
             confirmation: ''
@@ -26,25 +28,29 @@ const UserEditForm =({ imagePreview, canvas, setEditImage, setEditView }) => {
     let navigate = useNavigate()
 
     const sendUpdate = async (data) => {
+        console.log(data)
         try {
             const formData = new FormData()
     
             // remove avatar field, if image is attached it will be taken from canvas
-            delete['avatar']
+            delete data['avatar']
     
-            // check for password update
-            if(data.password === '' && data.confirmatino === '') {
-                delete['password']
-                delete['confirmation']
+            for (const [key] of Object.entries(data)) {
+                if(!Object.keys(dirtyFields).includes(key)) {
+                    delete data[key]
+                }
             }
     
             // if passwords dont match throw error else delete confirmation
             if(data.password !== data.confirmation) {
                 setError('credentials', { message: 'password and confirmation must match' })
+
+                return
             } else {
-                delete['confirmation']
+                delete data['confirmation']
             }
-    
+            
+            console.log(data)
             if((Object.keys(data).length === 0) && (canvas.current === null)) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -58,22 +64,21 @@ const UserEditForm =({ imagePreview, canvas, setEditImage, setEditView }) => {
                 reset()
     
                 return
-            } else {
-                
-                Object.keys(data).forEach(key => {
-                    formData.append(key, data[key])
-                })
             }
-    
+
             if(canvas.current !== null) {
                 // get the image ready and set it to formData
                 let user_avatar = setImageForForm(canvas)
                 formData.set('avatar', user_avatar)
     
                 // clear the canvas
-                canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
-                setEditImage(false)
+                // canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
+                // setEditImage(false)
             }
+
+            Object.keys(data).forEach(key => {
+                formData.append(key, data[key])
+            })
     
             const userUpdateResponse = await AxiosInstance.post('/users/update', formData)
     
@@ -96,14 +101,24 @@ const UserEditForm =({ imagePreview, canvas, setEditImage, setEditView }) => {
             return
             
         } catch (error) {
-            
-            if(error?.response.status === 400) {
+            console.log(Object.keys(error))
+            console.log(error.response)
+            if(error?.response?.status === 401) {
                 dispatch({
                     type:"ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: `error - no changes were made`
+                        message: `${error.response.data.error.message}`
                     }
+                })
+
+                logout_user()
+                navigate('/login')
+
+            } else if(error?.response?.status === 400) {
+                
+                setError(`${error.response.data.error.type}`, {
+                    message: `${error.response.data.error.message}`
                 })
 
             } else {
@@ -168,6 +183,12 @@ const UserEditForm =({ imagePreview, canvas, setEditImage, setEditView }) => {
 
     return (
         <div>
+            {
+                editImage &&
+                    <div className='formImage formCirclePreview'>
+                        <canvas id={'avatarImagePreview'} ref={canvas} />
+                    </div>
+            }
             <form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data' className='standardForm'>
 
                 {/* EVENT AND PROFILE IMAGE UPDATE */}
@@ -184,7 +205,7 @@ const UserEditForm =({ imagePreview, canvas, setEditImage, setEditView }) => {
                     </div>
 
                     {/* AVATAR / PROFILE IMAGE UPDATE */}
-                    <label htmlFor='avatar' className='formInput inputLabel'>
+                    <label htmlFor='avatar' className='formInput inputLabel' onClick={() => clearErrors('avatar')}>
                         <AddImageIcon />
                         <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                     </label>

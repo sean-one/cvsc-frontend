@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import default_profile from '../../../assets/default_user.png'
-import useImagePreview from '../../../hooks/useImagePreview';
 import UserEditForm from '../../forms/user.edit.form';
 import { role_types } from '../../../helpers/dataCleanUp';
 
@@ -96,21 +95,15 @@ const UserAccountStyles = styled.div`
 const UserAccount = () => {
     const [ editView, setEditView ] = useState(false)
     const { auth } = useAuth()
-    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
 
     return (
         <UserAccountStyles>
-            {/* <div className='userAccountPage'> */}
-            <div>
-                
-                <div className='profileImage'>
-                    {
-                        editImage
-                            ? <canvas
-                                id={'avatarImagePreview'}
-                                ref={canvas}
-                            />
-                            : <img
+            {
+                !editView
+                    ? <div className='userAccountPage'>
+                        
+                        <div className='profileImage'>
+                            <img
                                 src={
                                     (auth?.user?.avatar === null)
                                         ? default_profile
@@ -118,43 +111,36 @@ const UserAccount = () => {
                                 }
                                 alt={`user avatar`}
                             />
-                    }
-                </div>
-                
-                <div className='accountDetails'>
+                        </div>
+                        
+                        <div className='accountDetails'>
 
-                    <div className='profileHeader'>
-                        <div className='usernameHeader'>{auth?.user.username}</div>
-                        <div className='accountTypeHeader'>{role_types[auth.user.account_type].type}</div>
-                    </div>
+                            <div className='profileHeader'>
+                                <div className='usernameHeader'>{auth?.user.username}</div>
+                                <div className='accountTypeHeader'>{role_types[auth.user.account_type].type}</div>
+                            </div>
 
-                    <div className='userDetails'>
-                        {
-                            (!editView) &&
-                                <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
-                                    {auth?.user.email}
-                                </div>
-                        }
-                    </div>
+                            <div className='userDetails'>
+                                {
+                                    (!editView) &&
+                                        <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
+                                            {auth?.user.email}
+                                        </div>
+                                }
+                            </div>
 
-                    <div className='accountButtons'>
-                        {
-                            (!editView) &&
-                                <button onClick={() => setEditView(true)}>
-                                    <FontAwesomeIcon icon={faPencilAlt}/>
-                                </button>
-                        }
+                            <div className='accountButtons'>
+                                {
+                                    (!editView) &&
+                                        <button onClick={() => setEditView(true)}>
+                                            <FontAwesomeIcon icon={faPencilAlt}/>
+                                        </button>
+                                }
+                            </div>
+                            
+                        </div>
                     </div>
-                    
-                </div>
-            </div>
-            {
-                editView &&
-                    <UserEditForm
-                        imagePreview={imagePreview}
-                        setEditImage={setEditImage}
-                        setEditView={setEditView}
-                    />
+                    : <UserEditForm setEditView={setEditView} />
             }
         </UserAccountStyles>
     )
