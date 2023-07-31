@@ -28,13 +28,13 @@ const UserEditForm =({ setEditView }) => {
     let navigate = useNavigate()
 
     const sendUpdate = async (data) => {
-        console.log(data)
         try {
             const formData = new FormData()
     
             // remove avatar field, if image is attached it will be taken from canvas
             delete data['avatar']
     
+            // delete unchanged data
             for (const [key] of Object.entries(data)) {
                 if(!Object.keys(dirtyFields).includes(key)) {
                     delete data[key]
@@ -50,7 +50,7 @@ const UserEditForm =({ setEditView }) => {
                 delete data['confirmation']
             }
             
-            console.log(data)
+            // no changes registered - send notificate and do not hit api
             if((Object.keys(data).length === 0) && (canvas.current === null)) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -66,6 +66,7 @@ const UserEditForm =({ setEditView }) => {
                 return
             }
 
+            // check for the canvas element and set image to formData
             if(canvas.current !== null) {
                 // get the image ready and set it to formData
                 let user_avatar = setImageForForm(canvas)
@@ -76,6 +77,7 @@ const UserEditForm =({ setEditView }) => {
                 // setEditImage(false)
             }
 
+            // append any remaining updated fields to formData
             Object.keys(data).forEach(key => {
                 formData.append(key, data[key])
             })
@@ -101,8 +103,6 @@ const UserEditForm =({ setEditView }) => {
             return
             
         } catch (error) {
-            console.log(Object.keys(error))
-            console.log(error.response)
             if(error?.response?.status === 401) {
                 dispatch({
                     type:"ADD_NOTIFICATION",
@@ -215,7 +215,7 @@ const UserEditForm =({ setEditView }) => {
                 {/* PASSWORD */}
                 <div className='inputWrapper'>
                     <input {...register('password', {
-                        validate: validatePassword
+                        validate: value => validatePassword(value, false)
                     })} className='formInput' type='password' onClick={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
                     {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                 </div>
@@ -223,14 +223,14 @@ const UserEditForm =({ setEditView }) => {
                 {/* CONFIRM PASSWORD */}
                 <div className='inputWrapper'>
                     <input {...register('confirmation', {
-                        validate: validatePassword
+                        validate: value => validatePassword(value, false)
                     })} className='formInput' type='password' onClick={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
                     {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
                 </div>
                 {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
             
                 <div className='formButtonWrapper'>
-                    <button type='submit'>Create</button>
+                    <button type='submit'>Update</button>
                     <button onClick={cancelEdit}>Close</button>
                     <button onClick={deleteUser}>Delete</button>
                 </div>

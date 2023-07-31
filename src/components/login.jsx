@@ -121,8 +121,7 @@ const Login = () => {
                     {/* PASSWORD */}
                     <div className='inputWrapper'>
                         <input {...register('password', {
-                            required: 'password is required',
-                            validate: validatePassword
+                            validate: value => validatePassword(value, true)
                         })} className='formInput' type='password' onFocus={() => clearErrors('password')} placeholder='Password' />
                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                     </div>

@@ -44,20 +44,23 @@ export const validateUsername = (value) => {
     return true;
 }
 
-export const validatePassword = (value) => {
-    // const passwordneeds = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+-=,./?;:'"[\]{}|\\]).{8,}$/;
+export const validatePassword = (value, isRequired) => {
+    if(!value) {
+        return isRequired ? 'password is required' : true;
+    }
+    const passwordneeds = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+-=,./?;:'"[\]{}|\\]).{8,}$/;
     
-    // if(value.length < 8) {
-    //     return 'password must be at least 8 characters'
-    // }
+    if(value.length < 8) {
+        return 'password is too short - must be at least 8 characters'
+    }
 
-    // if(value.length >= 49) {
-    //     return 'password is too long'
-    // }
+    if(value.length >= 49) {
+        return 'password is too long - must be under 50 characters'
+    }
 
-    // if(!passwordneeds.test(value)) {
-    //     return 'password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-    // }
+    if(!passwordneeds.test(value)) {
+        return 'password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    }
 
     return true;
 }
