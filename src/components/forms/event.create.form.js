@@ -44,6 +44,8 @@ const EventCreateForm = ({ business_id }) => {
 
     const createNewEvent = async (data) => {
         try {
+            delete data['eventmedia']
+            
             const formData = new FormData()
 
             if(canvas.current === null) {
