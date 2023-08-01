@@ -12,6 +12,7 @@ import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { AddImageIcon } from '../icons/siteIcons';
+import { validateEventName } from './form.validations';
 
 const CreateEventFormStyles = styled.div`
 `;
@@ -45,7 +46,7 @@ const EventCreateForm = ({ business_id }) => {
     const createNewEvent = async (data) => {
         try {
             delete data['eventmedia']
-            
+
             const formData = new FormData()
 
             if(canvas.current === null) {
@@ -129,15 +130,7 @@ const EventCreateForm = ({ business_id }) => {
                         {/* EVENT NAME */}
                         <div className='inputWrapper'>
                             <input {...register('eventname', {
-                                required: 'event name is required',
-                                minLength: {
-                                    value: 2,
-                                    message: 'event name must be at least 2 characters'
-                                },
-                                maxLength: {
-                                    value: 50,
-                                    message: 'event name too long'
-                                }
+                                validate: value => validateEventName(value, true) 
                             })} className='formInput' type='text' onClick={() => clearErrors('eventname')} placeholder='Event name' />
                         </div>
 

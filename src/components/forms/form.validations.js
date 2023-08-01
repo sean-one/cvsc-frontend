@@ -64,3 +64,19 @@ export const validatePassword = (value, isRequired) => {
 
     return true;
 }
+
+export const validateEventName = (value, isRequired) => {
+    if(!value) {
+        return isRequired ? 'event name is required' : true
+    }
+
+    if(value.length < 2) {
+        return 'event name is too short'
+    }
+
+    if(value.length >= 49) {
+        return 'event name is too long'
+    }
+
+    return true
+}

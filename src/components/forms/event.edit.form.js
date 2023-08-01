@@ -14,6 +14,7 @@ import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon } from '../icons/siteIcons';
+import { validateEventName } from './form.validations';
 
 const EditEventFormStyles = styled.div`
 `;
@@ -92,8 +93,7 @@ const EventEditForm = () => {
             }
 
         } catch (error) {
-            console.log('inside the send update catch')
-            console.log(error)
+
             if (error.response.status === 401) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -174,7 +174,9 @@ const EventEditForm = () => {
 
                         {/* EVENT NAME */}
                         <div className='inputWrapper'>
-                            <input {...register('eventname')} className='formInput' type='text' onClick={() => clearErrors('eventname')} />
+                            <input {...register('eventname', {
+                                validate: value => validateEventName(value, false)
+                            })} className='formInput' type='text' onClick={() => clearErrors('eventname')} />
                         </div>
 
                         {/* EVENT MEDIA UPDATE */}
@@ -252,7 +254,7 @@ const EventEditForm = () => {
                     </div>
                     
                     <div className='formButtonWrapper'>
-                        <button type='submit' disabled={!isDirty}>Update</button>
+                        <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
                         <button onClick={() => delete_event()}>Delete</button>
                         <button onClick={() => close_edit_event()} variant='secondary'>Close</button>
                     </div>
