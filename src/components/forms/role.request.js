@@ -7,6 +7,7 @@ import useNotification from '../../hooks/useNotification';
 import useAuth from '../../hooks/useAuth';
 import { useCreateRoleMutation } from '../../hooks/useRolesApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
+import { uuidPattern } from './form.validations';
 
 const RoleRequestStyles = styled.div`
     .roleRequest {
@@ -19,18 +20,7 @@ const RoleRequestStyles = styled.div`
         font-weight: bold;
         letter-spacing: 0.1rem;
     }
-
-    .roleRequestForm {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        select {
-            margin-right: 0.5rem;
-        }
-    }
 `;
-
 
 const RoleRequest = () => {
     const { auth, setAuth } = useAuth()
@@ -85,21 +75,22 @@ const RoleRequest = () => {
                             <div>Create Business Role Request</div>
                         </div>
 
-                        <form className='standardForm'>
-                            <select {...register('business_id')} className='formInput' type='text' onClick={() => clearErrors('business_id')}>
+                        <form onSubmit={handleSubmit(roleCreate)} className='standardForm'>
+                            <select {...register('business_id', {
+                                required: 'valid business is required',
+                                pattern: uuidPattern
+                            })} className='formInput' type='text' onClick={() => clearErrors('business_id')}>
                                 {
                                     business_filtered.map(business => (
-                                        <option key={business.id} value={business.id}>{business.business_name.toUpperCase()}</option>
+                                        <option key={business.id} value={business.id}>
+                                            {business.business_name.toUpperCase()}
+                                        </option>
                                     ))
                                 }
                             </select>
-
-                            <button type='submit' onClick={handleSubmit(roleCreate)}>Submit Role Request</button>
+                            {errors.business_id ? <div className='errormessage'>{errors.business_id?.message}</div> : null}
+                            <button type='submit'>Submit Role Request</button>
                         </form>
-
-                        <div className='errormessage'>
-                            {errors.business_id?.message}
-                        </div>
                     </div>
             }
         </RoleRequestStyles>

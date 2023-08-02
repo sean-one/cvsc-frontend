@@ -18,13 +18,7 @@ export const phoneFormat = /^(?:\(\d{3}\)|\d{3})[-.]?\d{3}[-.]?\d{4}$/
 // optional @ symbol at the front
 export const twitterFormat = /^@?[a-zA-Z0-9_]{1,15}$/
 
-
-export const streetAddressFormat = /^[a-zA-Z0-9\s\-.,#&]*$/;
-export const cityFormat = /^[a-zA-Z\s.'-]+(?:,\s*[a-zA-Z\s.'-]+)*$/;
-export const stateList = /^(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)$/i
-// validate a 5-digit ZIP code format commonly used in the United States
-// optional include a hyphen and four additional digits
-export const zipFormat = /^\d{5}(?:-\d{4})?$/;
+export const uuidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
 export const businessTypeList = /^(?:BRAND|VENUE|BOTH)$/i;
 
