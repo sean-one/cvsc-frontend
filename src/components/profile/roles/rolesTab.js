@@ -9,10 +9,6 @@ import PendingRoleRequest from './pending.role.request';
 import LoadingSpinner from '../../loadingSpinner';
 
 const RolesTabStyles = styled.div`
-    .roleWrapper {
-        display: flex;
-        flex-direction: column;
-    }
 `;
 
 const RolesTab = () => {
@@ -26,7 +22,7 @@ const RolesTab = () => {
 
     return (
         <RolesTabStyles>
-            <div className='roleWrapper'>
+            <div>
                 <RoleRequest />
                 
                 {/* current user roles */}

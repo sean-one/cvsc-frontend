@@ -1,11 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import CreateEventIcon from '../../events/create.event.icon';
-import RemoveUserRole from '../../roles/buttons/remove.user.role';
+import Role from './role';
 
-const Styles = styled.div`
+const UserRolesStyles = styled.div`
     .currentRoles {
         display: flex;
         flex-direction: column;
@@ -20,29 +18,15 @@ const Styles = styled.div`
         letter-spacing: 0.1rem;
         border-bottom: 2px solid black;
     }
-
-    .role {
-        display: flex;
-        justify-content: space-between;
-        align-content: flex-end;
-        padding: 0.25rem 0.5rem;
-        border-radius: 5px;
-        border-bottom: 1px solid black;
-    }
-
-    .inactiveRole {
-        color: gray;
-    }
 `;
 
 const UserRoles = ({ roles }) => {
 
-    let navigate = useNavigate()
-    
     if(roles) { roles.sort((a,b) => b.active_role - a.active_role) }
     
+
     return (
-        <Styles>
+        <UserRolesStyles>
             <div className='currentRoles'>
 
                 <div className='currentRolesHeader'>
@@ -52,23 +36,12 @@ const UserRoles = ({ roles }) => {
                 <div>
                     {
                         roles.map(role =>
-                            <div key={role.id} className={`role ${(!role.active_role) && 'inactiveRole'}`}>
-                                {
-                                    (role.active_role) &&
-                                        <CreateEventIcon roletype={role.role_type} business_id={role.business_id} />
-                                }
-                                <div onClick={() => navigate(`/business/${role.business_id}`)} className='text-start flex-fill'>
-                                    {role.business_name}
-                                </div>
-                                <div className='mx-1'>
-                                    <RemoveUserRole role_id={role.id} role_type={role.role_type} />
-                                </div>
-                            </div>
+                            <Role key={role.id} role={role} />
                         )
                     }
                 </div>
             </div>
-        </Styles>
+        </UserRolesStyles>
     )
 }
 
