@@ -72,7 +72,7 @@ const PendingRoleRequest = ({ user_id }) => {
         }
     }
 
-
+    console.log(pending_roles)
     return (
         <Styles>
             <div className='pendingRolesWrapper'>

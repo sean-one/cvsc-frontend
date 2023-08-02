@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useAuth from '../../../hooks/useAuth';
-import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
-import useNotification from '../../../hooks/useNotification';
+import useAuth from '../../hooks/useAuth';
+import { useRemoveUserRoleMutation } from '../../hooks/useRolesApi';
+import useNotification from '../../hooks/useNotification';
 
 
 const RoleStyles = styled.div`
