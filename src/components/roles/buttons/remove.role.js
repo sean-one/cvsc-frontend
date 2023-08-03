@@ -1,18 +1,11 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
-// import { Button } from 'react-bootstrap';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
 
-const Styles = styled.div`
-    .roleRemove {
-        color: #b80c09;
-    }
+const RemoveRoleStyles = styled.div`
 `;
 
 const RemoveRole = ({ role_id }) => {
@@ -20,13 +13,11 @@ const RemoveRole = ({ role_id }) => {
     const { dispatch } = useNotification()
     const { mutateAsync: removeRole } = useRemoveRoleMutation()
 
-    // let navigate = useNavigate()
-
     const roleRemove = async () => {
         try {
             const removed_role = await removeRole(role_id)
     
-            if (removed_role.status === 204) {
+            if (removed_role.status === 200) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -65,9 +56,9 @@ const RemoveRole = ({ role_id }) => {
 
 
     return (
-        <Styles>
-            <FontAwesomeIcon className='roleRemove' icon={faTimes} onClick={(e) => roleRemove(e)} />
-        </Styles>
+        <RemoveRoleStyles>
+            <button onClick={(e) => roleRemove(e)}>Remove</button>
+        </RemoveRoleStyles>
     )
 }
 

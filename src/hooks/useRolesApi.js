@@ -5,11 +5,11 @@ import AxiosInstance from "../helpers/axios";
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/business/${business_id}`) }
 export const useBusinessRolesQuery = (business_id) => useQuery(['roles', 'business', business_id], () => getBusinessRoles(business_id))
 
-// management.roles - returns pending roles for all businesses with management rights
+//! management.roles - returns pending roles for all businesses with management rights - GET MANAGEMENT ROLE REQUEST
 const getBusinessPendingRoles = async (user_id) => { return await AxiosInstance.get(`/roles/management/${user_id}`) }
 export const usePendingBusinessRolesQuery = (user_id) => useQuery(['roles', user_id], () => getBusinessPendingRoles(user_id))
 
-// role.request - creates new role request
+//! role.request - CREATES NEW ROLE REQUEST
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/request/${business_id}`) }
 export const useCreateRoleMutation = () => {
     const queryClient = useQueryClient()
@@ -80,7 +80,7 @@ export const useDowngradeRoleMutation = () => {
     })
 }
 
-// remove.role 
+//! remove.role - REMOVE ROLE REQUEST (MANAGEMENT) 
 const removeRole = async (role_id) => { return await AxiosInstance.delete(`/roles/remove/${role_id}`) }
 export const useRemoveRoleMutation = () => {
     const queryClient = useQueryClient()
@@ -106,7 +106,7 @@ export const useUserRolesQuery = (user_id) => useQuery(['roles', 'user', user_id
 const getUserBusinessRole = async(business_id) => { return await AxiosInstance.get(`/roles/user_role/${business_id}`) }
 export const useUserBusinessRoleQuery = (business_id) => useQuery(['roles', 'user', business_id], () => getUserBusinessRole(business_id), { retry: false })
 
-// remove.user.role
+//! remove.user.role - REMOVE USER ROLE (SELF)
 const removeUserRole = async (role_id) => { return await AxiosInstance.delete(`/roles/user_remove/${role_id}`) }
 export const useRemoveUserRoleMutation = () => {
     const queryClient = useQueryClient()

@@ -1,6 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
@@ -8,10 +6,7 @@ import { useApproveRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
-const Styles = styled.div`
-    .roleApprove {
-        color: #0D2B12;
-    }
+const ApproveRoleStyles = styled.div`
 `;
 
 const ApproveRole = ({ role_id }) => {
@@ -62,9 +57,9 @@ const ApproveRole = ({ role_id }) => {
 
 
     return (
-        <Styles>
-            <FontAwesomeIcon className='roleApprove' icon={faCheck} onClick={(e) => roleApprove(e)} />
-        </Styles>
+        <ApproveRoleStyles>
+            <button onClick={(e) => roleApprove(e)}>Approve</button>
+        </ApproveRoleStyles>
     )
 }
 

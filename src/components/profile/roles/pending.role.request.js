@@ -1,45 +1,33 @@
 import React from 'react';
-// import { Accordion } from 'react-bootstrap';
 import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
 
-import useAuth from '../../../hooks/useAuth';
-import useNotification from '../../../hooks/useNotification';
-import { usePendingBusinessRolesQuery } from '../../../hooks/useRolesApi';
-import LoadingSpinner from '../../loadingSpinner';
 import ApproveRole from '../../roles/buttons/approve.role';
 import RemoveRole from '../../roles/buttons/remove.role';
 
-const Styles = styled.div`
-    .pendingRolesWrapper {
-        display: flex;
-        flex-direction: column;
-        padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
+const PendingRoleRequestStyles = styled.div`
+    .pendingRoleRequestWrapper {
+        padding: 0.5rem 0.5rem;
         border-radius: 5px;
-    }
-
-    .pendingRolesHeader {
-        font-weight: bold;
-        letter-spacing: 0.1rem;
-        border-bottom: 2px solid black;
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
     }
 
     .pendingRole {
         display: flex;
         justify-content: space-between;
-        align-items: end;
+        align-items: center;
         padding: 0.25rem 0.5rem;
         border-radius: 5px;
+    }
+    
+    .pendingRoleRequestBusinessName {
+        margin: 0.35rem 0;
+        font-weight: bold;
+        letter-spacing: 0.1rem;
         border-bottom: 1px solid black;
     }
 
     .pendingUsername {
         width: 50%;
-    }
-
-    .pendingBusinessName {
-        width: 100%;
     }
 
     .roleButtons {
@@ -49,54 +37,26 @@ const Styles = styled.div`
     }
 `;
 
-const PendingRoleRequest = ({ user_id }) => {
-    const { logout_user } = useAuth()
-    const { dispatch } = useNotification()
-    const { data: pending_roles, isLoading, error, isError } = usePendingBusinessRolesQuery(user_id)
-    // let navigate = useNavigate()
-
-    if (isLoading) { return <LoadingSpinner /> }
-
-    if(isError) {
-        if(error?.response.status === 401) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: `${error.response.data.error.message}`
-                }
-            })
-
-            logout_user()
-            // navigate('/login')
-        }
-    }
-
-    console.log(pending_roles)
+const PendingRoleRequest = ({ name, roles }) => {
+    
+    
     return (
-        <Styles>
-            <div className='pendingRolesWrapper'>
-
-                <div className='pendingRolesHeader'>
-                    <div>Pending Roles</div>
-                </div>
-
-                <div>
-                    {
-                        pending_roles.data.map(role => (
-                            <div key={role.id} className='pendingRole'>
-                                <div className='pendingUsername'>{role.username}</div>
-                                <div className='pendingBusinessName'>{role.business_name}</div>
-                                <div className='roleButtons'>
-                                    <ApproveRole role_id={role.id} />
-                                    <RemoveRole role_id={role.id} />
-                                </div>
+        <PendingRoleRequestStyles>
+            <div className='pendingRoleRequestWrapper'>
+                <div className='pendingRoleRequestBusinessName'>{name}</div>
+                {
+                    roles.map(role => (
+                        <div key={role.id} className='pendingRole'>
+                            <div className='pendingUsername'>{role.username}</div>
+                            <div className='roleButtons'>
+                                <ApproveRole role_id={role.id} />
+                                <RemoveRole role_id={role.id} />
                             </div>
-                        ))
-                    }
-                </div>
+                        </div>
+                    ))
+                }
             </div>
-        </Styles>
+        </PendingRoleRequestStyles>
     )
 }
 
