@@ -8,77 +8,38 @@ import useAuth from '../../../hooks/useAuth';
 import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 
-const Styles = styled.div`
-    .removeButton {
-        color: ${(props) => props.children.props.variant};
-        pointer-events: ${(props) => (props.children.props.type === 'disabled') ? 'none' : ''};
-    }
-`;
+const RemoveUserRoleStyles = styled.div``;
 
 
-const RemoveUserRole = ({ role_id, role_type }) => {
-    const { auth, logout_user, setAuth } = useAuth()
+const RemoveUserRole = ({ role }) => {
+    const { auth, setAuth } = useAuth()
     const { mutateAsync: removeUserRole } = useRemoveUserRoleMutation()
     const { dispatch } = useNotification()
     
-
-    const userRoleRemove = async (id) => {
+    const userRoleRemove = async(role_id) => {
         try {
-            const removed_role = await removeUserRole(id)
+            const removedRole = await removeUserRole(role_id)
 
-            if(removed_role.status === 204) {
+            if(removedRole.status === 200) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: 'role has been deleted'
+                        message: 'role has been delete'
                     }
                 })
 
-                setAuth({ user: auth.user, roles: auth.roles.filter(role => role !== role_id) })
-                
+                setAuth({ user: auth.user, roles: auth.roles.filter(role => role.id !== role_id)})
             }
-
-
-            
         } catch (error) {
-            
-            if(error?.response.status === 400) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${error?.response.data.error.message}`
-                    }
-                })
-            }
-
-            if(error?.response.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${error?.response.data.error.message}`
-                    }
-                })
-
-                logout_user()
-                // navigate('/login')
-            }
+            console.log(error)
         }
     }
 
-
     return (
-        <Styles>
-            <FontAwesomeIcon
-                icon={faTrash}
-                className='removeButton'
-                onClick={() => userRoleRemove(role_id)}
-                variant={(role_type === process.env.REACT_APP_ADMIN_ACCOUNT) ? 'grey' : '#b80c09'}
-                type={(role_type === process.env.REACT_APP_ADMIN_ACCOUNT) ? 'disabled' : 'enabled'}
-            />
-        </Styles>
+        <RemoveUserRoleStyles>
+            <button disabled={role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT} onClick={() => userRoleRemove(role.id)}>delete</button>
+        </RemoveUserRoleStyles>
     )
 }
 
