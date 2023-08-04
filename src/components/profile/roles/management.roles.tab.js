@@ -22,7 +22,7 @@ const ManagementRolesTabStyles = styled.div`
 
 const ManagementRolesTab = ({ user_id }) => {
     // const { auth } = useAuth()
-    const { data: pending_roles, isLoading, error, isError, isSuccess } = usePendingBusinessRolesQuery(user_id)
+    const { data: pending_roles, isLoading, isSuccess } = usePendingBusinessRolesQuery(user_id)
     const businesses = {};
 
     if(isLoading) {

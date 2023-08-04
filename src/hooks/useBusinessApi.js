@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 
 
-// businessView, update.business
+//! businessView, update.business - VIEW BUSINESS PAGE
 const getBusiness = async (id) => { return await AxiosInstance.get(`/business/single/${id}`) }
 export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id))
 

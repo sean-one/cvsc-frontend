@@ -70,6 +70,7 @@ const App = () => {
                 <Route path='/business/roles/:business_id' element={<BusinessRoles />} />
               </Route>
 
+
               {/* catch all for unknown pages */}
               <Route path='/*' element={<ErrorPage />} />
             

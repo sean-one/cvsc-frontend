@@ -6,7 +6,6 @@ import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import RoleRequest from '../../forms/role.request';
 import UserRoles from '../../roles/user.roles';
 import ManagementRolesTab from './management.roles.tab';
-import PendingRoleRequest from './pending.role.request';
 import LoadingSpinner from '../../loadingSpinner';
 
 const RolesTabStyles = styled.div`
@@ -32,7 +31,6 @@ const RolesTab = () => {
                 {/* pending roles for businesses managed */}
                 { (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
                     <ManagementRolesTab user_id={auth.user_id} />
-                    // <PendingRoleRequest user_id={auth.user.id}/>
                 }
             </div>
         </RolesTabStyles>

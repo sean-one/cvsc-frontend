@@ -7,9 +7,9 @@ import { image_link } from '../../helpers/dataCleanUp';
 
 import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
-// import ContactLink from '../contactLink';
 import BusinessAdminMenu from './admin/business.admin.menu';
 import RelatedEvents from '../events/related.events';
+import BusinessUnknown from './business.unknown';
 
 import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, TwitterIcon, WebSiteIcon } from '../icons/siteIcons';
 
@@ -134,9 +134,11 @@ const BusinessView = () => {
     let { business_id } = useParams()
     let business_role = {}
 
-    const { data: business, isLoading } = useBusinessQuery(business_id)
+    const { data: business, isLoading, isError } = useBusinessQuery(business_id)
 
     if (isLoading) { return <LoadingSpinner /> }
+
+    if(isError) { return <BusinessUnknown />}
 
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
 
@@ -154,11 +156,11 @@ const BusinessView = () => {
                                     <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
                             }
                         </div>
-                        <h2>{business.data.business_name.toUpperCase()}</h2>
+                        <h2>{business?.data.business_name.toUpperCase()}</h2>
                     </div>
                     {
-                        (business.data.formatted_address !== null) &&
-                            <div>{business.data?.formatted_address}</div>
+                        (business?.data.formatted_address !== null) &&
+                            <div>{business?.data?.formatted_address}</div>
                     }
                 </div>
 
@@ -168,26 +170,26 @@ const BusinessView = () => {
                         
                         <div className='businessImage'>
                             <img
-                                src={image_link(business.data.business_avatar)}
-                                alt={business.data.business_name}
+                                src={image_link(business?.data.business_avatar)}
+                                alt={business?.data.business_name}
                             />
                         </div>
                         <div className='businessContacts'>
-                            <a href={`mailto:${business.data.business_email}`} target='_blank' rel='noreferrer'><MailIcon /></a>
+                            <a href={`mailto:${business?.data.business_email}`} target='_blank' rel='noreferrer'><MailIcon /></a>
 
                             {/* dynamically add optional contact information */}
-                            {business.data.business_phone && <a href={`tel:${business.data.business_phone}`}><PhoneIcon /></a> }
-                            {business.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank' rel='noreferrer'><InstagramIcon /></a> }
-                            {business.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank' rel='noreferrer'><FacebookIcon /></a> }
-                            {business.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><WebSiteIcon /></a> }
-                            {business.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><TwitterIcon /></a> }
+                            {business?.data.business_phone && <a href={`tel:${business.data.business_phone}`}><PhoneIcon /></a> }
+                            {business?.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank' rel='noreferrer'><InstagramIcon /></a> }
+                            {business?.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank' rel='noreferrer'><FacebookIcon /></a> }
+                            {business?.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><WebSiteIcon /></a> }
+                            {business?.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><TwitterIcon /></a> }
                         </div>
 
                     </div>
 
                     <div className='secondBusinessSection'>
                         <div className='businessDescription'>
-                            {business.data.business_description}
+                            {business?.data.business_description}
                         </div>
                     </div>
                 </div>

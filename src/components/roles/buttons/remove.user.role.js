@@ -1,15 +1,11 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-
 
 import useAuth from '../../../hooks/useAuth';
 import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 
 const RemoveUserRoleStyles = styled.div``;
-
 
 const RemoveUserRole = ({ role }) => {
     const { auth, setAuth } = useAuth()
