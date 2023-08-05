@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import RoleRequest from '../../forms/role.request';
-import UserRoles from '../../roles/user.roles';
+import UserRoles from './user.roles';
 import ManagementRolesTab from './management.roles.tab';
 import LoadingSpinner from '../../loadingSpinner';
 

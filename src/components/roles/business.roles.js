@@ -30,7 +30,6 @@ const BusinessRoles = () => {
     
     return (
         <div>
-            <div className='mb-3' onClick={() => navigate(-1)}>{`< back`}</div>
             {
                 (inactive_roles.length > 0) &&
                     <InactiveRoles roles_list={inactive_roles} />

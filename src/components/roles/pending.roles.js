@@ -1,32 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
-import ApproveRole from './buttons/approve.role';
-import RemoveRole from './buttons/remove.role';
-import { role_types } from '../../helpers/dataCleanUp';
+import Role from './role';
 
+const PendingRolesStyles = styled.div``;
 
 const PendingRoles = ({ roles_list }) => {
+    const [viewRequest, setViewRequest] = useState(true);
+
+    const toggleRequest = () => {
+        setViewRequest(!viewRequest)
+    }
+
+
     return (
-        <div className='bg-light rounded p-1 mb-2'>
-            <h6>REQUESTS</h6>
-            {
-                roles_list.map(role =>
-                    <div key={role.id} className='d-flex justify-content-between align-items-end ps-2 py-1 border-bottom rounded-bottom'>
-                        <div className='flex-fill'>
-                            {`${role.username} - ${role_types[role.role_type].type}`}
+        <PendingRolesStyles>
+            <div className='rolesListWrapper'>
+                <div className='rolesListHeader'>
+                    <div>Request</div>
+                    <div onClick={() => toggleRequest()}>toggle</div>
+                </div>
+                {
+                    viewRequest &&
+                        <div>
+                            {
+                                roles_list.map(role =>
+                                    <Role key={role.id} role={role} rolelist='pendinglist' />
+                                )
+                            }
                         </div>
-                        <div className='d-flex'>
-                            <div className='mx-1'>
-                                <ApproveRole role_id={role.id} />
-                            </div>
-                            <div className='mx-1'>
-                                <RemoveRole role_id={role.id} />
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
-        </div>
+                }
+            </div>
+        </PendingRolesStyles>
     )
 }
 

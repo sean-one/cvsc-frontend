@@ -1,29 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import Role from './role';
+import Role from '../../roles/role';
 
 const UserRolesStyles = styled.div`
-    .userRolesWrapper {
-        display: flex;
-        flex-direction: column;
-        padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
-        border-radius: 5px;
-    }
-
     .userRolesContainer {
         display: flex;
         flex-direction: column;
         margin: 0.35rem 0;
-    }
-
-    .userRolesHeader {
-        display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-        letter-spacing: 0.1rem;
-        border-bottom: 2px solid black;
     }
 `;
 
@@ -38,7 +22,6 @@ const UserRoles = ({ roles }) => {
         inactive_roles = roles.filter(role => !role.active_role)
     }
     
-
     const toggleCurrent = () => {
         setViewCurrent(!viewCurrent)
     };
@@ -50,10 +33,10 @@ const UserRoles = ({ roles }) => {
 
     return (
         <UserRolesStyles>
-            <div className='userRolesWrapper'>
+            <div className='rolesListWrapper'>
 
                 <div className='userRolesContainer'>
-                    <div className='userRolesHeader'>
+                    <div className='rolesListHeader'>
                         <div>Current Roles</div>
                         <div onClick={() => toggleCurrent()}>toggle</div>
                     </div>
@@ -62,7 +45,7 @@ const UserRoles = ({ roles }) => {
                             <div>
                                 {
                                     active_roles.map(role =>
-                                        <Role key={role.id} role={role} />
+                                        <Role key={role.id} role={role} rolelist='userlist' />
                                     )
                                 }
                             </div>
@@ -70,7 +53,7 @@ const UserRoles = ({ roles }) => {
                 </div>
 
                 <div className='userRolesContainer'>
-                    <div className='userRolesHeader'>
+                    <div className='rolesListHeader'>
                         <div>Inactive Roles</div>
                         <div onClick={() => toggleInactive()}>toggle</div>
                     </div>
@@ -79,7 +62,7 @@ const UserRoles = ({ roles }) => {
                             <div>
                                 {
                                     inactive_roles.map(role =>
-                                        <Role key={role.id} role={role} />
+                                        <Role key={role.id} role={role} rolelist='userlist' />
                                     )
                                 }
                             </div>

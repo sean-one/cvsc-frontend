@@ -1,4 +1,4 @@
-import { useLocation, Navigate, Outlet, useParams } from "react-router";
+import { Navigate, Outlet, useParams } from "react-router";
 
 import useAuth from "../../hooks/useAuth";
 

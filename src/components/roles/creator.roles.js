@@ -1,31 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
-import UpgradeRole from './buttons/upgrade.role';
-import RemoveRole from './buttons/remove.role';
+import Role from './role';
 
+const CreateRolesStyles = styled.div``;
 
 const CreatorRoles = ({ roles_list }) => {
+    const [viewCreators, setViewCreators] = useState(true)
+
+    const toggleCreators = () => {
+        setViewCreators(!viewCreators)
+    }
+
+
     return (
-        <div className='bg-light rounded p-1 mb-2'>
-            <h6>CREATORS</h6>
-            {
-                roles_list.map(role =>
-                    <div key={role.id} className='d-flex justify-content-between align-items-end ps-2 py-1 border-bottom rounded-bottom'>
-                        <div className='flex-fill'>
-                            {role.username}
+        <CreateRolesStyles>
+            <div className='rolesListWrapper'>
+                <div className='rolesListHeader'>
+                    <div>Creators</div>
+                    <div onClick={() => toggleCreators()}>toggle</div>
+                </div>
+                {
+                    viewCreators &&
+                        <div>
+                            {
+                                roles_list.map(role =>
+                                    <Role key={role.id} role={role} rolelist='creatorlist' />
+                                )
+                            }
                         </div>
-                        <div className='d-flex'>
-                            <div className='mx-1'>
-                                <UpgradeRole role_id={role.id} />
-                            </div>
-                            <div className='mx-1'>
-                                <RemoveRole role_id={role.id} />
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
-        </div>
+                }
+            </div>
+        </CreateRolesStyles>
     )
 }
 

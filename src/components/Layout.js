@@ -204,6 +204,22 @@ const Styles = styled.div`
         padding-top: 0.75rem;
     }
 
+    .rolesListWrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 0.5rem;
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
+        border-radius: 5px;
+    }
+
+    .rolesListHeader {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        letter-spacing: 0.1rem;
+        border-bottom: 2px solid black;
+    }
+
 `;
 
 export const Layout = (props) => {

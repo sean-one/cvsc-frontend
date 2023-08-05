@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import RemoveUserRole from './buttons/remove.user.role';
+import ApproveRole from './buttons/approve.role';
+import DowngradeRole from './buttons/downgrade.role';
+import RemoveRole from './buttons/remove.role';
+import UpgradeRole from './buttons/upgrade.role';
 
 const RoleStyles = styled.div`
     .roleWrapper {
@@ -21,18 +25,48 @@ const RoleStyles = styled.div`
     }
 `;
 
-const Role = ({ role }) => {
-    
+
+const Role = ({ role, rolelist }) => {
     let navigate = useNavigate()
+    
+    const role_list_buttons = {
+        userlist: (
+            <>
+                <button disabled={!role.active_role} onClick={() => navigate('/event/create', { state: role.business_id })}>create</button>
+                <RemoveUserRole role={role} />
+            </>
+        ),
+        creatorlist: (
+            <>
+                <UpgradeRole role_id={role.id} />
+                <RemoveRole role_id={role.id} />
+            </>
+        ),
+        managerlist: (
+            <>
+                <DowngradeRole role_id={role.id} />
+                <RemoveRole role_id={role.id} />
+            </>
+        ),
+        pendinglist: (
+            <>
+                <ApproveRole role_id={role.id} />
+                <RemoveRole role_id={role.id} />
+            </>
+        )
+    }
 
 
     return (
         <RoleStyles>
             <div className='roleWrapper'>
-                <div>{role.business_name}</div>
+                {
+                    (rolelist === 'userlist')
+                        ? <div>{role.business_name}</div>
+                        : <div>{role.username}</div>
+                }
                 <div className='roleButtonWrapper'>
-                    <button disabled={!role.active_role} onClick={() => navigate('/event/create', { state: role.business_id })}>create</button>
-                    <RemoveUserRole role={role} />
+                    {role_list_buttons[rolelist]}
                 </div>
             </div>
         </RoleStyles>

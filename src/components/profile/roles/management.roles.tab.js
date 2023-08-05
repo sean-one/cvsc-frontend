@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // import useAuth from '../../../hooks/useAuth';
 import { usePendingBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
-import PendingRoleRequest from './pending.role.request';
+import AllManagementPendingRequest from './all.management.pending.request';
 
 const ManagementRolesTabStyles = styled.div`
     .managementRolesTabWrapper {
@@ -53,7 +53,7 @@ const ManagementRolesTab = ({ user_id }) => {
                 }
                 {
                     Object.entries(businesses).map(([businessName, roles]) => (
-                        <PendingRoleRequest key={businessName} name={businessName} roles={roles} pending_roles={pending_roles.data} />
+                        <AllManagementPendingRequest key={businessName} name={businessName} roles={roles} pending_roles={pending_roles.data} />
                     ))
                 }
             </div>

@@ -22,7 +22,7 @@ import EventCreateForm from './components/forms/event.create.form';
 import EventEditForm from './components/forms/event.edit.form';
 
 import BusinessView from './components/business/businessView';
-import BusinessAdminMenu from './components/business/admin/business.admin.menu';
+import BusinessAdminView from './components/business/admin/business.admin.view';
 import BusinessCreateForm from './components/forms/business.create.form';
 import BusinessEditForm from './components/forms/business.edit.form';
 
@@ -35,7 +35,6 @@ import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import BusinessAdminView from './components/business/admin/business.admin.view';
 
 const queryClient = new QueryClient()
 
