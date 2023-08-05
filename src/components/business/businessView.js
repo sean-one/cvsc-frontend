@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
@@ -7,14 +7,13 @@ import { image_link } from '../../helpers/dataCleanUp';
 
 import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
-import BusinessAdminMenu from './admin/business.admin.menu';
 import RelatedEvents from '../events/related.events';
 import BusinessUnknown from './business.unknown';
 
 import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, TwitterIcon, WebSiteIcon } from '../icons/siteIcons';
 
-const Styles = styled.div`
-    .businessView {
+const BusinessViewStyles = styled.div`
+    .businessViewWrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -38,7 +37,7 @@ const Styles = styled.div`
     .businessHeader {
         width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
 
         @media (min-width: 768px) {
             flex-direction: row-reverse;
@@ -47,6 +46,7 @@ const Styles = styled.div`
         }}
 
     .businessHeader h2 {
+        width: 100%;
         @media (min-width: 768px) {
             align-self: center;
         }}
@@ -134,6 +134,8 @@ const BusinessView = () => {
     let { business_id } = useParams()
     let business_role = {}
 
+    let navigate = useNavigate()
+
     const { data: business, isLoading, isError } = useBusinessQuery(business_id)
 
     if (isLoading) { return <LoadingSpinner /> }
@@ -144,19 +146,17 @@ const BusinessView = () => {
 
 
     return (
-        <Styles>
-            <div className='businessView'>
-
-
+        <BusinessViewStyles>
+            <div className='businessViewWrapper'>
                 <div className='businessViewHeader'>
                     <div className='businessHeader'>
+                        <h2>{business?.data.business_name.toUpperCase()}</h2>
                         <div>
                             {
                                 (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                                    <BusinessAdminMenu business={business.data} business_role={business_role?.role_type}/>
+                                    <div onClick={() => navigate(`/business/admin/${business_id}`)}>admin</div>
                             }
                         </div>
-                        <h2>{business?.data.business_name.toUpperCase()}</h2>
                     </div>
                     {
                         (business?.data.formatted_address !== null) &&
@@ -195,7 +195,7 @@ const BusinessView = () => {
                 </div>
             </div>
             <RelatedEvents business_ids={[business_id]} />
-        </Styles>
+        </BusinessViewStyles>
     )
 }
 

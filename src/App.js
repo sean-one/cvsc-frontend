@@ -22,17 +22,20 @@ import EventCreateForm from './components/forms/event.create.form';
 import EventEditForm from './components/forms/event.edit.form';
 
 import BusinessView from './components/business/businessView';
+import BusinessAdminMenu from './components/business/admin/business.admin.menu';
 import BusinessCreateForm from './components/forms/business.create.form';
 import BusinessEditForm from './components/forms/business.edit.form';
 
 import { ErrorPage } from './components/error/error_404';
 
 import AuthRoute from './components/auth/auth.jsx';
+import BusinessManagementAuth from './components/auth/businessManagementAuth';
 import PersistLogin from './components/persistLogin';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+import BusinessAdminView from './components/business/admin/business.admin.view';
 
 const queryClient = new QueryClient()
 
@@ -66,8 +69,11 @@ const App = () => {
                 <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EventEditForm />} />
                 <Route path='/business/create' element={<BusinessCreateForm />} />
-                <Route path='/business/edit/:business_id' element={<BusinessEditForm />} />
-                <Route path='/business/roles/:business_id' element={<BusinessRoles />} />
+                <Route element={<BusinessManagementAuth />}>
+                    <Route path='/business/admin/:business_id' element={<BusinessAdminView />} />
+                    <Route path='/business/edit/:business_id' element={<BusinessEditForm />} />
+                    <Route path='/business/roles/:business_id' element={<BusinessRoles />} />
+                </Route>
               </Route>
 
 
