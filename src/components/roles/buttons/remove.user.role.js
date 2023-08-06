@@ -1,11 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 
-const RemoveUserRoleStyles = styled.div``;
 
 const RemoveUserRole = ({ role }) => {
     const { auth, setAuth } = useAuth()
@@ -33,9 +31,7 @@ const RemoveUserRole = ({ role }) => {
     }
 
     return (
-        <RemoveUserRoleStyles>
-            <button disabled={role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT} onClick={() => userRoleRemove(role.id)}>delete</button>
-        </RemoveUserRoleStyles>
+        <button disabled={role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT} onClick={() => userRoleRemove(role.id)}>delete</button>
     )
 }
 

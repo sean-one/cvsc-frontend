@@ -6,6 +6,11 @@ import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import BusinessRoles from '../../roles/business.roles';
 
+import ActiveBusinessToggle from './active.business.toggle';
+import RequestStatusToggle from './request.status.toggle';
+import EditBusinessButton from './edit.business.button';
+import DeleteBusiness from './delete.business';
+
 const BusinessAdminViewStyles = styled.div`
     .businessAdminViewWrapper {
         display: flex;
@@ -35,6 +40,12 @@ const BusinessAdminViewStyles = styled.div`
         justify-content: space-around;
         gap: 10px;
     }
+
+    .businessAdminViewCreationRequest {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 `;
 
 const BusinessAdminView = () => {
@@ -59,20 +70,17 @@ const BusinessAdminView = () => {
                 <div className='businessAdminViewDetails'>
                     <div className='businessAdminViewStatus'>{`Business Status: ${business?.data.active_business ? 'Active' : 'Inactive'}`}</div>
                     <div className='businessAdminViewBusinessButtons'>
-                        <button>status</button>
-                        <button>edit</button>
-                        <button>delete</button>
+                        <ActiveBusinessToggle business_id={business_id} />
+                        <EditBusinessButton business={business?.data} />
+                        <DeleteBusiness business_name={business?.data?.business_name} business_id={business?.data?.id} />
                     </div>
                 </div>
-                <div>
-                    <h4>Current User Roles</h4>
-                    <div>
-                        <div>Manage Creation Request:</div>
-                    </div>
-                    <div>
-                        <BusinessRoles />
-                    </div>
+                <div className='businessAdminViewCreationRequest'>
+                    <div>{`Manage Creation Request: ${business?.data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
+                    <RequestStatusToggle business_id={business_id} />
                 </div>
+                <h4>Current User Roles</h4>
+                <BusinessRoles />
             </div>
         </BusinessAdminViewStyles>
     )

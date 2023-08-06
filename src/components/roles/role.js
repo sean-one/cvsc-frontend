@@ -36,6 +36,11 @@ const Role = ({ role, rolelist }) => {
                 <RemoveUserRole role={role} />
             </>
         ),
+        inactivelist: (
+            <>
+                <RemoveRole role_id={role.id} />
+            </>
+        ),
         creatorlist: (
             <>
                 <UpgradeRole role_id={role.id} />

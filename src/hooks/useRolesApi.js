@@ -27,7 +27,7 @@ export const useCreateRoleMutation = () => {
     })
 }
 
-// approve.role - approves role request and marks active true
+//! approve.role - APPROVE ROLE REQUEST
 const approveRole = async (role_id) => { return await AxiosInstance.post(`/roles/approve/${role_id}`) }
 export const useApproveRoleMutation = () => {
     const queryClient = useQueryClient()
@@ -46,7 +46,7 @@ export const useApproveRoleMutation = () => {
     })
 }
 
-// upgrade.role - upgrades creator to manager
+//! upgrade.role - UPGRADES CREATOR TO MANAGER
 const upgradeRole = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade/${role_id}`) }
 export const useUpgradeRoleMutation = () => {
     const queryClient = useQueryClient()
@@ -63,7 +63,7 @@ export const useUpgradeRoleMutation = () => {
     })
 }
 
-// downgrade.role - downgrades manager to creator
+//! downgrade.role - DOWNGRADES MANAGER TO CREATOR
 const downgradeRole = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade/${role_id}`) }
 export const useDowngradeRoleMutation = () => {
     const queryClient = useQueryClient()

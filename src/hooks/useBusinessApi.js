@@ -10,7 +10,7 @@ export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id]
 const getBusinesses = async () => { return await AxiosInstance.get('/business') }
 export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses,{ refetchOnMount: false })
 
-// business.create.form
+//! business.create.form - CREATE BUSINESS
 const createBusiness = async (business) => { return await AxiosInstance.post('/business/create', business) }
 export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient()
@@ -28,7 +28,7 @@ export const useCreateBusinessMutation = () => {
     })
 }
 
-// business.edit.form
+//! business.edit.form - EDIT BUSINESS
 const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/business/update/${business_id}`, business_updates) }
 export const useUpdateBusinessMutation = () => {
     const queryClient = useQueryClient()
@@ -61,7 +61,7 @@ export const useRemoveBusinessMutation = () => {
     })
 }
 
-// business.admin.menu
+//! business.admin.menu - TOGGLE BUSINESS REQUEST STATUS
 const toggleBusinessRequest = async (id) => { return await AxiosInstance.put(`/business/toggle-request/${id}`) }
 export const useBusinessRequestToggle = () => {
     const queryClient = useQueryClient()
@@ -77,14 +77,14 @@ export const useBusinessRequestToggle = () => {
     })
 }
 
-// business.admin.menu
+//! business.admin.view - TOGGLE ACTIVE BUSINESS STATUS
 const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/business/toggle-active/${id}`) }
 export const useActiveBusinessToggle = () => {
     const queryClient = useQueryClient()
     return useMutation(toggleActiveBusiness, {
         onSuccess: ({ data }) => {
             queryClient.invalidateQueries(['businesses', 'business', data.id, 'roles'])
-            queryClient.refetchQueries('businesses')
+            queryClient.refetchQueries(['businesses', 'roles'])
         },
         onError: (error, updated_business, context) => { console.log(error) },
         onSettled: ({ data }) => {

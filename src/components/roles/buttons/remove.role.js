@@ -1,12 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
 
-const RemoveRoleStyles = styled.div`
-`;
 
 const RemoveRole = ({ role_id }) => {
     const { logout_user } = useAuth()
@@ -56,9 +53,7 @@ const RemoveRole = ({ role_id }) => {
 
 
     return (
-        <RemoveRoleStyles>
-            <button onClick={(e) => roleRemove(e)}>Remove</button>
-        </RemoveRoleStyles>
+        <button onClick={(e) => roleRemove(e)}>Remove</button>
     )
 }
 

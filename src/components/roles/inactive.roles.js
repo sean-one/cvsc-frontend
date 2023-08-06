@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { role_types } from '../../helpers/dataCleanUp';
-import RemoveRole from './buttons/remove.role';
+import Role from './role';
 
 
 const InactiveRoles = ({ roles_list }) => {
+    const [viewInactive, setViewInactive] = useState(true)
+
+    const toggleInactive = () => {
+        setViewInactive(!viewInactive)
+    }
+
+
     return (
-        <div>
-            <h6>INACTIVE</h6>
-            {
-                roles_list.map(role =>
-                    <div key={role.id}>
-                        <div>{role.username}</div>
-                        <div>{role_types[role.role_type].type}</div>
-                        <div>inactive</div>
-                        <div>
-                            <RemoveRole role_id={role.id} />
-                        </div>
-                    </div>
-                )
-            }
+        <div className='rolesListWrapper'>
+            <div className='rolesListHeader'>
+                <div>Inactive</div>
+                <div onClick={() => toggleInactive()}>toggle</div>
+            </div>
+            <div>
+                {
+                    roles_list.map(role =>
+                        <Role key={role.id} role={role} rolelist='inactivelist' />
+                    )
+                }
+
+            </div>
         </div>
     )
 }

@@ -1,6 +1,4 @@
 import React from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -12,8 +10,6 @@ const UpgradeRole = ({ role_id }) => {
     const { logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { mutateAsync: upgradeRole } = useUpgradeRoleMutation()
-
-    // let navigate = useNavigate()
 
     const roleUpgrade = async (e) => {
         try {
@@ -61,7 +57,7 @@ const UpgradeRole = ({ role_id }) => {
 
 
     return (
-        <Button size='sm' variant='outline-success' onClick={(e) => roleUpgrade(e)} value={role_id}>upgrade</Button>
+        <button onClick={(e) => roleUpgrade(e)} value={role_id}>Upgrade</button>
     )
 }
 

@@ -1,6 +1,4 @@
 import React from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -12,13 +10,10 @@ const DowngradeRole = ({ role_id }) => {
     const { dispatch } = useNotification()
     const { mutateAsync: downgradeRole } = useDowngradeRoleMutation()
 
-    // let navigate = useNavigate()
-
     const roleDowngrade = async (e) => {
         try {
             const downgrade_response = await downgradeRole(e.currentTarget.value)
     
-            console.log(downgrade_response)
             if (downgrade_response.status === 200) {
     
                 dispatch({
@@ -52,13 +47,12 @@ const DowngradeRole = ({ role_id }) => {
                 })
 
                 logout_user()
-                // navigate('/login')
             }
         }
     }
 
     return (
-        <Button size='sm' variant='outline-danger' onClick={(e) => roleDowngrade(e)} value={role_id}>downgrade</Button>
+        <button onClick={(e) => roleDowngrade(e)} value={role_id}>Downgrade</button>
     )
 }
 

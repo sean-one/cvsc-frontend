@@ -1,13 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import { useApproveRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
-
-const ApproveRoleStyles = styled.div`
-`;
 
 const ApproveRole = ({ role_id }) => {
     const { logout_user } = useAuth()
@@ -57,9 +53,7 @@ const ApproveRole = ({ role_id }) => {
 
 
     return (
-        <ApproveRoleStyles>
-            <button onClick={(e) => roleApprove(e)}>Approve</button>
-        </ApproveRoleStyles>
+        <button onClick={(e) => roleApprove(e)}>Approve</button>
     )
 }
 

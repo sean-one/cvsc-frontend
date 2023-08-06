@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { DispensaryIcon, ClosedIcon } from '../../icons/siteIcons';
 import { useActiveBusinessToggle } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
-const ActiveBusinessToggle = ({ business_id, active_business }) => {
+const ActiveBusinessToggle = ({ business_id }) => {
     const { dispatch } = useNotification()
     const { mutateAsync: toggleActiveBusiness } = useActiveBusinessToggle()
 
@@ -26,13 +25,7 @@ const ActiveBusinessToggle = ({ business_id, active_business }) => {
 
     
     return (
-        <button onClick={toggleActive}>
-            {
-                active_business
-                    ? <DispensaryIcon />
-                    : <ClosedIcon />
-            }
-        </button>
+        <button onClick={toggleActive}>Status</button>
     )
 }
 
