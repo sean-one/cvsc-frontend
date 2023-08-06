@@ -6,7 +6,7 @@ import AxiosInstance from "../helpers/axios";
 const getBusiness = async (id) => { return await AxiosInstance.get(`/business/single/${id}`) }
 export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id))
 
-// business_list, role.request
+//! RETURN A LIST OF ALL BUSINESSES
 const getBusinesses = async () => { return await AxiosInstance.get('/business') }
 export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses,{ refetchOnMount: false })
 

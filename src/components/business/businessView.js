@@ -8,7 +8,6 @@ import { image_link } from '../../helpers/dataCleanUp';
 import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
 import RelatedEvents from '../events/related.events';
-import BusinessUnknown from './business.unknown';
 
 import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, TwitterIcon, WebSiteIcon } from '../icons/siteIcons';
 
@@ -136,11 +135,9 @@ const BusinessView = () => {
 
     let navigate = useNavigate()
 
-    const { data: business, isLoading, isError } = useBusinessQuery(business_id)
+    const { data: business, isLoading } = useBusinessQuery(business_id)
 
     if (isLoading) { return <LoadingSpinner /> }
-
-    if(isError) { return <BusinessUnknown />}
 
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
 
