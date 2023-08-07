@@ -5,7 +5,6 @@ import { useUserEventsQuery } from '../../hooks/useEventsApi';
 
 import LoadingSpinner from '../loadingSpinner';
 import EventSmallPreview from '../events/views/event.small.preview';
-import EventCard from '../events/views/event.card';
 
 
 const ProfileEvents = () => {

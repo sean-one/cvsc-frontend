@@ -72,7 +72,8 @@ export const useBusinessRequestToggle = () => {
         },
         onError: (error, updated_business, context) => { console.log(error) },
         onSettled: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'business', data.id])
+            queryClient.refetchQueries('businesses',)
+            queryClient.refetchQueries(['business', data.id])
         }
     })
 }
@@ -88,7 +89,9 @@ export const useActiveBusinessToggle = () => {
         },
         onError: (error, updated_business, context) => { console.log(error) },
         onSettled: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'business', data.id, 'roles'])
+            queryClient.refetchQueries('businesses')
+            queryClient.refetchQueries(['business', data.id])
+            queryClient.refetchQueries('roles')
         }
     })
 }

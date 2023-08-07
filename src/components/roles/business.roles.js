@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useBusinessRolesQuery } from '../../hooks/useRolesApi';
 import LoadingSpinner from '../loadingSpinner';
@@ -13,8 +13,6 @@ const BusinessRoles = () => {
     let { business_id } = useParams()
     const { data: business_roles, isLoading, isSuccess } = useBusinessRolesQuery(business_id)
     let inactive_roles, pending_roles, creator_roles, manager_roles = []
-
-    let navigate = useNavigate()
 
     if(isLoading) {
         return <LoadingSpinner />
