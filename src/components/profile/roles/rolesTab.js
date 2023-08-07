@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components'
 
 import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
@@ -8,8 +7,6 @@ import UserRoles from './user.roles';
 import ManagementRolesTab from './management.roles.tab';
 import LoadingSpinner from '../../loadingSpinner';
 
-const RolesTabStyles = styled.div`
-`;
 
 const RolesTab = () => {
     const { auth } = useAuth()
@@ -21,19 +18,17 @@ const RolesTab = () => {
 
 
     return (
-        <RolesTabStyles>
-            <div>
-                <RoleRequest />
-                
-                {/* current user roles */}
-                { (roles.data.length > 0) && <UserRoles roles={roles.data} /> }
-                
-                {/* pending roles for businesses managed */}
-                { (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
-                    <ManagementRolesTab user_id={auth.user_id} />
-                }
-            </div>
-        </RolesTabStyles>
+        <div>
+            <RoleRequest />
+            
+            {/* current user roles */}
+            { (roles.data.length > 0) && <UserRoles roles={roles.data} /> }
+            
+            {/* pending roles for businesses managed */}
+            { (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
+                <ManagementRolesTab user_id={auth.user_id} />
+            }
+        </div>
     )
 }
 

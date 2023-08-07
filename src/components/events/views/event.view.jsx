@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns'
 import styled from 'styled-components';
 
-import { EditIcon } from '../../icons/siteIcons';
 import useAuth from '../../../hooks/useAuth';
 import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
@@ -125,11 +124,8 @@ const EventView = () => {
                 <div className='eventViewHeaderRow'>
                     <div className='eventViewEventname'>{event.data.eventname}</div>
                     {
-                        (auth?.user?.id === event.data.created_by)
-                            ? <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })} className='eventViewEditButton'>
-                                <EditIcon />
-                            </div>
-                            : null
+                        (auth?.user?.id === event.data.created_by) &&
+                            <button onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>edit</button>
                     }
                 </div>
                 <div className='eventViewAddress'>{event.data.venue_location}</div>
