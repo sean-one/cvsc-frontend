@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import LoadingSpinner from '../../loadingSpinner';
@@ -20,6 +20,11 @@ const BusinessAdminViewStyles = styled.div`
     .businessAdminViewBusinessHeader {
         display: flex;
         flex-direction: column;
+    }
+
+    .businessAdminViewNameRow {
+        display: flex;
+        justify-content: space-between;
     }
 
     .businessAdminViewDetails {
@@ -52,6 +57,8 @@ const BusinessAdminView = () => {
     const { business_id } = useParams()
     const { data: business, isLoading } = useBusinessQuery(business_id)
 
+    let navigate = useNavigate()
+
     if(isLoading) {
         return <LoadingSpinner />
     }
@@ -61,7 +68,10 @@ const BusinessAdminView = () => {
         <BusinessAdminViewStyles>
             <div className='businessAdminViewWrapper'>
                 <div className='businessAdminViewBusinessHeader'>
-                    <h2>{business.data.business_name}</h2>
+                    <div className='businessAdminViewNameRow'>
+                        <h1>{business.data.business_name}</h1>
+                        <button onClick={() => navigate('/event/create', { state: business_id })}>+ event</button>
+                    </div>
                     {
                         (business?.data.formatted_address !== null) &&
                             <div>{business?.data?.formatted_address}</div>
@@ -79,7 +89,6 @@ const BusinessAdminView = () => {
                     <div>{`Manage Creation Request: ${business?.data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                     <RequestStatusToggle business_id={business_id} />
                 </div>
-                <h4>Current User Roles</h4>
                 <BusinessRoles />
             </div>
         </BusinessAdminViewStyles>

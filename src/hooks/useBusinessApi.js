@@ -45,7 +45,7 @@ export const useUpdateBusinessMutation = () => {
     })
 }
 
-// business.admin.menu
+//! business.admin.view - REMOVES BUSINESS & INVALIDATES ANY UPCOMING EVENT
 const removeBusiness = async (business_id) => { return await AxiosInstance.delete(`/business/remove/${business_id}`) }
 export const useRemoveBusinessMutation = () => {
     const queryClient = useQueryClient()
