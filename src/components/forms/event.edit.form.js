@@ -93,9 +93,10 @@ const EventEditForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
 
             if (error.response.status === 401) {
+                logout_user()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -104,8 +105,7 @@ const EventEditForm = () => {
                     }
                 })
 
-                logout_user()
-                // navigate('/login')
+                return
             }
 
             if (error.response.data.type === 'user') {
@@ -161,6 +161,8 @@ const EventEditForm = () => {
                 })
 
                 logout_user()
+
+                return
             }
         }
     }

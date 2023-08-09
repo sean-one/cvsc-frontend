@@ -36,6 +36,8 @@ const RemoveRole = ({ role_id }) => {
             }
 
             if(error?.response.status === 401) {
+                logout_user()
+                
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -44,8 +46,7 @@ const RemoveRole = ({ role_id }) => {
                     }
                 })
 
-                logout_user()
-                // navigate('/login')
+                return
             }
             
         }

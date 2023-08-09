@@ -154,6 +154,8 @@ const BusinessCreateForm = () => {
                 })
 
                 logout_user()
+
+                return
             }
 
             else {

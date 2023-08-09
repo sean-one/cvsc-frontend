@@ -100,7 +100,8 @@ const EventCreateForm = ({ business_id }) => {
                 })
 
                 logout_user()
-                // navigate('/login')
+
+                return
             }
 
             if (error?.response.status === 400) {

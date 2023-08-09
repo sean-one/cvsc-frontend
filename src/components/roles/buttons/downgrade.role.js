@@ -38,6 +38,8 @@ const DowngradeRole = ({ role_id }) => {
             }
             
             if(error?.response.status === 401) {
+                logout_user()
+                
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -46,7 +48,8 @@ const DowngradeRole = ({ role_id }) => {
                     }
                 })
 
-                logout_user()
+                return
+
             }
         }
     }

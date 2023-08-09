@@ -104,6 +104,8 @@ const UserEditForm =({ setEditView }) => {
             
         } catch (error) {
             if(error?.response?.status === 401) {
+                logout_user()
+                
                 dispatch({
                     type:"ADD_NOTIFICATION",
                     payload: {
@@ -112,8 +114,7 @@ const UserEditForm =({ setEditView }) => {
                     }
                 })
 
-                logout_user()
-                navigate('/login')
+                return
 
             } else if(error?.response?.status === 400) {
                 
@@ -171,6 +172,7 @@ const UserEditForm =({ setEditView }) => {
                 })
 
                 logout_user()
+                
                 refetch()
 
                 navigate('/login')
