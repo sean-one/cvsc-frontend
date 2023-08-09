@@ -84,13 +84,15 @@ const EventCreateForm = ({ business_id }) => {
                 navigate(`/event/${add_event_response.data.event_id}`)
             }
         } catch (error) {
-            console.log(error)
+
             if (error?.message === 'missing_image') {
                 setError('eventmedia', { message: 'missing required event image' })
                 throw Error;
             }
-
+            
             if (error?.response.status === 401) {
+                logout_user()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -99,16 +101,30 @@ const EventCreateForm = ({ business_id }) => {
                     }
                 })
 
+                return
+            }
+
+            if (error.response.data.type === 'user') {
                 logout_user()
+
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `${error.response.data.message}`
+                    }
+                })
 
                 return
             }
 
-            if (error?.response.status === 400) {
-                setError(`${error.response.data.error.type}`, {
-                    type: 'server',
-                    message: error.response.data.error.message
+            if ((error?.response.status === 400) || (error.response.status === 404)) {
+                setError(`${error.response.data.type}`, {
+                    type: error.response.data.type,
+                    message: error.response.data.message
                 })
+
+                return
             }
         }
     }
