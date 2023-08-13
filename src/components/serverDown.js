@@ -7,10 +7,20 @@ const ServerDownStyles = styled.div`
         width: 100%;
         max-width: 100%;
         height: 100%;
+        padding: 0 0.5rem;
 
         img {
+            border-radius: 5px;
             width: 100%;
         }
+    }
+
+    .serverDownHeader {
+        width: 100%;
+        margin: 0.5rem;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 0.05rem;
     }
 `;
 
@@ -18,6 +28,7 @@ const ServerDown = () => {
     return (
         <ServerDownStyles>
             <div className='serverDownWrapper'>
+                <div className='serverDownHeader'>Server is down...please check back</div>
                 <img src={ServerDownImage} alt='server down' />
             </div>
         </ServerDownStyles>
