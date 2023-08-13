@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useEventsQuery } from '../../hooks/useEventsApi';
 
 import LoadingSpinner from '../loadingSpinner';
+import ServerDown from '../serverDown';
 import EventCard from '../events/views/event.card';
 
 const CalendarStyles = styled.div`
@@ -26,7 +27,7 @@ const Calendar = () => {
 
     if(isError) {
         console.log(error)
-        return <div>Server is offline</div>
+        return <ServerDown />
     }
 
     if(isSuccess) {
