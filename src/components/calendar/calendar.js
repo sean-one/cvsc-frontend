@@ -15,10 +15,29 @@ const CalendarStyles = styled.div`
         display: flex;
         flex-direction: column;
     }
+
+    .calendarNoEvents {
+        margin-top:1.5rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem;
+    }
+
+    .calendarNoEventsHeader {
+        font-weight: bold;
+        letter-spacing: 0.05rem;
+    }
+
+    .calendarNoEventsLogin {
+        margin-top: 1rem;
+    }
 `
 
 const Calendar = () => {
-    const { data: eventList, isLoading, error, isError, isSuccess } = useEventsQuery()
+    const { data: eventList, isLoading, isError, isSuccess } = useEventsQuery()
     let sortedEvents = []
 
     if(isLoading) {
@@ -26,7 +45,6 @@ const Calendar = () => {
     }
 
     if(isError) {
-        console.log(error)
         return <ServerDown />
     }
 
@@ -52,11 +70,19 @@ const Calendar = () => {
 
             <div className='calendarWrapper'>
                 {
-                    sortedEvents.map(event => {
-                        return (
-                            <EventCard key={event.event_id} event={event} />
-                        )
-                    })
+                    (sortedEvents.length > 0)
+                        ? <div>{
+                            sortedEvents.map(event => {
+                                return (
+                                    <EventCard key={event.event_id} event={event} />
+                                )
+                            })
+                        } </div>
+                        : <div className='calendarNoEvents'>
+                            <div className='calendarNoEventsHeader'>No events to show</div>
+                            <div className='calendarNoEventsLogin'>Login and create a new event.</div>
+                        </div>
+
                 }
             </div>
 

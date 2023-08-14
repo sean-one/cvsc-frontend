@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faAngleUp, faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
 
-// import cvsc from '../assets/smokers_club.png'
-import cvsc from '../assets/cvsc.png'
+import useTheme from '../hooks/useTheme';
+
+import { ReactComponent as CVSCLogo } from '../assets/cvsc_sqr.svg';
 import Menu from './menu'
 
-const Styles = styled.div`
+const NavbarStyles = styled.div`
     .navWrapper {
         position: fixed;
         top: 0;
         left: 0;
-        background-color: var(--header-background-color);
+        background-color: var(--background-color);
         width: 100%;
         height: var(--header-height);
         display: flex;
@@ -29,35 +30,55 @@ const Styles = styled.div`
         max-width: var(--max-page-width);
         display: flex;
         justify-content: space-between;
-        /* border: 1px solid red; */
     }
 
-    .menuToggle {
-        color: #0D2B12;
-        margin-right: 0.5rem;
+    .navBarBranding {
+        max-width: 70px;
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    .navBarLogo {
+        width: 68px;
+        fill: var(--secondary-text-color);
+    }
+
+    .navBarMenu {
+        color: var(--secondary-text-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .toggler {
+        display: flex;
+        justify-content: center;
+        width: 3rem;
         padding: 0.5rem;
     }
 `;
 
 const Navbar = () => {
     const [ toggle, setToggle ] = useState(false)
+    const { themeName, toggleTheme } = useTheme()
+    
     let navigate = useNavigate()
 
 
     return (
-        <Styles>
-            {/* <div className='vstack fixed-top'> */}
+        <NavbarStyles>
             <div className='navWrapper'>
-                {/* <div className='d-flex justify-content-center w-100 bg-light py-0'> */}
-                <div>
-                    <div className='navContainer'>
-                        <img
-                            src={cvsc}
-                            height="50"
-                            alt="Coachella Valley Smokers Club logo"
-                            onClick={() => navigate('/')}
-                        />
-                        <div className='menuToggle' onClick={() => setToggle(!toggle)}>
+                <div className='navContainer'>
+                    <div className='navBarBranding'>
+                        <CVSCLogo className='navBarLogo' />
+                    </div>
+                    <div className='navBarMenu'>
+                        <div className='toggler'>
+                            <FontAwesomeIcon icon={themeName === 'light' ? faMoon : faSun } size='2x' onClick={() => toggleTheme()} />
+                        </div>
+                        <div className='toggler' onClick={() => setToggle(!toggle)}>
                             {
                                 toggle
                                     ? <FontAwesomeIcon icon={faAngleUp} size='2x' />
@@ -70,7 +91,7 @@ const Navbar = () => {
                     toggle && <Menu toggle={setToggle} />
                 }
             </div>
-        </Styles>
+        </NavbarStyles>
   )
 }
 

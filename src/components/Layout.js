@@ -1,18 +1,16 @@
 import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
-const theme = {
-
-}
+import useTheme from '../hooks/useTheme';
 
 const GlobalStyle = createGlobalStyle`
     :root {
         --header-height: 4.5rem;
-        --header-background-color: #DCDBC4;
-        /* --header-background-color: #DAD7CD; */
-        /* --header-background-color: #CBD4BA; */
-        --main-text-color: #DAD7CD;
-        --background-color: #19381f;
+        --main-text-color: #4CAF50;
+        --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
+        /* --main-text-color: #DAD7CD; */
+        --background-color: ${(props) => props.theme['--background-color']};
+        /* --background-color: #19381f; */
         --error-text-color: #58C46E;
         --box-shadow-color: #0D2B12;
         --input-text-color: #010A00;
@@ -223,12 +221,16 @@ const Styles = styled.div`
 `;
 
 export const Layout = (props) => {
+    const { currentTheme } = useTheme()
+
     return (
-        <Styles theme={theme}>
+        <ThemeProvider theme={currentTheme}>
             <GlobalStyle />
-            <div className='appContainer'>
-                <div className='innerContainer'>{props.children}</div>
-            </div>
-        </Styles>
+            <Styles>
+                <div className='appContainer'>
+                    <div className='innerContainer'>{props.children}</div>
+                </div>
+            </Styles>
+        </ThemeProvider>
     )
 }
