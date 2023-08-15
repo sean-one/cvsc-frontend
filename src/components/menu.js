@@ -63,26 +63,26 @@ const Menu = ({ toggle }) => {
         <MenuStyles>
             <div className='menuWrapper' onClick={() => toggle(false)}>
                 <div className='navMenu'>
-                    <div className='navMenuButtons' onClick={() => navMenuClick('home')}>calendar</div>
+                    <button className='navMenuButtons' onClick={() => navMenuClick('home')}>calendar</button>
                     {
                         (Object.keys(auth).length > 0)
-                            ? <div className='navMenuButtons' onClick={() => navMenuClick('profile')}>profile</div>
-                            : <div className='navMenuButtons' onClick={() => navMenuClick('register')}>register</div>
+                            ? <button className='navMenuButtons' onClick={() => navMenuClick('profile')}>profile</button>
+                            : <button className='navMenuButtons' onClick={() => navMenuClick('register')}>register</button>
                         
                     }
                     {
                         (auth?.user?.account_type >= process.env.REACT_APP_BASIC_ACCOUNT) &&
-                            <div className='navMenuButtons' onClick={() => navMenuClick('new_business')}>create business</div>
+                            <button className='navMenuButtons' onClick={() => navMenuClick('new_business')}>create business</button>
                     }
                     {
                         (auth?.user?.account_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
-                            <div className='navMenuButtons' onClick={() => navMenuClick('new_event')}>create event</div>
+                            <button className='navMenuButtons' onClick={() => navMenuClick('new_event')}>create event</button>
 
                     }
                     {
                         (Object.keys(auth).length > 0)
-                            ? <div className='navMenuButtons' onClick={() => logOutUser()}>logout</div>
-                            : <div className='navMenuButtons' onClick={() => navMenuClick('login')}>login</div>
+                            ? <button className='navMenuButtons' onClick={() => logOutUser()}>logout</button>
+                            : <button className='navMenuButtons' onClick={() => navMenuClick('login')}>login</button>
                     }
                 </div>
             </div>

@@ -9,12 +9,13 @@ const GlobalStyle = createGlobalStyle`
         --main-text-color: #4CAF50;
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
         --background-color: ${(props) => props.theme['--background-color']};
-        /* --card-background-color: #4CAF50; */
         --card-background-color: #607D8B;
+        --form-input-background: #A5D6A7;
+        --input-text-color: #263238;
+        --input-placeholder: #66BB6A;
         
         --error-text-color: #58C46E;
         --box-shadow-color: #0D2B12;
-        --input-text-color: #010A00;
         --input-background-color: #4B6F51;
         --image-border-color: #DCDBC4;
         --image-box-shadow-color: #010A00;
@@ -149,12 +150,13 @@ const Styles = styled.div`
         color: var(--input-text-color);
         border-radius: 5px;
         border-bottom: 1px solid black;
-        background-color: var(--input-background-color);
+        background-color: var(--form-input-background);
+        /* background-color: var(--input-background-color); */
         box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
 
         ::placeholder {
-            color: var(--main-text-color);
+            color: var(--input-placeholder);
         }
 
         ::autofill {

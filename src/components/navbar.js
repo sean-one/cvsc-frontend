@@ -42,6 +42,7 @@ const NavbarStyles = styled.div`
 
     .navBarLogo {
         width: 68px;
+        height: 70px;
         fill: var(--secondary-text-color);
     }
 
