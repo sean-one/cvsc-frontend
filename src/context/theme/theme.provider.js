@@ -4,7 +4,7 @@ export const ThemeContext = createContext({})
 
 const lightTheme = {
     '--background-color': '#E8F5E9',
-    '--secondary-text-color': '#607D8B',
+    '--secondary-text-color': '#263238',
     
 }
 

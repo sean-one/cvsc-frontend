@@ -11,9 +11,10 @@ const EventCardStyles = styled.div`
     .eventCardWrapper {
         position: relative;
         width: 100%;
-        border-radius: 5px;
+        border-radius: 1.2rem;
         margin-bottom: 1.25rem;
         overflow: hidden;
+        border: 2px solid var(--secondary-text-color);
 
         &:before {
             content: "";
@@ -44,7 +45,7 @@ const EventCardStyles = styled.div`
     }
 
     .eventCardRow {
-        color: var(--background-color);
+        color: var(--secondary-text-color);
         width: 100%;
         padding: 0.75rem;
     }    
@@ -56,8 +57,8 @@ const EventCardStyles = styled.div`
     }
     
     .eventCardBottomRow {
-        border-radius: 5px;
-        background-color: rgba(218,215,205,0.8);
+        border-radius: 1.2rem;
+        background-color: var(--card-background-color);
     }
 
     .eventCardDateContainer {
@@ -66,8 +67,8 @@ const EventCardStyles = styled.div`
         align-items: center;
         border: 2px solid black;
         padding: 0.7rem;
-        border-radius: 5px;
-        background-color: var(--main-text-color);
+        border-radius: 1.2rem;
+        background-color: var(--card-background-color);
         line-height: 1;
         font-weight: bold;
     }
@@ -80,10 +81,6 @@ const EventCardStyles = styled.div`
         font-size: 1rem;
         text-transform: uppercase;
         letter-spacing: 2px;
-    }
-
-    .eventCardTime {
-
     }
 
     .eventCardEventname {
@@ -124,7 +121,10 @@ const EventCard = ({ event }) => {
                         {
                             event.active_event &&
                                 <div className='eventCardVenueRow'>
-                                    <div>{event.venue_name}</div>
+                                    <div>
+                                        <div>{event.venue_name}</div>
+                                        <div>{event.venue_location.split(',')[1]}</div>
+                                    </div>
                                     <BusinessLabel businessId={event.venue_id} imageOnly={true} />
                                 </div>
                         }

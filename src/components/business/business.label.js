@@ -20,7 +20,7 @@ const BusinessLabelStyles = styled.div`
     .businessLogo {
         width: 100%;
         max-width: 3.4rem;
-        border: 2px solid black;
+        border: 2px solid var(--secondary-text-color);
         border-radius: 50%;
     }
 

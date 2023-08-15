@@ -8,9 +8,10 @@ const GlobalStyle = createGlobalStyle`
         --header-height: 4.5rem;
         --main-text-color: #4CAF50;
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
-        /* --main-text-color: #DAD7CD; */
         --background-color: ${(props) => props.theme['--background-color']};
-        /* --background-color: #19381f; */
+        /* --card-background-color: #4CAF50; */
+        --card-background-color: #607D8B;
+        
         --error-text-color: #58C46E;
         --box-shadow-color: #0D2B12;
         --input-text-color: #010A00;

@@ -71,7 +71,7 @@ const Navbar = () => {
         <NavbarStyles>
             <div className='navWrapper'>
                 <div className='navContainer'>
-                    <div className='navBarBranding'>
+                    <div className='navBarBranding' onClick={() => navigate('/')}>
                         <CVSCLogo className='navBarLogo' />
                     </div>
                     <div className='navBarMenu'>

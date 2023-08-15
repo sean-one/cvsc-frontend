@@ -11,6 +11,7 @@ import EventCard from '../events/views/event.card';
 const CalendarStyles = styled.div`
     .calendarWrapper {
         width: 100%;
+        padding: 0 0.25rem;
         max-width: var(--max-page-width);
         display: flex;
         flex-direction: column;
