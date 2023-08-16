@@ -8,6 +8,7 @@ import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
+import ServerDown from '../../serverDown';
 import EventViewRelated from '../event.view.related';
 
 const EventViewStyles = styled.div`
@@ -111,10 +112,14 @@ const EventView = () => {
 
     let navigate = useNavigate()
     
-    const { data: event, isLoading } = useEventQuery(event_id)
+    const { data: event, isLoading, isError } = useEventQuery(event_id)
 
     if (isLoading) {
         return <LoadingSpinner />
+    }
+
+    if (isError) {
+        return <ServerDown />
     }
 
 

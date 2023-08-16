@@ -4,10 +4,16 @@ import { useState, useRef, useEffect } from 'react';
 const useImagePreview = () => {
     const [editImage, setEditImage] = useState(false)
     const [imageToUpload, setImageToUpload] = useState()
+    const [imageIsLoading, setImageIsLoading] = useState(false)
     const canvas = useRef(null)
 
     const imagePreview = (event) => {
+        if(!event.target.files.length) {
+            return
+        }
+
         setEditImage(true)
+        setImageIsLoading(true)
         let fileToUpload = event.target.files
         let reader = new FileReader()
         const previewImage = new Image()
@@ -15,6 +21,7 @@ const useImagePreview = () => {
             previewImage.src = e.target.result
             previewImage.onload = () => {
                 setImageToUpload(previewImage)
+                setImageIsLoading(false)
             }
         }
         reader.readAsDataURL(fileToUpload[0])
@@ -52,7 +59,7 @@ const useImagePreview = () => {
         }
     }, [imageToUpload, canvas])
 
-    return { editImage, imagePreview, imageToUpload, canvas, setEditImage }
+    return { editImage, imagePreview, imageToUpload, canvas, setEditImage, imageIsLoading }
 }
 
 export default useImagePreview;

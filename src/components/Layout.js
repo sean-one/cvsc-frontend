@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
         --background-color: ${(props) => props.theme['--background-color']};
         --card-background-color: #607D8B;
-        --form-input-background: #A5D6A7;
+        --form-input-background: ${(props) => props.theme['--form-input-background']};
         --input-text-color: #263238;
         --input-placeholder: #66BB6A;
         
@@ -51,16 +51,15 @@ const Styles = styled.div`
     button {
         padding: 0.5rem 1.25rem;
         border: none;
-        border: 1px solid #010a00;
-        color: #dcdbc4;
+        border: 1px solid var(--secondary-text-color);
+        color: var(--secondary-text-color);
         border-radius: 5px;
-        background-color: transparent;
+        background-color: var(--main-text-color);
         outline: none;
-        /* margin: 0 1rem; */
         
         :hover {
-            background-color: #0D2B12;
-            border: 1px solid #4b6f51;
+            /* background-color: #0D2B12; */
+            /* border: 1px solid #4b6f51; */
         }
 
         :active {

@@ -10,6 +10,7 @@ import { emailformat, validatePassword, validateUsername } from './forms/form.va
 import useImagePreview from '../hooks/useImagePreview';
 import { AddImageIcon } from './icons/siteIcons';
 import { setImageForForm } from '../helpers/setImageForForm';
+import LoadingSpinner from './loadingSpinner';
 
 
 const RegisterStyles = styled.div`
@@ -25,6 +26,8 @@ const RegisterStyles = styled.div`
 
     .registerHeader {
         width: 100%;
+        text-align: center;
+        margin-bottom: 1rem;
         font-size: 1.8rem;
         font-weight: bold;
         align-self: flex-start;
@@ -57,7 +60,7 @@ const RegisterStyles = styled.div`
 
 const Register = () => {
     const { setAuth } = useAuth();
-    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
+    const { editImage, imagePreview, canvas, setEditImage, imageIsLoading } = useImagePreview()
     const { dispatch } = useNotification();
 
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
@@ -143,7 +146,7 @@ const Register = () => {
         <RegisterStyles>
             <div className='registerWrap'>
                 
-                <div className='registerHeader'>Register</div>
+                <div className='registerHeader'>Register new Account</div>
                 
                 <form onSubmit={handleSubmit(createUser)} className='standardForm'>
 
@@ -164,6 +167,7 @@ const Register = () => {
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
 
+                    { imageIsLoading && <LoadingSpinner /> }
                     {
                         editImage &&
                             <div className='registerImagePreview'>
@@ -181,7 +185,6 @@ const Register = () => {
                                     message: 'invalid email format'
                                 }
                             })} className='formInput' type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
-                            {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
                         </div>
                         
                         {/* AVATAR IMAGE UPLOAD */}
@@ -190,6 +193,7 @@ const Register = () => {
                             <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
                     </div>
+                    {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
 
                     {/* PASSWORD */}
                     <div className='inputWrapper'>
@@ -213,7 +217,7 @@ const Register = () => {
                     
                     <div className='formButtonWrapper'>
                         <button type='submit'>submit</button>
-                        <button onClick={googleAuthButton} disabled={true} >google</button>
+                        <button onClick={googleAuthButton}>google</button>
                     </div>
                 
                 </form>
