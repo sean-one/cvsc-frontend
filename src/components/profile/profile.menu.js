@@ -8,25 +8,24 @@ const ProfileMenuStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        /* margin: 0.25rem 0; */
+        margin-bottom: 0.5rem;
     }
 
     .profileTab {
         cursor: pointer;
-        color: #dcdbc4;
-        border-right: 1px solid black;
+        color: var(--secondary-text-color);
+        border-right: 1px solid var(--secondary-text-color);
         width: 100%;
         text-align: center;
         padding: 0.5rem 0;
     }
 
     .profileTab:first-child {
-        border-left: 1px solid black;
+        border-left: 1px solid var(--secondary-text-color);
     }
 
     .activeTab {
-        color: #010a00;
-        background-color: #dcdbc4
+        color: var(--main-text-color);
     }
 `;
 

@@ -159,7 +159,7 @@ const Register = () => {
                                 message: 'must be at least 4 characters'
                             },
                             maxLength: {
-                                value: 20,
+                                value: 50,
                                 message: 'username too long'
                             },
                             validate: validateUsername

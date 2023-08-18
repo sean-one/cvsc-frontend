@@ -10,12 +10,13 @@ const GlobalStyle = createGlobalStyle`
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
         --background-color: ${(props) => props.theme['--background-color']};
         --card-background-color: #607D8B;
-        --form-input-background: ${(props) => props.theme['--form-input-background']};
+        --form-input-background: #607D8B;
+        --image-border: #263238;
         --input-text-color: #263238;
         --input-placeholder: #66BB6A;
         
         --error-text-color: #58C46E;
-        --box-shadow-color: #0D2B12;
+        --box-shadow-color: #263238;
         --input-background-color: #4B6F51;
         --image-border-color: #DCDBC4;
         --image-box-shadow-color: #010A00;

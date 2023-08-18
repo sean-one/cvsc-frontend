@@ -6,7 +6,7 @@ import useImagePreview from '../../hooks/useImagePreview';
 import useNotification from '../../hooks/useNotification';
 import { useEventsQuery } from '../../hooks/useEventsApi';
 import { AddImageIcon } from '../icons/siteIcons';
-import { validatePassword, emailformat } from './form.validations';
+import { validatePassword, emailformat, validateUsername } from './form.validations';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import AxiosInstance from '../../helpers/axios';
 
@@ -18,6 +18,7 @@ const UserEditForm =({ setEditView }) => {
     const { register, handleSubmit, clearErrors, setError, reset, formState: { dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
+            username: auth?.user?.username,
             email: auth?.user?.email,
             avatar: null,
             password: '',
@@ -192,6 +193,20 @@ const UserEditForm =({ setEditView }) => {
                     </div>
             }
             <form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data' className='standardForm'>
+                {/* USERNAME */}
+                <div className='inputWrapper'>
+                    <input {...register('username', {
+                        minLength: {
+                            value: 4,
+                            message: 'must be at least 4 characters'
+                        },
+                        maxLength: {
+                            value: 50,
+                            message: 'username too long'
+                        },
+                        validate: validateUsername
+                    })} className='formInput' type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                </div>
 
                 {/* EVENT AND PROFILE IMAGE UPDATE */}
                 <div className='formRowInputIcon'>

@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { getImageSrc } from '../../../helpers/getImageSrc';
 
 import useAuth from '../../../hooks/useAuth';
-// import default_profile from '../../../assets/default_user.png'
 import UserEditForm from '../../forms/user.edit.form';
 import { role_types } from '../../../helpers/dataCleanUp';
 
 const UserAccountStyles = styled.div`
-
     .userAccountPage {
         display: flex;
+        border: 1px solid #263238;
         flex-direction: column;
         align-items: center;
         width: 100%;
@@ -28,6 +25,7 @@ const UserAccountStyles = styled.div`
         }}
 
     .profileImage {
+        min-width: 225px;
         max-width: 275px;
         
         @media (min-width: 500px) {
@@ -37,7 +35,7 @@ const UserAccountStyles = styled.div`
 
         canvas {
             max-width: 100%;
-            border: 1px solid var(--secondary-text-color);
+            border: 1px solid var(--image-border);
             display: block;
             box-shadow: 5px 5px 5px var(--main-text-color);
             border-radius: 50%;
@@ -45,7 +43,7 @@ const UserAccountStyles = styled.div`
         
         img {
             width: 100%;
-            border: 1px solid var(--secondary-text-color);
+            border: 1px solid var(--image-border);
             display: block;
             box-shadow: 5px 5px 5px var(--main-text-color);
             border-radius: 50%;
@@ -128,9 +126,7 @@ const UserAccount = () => {
                             <div className='accountButtons'>
                                 {
                                     (!editView) &&
-                                        <button onClick={() => setEditView(true)}>
-                                            <FontAwesomeIcon icon={faPencilAlt}/>
-                                        </button>
+                                        <button onClick={() => setEditView(true)}>edit</button>
                                 }
                             </div>
                             
