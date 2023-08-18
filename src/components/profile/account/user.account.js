@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import { getImageSrc } from '../../../helpers/getImageSrc';
 
 import useAuth from '../../../hooks/useAuth';
-import default_profile from '../../../assets/default_user.png'
+// import default_profile from '../../../assets/default_user.png'
 import UserEditForm from '../../forms/user.edit.form';
 import { role_types } from '../../../helpers/dataCleanUp';
 
@@ -19,7 +20,6 @@ const UserAccountStyles = styled.div`
         padding: 1.5rem 0.5rem;
         box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
-        background-color: var(--page-wrapper-background-color);
         
         @media (min-width: 500px) {
             flex-direction: row;
@@ -37,17 +37,17 @@ const UserAccountStyles = styled.div`
 
         canvas {
             max-width: 100%;
-            border: 1px solid #dcdbc4;
+            border: 1px solid var(--secondary-text-color);
             display: block;
-            box-shadow: 5px 5px 5px #010a00;
+            box-shadow: 5px 5px 5px var(--main-text-color);
             border-radius: 50%;
         }
         
         img {
             width: 100%;
-            border: 1px solid #dcdbc4;
+            border: 1px solid var(--secondary-text-color);
             display: block;
-            box-shadow: 5px 5px 5px #010a00;
+            box-shadow: 5px 5px 5px var(--main-text-color);
             border-radius: 50%;
         }}
     
@@ -104,11 +104,7 @@ const UserAccount = () => {
                         
                         <div className='profileImage'>
                             <img
-                                src={
-                                    (auth?.user?.avatar === null)
-                                        ? default_profile
-                                        : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`
-                                }
+                                src={getImageSrc(auth?.user?.avatar)}
                                 alt={`user avatar`}
                             />
                         </div>
