@@ -70,7 +70,7 @@ const Styles = styled.div`
         :disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            /* background-color: red; */
+            background-color: transparent;
         }
     }
     
@@ -209,6 +209,8 @@ const Styles = styled.div`
         display: flex;
         flex-direction: column;
         padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid #263238;
         box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
     }
