@@ -80,9 +80,14 @@ const Login = () => {
                         message: err.response.data.error.message
                     })
 
-                } else {
-                    console.log(err.name + ': ' + err.message)
-                    
+                } else if (err.response.status === 500) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: 'server error, please try again later'
+                        }
+                    })
                 }
             })
     }
@@ -127,6 +132,7 @@ const Login = () => {
                     </div>
                     
                     {errors.credentials ? <div className='errormessage'>{errors?.credentials?.message}</div> : null}
+                    {errors.server ? <div className='errormessage'>{errors?.server?.message}</div> : null}
 
                     <div className='formButtonWrapper'>
                         <button type='submit'>submit</button>

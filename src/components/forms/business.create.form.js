@@ -89,7 +89,7 @@ const BusinessCreateForm = () => {
             if (new_business.status === 201) {
 
                 // add new business to user auth roles
-                setAuth({ ...auth, roles: [
+                setAuth({ user: { ...auth.user, account_type: process.env.REACT_APP_ADMIN_ACCOUNT }, roles: [
                     ...auth.roles, 
                     { 
                         active_role: true,

@@ -28,7 +28,7 @@ const ServerDown = () => {
     return (
         <ServerDownStyles>
             <div className='serverDownWrapper'>
-                <div className='serverDownHeader'>Server is down...please check back</div>
+                <div className='serverDownHeader'>Server is down, please try again later</div>
                 <img src={ServerDownImage} alt='server down' />
             </div>
         </ServerDownStyles>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
@@ -9,14 +10,29 @@ import LoadingSpinner from '../../loadingSpinner';
 
 
 const RolesTab = () => {
-    const { auth } = useAuth()
-    const { data: roles, isLoading } = useUserRolesQuery(auth.user.id)
+    const { auth, logout_user } = useAuth()
+    const { data: roles, isLoading, isError, error } = useUserRolesQuery(auth.user.id)
+
+    let navigate = useNavigate()
 
     if(isLoading) {
         return <LoadingSpinner />
     }
 
+    if(isError) {
+        if((error.response.status === 400) || (error.response.status === 401)) {
+            logout_user()
 
+            navigate('/login')
+
+            return false
+        } else {
+            navigate('/')
+            return false
+        }
+    }
+
+    
     return (
         <div>
             <RoleRequest />

@@ -123,14 +123,25 @@ const Register = () => {
             
             else if(error?.response?.status === 409) {
                 setError(error.response.data.error.type, { message: error.response.data.error.message })
+            }
 
+            else if(error?.response?.status === 500) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'server error, please try again later'
+                    }
+                })
             }
             
             else {
                 dispatch({
                     type: "ADD_NOTIFICATION",
-                    notification_type: 'ERROR',
-                    message: 'something went wrong - uncaught error'
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'something went wrong - uncaught error'
+                    }
                 })
             }
         }
