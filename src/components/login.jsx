@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -42,7 +42,11 @@ const Login = () => {
     const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
         mode: "onBlur",
     });
+
+    const location = useLocation()
     let navigate = useNavigate();
+
+    const navigateTo = location.state?.from || '/profile'
     
     const sendLogin = (data) => {
         AxiosInstance.post('/auth/login', data)
@@ -58,8 +62,7 @@ const Login = () => {
                         }
                     })
 
-                    // forward to profile page
-                    navigate('/profile');
+                    navigate(navigateTo)
 
                 } else {
                     dispatch({

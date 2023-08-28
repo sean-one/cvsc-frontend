@@ -45,7 +45,7 @@ const ProfileMenu = () => {
         }
     }
 
-    console.log(auth)
+    
     return (
         <ProfileMenuStyles>
             <div className='profileMenu'>

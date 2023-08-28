@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
@@ -13,6 +13,7 @@ const RolesTab = () => {
     const { auth, logout_user } = useAuth()
     const { data: roles, isLoading, isError, error } = useUserRolesQuery(auth.user.id)
 
+    const { pathname } = useLocation()
     let navigate = useNavigate()
 
     if(isLoading) {
@@ -23,7 +24,7 @@ const RolesTab = () => {
         if((error.response.status === 400) || (error.response.status === 401)) {
             logout_user()
 
-            navigate('/login')
+            navigate('/login', { state: { from: pathname } })
 
             return false
         } else {
