@@ -44,6 +44,7 @@ const BusinessCreateForm = () => {
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
+        localStorage.setItem('createBusinessForm', JSON.stringify(business_data));
         try {
             const formData = new FormData()
 
@@ -87,6 +88,8 @@ const BusinessCreateForm = () => {
             const new_business = await createBusiness(formData)
 
             if (new_business.status === 201) {
+                // remove saved form from local storage
+                localStorage.removeItem('createBusinessForm')
 
                 // add new business to user auth roles
                 setAuth({ user: { ...auth.user, account_type: process.env.REACT_APP_ADMIN_ACCOUNT }, roles: [
@@ -105,7 +108,7 @@ const BusinessCreateForm = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `${new_business.data.business_name} business request submitted`
+                        message: `New business: ${new_business.data.business_name}, has been created`
                     }
                 })
 
@@ -122,28 +125,28 @@ const BusinessCreateForm = () => {
             // missing required business branding logo image
             if (error.message === 'missing_image') {
                 setError('business_avatar', {
-                    message: 'business brand logo is required'
+                    message: 'Business branding (logo) is required'
                 }, { shouldFocus: true })
             }
             // business type was venue or both but did not include required address components
             else if (error.message === 'location_required') {
                 setError('formatted_address', {
-                    message: 'address required for business venues'
+                    message: 'Business Address required for venue business type'
                 })
             }
             // invalid business type attempted to be submitted
             else if (error.message === 'invalid_business_type') {
                 setError('business_type', {
-                    message: 'invalid business type'
+                    message: 'Business type must be Venue, Brand, or Both'
                 }, { shouldFocus: true })
             }
-            // 
+            // form data is incorrectly formatted, missing, or invalid 
             else if (error.response.status === 400) {
                 setError(`${error.response.data.error.type}`, {
                     message: error.response.data.error.message
                 }, { shouldFocus: true })
             }
-
+            // token errors (missing, exp, invalid), require user to login
             else if (error.response.status === 401) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -167,13 +170,29 @@ const BusinessCreateForm = () => {
     }
 
     useEffect(() => {
+        // watch for business type - if not brand, set true to show business location form section
         if (watchBusinessType !== 'brand') {
-            setValue('business_location', true); // Set business_location to true for non-'brand' type
+            setValue('business_location', true);
+        // adjust if business type is set to brand - no need for place id or location for section
         } else {
+            // this will also delete what was there before so not to confuse if location is set to false but form still contains location information
             setValue('business_location', false); // Reset business_location for 'brand' type
             setValue('place_id', ''); // Reset place_id field when business_type changes to 'brand'
         }
     }, [watchBusinessType, setValue])
+
+    useEffect(() => {
+        // check for saved form in local storage
+        const savedFormData = localStorage.getItem('createBusinessForm');
+        
+        // if found set values to values saved in local storage
+        if (savedFormData) {
+            const parsedData = JSON.parse(savedFormData);
+            for (let key in parsedData) {
+                setValue(key, parsedData[key]);
+            }
+        }
+    }, [setValue])
 
 
     return (
@@ -205,7 +224,6 @@ const BusinessCreateForm = () => {
                             </div>
                     }
 
-                    {errors.business_avatar ? <div className='errormessage'>{errors.business_avatar?.message}</div> : null}
                     <div className='formRowInputIcon'>
                         {/* EMAIL */}
                         <div className='inputWrapper'>
@@ -216,7 +234,6 @@ const BusinessCreateForm = () => {
                                     message: 'invalid email format'
                                 }
                             })} className='formInput' type='text' onClick={() => clearErrors('business_email')} placeholder='Email' />
-                            {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
                         </div>
 
                         {/* BUSINESS AVATAR UPLOAD */}
@@ -225,6 +242,8 @@ const BusinessCreateForm = () => {
                             <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
                     </div>
+                    {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
+                    {errors.business_avatar ? <div className='errormessage'>{errors.business_avatar?.message}</div> : null}
 
                     {/* BUSINESS DESCRIPTION */}
                     <div className='inputWrapper'>
@@ -248,7 +267,6 @@ const BusinessCreateForm = () => {
                                 <option value='venue'>Dispensary</option>
                                 <option value='both'>{`Brand & Dispensary`}</option>
                             </select>
-                            {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
                         </div>
                         
                         {/* BUSINESS LOCATION CHECKBOX */}
@@ -263,9 +281,10 @@ const BusinessCreateForm = () => {
                                 type='checkbox'
                                 name='business_location'
                                 disabled={watchBusinessType !== 'brand'}
-                            />
+                                />
                         </label>
                     </div>
+                    {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
 
                     {
                         (business_location) &&
