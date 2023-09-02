@@ -131,14 +131,8 @@ const BusinessCreateForm = () => {
             // business type was venue or both but did not include required address components
             else if (error.message === 'location_required') {
                 setError('formatted_address', {
-                    message: 'Business Address required for venue business type'
+                    message: 'Business address required for venue business type'
                 })
-            }
-            // invalid business type attempted to be submitted
-            else if (error.message === 'invalid_business_type') {
-                setError('business_type', {
-                    message: 'Business type must be Venue, Brand, or Both'
-                }, { shouldFocus: true })
             }
             // form data is incorrectly formatted, missing, or invalid 
             else if (error.response.status === 400) {
@@ -161,12 +155,8 @@ const BusinessCreateForm = () => {
                 return
             }
 
-            else {
-                console.log(`uncaught error: ${error}`)
-            }
-
+            else { console.log(`uncaught error: ${error}`) }
         }
-
     }
 
     useEffect(() => {

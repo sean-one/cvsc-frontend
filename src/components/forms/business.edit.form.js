@@ -18,7 +18,7 @@ const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = () => {
-    const { auth } = useAuth()
+    const { auth, logout_user } = useAuth()
     const { business_id } = useParams()
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
@@ -33,7 +33,7 @@ const BusinessEditForm = () => {
         defaultValues: {
             business_email: business?.business_email,
             business_description: business?.business_description,
-            place_id: business?.place_id,
+            place_id: business?.place_id || '',
             formatted_address: business?.formatted_address,
             business_avatar: '',
             business_type: business?.business_type,
@@ -52,6 +52,7 @@ const BusinessEditForm = () => {
     const watchBusinessType = watch('business_type');
 
     const update_business = async (business_updates) => {
+        localStorage.setItem('editBusinessForm', JSON.stringify(business_updates))
         try {
             const formData = new FormData()
             
@@ -91,6 +92,9 @@ const BusinessEditForm = () => {
             const update_response = await updateBusiness({ business_updates: formData, business_id: business.id })
             
             if (update_response.status === 201) {
+                // remove saved form from local storage
+                localStorage.removeItem('editBusinessForm')
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -104,19 +108,41 @@ const BusinessEditForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
             // missing all or portion of address
             if(error.message === 'location_required') {
                 setError('address', {
                     message: 'address is required for business venues'
                 })
             }
+            // incorrectly formated, missing or invalid data
+            else if(error.response.status === 400) {
+                setError(`${error.response.data.error.type}`, {
+                    message: error.response.data.error.message
+                }, { shouldFocus: true })
+            }
+            // missing, expired, or invalid token
+            else if(error.response.status === 401) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error.response.data.error.message
+                    }
+                })
+
+                logout_user()
+
+                return
+            }
+
+            else { console.log(`uncaught error: ${error}`) }
         }
 
     }
 
     const close_edit_view = () => {
         setEditImage(false)
+        localStorage.removeItem('editBusinessForm')
         reset()
 
         navigate(`/business/${business.id}`)
@@ -127,9 +153,25 @@ const BusinessEditForm = () => {
             setValue('business_location', true)
         } else {
             setValue('business_location', false)
-            setValue('place_id', business?.place_id)
+            setValue('place_id', '')
         }
-    }, [watchBusinessType, setValue, business.place_id])
+    }, [watchBusinessType, setValue])
+
+    useEffect(() => {
+        // check for saved form in local storage
+        const savedFormData = localStorage.getItem('editBusinessForm');
+
+        // if found set values to values saved in local storage
+        if (savedFormData) {
+            const parsedData = JSON.parse(savedFormData);
+            for (let key in parsedData) {
+                console.log(`key: ${key}, value: ${parsedData[key]}`)
+                if(parsedData[key] !== null) {
+                    setValue(key, parsedData[key]);
+                }
+            }
+        }
+    }, [setValue])
 
     
     return (
