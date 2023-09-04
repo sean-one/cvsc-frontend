@@ -28,6 +28,7 @@ const BusinessEditForm = () => {
 
     let navigate = useNavigate()
 
+    console.log(business)
     const { register, handleSubmit, clearErrors, watch, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
@@ -52,7 +53,6 @@ const BusinessEditForm = () => {
     const watchBusinessType = watch('business_type');
 
     const update_business = async (business_updates) => {
-        localStorage.setItem('editBusinessForm', JSON.stringify(business_updates))
         try {
             const formData = new FormData()
             
@@ -156,22 +156,6 @@ const BusinessEditForm = () => {
             setValue('place_id', '')
         }
     }, [watchBusinessType, setValue])
-
-    useEffect(() => {
-        // check for saved form in local storage
-        const savedFormData = localStorage.getItem('editBusinessForm');
-
-        // if found set values to values saved in local storage
-        if (savedFormData) {
-            const parsedData = JSON.parse(savedFormData);
-            for (let key in parsedData) {
-                console.log(`key: ${key}, value: ${parsedData[key]}`)
-                if(parsedData[key] !== null) {
-                    setValue(key, parsedData[key]);
-                }
-            }
-        }
-    }, [setValue])
 
     
     return (
