@@ -51,10 +51,3 @@ export const role_types = {
     [process.env.REACT_APP_MANAGER_ACCOUNT]: { type: 'manager', color: 'blue' },
     [process.env.REACT_APP_ADMIN_ACCOUNT]: { type: 'admin', color: 'green' }
 }
-
-export const role_colors = {
-    'basic': 'gray',
-    'creator': 'yellow',
-    'manager': 'blue',
-    'admin': 'green'
-}
