@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -7,10 +7,11 @@ import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
+import { useBusinessQuery, useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
-import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
+import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
+import LoadingSpinner from '../loadingSpinner';
 
 import AddressForm from './address.form';
 
@@ -20,44 +21,39 @@ const BusinessEditFormStyles = styled.div`
 const BusinessEditForm = () => {
     const { auth, logout_user } = useAuth()
     const { business_id } = useParams()
+    const { data: business, isLoading } = useBusinessQuery(business_id)
+
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
-    const { state: business } = useLocation()
+    
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     let business_role = {}
 
     let navigate = useNavigate()
 
-    console.log(business)
-    const { register, handleSubmit, clearErrors, watch, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
-            business_email: business?.business_email,
-            business_description: business?.business_description,
-            place_id: business?.place_id || '',
-            formatted_address: business?.formatted_address,
+            business_email: business?.data.business_email,
+            business_description: business?.data.business_description,
+            place_id: business?.data.place_id || '',
+            formatted_address: business?.data.formatted_address,
             business_avatar: '',
-            business_type: business?.business_type,
-            business_instagram: business?.business_instagram || '',
-            business_website: business?.business_website || '',
-            business_facebook: business?.business_facebook || '',
-            business_phone: business?.business_phone || '',
-            business_twitter: business?.business_twitter || '',
-            business_location: false,
+            business_type: business?.data.business_type,
+            business_instagram: business?.data.business_instagram || '',
+            business_website: business?.data.business_website || '',
+            business_facebook: business?.data.business_facebook || '',
+            business_phone: business?.data.business_phone || '',
+            business_twitter: business?.data.business_twitter || '',
         }
     })
 
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
 
-    const business_location = watch('business_location');
-    const watchBusinessType = watch('business_type');
-
     const update_business = async (business_updates) => {
+        localStorage.setItem('editBusinessForm', JSON.stringify(business_updates))
         try {
             const formData = new FormData()
-            
-            // delete business_location boolean - no longer needed
-            delete business_updates.business_location
             
             // remove entries that are unchanged
             for (const [key] of Object.entries(business_updates)) {
@@ -108,6 +104,7 @@ const BusinessEditForm = () => {
             }
 
         } catch (error) {
+            console.log(error.response)
             // missing all or portion of address
             if(error.message === 'location_required') {
                 setError('address', {
@@ -145,24 +142,29 @@ const BusinessEditForm = () => {
         localStorage.removeItem('editBusinessForm')
         reset()
 
-        navigate(`/business/${business.id}`)
+        navigate(`/business/${business_id}`)
     }
 
     useEffect(() => {
-        if(watchBusinessType !== 'brand') {
-            setValue('business_location', true)
-        } else {
-            setValue('business_location', false)
-            setValue('place_id', '')
-        }
-    }, [watchBusinessType, setValue])
+        // check for saved form in local storage
+        const savedFormData = localStorage.getItem('editBusinessForm');
 
+        // if found set values to values saved in local storage
+        if (savedFormData) {
+            const parsedData = JSON.parse(savedFormData);
+            for (let key in parsedData) {
+                setValue(key, parsedData[key]);
+            }
+        }
+    }, [setValue])
+
+    if (isLoading) { return <LoadingSpinner /> }
     
     return (
         <BusinessEditFormStyles>
             <div>
                 <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
-                    <h1>{business?.business_name}</h1>
+                    <h1>{business?.data.business_name}</h1>
                     
                     <div className='formImage formCirclePreview'>
                         {
@@ -174,8 +176,8 @@ const BusinessEditForm = () => {
                                 />
                                 : <img
                                     // className=''
-                                    src={image_link(business?.business_avatar)}
-                                    alt={business.business_name}
+                                    src={image_link(business?.data.business_avatar)}
+                                    alt={business?.data.business_name}
                                 />
                         }
                     </div>
@@ -208,50 +210,31 @@ const BusinessEditForm = () => {
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
+                    {/* BUSINESS TYPE SELECTOR */}
                     {
                         (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                            <div className='formRowInputIcon'>
-                                {/* BUSINESS TYPE SELECTOR */}
-                                <div className='inputWrapper'>
-                                    <select {...register('business_type', {
-                                        patter: {
-                                            value: businessTypeList,
-                                            message: 'invalid business type'
-                                        }
-                                    })} className='formInput' onClick={() => clearErrors('business_type')} type='text'>
-                                        <option value='brand'>Brand</option>
-                                        <option value='venue'>Dispensary</option>
-                                        <option value='both'>{`Brand & Dispensary`}</option>
-                                    </select>
-                                    {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
-                                </div>
-
-                                {/* BUSINESS LOCATION CHECKBOX */}
-                                <label htmlFor='business_location' className='formInput inputLabel'>
-                                    {
-                                        business_location ? <RemoveLocationIcon /> : <AddLocationIcon />
+                        <div className='inputWrapper'>
+                                <select {...register('business_type', {
+                                    patter: {
+                                        value: businessTypeList,
+                                        message: 'invalid business type'
                                     }
-                                    <input
-                                        {...register('business_location')}
-                                        id='business_location'
-                                        className='inputLabelInput'
-                                        type='checkbox'
-                                        name='business_location'
-                                        disabled={watchBusinessType !== 'brand'}
-                                    />
-                                </label>
+                                })} className='formInput' onClick={() => clearErrors('business_type')} type='text'>
+                                    <option value='brand'>Brand</option>
+                                    <option value='venue'>Dispensary</option>
+                                    <option value='both'>{`Brand & Dispensary`}</option>
+                                </select>
+                                {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
                             </div>
                     }
-                    {
-                        (business_location) &&
-                            <AddressForm
-                                register={register}
-                                setValue={setValue}
-                                clearErrors={clearErrors}
-                                errors={errors}
-                                defaultValue={business?.formatted_address}
-                            />
-                    }
+
+                    <AddressForm
+                        register={register}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
+                        errors={errors}
+                        defaultValue={business?.data.formatted_address}
+                    />
                     
                     <div>Business Contacts & Social Media:</div>
                     {/* INSTAGRAM */}

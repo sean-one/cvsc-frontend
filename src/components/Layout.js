@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
         --input-text-color: #263238;
         --input-placeholder: #66BB6A;
         
-        --error-text-color: #58C46E;
+        --error-text-color: ${(props) => props.theme['--error-text-color']};
         --box-shadow-color: #263238;
         --input-background-color: #4B6F51;
         --image-border-color: #DCDBC4;

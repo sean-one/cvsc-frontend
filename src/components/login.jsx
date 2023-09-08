@@ -51,6 +51,7 @@ const Login = () => {
     const sendLogin = (data) => {
         AxiosInstance.post('/auth/login', data)
             .then(response => {
+                console.log(response)
                 if(response.status === 200) {
                     setAuth({ user: response.data.user, roles: response.data.roles })
 
@@ -63,6 +64,8 @@ const Login = () => {
                     })
 
                     navigate(navigateTo)
+
+                    return
 
                 } else {
                     dispatch({

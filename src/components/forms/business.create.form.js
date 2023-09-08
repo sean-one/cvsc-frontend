@@ -9,7 +9,7 @@ import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-import { AddImageIcon, AddLocationIcon, RemoveLocationIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
+import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 
 import AddressForm from './address.form';
 
@@ -22,7 +22,7 @@ const BusinessCreateForm = () => {
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
-    const { register, handleSubmit, watch, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             business_name: null,
@@ -33,13 +33,12 @@ const BusinessCreateForm = () => {
             business_instagram: '',
             business_facebook: '',
             business_website: '',
-            business_twitter: ''
+            business_twitter: '',
+            place_id: null,
+            formatted_address: '',
 
         }
     });
-
-    const business_location = watch('business_location', false);
-    const watchBusinessType = watch('business_type')
 
     let navigate = useNavigate();
 
@@ -56,9 +55,6 @@ const BusinessCreateForm = () => {
 
                 formData.set('business_avatar', business_avatar)
             }
-
-            // delete business_location boolean - no longer needed
-            delete business_data.business_location
 
             // check business type and confirm business address when required
             if ((business_data.business_type === 'both' || business_data.business_type === 'venue') && !business_data.place_id) {
@@ -160,18 +156,6 @@ const BusinessCreateForm = () => {
     }
 
     useEffect(() => {
-        // watch for business type - if not brand, set true to show business location form section
-        if (watchBusinessType !== 'brand') {
-            setValue('business_location', true);
-        // adjust if business type is set to brand - no need for place id or location for section
-        } else {
-            // this will also delete what was there before so not to confuse if location is set to false but form still contains location information
-            setValue('business_location', false); // Reset business_location for 'brand' type
-            setValue('place_id', ''); // Reset place_id field when business_type changes to 'brand'
-        }
-    }, [watchBusinessType, setValue])
-
-    useEffect(() => {
         // check for saved form in local storage
         const savedFormData = localStorage.getItem('createBusinessForm');
         
@@ -243,48 +227,28 @@ const BusinessCreateForm = () => {
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
-                    <div className='formRowInputIcon'>
-                        {/* BUSINESS TYPE SELECTOR */}
-                        <div className='inputWrapper'>
-                            <select {...register('business_type', {
-                                required: 'business type required',
-                                pattern: {
-                                    value: businessTypeList,
-                                    message: 'invalid business type'
-                                }
-                            })} className='formInput' onClick={() => clearErrors('business_type')} type='text'>
-                                <option value='brand'>Brand</option>
-                                <option value='venue'>Dispensary</option>
-                                <option value='both'>{`Brand & Dispensary`}</option>
-                            </select>
-                        </div>
-                        
-                        {/* BUSINESS LOCATION CHECKBOX */}
-                        <label htmlFor='business_location' className='formInput inputLabel'>
-                            {
-                                business_location ? <RemoveLocationIcon /> : <AddLocationIcon />
+                    {/* BUSINESS TYPE SELECTOR */}
+                    <div className='inputWrapper'>
+                        <select {...register('business_type', {
+                            required: 'business type required',
+                            pattern: {
+                                value: businessTypeList,
+                                message: 'invalid business type'
                             }
-                            <input
-                                {...register('business_location')}
-                                id='business_location'
-                                className='inputLabelInput'
-                                type='checkbox'
-                                name='business_location'
-                                disabled={watchBusinessType !== 'brand'}
-                                />
-                        </label>
+                        })} className='formInput' onClick={() => clearErrors('business_type')} type='text'>
+                            <option value='brand'>Brand</option>
+                            <option value='venue'>Dispensary</option>
+                            <option value='both'>{`Brand & Dispensary`}</option>
+                        </select>
                     </div>
                     {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
 
-                    {
-                        (business_location) &&
-                            <AddressForm
-                                register={register}
-                                setValue={setValue}
-                                errors={errors}
-                                clearErrors={clearErrors}
-                            />
-                    }
+                    <AddressForm
+                        register={register}
+                        setValue={setValue}
+                        errors={errors}
+                        clearErrors={clearErrors}
+                    />
 
                     <div>Business Contacts & Social Media:</div>
                     {/* INSTAGRAM */}
