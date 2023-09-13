@@ -45,13 +45,12 @@ const Login = () => {
 
     const location = useLocation()
     let navigate = useNavigate();
-
+    
     const navigateTo = location.state?.from || '/profile'
     
     const sendLogin = (data) => {
         AxiosInstance.post('/auth/login', data)
             .then(response => {
-                console.log(response)
                 if(response.status === 200) {
                     setAuth({ user: response.data.user, roles: response.data.roles })
 
@@ -103,7 +102,7 @@ const Login = () => {
         window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
     }
 
-
+    console.log(location)
     return (
         <LoginStyles>
             <div className='loginWrap'>

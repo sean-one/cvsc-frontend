@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -7,11 +7,10 @@ import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-import { useBusinessQuery, useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
+import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
-import LoadingSpinner from '../loadingSpinner';
 
 import AddressForm from './address.form';
 
@@ -19,12 +18,12 @@ const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = () => {
-    const { auth, logout_user } = useAuth()
+    const { auth } = useAuth()
     const { business_id } = useParams()
-    const { data: business, isLoading } = useBusinessQuery(business_id)
 
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { dispatch } = useNotification()
+    const { state: business } = useLocation()
     
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     let business_role = {}
@@ -34,24 +33,23 @@ const BusinessEditForm = () => {
     const { register, handleSubmit, clearErrors, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
-            business_email: business?.data.business_email,
-            business_description: business?.data.business_description,
-            place_id: business?.data.place_id || '',
-            formatted_address: business?.data.formatted_address,
+            business_email: business?.business_email,
+            business_description: business?.business_description,
+            place_id: business?.place_id || '',
+            formatted_address: business?.formatted_address,
             business_avatar: '',
-            business_type: business?.data.business_type,
-            business_instagram: business?.data.business_instagram || '',
-            business_website: business?.data.business_website || '',
-            business_facebook: business?.data.business_facebook || '',
-            business_phone: business?.data.business_phone || '',
-            business_twitter: business?.data.business_twitter || '',
+            business_type: business?.business_type,
+            business_instagram: business?.business_instagram || '',
+            business_website: business?.business_website || '',
+            business_facebook: business?.business_facebook || '',
+            business_phone: business?.business_phone || '',
+            business_twitter: business?.business_twitter || '',
         }
     })
 
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
 
     const update_business = async (business_updates) => {
-        localStorage.setItem('editBusinessForm', JSON.stringify(business_updates))
         try {
             const formData = new FormData()
             
@@ -127,9 +125,9 @@ const BusinessEditForm = () => {
                     }
                 })
 
-                logout_user()
+                navigate('/login', { state: { from: `/business/admin/${business_id}` } })
 
-                return
+                return null
             }
 
             else { console.log(`uncaught error: ${error}`) }
@@ -139,32 +137,17 @@ const BusinessEditForm = () => {
 
     const close_edit_view = () => {
         setEditImage(false)
-        localStorage.removeItem('editBusinessForm')
         reset()
 
         navigate(`/business/${business_id}`)
     }
 
-    useEffect(() => {
-        // check for saved form in local storage
-        const savedFormData = localStorage.getItem('editBusinessForm');
 
-        // if found set values to values saved in local storage
-        if (savedFormData) {
-            const parsedData = JSON.parse(savedFormData);
-            for (let key in parsedData) {
-                setValue(key, parsedData[key]);
-            }
-        }
-    }, [setValue])
-
-    if (isLoading) { return <LoadingSpinner /> }
-    
     return (
         <BusinessEditFormStyles>
             <div>
                 <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
-                    <h1>{business?.data.business_name}</h1>
+                    <h1>{business?.business_name}</h1>
                     
                     <div className='formImage formCirclePreview'>
                         {
@@ -176,8 +159,8 @@ const BusinessEditForm = () => {
                                 />
                                 : <img
                                     // className=''
-                                    src={image_link(business?.data.business_avatar)}
-                                    alt={business?.data.business_name}
+                                    src={image_link(business?.business_avatar)}
+                                    alt={business?.business_name}
                                 />
                         }
                     </div>
@@ -215,7 +198,7 @@ const BusinessEditForm = () => {
                         (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='inputWrapper'>
                                 <select {...register('business_type', {
-                                    patter: {
+                                    pattern: {
                                         value: businessTypeList,
                                         message: 'invalid business type'
                                     }
@@ -233,7 +216,7 @@ const BusinessEditForm = () => {
                         setValue={setValue}
                         clearErrors={clearErrors}
                         errors={errors}
-                        defaultValue={business?.data.formatted_address}
+                        defaultValue={business?.formatted_address}
                     />
                     
                     <div>Business Contacts & Social Media:</div>

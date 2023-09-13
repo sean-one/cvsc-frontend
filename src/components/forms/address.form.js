@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AutoComplete from 'react-google-autocomplete';
 
 
-const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=null}) => {
+const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=''}) => {
     const [ inputValue, setInputValue ] = useState(defaultValue)
 
     useEffect(() => {
