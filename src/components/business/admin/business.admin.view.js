@@ -44,12 +44,22 @@ const BusinessAdminViewStyles = styled.div`
 
 const BusinessAdminView = () => {
     const { business_id } = useParams()
-    const { data: business, isLoading } = useBusinessQuery(business_id)
+    const { data, isLoading, isSuccess, isError } = useBusinessQuery(business_id)
+    let business = {}
 
     let navigate = useNavigate()
 
     if(isLoading) {
         return <LoadingSpinner />
+    }
+
+    if(isSuccess) {
+        business = data.data
+    }
+
+    if(isError) {
+        navigate('/profile/admin')
+        return null
     }
 
 
@@ -58,23 +68,23 @@ const BusinessAdminView = () => {
             <div>
                 <div className='sectionContainer'>
                     <div className='businessAdminViewHeader'>
-                        <h1>{business.data.business_name}</h1>
+                        <h1>{business.business_name}</h1>
                         <button onClick={() => navigate('/event/create', { state: business_id })}>+ event</button>
                     </div>
                     {
-                        (business?.data.formatted_address !== null) &&
-                            <div>{business?.data?.formatted_address}</div>
+                        (business?.formatted_address !== null) &&
+                            <div>{business?.formatted_address}</div>
                     }
                     <div className='businessAdminViewDetails'>
-                        <div className='businessAdminViewStatus'>{`Business Status: ${business?.data.active_business ? 'Active' : 'Inactive'}`}</div>
+                        <div className='businessAdminViewStatus'>{`Business Status: ${business?.active_business ? 'Active' : 'Inactive'}`}</div>
                         <div className='businessAdminViewBusinessButtons'>
                             <ActiveBusinessToggle business_id={business_id} />
-                            <EditBusinessButton business={business?.data} />
-                            <DeleteBusiness business_name={business?.data?.business_name} business_id={business?.data?.id} />
+                            <EditBusinessButton business={business} />
+                            <DeleteBusiness business_name={business?.business_name} business_id={business?.id} />
                         </div>
                     </div>
                     <div className='businessAdminViewCreationRequest'>
-                        <div>{`Manage Creation Request: ${business?.data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
+                        <div>{`Manage Creation Request: ${business?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                         <RequestStatusToggle business_id={business_id} />
                     </div>
                 </div>

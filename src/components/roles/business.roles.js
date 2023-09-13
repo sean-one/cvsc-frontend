@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useBusinessRolesQuery } from '../../hooks/useRolesApi';
 import LoadingSpinner from '../loadingSpinner';
@@ -11,8 +11,10 @@ import ManagerRoles from '../roles/manager.roles';
 
 const BusinessRoles = () => {
     let { business_id } = useParams()
-    const { data: business_roles, isLoading, isSuccess } = useBusinessRolesQuery(business_id)
+    const { data: business_roles, isLoading, isSuccess, isError } = useBusinessRolesQuery(business_id)
     let inactive_roles, pending_roles, creator_roles, manager_roles = []
+
+    let navigate = useNavigate()
 
     if(isLoading) {
         return <LoadingSpinner />
@@ -27,12 +29,17 @@ const BusinessRoles = () => {
         manager_roles = business_roles.data.filter(business_role => (business_role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT && business_role.active_role))
     }
 
+    if(isError) {
+        navigate('/profile/admin')
+        return null
+    }
+
     return (
         <div>
             {
                 (business_roles?.data.length < 1)
-                    ? <h4>No Current User Roles</h4>
-                    : <h4>Current User Roles</h4>
+                    ? <h4>No Business Roles</h4>
+                    : <h4>Current Business Roles</h4>
             }
             {
                 (inactive_roles.length > 0) &&

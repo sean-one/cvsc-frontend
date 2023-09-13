@@ -148,7 +148,7 @@ const BusinessCreateForm = () => {
 
                 logout_user()
 
-                return
+                return null
             }
 
             else { console.log(`uncaught error: ${error}`) }

@@ -102,7 +102,7 @@ const Login = () => {
         window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
     }
 
-    console.log(location)
+    
     return (
         <LoginStyles>
             <div className='loginWrap'>
