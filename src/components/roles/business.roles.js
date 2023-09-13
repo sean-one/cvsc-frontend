@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { useBusinessRolesQuery } from '../../hooks/useRolesApi';
 import LoadingSpinner from '../loadingSpinner';
@@ -9,13 +8,6 @@ import PendingRoles from '../roles/pending.roles';
 import CreatorRoles from '../roles/creator.roles';
 import ManagerRoles from '../roles/manager.roles';
 
-const BusinessRolesStyles = styled.div`
-    .businessRolesWrapper {
-        margin-top: 1rem;
-        border-top: 1px solid black;
-        padding-top: 0.75rem;
-    }
-`;
 
 const BusinessRoles = () => {
     let { business_id } = useParams()
@@ -27,38 +19,38 @@ const BusinessRoles = () => {
     }
 
     if(isSuccess) {
+        // active_role=false & approved_by=user_id
         inactive_roles = business_roles.data.filter(business_role => !business_role.active_role && business_role.approved_by !== null)
+        // active_role=false & approved_by=null
         pending_roles = business_roles.data.filter(business_role => !business_role.active_role && business_role.approved_by === null)
         creator_roles = business_roles.data.filter(business_role => (business_role.role_type === process.env.REACT_APP_CREATOR_ACCOUNT && business_role.active_role))
         manager_roles = business_roles.data.filter(business_role => (business_role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT && business_role.active_role))
     }
 
     return (
-        <BusinessRolesStyles>
-            <div className='businessRolesWrapper'>
-                {
-                    (business_roles?.data.length < 1)
-                        ? <h4>No Current User Roles</h4>
-                        : <h4>Current User Roles</h4>
-                }
-                {
-                    (inactive_roles.length > 0) &&
-                        <InactiveRoles roles_list={inactive_roles} />
-                }
-                {
-                    (pending_roles.length > 0 && inactive_roles.length === 0) &&
-                        <PendingRoles roles_list={pending_roles} />
-                }
-                {
-                    (creator_roles.length > 0 && inactive_roles.length === 0) &&
-                        <CreatorRoles roles_list={creator_roles} />
-                }
-                {
-                    (manager_roles.length > 0 && inactive_roles.length === 0) &&
-                        <ManagerRoles roles_list={manager_roles} />
-                }
-            </div>
-        </BusinessRolesStyles>
+        <div>
+            {
+                (business_roles?.data.length < 1)
+                    ? <h4>No Current User Roles</h4>
+                    : <h4>Current User Roles</h4>
+            }
+            {
+                (inactive_roles.length > 0) &&
+                    <InactiveRoles roles_list={inactive_roles} />
+            }
+            {
+                (pending_roles.length > 0 && inactive_roles.length === 0) &&
+                    <PendingRoles roles_list={pending_roles} />
+            }
+            {
+                (creator_roles.length > 0 && inactive_roles.length === 0) &&
+                    <CreatorRoles roles_list={creator_roles} />
+            }
+            {
+                (manager_roles.length > 0 && inactive_roles.length === 0) &&
+                    <ManagerRoles roles_list={manager_roles} />
+            }
+        </div>
     )
 }
 

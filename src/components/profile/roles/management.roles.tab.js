@@ -7,10 +7,6 @@ import LoadingSpinner from '../../loadingSpinner';
 import AllManagementPendingRequest from './all.management.pending.request';
 
 const ManagementRolesTabStyles = styled.div`
-    .managementRolesTabWrapper {
-        padding: 1.75rem 0 0;
-    }
-
     .managementRolesTabHeader {
         width: 100%;
         text-align: center;
@@ -46,10 +42,10 @@ const ManagementRolesTab = ({ user_id }) => {
 
     return (
         <ManagementRolesTabStyles>
-            <div className='managementRolesTabWrapper'>
+            <div className='sectionContainer'>
                 {
                     (pending_roles.data.length > 0) &&
-                        <div className='managementRolesTabHeader'>Management Roles</div>
+                        <div className='sectionHeader'>Management Roles</div>
                 }
                 {
                     Object.entries(businesses).map(([businessName, roles]) => (

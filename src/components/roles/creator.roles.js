@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import Role from './role';
 
-const CreateRolesStyles = styled.div``;
 
 const CreatorRoles = ({ roles_list }) => {
     const [viewCreators, setViewCreators] = useState(true)
@@ -14,24 +12,22 @@ const CreatorRoles = ({ roles_list }) => {
 
 
     return (
-        <CreateRolesStyles>
-            <div className='rolesListWrapper'>
-                <div className='rolesListHeader'>
-                    <div>Creators</div>
-                    <div onClick={() => toggleCreators()}>toggle</div>
-                </div>
-                {
-                    viewCreators &&
-                        <div>
-                            {
-                                roles_list.map(role =>
-                                    <Role key={role.id} role={role} rolelist='creatorlist' />
-                                )
-                            }
-                        </div>
-                }
+        <div className='sectionContainer'>
+            <div className='sectionHeader sectionListHeader'>
+                <div>Creators</div>
+                <div onClick={() => toggleCreators()}>{viewCreators ? 'hide' : 'view'}</div>
             </div>
-        </CreateRolesStyles>
+            {
+                viewCreators &&
+                    <div>
+                        {
+                            roles_list.map(role =>
+                                <Role key={role.id} role={role} rolelist='creatorlist' />
+                            )
+                        }
+                    </div>
+            }
+        </div>
     )
 }
 

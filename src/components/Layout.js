@@ -48,6 +48,25 @@ const Styles = styled.div`
             margin: 0 auto;
         }
     }
+
+    .sectionContainer {
+        padding: 1.5rem 0.5rem;
+        border-radius: 5px;
+        border: 1px solid var(--box-shadow-color);
+        box-shadow: 5px 5px 5px var(--box-shadow-color);
+        margin-bottom: 0.75rem;
+    }
+
+    .sectionHeader {
+        display: flex;
+        font-weight: bold;
+        letter-spacing: 0.1rem;
+        justify-content: space-between;
+    }
+
+    .sectionListHeader {
+        border-bottom: 2px solid black;
+    }
     
     button {
         padding: 0.5rem 1.25rem;
@@ -203,24 +222,6 @@ const Styles = styled.div`
         display: flex;
         justify-content: space-around;
         padding-top: 0.75rem;
-    }
-
-    .rolesListWrapper {
-        display: flex;
-        flex-direction: column;
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
-        border: 1px solid #263238;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
-        border-radius: 5px;
-    }
-
-    .rolesListHeader {
-        display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-        letter-spacing: 0.1rem;
-        border-bottom: 2px solid black;
     }
 
 `;

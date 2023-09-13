@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import Role from '../../roles/role';
 
-const UserRolesStyles = styled.div`
-    .userRolesContainer {
-        display: flex;
-        flex-direction: column;
-        margin: 0.35rem 0;
-    }
-`;
-
 const UserRoles = ({ roles }) => {
     const [viewCurrent, setViewCurrent] = useState(true)
-    const [viewInactive, setViewInactive] = useState(true)
+    const [viewInactive, setViewInactive] = useState(false)
     let active_roles = []
     let inactive_roles = []
 
@@ -32,13 +23,13 @@ const UserRoles = ({ roles }) => {
 
 
     return (
-        <UserRolesStyles>
-            <div className='rolesListWrapper'>
+        <div>
+            <div className='sectionContainer'>
 
-                <div className='userRolesContainer'>
-                    <div className='rolesListHeader'>
+                <div>
+                    <div className='sectionHeader sectionListHeader'>
                         <div>Current Roles</div>
-                        <div onClick={() => toggleCurrent()}>toggle</div>
+                        <div onClick={() => toggleCurrent()}>{viewCurrent ? 'hide' : 'view'}</div>
                     </div>
                     {
                         viewCurrent &&
@@ -52,10 +43,10 @@ const UserRoles = ({ roles }) => {
                     }
                 </div>
 
-                <div className='userRolesContainer'>
-                    <div className='rolesListHeader'>
+                <div>
+                    <div className='sectionHeader sectionListHeader'>
                         <div>Inactive Roles</div>
-                        <div onClick={() => toggleInactive()}>toggle</div>
+                        <div onClick={() => toggleInactive()}>{viewInactive ? 'hide' : 'view'}</div>
                     </div>
                     {
                         viewInactive &&
@@ -69,7 +60,7 @@ const UserRoles = ({ roles }) => {
                     }
                 </div>
             </div>
-        </UserRolesStyles>
+        </div>
     )
 }
 

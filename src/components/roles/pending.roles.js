@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import Role from './role';
 
-const PendingRolesStyles = styled.div``;
 
 const PendingRoles = ({ roles_list }) => {
     const [viewRequest, setViewRequest] = useState(true);
@@ -14,24 +12,22 @@ const PendingRoles = ({ roles_list }) => {
 
 
     return (
-        <PendingRolesStyles>
-            <div className='rolesListWrapper'>
-                <div className='rolesListHeader'>
-                    <div>Request</div>
-                    <div onClick={() => toggleRequest()}>toggle</div>
-                </div>
-                {
-                    viewRequest &&
-                        <div>
-                            {
-                                roles_list.map(role =>
-                                    <Role key={role.id} role={role} rolelist='pendinglist' />
-                                )
-                            }
-                        </div>
-                }
+        <div className='sectionContainer'>
+            <div className='sectionHeader sectionListHeader'>
+                <div>Request</div>
+                <div onClick={() => toggleRequest()}>{viewRequest ? 'hide' : 'view'}</div>
             </div>
-        </PendingRolesStyles>
+            {
+                viewRequest &&
+                    <div>
+                        {
+                            roles_list.map(role =>
+                                <Role key={role.id} role={role} rolelist='pendinglist' />
+                            )
+                        }
+                    </div>
+            }
+        </div>
     )
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
 
 import LoadingSpinner from '../loadingSpinner';
 import useNotification from '../../hooks/useNotification';
@@ -8,20 +7,6 @@ import useAuth from '../../hooks/useAuth';
 import { useCreateRoleMutation } from '../../hooks/useRolesApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { uuidPattern } from './form.validations';
-
-const RoleRequestStyles = styled.div`
-    .roleRequest {
-        padding: 1.5rem 0.5rem;
-        border-radius: 5px;
-        border: 1px solid #263238;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
-    }
-
-    .roleRequestHeader {
-        font-weight: bold;
-        letter-spacing: 0.1rem;
-    }
-`;
 
 const RoleRequest = () => {
     const { auth, setAuth } = useAuth()
@@ -68,11 +53,11 @@ const RoleRequest = () => {
 
 
     return (
-        <RoleRequestStyles>
+        <div>
             {
                 (business_filtered.length > 0) &&
-                    <div className='roleRequest'>
-                        <div className='roleRequestHeader'>
+                <div className='sectionContainer'>
+                        <div className='sectionHeader'>
                             <div>Create Business Role Request</div>
                         </div>
 
@@ -94,7 +79,7 @@ const RoleRequest = () => {
                         </form>
                     </div>
             }
-        </RoleRequestStyles>
+        </div>
     )
 }
 

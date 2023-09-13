@@ -12,10 +12,10 @@ const InactiveRoles = ({ roles_list }) => {
 
 
     return (
-        <div className='rolesListWrapper'>
-            <div className='rolesListHeader'>
+        <div className='sectionContainer'>
+            <div className='sectionHeader sectionListHeader'>
                 <div>Inactive</div>
-                <div onClick={() => toggleInactive()}>toggle</div>
+                <div onClick={() => toggleInactive()}>{viewInactive ? 'hide' : 'view'}</div>
             </div>
             <div>
                 {
