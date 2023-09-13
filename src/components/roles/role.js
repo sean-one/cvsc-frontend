@@ -10,11 +10,14 @@ import UpgradeRole from './buttons/upgrade.role';
 
 const RoleStyles = styled.div`
     .roleWrapper {
-        margin: 0.5rem 0;
+        margin: 0.1rem 0;
+        padding: 0.25rem 0.75rem;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        border-top: 1px dotted var(--main-text-color);
+        border-bottom: 1px dotted var(--main-text-color);
     }
 
     .roleButtonWrapper {
