@@ -37,11 +37,6 @@ const BusinessRoles = () => {
     return (
         <div>
             {
-                (business_roles?.data.length < 1)
-                    ? <h4>No Business Roles</h4>
-                    : <h4>Current Business Roles</h4>
-            }
-            {
                 (inactive_roles.length > 0) &&
                     <InactiveRoles roles_list={inactive_roles} />
             }

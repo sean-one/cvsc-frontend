@@ -65,31 +65,29 @@ const BusinessAdminView = () => {
 
     return (
         <BusinessAdminViewStyles>
-            <div>
-                <div className='sectionContainer'>
-                    <div className='businessAdminViewHeader'>
-                        <h1>{business.business_name}</h1>
-                        <button onClick={() => navigate('/event/create', { state: business_id })}>+ event</button>
-                    </div>
-                    {
-                        (business?.formatted_address !== null) &&
-                            <div>{business?.formatted_address}</div>
-                    }
-                    <div className='businessAdminViewDetails'>
-                        <div className='businessAdminViewStatus'>{`Business Status: ${business?.active_business ? 'Active' : 'Inactive'}`}</div>
-                        <div className='businessAdminViewBusinessButtons'>
-                            <ActiveBusinessToggle business_id={business_id} />
-                            <EditBusinessButton business={business} />
-                            <DeleteBusiness business_name={business?.business_name} business_id={business?.id} />
-                        </div>
-                    </div>
-                    <div className='businessAdminViewCreationRequest'>
-                        <div>{`Manage Creation Request: ${business?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
-                        <RequestStatusToggle business_id={business_id} />
+            <div className='sectionContainer'>
+                <div className='businessAdminViewHeader'>
+                    <h1>{business.business_name}</h1>
+                    <button onClick={() => navigate('/event/create', { state: business_id })}>+ event</button>
+                </div>
+                {
+                    (business?.formatted_address !== null) &&
+                        <div>{business?.formatted_address}</div>
+                }
+                <div className='businessAdminViewDetails'>
+                    <div className='businessAdminViewStatus'>{`Business Status: ${business?.active_business ? 'Active' : 'Inactive'}`}</div>
+                    <div className='businessAdminViewBusinessButtons'>
+                        <ActiveBusinessToggle business_id={business_id} />
+                        <EditBusinessButton business={business} />
+                        <DeleteBusiness business_name={business?.business_name} business_id={business?.id} />
                     </div>
                 </div>
-                <BusinessRoles />
+                <div className='businessAdminViewCreationRequest'>
+                    <div>{`Manage Creation Request: ${business?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
+                    <RequestStatusToggle business_id={business_id} />
+                </div>
             </div>
+            <BusinessRoles />
         </BusinessAdminViewStyles>
     )
 }
