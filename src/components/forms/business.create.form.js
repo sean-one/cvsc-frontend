@@ -43,6 +43,7 @@ const BusinessCreateForm = () => {
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
+        console.log(business_data)
         localStorage.setItem('createBusinessForm', JSON.stringify(business_data));
         try {
             const formData = new FormData()
@@ -72,7 +73,7 @@ const BusinessCreateForm = () => {
             Object.keys(business_data).forEach((key) => {
                 let value = business_data[key]
                 
-                if(value !== '') {
+                if(value !== '' && value !== null) {
                     if(typeof value === 'string' && value.startsWith('@')) {
                         value = value.slice(1)
                     }
