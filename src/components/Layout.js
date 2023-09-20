@@ -6,7 +6,7 @@ import useTheme from '../hooks/useTheme';
 const GlobalStyle = createGlobalStyle`
     :root {
         --header-height: 4.5rem;
-        --main-text-color: #4CAF50;
+        --main-text-color: ${(props) => props.theme['--main-text-color']};
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
         --background-color: ${(props) => props.theme['--background-color']};
         --card-background-color: #607D8B;
@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
         --input-text-color: #263238;
         --input-placeholder: #66BB6A;
         
-        --error-text-color: ${(props) => props.theme['--error-text-color']};
+        --error-text-color: #D32F2F;
         --box-shadow-color: #263238;
         --input-background-color: #4B6F51;
         --image-border-color: #DCDBC4;

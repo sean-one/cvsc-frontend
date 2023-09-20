@@ -11,11 +11,6 @@ const EventSmallPreviewStyles = styled.div`
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
-        background-color: var(--page-wrapper-background-color);
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
-        border-radius: 5px;
         gap: 10px;
 
         @media (min-width: 768px) {
@@ -67,7 +62,7 @@ const EventSmallPreview = ({ event }) => {
 
     return (
         <EventSmallPreviewStyles>
-            <div className='eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>
+            <div className='sectionContainer eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>
                 
                 <div className='eventSmallPreviewLeftSection'>
                     <div className='eventSmallPreviewImageContainer'>

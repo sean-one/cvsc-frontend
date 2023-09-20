@@ -3,15 +3,15 @@ import React, { createContext, useState } from 'react';
 export const ThemeContext = createContext({})
 
 const lightTheme = {
-    '--background-color': '#E8F5E9',
+    '--main-text-color': '#37474F',
+    '--background-color': '#70AF97',
     '--secondary-text-color' : '#263238',
-    '--error-text-color' : '#D32F2F',
 }
 
 const darkTheme = {
-    '--background-color': '#37474F',
+    '--main-text-color': '#5F9E7F',
+    '--background-color': '#263238',
     '--secondary-text-color': '#CFD8DC',
-    '--error-text-color' : '#E57373',
 }
 
 export const ThemeProvider = ({ children }) => {

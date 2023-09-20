@@ -19,6 +19,8 @@ const PersistLogin = () => {
                 await refresh()
             }
             catch (err) {
+                console.log('inside catch')
+                console.log(err)
                 setAuth({})
             }
             finally {

@@ -24,6 +24,13 @@ const EventViewStyles = styled.div`
         }
     }
 
+    .eventViewTopInfo {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0rem 0.5rem;
+    }
+
     .eventViewHeaderRow {
         width: 100%;
         display: flex;
@@ -39,7 +46,7 @@ const EventViewStyles = styled.div`
         font-weight: bold;
         text-transform: uppercase;
     }
-
+    
     .eventViewEditButton {
         flex-shrink: 0;
     }
@@ -47,7 +54,7 @@ const EventViewStyles = styled.div`
     .eventViewAddress {
         align-self: flex-start;
     }
-
+    
     .eventViewDateWrapper {
         width: 100%;
         display: flex;
@@ -91,10 +98,10 @@ const EventViewStyles = styled.div`
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        padding: 0 0.5rem;
     
         @media (min-width: 768px) {
-            padding-top: 0;
-            padding-left: 1rem;
+            padding: 0 0 0 0.5rem;
         }
     }
 
@@ -126,17 +133,19 @@ const EventView = () => {
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
-                <div className='eventViewHeaderRow'>
-                    <div className='eventViewEventname'>{event.data.eventname}</div>
-                    {
-                        (auth?.user?.id === event.data.created_by) &&
-                            <button onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>edit</button>
-                    }
-                </div>
-                <div className='eventViewAddress'>{event.data.venue_location}</div>
-                <div className='eventViewDateWrapper'>
-                    <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
-                    <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
+                <div className='eventViewTopInfo'>
+                    <div className='eventViewHeaderRow'>
+                        <div className='eventViewEventname'>{event.data.eventname}</div>
+                        {
+                            (auth?.user?.id === event.data.created_by) &&
+                                <button onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>edit</button>
+                        }
+                    </div>
+                    <div className='eventViewAddress'>{event.data.venue_location}</div>
+                    <div className='eventViewDateWrapper'>
+                        <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
+                        <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
+                    </div>
                 </div>
                 <div className='eventViewBody'>
                     <div className='eventViewImageContainer'>
