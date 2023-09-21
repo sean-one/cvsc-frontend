@@ -9,6 +9,8 @@ const GlobalStyle = createGlobalStyle`
         --main-text-color: ${(props) => props.theme['--main-text-color']};
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
         --background-color: ${(props) => props.theme['--background-color']};
+        --trim-color: #3A7D4F;
+
         --card-background-color: #607D8B;
         --form-input-background: #607D8B;
         --image-border: #263238;
