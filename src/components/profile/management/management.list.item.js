@@ -12,7 +12,8 @@ const ManagementListItemStyles = styled.div`
         align-items: stretch;
         margin: 1rem 0;
         padding: 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
+        border: 1px solid var(--trim-color);
+        border-radius: 15px;
     }
 
     .managementListItemLogo {
@@ -25,7 +26,7 @@ const ManagementListItemStyles = styled.div`
 
         img {
             width: 100%;
-            border: 1px solid #dcdbc4;
+            border: 1px solid var(--trim-color);
             display: block;
             border-radius: 50%;
         }

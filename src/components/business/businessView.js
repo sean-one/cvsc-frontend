@@ -20,9 +20,7 @@ const BusinessViewStyles = styled.div`
         max-width: 1080px;
         margin: 0 auto;
         padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
-        background-color: var(--page-wrapper-background-color);
         
         @media (min-width: 768px) {
             padding: 1.5rem;

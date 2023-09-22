@@ -22,7 +22,6 @@ const ManagementList = () => {
 
     return (
         <div>
-            <h6>Business List</h6>
             {
                 business_list.map(business => (
                     <ManagementListItem key={business.id} business={business} />

@@ -9,7 +9,7 @@ import { MenuLinks } from '../helpers/menu.links';
 const MenuStyles = styled.div`
     .menuWrapper {
         position: absolute;
-        top: 4.5rem;
+        top: var(--header-height);
         left: 0;
         width: 100%;
         height: 100vh;
@@ -20,14 +20,14 @@ const MenuStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: var(--background-color);
+        background-color: var(--main-color);
+        color: var(--secondary-color);
         border-radius: 0 0 15px 15px;
-        box-shadow: 5px 5px 5px #010a00;
+        box-shadow: 5px 5px 5px var(--trim-color);
     }
 
     .navMenuButtons {
         padding: 1rem;
-        color: var(--secondary-text-color);
         font-weight: bold;
         text-transform: capitalize;
         letter-spacing: 0.15rem;

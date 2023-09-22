@@ -5,24 +5,26 @@ import useTheme from '../hooks/useTheme';
 
 const GlobalStyle = createGlobalStyle`
     :root {
-        --header-height: 4.5rem;
+        --header-height: 5rem;
+        --main-color: ${(props) => props.theme['--main-color']};
+        --secondary-color: ${(props) => props.theme['--secondary-color']};
         --main-text-color: ${(props) => props.theme['--main-text-color']};
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
-        --background-color: ${(props) => props.theme['--background-color']};
-        --trim-color: #3A7D4F;
+        --trim-color: #286237;
+        /* --trim-color: #1A1E1B; */
+        /* --trim-color: #F4F6F5; */
 
         --card-background-color: #607D8B;
-        --form-input-background: #607D8B;
+        --form-input-background: #F4F6F5;
         --image-border: #263238;
         --input-text-color: #263238;
-        --input-placeholder: #66BB6A;
+        /* --input-placeholder: #66BB6A; */
+        --input-placeholder: #286237;
         
         --error-text-color: #D32F2F;
-        --box-shadow-color: #263238;
         --input-background-color: #4B6F51;
         --image-border-color: #DCDBC4;
         --image-box-shadow-color: #010A00;
-        --page-wrapper-background-color: rgba(75,111,81,0.3);
         --max-page-width: 825px;
         --main-break-width: 500px;
         --site-icon-color: #DAD7CD;
@@ -37,7 +39,7 @@ const Styles = styled.div`
         min-height: 100vh;
         max-width: 100vw;
         color: var(--main-text-color);
-        background-color: var(--background-color);
+        background-color: var(--main-color);
     }
     
     .innerContainer {
@@ -52,10 +54,10 @@ const Styles = styled.div`
     }
 
     .sectionContainer {
+        margin: 0 0.25rem;
         padding: 1.5rem 0.5rem;
         border-radius: 5px;
-        border: 1px solid var(--box-shadow-color);
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
+        border: 1px solid var(--trim-color);
         margin-bottom: 0.75rem;
     }
 
@@ -67,16 +69,16 @@ const Styles = styled.div`
     }
 
     .sectionListHeader {
-        border-bottom: 2px solid black;
+        border-bottom: 1px solid var(--secondary-color);
     }
     
     button {
         padding: 0.5rem 1.25rem;
         border: none;
-        border: 1px solid var(--secondary-text-color);
-        color: var(--secondary-text-color);
+        border: 1px solid var(--secondary-color);
+        color: #F4F6F5;
         border-radius: 5px;
-        background-color: var(--main-text-color);
+        background-color: var(--trim-color);
         outline: none;
         
         :hover {
@@ -106,16 +108,14 @@ const Styles = styled.div`
 
         canvas {
             max-width: 100%;
-            border: 1px solid #dcdbc4;
+            border: 1px solid var(--trim-color);
             display: block;
-            box-shadow: 5px 5px 5px #010a00;
         }
 
         img {
             width: 100%;
-            border: 1px solid #dcdbc4;
+            border: 1px solid var(--trim-color);
             display: block;
-            box-shadow: 5px 5px 5px #010a00;
         }
     }
 
@@ -143,10 +143,7 @@ const Styles = styled.div`
     }
 
     .contactWrapper {
-        background-color: var(--input-background-color);
         border-radius: 5px;
-        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
-        border-bottom: 1px solid black;
 
         input {
             border-bottom: none;
@@ -172,8 +169,6 @@ const Styles = styled.div`
         border-radius: 5px;
         border-bottom: 1px solid black;
         background-color: var(--form-input-background);
-        /* background-color: var(--input-background-color); */
-        box-shadow: 3px 2px 1px 0 var(--box-shadow-color);
         outline: none;
 
         ::placeholder {

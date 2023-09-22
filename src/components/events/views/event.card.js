@@ -14,7 +14,7 @@ const EventCardStyles = styled.div`
         border-radius: 1.2rem;
         margin-bottom: 1.25rem;
         overflow: hidden;
-        border: 2px solid var(--secondary-text-color);
+        border: 2px solid var(--trim-color);
 
         &:before {
             content: "";
@@ -45,7 +45,6 @@ const EventCardStyles = styled.div`
     }
 
     .eventCardRow {
-        color: var(--secondary-text-color);
         width: 100%;
         padding: 0.75rem;
     }    
@@ -57,8 +56,8 @@ const EventCardStyles = styled.div`
     }
     
     .eventCardBottomRow {
-        border-radius: 1.2rem;
-        background-color: var(--card-background-color);
+        border-radius: 1rem;
+        background-color: var(--trim-color);
     }
 
     .eventCardDateContainer {
@@ -68,7 +67,7 @@ const EventCardStyles = styled.div`
         border: 2px solid black;
         padding: 0.7rem;
         border-radius: 1.2rem;
-        background-color: var(--card-background-color);
+        background-color: var(--main-color);
         line-height: 1;
         font-weight: bold;
     }

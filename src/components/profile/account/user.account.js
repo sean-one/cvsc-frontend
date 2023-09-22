@@ -9,13 +9,12 @@ import { role_types } from '../../../helpers/dataCleanUp';
 const UserAccountStyles = styled.div`
     .userAccountPage {
         display: flex;
-        border: 1px solid #263238;
+        border: 1px solid var(--trim-color);
         flex-direction: column;
         align-items: center;
         width: 100%;
         margin: 0 auto;
         padding: 1.5rem 0.5rem;
-        box-shadow: 5px 5px 5px var(--box-shadow-color);
         border-radius: 5px;
         
         @media (min-width: 500px) {
@@ -35,17 +34,15 @@ const UserAccountStyles = styled.div`
 
         canvas {
             max-width: 100%;
-            border: 1px solid var(--image-border);
+            border: 1px solid var(--trim-color);
             display: block;
-            box-shadow: 5px 5px 5px var(--main-text-color);
             border-radius: 50%;
         }
         
         img {
             width: 100%;
-            border: 1px solid var(--image-border);
+            border: 1px solid var(--trim-color);
             display: block;
-            box-shadow: 5px 5px 5px var(--main-text-color);
             border-radius: 50%;
         }}
     
