@@ -8,14 +8,10 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 const EventSmallPreviewStyles = styled.div`
     .eventSmallPreviewWrapper {
-        width: 100%;
         display: flex;
+        align-items: center;
         justify-content: space-between;
         gap: 10px;
-
-        @media (min-width: 768px) {
-            padding: 1.5rem;
-        }
     }
 
     .eventSmallPreviewLeftSection {
@@ -36,9 +32,9 @@ const EventSmallPreviewStyles = styled.div`
     
     .eventSmallPreviewImage {
         width: 100%;
-        border: 1px solid var(--image-border-color);
+        border-radius: 5px;
+        border: 1px solid var(--trim-color);
         display: block;
-        box-shadow: 5px 5px 5px var(--image-box-shadow-color);
     }
 
     .eventSmallPreviewDetails {
@@ -60,6 +56,7 @@ const EventSmallPreview = ({ event }) => {
     let navigate = useNavigate()
 
 
+    console.log(event)
     return (
         <EventSmallPreviewStyles>
             <div className='sectionContainer eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>
@@ -73,6 +70,7 @@ const EventSmallPreview = ({ event }) => {
                 <div className='eventSmallPreviewDetails'>
                     <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), 'MMM dd')} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                     <div className='eventSmallPreviewEventname'>{event.eventname}</div>
+                    <div className='truncated-text'>{event.details}</div>
                 </div>
 
             </div>

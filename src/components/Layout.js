@@ -14,7 +14,6 @@ const GlobalStyle = createGlobalStyle`
         /* --trim-color: #1A1E1B; */
         /* --trim-color: #F4F6F5; */
 
-        --card-background-color: #607D8B;
         --form-input-background: #F4F6F5;
         --image-border: #263238;
         --input-text-color: #263238;
@@ -72,6 +71,17 @@ const Styles = styled.div`
         border-bottom: 1px solid var(--secondary-color);
     }
     
+    .truncated-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 4.8rem;
+        line-height: 1.5;
+        cursor: pointer;
+    }
+
     button {
         padding: 0.5rem 1.25rem;
         border: none;

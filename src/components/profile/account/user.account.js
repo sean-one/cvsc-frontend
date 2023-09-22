@@ -12,15 +12,13 @@ const UserAccountStyles = styled.div`
         border: 1px solid var(--trim-color);
         flex-direction: column;
         align-items: center;
-        width: 100%;
-        margin: 0 auto;
+        margin: 0 0.25rem;
         padding: 1.5rem 0.5rem;
         border-radius: 5px;
         
         @media (min-width: 500px) {
             flex-direction: row;
             justify-content: space-between;
-            padding: 1.5rem;
         }}
 
     .profileImage {
