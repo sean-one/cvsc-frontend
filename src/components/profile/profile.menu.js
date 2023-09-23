@@ -26,6 +26,8 @@ const ProfileMenuStyles = styled.div`
 
     .activeTab {
         color: var(--trim-color);
+        font-weight: bold;
+        letter-spacing: 0.01rem;
     }
 `;
 

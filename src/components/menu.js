@@ -13,7 +13,8 @@ const MenuStyles = styled.div`
         left: 0;
         width: 100%;
         height: 100vh;
-        background-color: rgba(0,0,0,0.6);
+        /* background-color: rgba(0,0,0,0.6); */
+        background-color: var(--opacity);
     }
     
     .navMenu {
@@ -23,7 +24,6 @@ const MenuStyles = styled.div`
         background-color: var(--main-color);
         color: var(--secondary-color);
         border-radius: 0 0 15px 15px;
-        box-shadow: 5px 5px 5px var(--trim-color);
     }
 
     .navMenuButtons {

@@ -18,12 +18,10 @@ const BusinessViewStyles = styled.div`
         align-items: center;
         width: 100%;
         max-width: 1080px;
-        margin: 0 auto;
-        padding: 1.5rem 0.5rem;
-        border-radius: 5px;
+        padding: 0 0.5rem;
         
         @media (min-width: 768px) {
-            padding: 1.5rem;
+            padding: 1rem 0.5rem;
         }}
 
     .businessViewHeader {
@@ -49,34 +47,30 @@ const BusinessViewStyles = styled.div`
         }}
     
     .businessDetails {
-        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 0.75rem 0 1.25rem;
-        border-bottom: 1px solid var(--main-text-color);
+        border-bottom: 1px solid var(--secondary-color);
         
         @media (min-width: 768px) {
             flex-direction: row;
             justify-content: space-between;
             flex-wrap: wrap;
-            /* gap: 10px; */
         }}
 
     .firstBusinessSection {
-        width: 100%;
         display: flex;
         align-items: center;
         flex-direction: column;
         padding: 0 0.5rem;
 
         @media (min-width: 768px) {
-            flex-basis: 35%;
+            flex-basis: 50%;
         }}
 
     .businessImage {
-        width: 100%;
-        max-width: 350px;
+        max-width: 450px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -84,21 +78,20 @@ const BusinessViewStyles = styled.div`
 
         img {
             width: 100%;
-            border: 1px solid #dcdbc4;
+            max-width: 350px;
+            border: 1px solid var(--trim-color);
             display: block;
-            border-radius: 50%;
-            box-shadow: 5px 5px 5px #010a00;
-
-            @media (min-width: 768px) {
-                width: 200px;
-            }
+            border-radius: 55%;
         }}
 
     .secondBusinessSection {
-        width: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
 
         @media (min-width: 768px) {
-            flex-basis: 65%;
+            flex-direction: column;
+            flex-basis: 50%;
             padding: 2rem 0;
         }}
 
@@ -108,11 +101,12 @@ const BusinessViewStyles = styled.div`
         justify-content: space-around;
         padding: 0.5rem 0;
         margin: 0.5rem 0;
-        background-color: rgba(218, 215, 205, 0.2);
+        background-color: var(--black-and-white);
         border-radius: 5px;
         gap: 10px;
         
         @media (min-width: 768px) {
+            margin: 1.5rem 0;
             border: none;
             align-self: flex-start;
         }}
@@ -169,6 +163,13 @@ const BusinessView = () => {
                                 alt={business?.data.business_name}
                             />
                         </div>
+
+                    </div>
+
+                    <div className='secondBusinessSection'>
+                        <div className='businessDescription'>
+                            {business?.data.business_description}
+                        </div>
                         <div className='businessContacts'>
                             <a href={`mailto:${business?.data.business_email}`} target='_blank' rel='noreferrer'><MailIcon /></a>
 
@@ -178,13 +179,6 @@ const BusinessView = () => {
                             {business?.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank' rel='noreferrer'><FacebookIcon /></a> }
                             {business?.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><WebSiteIcon /></a> }
                             {business?.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><TwitterIcon /></a> }
-                        </div>
-
-                    </div>
-
-                    <div className='secondBusinessSection'>
-                        <div className='businessDescription'>
-                            {business?.data.business_description}
                         </div>
                     </div>
                 </div>

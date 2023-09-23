@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import useAuth from '../../../hooks/useAuth';
 import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
+import BusinessLabel from '../../business/business.label';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { image_link } from '../../../helpers/dataCleanUp';
 import ServerDown from '../../serverDown';
@@ -88,7 +89,7 @@ const EventViewStyles = styled.div`
     
     .eventViewImage {
         width: 100%;
-        border: 1px solid var(--image-border-color);
+        border: 1px solid var(--trim-color);
         display: block;
     }
 
@@ -155,10 +156,10 @@ const EventView = () => {
                         <div>{event.data.details}</div>
                         <div>
                             <div className='eventViewBusiness' onClick={() => navigate(`/business/${event.data.venue_id}`)}>
-                                {`Location: ${event.data.venue_name}`}
+                                <BusinessLabel businessId={event.data.venue_id} imageOnly={false} />
                             </div>
                             <div className='eventViewBusiness' onClick={() => navigate(`/business/${event.data.brand_id}`)}>
-                                {`Brand: ${event.data.brand_name}`}
+                                <BusinessLabel businessId={event.data.brand_id} imageOnly={false} />
                             </div>
                         </div>
                     </div>

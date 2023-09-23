@@ -11,6 +11,8 @@ const GlobalStyle = createGlobalStyle`
         --main-text-color: ${(props) => props.theme['--main-text-color']};
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
         --trim-color: #286237;
+        --opacity: ${(props) => props.theme['--opacity']};
+        --black-and-white: ${(props) => props.theme['--black-and-white']};
         /* --trim-color: #1A1E1B; */
         /* --trim-color: #F4F6F5; */
 
@@ -24,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
         --input-background-color: #4B6F51;
         --image-border-color: #DCDBC4;
         --image-box-shadow-color: #010A00;
-        --max-page-width: 825px;
+        --max-page-width: 875px;
         --main-break-width: 500px;
         --site-icon-color: #DAD7CD;
         /* --site-icon-color: #58C46E; */

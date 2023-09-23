@@ -7,6 +7,8 @@ const lightTheme = {
     '--main-color': '#70AF97',
     '--secondary-color': '#263238',
     '--secondary-text-color' : '#263238',
+    '--black-and-white': '#F4F6F5',
+    '--opacity': 'rgba(255,255,255,0.6)'
 }
 
 const darkTheme = {
@@ -14,6 +16,8 @@ const darkTheme = {
     '--main-color': '#263238',
     '--secondary-color': '#70AF97',
     '--secondary-text-color': '#CFD8DC',
+    '--black-and-white' : '#1A1E1B',
+    '--opacity': 'rgba(0,0,0,0.6)'
 }
 
 export const ThemeProvider = ({ children }) => {

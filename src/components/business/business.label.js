@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
@@ -7,11 +8,13 @@ import { image_link } from '../../helpers/dataCleanUp';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
+        padding: 0.25rem;
         width: 100%;
         display: flex;
         justify-content: space-between;
+        border-radius: 1rem;
     }
-
+    
     .businessLogoContainer {
         display: flex;
         justify-content: space-between;
@@ -23,11 +26,12 @@ const BusinessLabelStyles = styled.div`
         border: 2px solid var(--trim-color);
         border-radius: 50%;
     }
-
+    
     .businessListing {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 10px;
         
         @media (max-width: 350px) {
             width: 100%;
@@ -39,6 +43,10 @@ const BusinessLabelStyles = styled.div`
         }
     }
 
+    .listingReverse {
+        flex-direction: row-reverse;
+    }
+
     .businessName {
         @media (max-width: 350px) {
             display: none;
@@ -47,9 +55,10 @@ const BusinessLabelStyles = styled.div`
 `;
 
 
-const BusinessLabel = ({ businessId, imageOnly = false }) => {
+const BusinessLabel = ({ businessId, imageOnly=false, reverseOrder=false }) => {
     const { data: businessList, isLoading, isSuccess } = useBusinessesQuery()
     let business = {}
+    let navigate = useNavigate()
 
     if (isLoading) { return <LoadingSpinner /> }
 
@@ -60,8 +69,8 @@ const BusinessLabel = ({ businessId, imageOnly = false }) => {
 
     return (
         <BusinessLabelStyles>
-            <div className='businessLabelsContainer'>
-                <div className='businessListing'>
+            <div className='businessLabelsContainer' onClick={() => navigate(`/business/${businessId}`)}>
+                <div className={`businessListing ${reverseOrder ? 'listingReverse' : ''}`}>
                     <div className='businessLogoContainer'>
                         <img className='businessLogo' src={image_link(business?.business_avatar)} alt={`${business.businessname} logo`} />
                     </div>

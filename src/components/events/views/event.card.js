@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import { image_link } from '../../../helpers/dataCleanUp';
 
-import BusinessLabel from '../../business/business.label';
+// import BusinessLabel from '../../business/business.label';
 
 const EventCardStyles = styled.div`
     .eventCardWrapper {
@@ -46,16 +46,18 @@ const EventCardStyles = styled.div`
 
     .eventCardRow {
         width: 100%;
-        padding: 0.75rem;
+        padding: 0.25rem 0.75rem 0.75rem;
     }    
 
     .eventCardTopRow {
+        margin-top: 1rem;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
     }
     
     .eventCardBottomRow {
+        color: var(--black-and-white);
         border-radius: 1rem;
         background-color: var(--trim-color);
     }
@@ -64,9 +66,10 @@ const EventCardStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        border: 2px solid black;
+        border: 2px solid var(--black-and-white);
         padding: 0.7rem;
         border-radius: 1.2rem;
+        color: var(--secondary-color);
         background-color: var(--main-color);
         line-height: 1;
         font-weight: bold;
@@ -89,10 +92,13 @@ const EventCardStyles = styled.div`
         text-transform: uppercase;
     }
 
-    .eventCardVenueRow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .eventCardDetails {
+        margin-bottom: 0.2rem;
+        border-bottom: 1px solid var(--black-and-white);
+    }
+
+    .eventCardBusinessSection {
+        font-size: 0.9rem;
     }
 `;
 
@@ -102,30 +108,30 @@ const EventCard = ({ event }) => {
 
     return (
         <EventCardStyles>
-            <div className="eventCardWrapper" onClick={(event.active_event) ? () => navigate(`/event/${event.event_id}`) : null}>
+            <div className="eventCardWrapper" onClick={(e) => event.active_event ? navigate(`/event/${event.event_id}`) : null}>
                 <img className='eventCardBackground' src={image_link(event.eventmedia)} alt={`${event.eventname} event flyer`} />
                 <div className="eventCardOverlay">
                     <div className='eventCardRow eventCardTopRow'>
-                        {
-                            event.active_event && <BusinessLabel businessId={event.brand_id} imageOnly={true}/>
-                        }
                         <div className='eventCardDateContainer'>
                             <div className='eventCardDate'>{format(new Date(event.eventdate), 'dd')}</div>
                             <div className='eventCardMonth'>{format(new Date(event.eventdate), 'MMM')}</div>
                         </div>
                     </div>
                     <div className='eventCardRow eventCardBottomRow'>
-                        <div className='eventCardTime'>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
+                        <div>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                         <div className='eventCardEventname'>{event.eventname}</div>
-                        {
-                            event.active_event &&
-                                <div className='eventCardVenueRow'>
-                                    <div>
-                                        <div>{event.venue_name}</div>
-                                        <div>{event.venue_location.split(',')[1]}</div>
-                                    </div>
-                                    <BusinessLabel businessId={event.venue_id} imageOnly={true} />
-                                </div>
+                        <div className='truncated-text eventCardDetails'>{event.details}</div>
+                        {event.active_event &&
+                            <div className='eventCardBusinessSection'>
+                                At <strong onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/business/${event.venue_id}`);
+                                }}>{event.venue_name}</strong> in <strong>{event.venue_location.split(',')[1]}
+                                </strong> with <strong onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/business/${event.brand_id}`);
+                                }}>{event.brand_name}</strong>
+                            </div>
                         }
                     </div>
                 </div>
