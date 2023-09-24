@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
         --opacity: ${(props) => props.theme['--opacity']};
         --black-and-white: ${(props) => props.theme['--black-and-white']};
         --site-icon-size: 1.8rem;
+        --error-color: #D32F2F;
         /* --trim-color: #1A1E1B; */
         /* --trim-color: #F4F6F5; */
 
@@ -23,7 +24,6 @@ const GlobalStyle = createGlobalStyle`
         /* --input-placeholder: #66BB6A; */
         --input-placeholder: #286237;
         
-        --error-text-color: #D32F2F;
         --input-background-color: #4B6F51;
         --image-border-color: #DCDBC4;
         --image-box-shadow-color: #010A00;
@@ -91,9 +91,11 @@ const Styles = styled.div`
         padding: 0.5rem 1.25rem;
         border: none;
         border: 1px solid var(--secondary-color);
-        color: #F4F6F5;
+        /* color: #F4F6F5; */
+        color: var(--trim-color);
         border-radius: 5px;
-        background-color: var(--trim-color);
+        /* background-color: var(--trim-color); */
+        background-color: transparent;
         outline: none;
         
         :hover {
@@ -106,10 +108,17 @@ const Styles = styled.div`
         }
 
         :disabled {
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
             opacity: 0.6;
             cursor: not-allowed;
             background-color: transparent;
         }
+    }
+
+    .deleteButton {
+        color: var(--error-color);
+        background-color: transparent;
     }
     
     .formImage {
@@ -230,7 +239,7 @@ const Styles = styled.div`
         text-align: left;
         letter-spacing: 0.05rem;
         font-weight: bold;
-        color: var(--error-text-color);
+        color: var(--error-color);
     }
 
     .formButtonWrapper {

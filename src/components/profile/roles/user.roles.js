@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 import Role from '../../roles/role';
 
 const UserRoles = ({ roles }) => {
@@ -29,7 +30,7 @@ const UserRoles = ({ roles }) => {
                     <div className='sectionContainer'>
                         <div className='sectionHeader'>
                             <div>Current Roles</div>
-                            <div onClick={() => toggleCurrent()}>{viewCurrent ? 'hide' : 'view'}</div>
+                            <div onClick={() => toggleCurrent()}>{viewCurrent ? <HideIcon /> : <ShowIcon />}</div>
                         </div>
                         {
                             viewCurrent &&
@@ -49,7 +50,7 @@ const UserRoles = ({ roles }) => {
                     <div className='sectionContainer'>
                         <div className='sectionHeader'>
                             <div>Inactive Roles</div>
-                            <div onClick={() => toggleInactive()}>{viewInactive ? 'hide' : 'view'}</div>
+                            <div onClick={() => toggleInactive()}>{viewInactive ? <HideIcon /> : <ShowIcon />}</div>
                         </div>
                         {
                             viewInactive &&

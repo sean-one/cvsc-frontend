@@ -3,6 +3,7 @@ import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { useRemoveRoleMutation } from '../../../hooks/useRolesApi';
+import { DeleteIcon } from '../../icons/siteIcons';
 
 
 const RemoveRole = ({ role_id }) => {
@@ -54,7 +55,7 @@ const RemoveRole = ({ role_id }) => {
 
 
     return (
-        <button onClick={(e) => roleRemove(e)}>Remove</button>
+        <button className='deleteButton' onClick={(e) => roleRemove(e)}><DeleteIcon /></button>
     )
 }
 

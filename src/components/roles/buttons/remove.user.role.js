@@ -4,6 +4,7 @@ import useAuth from '../../../hooks/useAuth';
 import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 
+import { DeleteIcon } from '../../icons/siteIcons';
 
 const RemoveUserRole = ({ role }) => {
     const { auth, setAuth } = useAuth()
@@ -31,7 +32,9 @@ const RemoveUserRole = ({ role }) => {
     }
 
     return (
-        <button disabled={role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT} onClick={() => userRoleRemove(role.id)}>delete</button>
+        <button className='deleteButton' disabled={role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT} onClick={() => userRoleRemove(role.id)}>
+            <DeleteIcon />
+        </button>
     )
 }
 

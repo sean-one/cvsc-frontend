@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 
+import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 import Role from '../../roles/role';
 
 const AllManagementPendingRequestStyles = styled.div`
@@ -26,7 +27,7 @@ const AllManagementPendingRequest = ({ name, roles }) => {
             <div className='managementRoleInsert'>
                 <div className='sectionHeader sectionListHeader'>
                     <div onClick={() => navigate(`/business/${roles[0].business_id}`)}>{name}</div>
-                    <div onClick={() => togglePending()}>{viewPending ? 'hide' : 'view'}</div>
+                    <div onClick={() => togglePending()}>{viewPending ? <HideIcon /> : <ShowIcon />}</div>
                 </div>
                 {
                     viewPending &&

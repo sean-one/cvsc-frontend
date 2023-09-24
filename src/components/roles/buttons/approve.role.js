@@ -5,6 +5,8 @@ import { useApproveRoleMutation } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
+import { ApproveUserIcon } from '../../icons/siteIcons';
+
 const ApproveRole = ({ role_id }) => {
     const { logout_user } = useAuth()
     const { dispatch } = useNotification()
@@ -54,7 +56,7 @@ const ApproveRole = ({ role_id }) => {
 
 
     return (
-        <button onClick={(e) => roleApprove(e)}>Approve</button>
+        <button onClick={(e) => roleApprove(e)}><ApproveUserIcon /></button>
     )
 }
 

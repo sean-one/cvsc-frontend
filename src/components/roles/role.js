@@ -8,6 +8,8 @@ import DowngradeRole from './buttons/downgrade.role';
 import RemoveRole from './buttons/remove.role';
 import UpgradeRole from './buttons/upgrade.role';
 
+import { CreateEventIcon } from '../icons/siteIcons';
+
 const RoleStyles = styled.div`
     .roleWrapper {
         margin: 0.1rem 0;
@@ -35,7 +37,7 @@ const Role = ({ role, rolelist }) => {
     const role_list_buttons = {
         userlist: (
             <>
-                <button disabled={!role.active_role} onClick={() => navigate('/event/create', { state: role.business_id })}>create</button>
+                <button disabled={!role.active_role} onClick={() => navigate('/event/create', { state: role.business_id })}><CreateEventIcon /></button>
                 <RemoveUserRole role={role} />
             </>
         ),
