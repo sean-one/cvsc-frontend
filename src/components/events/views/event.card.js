@@ -5,8 +5,6 @@ import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import { image_link } from '../../../helpers/dataCleanUp';
 
-// import BusinessLabel from '../../business/business.label';
-
 const EventCardStyles = styled.div`
     .eventCardWrapper {
         position: relative;
@@ -104,6 +102,10 @@ const EventCardStyles = styled.div`
 
 const EventCard = ({ event }) => {
     let navigate = useNavigate()
+
+    if(!event) {
+        return null;
+    }
 
 
     return (

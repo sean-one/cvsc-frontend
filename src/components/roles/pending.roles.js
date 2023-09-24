@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ShowIcon, HideIcon } from '../icons/siteIcons';
 import Role from './role';
 
 
@@ -11,11 +12,12 @@ const PendingRoles = ({ roles_list }) => {
     }
 
 
+    console.log(viewRequest)
     return (
         <div className='sectionContainer'>
             <div className='sectionHeader sectionListHeader'>
                 <div>Request</div>
-                <div onClick={() => toggleRequest()}>{viewRequest ? 'hide' : 'view'}</div>
+                <div onClick={() => toggleRequest()}>{viewRequest ? <HideIcon /> : <ShowIcon />}</div>
             </div>
             {
                 viewRequest &&

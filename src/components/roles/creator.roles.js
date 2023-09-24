@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ShowIcon, HideIcon } from '../icons/siteIcons';
 import Role from './role';
 
 
@@ -15,7 +16,7 @@ const CreatorRoles = ({ roles_list }) => {
         <div className='sectionContainer'>
             <div className='sectionHeader sectionListHeader'>
                 <div>Creators</div>
-                <div onClick={() => toggleCreators()}>{viewCreators ? 'hide' : 'view'}</div>
+                <div onClick={() => toggleCreators()}>{viewCreators ? <HideIcon /> : <ShowIcon />}</div>
             </div>
             {
                 viewCreators &&

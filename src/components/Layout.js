@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
         --trim-color: #286237;
         --opacity: ${(props) => props.theme['--opacity']};
         --black-and-white: ${(props) => props.theme['--black-and-white']};
+        --site-icon-size: 1.8rem;
         /* --trim-color: #1A1E1B; */
         /* --trim-color: #F4F6F5; */
 
@@ -28,9 +29,7 @@ const GlobalStyle = createGlobalStyle`
         --image-box-shadow-color: #010A00;
         --max-page-width: 875px;
         --main-break-width: 500px;
-        --site-icon-color: #DAD7CD;
         /* --site-icon-color: #58C46E; */
-        --site-icon-size: 22px;
     }
 `;
 
@@ -56,7 +55,7 @@ const Styles = styled.div`
 
     .sectionContainer {
         margin: 0 0.25rem;
-        padding: 1.5rem 0.5rem;
+        padding: 0.5rem 0.5rem 1.5rem;
         border-radius: 5px;
         border: 1px solid var(--trim-color);
         margin-bottom: 0.75rem;
@@ -71,6 +70,10 @@ const Styles = styled.div`
 
     .sectionListHeader {
         border-bottom: 1px solid var(--secondary-color);
+    }
+
+    .removeBorder {
+        border: none;
     }
     
     .truncated-text {

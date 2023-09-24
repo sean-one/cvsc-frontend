@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { ToggleOnIcon, ToggleOffIcon } from '../../icons/siteIcons';
+
 import { useBusinessRequestToggle } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
-const RequestStatusToggle = ({ business_id }) => {
+const RequestStatusToggle = ({ business_id, isOpen }) => {
     const { mutateAsync: toggleBusinessRequest } = useBusinessRequestToggle()
     
     const { dispatch } = useNotification()
@@ -26,7 +28,7 @@ const RequestStatusToggle = ({ business_id }) => {
     }
 
     return (
-        <button onClick={toggleRequest}>toggle</button>
+        <div onClick={toggleRequest}>{(isOpen ? <ToggleOnIcon /> : <ToggleOffIcon />)}</div>
     )
 }
 

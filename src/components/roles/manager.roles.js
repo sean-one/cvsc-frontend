@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ShowIcon, HideIcon } from '../icons/siteIcons';
 import Role from './role';
 
 const ManagerRoles = ({ roles_list }) => {
@@ -14,7 +15,7 @@ const ManagerRoles = ({ roles_list }) => {
         <div className='sectionContainer'>
             <div className='sectionHeader sectionListHeader'>
                 <div>Managers</div>
-                <div onClick={() => toggleManagers()}>{viewManagers ? 'hide' : 'view'}</div>
+                <div onClick={() => toggleManagers()}>{viewManagers ? <HideIcon /> : <ShowIcon />}</div>
             </div>
             {
                 viewManagers &&

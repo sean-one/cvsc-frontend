@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { ToggleOnIcon, ToggleOffIcon } from '../../icons/siteIcons';
 import { useActiveBusinessToggle } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
-const ActiveBusinessToggle = ({ business_id }) => {
+const ActiveBusinessToggle = ({ business_id, isActive }) => {
     const { dispatch } = useNotification()
     const { mutateAsync: toggleActiveBusiness } = useActiveBusinessToggle()
 
@@ -25,7 +26,7 @@ const ActiveBusinessToggle = ({ business_id }) => {
 
     
     return (
-        <button onClick={toggleActive}>Status</button>
+        <div onClick={toggleActive}>{isActive ? <ToggleOnIcon /> : <ToggleOffIcon />}</div>
     )
 }
 

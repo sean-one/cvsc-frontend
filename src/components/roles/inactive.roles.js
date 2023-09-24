@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ShowIcon, HideIcon } from '../icons/siteIcons';
 import Role from './role';
 
 
@@ -15,7 +16,7 @@ const InactiveRoles = ({ roles_list }) => {
         <div className='sectionContainer'>
             <div className='sectionHeader sectionListHeader'>
                 <div>Inactive</div>
-                <div onClick={() => toggleInactive()}>{viewInactive ? 'hide' : 'view'}</div>
+                <div onClick={() => toggleInactive()}>{viewInactive ? <HideIcon /> : <ShowIcon />}</div>
             </div>
             <div>
                 {
