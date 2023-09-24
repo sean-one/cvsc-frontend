@@ -15,21 +15,14 @@ const GlobalStyle = createGlobalStyle`
         --black-and-white: ${(props) => props.theme['--black-and-white']};
         --site-icon-size: 1.8rem;
         --error-color: #D32F2F;
-        /* --trim-color: #1A1E1B; */
-        /* --trim-color: #F4F6F5; */
-
+        // added to label to make it look like an input for image upload
         --form-input-background: #F4F6F5;
-        --image-border: #263238;
         --input-text-color: #263238;
-        /* --input-placeholder: #66BB6A; */
         --input-placeholder: #286237;
         
-        --input-background-color: #4B6F51;
-        --image-border-color: #DCDBC4;
-        --image-box-shadow-color: #010A00;
+    
         --max-page-width: 875px;
         --main-break-width: 500px;
-        /* --site-icon-color: #58C46E; */
     }
 `;
 
