@@ -15,7 +15,6 @@ const EventSmallPreviewStyles = styled.div`
     }
 
     .eventSmallPreviewLeftSection {
-        min-width: 80px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -23,18 +22,26 @@ const EventSmallPreviewStyles = styled.div`
     }
 
     .eventSmallPreviewImageContainer {
-        width: 100%;
-        max-width: 10rem;
+        width: 7rem;
+        height: 7rem;
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
+        position: relative;
     }
     
     .eventSmallPreviewImage {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
         border-radius: 5px;
         border: 1px solid var(--trim-color);
         display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     .eventSmallPreviewDetails {
@@ -56,7 +63,6 @@ const EventSmallPreview = ({ event }) => {
     let navigate = useNavigate()
 
 
-    console.log(event)
     return (
         <EventSmallPreviewStyles>
             <div className='sectionContainer eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>

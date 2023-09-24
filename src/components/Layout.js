@@ -111,8 +111,11 @@ const Styles = styled.div`
     
     .formImage {
         width: 100%;
-        max-width: 350px;
-        margin: 1rem auto;
+        /* max-width: 350px; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* margin: 1rem auto; */
         
         @media (min-width: 500px) {
             width: 100%;

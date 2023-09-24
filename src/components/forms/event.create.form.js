@@ -17,7 +17,6 @@ import { validateEventName } from './form.validations';
 const CreateEventFormStyles = styled.div`
 `;
 
-
 const EventCreateForm = ({ business_id }) => {
     const { logout_user } = useAuth()
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
@@ -26,7 +25,7 @@ const EventCreateForm = ({ business_id }) => {
     let venue_list, brand_list = []
     let navigate = useNavigate();
     let location = useLocation()
-
+    
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, reset, formState: { errors } } = useForm({
@@ -34,14 +33,21 @@ const EventCreateForm = ({ business_id }) => {
         defaultValues: {
             eventname: '',
             eventdate: '',
-            eventstart: '',
-            eventend: '',
+            eventstart: '0420',
+            eventend: '0710',
             eventmedia: '',
             venue_id: location?.state || '',
             details: '',
             brand_id: location?.state || '',
         }
     });
+    
+    if (isLoading) { return <LoadingSpinner /> }
+    
+    if (isSuccess) {
+        venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
+        brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
+    }
 
     const createNewEvent = async (data) => {
         try {
@@ -129,12 +135,7 @@ const EventCreateForm = ({ business_id }) => {
         }
     }
 
-    if(isLoading) { return <LoadingSpinner /> }
 
-    if(isSuccess) {
-        venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-        brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
-    }
 
     return (
         <CreateEventFormStyles>
@@ -169,18 +170,21 @@ const EventCreateForm = ({ business_id }) => {
 
                     {/* EVENT DATE */}
                     <div className='inputWrapper'>
+                        <label htmlFor='eventdate'>Select event date:</label>
                         <input {...register('eventdate', { required: 'event date is required' })} className='formInput' type='date' onClick={() => clearErrors('eventdate')} />
                         {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
                     </div>
 
                     {/* EVENT START */}
                     <div className='inputWrapper'>
+                        <label htmlFor='eventstart'>Select event start time:</label>
                         <input {...register('eventstart', { required: 'event start time is required' })} className='formInput' type='time' onClick={() => clearErrors('eventstart')} />
                         {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
                     </div>
                     
                     {/* EVENT END */}
                     <div className='inputWrapper'>
+                        <label htmlFor='eventend'>Select event end time:</label>
                         <input {...register('eventend', { required: 'event end time is required' })} className='formInput' type='time' onClick={() => clearErrors('eventend')} />
                         {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
                     </div>
@@ -188,10 +192,10 @@ const EventCreateForm = ({ business_id }) => {
                     
                     {/* VENUE ID / EVENT LOCATION */}
                     <div className='inputWrapper'>
+                        <label htmlFor='venue_id'>Select a business venue:</label>
                         <select {...register('venue_id', {
                             required: 'event location / venue is required'
-                        })} className='formInput' type='text' defaultValue='venueDefault' onClick={() => clearErrors(['venue_id', 'role_rights'])}>
-                            <option value='venueDefault' disabled>Venue / Location</option>
+                        })} className='formInput' type='text' onClick={() => clearErrors(['venue_id', 'role_rights'])}>
                             {
                                 venue_list.map(venue => (
                                     <option key={venue.id} value={venue.id}>{venue.business_name}</option>
@@ -210,10 +214,10 @@ const EventCreateForm = ({ business_id }) => {
 
                     {/* EVENT BUSINESS BRANDING */}
                     <div className='inputWrapper'>
+                        <label htmlFor='brand_id'>Select a business brand:</label>
                         <select {...register('brand_id', {
                             required: 'branding business is required'
-                        })} className='formInput' type='text' defaultValue='brandDefault' onClick={() => clearErrors(['brand_id', 'role_rights'])}>
-                            <option value='brandDefault' disabled>Brand</option>
+                        })} className='formInput' type='text' onClick={() => clearErrors(['brand_id', 'role_rights'])}>
                             {
                                 brand_list.map(brand => (
                                     <option key={brand.id} value={brand.id}>{brand.business_name}</option>
