@@ -12,6 +12,7 @@ const BusinessLabelStyles = styled.div`
         width: 100%;
         display: flex;
         justify-content: space-between;
+        border: 1px solid red;
         border-radius: 1rem;
     }
     
