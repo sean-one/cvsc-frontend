@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
-import { CalendarAdd } from '@styled-icons/fluentui-system-filled';
 import { Phone, ToggleRight, UserCheck } from "@styled-icons/boxicons-solid"
 import { ToggleLeft, ChevronDown, ChevronUp, Trash, CalendarEdit, Cog } from "@styled-icons/boxicons-regular";
 import { Web } from "@styled-icons/foundation"
 import { BuildingRetail, LocationAdd, LocationDismiss, Mail, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
-import { CameraAdd, Edit } from "@styled-icons/fluentui-system-regular";
+import { CameraAdd, Edit, CalendarAdd } from "@styled-icons/fluentui-system-regular";
 import { Users, Cannabis } from "@styled-icons/fa-solid"
 
 // used at all image upload and edit components

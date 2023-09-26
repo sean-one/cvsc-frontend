@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useRemoveBusinessMutation } from '../../../hooks/useBusinessApi';
+import { DeleteIcon } from '../../icons/siteIcons';
 import useNotification from '../../../hooks/useNotification';
 
 
@@ -31,7 +32,7 @@ const DeleteBusiness = ({ business_id, business_name }) => {
 
 
     return (
-        <button onClick={delete_business}>Delete</button>
+        <button onClick={delete_business}><DeleteIcon /></button>
     )
 }
 

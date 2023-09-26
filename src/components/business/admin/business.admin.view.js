@@ -5,16 +5,19 @@ import styled from 'styled-components';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import BusinessRoles from '../../roles/business.roles';
+import { CreateEventIcon } from '../../icons/siteIcons';
 
 import ActiveBusinessToggle from './active.business.toggle';
 import RequestStatusToggle from './request.status.toggle';
 import EditBusinessButton from './edit.business.button';
 import DeleteBusiness from './delete.business';
+import CreateEventButton from '../../events/create.event.button';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminViewHeader {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     .businessAdminViewControls {
@@ -86,10 +89,10 @@ const BusinessAdminView = () => {
                 </div>
                 {
                     (business?.formatted_address !== null) &&
-                        <div>{business?.formatted_address}</div>
+                    <div>{business?.formatted_address}</div>
                 }
                 <div className='businessAdminViewControls'>
-                    <button onClick={() => navigate('/event/create', { state: business_id })}>Create Event</button>
+                    <CreateEventButton business_id={business_id} />
                     <EditBusinessButton business={business} />
                     <DeleteBusiness business_name={business?.business_name} business_id={business?.id} />
                 </div>
