@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
 import { CalendarAdd } from '@styled-icons/fluentui-system-filled';
 import { Phone, ToggleRight, UserCheck } from "@styled-icons/boxicons-solid"
-import { ToggleLeft, ChevronDown, ChevronUp, Trash } from "@styled-icons/boxicons-regular";
+import { ToggleLeft, ChevronDown, ChevronUp, Trash, CalendarEdit, Cog } from "@styled-icons/boxicons-regular";
 import { Web } from "@styled-icons/foundation"
-import { BuildingRetail, Edit, LocationAdd, LocationDismiss, Mail, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
-import { CameraAdd } from "@styled-icons/fluentui-system-regular";
-import { Users } from "@styled-icons/fa-solid"
+import { BuildingRetail, LocationAdd, LocationDismiss, Mail, PeopleTeam, PeopleTeamDelete, Prohibited } from "@styled-icons/fluentui-system-filled"
+import { CameraAdd, Edit } from "@styled-icons/fluentui-system-regular";
+import { Users, Cannabis } from "@styled-icons/fa-solid"
 
 // used at all image upload and edit components
 export const AddImageIcon = styled(CameraAdd)`color: var(--trim-color); width: var(--site-icon-size);`
@@ -33,6 +33,11 @@ export const DeleteIcon = styled(Trash)`width: var(--site-icon-size);`
 
 export const ApproveUserIcon = styled(UserCheck)`width: var(--site-icon-size);`
 export const CreateEventIcon = styled(CalendarAdd)`width: var(--site-icon-size);`
+
+export const UserEditIcon = styled(Edit)`width: var(--site-icon-size);`
+
+export const BusinessIcon = styled(Cannabis)`color: var(--trim-color); width: var(--site-icon-size);`
+export const SettingsIcon = styled(Cog)`color: var(--secondary-color); width: var(--site-icon-size);`
 
 export const DispensaryIcon = styled(BuildingRetail)`color: var(--trim-color); width: var(--site-icon-size);`
 export const AddLocationIcon = styled(LocationAdd)`color: var(--trim-color); width: var(--site-icon-size);`

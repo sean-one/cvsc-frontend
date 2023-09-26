@@ -5,6 +5,7 @@ import { getImageSrc } from '../../../helpers/getImageSrc';
 import useAuth from '../../../hooks/useAuth';
 import UserEditForm from '../../forms/user.edit.form';
 import { role_types } from '../../../helpers/dataCleanUp';
+import { UserEditIcon } from '../../icons/siteIcons';
 
 const UserAccountStyles = styled.div`
     .userAccountPage {
@@ -46,9 +47,14 @@ const UserAccountStyles = styled.div`
         }}
     
     .editButton {
+        padding: 0.25rem;
         position: absolute;
-        right: 15%;
+        right: 10%;
         bottom: 0;
+        border: 1px solid var(--secondary-color);
+        border-radius: 50%;
+        color: var(--secondary-text-color);
+        background-color: var(--trim-color);
     }
 
     .accountDetails {
@@ -81,11 +87,6 @@ const UserAccountStyles = styled.div`
     .userDetails {
         height: 100%;}
 
-    .accountButtons {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;}
-
     .updateWrapper {
         display: flex;
         justify-content: space-between;
@@ -107,7 +108,10 @@ const UserAccount = () => {
                                 src={getImageSrc(auth?.user?.avatar)}
                                 alt={`user avatar`}
                             />
-                            <div className='editButton'>edit</div>
+                            {
+                                (!editView) &&
+                                    <div className='editButton' onClick={() => setEditView(true)}><UserEditIcon /></div>
+                            }
                         </div>
                         
                         <div className='accountDetails'>
@@ -123,13 +127,6 @@ const UserAccount = () => {
                                         <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
                                             {auth?.user.email}
                                         </div>
-                                }
-                            </div>
-
-                            <div className='accountButtons'>
-                                {
-                                    (!editView) &&
-                                        <button onClick={() => setEditView(true)}>edit</button>
                                 }
                             </div>
                             

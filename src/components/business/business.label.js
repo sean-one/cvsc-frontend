@@ -8,11 +8,13 @@ import { image_link } from '../../helpers/dataCleanUp';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
-        padding: 0.25rem;
+        padding: 0.5rem;
+        margin-top: 1rem;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        border: 1px solid red;
+        border-top: 1px solid var(--secondary-color);
+        border-bottom: 1px solid var(--secondary-color);
         border-radius: 1rem;
     }
     
@@ -29,8 +31,9 @@ const BusinessLabelStyles = styled.div`
     }
     
     .businessListing {
+        width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         gap: 10px;
         

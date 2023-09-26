@@ -107,9 +107,11 @@ const EventViewStyles = styled.div`
     }
 
     .eventViewBusiness {
-        margin: 0.25rem;
-        font-size: 1.2rem;
-        font-weight: bold;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
     }
 `;
 
@@ -155,10 +157,8 @@ const EventView = () => {
                     <div className='eventViewDetails'>
                         <div>{event.data.details}</div>
                         <div>
-                            <div className='eventViewBusiness' onClick={() => navigate(`/business/${event.data.venue_id}`)}>
+                            <div className='eventViewBusiness'>
                                 <BusinessLabel businessId={event.data.venue_id} imageOnly={false} />
-                            </div>
-                            <div className='eventViewBusiness' onClick={() => navigate(`/business/${event.data.brand_id}`)}>
                                 <BusinessLabel businessId={event.data.brand_id} imageOnly={false} />
                             </div>
                         </div>

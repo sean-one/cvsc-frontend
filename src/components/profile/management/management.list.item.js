@@ -2,14 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components'
+import { SettingsIcon, BusinessIcon } from '../../icons/siteIcons';
 import { image_link } from '../../../helpers/dataCleanUp';
 
 const ManagementListItemStyles = styled.div`
     .managementListItemWrapper {
-        width: 100%;
         display: flex;
         flex-direction: row;
         align-items: stretch;
+        width: 100%;
         margin: 1rem 0;
         padding: 0.5rem;
         border: 1px solid var(--trim-color);
@@ -41,20 +42,20 @@ const ManagementListItemStyles = styled.div`
         /* margin-left: 0.5rem; */
     }
 
-    .managementListItemStatus {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-        gap: 10px;
-    }
-
     .managementListItemBusinessname {
         font-weight: bold;
         font-size: 1.2rem;
         letter-spacing: 1.5;
     }
 
+    .managementListItemStatus {
+        font-size: 0.8rem;
+    }
+
     .managementListItemAdminButton {
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 1rem;
         align-self: flex-end;
     }
 `
@@ -71,14 +72,12 @@ const ManagementListItem = ({ business }) => {
                     <img src={image_link(business?.business_avatar)} alt={business.business_name} />
                 </div>
                 <div className='managementListItemDetails'>
-                    <div className='managementListItemStatus'>
-                        <div>{`Business: ${business.active_business ? 'Active' : 'Inactive'}`}</div>
-                        <div>{`Request: ${business.business_request_open ? 'Open' : 'Closed'}`}</div>
-                    </div>
                     <div>{business.business_type === 'both' ? `Dispensary / Brand` : `${business.business_type.charAt(0).toUpperCase() + business.business_type.slice(1)}`}</div>
                     <div className='managementListItemBusinessname'>{business.business_name}</div>
+                    <div className='managementListItemStatus'>{`${business.active_business ? 'Active' : 'Inactive'} / ${business.business_request_open ? 'Request Open' : 'Request Closed'}`}</div>
                     <div className='managementListItemAdminButton'>
-                        <button onClick={() => navigate(`/business/admin/${business.id}`)}>admin</button>
+                        <div onClick={() => navigate(`/business/${business.id}`)}><BusinessIcon /></div>
+                        <div onClick={() => navigate(`/business/admin/${business.id}`)}><SettingsIcon /></div>
                     </div>
                 </div>
             </div>
