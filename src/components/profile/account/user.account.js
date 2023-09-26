@@ -22,6 +22,7 @@ const UserAccountStyles = styled.div`
         }}
 
     .profileImage {
+        position: relative;
         min-width: 225px;
         max-width: 275px;
         
@@ -44,6 +45,12 @@ const UserAccountStyles = styled.div`
             border-radius: 50%;
         }}
     
+    .editButton {
+        position: absolute;
+        right: 15%;
+        bottom: 0;
+    }
+
     .accountDetails {
         width: 100%;
         align-self: start;
@@ -100,6 +107,7 @@ const UserAccount = () => {
                                 src={getImageSrc(auth?.user?.avatar)}
                                 alt={`user avatar`}
                             />
+                            <div className='editButton'>edit</div>
                         </div>
                         
                         <div className='accountDetails'>
