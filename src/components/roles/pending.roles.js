@@ -12,7 +12,6 @@ const PendingRoles = ({ roles_list }) => {
     }
 
 
-    console.log(viewRequest)
     return (
         <div className='sectionContainer'>
             <div className='sectionHeader sectionListHeader'>

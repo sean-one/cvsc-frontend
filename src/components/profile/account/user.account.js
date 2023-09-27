@@ -47,14 +47,14 @@ const UserAccountStyles = styled.div`
         }}
     
     .editButton {
-        padding: 0.25rem;
+        padding: 0.5rem;
         position: absolute;
-        right: 10%;
+        right: 15%;
         bottom: 0;
         border: 1px solid var(--secondary-color);
         border-radius: 50%;
-        color: var(--secondary-text-color);
-        background-color: var(--trim-color);
+        color: var(--trim-color);
+        background-color: var(--secondary-text-color);
     }
 
     .accountDetails {
