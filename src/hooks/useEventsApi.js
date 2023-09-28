@@ -31,6 +31,8 @@ export const useEventQuery = (id) => useQuery(['events', id], () => getEvent(id)
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 
+// const getBusinessEvents = async (id) => { return await AxiosInstance.get() }
+
 //! event.create.form - CREATE A NEW EVENT
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {

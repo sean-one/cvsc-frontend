@@ -12,6 +12,7 @@ import RequestStatusToggle from './request.status.toggle';
 import EditBusinessButton from './edit.business.button';
 import DeleteBusiness from './delete.business';
 import CreateEventButton from '../../events/create.event.button';
+import BusinessEvents from './business.events';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminViewHeader {
@@ -63,25 +64,24 @@ const BusinessAdminViewStyles = styled.div`
 const BusinessAdminView = () => {
     const { auth } = useAuth()
     const { business_id } = useParams()
-    const { data, isLoading, isSuccess, isError } = useBusinessQuery(business_id)
+    const { data, status } = useBusinessQuery(business_id)
     let business, business_role = {}
 
     let navigate = useNavigate()
-
-    if(isLoading) {
-        return <LoadingSpinner />
-    }
-
-    if(isSuccess) {
-        business = data.data
-    }
-
-    if(isError) {
+    
+    if(status === 'error') {
         navigate('/profile/admin')
         return null
     }
 
+    if(status === 'loading') {
+        return <LoadingSpinner />
+    }
+    
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
+    
+    business = data.data
+
 
     return (
         <BusinessAdminViewStyles>
@@ -124,6 +124,7 @@ const BusinessAdminView = () => {
                 }
             </div>
             <BusinessRoles />
+            <BusinessEvents />
         </BusinessAdminViewStyles>
     )
 }
