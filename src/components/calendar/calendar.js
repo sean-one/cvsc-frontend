@@ -1,5 +1,4 @@
 import React from 'react'
-import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import { useEventsQuery } from '../../hooks/useEventsApi';
@@ -38,31 +37,14 @@ const CalendarStyles = styled.div`
 `
 
 const Calendar = () => {
-    const { data: eventList, isLoading, isError, isSuccess } = useEventsQuery()
-    let sortedEvents = []
+    const { data: eventList, status } = useEventsQuery()
 
-    if(isLoading) {
+    if(status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if(isError) {
+    if(status === 'error') {
         return <ServerDown />
-    }
-
-    if(isSuccess) {
-        sortedEvents = eventList.data.sort((a,b) => {
-            if (format(new Date(a.eventdate), 't') > format(new Date(b.eventdate), 't')) {
-                return 1;
-            } else if (format(new Date(a.eventdate), 't') < format(new Date(b.eventdate), 't')) {
-                return -1;
-            } else {
-                if (a.eventstart > b.eventstart) {
-                    return 1
-                } else {
-                    return -1
-                }
-            }
-        })
     }
     
 
@@ -70,22 +52,16 @@ const Calendar = () => {
         <CalendarStyles>
 
             <div className='calendarWrapper'>
-                {
-                    (sortedEvents.length > 0)
-                        ? <div>{
-                            sortedEvents.map(event => {
-                                return (
-                                    <EventCard key={event.event_id} event={event} />
-                                )
-                            })
-                        } </div>
-                        : <div className='calendarNoEvents'>
-                            <div className='calendarNoEventsHeader'>No events to show</div>
-                            <div className='calendarNoEventsLogin'>Login and create a new event.</div>
-                        </div>
-
-                }
+                {eventList.data.length > 0 ? (
+                    eventList.data.map(event => <EventCard key={event.event_id} event={event} />)
+                ) : (
+                    <div className='calendarNoEvents'>
+                        <div className='calendarNoEventsHeader'>No events to show</div>
+                        <div className='calendarNoEventsLogin'>Login and create a new event.</div>
+                    </div>
+                )}
             </div>
+
 
         </CalendarStyles>
     )

@@ -87,7 +87,7 @@ const BusinessAdminView = () => {
         <BusinessAdminViewStyles>
             <div className='sectionContainer removeBorder'>
                 <div className='businessAdminViewHeader'>
-                    <h1>{business.business_name}</h1>
+                    <h1 onClick={() => navigate(`/business/${business_id}`)}>{business.business_name}</h1>
                     {
                         (business_role?.role_type < process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&
                             <CreateEventButton business_id={business_id} /> 

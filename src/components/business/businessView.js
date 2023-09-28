@@ -6,10 +6,21 @@ import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
 import useAuth from '../../hooks/useAuth';
+import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import RelatedEvents from '../events/related.events';
 
-import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, TwitterIcon, WebSiteIcon } from '../icons/siteIcons';
+import {
+    CreateEventIcon,
+    FacebookIcon,
+    InstagramIcon,
+    MailIcon,
+    PhoneIcon,
+    TwitterIcon,
+    WebSiteIcon,
+    EditIcon,
+    SettingsIcon
+} from '../icons/siteIcons';
 
 const BusinessViewStyles = styled.div`
     .businessViewWrapper {
@@ -33,18 +44,15 @@ const BusinessViewStyles = styled.div`
         width: 100%;
         display: flex;
         flex-direction: row;
-
-        @media (min-width: 768px) {
-            flex-direction: row-reverse;
-            justify-content: space-between;
-            align-items: flex-start;
-        }}
-
-    .businessHeader h2 {
-        width: 100%;
-        @media (min-width: 768px) {
-            align-self: center;
-        }}
+        justify-content: space-between;}
+    
+    .businessViewManagementControls {
+        display: flex;
+        color: var(--secondary-color);
+        gap: 0.5rem;}
+    
+    .businessViewControl {
+        cursor: pointer;}
     
     .businessDetails {
         display: flex;
@@ -122,17 +130,31 @@ const BusinessViewStyles = styled.div`
 
 const BusinessView = () => {
     const { auth } = useAuth()
+    const { dispatch } = useNotification()
     let { business_id } = useParams()
     let business_role = {}
 
     let navigate = useNavigate()
 
-    const { data: business, isLoading } = useBusinessQuery(business_id)
+    const { data: business, status } = useBusinessQuery(business_id)
 
-    if (isLoading) { return <LoadingSpinner /> }
+    if(status === 'error') {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: `There was an error locating the business.`,
+            }
+        })
 
+        navigate('/')
+        return null;
+    }
+    
+    if (status === 'loading') { return <LoadingSpinner /> }
+    
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
-
+    
 
     return (
         <BusinessViewStyles>
@@ -140,12 +162,20 @@ const BusinessView = () => {
                 <div className='businessViewHeader'>
                     <div className='businessHeader'>
                         <h2>{business?.data.business_name.toUpperCase()}</h2>
-                        <div>
-                            {
-                                (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                                    <div onClick={() => navigate(`/business/admin/${business_id}`)}>admin</div>
-                            }
-                        </div>
+                        {
+                            (business_role?.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT && business_role?.active_role === true) &&
+                                <div className='businessViewManagementControls'>
+                                    <div className='businessViewControl' onClick={() => navigate(`/event/create`, { state: business_id })}><CreateEventIcon /></div>
+                                    {
+                                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
+                                            <div className='businessViewControl' onClick={() => navigate(`/business/admin/${business_id}`)}><SettingsIcon /></div>
+                                    }
+                                    {
+                                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
+                                            <div className='businessViewControl' onClick={() => navigate(`/business/edit/${business_id}`)}><EditIcon /></div>
+                                    }
+                                </div>
+                        }
                     </div>
                     {
                         (business?.data.formatted_address !== null) &&
