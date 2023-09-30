@@ -74,7 +74,16 @@ const ManagementListItem = ({ business }) => {
                 <div className='managementListItemDetails'>
                     <div>{business.business_type === 'both' ? `Dispensary / Brand` : `${business.business_type.charAt(0).toUpperCase() + business.business_type.slice(1)}`}</div>
                     <div className='managementListItemBusinessname'>{business.business_name}</div>
-                    <div className='managementListItemStatus'>{`${business.active_business ? 'Active' : 'Inactive'} / ${business.business_request_open ? 'Request Open' : 'Request Closed'}`}</div>
+                    <div className='managementListItemStatus'>
+                        <span style={{ color: business.active_business ? 'inherit' : `var(--error-color)` }}>
+                            {business.active_business ? 'Active' : 'Inactive'}
+                        </span>
+                        {' / '}
+                        <span style={{ color: business.business_request_open ? 'inherit' : `var(--error-color)` }}>
+                            {business.business_request_open ? 'Request Open' : 'Request Closed'}
+                        </span>
+                    </div>
+
                     <div className='managementListItemAdminButton'>
                         <div onClick={() => navigate(`/business/${business.id}`)}><BusinessIcon /></div>
                         <div onClick={() => navigate(`/business/admin/${business.id}`)}><SettingsIcon /></div>

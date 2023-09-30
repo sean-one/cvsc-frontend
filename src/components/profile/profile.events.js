@@ -50,7 +50,7 @@ const ProfileEvents = () => {
                     (events_list.length > 0)
                         ? events_list.map(event => {
                             return (
-                                <EventSmallPreview key={event.event_id} event={event} />
+                                <EventSmallPreview key={event.event_id} event={event} user/>
                             )
                         })
                         : <div className='profileEventsNoEvents'>

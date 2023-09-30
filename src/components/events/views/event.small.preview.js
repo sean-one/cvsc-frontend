@@ -5,13 +5,22 @@ import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
 
 import { image_link } from '../../../helpers/dataCleanUp';
+import { EditIcon } from '../../icons/siteIcons';
 
 const EventSmallPreviewStyles = styled.div`
     .eventSmallPreviewWrapper {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: relative;
         gap: 10px;
+    }
+
+    .eventSmallPreviewEdit {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+        cursor: pointer;
     }
 
     .eventSmallPreviewLeftSection {
@@ -59,14 +68,20 @@ const EventSmallPreviewStyles = styled.div`
     }
 `;
 
-const EventSmallPreview = ({ event }) => {
+const EventSmallPreview = ({ event, user=false, business=false }) => {
     let navigate = useNavigate()
 
 
+    console.log(event, user, business)
     return (
         <EventSmallPreviewStyles>
             <div className='sectionContainer eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>
-                
+                {
+                    user && <div className='eventSmallPreviewEdit' onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/event/edit/${event.event_id}`, { state: event })
+                    }}><EditIcon /></div>
+                }
                 <div className='eventSmallPreviewLeftSection'>
                     <div className='eventSmallPreviewImageContainer'>
                         <img className='eventSmallPreviewImage' src={image_link(event.eventmedia)} alt={`${event.eventname} flyer`} />

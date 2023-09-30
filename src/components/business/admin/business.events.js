@@ -1,7 +1,15 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessEventsQuery } from '../../../hooks/useEventsApi';
+import EventSmallPreview from '../../events/views/event.small.preview';
+
+const BusinessEventsStyles = styled.div`
+    .businessEventsWrapper {
+        padding: 0 0.5rem;
+    }
+`;
 
 const BusinessEvents = ({ business_id, business_name }) => {
     const { data: eventsList, status } = useBusinessEventsQuery(business_id)
@@ -17,22 +25,25 @@ const BusinessEvents = ({ business_id, business_name }) => {
 
 
     return (
-        <div className='sectionContainer'>
-            {
-                (eventsList.data.length > 0)
-                    ? <div>
-                        <div>{`${business_name} Upcoming Events`}</div>
-                        {
-                            eventsList.data.map(event => (
-                                <div key={event.event_id}>
-                                    <div>{`01/01 | ${event.eventname} | ${event.eventstart}-${event.eventend}`}</div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                    : <div>no current events, create one!</div>
-            }
-        </div>
+        <BusinessEventsStyles>
+            <div className='businessEventsWrapper'>
+                {
+                    (eventsList.data.length > 0)
+                        ? <div>
+                            <div>{`${business_name} Upcoming Events`}</div>
+                            {
+                                eventsList.data.map(event => {
+                                    return (
+                                        <EventSmallPreview key={event.event_id} event={event} business />
+                                    )
+                                })
+                            }
+                        </div>
+                        : <div>no current events, create one!</div>
+                }
+            </div>
+
+        </BusinessEventsStyles>
     )
 }
 
