@@ -82,6 +82,12 @@ const EventSmallPreview = ({ event, user=false, business=false }) => {
                         navigate(`/event/edit/${event.event_id}`, { state: event })
                     }}><EditIcon /></div>
                 }
+                {
+                    business && <div className='eventSmallPreviewEdit' onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/event/edit/${event.event_id}`, { state: event })
+                    }}><EditIcon /></div>
+                }
                 <div className='eventSmallPreviewLeftSection'>
                     <div className='eventSmallPreviewImageContainer'>
                         <img className='eventSmallPreviewImage' src={image_link(event.eventmedia)} alt={`${event.eventname} flyer`} />

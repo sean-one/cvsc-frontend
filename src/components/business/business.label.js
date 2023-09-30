@@ -13,9 +13,6 @@ const BusinessLabelStyles = styled.div`
         width: 100%;
         display: flex;
         justify-content: space-between;
-        border-top: 1px solid var(--secondary-color);
-        border-bottom: 1px solid var(--secondary-color);
-        border-radius: 1rem;
     }
     
     .businessLogoContainer {
