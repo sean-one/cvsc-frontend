@@ -34,7 +34,7 @@ const BusinessEvents = ({ business_id, business_name }) => {
                             {
                                 eventsList.data.map(event => {
                                     return (
-                                        <EventSmallPreview key={event.event_id} event={event} business />
+                                        <EventSmallPreview key={event.event_id} event={event} />
                                     )
                                 })
                             }

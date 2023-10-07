@@ -9,11 +9,13 @@ import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import RelatedEvents from '../events/related.events';
+import BusinessAdminControls from './admin/business.admin.controls';
 
 import {
     CreateEventIcon,
     FacebookIcon,
     InstagramIcon,
+    InactiveBusiness,
     MailIcon,
     PhoneIcon,
     TwitterIcon,
@@ -156,6 +158,8 @@ const BusinessView = () => {
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
     
 
+    console.log('AUTH ROLE')
+    console.log(business_role)
     return (
         <BusinessViewStyles>
             <div className='businessViewWrapper'>
@@ -163,18 +167,12 @@ const BusinessView = () => {
                     <div className='businessHeader'>
                         <h2>{business?.data.business_name.toUpperCase()}</h2>
                         {
-                            (business_role?.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT && business_role?.active_role === true) &&
-                                <div className='businessViewManagementControls'>
-                                    <div className='businessViewControl' onClick={() => navigate(`/event/create`, { state: business_id })}><CreateEventIcon /></div>
-                                    {
-                                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                                            <div className='businessViewControl' onClick={() => navigate(`/business/admin/${business_id}`)}><SettingsIcon /></div>
-                                    }
-                                    {
-                                        (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && business_role?.active_role === true) &&
-                                            <div className='businessViewControl' onClick={() => navigate(`/business/edit/${business_id}`)}><EditIcon /></div>
-                                    }
-                                </div>
+                            (business_role?.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
+                                <BusinessAdminControls user_role={business_role} business={business?.data} />
+                        }
+                        {
+                            ((business_role === undefined) && !business?.data?.active_business) &&
+                                <InactiveBusiness />
                         }
                     </div>
                     {

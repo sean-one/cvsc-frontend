@@ -5,7 +5,9 @@ import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import { EditIcon } from '../../icons/siteIcons';
+import { EditIcon, RemoveBusinessIcon } from '../../icons/siteIcons';
+
+import useAuth from '../../../hooks/useAuth';
 
 const EventSmallPreviewStyles = styled.div`
     .eventSmallPreviewWrapper {
@@ -16,11 +18,15 @@ const EventSmallPreviewStyles = styled.div`
         gap: 10px;
     }
 
-    .eventSmallPreviewEdit {
+    .eventSmallPreviewAdminControls {
         position: absolute;
         right: 0.5rem;
         top: 0.5rem;
         cursor: pointer;
+        display: flex;
+    }
+
+    .eventSmallPreviewEdit {
     }
 
     .eventSmallPreviewLeftSection {
@@ -68,25 +74,40 @@ const EventSmallPreviewStyles = styled.div`
     }
 `;
 
-const EventSmallPreview = ({ event, user=false, business=false }) => {
+const EventSmallPreview = ({ event }) => {
+    const { auth } = useAuth()
     let navigate = useNavigate()
 
+    const isCreator = () => auth?.user?.id === event.created_by
 
-    console.log(event, user, business)
+    // Check if auth.roles contains event.brand_id or event.venue_id and has a certain role_type
+    const isManagement = () => {
+        return auth.roles && auth.roles.some(role => 
+            (role.business_id === event.brand_id || role.business_id === event.venue_id) && role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role === true
+        );
+    };
+
+
     return (
         <EventSmallPreviewStyles>
             <div className='sectionContainer eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>
                 {
-                    user && <div className='eventSmallPreviewEdit' onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/event/edit/${event.event_id}`, { state: event })
-                    }}><EditIcon /></div>
-                }
-                {
-                    business && <div className='eventSmallPreviewEdit' onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/event/edit/${event.event_id}`, { state: event })
-                    }}><EditIcon /></div>
+                    (Object.keys(auth).length > 0) &&
+                        <div className='eventSmallPreviewAdminControls'>
+                            {
+                                (isCreator()) && <div className='eventSmallPreviewEdit' onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/event/edit/${event.event_id}`, { state: event })
+                                }}><EditIcon /></div>
+                            }
+                            {
+                                (!isCreator() && isManagement()) &&
+                                    <div className='eventSmallPreviewEdit' onClick={(e) => {
+                                            e.stopPropagation();
+                                            console.log('remove business from event')
+                                        }}><RemoveBusinessIcon /></div>
+                            }
+                        </div>
                 }
                 <div className='eventSmallPreviewLeftSection'>
                     <div className='eventSmallPreviewImageContainer'>

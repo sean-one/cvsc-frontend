@@ -2,11 +2,22 @@ import styled from "styled-components";
 
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
 import { Phone, ToggleRight, UserCheck } from "@styled-icons/boxicons-solid"
-import { CalendarPlus, Edit, ToggleLeft, ChevronDown, ChevronUp, Trash, Cog } from "@styled-icons/boxicons-regular";
 import { Web } from "@styled-icons/foundation"
 import { Mail } from "@styled-icons/fluentui-system-filled"
 import { CameraAdd } from "@styled-icons/fluentui-system-regular";
 import { Cannabis } from "@styled-icons/fa-solid"
+import {
+    CalendarPlus,
+    CalendarX,
+    Edit,
+    ErrorCircle,
+    ToggleLeft,
+    ChevronDown,
+    ChevronUp,
+    Trash,
+    Cog,
+    MinusCircle
+} from "@styled-icons/boxicons-regular";
 
 // used at all image upload and edit components
 export const AddImageIcon = styled(CameraAdd)`color: var(--trim-color); width: var(--site-icon-size);`
@@ -37,5 +48,7 @@ export const UserEditIcon = styled(Edit)`width: var(--site-icon-size);`
 
 export const BusinessIcon = styled(Cannabis)`color: var(--trim-color); width: var(--site-icon-size);`
 export const SettingsIcon = styled(Cog)`width: var(--site-icon-size);`
+export const InactiveBusiness = styled(ErrorCircle)`color: var(--error-color); width: var(--site-icon-size);`
+export const RemoveBusinessIcon = styled(MinusCircle)`width: var(--site-icon-size);`
 
 export const EditIcon = styled(Edit)`width: var(--site-icon-size);`

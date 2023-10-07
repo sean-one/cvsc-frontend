@@ -132,6 +132,8 @@ const EventView = () => {
         return <ServerDown />
     }
 
+    const isCreator = () => auth?.user?.id === event.data.created_by
+
 
     return (
         <EventViewStyles>
@@ -140,7 +142,7 @@ const EventView = () => {
                     <div className='eventViewHeaderRow'>
                         <div className='eventViewEventname'>{event.data.eventname}</div>
                         {
-                            (auth?.user?.id === event.data.created_by) &&
+                            (isCreator) &&
                                 <button onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>edit</button>
                         }
                     </div>
