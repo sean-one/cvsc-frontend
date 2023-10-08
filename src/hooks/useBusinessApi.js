@@ -4,15 +4,7 @@ import AxiosInstance from "../helpers/axios";
 
 //! businessView, update.business - VIEW BUSINESS PAGE
 const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/single/${id}`) }
-export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id), {
-    // retry: (failureCount, error) => {
-        // Don't retry for 404 status codes
-        // if (error?.response?.status === 404) {
-            // return false;
-        // }
-        // return true;
-    // }
-})
+export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id))
 
 //! RETURN A LIST OF ALL BUSINESSES
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }

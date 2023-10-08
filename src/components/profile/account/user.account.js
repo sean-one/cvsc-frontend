@@ -54,7 +54,7 @@ const UserAccountStyles = styled.div`
         border: 1px solid var(--secondary-color);
         border-radius: 50%;
         color: var(--trim-color);
-        background-color: var(--secondary-text-color);
+        background-color: var(--main-color);
     }
 
     .accountDetails {
