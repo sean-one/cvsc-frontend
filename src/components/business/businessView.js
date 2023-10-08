@@ -12,7 +12,6 @@ import RelatedEvents from '../events/related.events';
 import BusinessAdminControls from './admin/business.admin.controls';
 
 import {
-    CreateEventIcon,
     FacebookIcon,
     InstagramIcon,
     InactiveBusiness,
@@ -20,8 +19,6 @@ import {
     PhoneIcon,
     TwitterIcon,
     WebSiteIcon,
-    EditIcon,
-    SettingsIcon
 } from '../icons/siteIcons';
 
 const BusinessViewStyles = styled.div`
@@ -158,8 +155,6 @@ const BusinessView = () => {
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
     
 
-    console.log('AUTH ROLE')
-    console.log(business_role)
     return (
         <BusinessViewStyles>
             <div className='businessViewWrapper'>

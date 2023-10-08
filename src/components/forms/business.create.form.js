@@ -14,6 +14,10 @@ import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, Twit
 import AddressForm from './address.form';
 
 const BusinessCreateFormStyles = styled.div`
+    label {
+        padding-bottom: 0.5rem;
+        align-self: flex-end;
+    }
 `;
 
 const BusinessCreateForm = () => {

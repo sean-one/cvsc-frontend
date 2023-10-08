@@ -202,7 +202,7 @@ const BusinessEditForm = () => {
                                         value: businessTypeList,
                                         message: 'invalid business type'
                                     }
-                                })} onClick={() => clearErrors('business_type')} type='text'>
+                                })} onClick={() => clearErrors('business_type')}>
                                     <option value='brand'>Brand</option>
                                     <option value='venue'>Dispensary</option>
                                     <option value='both'>{`Brand & Dispensary`}</option>

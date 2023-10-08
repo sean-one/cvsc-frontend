@@ -8,26 +8,29 @@ import { CameraAdd } from "@styled-icons/fluentui-system-regular";
 import { Cannabis } from "@styled-icons/fa-solid"
 import {
     ArrowToTop,
+    CalendarEvent,
     CalendarPlus,
-    CalendarX,
     Edit,
     ErrorCircle,
     ToggleLeft,
     ChevronDown,
     ChevronUp,
     Trash,
+    Time,
     Cog,
     MinusCircle,
     Search,
 } from "@styled-icons/boxicons-regular";
 
 // used at all image upload and edit components
-export const AddImageIcon = styled(CameraAdd)`color: var(--trim-color); width: var(--site-icon-size);`
+export const AddImageIcon = styled(CameraAdd)`width: var(--site-icon-size);`
 
 export const SearchIcon = styled(Search)`width: var(--site-icon-size);`
 export const FilterTopIcon = styled(ArrowToTop)`width: var(--site-icon-size);`
 
 export const AddressIcon = styled(Map)`width: var(--site-icon-size);`
+export const DateIcon = styled(CalendarEvent)`width: var(--site-icon-size);`
+export const TimeIcon = styled(Time)`width: var(--site-icon-size);`
 
 // used in the contacts - both the input fields as well as on the business page
 export const MailIcon = styled(Mail)`color: var(--trim-color); width: var(--contact-icon-size);`

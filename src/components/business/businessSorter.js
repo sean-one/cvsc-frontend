@@ -13,25 +13,22 @@ const BusinessSorterStyles = styled.div`
 
     .businessSorterInputWrapper {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-    }
 
-    #businessSorterSearchInput {
-        margin: 0; 
-        padding: 0;
-        border: none; 
-        border-radius: 0;
-        outline: none;
-        appearance: none; /* For modern browsers */
-        -webkit-appearance: none; /* For older versions of Safari */
-        -moz-appearance: none; /* For Firefox */
-        background: transparent;
-        font-family: inherit; /* Inherit font from parent elements */
-        font-size: inherit; /* Inherit font size from parent elements */
-        background: var(--main-color);
-        border-bottom: 1px solid var(--secondary-color);
-        color: var(--secondary-color);
-        /* color: red; */
+        input, select {
+            font-size: 1.1rem;
+
+            ::placeholder {
+                color: var(--secondary-color);
+            }
+        }
+
+        label {
+            align-self: flex-end;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid var(--secondary-color);
+        }
     }
 
 `
@@ -43,7 +40,6 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                 <div className='businessSorterInputWrapper'>
                     <label><SearchIcon /></label>
                     <input
-                        id='businessSorterSearchInput' 
                         type="text" 
                         value={searchQuery} 
                         onChange={e => onSearchChange(e.target.value)}
@@ -51,8 +47,7 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                     />
                 </div>
                 <div className='businessSorterInputWrapper'>
-                    <label><FilterTopIcon /></label>
-                    <select id='businessSorterFilterSelect' value={sortCriteria} onChange={e => onSortChange(e.target.value)}>
+                    <select value={sortCriteria} onChange={e => onSortChange(e.target.value)}>
                         <option value="business_name">Business Name</option>
                         <option value="business_type_brand">Type: Brand</option>
                         <option value="business_type_venue">Type: Venue</option>
@@ -61,6 +56,7 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                         <option value="inactive_business">Inactive</option>
                         <option value="request_closed">Request Closed</option>
                     </select>
+                    <label><FilterTopIcon /></label>
                 </div>
             </div>
         </BusinessSorterStyles>
