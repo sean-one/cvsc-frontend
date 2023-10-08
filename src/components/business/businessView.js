@@ -135,7 +135,7 @@ const BusinessView = () => {
 
     let navigate = useNavigate()
 
-    const { data: business, status, error: responseError } = useBusinessQuery('485263cc-3bbe-45a8-9f10-8531f70306de')
+    const { data: business, status, error: responseError } = useBusinessQuery(business_id)
 
     useEffect(() => {
         if (status === 'error') {
