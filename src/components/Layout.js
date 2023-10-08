@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
         --opacity: ${(props) => props.theme['--opacity']};
         --black-and-white: ${(props) => props.theme['--black-and-white']};
         --site-icon-size: 1.8rem;
+        --contact-icon-size: 2.2rem;
         --error-color: #D32F2F;
         // added to label to make it look like an input for image upload
         --form-input-background: #F4F6F5;
@@ -51,7 +52,6 @@ const Styles = styled.div`
         padding: 0.5rem;
         border-radius: 5px;
         border: 1px solid var(--trim-color);
-        /* margin-bottom: 0.75rem; */
     }
 
     .sectionHeader {
@@ -84,17 +84,10 @@ const Styles = styled.div`
         padding: 0.5rem 1.25rem;
         border: none;
         border: 1px solid var(--secondary-color);
-        /* color: #F4F6F5; */
         color: var(--trim-color);
         border-radius: 5px;
-        /* background-color: var(--trim-color); */
         background-color: transparent;
         outline: none;
-        
-        :hover {
-            /* background-color: #0D2B12; */
-            /* border: 1px solid #4b6f51; */
-        }
 
         :active {
             transform: translate(2px, 4px)
@@ -109,6 +102,29 @@ const Styles = styled.div`
         }
     }
 
+    input, textarea, select {
+        width: 100%;
+        max-width: 30rem;
+        font-size: 1.4rem;
+        padding: 0.5rem 1rem;
+        margin: 0; 
+        border: none; 
+        border-radius: 0;
+        outline: none;
+        appearance: none; /* For modern browsers */
+        -webkit-appearance: none; /* For older versions of Safari */
+        -moz-appearance: none; /* For Firefox */
+        background: transparent;
+        font-family: inherit; /* Inherit font from parent elements */
+        background: var(--main-color);
+        border-bottom: 1px solid var(--secondary-color);
+        color: var(--secondary-color);
+
+        ::placeholder {
+            color: var(--input-placeholder);
+        }
+    }
+
     .deleteButton {
         color: var(--error-color);
         background-color: transparent;
@@ -116,11 +132,11 @@ const Styles = styled.div`
     
     .formImage {
         width: 100%;
-        /* max-width: 350px; */
+        max-width: 450px;
         display: flex;
         justify-content: center;
         align-items: center;
-        /* margin: 1rem auto; */
+        margin: 1rem auto;
         
         @media (min-width: 500px) {
             width: 100%;
@@ -159,25 +175,17 @@ const Styles = styled.div`
     }
 
     .inputWrapper {
-        margin: 0.1rem 0;
-    }
-
-    .contactWrapper {
-        border-radius: 5px;
-
-        input {
-            border-bottom: none;
-            box-shadow: none;
-        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0.25rem 0 0.1rem;
     }
 
     .contactLabelWrapper {
+        width: 100%;
         display: flex;
-        align-items: center;
-    }
-
-    .contactIcon {
-        padding: 0.5rem;
+        gap: 0.5rem;
     }
 
     .formInput {
@@ -217,6 +225,8 @@ const Styles = styled.div`
     }
 
     .inputLabel {
+        display: flex;
+        align-items: center;
         width: auto;
         /* margin: 0.5rem 0; */
         cursor: pointer;

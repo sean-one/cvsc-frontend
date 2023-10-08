@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import AutoComplete from 'react-google-autocomplete';
 
+import { AddressIcon } from '../icons/siteIcons';
+
+const AddressFormStyles = styled.div`
+    .addressInputWrapper {
+        margin: 0.25rem 0 0.1rem;
+        display: flex;
+        align-items: center; 
+    }
+`
 
 const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=''}) => {
     const [ inputValue, setInputValue ] = useState(defaultValue)
@@ -21,24 +31,25 @@ const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=''}
     }
 
     return (
-        <div className='inputWrapper'>
-            <label htmlFor="formatted_address">Address Search:</label>
-            <AutoComplete
-                apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                {...register('formatted_address')}
-                name='formatted_address'
-                className='formInput'
-                value={inputValue}
-                onChange={handleInputChange}
-                onClick={() => clearErrors('formatted_address')}
-                onPlaceSelected={handleSelect}
-                options={{
-                    types: ['address'],
-                }}
-            />
-            {errors.formatted_address ? <div className='errormessage'>{errors.formatted_address?.message}</div> : null}
-            {errors.place_id ? <div className='errormessage'>{errors.place_id?.message}</div> : null}
-        </div>
+        <AddressFormStyles>
+            <div className='addressInputWrapper'>
+                <label htmlFor="formatted_address"><AddressIcon /></label>
+                <AutoComplete
+                    apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+                    {...register('formatted_address')}
+                    name='formatted_address'
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onClick={() => clearErrors('formatted_address')}
+                    onPlaceSelected={handleSelect}
+                    options={{
+                        types: ['address'],
+                    }}
+                />
+                {errors.formatted_address ? <div className='errormessage'>{errors.formatted_address?.message}</div> : null}
+                {errors.place_id ? <div className='errormessage'>{errors.place_id?.message}</div> : null}
+            </div>
+        </AddressFormStyles>
     )
 };
 

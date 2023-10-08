@@ -174,7 +174,7 @@ const Register = () => {
                                 message: 'username too long'
                             },
                             validate: validateUsername
-                        })} className='formInput' type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                        })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
 
@@ -195,11 +195,11 @@ const Register = () => {
                                     value: emailformat,
                                     message: 'invalid email format'
                                 }
-                            })} className='formInput' type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
+                            })} type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
                         </div>
                         
                         {/* AVATAR IMAGE UPLOAD */}
-                        <label htmlFor='avatar' className='formInput inputLabel'>
+                        <label htmlFor='avatar' className='inputLabel'>
                             <AddImageIcon />
                             <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
@@ -211,7 +211,7 @@ const Register = () => {
                         <input {...register('password', {
                             required: 'password is required',
                             validate: validatePassword
-                        })} className='formInput' type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='Password' />
+                        })} type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='Password' />
                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                     </div>
                     
@@ -220,7 +220,7 @@ const Register = () => {
                         <input {...register('confirmation', {
                             required: 'password confirmation is required',
                             validate: validatePassword
-                        })} className='formInput' type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm Password' />
+                        })} type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm Password' />
                         {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
                     </div>
                     

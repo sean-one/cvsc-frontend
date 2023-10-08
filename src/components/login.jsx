@@ -124,7 +124,7 @@ const Login = () => {
                                 message: 'too long, must be 20 characters or less'
                             },
                             validate: validateUsername,
-                        })} className='formInput' type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                        })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
                     
@@ -132,7 +132,7 @@ const Login = () => {
                     <div className='inputWrapper'>
                         <input {...register('password', {
                             validate: value => validatePassword(value, true)
-                        })} className='formInput' type='password' onFocus={() => clearErrors('password')} placeholder='Password' />
+                        })} type='password' onFocus={() => clearErrors('password')} placeholder='Password' />
                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                     </div>
                     

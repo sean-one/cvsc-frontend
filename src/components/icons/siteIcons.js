@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
-import { Phone, ToggleRight, UserCheck } from "@styled-icons/boxicons-solid"
+import { Phone, ToggleRight, UserCheck, Map } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
 import { Mail } from "@styled-icons/fluentui-system-filled"
 import { CameraAdd } from "@styled-icons/fluentui-system-regular";
@@ -27,13 +27,15 @@ export const AddImageIcon = styled(CameraAdd)`color: var(--trim-color); width: v
 export const SearchIcon = styled(Search)`width: var(--site-icon-size);`
 export const FilterTopIcon = styled(ArrowToTop)`width: var(--site-icon-size);`
 
+export const AddressIcon = styled(Map)`width: var(--site-icon-size);`
+
 // used in the contacts - both the input fields as well as on the business page
-export const MailIcon = styled(Mail)`color: var(--trim-color); width: var(--site-icon-size);`
-export const InstagramIcon = styled(Instagram)`color: var(--trim-color); width: var(--site-icon-size);`
-export const TwitterIcon = styled(Twitter)`color: var(--trim-color); width: var(--site-icon-size);`
-export const FacebookIcon = styled(FacebookCircle)`color: var(--trim-color); width: var(--site-icon-size);`
-export const PhoneIcon = styled(Phone)`color: var(--trim-color); width: var(--site-icon-size);`
-export const WebSiteIcon = styled(Web)`color: var(--trim-color); width: var(--site-icon-size);`
+export const MailIcon = styled(Mail)`color: var(--trim-color); width: var(--contact-icon-size);`
+export const InstagramIcon = styled(Instagram)`color: var(--trim-color); width: var(--contact-icon-size);`
+export const TwitterIcon = styled(Twitter)`color: var(--trim-color); width: var(--contact-icon-size);`
+export const FacebookIcon = styled(FacebookCircle)`color: var(--trim-color); width: var(--contact-icon-size);`
+export const PhoneIcon = styled(Phone)`color: var(--trim-color); width: var(--contact-icon-size);`
+export const WebSiteIcon = styled(Web)`color: var(--trim-color); width: var(--contact-icon-size);`
 
 // used in Busines admin menu for active status and business request open toggles
 export const ToggleOnIcon = styled(ToggleRight)`color: var(--secondary-color); width: 3.5rem;`

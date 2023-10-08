@@ -149,11 +149,11 @@ const EventCreateForm = ({ business_id }) => {
                         <div className='inputWrapper'>
                             <input {...register('eventname', {
                                 validate: value => validateEventName(value, true) 
-                            })} className='formInput' type='text' onClick={() => clearErrors('eventname')} placeholder='Event name' />
+                            })} type='text' onClick={() => clearErrors('eventname')} placeholder='Event name' />
                         </div>
 
                         {/* EVENT MEDIA UPLOAD */}
-                        <label htmlFor='eventmedia' className='formInput inputLabel' onClick={() => clearErrors('eventmedia')}>
+                        <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
                             <AddImageIcon />
                             <input {...register('eventmedia')} id='eventmedia' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
@@ -171,21 +171,21 @@ const EventCreateForm = ({ business_id }) => {
                     {/* EVENT DATE */}
                     <div className='inputWrapper'>
                         <label htmlFor='eventdate'>Select event date:</label>
-                        <input {...register('eventdate', { required: 'event date is required' })} className='formInput' type='date' onClick={() => clearErrors('eventdate')} />
+                        <input {...register('eventdate', { required: 'event date is required' })} type='date' onClick={() => clearErrors('eventdate')} />
                         {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
                     </div>
 
                     {/* EVENT START */}
                     <div className='inputWrapper'>
                         <label htmlFor='eventstart'>Select event start time:</label>
-                        <input {...register('eventstart', { required: 'event start time is required' })} className='formInput' type='time' onClick={() => clearErrors('eventstart')} />
+                        <input {...register('eventstart', { required: 'event start time is required' })} type='time' onClick={() => clearErrors('eventstart')} />
                         {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
                     </div>
                     
                     {/* EVENT END */}
                     <div className='inputWrapper'>
                         <label htmlFor='eventend'>Select event end time:</label>
-                        <input {...register('eventend', { required: 'event end time is required' })} className='formInput' type='time' onClick={() => clearErrors('eventend')} />
+                        <input {...register('eventend', { required: 'event end time is required' })} type='time' onClick={() => clearErrors('eventend')} />
                         {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
                     </div>
                     <div className='errormessage'>{errors.time_format?.message}</div>
@@ -195,7 +195,7 @@ const EventCreateForm = ({ business_id }) => {
                         <label htmlFor='venue_id'>Select a business venue:</label>
                         <select {...register('venue_id', {
                             required: 'event location / venue is required'
-                        })} className='formInput' type='text' onClick={() => clearErrors(['venue_id', 'role_rights'])}>
+                        })} type='text' onClick={() => clearErrors(['venue_id', 'role_rights'])}>
                             {
                                 venue_list.map(venue => (
                                     <option key={venue.id} value={venue.id}>{venue.business_name}</option>
@@ -208,7 +208,7 @@ const EventCreateForm = ({ business_id }) => {
 
                     {/* EVENT DETAILS */}
                     <div className='inputWrapper'>
-                        <textarea {...register('details', { required: 'event details are required' })} className='formInput' rows='8' onClick={() => clearErrors('details')} placeholder='Event details ...'/>
+                        <textarea {...register('details', { required: 'event details are required' })} rows='8' onClick={() => clearErrors('details')} placeholder='Event details ...'/>
                         {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
                     </div>
 
@@ -217,7 +217,7 @@ const EventCreateForm = ({ business_id }) => {
                         <label htmlFor='brand_id'>Select a business brand:</label>
                         <select {...register('brand_id', {
                             required: 'branding business is required'
-                        })} className='formInput' type='text' onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                        })} type='text' onClick={() => clearErrors(['brand_id', 'role_rights'])}>
                             {
                                 brand_list.map(brand => (
                                     <option key={brand.id} value={brand.id}>{brand.business_name}</option>

@@ -187,7 +187,7 @@ const BusinessCreateForm = () => {
                                 value: 25,
                                 message: 'business name too long'
                             }
-                        })} className='formInput' onClick={() => clearErrors('business_name')} type='text' placeholder='Business Name' />
+                        })} onClick={() => clearErrors('business_name')} type='text' placeholder='Business Name' />
                         {errors.business_name ? <div className='errormessage'>{errors.business_name?.message}</div> : null}
                     </div>
 
@@ -208,11 +208,11 @@ const BusinessCreateForm = () => {
                                     value: emailformat,
                                     message: 'invalid email format'
                                 }
-                            })} className='formInput' type='text' onClick={() => clearErrors('business_email')} placeholder='Email' />
+                            })} type='text' onClick={() => clearErrors('business_email')} placeholder='Email' />
                         </div>
 
                         {/* BUSINESS AVATAR UPLOAD */}
-                        <label htmlFor='business_avatar' className='formInput inputLabel' onClick={() => clearErrors('business_avatar')}>
+                        <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
                             <AddImageIcon />
                             <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
@@ -224,7 +224,7 @@ const BusinessCreateForm = () => {
                     <div className='inputWrapper'>
                         <textarea {...register('business_description', {
                             required: 'business description is required'
-                        })} className='formInput' rows='8' onClick={() => clearErrors('business_description')} placeholder='Business details' />
+                        })} rows='8' onClick={() => clearErrors('business_description')} placeholder='Business details' />
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
@@ -236,7 +236,7 @@ const BusinessCreateForm = () => {
                                 value: businessTypeList,
                                 message: 'invalid business type'
                             }
-                        })} className='formInput' onClick={() => clearErrors('business_type')} type='text'>
+                        })} onClick={() => clearErrors('business_type')} type='text'>
                             <option value='brand'>Brand</option>
                             <option value='venue'>Dispensary</option>
                             <option value='both'>{`Brand & Dispensary`}</option>
@@ -251,73 +251,73 @@ const BusinessCreateForm = () => {
                         clearErrors={clearErrors}
                     />
 
-                    <div>Business Contacts & Social Media:</div>
+                    <h2>Business Contacts & Social Media:</h2>
                     {/* INSTAGRAM */}
-                    <div className='inputWrapper contactWrapper'>
+                    <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>
-                            <div className='contactIcon'><InstagramIcon /></div>
+                            <InstagramIcon />
                             <input {...register('business_instagram', {
                                 pattern: {
                                     value: instagramFormat,
                                     message: 'invalid Instagram format'
                                 }
-                            })} className='formInput' type='text' onClick={() => clearErrors('business_instagram')} placeholder='@Instagram' />
+                            })} type='text' onClick={() => clearErrors('business_instagram')} placeholder='@Instagram' />
                         </label>
                         {errors.business_instagram ? <div className='errormessage'>{errors.business_instagram?.message}</div> : null}
                     </div>
 
                     {/* WEBSITE */}
-                    <div className='inputWrapper contactWrapper'>
+                    <div className='inputWrapper'>
                         <label htmlFor='business_website' className='contactLabelWrapper'>
-                            <div className='contactIcon'><WebSiteIcon /></div>
+                            <WebSiteIcon />
                             <input {...register('business_website', {
                                 pattern: {
                                     value: websiteFormat,
                                     message: 'invalid website format'
                                 }
-                            })} className='formInput' type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
+                            })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                         </label>
                         {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
                     </div>
                     
                     {/* FACEBOOK */}
-                    <div className='inputWrapper contactWrapper'>
+                    <div className='inputWrapper'>
                         <label htmlFor='business_facebook' className='contactLabelWrapper'>
-                            <div className='contactIcon'><FacebookIcon /></div>
+                            <FacebookIcon />
                             <input {...register('business_facebook', {
                                 pattern: {
                                     value: facebookFormat,
                                     message: 'only need username portion (exp. https://www.facebook.com/{USERNAME}'
                                 }
-                            })} className='formInput' type='text' onClick={() => clearErrors('business_facebook')} placeholder='Facebook username' />
+                            })} type='text' onClick={() => clearErrors('business_facebook')} placeholder='Facebook username' />
                         </label>
                         {errors.business_facebook ? <div className='errormessage'>{errors.business_facebook?.message}</div> : null}
                     </div>
                     
                     {/* PHONE NUMBER */}
-                    <div className='inputWrapper contactWrapper'>
+                    <div className='inputWrapper'>
                         <label htmlFor='business_phone' className='contactLabelWrapper'>
-                            <div className='contactIcon'><PhoneIcon /></div>
+                            <PhoneIcon />
                             <input {...register('business_phone', {
                                 pattern: {
                                     value: phoneFormat,
                                     message: 'invalid phone number format'
                                 }
-                            })} className='formInput' type='text' onClick={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
+                            })} type='text' onClick={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
                         </label>
                         {errors.business_phone ? <div className='errormessage'>{errors.business_phone?.message}</div> : null}
                     </div>
                     
                     {/* TWITTER */}
-                    <div className='inputWrapper contactWrapper'>
+                    <div className='inputWrapper'>
                         <label htmlFor='business_twitter' className='contactLabelWrapper'>
-                            <div className='contactIcon'><TwitterIcon /></div>
+                            <TwitterIcon />
                             <input {...register('business_twitter', {
                                 pattern: {
                                     value: twitterFormat,
                                     message: 'invalid Twitter format'
                                 }
-                            })} className='formInput' type='text' onClick={() => clearErrors('business_twitter')} placeholder='@Twitter' />
+                            })} type='text' onClick={() => clearErrors('business_twitter')} placeholder='@Twitter' />
                         </label>
                         {errors.business_twitter ? <div className='errormessage'>{errors.business_twitter?.message}</div> : null}
                     </div>

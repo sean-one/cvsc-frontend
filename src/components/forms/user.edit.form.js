@@ -205,7 +205,7 @@ const UserEditForm =({ setEditView }) => {
                             message: 'username too long'
                         },
                         validate: validateUsername
-                    })} className='formInput' type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                    })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
                 </div>
 
                 {/* EVENT AND PROFILE IMAGE UPDATE */}
@@ -218,11 +218,11 @@ const UserEditForm =({ setEditView }) => {
                                 value: emailformat,
                                 message: 'invalid email format'
                             }
-                        })} className='formInput' type='text' onClick={() => clearErrors('email')} placeholder='Email' />
+                        })} type='text' onClick={() => clearErrors('email')} placeholder='Email' />
                     </div>
 
                     {/* AVATAR / PROFILE IMAGE UPDATE */}
-                    <label htmlFor='avatar' className='formInput inputLabel' onClick={() => clearErrors('avatar')}>
+                    <label htmlFor='avatar' className='inputLabel' onClick={() => clearErrors('avatar')}>
                         <AddImageIcon />
                         <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                     </label>
@@ -233,7 +233,7 @@ const UserEditForm =({ setEditView }) => {
                 <div className='inputWrapper'>
                     <input {...register('password', {
                         validate: value => validatePassword(value, false)
-                    })} className='formInput' type='password' onClick={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
+                    })} type='password' onClick={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
                     {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                 </div>
 
@@ -241,7 +241,7 @@ const UserEditForm =({ setEditView }) => {
                 <div className='inputWrapper'>
                     <input {...register('confirmation', {
                         validate: value => validatePassword(value, false)
-                    })} className='formInput' type='password' onClick={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
+                    })} type='password' onClick={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
                     {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
                 </div>
                 {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
