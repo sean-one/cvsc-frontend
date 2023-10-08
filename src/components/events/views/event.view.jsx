@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
+import { EditIcon } from '../../icons/siteIcons';
 import LoadingSpinner from '../../loadingSpinner';
 import { formatTime } from '../../../helpers/formatTime';
 import BusinessLabel from '../../business/business.label';
@@ -142,8 +143,10 @@ const EventView = () => {
                     <div className='eventViewHeaderRow'>
                         <div className='eventViewEventname'>{event.data.eventname}</div>
                         {
-                            (isCreator) &&
-                                <button onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>edit</button>
+                            (isCreator()) &&
+                                <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>
+                                    <EditIcon />
+                                </div>
                         }
                     </div>
                     <div className='eventViewAddress'>{event.data.venue_location}</div>

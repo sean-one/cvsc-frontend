@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components';
 
 import { useEventsQuery } from '../../hooks/useEventsApi';
-
 import LoadingSpinner from '../loadingSpinner';
 import ServerDown from '../serverDown';
 import EventCard from '../events/views/event.card';

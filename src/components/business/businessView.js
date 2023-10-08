@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -135,32 +135,33 @@ const BusinessView = () => {
 
     let navigate = useNavigate()
 
-    const { data: business, status } = useBusinessQuery(business_id)
+    const { data: business, status, error: responseError } = useBusinessQuery('485263cc-3bbe-45a8-9f10-8531f70306de')
 
-    if(status === 'error') {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: `There was an error locating the business.`,
-            }
-        })
-
-        navigate('/')
-        return null;
-    }
+    useEffect(() => {
+        if (status === 'error') {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: `${responseError.response.data.error.message}`,
+                }
+            });
+            navigate('/');
+            return null;
+        }
+    }, [status, dispatch, responseError, navigate]);
     
     if (status === 'loading') { return <LoadingSpinner /> }
     
     if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
     
-
+    
     return (
         <BusinessViewStyles>
             <div className='businessViewWrapper'>
                 <div className='businessViewHeader'>
                     <div className='businessHeader'>
-                        <h2>{business?.data.business_name.toUpperCase()}</h2>
+                        <h2>{business?.data?.business_name?.toUpperCase()}</h2>
                         {
                             (business_role?.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
                                 <BusinessAdminControls user_role={business_role} business={business?.data} />
@@ -171,7 +172,7 @@ const BusinessView = () => {
                         }
                     </div>
                     {
-                        (business?.data.formatted_address !== null) &&
+                        (business?.data?.formatted_address !== null) &&
                             <div>{business?.data?.formatted_address}</div>
                     }
                 </div>
@@ -182,7 +183,7 @@ const BusinessView = () => {
                         
                         <div className='businessImage'>
                             <img
-                                src={image_link(business?.data.business_avatar)}
+                                src={image_link(business?.data?.business_avatar)}
                                 alt={business?.data.business_name}
                             />
                         </div>

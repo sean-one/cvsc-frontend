@@ -39,7 +39,7 @@ const MenuStyles = styled.div`
     }
 `;
 
-const Menu = ({ toggle }) => { 
+const Menu = ({ toggle }) => {
     const { auth, logout_user } = useAuth()
     let navigate = useNavigate()
 

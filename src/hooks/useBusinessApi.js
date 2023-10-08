@@ -5,13 +5,13 @@ import AxiosInstance from "../helpers/axios";
 //! businessView, update.business - VIEW BUSINESS PAGE
 const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/single/${id}`) }
 export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id), {
-    retry: (failureCount, error) => {
+    // retry: (failureCount, error) => {
         // Don't retry for 404 status codes
-        if (error?.response?.status === 404) {
-            return false;
-        }
-        return true;
-    }
+        // if (error?.response?.status === 404) {
+            // return false;
+        // }
+        // return true;
+    // }
 })
 
 //! RETURN A LIST OF ALL BUSINESSES

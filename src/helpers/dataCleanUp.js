@@ -28,6 +28,8 @@ export const update_event = (data, df) => {
 }
 
 export const image_link = (db_image) => {
+    // error handling for null or undefined that sneak thru
+    if(!db_image) return `${process.env.REACT_APP_BACKEND_IMAGE_URL}Coachella+Valley-01.png`
     // check for db return to be image url
     const http_link = /^(blob|http|https)/g
     // if not url, image should be found on s3
