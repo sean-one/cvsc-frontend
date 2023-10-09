@@ -104,7 +104,6 @@ const Styles = styled.div`
 
     input, textarea, select {
         width: 100%;
-        max-width: 30rem;
         font-size: 1.4rem;
         padding: 0.5rem 1rem;
         margin: 0; 
@@ -123,6 +122,13 @@ const Styles = styled.div`
         ::placeholder {
             color: var(--input-placeholder);
         }
+    }
+
+    select, textarea {
+        border: 1px solid var(--secondary-color);
+        appearance: auto;
+        -webkit-appearance: menulist;
+        -moz-appearance: menulist;
     }
 
     .deleteButton {
@@ -167,6 +173,7 @@ const Styles = styled.div`
 
     .standardForm {
         width: 95%;
+        max-width: 35rem;
         margin: 0.5rem auto;
         display: flex;
         flex-direction: column;
@@ -175,7 +182,7 @@ const Styles = styled.div`
     }
 
     .inputWrapper {
-        display: flex;
+        /* display: flex; */
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -225,10 +232,9 @@ const Styles = styled.div`
     }
 
     .inputLabel {
+        padding-top: 0.75rem;
         display: flex;
         align-items: center;
-        width: auto;
-        /* margin: 0.5rem 0; */
         cursor: pointer;
     }
 

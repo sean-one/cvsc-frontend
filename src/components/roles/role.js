@@ -72,7 +72,7 @@ const Role = ({ role, rolelist }) => {
             <div className='roleWrapper'>
                 {
                     (rolelist === 'userlist')
-                        ? <div>{role.business_name}</div>
+                        ? <div onClick={() => navigate(`/business/${role?.business_id}`)}>{role.business_name}</div>
                         : <div>{role.username}</div>
                 }
                 <div className='roleButtonWrapper'>

@@ -16,7 +16,6 @@ const ActiveBusinessToggle = ({ business_id, isActive }) => {
         try {
             const active_toggle = await toggleActiveBusiness(business_id)
     
-            console.log(active_toggle)
             if(active_toggle.status === 201) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -30,6 +29,14 @@ const ActiveBusinessToggle = ({ business_id, isActive }) => {
             if(error.response?.status === 400 || error.response?.status === 401) {
                 navigate('/login')
                 return null
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
             }
         }
 

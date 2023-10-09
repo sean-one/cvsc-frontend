@@ -68,7 +68,9 @@ export const useActiveBusinessToggle = () => {
     const queryClient = useQueryClient()
     return useMutation(toggleActiveBusiness, {
         onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'business', data.id, 'roles'])
+            queryClient.refetchQueries(['businesses'])
+            queryClient.refetchQueries(['business', data.id])
+            queryClient.refetchQueries(['roles'])
         },
         onError: (error, updated_business, context) => {
             console.log(Object.keys(error)) 

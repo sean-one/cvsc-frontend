@@ -65,7 +65,7 @@ const RoleRequest = () => {
                             <select {...register('business_id', {
                                 required: 'valid business is required',
                                 pattern: uuidPattern
-                            })} className='formInput' type='text' onClick={() => clearErrors('business_id')}>
+                            })} type='text' onClick={() => clearErrors('business_id')}>
                                 {
                                     business_filtered.map(business => (
                                         <option key={business.id} value={business.id}>

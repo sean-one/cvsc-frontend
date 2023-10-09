@@ -46,7 +46,7 @@ const UserAccountStyles = styled.div`
             border-radius: 50%;
         }}
     
-    .editButton {
+    .userEditButton {
         padding: 0.5rem;
         position: absolute;
         right: 15%;
@@ -110,7 +110,7 @@ const UserAccount = () => {
                             />
                             {
                                 (!editView) &&
-                                    <div className='editButton' onClick={() => setEditView(true)}><UserEditIcon /></div>
+                                    <div className='userEditButton' onClick={() => setEditView(true)}><UserEditIcon /></div>
                             }
                         </div>
                         
