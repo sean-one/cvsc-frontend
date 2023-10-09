@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import { useRemoveUserRoleMutation } from '../../../hooks/useRolesApi';
@@ -10,7 +11,8 @@ const RemoveUserRole = ({ role }) => {
     const { auth, setAuth } = useAuth()
     const { mutateAsync: removeUserRole } = useRemoveUserRoleMutation()
     const { dispatch } = useNotification()
-    
+    let navigate = useNavigate()
+
     const userRoleRemove = async(role_id) => {
         try {
             const removedRole = await removeUserRole(role_id)
@@ -27,7 +29,19 @@ const RemoveUserRole = ({ role }) => {
                 setAuth({ user: auth.user, roles: auth.roles.filter(role => role.id !== role_id)})
             }
         } catch (error) {
-            console.log(error)
+            // returns 400 or 401 if user needs to login
+            if(error?.response?.status === 400 || error?.response?.status === 401) {
+                navigate('/login');
+                return null;
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            }
         }
     }
 

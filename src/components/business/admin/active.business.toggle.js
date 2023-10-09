@@ -27,8 +27,8 @@ const ActiveBusinessToggle = ({ business_id, isActive }) => {
             }
         } catch (error) {
             if(error.response?.status === 400 || error.response?.status === 401) {
-                navigate('/login')
-                return null
+                navigate('/login');
+                return null;
             } else {
                 dispatch({
                     type: "ADD_NOTIFICATION",
