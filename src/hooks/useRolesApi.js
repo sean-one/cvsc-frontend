@@ -15,14 +15,10 @@ export const useCreateRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(createRoleRequest, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['roles', 'business'])
-            queryClient.refetchQueries(['roles'])
+            queryClient.refetchQueries(['roles', 'business'])
         },
         onError: (error) => {
             console.log(error)
-        },
-        onSettled: () => {
-            queryClient.refetchQueries(['roles', 'business'])
         },
     })
 }
@@ -33,15 +29,10 @@ export const useApproveRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(approveRole, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['roles', 'business'])
-            queryClient.refetchQueries(['roles'])
+            queryClient.refetchQueries(['roles', 'business'])
         },
         onError: (error) => {
-            console.log(Object.keys(error))
-            console.log(error.response)
-        },
-        onSettled: () => {
-            queryClient.refetchQueries(['roles', 'business'])
+            console.log(error)
         },
     })
 }
@@ -52,14 +43,11 @@ export const useUpgradeRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(upgradeRole, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['roles', 'business'])
-            queryClient.refetchQueries(['roles'])
+            queryClient.refetchQueries(['roles', 'business'])
         },
         onError: (error) => {
-            console.log(Object.keys(error))
-            console.log(error.response)
+            console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries(['roles', 'business']),
     })
 }
 
@@ -69,14 +57,11 @@ export const useDowngradeRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(downgradeRole, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['roles', 'business'])
-            queryClient.refetchQueries(['roles'])
+            queryClient.refetchQueries(['roles', 'business'])
         },
         onError: (error) => {
-            console.log(Object.keys(error))
-            console.log(error.response)
+            console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries(['roles', 'business']),
     })
 }
 
@@ -86,14 +71,10 @@ export const useRemoveRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeRole, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['roles', 'business'])
-            queryClient.refetchQueries(['roles'])
+            queryClient.refetchQueries(['roles', 'business'])
         },
         onError: (error) => {
             console.log(error)
-        },
-        onSettled: () => {
-            queryClient.refetchQueries(['roles', 'business'])
         },
     })
 }
@@ -112,14 +93,10 @@ export const useRemoveUserRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeUserRole, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['roles', 'user'])
-            queryClient.refetchQueries('roles')
+            queryClient.refetchQueries(['roles', 'user'])
         },
         onError: (error) => {
             console.log(error)
-        },
-        onSettled: () => {
-            queryClient.refetchQueries(['roles', 'user'])
         },
     })
 }

@@ -11,15 +11,12 @@ export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
-            queryClient.cancelQueries(['event', data.id])
-            queryClient.cancelQueries(['businesses'])
-            queryClient.refetchQueries(['businesses'])
+            queryClient.refetchQueries(['businesses', 'events', 'event', data.id])
         },
         onError: (error) => {
             console.log('error inside event business remove mutation')
             console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries(['events'])
     })
 }
 
@@ -40,14 +37,11 @@ export const useCreateEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(createEvent, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['events'])
-            queryClient.refetchQueries('events')
+            queryClient.refetchQueries(['events'])
         },
         onError: (error) => {
-            console.log('error inside add event mutation')
-            // console.log(error)
+            console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries(['events'])
     })
 }
 
@@ -57,16 +51,11 @@ export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
         onSuccess: ({ data }) => {
-            queryClient.cancelQueries(['event', data.event_id])
-            queryClient.cancelQueries('events')
-            queryClient.refetchQueries(['event', data.event_id])
+            queryClient.refetchQueries(['events', 'event', data.event_id])
         },
         onError: (error) => {
             console.log(error)
         },
-        onSettled: () => {
-            queryClient.refetchQueries('events')
-        }
     })
 }
 
@@ -76,12 +65,10 @@ export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeEvent, {
         onSuccess: () => {
-            queryClient.invalidateQueries(['events'])
             queryClient.refetchQueries(['events'])
         },
         onError: (error) => {
             console.log(error)
         },
-        onSettled: () => queryClient.refetchQueries('events')
     })
 }
