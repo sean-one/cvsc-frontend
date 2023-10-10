@@ -109,50 +109,36 @@ const EventEditForm = () => {
 
         } catch (error) {
 
-            if (error.response.status === 401) {
-                logout_user()
-
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${error.response.data.error.message}`
-                    }
-                })
-
-                return
-            }
-
-            if (error.response.data.type === 'user') {
-                
-                logout_user()
+            if (error?.response?.status === 401) {
                 
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: `${error.response.data.message}`
+                        message: `${error?.response?.data?.error?.message}`
                     }
                 })
                 
-                return
+                navigate('/login', { state: { from: `/event/${event.event_id}` }})
+
+                return null;
             }
 
-            if ((error.response.status === 400) || (error.response.status === 404)) {
-                setError(error.response.data.type, {
-                    type: error.response.data.type,
+            if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
+                setError(error?.response?.data?.type, {
                     message: error.response.data.message
                 })
+                return null;
             }
 
         }
     }
 
-    const delete_event = async () => {
+    const sendEventDelete = async () => {
         try {
             const delete_event_response = await removeEventMutation(event.event_id)
 
-            if (delete_event_response.status === 204) {
+            if (delete_event_response?.status === 204) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -165,20 +151,20 @@ const EventEditForm = () => {
             }
 
         } catch (error) {
-            console.log('error in the deleteEvent')
-            if (error.response.status === 401) {
+            if (error?.response?.status === 401) {
+                navigate('/login', { state: { from: `/event/${event.event_id}` } })
+                return null;
+
+            } else {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: error.response.data.error.message
+                        message: error?.response?.data?.error?.message
                     }
                 })
-
-                logout_user()
-
-                return
             }
+
         }
     }
 
@@ -312,7 +298,7 @@ const EventEditForm = () => {
                     
                     <div className='formButtonWrapper'>
                         <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
-                        <button type='button' onClick={() => delete_event()}>Delete</button>
+                        <button type='button' onClick={sendEventDelete}>Delete</button>
                         <button type='button' onClick={handleClose}>Close</button>
                     </div>
 
