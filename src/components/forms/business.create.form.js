@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components'
 
 import useAuth from '../../hooks/useAuth';
@@ -26,7 +26,7 @@ const BusinessCreateForm = () => {
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
     const { dispatch } = useNotification()
 
-    const { register, handleSubmit, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             business_name: null,
@@ -47,7 +47,6 @@ const BusinessCreateForm = () => {
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
-        console.log(business_data)
         localStorage.setItem('createBusinessForm', JSON.stringify(business_data));
         try {
             const formData = new FormData()
@@ -123,6 +122,7 @@ const BusinessCreateForm = () => {
             }
 
         } catch (error) {
+            console.log(error)
             // missing required business branding logo image
             if (error.message === 'missing_image') {
                 setError('business_avatar', {
@@ -160,6 +160,12 @@ const BusinessCreateForm = () => {
         }
     }
 
+    const handleClose = () => {
+        // remove create business form save from localhost & go back
+        localStorage.removeItem('createBusinessForm')
+        navigate(-1)
+    }
+
     useEffect(() => {
         // check for saved form in local storage
         const savedFormData = localStorage.getItem('createBusinessForm');
@@ -188,7 +194,7 @@ const BusinessCreateForm = () => {
                                 message: 'business name must be at least 4 characters'
                             },
                             maxLength: {
-                                value: 25,
+                                value: 50,
                                 message: 'business name too long'
                             }
                         })} onClick={() => clearErrors('business_name')} type='text' placeholder='Business Name' />
@@ -227,26 +233,38 @@ const BusinessCreateForm = () => {
                     {/* BUSINESS DESCRIPTION */}
                     <div className='inputWrapper'>
                         <textarea {...register('business_description', {
-                            required: 'business description is required'
+                            required: 'business description is required',
+                            minLength: {
+                                value: 100,
+                                message: 'business description is too short'
+                            },
+                            maxLength: {
+                                value: 1000,
+                                message: 'business description is too long'
+                            }
                         })} rows='8' onClick={() => clearErrors('business_description')} placeholder='Business details' />
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
                     {/* BUSINESS TYPE SELECTOR */}
                     <div className='inputWrapper'>
-                        <select {...register('business_type', {
-                            required: 'business type required',
-                            pattern: {
-                                value: businessTypeList,
-                                message: 'invalid business type'
-                            }
-                        })} onClick={() => clearErrors('business_type')} type='text'>
-                            <option value='brand'>Brand</option>
-                            <option value='venue'>Dispensary</option>
-                            <option value='both'>{`Brand & Dispensary`}</option>
-                        </select>
+                        <label htmlFor='business_type' className='visuallyHidden'>Business type:</label>
+                        <Controller
+                            name='business_type'
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: 'business type is required', pattern: { value: businessTypeList, message: 'invalid business type'}}}
+                            render={({ field }) => (
+                                <select {...field} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                                    <option value="" disabled>Select business type...</option>
+                                    <option value='brand'>Brand</option>
+                                    <option value='venue'>Dispensary</option>
+                                    <option value='both'>{`Brand & Dispensary`}</option>
+                                </select>
+                            )}
+                        />
+                        {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
                     </div>
-                    {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
 
                     <AddressForm
                         register={register}
@@ -255,7 +273,7 @@ const BusinessCreateForm = () => {
                         clearErrors={clearErrors}
                     />
 
-                    <h2>Business Contacts & Social Media:</h2>
+                    <div className='businessFormContactHeader'>Business Contacts & Social Media:</div>
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>
@@ -330,7 +348,7 @@ const BusinessCreateForm = () => {
                     
                     <div className='formButtonWrapper'>
                         <button type='submit'>Create</button>
-                        <button onClick={() => navigate(-1)}>Close</button>
+                        <button onClick={handleClose}>Close</button>
                     </div>
 
                 </form>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -9,6 +10,7 @@ const DowngradeRole = ({ role_id }) => {
     const { logout_user } = useAuth()
     const { dispatch } = useNotification()
     const { mutateAsync: downgradeRole } = useDowngradeRoleMutation()
+    let navigate = useNavigate()
 
     const roleDowngrade = async (e) => {
         try {
@@ -26,30 +28,19 @@ const DowngradeRole = ({ role_id }) => {
             }
             
         } catch (error) {
-            
-            if(error?.response.status === 400) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${error?.response.data.error.message}`
-                    }
-                })
-            }
-            
-            if(error?.response.status === 401) {
+            if(error?.response?.status === 400 || error?.response?.status === 401) {
                 logout_user()
+                navigate('/login')
+                return null;
+            } else {
                 
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: `${error?.response.data.error.message}`
+                        message: error?.response?.data?.error?.message
                     }
                 })
-
-                return
-
             }
         }
     }

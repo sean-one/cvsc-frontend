@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
@@ -35,18 +35,6 @@ const CreateEventFormStyles = styled.div`
             }
         }  
     }
-
-    .visuallyHidden {
-        border: 0;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        white-space: nowrap;
-        width: 1px;
-    }
 `;
 
 const EventCreateForm = ({ business_id }) => {
@@ -60,7 +48,7 @@ const EventCreateForm = ({ business_id }) => {
     
     const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
 
-    const { register, control, handleSubmit, setError, clearErrors, reset, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             eventname: '',
@@ -74,6 +62,19 @@ const EventCreateForm = ({ business_id }) => {
         }
     });
     
+    useEffect(() => {
+        // check for saved form in local storage
+        const savedFormData = localStorage.getItem('createEventForm');
+
+        // if found set values to values saved in local storage
+        if (savedFormData) {
+            const parsedData = JSON.parse(savedFormData);
+            for (let key in parsedData) {
+                setValue(key, parsedData[key]);
+            }
+        }
+    },[setValue])
+
     if (isLoading) { return <LoadingSpinner /> }
     
     if (isSuccess) {
@@ -81,9 +82,10 @@ const EventCreateForm = ({ business_id }) => {
         brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
     }
 
-    const createNewEvent = async (data) => {
+    const createNewEvent = async (event_data) => {
+        localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
-            delete data['eventmedia']
+            delete event_data['eventmedia']
 
             const formData = new FormData()
 
@@ -95,19 +97,22 @@ const EventCreateForm = ({ business_id }) => {
                 formData.set('eventmedia', event_image)
             }
 
-            Object.keys(data).forEach(key => {
+            Object.keys(event_data).forEach(key => {
                 if (key === 'eventdate') {
-                    formData.append(key, format(parseISO(data[key]), 'y-M-d'))
+                    formData.append(key, format(parseISO(event_data[key]), 'y-M-d'))
                 } else if (key === 'eventstart' || key === 'eventend') {
-                    formData.append(key, data[key].replace(':', ''))
+                    formData.append(key, event_data[key].replace(':', ''))
                 } else {
-                    formData.append(key, data[key])
+                    formData.append(key, event_data[key])
                 }
             })
 
             const add_event_response = await createEvent(formData)
 
             if (add_event_response.status === 201) {
+                // remove saved form data from localstorage
+                localStorage.removeItem('createEventForm')
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -122,51 +127,23 @@ const EventCreateForm = ({ business_id }) => {
                 navigate(`/event/${add_event_response.data.event_id}`)
             }
         } catch (error) {
-
-            if (error?.message === 'missing_image') {
-                setError('eventmedia', { message: 'missing required event image' })
-                throw Error;
-            }
             
-            if (error?.response.status === 401) {
-                logout_user()
-
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${error.response.data.error.message}`
-                    }
-                })
-
-                return
+            if (error?.response?.status === 401) {
+                logout_user();
+                // navigate('/login');
+                return null;
             }
 
-            if (error.response.data.type === 'user') {
-                logout_user()
-
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `${error.response.data.message}`
-                    }
-                })
-
-                return
+            else if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
+                setError(error?.response?.data?.error?.type, { message: error?.response?.data?.error?.message })
+                return;
             }
 
-            if ((error?.response.status === 400) || (error.response.status === 404)) {
-                setError(`${error.response.data.type}`, {
-                    type: error.response.data.type,
-                    message: error.response.data.message
-                })
-
-                return
+            else {
+                setError('server', { message: 'there was an issue creating the event' })
             }
         }
     }
-
 
 
     return (
@@ -201,6 +178,7 @@ const EventCreateForm = ({ business_id }) => {
                     </div>
                     {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
                     {errors.eventmedia ? <div className='errormessage'>{errors.eventmedia?.message}</div> : null}
+                    {errors.media_error ? <div className='errormessage'>{errors.media_error?.message}</div> : null}
 
                     {
                         editImage &&

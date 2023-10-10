@@ -131,6 +131,25 @@ const Styles = styled.div`
         -moz-appearance: menulist;
     }
 
+    .visuallyHidden {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    .businessFormContactHeader {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-top: 0.5rem;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+
     .deleteButton {
         color: var(--error-color);
         background-color: transparent;

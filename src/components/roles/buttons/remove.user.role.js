@@ -8,7 +8,7 @@ import useNotification from '../../../hooks/useNotification';
 import { DeleteIcon } from '../../icons/siteIcons';
 
 const RemoveUserRole = ({ role }) => {
-    const { auth, setAuth } = useAuth()
+    const { auth, setAuth, logout_user } = useAuth()
     const { mutateAsync: removeUserRole } = useRemoveUserRoleMutation()
     const { dispatch } = useNotification()
     let navigate = useNavigate()
@@ -31,6 +31,7 @@ const RemoveUserRole = ({ role }) => {
         } catch (error) {
             // returns 400 or 401 if user needs to login
             if(error?.response?.status === 400 || error?.response?.status === 401) {
+                logout_user();
                 navigate('/login');
                 return null;
             } else {

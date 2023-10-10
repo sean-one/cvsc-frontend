@@ -189,7 +189,16 @@ const BusinessEditForm = () => {
 
                     {/* BUSINESS DESCRIPTION */}
                     <div className='inputWrapper'>
-                        <textarea {...register('business_description')} rows='8' onClick={() => clearErrors('business_description')} />
+                        <textarea {...register('business_description', {
+                            minLength: {
+                                value: 100,
+                                message: 'business description is too short'
+                            },
+                            maxLength: {
+                                value: 1000,
+                                message: 'business description is too long'
+                            }
+                        })} rows='8' onClick={() => clearErrors('business_description')} />
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
@@ -219,7 +228,7 @@ const BusinessEditForm = () => {
                         defaultValue={business?.formatted_address}
                     />
                     
-                    <div>Business Contacts & Social Media:</div>
+                    <div className='businessFormContactHeader'>Contacts & Social Media:</div>
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>
