@@ -303,7 +303,7 @@ const BusinessEditForm = () => {
 
                     <div className='formButtonWrapper'>
                         <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
-                        <button onClick={handleClose}>Close</button>
+                        <button type='button' onClick={handleClose}>Close</button>
                     </div>
 
                 </form>

@@ -182,7 +182,7 @@ const EventEditForm = () => {
         }
     }
 
-    const handleClose = async () => {
+    const handleClose = () => {
         setEditImage(false)
         reset()
 
@@ -312,8 +312,8 @@ const EventEditForm = () => {
                     
                     <div className='formButtonWrapper'>
                         <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
-                        <button onClick={() => delete_event()}>Delete</button>
-                        <button onClick={() => handleClose()}>Close</button>
+                        <button type='button' onClick={() => delete_event()}>Delete</button>
+                        <button type='button' onClick={handleClose}>Close</button>
                     </div>
 
                 </form>
