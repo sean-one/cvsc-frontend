@@ -150,6 +150,28 @@ const Styles = styled.div`
         border-bottom: 1px solid var(--secondary-color);
     }
 
+    .dateTimeInputWrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        input {
+            &[type=time], &[type=date] {
+                appearance: none;
+    
+                // For Chrome
+                &::-webkit-calendar-picker-indicator {
+                display: none;
+                }
+    
+                // For Firefox (if needed, depending on the browser version and OS)
+                &::-moz-calendar-picker-indicator {
+                display: none;
+                }
+            }
+        }  
+    }
+
     .deleteButton {
         color: var(--error-color);
         background-color: transparent;

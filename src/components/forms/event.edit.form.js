@@ -13,10 +13,25 @@ import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useE
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
-import { AddImageIcon } from '../icons/siteIcons';
-import { validateEventName } from './form.validations';
+import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
+
 
 const EditEventFormStyles = styled.div`
+    input {
+        &[type=time], &[type=date] {
+            appearance: none;
+
+            // For Chrome
+            &::-webkit-calendar-picker-indicator {
+            display: none;
+            }
+
+            // For Firefox (if needed, depending on the browser version and OS)
+            &::-moz-calendar-picker-indicator {
+            display: none;
+            }
+        }
+    } 
 `;
 
 const EventEditForm = () => {
@@ -32,7 +47,7 @@ const EventEditForm = () => {
 
     let navigate = useNavigate()
 
-    const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
+    const { data: business_list, status } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -167,19 +182,33 @@ const EventEditForm = () => {
         }
     }
 
-    const close_edit_event = () => {
+    const handleClose = async () => {
         setEditImage(false)
         reset()
 
-        navigate(`/event/${event?.event_id}`)
+        navigate(-1);
+        return null;
     }
 
-    if(isLoading) { return <LoadingSpinner /> }
-
-    if(isSuccess) {
-        venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-        brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
+    if(status === 'loading') {
+        return <LoadingSpinner />
     }
+
+    if(status === 'error') {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: 'server error, please try again'
+            }
+        })
+
+        navigate(-1);
+        return null;
+    }
+
+    venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
+    brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
 
     return (
@@ -193,12 +222,19 @@ const EventEditForm = () => {
                         {/* EVENT NAME */}
                         <div className='inputWrapper'>
                             <input {...register('eventname', {
-                                validate: value => validateEventName(value, false)
-                            })} className='formInput' type='text' onClick={() => clearErrors('eventname')} />
+                                minLength: {
+                                    value: 4,
+                                    message: 'event name must be at least 4 characters'
+                                },
+                                maxLength: {
+                                    value: 49,
+                                    message: 'event name is too long'
+                                }
+                            })} type='text' onClick={() => clearErrors('eventname')} />
                         </div>
 
                         {/* EVENT MEDIA UPDATE */}
-                        <label htmlFor='eventmedia' className='formInput inputLabel' onClick={() => clearErrors('eventmedia')}>
+                        <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
                             <AddImageIcon />
                             <input {...register('eventmedia')} id='eventmedia' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
@@ -222,26 +258,29 @@ const EventEditForm = () => {
                     }
 
                     {/* EVENT DATE */}
-                    <div className='inputWrapper'>
-                        <input {...register('eventdate')} className='formInput' type='date' onClick={() => clearErrors('eventdate')} />
+                    <div className='dateTimeInputWrapper'>
+                        <label htmlFor='eventdate'><DateIcon /></label>
+                        <input {...register('eventdate')} type='date' onClick={() => clearErrors('eventdate')} />
                         {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
                     </div>
 
                     {/* EVENT START TIME */}
-                    <div className='inputWrapper'>
-                        <input {...register('eventstart')} className='formInput' type='time' onClick={() => clearErrors('eventstart')} />
+                    <div className='dateTimeInputWrapper'>
+                        <label htmlFor='eventstart'><TimeIcon /></label>
+                        <input {...register('eventstart')} type='time' onClick={() => clearErrors('eventstart')} />
                         {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
                     </div>
 
                     {/* EVENT END TIME */}
-                    <div className='inputWrapper'>
-                        <input {...register('eventend')} className='formInput' type='time' onClick={() => clearErrors('eventend')} />
+                    <div className='dateTimeInputWrapper'>
+                        <label htmlFor='eventend'><TimeIcon /></label>
+                        <input {...register('eventend')} type='time' onClick={() => clearErrors('eventend')} />
                         {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
                     </div>
 
                     {/* VENUE ID / EVENT LOCATION */}
                     <div className='inputWrapper'>
-                        <select {...register('venue_id')} className='formInput' type='text' onClick={() => clearErrors(['venue_id', 'role_rights'])}>
+                        <select {...register('venue_id')} onClick={() => clearErrors(['venue_id', 'role_rights'])}>
                             {
                                 venue_list.map(venue => (
                                     <option key={venue.id} value={venue.id}>{venue.business_name}</option>
@@ -254,13 +293,13 @@ const EventEditForm = () => {
 
                     {/* EVENT DETAILS */}
                     <div className='inputWrapper'>
-                        <textarea {...register('details')} className='formInput' rows='8' onClick={() => clearErrors('details')} />
+                        <textarea {...register('details')} rows='8' onClick={() => clearErrors('details')} />
                         {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
                     </div>
 
                     {/* EVENT BUSINESS BRANDING */}
                     <div className='inputWrapper'>
-                        <select {...register('brand_id')} className='formInput' type='text' onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                        <select {...register('brand_id')} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
                             {
                                 brand_list.map(brand => (
                                     <option key={brand.id} value={brand.id}>{brand.business_name}</option>
@@ -274,7 +313,7 @@ const EventEditForm = () => {
                     <div className='formButtonWrapper'>
                         <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
                         <button onClick={() => delete_event()}>Delete</button>
-                        <button onClick={() => close_edit_event()} variant='secondary'>Close</button>
+                        <button onClick={() => handleClose()}>Close</button>
                     </div>
 
                 </form>

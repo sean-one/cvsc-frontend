@@ -14,27 +14,6 @@ import LoadingSpinner from '../loadingSpinner';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 
 const CreateEventFormStyles = styled.div`
-    .dateTimeInputWrapper {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        input {
-            &[type=time], &[type=date] {
-                appearance: none;
-    
-                // For Chrome
-                &::-webkit-calendar-picker-indicator {
-                display: none;
-                }
-    
-                // For Firefox (if needed, depending on the browser version and OS)
-                &::-moz-calendar-picker-indicator {
-                display: none;
-                }
-            }
-        }  
-    }
 `;
 
 const EventCreateForm = ({ business_id }) => {
@@ -46,7 +25,7 @@ const EventCreateForm = ({ business_id }) => {
     let navigate = useNavigate();
     let location = useLocation()
     
-    const { data: business_list, isLoading, isSuccess } = useBusinessesQuery()
+    const { data: business_list, status } = useBusinessesQuery()
 
     const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -75,12 +54,25 @@ const EventCreateForm = ({ business_id }) => {
         }
     },[setValue])
 
-    if (isLoading) { return <LoadingSpinner /> }
-    
-    if (isSuccess) {
-        venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-        brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
+    if (status === 'loading') {
+        return <LoadingSpinner />
     }
+
+    if (status === 'error') {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: 'server error, please try again'
+            }
+        })
+
+        navigate(-1);
+        return null;
+    }
+    
+    venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
+    brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
     const createNewEvent = async (event_data) => {
         localStorage.setItem('createEventForm', JSON.stringify(event_data));
@@ -130,19 +122,24 @@ const EventCreateForm = ({ business_id }) => {
             
             if (error?.response?.status === 401) {
                 logout_user();
-                // navigate('/login');
                 return null;
             }
 
             else if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
                 setError(error?.response?.data?.error?.type, { message: error?.response?.data?.error?.message })
-                return;
+                return null;
             }
 
             else {
                 setError('server', { message: 'there was an issue creating the event' })
             }
         }
+    }
+
+    const handleClose = () => {
+        // remove create event form save from localhost & go back
+        localStorage.removeItem('createEventForm')
+        navigate(-1)
     }
 
 
@@ -271,7 +268,7 @@ const EventCreateForm = ({ business_id }) => {
 
                     <div className='formButtonWrapper'>
                         <button type='submit'>Create</button>
-                        <button onClick={() => navigate(-1)}>Close</button>
+                        <button onClick={handleClose}>Close</button>
                     </div>
 
                 </form>

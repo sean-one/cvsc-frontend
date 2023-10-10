@@ -135,7 +135,7 @@ const BusinessEditForm = () => {
 
     }
 
-    const close_edit_view = () => {
+    const handleClose = () => {
         setEditImage(false)
         reset()
 
@@ -303,7 +303,7 @@ const BusinessEditForm = () => {
 
                     <div className='formButtonWrapper'>
                         <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
-                        <button onClick={() => close_edit_view()}>Close</button>
+                        <button onClick={handleClose}>Close</button>
                     </div>
 
                 </form>
