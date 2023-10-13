@@ -3,21 +3,21 @@ import styled from "styled-components";
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
 import { Phone, ToggleRight, UserCheck, Map } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
-import { Mail } from "@styled-icons/fluentui-system-filled"
-import { CameraAdd } from "@styled-icons/fluentui-system-regular";
+import { Mail, CalendarAdd } from "@styled-icons/fluentui-system-filled"
+import { Edit, CameraAdd, Settings } from "@styled-icons/fluentui-system-regular";
 import { Cannabis } from "@styled-icons/fa-solid"
 import {
     ArrowToTop,
     CalendarEvent,
-    CalendarPlus,
-    Edit,
+    // CalendarPlus,
+    // Edit,
     ErrorCircle,
     ToggleLeft,
     ChevronDown,
     ChevronUp,
     Trash,
     Time,
-    Cog,
+    // Cog,
     MinusCircle,
     Search,
 } from "@styled-icons/boxicons-regular";
@@ -52,13 +52,13 @@ export const HideIcon = styled(ChevronUp)`color: var(--secondary-color); width: 
 export const DeleteIcon = styled(Trash)`width: var(--site-icon-size);`
 
 export const ApproveUserIcon = styled(UserCheck)`width: var(--site-icon-size);`
-export const CreateEventIcon = styled(CalendarPlus)`width: var(--site-icon-size);`
+export const CreateEventIcon = styled(CalendarAdd)`width: var(--site-icon-size);`
 
 export const UserEditIcon = styled(Edit)`width: var(--site-icon-size);`
 
 export const BusinessIcon = styled(Cannabis)`color: var(--trim-color); width: var(--site-icon-size);`
-export const SettingsIcon = styled(Cog)`width: var(--site-icon-size);`
+export const SettingsIcon = styled(Settings)`width: var(--site-icon-size);`
 export const InactiveBusiness = styled(ErrorCircle)`color: var(--error-color); width: var(--site-icon-size);`
-export const RemoveBusinessIcon = styled(MinusCircle)`width: var(--site-icon-size);`
+export const RemoveBusinessIcon = styled(MinusCircle)`color: var(--error-color); width: var(--site-icon-size);`
 
-export const EditIcon = styled(Edit)`width: var(--site-icon-size);`
+export const EditIcon = styled(Edit)`color: #F4F6F5; width: var(--site-icon-size);`

@@ -5,7 +5,7 @@ import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import { EditIcon, RemoveBusinessIcon } from '../../icons/siteIcons';
+import { EditIcon } from '../../icons/siteIcons';
 
 import useAuth from '../../../hooks/useAuth';
 
@@ -80,13 +80,6 @@ const EventSmallPreview = ({ event }) => {
 
     const isCreator = () => auth?.user?.id === event.created_by
 
-    // Check if auth.roles contains event.brand_id or event.venue_id and has a certain role_type
-    const isManagement = () => {
-        return auth.roles && auth.roles.some(role => 
-            (role.business_id === event.brand_id || role.business_id === event.venue_id) && role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role === true
-        );
-    };
-
 
     return (
         <EventSmallPreviewStyles>
@@ -99,13 +92,6 @@ const EventSmallPreview = ({ event }) => {
                                     e.stopPropagation();
                                     navigate(`/event/edit/${event.event_id}`, { state: event })
                                 }}><EditIcon /></div>
-                            }
-                            {
-                                (!isCreator() && isManagement()) &&
-                                    <div className='eventSmallPreviewEdit' onClick={(e) => {
-                                            e.stopPropagation();
-                                            console.log('remove business from event')
-                                        }}><RemoveBusinessIcon /></div>
                             }
                         </div>
                 }

@@ -18,7 +18,7 @@ const EventViewStyles = styled.div`
     .eventViewWrapper {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        /* align-items: center; */
         width: 100%;
         
         @media (min-width: 768px) {
@@ -110,9 +110,7 @@ const EventViewStyles = styled.div`
     .eventViewBusiness {
         width: 100%;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
+        flex-direction: column;
     }
 `;
 
@@ -123,18 +121,17 @@ const EventView = () => {
 
     let navigate = useNavigate()
     
-    const { data: event, isLoading, isError } = useEventQuery(event_id)
+    const { data: event, status } = useEventQuery(event_id)
 
-    if (isLoading) {
+    if (status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if (isError) {
+    if (status === 'error') {
         return <ServerDown />
     }
 
     const isCreator = () => auth?.user?.id === event.data.created_by
-
 
     return (
         <EventViewStyles>
@@ -163,8 +160,8 @@ const EventView = () => {
                         <div>{event.data.details}</div>
                         <div>
                             <div className='eventViewBusiness'>
-                                <BusinessLabel businessId={event.data.venue_id} imageOnly={false} />
-                                <BusinessLabel businessId={event.data.brand_id} imageOnly={false} />
+                                <BusinessLabel businessId={event.data.venue_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
+                                <BusinessLabel businessId={event.data.brand_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
                             </div>
                         </div>
                     </div>

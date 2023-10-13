@@ -110,31 +110,31 @@ const EventCard = ({ event }) => {
 
     return (
         <EventCardStyles>
-            <div className="eventCardWrapper" onClick={(e) => event.active_event ? navigate(`/event/${event.event_id}`) : null}>
-                <img className='eventCardBackground' src={image_link(event.eventmedia)} alt={`${event.eventname} event flyer`} />
+            <div className="eventCardWrapper" onClick={(e) => event?.active_event ? navigate(`/event/${event?.event_id}`) : null}>
+                <img className='eventCardBackground' src={image_link(event?.eventmedia)} alt={`${event?.eventname} event flyer`} />
                 <div className="eventCardOverlay">
                     <div className='eventCardRow eventCardTopRow'>
                         <div className='eventCardDateContainer'>
-                            <div className='eventCardDate'>{format(new Date(event.eventdate), 'dd')}</div>
-                            <div className='eventCardMonth'>{format(new Date(event.eventdate), 'MMM')}</div>
+                            <div className='eventCardDate'>{format(new Date(event?.eventdate), 'dd')}</div>
+                            <div className='eventCardMonth'>{format(new Date(event?.eventdate), 'MMM')}</div>
                         </div>
                     </div>
                     <div className='eventCardRow eventCardBottomRow'>
-                        <div>{`${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
-                        <div className='eventCardEventname'>{event.eventname}</div>
-                        <div className='truncated-text eventCardDetails'>{event.details}</div>
-                        {event.active_event &&
+                        <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
+                        <div className='eventCardEventname'>{event?.eventname}</div>
+                        <div className='truncated-text eventCardDetails'>{event?.details}</div>
+                        {/* {event?.active_event &&
                             <div className='eventCardBusinessSection'>
                                 At <strong onClick={(e) => {
                                     e.stopPropagation();
-                                    navigate(`/business/${event.venue_id}`);
-                                }}>{event.venue_name}</strong> in <strong>{event.venue_location.split(',')[1]}
+                                    navigate(`/business/${event?.venue_id}`);
+                                }}>{event?.venue_name}</strong> in <strong>{event?.venue_location.split(',')[1]}
                                 </strong> with <strong onClick={(e) => {
                                     e.stopPropagation();
-                                    navigate(`/business/${event.brand_id}`);
-                                }}>{event.brand_name}</strong>
+                                    navigate(`/business/${event?.brand_id}`);
+                                }}>{event?.brand_name}</strong>
                             </div>
-                        }
+                        } */}
                     </div>
                 </div>
             </div>

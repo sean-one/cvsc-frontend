@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
 import styled from 'styled-components';
 
-import useAuth from '../../hooks/useAuth';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { reformatTime } from '../../helpers/formatTime';
@@ -35,7 +34,6 @@ const EditEventFormStyles = styled.div`
 `;
 
 const EventEditForm = () => {
-    const { logout_user } = useAuth()
     const { state: event } = useLocation()
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()

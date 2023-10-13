@@ -2,17 +2,21 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAuth from '../../hooks/useAuth';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
+import { RemoveBusinessIcon } from '../icons/siteIcons';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
         padding: 0.5rem;
-        margin-top: 1rem;
+        margin-top: 0.25rem;
         width: 100%;
         display: flex;
         justify-content: space-between;
+        border-top: 1px dotted var(--secondary-color);
+        border-bottom: 1px dotted var(--secondary-color);
     }
     
     .businessLogoContainer {
@@ -44,41 +48,59 @@ const BusinessLabelStyles = styled.div`
         }
     }
 
-    .listingReverse {
-        flex-direction: row-reverse;
-    }
-
     .businessName {
-        @media (max-width: 350px) {
+        @media (max-width: 275px) {
             display: none;
         }
     }
 `;
 
 
-const BusinessLabel = ({ businessId, imageOnly=false, reverseOrder=false }) => {
-    const { data: businessList, isLoading, isSuccess } = useBusinessesQuery()
+const BusinessLabel = ({ businessId, eventCreator, eventId }) => {
+    const { auth } = useAuth()
+    const { data: businessList, status } = useBusinessesQuery()
     let business = {}
     let navigate = useNavigate()
 
-    if (isLoading) { return <LoadingSpinner /> }
+    if (status === 'loading') { return <LoadingSpinner /> }
 
-    if (isSuccess) {
-        business = businessList?.data.find(business => business.id === businessId)
+    if (status === 'error') { return (
+        <div>
+            looks like something went wrong, please try again
+        </div>
+    )}
+
+    const removeEventBusiness = (e) => {
+        e.stopPropagation();
+        console.log('clickity click')
     }
 
+    const isCreator = () => auth?.user?.id === eventCreator
+
+    // Check if auth.roles contains event.brand_id or event.venue_id and has a certain role_type
+    const isManagement = () => {
+        return auth?.roles && auth?.roles.some(role =>
+            (role.business_id === businessId) && role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role === true
+        );
+    };
+
+    business = businessList?.data.find(business => business.id === businessId)
 
     return (
         <BusinessLabelStyles>
             <div className='businessLabelsContainer' onClick={() => navigate(`/business/${businessId}`)}>
-                <div className={`businessListing ${reverseOrder ? 'listingReverse' : ''}`}>
+                <div className='businessListing'>
                     <div className='businessLogoContainer'>
                         <img className='businessLogo' src={image_link(business?.business_avatar)} alt={`${business.businessname} logo`} />
                     </div>
-                    {
-                        (!imageOnly) && <div className='businessName'>{business?.business_name}</div>
-                    }
+                    <div className='businessName'>{business?.business_name}</div>
                 </div>
+                {
+                    (!isCreator() && isManagement()) &&
+                        <div onClick={(e) => removeEventBusiness(e)}>
+                            <RemoveBusinessIcon />
+                        </div>
+                }
             </div>
         </BusinessLabelStyles>
     )
