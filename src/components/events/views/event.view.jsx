@@ -44,7 +44,7 @@ const EventViewStyles = styled.div`
     .eventViewEventname {
         flex-grow: 1;
         font-size: 1.6rem;
-        line-height: 1.2;
+        line-height: 1.7rem;
         font-weight: bold;
         text-transform: uppercase;
     }

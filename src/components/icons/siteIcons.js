@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
 import { Phone, ToggleRight, UserCheck, Map } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
-import { Mail, CalendarAdd } from "@styled-icons/fluentui-system-filled"
-import { Edit, CameraAdd, Settings } from "@styled-icons/fluentui-system-regular";
+import { Mail } from "@styled-icons/fluentui-system-filled"
+import { Edit, CameraAdd, Settings, CalendarAdd } from "@styled-icons/fluentui-system-regular";
 import { Cannabis } from "@styled-icons/fa-solid"
 import {
     ArrowToTop,
@@ -62,3 +62,4 @@ export const InactiveBusiness = styled(ErrorCircle)`color: var(--error-color); w
 export const RemoveBusinessIcon = styled(MinusCircle)`color: var(--error-color); width: var(--site-icon-size);`
 
 export const EditIcon = styled(Edit)`color: #F4F6F5; width: var(--site-icon-size);`
+export const SmallEditIcon = styled(Edit)`color: #F4F6F5; width: 1.2rem;`

@@ -5,7 +5,7 @@ import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import { EditIcon } from '../../icons/siteIcons';
+import { EditIcon, SmallEditIcon } from '../../icons/siteIcons';
 
 import useAuth from '../../../hooks/useAuth';
 
@@ -24,9 +24,6 @@ const EventSmallPreviewStyles = styled.div`
         top: 0.5rem;
         cursor: pointer;
         display: flex;
-    }
-
-    .eventSmallPreviewEdit {
     }
 
     .eventSmallPreviewLeftSection {
@@ -59,18 +56,40 @@ const EventSmallPreviewStyles = styled.div`
         transform: translate(-50%, -50%);
     }
 
-    .eventSmallPreviewDetails {
+    .eventSmallPreviewInfo {
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
 
+    .eventSmallPreviewDate {
+        font-size: 1rem;
+        line-height: 1.1rem;
+        font-weight: thin;
+        color: #F4F6F5;
+        /* text-transform: uppercase; */
+    }
+
     .eventSmallPreviewEventname {
         font-size: 1.2rem;
+        line-height: 1.3rem;
+        letter-spacing: 0.01rem;
         font-weight: bold;
         text-transform: uppercase;
-        margin-bottom: 0.25rem;
+        margin: 0.25rem 0;
+    }
+
+    .eventSmallPreviewDetails {
+        display: -webkit-box;
+        font-size: 1.1rem;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 4.8rem;
+        line-height: 1.3;
+        cursor: pointer;
     }
 `;
 
@@ -88,10 +107,10 @@ const EventSmallPreview = ({ event }) => {
                     (Object.keys(auth).length > 0) &&
                         <div className='eventSmallPreviewAdminControls'>
                             {
-                                (isCreator()) && <div className='eventSmallPreviewEdit' onClick={(e) => {
+                                (isCreator()) && <div onClick={(e) => {
                                     e.stopPropagation();
                                     navigate(`/event/edit/${event.event_id}`, { state: event })
-                                }}><EditIcon /></div>
+                                }}><SmallEditIcon /></div>
                             }
                         </div>
                 }
@@ -101,10 +120,10 @@ const EventSmallPreview = ({ event }) => {
                     </div>
                 </div>
                 
-                <div className='eventSmallPreviewDetails'>
-                    <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), 'MMM dd')} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
+                <div className='eventSmallPreviewInfo'>
+                    <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), 'MMM. dd')} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                     <div className='eventSmallPreviewEventname'>{event.eventname}</div>
-                    <div className='truncated-text'>{event.details}</div>
+                    <div className='eventSmallPreviewDetails'>{event.details}</div>
                 </div>
 
             </div>

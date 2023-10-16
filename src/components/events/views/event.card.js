@@ -91,8 +91,15 @@ const EventCardStyles = styled.div`
     }
 
     .eventCardDetails {
-        margin-bottom: 0.2rem;
-        border-bottom: 1px solid var(--black-and-white);
+        display: -webkit-box;
+        font-size: 1.1rem;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 4.8rem;
+        line-height: 1.3;
+        cursor: pointer;
     }
 
     .eventCardBusinessSection {
@@ -122,7 +129,7 @@ const EventCard = ({ event }) => {
                     <div className='eventCardRow eventCardBottomRow'>
                         <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                         <div className='eventCardEventname'>{event?.eventname}</div>
-                        <div className='truncated-text eventCardDetails'>{event?.details}</div>
+                        <div className='eventCardDetails'>{event?.details}</div>
                         {/* {event?.active_event &&
                             <div className='eventCardBusinessSection'>
                                 At <strong onClick={(e) => {
