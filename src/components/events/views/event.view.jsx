@@ -146,7 +146,7 @@ const EventView = () => {
                                 </div>
                         }
                     </div>
-                    <div className='eventViewAddress'>{event.data?.venue_location.split(/,\s[A-Z]{2}\s\d{5},\sUSA/)[0]}</div>
+                    <div className='eventViewAddress'>{event.data?.venue_location.split(/\s\d{5},\sUSA/)[0]}</div>
                     <div className='eventViewDateWrapper'>
                         <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
                         <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>

@@ -95,7 +95,7 @@ const BusinessAdminView = () => {
                 </div>
                 {
                     (business?.formatted_address !== null) &&
-                        <div>{business?.formatted_address}</div>
+                        <div>{business?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
                 }
                 {
                     (business_role?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&
