@@ -12,10 +12,11 @@ const BusinessEventsStyles = styled.div`
 `;
 
 const BusinessEvents = ({ business_id, business_name }) => {
-    const { data: eventsList, status } = useBusinessEventsQuery(business_id)
+    const { data: eventsList, status, error } = useBusinessEventsQuery(business_id)
 
     if(status === 'error') {
         console.log('inside the error')
+        console.log(error)
         return null
     }
 

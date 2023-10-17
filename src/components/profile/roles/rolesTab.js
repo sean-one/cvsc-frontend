@@ -33,6 +33,10 @@ const RolesTab = () => {
         }
     }
 
+    const userHasRole = (roleType) => {
+        return auth?.roles.some(role => role.role_type >= roleType)
+    }
+
     
     return (
         <div>
@@ -42,7 +46,7 @@ const RolesTab = () => {
             { (roles.data.length > 0) && <UserRoles roles={roles.data} /> }
             
             {/* pending roles for businesses managed */}
-            { (auth?.user?.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
+            { (userHasRole(process.env.REACT_APP_MANAGER_ACCOUNT)) &&
                 <ManagementRolesTab user_id={auth.user_id} />
             }
         </div>
