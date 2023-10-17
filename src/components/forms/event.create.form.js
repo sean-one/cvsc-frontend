@@ -81,67 +81,65 @@ const EventCreateForm = ({ business_id }) => {
     if(foundBrand) { setValue('brand_id', foundBrand?.id)}
 
     const createNewEvent = async (event_data) => {
-        console.log(event_data)
-        return
-        // localStorage.setItem('createEventForm', JSON.stringify(event_data));
-        // try {
-        //     delete event_data['eventmedia']
+        localStorage.setItem('createEventForm', JSON.stringify(event_data));
+        try {
+            delete event_data['eventmedia']
 
-        //     const formData = new FormData()
+            const formData = new FormData()
 
-        //     if(canvas.current === null) {
-        //         throw new Error('missing_image')
-        //     } else {
-        //         let event_image = setImageForForm(canvas)
+            if(canvas.current === null) {
+                throw new Error('missing_image')
+            } else {
+                let event_image = setImageForForm(canvas)
 
-        //         formData.set('eventmedia', event_image)
-        //     }
+                formData.set('eventmedia', event_image)
+            }
 
-        //     Object.keys(event_data).forEach(key => {
-        //         if (key === 'eventdate') {
-        //             formData.append(key, format(parseISO(event_data[key]), 'y-M-d'))
-        //         } else if (key === 'eventstart' || key === 'eventend') {
-        //             formData.append(key, event_data[key].replace(':', ''))
-        //         } else {
-        //             formData.append(key, event_data[key])
-        //         }
-        //     })
+            Object.keys(event_data).forEach(key => {
+                if (key === 'eventdate') {
+                    formData.append(key, format(parseISO(event_data[key]), 'y-M-d'))
+                } else if (key === 'eventstart' || key === 'eventend') {
+                    formData.append(key, event_data[key].replace(':', ''))
+                } else {
+                    formData.append(key, event_data[key])
+                }
+            })
 
-        //     const add_event_response = await createEvent(formData)
+            const add_event_response = await createEvent(formData)
 
-        //     if (add_event_response.status === 201) {
-        //         // remove saved form data from localstorage
-        //         localStorage.removeItem('createEventForm')
+            if (add_event_response.status === 201) {
+                // remove saved form data from localstorage
+                localStorage.removeItem('createEventForm')
 
-        //         dispatch({
-        //             type: "ADD_NOTIFICATION",
-        //             payload: {
-        //                 notification_type: 'SUCCESS',
-        //                 message: `${add_event_response.data.eventname} has been created`
-        //             }
-        //         })
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${add_event_response.data.eventname} has been created`
+                    }
+                })
 
-        //         setEditImage(false)
-        //         reset()
+                setEditImage(false)
+                reset()
 
-        //         navigate(`/event/${add_event_response.data.event_id}`)
-        //     }
-        // } catch (error) {
+                navigate(`/event/${add_event_response.data.event_id}`)
+            }
+        } catch (error) {
             
-        //     if (error?.response?.status === 401) {
-        //         logout_user();
-        //         return null;
-        //     }
+            if (error?.response?.status === 401) {
+                logout_user();
+                return null;
+            }
 
-        //     else if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
-        //         setError(error?.response?.data?.error?.type, { message: error?.response?.data?.error?.message })
-        //         return null;
-        //     }
+            else if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
+                setError(error?.response?.data?.error?.type, { message: error?.response?.data?.error?.message })
+                return null;
+            }
 
-        //     else {
-        //         setError('server', { message: 'there was an issue creating the event' })
-        //     }
-        // }
+            else {
+                setError('server', { message: 'there was an issue creating the event' })
+            }
+        }
     }
 
     const handleClose = () => {

@@ -13,14 +13,14 @@ const RoleRequest = () => {
     const businessIdList = auth.roles.map(role => role?.business_id) || []
     
     const { dispatch } = useNotification();
-    const { data: businessList, isLoading } = useBusinessesQuery()
+    const { data: businessList, status } = useBusinessesQuery()
     const { mutateAsync: createRole } = useCreateRoleMutation()
 
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
     });
     
-    if(isLoading) { return <LoadingSpinner /> }
+    if(status === 'loading') { return <LoadingSpinner /> }
 
     // filter out businesses that are not currently excepting request
     const request_open = businessList.data.filter(business => business.business_request_open && business.active_business)

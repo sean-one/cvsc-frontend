@@ -103,7 +103,10 @@ const EventCardStyles = styled.div`
     }
 
     .eventCardBusinessSection {
-        font-size: 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 1rem;
     }
 `;
 
@@ -130,18 +133,18 @@ const EventCard = ({ event }) => {
                         <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                         <div className='eventCardEventname'>{event?.eventname}</div>
                         <div className='eventCardDetails'>{event?.details}</div>
-                        {/* {event?.active_event &&
+                        {event?.active_event &&
                             <div className='eventCardBusinessSection'>
-                                At <strong onClick={(e) => {
+                                <div onClick={(e) => {
                                     e.stopPropagation();
                                     navigate(`/business/${event?.venue_id}`);
-                                }}>{event?.venue_name}</strong> in <strong>{event?.venue_location.split(',')[1]}
-                                </strong> with <strong onClick={(e) => {
-                                    e.stopPropagation();
+                                }}>{event?.venue_name}</div>
+                                <div onClick={(e) => {
+                                    e.stopPropagation()
                                     navigate(`/business/${event?.brand_id}`);
-                                }}>{event?.brand_name}</strong>
+                                }}>{event?.brand_name}</div>
                             </div>
-                        } */}
+                        }
                     </div>
                 </div>
             </div>

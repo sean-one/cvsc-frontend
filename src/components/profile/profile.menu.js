@@ -40,33 +40,39 @@ const ProfileMenu = () => {
     let menuTab = pathname.split('/')[2] || 'home'
     
     const buttonLink = (e) => {
-        if(e.target.textContent.toLowerCase() === 'account') {
-            navigate(`/profile/`)
-        } else {
-            navigate(`/profile/${e.target.textContent.toLowerCase()}`)
-        }
+        const route = e.target.getAttribute('data-route');
+        navigate(route);
     }
+
+    const userHasRole = (roleType) => {
+        return auth?.roles.some(role => role.role_type >= roleType);
+    };
+
+    const tabs = [
+        { label: 'Account', route: '/profile/' },
+        { label: 'Roles', route: '/profile/roles' },
+        { label: 'Events', route: '/profile/events', condition: userHasRole(process.env.REACT_APP_CREATOR_ACCOUNT) },
+        { label: 'Admin', route: '/profile/admin', condition: userHasRole(process.env.REACT_APP_MANAGER_ACCOUNT) },
+    ];
 
     
     return (
         <ProfileMenuStyles>
             <div className='profileMenu'>
-                <div className={`profileTab ${menuTab === 'home' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>
-                    Account
-                </div>
-                <div className={`profileTab ${menuTab === 'roles' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>
-                    Roles
-                </div>
-                {
-                    (auth.user.account_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
-                        <div className={`profileTab ${menuTab === 'events' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>Events</div>
-                }
-                {
-                    (auth.user.account_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
-                        <div className={`profileTab ${menuTab === 'admin' ? 'activeTab' : ''}`} onClick={(e) => buttonLink(e)}>Admin</div>
-                }
+                {tabs.map(tab => {
+                    if (tab.condition === undefined || tab.condition) {
+                        return (
+                            <div
+                                key={tab.route}
+                                data-route={tab.route}
+                                className={`profileTab ${menuTab === tab.route.split('/')[2] ? 'activeTab' : ''}`}
+                                onClick={buttonLink}
+                            >{tab.label}</div>
+                        );
+                    }
+                    return null;
+                })}
             </div>
-
         </ProfileMenuStyles>
     )
 }
