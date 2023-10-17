@@ -4,7 +4,6 @@ import { getImageSrc } from '../../../helpers/getImageSrc';
 
 import useAuth from '../../../hooks/useAuth';
 import UserEditForm from '../../forms/user.edit.form';
-import { role_types } from '../../../helpers/dataCleanUp';
 import { UserEditIcon } from '../../icons/siteIcons';
 
 const UserAccountStyles = styled.div`

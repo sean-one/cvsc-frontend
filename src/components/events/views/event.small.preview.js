@@ -5,7 +5,7 @@ import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import { EditIcon, SmallEditIcon } from '../../icons/siteIcons';
+import { SmallEditIcon } from '../../icons/siteIcons';
 
 import useAuth from '../../../hooks/useAuth';
 

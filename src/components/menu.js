@@ -4,7 +4,6 @@ import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
 import useAuth from '../hooks/useAuth';
-import { MenuLinks } from '../helpers/menu.links';
 
 const MenuStyles = styled.div`
     .menuWrapper {
@@ -43,9 +42,9 @@ const Menu = ({ toggle }) => {
     const { auth, logout_user } = useAuth()
     let navigate = useNavigate()
 
-    const navMenuClick = (linkto) => {
+    const navMenuClick = (link) => {
         toggle(false)
-        navigate(MenuLinks[linkto].link)
+        navigate(link)
     }
 
     const logOutUser = async () => {
@@ -58,36 +57,53 @@ const Menu = ({ toggle }) => {
         }
     }
 
+    const menuItems = [
+        { label: 'Calendar', link: '/' },
+        {
+            label: () => auth?.user ? 'Profile' : 'Register',
+            link: () => auth?.user ? '/profile' : '/register'
+        },
+        {
+            label: 'Create Business',
+            link: '/business/create',
+            condition: () => auth?.user
+        },
+        {
+            label: 'Create Event',
+            link: '/event/create',
+            condition: () => auth?.user && auth?.roles.some(role => role.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT)
+        },
+        {
+            label: () => auth?.user ? 'Logout' : 'Login',
+            action: () => auth?.user ? logOutUser : () => navMenuClick('/login')
+        }
+    ];
+
 
     return (
         <MenuStyles>
             <div className='menuWrapper' onClick={() => toggle(false)}>
                 <div className='navMenu'>
-                    <div className='navMenuButtons' onClick={() => navMenuClick('home')}>calendar</div>
-                    {
-                        (Object.keys(auth).length > 0)
-                            ? <div className='navMenuButtons' onClick={() => navMenuClick('profile')}>profile</div>
-                            : <div className='navMenuButtons' onClick={() => navMenuClick('register')}>register</div>
-                        
-                    }
-                    {
-                        (auth?.user?.account_type >= process.env.REACT_APP_BASIC_ACCOUNT) &&
-                            <div className='navMenuButtons' onClick={() => navMenuClick('new_business')}>create business</div>
-                    }
-                    {
-                        (auth?.user?.account_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
-                            <div className='navMenuButtons' onClick={() => navMenuClick('new_event')}>create event</div>
-
-                    }
-                    {
-                        (Object.keys(auth).length > 0)
-                            ? <div className='navMenuButtons' onClick={() => logOutUser()}>logout</div>
-                            : <div className='navMenuButtons' onClick={() => navMenuClick('login')}>login</div>
-                    }
+                    {menuItems.map((item, index) => {
+                        const shouldDisplay = item.condition ? item.condition() : true;
+                        if (shouldDisplay) {
+                            return (
+                                <div
+                                    key={index}
+                                    className='navMenuButtons'
+                                    onClick={item.action ? item.action() : () => navMenuClick(item.link())}
+                                >
+                                    {typeof item.label === 'function' ? item.label() : item.label}
+                                </div>
+                            );
+                        }
+                        return null;
+                    })}
                 </div>
             </div>
         </MenuStyles>
-    )
+    );
 }
+
 
 export default Menu;
