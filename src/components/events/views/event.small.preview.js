@@ -82,13 +82,13 @@ const EventSmallPreviewStyles = styled.div`
 
     .eventSmallPreviewDetails {
         display: -webkit-box;
-        font-size: 1.1rem;
-        -webkit-line-clamp: 3;
+        font-size: 1rem;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
         max-height: 4.8rem;
-        line-height: 1.3;
+        line-height: 1.1rem;
         cursor: pointer;
     }
 `;

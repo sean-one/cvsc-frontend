@@ -173,7 +173,7 @@ const BusinessView = () => {
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&
-                            <div>{business?.data?.formatted_address}</div>
+                            <div>{business?.data?.formatted_address.split(/,\s[A-Z]{2}\s\d{5},\sUSA/)[0]}</div>
                     }
                 </div>
 
