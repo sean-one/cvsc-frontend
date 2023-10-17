@@ -127,7 +127,6 @@ const UserAccount = () => {
                             <div className='profileHeader'>
                                 <div className='usernameHeader'>{auth?.user.username}</div>
                                 <div className='accountTypeHeader'>{userRoleType(auth?.roles)}</div>
-                                {/* <div className='accountTypeHeader'>{role_types[auth.user.account_type].type}</div> */}
                             </div>
 
                             <div className='userDetails'>

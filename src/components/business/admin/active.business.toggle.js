@@ -2,19 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ToggleOnIcon, ToggleOffIcon } from '../../icons/siteIcons';
-import { useActiveBusinessToggle } from '../../../hooks/useBusinessApi';
+import { useBusinessToggle } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
 const ActiveBusinessToggle = ({ business_id, isActive }) => {
     const { dispatch } = useNotification()
-    const { mutateAsync: toggleActiveBusiness } = useActiveBusinessToggle()
+    const { mutateAsync: toggleBusiness } = useBusinessToggle()
 
     let navigate = useNavigate()
 
     const toggleActive = async () => {
         try {
-            const active_toggle = await toggleActiveBusiness(business_id)
+            const active_toggle = await toggleBusiness({ toggle_type: { toggleType: 'active' }, business_id: business_id })
     
             if(active_toggle.status === 201) {
                 dispatch({

@@ -3,7 +3,7 @@ import AxiosInstance from "../helpers/axios";
 
 
 //! businessView, update.business - VIEW BUSINESS PAGE
-const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/single/${id}`) }
+const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/${id}`) }
 export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id))
 
 //! RETURN A LIST OF ALL BUSINESSES
@@ -11,7 +11,7 @@ const getBusinesses = async () => { return await AxiosInstance.get('/businesses'
 export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses,{ refetchOnMount: false })
 
 //! business.create.form - CREATE BUSINESS
-const createBusiness = async (business) => { return await AxiosInstance.post('/businesses/create', business) }
+const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }
 export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(createBusiness, {
@@ -24,8 +24,19 @@ export const useCreateBusinessMutation = () => {
     })
 }
 
+//! business.admin.menu - toggle active & toggle request
+const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/toggle`, toggle_type) }
+export const useBusinessToggle = () => {
+    const queryClient = useQueryClient()
+    return useMutation(toggleBusiness, {
+        onSuccess: ({ data }) => {
+            queryClient.refetchQueries(['businesses', 'business', data.id])
+        },
+        onError: (error, business_error, context) => { console.log(error) },
+    })
+}
 //! business.edit.form - EDIT BUSINESS
-const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/businesses/update/${business_id}`, business_updates) }
+const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/businesses/${business_id}`, business_updates) }
 export const useUpdateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateBusiness, {
@@ -46,35 +57,6 @@ export const useRemoveBusinessMutation = () => {
         },
         onError: (error) => {
             console.log(error)
-        },
-    })
-}
-
-//! business.admin.menu - TOGGLE BUSINESS REQUEST STATUS
-const toggleBusinessRequest = async (id) => { return await AxiosInstance.put(`/businesses/toggle-request/${id}`) }
-export const useBusinessRequestToggle = () => {
-    const queryClient = useQueryClient()
-    return useMutation(toggleBusinessRequest, {
-        onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'business', data.id])
-        },
-        onError: (error, updated_business, context) => { console.log(error) },
-    })
-}
-
-//! business.admin.view - TOGGLE ACTIVE BUSINESS STATUS
-const toggleActiveBusiness = async (id) => { return await AxiosInstance.put(`/businesses/toggle-active/${id}`) }
-export const useActiveBusinessToggle = () => {
-    const queryClient = useQueryClient()
-    return useMutation(toggleActiveBusiness, {
-        onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['businesses'])
-            queryClient.refetchQueries(['business', data.id])
-            queryClient.refetchQueries(['roles'])
-        },
-        onError: (error, updated_business, context) => {
-            console.log(Object.keys(error)) 
-            console.log(error.response) 
         },
     })
 }

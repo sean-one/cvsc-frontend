@@ -3,18 +3,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { ToggleOnIcon, ToggleOffIcon } from '../../icons/siteIcons';
 
-import { useBusinessRequestToggle } from '../../../hooks/useBusinessApi';
+import { useBusinessToggle } from '../../../hooks/useBusinessApi';
 import useNotification from '../../../hooks/useNotification';
 
 
 const RequestStatusToggle = ({ business_id, isOpen }) => {
-    const { mutateAsync: toggleBusinessRequest } = useBusinessRequestToggle()
+    const { mutateAsync: toggleBusiness } = useBusinessToggle()
     let navigate = useNavigate()
     const { dispatch } = useNotification()
 
     const toggleRequest = async () => {
         try {
-            const business_toggled = await toggleBusinessRequest(business_id)
+            const business_toggled = await toggleBusiness({ toggle_type: { toggleType: 'request' }, business_id: business_id })
     
             if(business_toggled.status === 201) {
                 dispatch({
