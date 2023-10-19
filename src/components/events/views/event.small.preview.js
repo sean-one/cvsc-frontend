@@ -18,6 +18,14 @@ const EventSmallPreviewStyles = styled.div`
         gap: 10px;
     }
 
+    .eventSmallPreviewInactive {
+        margin: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        color: var(--error-color);
+        border: 1px solid var(--error-color);
+    }
+
     .eventSmallPreviewAdminControls {
         position: absolute;
         right: 0.5rem;
@@ -102,7 +110,7 @@ const EventSmallPreview = ({ event }) => {
 
     return (
         <EventSmallPreviewStyles>
-            <div className='sectionContainer eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>
+            <div className={`${event?.active_event ? 'sectionContainer' : 'eventSmallPreviewInactive'} eventSmallPreviewWrapper`} onClick={() => navigate(`/event/${event.event_id}`)}>
                 {
                     (Object.keys(auth).length > 0) &&
                         <div className='eventSmallPreviewAdminControls'>

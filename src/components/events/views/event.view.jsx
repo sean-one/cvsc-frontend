@@ -48,6 +48,10 @@ const EventViewStyles = styled.div`
         font-weight: bold;
         text-transform: uppercase;
     }
+
+    .eventViewEventInactive {
+        color: var(--error-color);
+    }
     
     .eventViewEditButton {
         flex-shrink: 0;
@@ -138,7 +142,7 @@ const EventView = () => {
             <div className='eventViewWrapper'>
                 <div className='eventViewTopInfo'>
                     <div className='eventViewHeaderRow'>
-                        <div className='eventViewEventname'>{event.data.eventname}</div>
+                        <div className={`eventViewEventname ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event.data.eventname}</div>
                         {
                             (isCreator()) &&
                                 <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>
@@ -146,11 +150,17 @@ const EventView = () => {
                                 </div>
                         }
                     </div>
-                    <div className='eventViewAddress'>{event.data?.venue_location.split(/\s\d{5},\sUSA/)[0]}</div>
-                    <div className='eventViewDateWrapper'>
-                        <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
-                        <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
-                    </div>
+                    {
+                        (event?.data?.active_event) &&
+                            <div className='eventViewAddress'>{event.data?.venue_location.split(/\s\d{5},\sUSA/)[0]}</div>
+                    }
+                    {
+                        (event?.data?.active_event) &&
+                            <div className='eventViewDateWrapper'>
+                                <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
+                                <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
+                            </div>
+                    }
                 </div>
                 <div className='eventViewBody'>
                     <div className='eventViewImageContainer'>
@@ -159,15 +169,21 @@ const EventView = () => {
                     <div className='eventViewDetails'>
                         <div>{event.data.details}</div>
                         <div>
-                            <div className='eventViewBusiness'>
-                                <BusinessLabel businessId={event.data.venue_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
-                                <BusinessLabel businessId={event.data.brand_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
-                            </div>
+                            {
+                                (event?.data?.active_event) &&
+                                    <div className='eventViewBusiness'>
+                                        <BusinessLabel businessId={event.data.venue_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
+                                        <BusinessLabel businessId={event.data.brand_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
+                                    </div>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
-            <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
+            {
+                (event?.data?.active_event) &&
+                    <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
+            }
         </EventViewStyles>
     )
 }

@@ -91,7 +91,7 @@ const BusinessLabel = ({ businessId, eventCreator, eventId }) => {
             <div className='businessLabelsContainer' onClick={() => navigate(`/business/${businessId}`)}>
                 <div className='businessListing'>
                     <div className='businessLogoContainer'>
-                        <img className='businessLogo' src={image_link(business?.business_avatar)} alt={`${business.businessname} logo`} />
+                        <img className='businessLogo' src={image_link(business?.business_avatar)} alt={`${business?.businessname} logo`} />
                     </div>
                     <div className='businessName'>{business?.business_name}</div>
                 </div>
