@@ -41,7 +41,7 @@ export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(updateEvent, {
         onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['events', 'event', data.event_id])
+            queryClient.refetchQueries(['inactive', 'events', 'event', 'user', data.event_id])
         },
         onError: (error) => {
             console.log(error)

@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
     
         --max-page-width: 875px;
         --main-break-width: 500px;
+
     }
 `;
 
@@ -35,6 +36,17 @@ const Styles = styled.div`
         color: var(--main-text-color);
         background-color: var(--main-color);
     }
+
+    .headerText {
+        font-size: 1rem;
+        line-height: 1.1rem;
+        font-weight: bold;
+        letter-spacing: 
+    }
+    .smallHeaderText {}
+    .subheaderText {}
+    .smallSubheaderText {}
+    .smallText {}
     
     .innerContainer {
         padding: calc(var(--header-height) + 0.75rem) 0 0.5rem 0;
