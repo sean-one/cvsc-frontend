@@ -12,7 +12,7 @@ import RequestStatusToggle from './request.status.toggle';
 import EditBusinessButton from './edit.business.button';
 import DeleteBusiness from './delete.business';
 import CreateEventButton from '../../events/create.event.button';
-import BusinessEvents from './business.events';
+import BusinessEventsRelated from '../../events/business.events.related';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminViewHeader {
@@ -124,7 +124,7 @@ const BusinessAdminView = () => {
                 }
             </div>
             <BusinessRoles />
-            <BusinessEvents business_id={business_id} business_name={business?.business_name} />
+            <BusinessEventsRelated business_id={business_id} />
         </BusinessAdminViewStyles>
     )
 }

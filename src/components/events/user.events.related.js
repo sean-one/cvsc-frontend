@@ -1,13 +1,15 @@
 import React from 'react';
 
+import useAuth from '../../hooks/useAuth';
 import { useUserEventsQuery } from '../../hooks/useEventsApi';
 import EventSmallPreview from './views/event.small.preview';
 import LoadingSpinner from '../loadingSpinner';
 import ServerReturnError from '../serverReturnError';
 
 
-const UserEventsRelated = ({ user_id }) => {
-    const { data: user_events_list, status, error } = useUserEventsQuery(user_id)
+const UserEventsRelated = () => {
+    const { auth } = useAuth()
+    const { data: user_events_list, status, error } = useUserEventsQuery(auth?.user?.id)
     let user_events = {}
     
     if (status === 'loading') {

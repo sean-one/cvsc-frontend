@@ -5,6 +5,10 @@ import AxiosInstance from "../helpers/axios";
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
 export const useBusinessEventsQuery = (business_id) => useQuery(["business_events", business_id], () => getBusinessEvents(business_id), { refetchOnMount: false })
 
+// return an array of all INACTIVE user events
+const getAllUserInactiveEvents = async (user_id) => { return await AxiosInstance.get(`/events/inactive_user/${user_id}`) }
+export const useInactiveUserEvents = (user_id) => useQuery(["inactive", "events", "user", user_id], () => getAllUserInactiveEvents(user_id), { staleTime: 60000, refetchOnMount: false })
+
 // return an array of all events related to user id
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false })
