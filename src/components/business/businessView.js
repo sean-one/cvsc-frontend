@@ -8,7 +8,8 @@ import { image_link } from '../../helpers/dataCleanUp';
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
-import RelatedEvents from '../events/related.events';
+// import RelatedEvents from '../events/related.events';
+import BusinessEventsRelated from '../events/business.events.related';
 import BusinessAdminControls from './admin/business.admin.controls';
 
 import {
@@ -207,7 +208,8 @@ const BusinessView = () => {
                     </div>
                 </div>
             </div>
-            <RelatedEvents business_ids={[business_id]} />
+            {/* <RelatedEvents business_ids={[business_id]} /> */}
+            <BusinessEventsRelated business_id={business_id} />
         </BusinessViewStyles>
     )
 }

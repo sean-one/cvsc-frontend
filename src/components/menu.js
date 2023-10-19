@@ -61,7 +61,7 @@ const Menu = ({ toggle }) => {
         { label: 'Calendar', link: '/' },
         {
             label: () => auth?.user ? 'Profile' : 'Register',
-            link: () => auth?.user ? '/profile' : '/register'
+            link: `${auth?.user ? '/profile' : '/register'}`
         },
         {
             label: 'Create Business',
@@ -91,7 +91,7 @@ const Menu = ({ toggle }) => {
                                 <div
                                     key={index}
                                     className='navMenuButtons'
-                                    onClick={item.action ? item.action() : () => navMenuClick(item.link())}
+                                    onClick={item.action ? item.action() : () => navMenuClick(item.link)}
                                 >
                                     {typeof item.label === 'function' ? item.label() : item.label}
                                 </div>

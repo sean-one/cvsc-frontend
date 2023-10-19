@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import { useUserEventsQuery } from '../../hooks/useEventsApi';
 
 import LoadingSpinner from '../loadingSpinner';
+import UserEventsRelated from '../events/user.events.related';
 import EventSmallPreview from '../events/views/event.small.preview';
 
 const ProfileEventsStyles = styled.div`
