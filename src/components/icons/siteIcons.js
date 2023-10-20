@@ -49,10 +49,10 @@ export const ShowIcon = styled(ChevronDown)`color: var(--secondary-color); width
 export const HideIcon = styled(ChevronUp)`color: var(--secondary-color); width: var(--site-icon-size);`
 
 // various delete buttons (roles, business)
-export const DeleteIcon = styled(Trash)`width: var(--site-icon-size);`
+export const DeleteIcon = styled(Trash)`color: var(--error-color); width: var(--site-icon-size);`
 
 export const ApproveUserIcon = styled(UserCheck)`width: var(--site-icon-size);`
-export const CreateEventIcon = styled(CalendarAdd)`width: var(--site-icon-size);`
+export const CreateEventIcon = styled(CalendarAdd)`color: var(--trim-color); width: var(--site-icon-size);`
 
 export const UserEditIcon = styled(Edit)`width: var(--site-icon-size);`
 

@@ -47,9 +47,9 @@ const RemoveUserRole = ({ role }) => {
     }
 
     return (
-        <button className='deleteButton' disabled={role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT} onClick={() => userRoleRemove(role.id)}>
+        <div className='deleteButton' disabled={role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT} onClick={() => userRoleRemove(role.id)}>
             <DeleteIcon />
-        </button>
+        </div>
     )
 }
 
