@@ -8,7 +8,6 @@ import { image_link } from '../../helpers/dataCleanUp';
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
-// import RelatedEvents from '../events/related.events';
 import BusinessEventsRelated from '../events/business.events.related';
 import BusinessAdminControls from './admin/business.admin.controls';
 
@@ -39,16 +38,6 @@ const BusinessViewStyles = styled.div`
         width: 100%;
         display: flex;
         flex-direction: column;}
-
-    /* .businessHeader {
-        font-size: 1.6rem;
-        font-weight: bold;
-        line-height: 1.8rem;
-        letter-spacing: 0.05rem;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;} */
     
     .businessViewManagementControls {
         display: flex;
@@ -212,7 +201,6 @@ const BusinessView = () => {
                     </div>
                 </div>
             </div>
-            {/* <RelatedEvents business_ids={[business_id]} /> */}
             <BusinessEventsRelated business_id={business_id} />
         </BusinessViewStyles>
     )

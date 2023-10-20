@@ -21,7 +21,12 @@ const GlobalStyle = createGlobalStyle`
         --input-text-color: #263238;
         --input-placeholder: #286237;
         
-    
+        --header-font-size: 1.6rem;
+        --small-header-font: 1.2rem;
+        --subheader-font-size: 1.2rem;
+        --small-subheader-font: 1rem;
+        --main-font-size: 1.1rem;
+        --small-font: 0.9rem;
         --max-page-width: 875px;
         --main-break-width: 500px;
 
@@ -33,26 +38,35 @@ const Styles = styled.div`
         min-width: 250px;
         min-height: 100vh;
         max-width: 100vw;
+        font-size: var(--main-font-size);
+        line-height: 1.3;
         color: var(--main-text-color);
         background-color: var(--main-color);
     }
 
     .headerText {
-        font-size: 1.6rem;
-        line-height: 1.8rem;
+        font-size: var(--header-font-size);
         font-weight: bold;
+        text-transform: uppercase;
         letter-spacing: 0.05rem;
     }
 
-    .smallHeaderText {}
+    .smallHeaderText {
+        font-size: var(--small-header-font);
+        font-weight: bold;
+        letter-spacing: 0.01rem;
+        text-transform: uppercase;
+    }
     
     .subheaderText {
-        font-size: 1.3rem;
-        line-height: 1.4rem;
+        font-size: var(--subheader-font-size);
         font-weight: bold;
-        /* margin-top: 0.5rem; */
     }
-    .smallSubheaderText {}
+
+    .smallSubheaderText {
+        font-size: var(--small-subheader-font);
+        font-weight: bold;
+    }
     .smallText {}
     
     .innerContainer {

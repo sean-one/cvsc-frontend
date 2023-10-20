@@ -72,31 +72,21 @@ const EventSmallPreviewStyles = styled.div`
     }
 
     .eventSmallPreviewDate {
-        font-size: 1rem;
-        line-height: 1.1rem;
+        font-size: var(--small-font);
+        line-height: calc(var(--small-font) + 0.1rem);
         font-weight: thin;
         color: #F4F6F5;
-        /* text-transform: uppercase; */
-    }
-
-    .eventSmallPreviewEventname {
-        font-size: 1.2rem;
-        line-height: 1.3rem;
-        letter-spacing: 0.01rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin: 0.25rem 0;
     }
 
     .eventSmallPreviewDetails {
         display: -webkit-box;
-        font-size: 1rem;
+        font-size: var(--small-font);
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
         max-height: 4.8rem;
-        line-height: 1.1rem;
+        line-height: calc(var(--small-font) + 0.1rem);
         cursor: pointer;
     }
 `;
@@ -104,6 +94,8 @@ const EventSmallPreviewStyles = styled.div`
 const EventSmallPreview = ({ event }) => {
     const { auth } = useAuth()
     let navigate = useNavigate()
+
+    if (!event) { return null; }
 
     const isCreator = () => auth?.user?.id === event.created_by
 
@@ -130,7 +122,7 @@ const EventSmallPreview = ({ event }) => {
                 
                 <div className='eventSmallPreviewInfo'>
                     <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), 'MMM. dd')} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
-                    <div className='eventSmallPreviewEventname'>{event.eventname}</div>
+                    <div className='smallHeaderText'>{event.eventname}</div>
                     <div className='eventSmallPreviewDetails'>{event.details}</div>
                 </div>
 

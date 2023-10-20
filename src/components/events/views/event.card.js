@@ -74,41 +74,27 @@ const EventCardStyles = styled.div`
     }
 
     .eventCardDate {
-        font-size: 1.8rem;
+        font-size: var(--header-font-size);
     }
 
     .eventCardMonth {
-        font-size: 1rem;
+        font-size: var(--main-font-size);
         text-transform: uppercase;
         letter-spacing: 2px;
     }
 
-    .eventCardEventname {
-        line-height: 1;
-        font-size: 1.4rem;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
     .eventCardDetails {
         display: -webkit-box;
-        font-size: 1rem;
+        font-size: var(--small-font);
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
         max-height: 4.8rem;
-        line-height: 1.1rem;
         cursor: pointer;
         text-align: justify;
     }
 
-    .eventCardBusinessSection {
-        display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-        font-size: 1rem;
-    }
 `;
 
 const EventCard = ({ event }) => {
@@ -132,15 +118,15 @@ const EventCard = ({ event }) => {
                     </div>
                     <div className='eventCardRow eventCardBottomRow'>
                         <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
-                        <div className='eventCardEventname'>{event?.eventname}</div>
+                        <div className='smallHeaderText'>{event?.eventname}</div>
                         <div className='eventCardDetails'>{event?.details}</div>
                         {event?.active_event &&
-                            <div className='eventCardBusinessSection'>
-                                <div onClick={(e) => {
+                            <div className='sectionRowSplit'>
+                                <div className='smallSubheaderText' onClick={(e) => {
                                     e.stopPropagation();
                                     navigate(`/business/${event?.venue_id}`);
                                 }}>{event?.venue_name}</div>
-                                <div onClick={(e) => {
+                                <div className='smallSubheaderText' onClick={(e) => {
                                     e.stopPropagation()
                                     navigate(`/business/${event?.brand_id}`);
                                 }}>{event?.brand_name}</div>

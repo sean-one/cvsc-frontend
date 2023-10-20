@@ -9,8 +9,13 @@ import EventCard from './views/event.card';
 import EventSmallPreview from './views/event.small.preview';
 
 const BusinessEventsRelatedStyles = styled.div`
+    .businessEventsRelatedWrapper {
+        margin: 0.5rem;
+    }
+
     .businessEventsRelatedHeader {
-        margin: 0.25rem 0;
+        padding-left: 0.75rem;
+        margin: 0.5rem 0;
     }
 `;
 
@@ -33,11 +38,11 @@ const BusinessEventsRelated = ({ business_id }) => {
 
     return (
         <BusinessEventsRelatedStyles>
-            <div>
+            <div className='businessEventsRelatedWrapper'>
                 {
                     (business_events.length > 0)
                         ? <div>
-                            <div className='businessEventsRelatedHeader'>Upcoming Events</div>
+                            <div className='businessEventsRelatedHeader subheaderText'>Upcoming Events</div>
                             {
                                 business_events.map(event => {
                                     if (location.pathname.includes('admin')) {

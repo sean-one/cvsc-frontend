@@ -17,6 +17,7 @@ const UserEventsRelated = () => {
     }
 
     if (status === 'error') {
+        console.log(error)
         return <ServerReturnError />
     }
 

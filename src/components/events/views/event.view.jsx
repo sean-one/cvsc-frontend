@@ -33,22 +33,6 @@ const EventViewStyles = styled.div`
         padding: 0rem 0.5rem;
     }
 
-    .eventViewHeaderRow {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-    }
-    
-    .eventViewEventname {
-        flex-grow: 1;
-        font-size: 1.6rem;
-        line-height: 1.7rem;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
     .eventViewEventInactive {
         color: var(--error-color);
     }
@@ -59,14 +43,6 @@ const EventViewStyles = styled.div`
     
     .eventViewAddress {
         align-self: flex-start;
-    }
-    
-    .eventViewDateWrapper {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-        font-style: italic;
     }
     
     .eventViewBody {
@@ -99,6 +75,7 @@ const EventViewStyles = styled.div`
     }
 
     .eventViewDetails {
+        text-align: justify;
         align-self: center;
         width: 100%;
         display: flex;
@@ -112,6 +89,7 @@ const EventViewStyles = styled.div`
     }
 
     .eventViewBusiness {
+        margin: 0.5rem 0;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -141,8 +119,8 @@ const EventView = () => {
         <EventViewStyles>
             <div className='eventViewWrapper'>
                 <div className='eventViewTopInfo'>
-                    <div className='eventViewHeaderRow'>
-                        <div className={`eventViewEventname ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event.data.eventname}</div>
+                    <div className='sectionRowSplit'>
+                        <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event.data.eventname}</div>
                         {
                             (isCreator()) &&
                                 <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>
@@ -156,9 +134,9 @@ const EventView = () => {
                     }
                     {
                         (event?.data?.active_event) &&
-                            <div className='eventViewDateWrapper'>
-                                <div>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
-                                <div>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
+                            <div className='sectionRowSplit'>
+                                <div className='subheaderText'>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
+                                <div className='subheaderText'>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
                             </div>
                     }
                 </div>

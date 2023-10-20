@@ -20,9 +20,7 @@ const LoginStyles = styled.div`
     }
 
     .loginHeader {
-        width: 100%;
-        font-size: 1.8rem;
-        font-weight: bold;
+        padding-left: 0.5rem;
         align-self: flex-start;
     }
 
@@ -107,7 +105,7 @@ const Login = () => {
         <LoginStyles>
             <div className='loginWrap'>
                 
-                <div className='loginHeader'>Login</div>
+                <div className='headerText loginHeader'>Login</div>
 
                 <form onSubmit={handleSubmit(sendLogin)} className='standardForm' onClick={() => clearErrors('credentials')}>
                     

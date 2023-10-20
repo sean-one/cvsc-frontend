@@ -25,12 +25,7 @@ const RegisterStyles = styled.div`
     }
 
     .registerHeader {
-        width: 100%;
         text-align: center;
-        margin-bottom: 1rem;
-        font-size: 1.8rem;
-        font-weight: bold;
-        align-self: flex-start;
     }
 
     .registerImagePreview {
@@ -157,7 +152,7 @@ const Register = () => {
         <RegisterStyles>
             <div className='registerWrap'>
                 
-                <div className='registerHeader'>Register new Account</div>
+                <div className='headerText registerHeader'>Register new Account</div>
                 
                 <form onSubmit={handleSubmit(createUser)} className='standardForm'>
 
