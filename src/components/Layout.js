@@ -38,13 +38,20 @@ const Styles = styled.div`
     }
 
     .headerText {
-        font-size: 1rem;
-        line-height: 1.1rem;
+        font-size: 1.6rem;
+        line-height: 1.8rem;
         font-weight: bold;
-        letter-spacing: 
+        letter-spacing: 0.05rem;
     }
+
     .smallHeaderText {}
-    .subheaderText {}
+    
+    .subheaderText {
+        font-size: 1.3rem;
+        line-height: 1.4rem;
+        font-weight: bold;
+        /* margin-top: 0.5rem; */
+    }
     .smallSubheaderText {}
     .smallText {}
     
@@ -66,15 +73,10 @@ const Styles = styled.div`
         border: 1px solid var(--trim-color);
     }
 
-    .sectionHeader {
+    .sectionRowSplit {
         display: flex;
-        font-weight: bold;
-        letter-spacing: 0.1rem;
+        align-items: center;
         justify-content: space-between;
-    }
-
-    .sectionListHeader {
-        border-bottom: 1px solid var(--secondary-color);
     }
 
     .removeBorder {
@@ -142,13 +144,6 @@ const Styles = styled.div`
         position: absolute;
         white-space: nowrap;
         width: 1px;
-    }
-
-    .businessFormContactHeader {
-        font-size: 1.3rem;
-        font-weight: bold;
-        margin-top: 0.5rem;
-        border-bottom: 1px solid var(--secondary-color);
     }
 
     .dateTimeInputWrapper {

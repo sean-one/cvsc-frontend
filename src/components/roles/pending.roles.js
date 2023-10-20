@@ -14,8 +14,8 @@ const PendingRoles = ({ roles_list }) => {
 
     return (
         <div className='sectionContainer'>
-            <div className='sectionHeader'>
-                <div>Request</div>
+            <div className='sectionRowSplit'>
+                <div className='subheaderText'>Request</div>
                 <div onClick={() => toggleRequest()}>{viewRequest ? <HideIcon /> : <ShowIcon />}</div>
             </div>
             {

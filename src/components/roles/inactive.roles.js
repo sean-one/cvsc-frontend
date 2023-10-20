@@ -14,8 +14,8 @@ const InactiveRoles = ({ roles_list }) => {
 
     return (
         <div className='sectionContainer'>
-            <div className='sectionHeader sectionListHeader'>
-                <div>Inactive</div>
+            <div className='sectionRowSplit'>
+                <div className='subheaderText'>Inactive</div>
                 <div onClick={() => toggleInactive()}>{viewInactive ? <HideIcon /> : <ShowIcon />}</div>
             </div>
             <div>

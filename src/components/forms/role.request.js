@@ -57,9 +57,7 @@ const RoleRequest = () => {
             {
                 (business_filtered.length > 0) &&
                 <div className='sectionContainer'>
-                        <div className='sectionHeader'>
-                            <div>Create Business Role Request</div>
-                        </div>
+                        <div className='subheaderText'>Create Business Role Request</div>
 
                         <form onSubmit={handleSubmit(roleCreate)} className='standardForm'>
                             <select {...register('business_id', {

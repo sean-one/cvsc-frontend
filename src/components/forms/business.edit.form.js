@@ -228,7 +228,7 @@ const BusinessEditForm = () => {
                         defaultValue={business?.formatted_address}
                     />
                     
-                    <div className='businessFormContactHeader'>Contacts & Social Media:</div>
+                    <div className='subheaderText'>Contacts & Social Media:</div>
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>

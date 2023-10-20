@@ -25,7 +25,7 @@ const AllManagementPendingRequest = ({ name, roles }) => {
     return (
         <AllManagementPendingRequestStyles>
             <div className='managementRoleInsert'>
-                <div className='sectionHeader sectionListHeader'>
+                <div className='sectionRowSplit'>
                     <div onClick={() => navigate(`/business/${roles[0].business_id}`)}>{name}</div>
                     <div onClick={() => togglePending()}>{viewPending ? <HideIcon /> : <ShowIcon />}</div>
                 </div>

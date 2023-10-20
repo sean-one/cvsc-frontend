@@ -28,8 +28,8 @@ const UserRoles = ({ roles }) => {
             {
                 (active_roles.length > 0) &&
                     <div className='sectionContainer'>
-                        <div className='sectionHeader'>
-                            <div>Current Roles</div>
+                        <div className='sectionRowSplit'>
+                            <div className='subheaderText'>Current Roles</div>
                             <div onClick={() => toggleCurrent()}>{viewCurrent ? <HideIcon /> : <ShowIcon />}</div>
                         </div>
                         {
@@ -48,8 +48,8 @@ const UserRoles = ({ roles }) => {
             {
                 (inactive_roles.length > 0) &&
                     <div className='sectionContainer'>
-                        <div className='sectionHeader'>
-                            <div>Inactive Roles</div>
+                        <div className='sectionRowSplit'>
+                            <div className='subheaderText'>Inactive Roles</div>
                             <div onClick={() => toggleInactive()}>{viewInactive ? <HideIcon /> : <ShowIcon />}</div>
                         </div>
                         {

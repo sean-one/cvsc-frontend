@@ -40,11 +40,15 @@ const BusinessViewStyles = styled.div`
         display: flex;
         flex-direction: column;}
 
-    .businessHeader {
+    /* .businessHeader {
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 1.8rem;
+        letter-spacing: 0.05rem;
         width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;}
+        justify-content: space-between;} */
     
     .businessViewManagementControls {
         display: flex;
@@ -161,8 +165,8 @@ const BusinessView = () => {
         <BusinessViewStyles>
             <div className='businessViewWrapper'>
                 <div className='businessViewHeader'>
-                    <div className='businessHeader'>
-                        <h2>{business?.data?.business_name?.toUpperCase()}</h2>
+                    <div className='sectionRowSplit'>
+                        <div className='headerText'>{business?.data?.business_name?.toUpperCase()}</div>
                         {
                             (business_role?.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
                                 <BusinessAdminControls user_role={business_role} business={business?.data} />

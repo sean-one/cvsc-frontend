@@ -45,7 +45,7 @@ const ManagementRolesTab = ({ user_id }) => {
             <div className='sectionContainer'>
                 {
                     (pending_roles.data.length > 0) &&
-                        <div className='sectionHeader'>Management Roles</div>
+                        <div className='subheaderText'>Management Roles</div>
                 }
                 {
                     Object.entries(businesses).map(([businessName, roles]) => (

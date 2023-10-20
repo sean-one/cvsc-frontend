@@ -273,7 +273,7 @@ const BusinessCreateForm = () => {
                         clearErrors={clearErrors}
                     />
 
-                    <div className='businessFormContactHeader'>Business Contacts & Social Media:</div>
+                    <div className='subheaderText'>Business Contacts & Social Media:</div>
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>
