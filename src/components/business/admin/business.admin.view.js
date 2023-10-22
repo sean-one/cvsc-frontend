@@ -123,7 +123,7 @@ const BusinessAdminView = () => {
                         </div>
                 }
             </div>
-            <BusinessRoles />
+            {/* <BusinessRoles /> */}
             <BusinessEventsRelated business_id={business_id} />
         </BusinessAdminViewStyles>
     )
