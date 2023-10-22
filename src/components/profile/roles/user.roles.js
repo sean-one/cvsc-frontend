@@ -6,25 +6,15 @@ import Role from '../../roles/role';
 import CurrentUserRole from '../../roles/current.user.role';
 
 const UserRolesStyles = styled.div`
-    .roleListWrapper {
-        border-bottom: 1px dotted var(--secondary-color);
-    }
-    .adminRoleList {
-        /* color: green; */
-    }
-    .managerRoleList {
-        /* color: blue; */
-    }
-    .creatorRoleList {
-        /* color: yellow; */
+    .userRolesCurrent {
     }
 `;
 
 
 const UserRoles = ({ roles }) => {
-    const [adminView, setAdminView] = useState(true)
-    const [managerView, setManagerView] = useState(true)
-    const [creatorView, setCreatorView] = useState(true)
+    const [adminView, setAdminView] = useState(false)
+    const [managerView, setManagerView] = useState(false)
+    const [creatorView, setCreatorView] = useState(false)
     const [viewInactive, setViewInactive] = useState(false)
     let active_roles, inactive_roles, admin_roles, manager_roles, creator_roles = []
 
@@ -57,12 +47,12 @@ const UserRoles = ({ roles }) => {
     return (
         <UserRolesStyles>
             <div>
-                <div>
+                <div className='userRolesCurrent'>
                     {
                         (admin_roles.length > 0) &&
                             <div className='sectionContainer'>
                                 <div className='sectionRowSplit'>
-                                    <div>Admin Roles</div>
+                                    <div className='subheaderText'>Admin Roles</div>
                                     <div onClick={() => toggleAdminList()}>{adminView ? <HideIcon /> : <ShowIcon />}</div>
                                 </div>
                                 {
@@ -77,7 +67,7 @@ const UserRoles = ({ roles }) => {
                         (manager_roles.length > 0) &&
                         <div className='sectionContainer'>
                                 <div className='sectionRowSplit'>
-                                    <div>Manager</div>
+                                    <div className='subheaderText'>Manager Roles</div>
                                     <div onClick={() => toggleManagerList()}>{managerView ? <HideIcon /> : <ShowIcon />}</div>
                                 </div>
                                 {
@@ -92,7 +82,7 @@ const UserRoles = ({ roles }) => {
                         (creator_roles.length > 0) &&
                         <div className='sectionContainer'>
                                 <div className='sectionRowSplit'>
-                                    <div>Creator</div>
+                                    <div className='subheaderText'>Creator Roles</div>
                                     <div onClick={() => toggleCreatorList()}>{creatorView ? <HideIcon /> : <ShowIcon />}</div>
                                 </div>
                                 {
@@ -103,25 +93,7 @@ const UserRoles = ({ roles }) => {
                                 }
                             </div>
                     }
-                    {/* {
-                        active_roles.map(role =>
-                            <Role key={role.id} role={role} rolelist='userlist' />
-                        )
-                    } */}
                 </div>
-                {/* {
-                    (active_roles.length > 0) &&
-                        <div className='sectionContainer'>
-                            <div className='sectionRowSplit'>
-                                <div className='subheaderText'>Current Roles</div>
-                                <div onClick={() => toggleCurrent()}>{viewCurrent ? <HideIcon /> : <ShowIcon />}</div>
-                            </div>
-                            {
-                                viewCurrent &&
-                            }
-                        </div>
-                } */}
-
                 {
                     (inactive_roles.length > 0) &&
                         <div className='sectionContainer'>
