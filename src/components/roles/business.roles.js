@@ -14,7 +14,7 @@ import ManagerRoles from '../roles/manager.roles';
 const BusinessRoles = () => {
     const { auth } = useAuth()
     let { business_id } = useParams()
-    const { data: business_roles, status, error } = useBusinessRolesQuery('wrong')
+    const { data: business_roles, status, error } = useBusinessRolesQuery('nonsense')
     let inactive_roles, pending_roles, creator_roles, manager_roles = []
 
     let navigate = useNavigate()
