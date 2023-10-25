@@ -62,7 +62,7 @@ const Login = () => {
 
                     navigate(navigateTo)
 
-                    return
+                    return false;
 
                 } else {
                     dispatch({

@@ -47,7 +47,7 @@ const BusinessEditForm = () => {
         }
     })
 
-    if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id ) }
+    if(auth?.roles) { business_role = auth.roles.find(role => role.active_role === true && role.business_id === business_id ) }
 
     const update_business = async (business_updates) => {
         try {

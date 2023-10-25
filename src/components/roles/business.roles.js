@@ -16,7 +16,7 @@ const BusinessRoles = () => {
     const { auth } = useAuth()
     const { dispatch } = useNotification()
     let { business_id } = useParams()
-    const { data: business_roles, status, error } = useBusinessRolesQuery('nonsense')
+    const { data: business_roles, status, error } = useBusinessRolesQuery(business_id)
     let inactive_roles, pending_roles, creator_roles, manager_roles = []
 
     let navigate = useNavigate()

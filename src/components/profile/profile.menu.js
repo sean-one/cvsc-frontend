@@ -45,7 +45,7 @@ const ProfileMenu = () => {
     }
 
     const userHasRole = (roleType) => {
-        return auth?.roles.some(role => role.role_type >= roleType);
+        return auth?.roles.some(role => role.active_role === true && role.role_type >= roleType);
     };
 
     const tabs = [

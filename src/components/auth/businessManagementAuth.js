@@ -8,7 +8,7 @@ const BusinessManagementAuth = () => {
     const { business_id } = useParams()
 
     // if no role is found - returns undefined
-    const user_business_role = auth?.roles.find(role => role.business_id === business_id)
+    const user_business_role = auth?.roles.find(role => role.active_role && role.business_id === business_id)
 
 
     return (

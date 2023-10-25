@@ -147,7 +147,7 @@ const BusinessView = () => {
     
     if (status === 'loading') { return <LoadingSpinner /> }
     
-    if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
+    if(auth?.roles) { business_role = auth.roles.find(role => role.active_role && role.business_id === business_id) }
     
     
     return (

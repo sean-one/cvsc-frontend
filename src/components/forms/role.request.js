@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import LoadingSpinner from '../loadingSpinner';
@@ -10,11 +11,13 @@ import { uuidPattern } from './form.validations';
 
 const RoleRequest = () => {
     const { auth, setAuth } = useAuth()
-    const businessIdList = auth.roles.map(role => role?.business_id) || []
+    const businessIdList = auth?.roles.map(role => role?.business_id) || []
     
     const { dispatch } = useNotification();
     const { data: businessList, status } = useBusinessesQuery()
     const { mutateAsync: createRole } = useCreateRoleMutation()
+
+    let navigate = useNavigate()
 
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -31,7 +34,8 @@ const RoleRequest = () => {
         try {
             if(!data.business_id) return
     
-            const request_response = await createRole(data.business_id)
+            // const request_response = await createRole(data.business_id)
+            const request_response = await createRole('e8728dd1-5ed5-4d6b-bc07-810aa79c8a5f')
             
             if(request_response.status === 201) {
                 setAuth({ user: auth.user, roles: [ ...auth.roles, request_response.data ] })
@@ -45,6 +49,21 @@ const RoleRequest = () => {
                 })
             }
         } catch (error) {
+            if (error?.response?.status === 401) {
+                navigate('/login', { state: { from: `/profile/roles` } })
+
+                return false
+            }
+
+            if (error?.response?.status === 400) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            }
             console.log(error)
         } finally {
             reset()

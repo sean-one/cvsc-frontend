@@ -5,12 +5,12 @@ import AxiosInstance from "../helpers/axios";
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
 export const useBusinessRolesQuery = (business_id) => useQuery(['roles', 'business', business_id], () => getBusinessRoles(business_id))
 
-//! management.roles - returns pending roles for all businesses with management rights - GET MANAGEMENT ROLE REQUEST
-const getBusinessPendingRoles = async (user_id) => { return await AxiosInstance.get(`/roles/management/${user_id}`) }
-export const usePendingBusinessRolesQuery = (user_id) => useQuery(['roles', user_id], () => getBusinessPendingRoles(user_id))
+// rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
+const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
+export const useUserRolesQuery = (user_id) => useQuery(['roles', 'user', user_id], () => getUserRoles(user_id))
 
-//! role.request - CREATES NEW ROLE REQUEST
-const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/request/${business_id}`) }
+// role.request - CREATES NEW ROLE REQUEST
+const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/businesses/${business_id}/role-requests`) }
 export const useCreateRoleMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(createRoleRequest, {
@@ -22,6 +22,9 @@ export const useCreateRoleMutation = () => {
         },
     })
 }
+
+
+
 
 //! approve.role - APPROVE ROLE REQUEST
 const approveRole = async (role_id) => { return await AxiosInstance.post(`/roles/approve/${role_id}`) }
@@ -78,14 +81,6 @@ export const useRemoveRoleMutation = () => {
         },
     })
 }
-
-// user.roles
-const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/user/${user_id}`) }
-export const useUserRolesQuery = (user_id) => useQuery(['roles', 'user', user_id], () => getUserRoles(user_id))
-
-
-// const getUserBusinessRole = async(business_id) => { return await AxiosInstance.get(`/roles/user_role/${business_id}`) }
-// export const useUserBusinessRoleQuery = (business_id) => useQuery(['roles', 'user', business_id], () => getUserBusinessRole(business_id), { retry: false })
 
 //! remove.user.role - REMOVE USER ROLE (SELF)
 const removeUserRole = async (role_id) => { return await AxiosInstance.delete(`/roles/user_remove/${role_id}`) }

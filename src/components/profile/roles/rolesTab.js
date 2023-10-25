@@ -5,24 +5,23 @@ import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import RoleRequest from '../../forms/role.request';
 import UserRoles from './user.roles';
-import ManagementRolesTab from './management.roles.tab';
 import LoadingSpinner from '../../loadingSpinner';
 
 
 const RolesTab = () => {
-    const { auth, logout_user } = useAuth()
-    const { data: roles, isLoading, isError, error } = useUserRolesQuery(auth.user.id)
+    const { auth } = useAuth()
+    //! not needed because the user id is pull from the token validation at the endpoint
+    const { data: roles, status, error } = useUserRolesQuery(auth?.user?.id)
 
     const { pathname } = useLocation()
     let navigate = useNavigate()
 
-    if(isLoading) {
+    if (status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if(isError) {
-        if((error.response.status === 400) || (error.response.status === 401)) {
-            logout_user()
+    if (status === 'error') {
+        if (error?.response?.status === 401) {
 
             navigate('/login', { state: { from: pathname } })
 
@@ -33,10 +32,6 @@ const RolesTab = () => {
         }
     }
 
-    const userHasRole = (roleType) => {
-        return auth?.roles.some(role => role.role_type >= roleType)
-    }
-
     
     return (
         <div>
@@ -44,11 +39,6 @@ const RolesTab = () => {
             
             {/* current user roles */}
             { (roles.data.length > 0) && <UserRoles roles={roles.data} /> }
-            
-            {/* pending roles for businesses managed */}
-            { (userHasRole(process.env.REACT_APP_MANAGER_ACCOUNT)) &&
-                <ManagementRolesTab user_id={auth.user_id} />
-            }
         </div>
     )
 }
