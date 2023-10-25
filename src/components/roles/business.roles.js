@@ -1,7 +1,8 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
+import useNotification from '../../hooks/useNotification';
 import { useBusinessRolesQuery } from '../../hooks/useRolesApi';
 import LoadingSpinner from '../loadingSpinner';
 import ServerReturnError from '../serverReturnError';
@@ -13,20 +14,34 @@ import ManagerRoles from '../roles/manager.roles';
 
 const BusinessRoles = () => {
     const { auth } = useAuth()
+    const { dispatch } = useNotification()
     let { business_id } = useParams()
     const { data: business_roles, status, error } = useBusinessRolesQuery('nonsense')
     let inactive_roles, pending_roles, creator_roles, manager_roles = []
 
     let navigate = useNavigate()
+    let { pathname } = useLocation()
 
     if (status === 'loading') {
         return <LoadingSpinner />
     }
 
     if (status === 'error') {
+        if (error?.response?.status === 401) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/login', { state: { from: pathname } })
+
+            return null;
+        }
         if (error?.response?.status === 400) {
-            console.log('got a 400')
-            return <ServerReturnError />
+            return <ServerReturnError return_type='business user roles'/>
         } else {
             console.log(error?.response)
             return <ServerReturnError />
@@ -42,7 +57,7 @@ const BusinessRoles = () => {
     creator_roles = user_removed_roles.filter(business_role => (business_role.role_type === process.env.REACT_APP_CREATOR_ACCOUNT && business_role.active_role))
     manager_roles = user_removed_roles.filter(business_role => (business_role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT && business_role.active_role))
     
-
+    
     return (
         <div>
             {

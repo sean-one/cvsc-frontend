@@ -15,12 +15,6 @@ import CreateEventButton from '../../events/create.event.button';
 import BusinessEventsRelated from '../../events/business.events.related';
 
 const BusinessAdminViewStyles = styled.div`
-    .businessAdminViewHeader {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
     .businessAdminViewControls {
         display: flex;
         justify-content: space-around;
@@ -86,8 +80,8 @@ const BusinessAdminView = () => {
     return (
         <BusinessAdminViewStyles>
             <div className='sectionContainer removeBorder'>
-                <div className='businessAdminViewHeader'>
-                    <h1 onClick={() => navigate(`/business/${business_id}`)}>{business.business_name}</h1>
+                <div className='sectionRowSplit'>
+                    <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business.business_name}</div>
                     {
                         (business_role?.role_type < process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&
                             <CreateEventButton business_id={business_id} /> 
@@ -95,7 +89,7 @@ const BusinessAdminView = () => {
                 </div>
                 {
                     (business?.formatted_address !== null) &&
-                        <div>{business?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
+                        <div className='subheaderText'>{business?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
                 }
                 {
                     (business_role?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&

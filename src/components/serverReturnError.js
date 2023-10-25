@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const ServerReturnErrorStyles = styled.div`
     .serverReturnError {
+        font-size: var(--small-font);
         width: 100%;
         color: var(--error-color);
         text-align: center;
@@ -10,10 +11,16 @@ const ServerReturnErrorStyles = styled.div`
     }
 `;
 
-const ServerReturnError = () => {
+const ServerReturnError = ({ return_type=null }) => {
     return (
         <ServerReturnErrorStyles>
-            <div className='serverReturnError'>Server Error</div>
+            <div className='serverReturnError'>
+                {
+                    (!!return_type)
+                        ? <div>{`Error returning ${return_type}`}</div>
+                        : <div>Server Error</div>
+                }
+            </div>
         </ServerReturnErrorStyles>
     )
 }
