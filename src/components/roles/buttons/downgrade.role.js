@@ -3,18 +3,18 @@ import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
-import { useDowngradeRoleMutation } from '../../../hooks/useRolesApi';
+import { useRoleAction } from '../../../hooks/useRolesApi';
 
 
 const DowngradeRole = ({ role_id }) => {
     const { logout_user } = useAuth()
     const { dispatch } = useNotification()
-    const { mutateAsync: downgradeRole } = useDowngradeRoleMutation()
+    const { mutateAsync: roleDowngradeAction } = useRoleAction()
     let navigate = useNavigate()
 
-    const roleDowngrade = async (e) => {
+    const roleDowngrade = async () => {
         try {
-            const downgrade_response = await downgradeRole(e.currentTarget.value)
+            const downgrade_response = await roleDowngradeAction({ role_id: role_id, action_type: 'downgrade' })
     
             if (downgrade_response.status === 200) {
     
@@ -46,7 +46,7 @@ const DowngradeRole = ({ role_id }) => {
     }
 
     return (
-        <button onClick={(e) => roleDowngrade(e)} value={role_id}>Downgrade</button>
+        <button onClick={(e) => roleDowngrade(e)}>Downgrade</button>
     )
 }
 

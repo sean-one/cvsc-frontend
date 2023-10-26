@@ -4,19 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
-import { useUpgradeRoleMutation } from '../../../hooks/useRolesApi';
+import { useRoleAction } from '../../../hooks/useRolesApi';
 import { role_types } from '../../../helpers/dataCleanUp';
 
 
 const UpgradeRole = ({ role_id }) => {
     const { logout_user } = useAuth()
     const { dispatch } = useNotification()
-    const { mutateAsync: upgradeRole } = useUpgradeRoleMutation()
+    const { mutateAsync: roleUpgradeAction } = useRoleAction()
     let navigate = useNavigate()
     
-    const roleUpgrade = async (e) => {
+    const roleUpgrade = async () => {
         try {
-            const upgrade_response = await upgradeRole(e.currentTarget.value)
+            const upgrade_response = await roleUpgradeAction({ role_id: role_id, action_type: 'upgrade' })
             
             if (upgrade_response.status === 200) {
     
@@ -50,7 +50,7 @@ const UpgradeRole = ({ role_id }) => {
 
 
     return (
-        <button onClick={(e) => roleUpgrade(e)} value={role_id}>Upgrade</button>
+        <button onClick={(e) => roleUpgrade(e)}>Upgrade</button>
     )
 }
 

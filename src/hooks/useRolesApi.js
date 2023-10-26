@@ -23,7 +23,7 @@ export const useCreateRoleMutation = () => {
     })
 }
 
-// aprrove.role
+// aprrove.role, upgrade.role, downgrade role
 const roleAction = async ({ role_id, action_type }) => { return await AxiosInstance.put(`/roles/${role_id}/actions`, { action_type: action_type }) }
 export const useRoleAction = () => {
     const queryClient = useQueryClient()
@@ -34,49 +34,6 @@ export const useRoleAction = () => {
             queryClient.refetchQueries(['roles', 'business'])
         },
         onError: (error, role_error, context) => { console.log(error) },
-    })
-}
-
-
-//! approve.role - APPROVE ROLE REQUEST
-const approveRole = async (role_id) => { return await AxiosInstance.post(`/roles/approve/${role_id}`) }
-export const useApproveRoleMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(approveRole, {
-        onSuccess: () => {
-            queryClient.refetchQueries(['roles', 'business'])
-        },
-        onError: (error) => {
-            console.log(error)
-        },
-    })
-}
-
-//! upgrade.role - UPGRADES CREATOR TO MANAGER
-const upgradeRole = async (role_id) => { return await AxiosInstance.post(`/roles/upgrade/${role_id}`) }
-export const useUpgradeRoleMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(upgradeRole, {
-        onSuccess: () => {
-            queryClient.refetchQueries(['roles', 'business'])
-        },
-        onError: (error) => {
-            console.log(error)
-        },
-    })
-}
-
-//! downgrade.role - DOWNGRADES MANAGER TO CREATOR
-const downgradeRole = async (role_id) => { return await AxiosInstance.post(`/roles/downgrade/${role_id}`) }
-export const useDowngradeRoleMutation = () => {
-    const queryClient = useQueryClient()
-    return useMutation(downgradeRole, {
-        onSuccess: () => {
-            queryClient.refetchQueries(['roles', 'business'])
-        },
-        onError: (error) => {
-            console.log(error)
-        },
     })
 }
 
