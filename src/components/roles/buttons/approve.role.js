@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
-import { useApproveRoleMutation } from '../../../hooks/useRolesApi';
+import { useRoleAction } from '../../../hooks/useRolesApi';
 import useNotification from '../../../hooks/useNotification';
 import { role_types } from '../../../helpers/dataCleanUp';
 
@@ -11,12 +11,12 @@ import { ApproveUserIcon } from '../../icons/siteIcons';
 const ApproveRole = ({ role_id }) => {
     const { logout_user } = useAuth()
     const { dispatch } = useNotification()
-    const { mutateAsync: approveRole } = useApproveRoleMutation()
+    const { mutateAsync: roleApproveAction } = useRoleAction()
     let navigate = useNavigate()
 
     const roleApprove = async () => {
         try {
-            const approval_response = await approveRole(role_id)
+            const approval_response = await roleApproveAction({ role_id: role_id, action_type: 'approve' })
     
             if (approval_response.status === 200) {
                 dispatch({

@@ -34,8 +34,7 @@ const RoleRequest = () => {
         try {
             if(!data.business_id) return
     
-            // const request_response = await createRole(data.business_id)
-            const request_response = await createRole('e8728dd1-5ed5-4d6b-bc07-810aa79c8a5f')
+            const request_response = await createRole(data.business_id)
             
             if(request_response.status === 201) {
                 setAuth({ user: auth.user, roles: [ ...auth.roles, request_response.data ] })
@@ -50,7 +49,9 @@ const RoleRequest = () => {
             }
         } catch (error) {
             if (error?.response?.status === 401) {
-                navigate('/login', { state: { from: `/profile/roles` } })
+                setAuth({})
+                
+                navigate('/login')
 
                 return false
             }

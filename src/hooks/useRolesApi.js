@@ -23,7 +23,19 @@ export const useCreateRoleMutation = () => {
     })
 }
 
-
+// aprrove.role
+const roleAction = async ({ role_id, action_type }) => { return await AxiosInstance.put(`/roles/${role_id}/actions`, { action_type: action_type }) }
+export const useRoleAction = () => {
+    const queryClient = useQueryClient()
+    return useMutation(roleAction, {
+        onSuccess: ({ data }) => {
+            console.log('data from onSuccess inside useRoleAction')
+            console.log(data)
+            queryClient.refetchQueries(['roles', 'business'])
+        },
+        onError: (error, role_error, context) => { console.log(error) },
+    })
+}
 
 
 //! approve.role - APPROVE ROLE REQUEST
