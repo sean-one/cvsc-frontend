@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { ShowIcon, HideIcon } from '../icons/siteIcons';
-import Role from './role';
+import { ShowIcon, HideIcon } from '../../../icons/siteIcons';
+import BusinessRole from '../../../roles/business.role';
 
 
 const InactiveRoles = ({ roles_list }) => {
@@ -21,7 +21,7 @@ const InactiveRoles = ({ roles_list }) => {
             <div>
                 {
                     roles_list.map(role =>
-                        <Role key={role.id} role={role} rolelist='inactivelist' />
+                        <BusinessRole key={role.id} role={role} list_type='inactive' />
                     )
                 }
 

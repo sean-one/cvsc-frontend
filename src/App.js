@@ -9,7 +9,6 @@ import Navbar from './components/navbar';
 
 import Login from './components/login.jsx';
 import Register from './components/register.jsx';
-import BusinessRoles from './components/roles/business.roles';
 
 import Profile from './components/profile/profile.jsx';
 import UserAccount from './components/profile/account/user.account';
@@ -71,7 +70,6 @@ const App = () => {
                 <Route element={<BusinessManagementAuth />}>
                     <Route path='/business/admin/:business_id' element={<BusinessAdminView />} />
                     <Route path='/business/edit/:business_id' element={<BusinessEditForm />} />
-                    <Route path='/business/roles/:business_id' element={<BusinessRoles />} />
                 </Route>
               </Route>
 

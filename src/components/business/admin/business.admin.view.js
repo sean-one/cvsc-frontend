@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import LoadingSpinner from '../../loadingSpinner';
 import useAuth from '../../../hooks/useAuth';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
-import BusinessRoles from '../../roles/business.roles';
+import BusinessRoles from './business.roles';
 
 import ActiveBusinessToggle from './active.business.toggle';
 import RequestStatusToggle from './request.status.toggle';

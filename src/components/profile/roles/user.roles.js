@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { ShowIcon, HideIcon } from '../../icons/siteIcons';
-import Role from '../../roles/role';
-import CurrentUserRole from '../../roles/current.user.role';
+import UserRole from '../../roles/user.role';
 
 const UserRolesStyles = styled.div`
     .userRolesCurrent {
@@ -58,7 +57,7 @@ const UserRoles = ({ roles }) => {
                                 {
                                     (adminView) &&
                                         admin_roles.map(role => {
-                                            return <CurrentUserRole key={role.id} role={role} />
+                                            return <UserRole key={role.id} role={role} />
                                         })
                                 }
                             </div>
@@ -73,7 +72,7 @@ const UserRoles = ({ roles }) => {
                                 {
                                     (managerView) &&
                                         manager_roles.map(role => {
-                                            return <CurrentUserRole key={role.id} role={role} />
+                                            return <UserRole key={role.id} role={role} />
                                         })
                                 }
                             </div>
@@ -88,7 +87,7 @@ const UserRoles = ({ roles }) => {
                                 {
                                     (creatorView) &&
                                         creator_roles.map(role => {
-                                            return <CurrentUserRole key={role.id} role={role} />
+                                            return <UserRole key={role.id} role={role} />
                                         })
                                 }
                             </div>
@@ -106,7 +105,7 @@ const UserRoles = ({ roles }) => {
                                     <div>
                                         {
                                             inactive_roles.map(role =>
-                                                <Role key={role.id} role={role} rolelist='userlist' />
+                                                <UserRole key={role.id} role={role} />
                                             )
                                         }
                                     </div>

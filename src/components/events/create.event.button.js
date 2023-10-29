@@ -7,9 +7,9 @@ const CreateEventButton = ({ business_id }) => {
     let navigate = useNavigate()
 
     return (
-        <button onClick={() => navigate(`/event/create`, { state: business_id })}>
+        <div onClick={() => navigate(`/event/create`, { state: business_id })}>
             <CreateEventIcon />
-        </button>
+        </div>
     )
 }
 

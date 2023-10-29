@@ -148,6 +148,24 @@ const Styles = styled.div`
         -moz-appearance: menulist;
     }
 
+    .roleWrapper {
+        margin: 0.1rem 0;
+        padding: 0.2rem 0.75rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px dotted var(--main-text-color);
+        border-bottom: 1px dotted var(--main-text-color);
+    }
+
+    .roleButtonWrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
     .visuallyHidden {
         border: 0;
         clip: rect(0 0 0 0);
