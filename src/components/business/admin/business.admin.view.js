@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import LoadingSpinner from '../../loadingSpinner';
+import useNotification from '../../../hooks/useNotification';
 import useAuth from '../../../hooks/useAuth';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import BusinessRoles from './business.roles';
@@ -56,23 +57,29 @@ const BusinessAdminViewStyles = styled.div`
 `;
 
 const BusinessAdminView = () => {
-    const { auth } = useAuth()
-    const { business_id } = useParams()
-    const { data, status } = useBusinessQuery(business_id)
-    let business, business_role = {}
+    const { auth } = useAuth();
+    const { dispatch } = useNotification();
+    const { business_id } = useParams();
+    const { data, status } = useBusinessQuery(business_id);
+    let business, business_role = {};
 
-    let navigate = useNavigate()
-    
-    if(status === 'error') {
-        navigate('/profile/admin')
-        return null
-    }
+    let navigate = useNavigate();
 
-    if(status === 'loading') {
+    if (status === 'loading') {
         return <LoadingSpinner />
     }
+
+    if (status === 'error') {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: error?.response?.data?.error?.message
+            }
+        })
+    }
     
-    if(auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
+    if (auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
     
     business = data.data
 

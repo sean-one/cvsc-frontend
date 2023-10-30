@@ -1,10 +1,10 @@
 import React from 'react';
 
-import useAuth from '../../hooks/useAuth';
-import { useUserEventsQuery } from '../../hooks/useEventsApi';
-import EventSmallPreview from './views/event.small.preview';
-import LoadingSpinner from '../loadingSpinner';
-import ServerReturnError from '../serverReturnError';
+import useAuth from '../../../hooks/useAuth';
+import { useUserEventsQuery } from '../../../hooks/useEventsApi';
+import EventSmallPreview from '../../events/views/event.small.preview';
+import LoadingSpinner from '../../loadingSpinner';
+import ServerReturnError from '../../serverReturnError';
 
 
 const UserEventsRelated = () => {

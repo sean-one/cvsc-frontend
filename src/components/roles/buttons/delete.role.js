@@ -17,7 +17,7 @@ const DeleteRole = ({ role }) => {
 
             if (deleteRoleResponse?.status === 200) {
                 dispatch({
-                    type: "ADD_NOTIFICATOIN",
+                    type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
                         message: 'role has been deleted successfully'

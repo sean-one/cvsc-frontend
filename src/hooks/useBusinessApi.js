@@ -1,14 +1,41 @@
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
-
+import useAuth from "./useAuth";
 
 // businessView, update.business - VIEW BUSINESS PAGE
 const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/${id}`) }
-export const useBusinessQuery = (id) => useQuery(['businesses', 'business' , id], () => getBusiness(id))
+export const useBusinessQuery = (id) => {
+    const { setAuth } = useAuth()
+    let navigate = useNavigate()
+
+    return useQuery(['businesses', 'business' , id], () => getBusiness(id), {
+        onError: (error) => {
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login');
+            }
+        }
+    })
+}
 
 // return All businesses
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
-export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses,{ refetchOnMount: false })
+export const useBusinessesQuery = () => {
+    const { setAuth } = useAuth();
+    let navigate = useNavigate();
+
+    return useQuery(['businesses'], getBusinesses,{ refetchOnMount: false }, {
+        onError: (error) => {
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login')
+            }
+        }
+    })
+}
 
 // business.create.form - CREATE BUSINESS
 const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }

@@ -13,7 +13,7 @@ import Register from './components/register.jsx';
 import Profile from './components/profile/profile.jsx';
 import UserAccount from './components/profile/account/user.account';
 import RolesTab from './components/profile/roles/rolesTab';
-import EventsTab from './components/profile/events/eventsTab';
+import UserEventsRelated from './components/profile/events/user.events.related';
 import ManagementList from './components/profile/management/management.list';
 
 import EventView from './components/events/views/event.view';
@@ -61,7 +61,7 @@ const App = () => {
                 <Route path='/profile' element={<Profile />}>
                     <Route exact path='/profile' element={<UserAccount />} />
                     <Route path='/profile/roles' element={<RolesTab />} />
-                    <Route path='/profile/events' element={<EventsTab />} />
+                    <Route path='/profile/events' element={<UserEventsRelated />} />
                     <Route path='/profile/admin' element={<ManagementList />} />
                 </Route>
                 <Route path='/event/create' element={<EventCreateForm />} />
