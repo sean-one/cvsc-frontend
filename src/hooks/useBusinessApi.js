@@ -2,25 +2,30 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
+import useNotification from "./useNotification";
 
-// businessView, update.business - VIEW BUSINESS PAGE
+// businessView & business.admin.view 
 const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/${id}`) }
 export const useBusinessQuery = (id) => {
-    const { setAuth } = useAuth()
+    const { dispatch } = useNotification()
     let navigate = useNavigate()
 
     return useQuery(['businesses', 'business' , id], () => getBusiness(id), {
         onError: (error) => {
-            if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt');
-                setAuth({});
-                navigate('/login');
-            }
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/');
         }
     })
 }
 
-// return All businesses
+// business.label, event.create.form, event.edit.form, role.request, management.list
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
 export const useBusinessesQuery = () => {
     const { setAuth } = useAuth();

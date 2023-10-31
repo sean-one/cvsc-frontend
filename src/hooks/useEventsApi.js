@@ -2,10 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
+ 
 
 // return an array of all events related to business id
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
-export const useBusinessEventsQuery = (business_id) => useQuery(["business_events", business_id], () => getBusinessEvents(business_id), { refetchOnMount: false })
+export const useBusinessEventsQuery = (business_id) => {
+    
+    return useQuery(["business_events", business_id], () => getBusinessEvents(business_id), {
+        refetchOnMount: false,
+        onError: (error) => {
+            console.log('error inside the useBusinessEventsQuery')
+            console.log(error)
+        }
+    })
+}
 
 // return an array of all events related to user id
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }

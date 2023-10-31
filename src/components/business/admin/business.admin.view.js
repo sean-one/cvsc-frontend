@@ -60,7 +60,7 @@ const BusinessAdminView = () => {
     const { auth } = useAuth();
     const { dispatch } = useNotification();
     const { business_id } = useParams();
-    const { data, status } = useBusinessQuery(business_id);
+    const { data, status, error } = useBusinessQuery(business_id);
     let business, business_role = {};
 
     let navigate = useNavigate();

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
 import useAuth from '../../hooks/useAuth';
-import useNotification from '../../hooks/useNotification';
+// import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import BusinessEventsRelated from '../events/business.events.related';
 import BusinessAdminControls from './admin/business.admin.controls';
@@ -123,27 +123,27 @@ const BusinessViewStyles = styled.div`
 
 const BusinessView = () => {
     const { auth } = useAuth()
-    const { dispatch } = useNotification()
+    // const { dispatch } = useNotification()
     let { business_id } = useParams()
     let business_role = {}
 
-    let navigate = useNavigate()
+    // let navigate = useNavigate()
 
-    const { data: business, status, error: responseError } = useBusinessQuery(business_id)
+    const { data: business, status, error } = useBusinessQuery(business_id)
 
-    useEffect(() => {
-        if (status === 'error') {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: `${responseError.response.data.error.message}`,
-                }
-            });
-            navigate('/');
-            return null;
-        }
-    }, [status, dispatch, responseError, navigate]);
+    // useEffect(() => {
+    //     if (status === 'error') {
+    //         dispatch({
+    //             type: "ADD_NOTIFICATION",
+    //             payload: {
+    //                 notification_type: 'ERROR',
+    //                 message: `${responseError.response.data.error.message}`,
+    //             }
+    //         });
+    //         navigate('/');
+    //         return null;
+    //     }
+    // }, [status, dispatch, responseError, navigate]);
     
     if (status === 'loading') { return <LoadingSpinner /> }
     
