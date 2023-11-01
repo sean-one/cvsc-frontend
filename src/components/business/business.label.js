@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
-import { useBusinessesQuery } from '../../hooks/useBusinessApi';
+import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 import { RemoveBusinessIcon } from '../icons/siteIcons';
@@ -58,17 +58,13 @@ const BusinessLabelStyles = styled.div`
 
 const BusinessLabel = ({ businessId, eventCreator, eventId }) => {
     const { auth } = useAuth()
-    const { data: businessList, status } = useBusinessesQuery()
+    const { data: business_label, status } = useBusinessQuery(businessId)
     let business = {}
     let navigate = useNavigate()
 
     if (status === 'loading') { return <LoadingSpinner /> }
 
-    if (status === 'error') { return (
-        <div>
-            looks like something went wrong, please try again
-        </div>
-    )}
+    if (status === 'error') { return null }
 
     const removeEventBusiness = (e) => {
         e.stopPropagation();
@@ -84,7 +80,7 @@ const BusinessLabel = ({ businessId, eventCreator, eventId }) => {
         );
     };
 
-    business = businessList?.data.find(business => business.id === businessId)
+    business = business_label.data
 
     return (
         <BusinessLabelStyles>
