@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
-import { useBusinessQuery } from '../../hooks/useBusinessApi';
-import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 import { RemoveBusinessIcon } from '../icons/siteIcons';
 
@@ -56,15 +54,9 @@ const BusinessLabelStyles = styled.div`
 `;
 
 
-const BusinessLabel = ({ businessId, eventCreator, eventId }) => {
+const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, business_name }) => {
     const { auth } = useAuth()
-    const { data: business_label, status } = useBusinessQuery(businessId)
-    let business = {}
     let navigate = useNavigate()
-
-    if (status === 'loading') { return <LoadingSpinner /> }
-
-    if (status === 'error') { return null }
 
     const removeEventBusiness = (e) => {
         e.stopPropagation();
@@ -80,16 +72,15 @@ const BusinessLabel = ({ businessId, eventCreator, eventId }) => {
         );
     };
 
-    business = business_label.data
 
     return (
         <BusinessLabelStyles>
             <div className='businessLabelsContainer' onClick={() => navigate(`/business/${businessId}`)}>
                 <div className='businessListing'>
                     <div className='businessLogoContainer'>
-                        <img className='businessLogo' src={image_link(business?.business_avatar)} alt={`${business?.businessname} logo`} />
+                        <img className='businessLogo' src={image_link(business_logo)} alt={`${business_name} logo`} />
                     </div>
-                    <div className='businessName'>{business?.business_name}</div>
+                    <div className='businessName'>{business_name}</div>
                 </div>
                 {
                     (!isCreator() && isManagement()) &&

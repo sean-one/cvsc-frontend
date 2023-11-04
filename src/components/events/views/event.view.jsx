@@ -115,6 +115,7 @@ const EventView = () => {
 
     const isCreator = () => auth?.user?.id === event.data.created_by
 
+    console.log(event?.data)
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
@@ -150,8 +151,20 @@ const EventView = () => {
                             {
                                 (event?.data?.active_event) &&
                                     <div className='eventViewBusiness'>
-                                        <BusinessLabel businessId={event.data.venue_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
-                                        <BusinessLabel businessId={event.data.brand_id} eventCreator={event?.data?.created_by} eventId={event?.data?.event_id} />
+                                        <BusinessLabel
+                                            businessId={event.data.venue_id}
+                                            eventCreator={event?.data?.created_by}
+                                            eventId={event?.data?.event_id}
+                                            business_logo={event?.data?.venue_logo}
+                                            business_name={event?.data?.venue_name}
+                                            />
+                                        <BusinessLabel
+                                            businessId={event.data.brand_id}
+                                            eventCreator={event?.data?.created_by}
+                                            eventId={event?.data?.event_id}
+                                            business_logo={event?.data?.brand_logo}
+                                            business_name={event?.data?.brand_name}
+                                        />
                                     </div>
                             }
                         </div>
