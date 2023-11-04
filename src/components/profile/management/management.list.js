@@ -1,35 +1,21 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import BusinessSorter from '../../business/businessSorter';
 import ManagementListItem from './management.list.item';
 import LoadingSpinner from '../../loadingSpinner';
-import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
-import useAuth from '../../../hooks/useAuth';
+import { useBusinessManagement } from '../../../hooks/useBusinessApi';
+import ServerReturnError from '../../serverReturnError';
 
 const ManagementList = () => {
     const [sortCriteria, setSortCriteria] = useState('business_name'); // default sort criteria
     const [searchQuery, setSearchQuery] = useState('');
-    const { auth, logout_user } = useAuth()
-    let business_list = []
-    let navigate = useNavigate()
+    const { data: management_list, status, error } = useBusinessManagement();
 
-    const { data: businesses, isLoading, isError } = useBusinessesQuery()
-
-    if (isLoading) {
-        return <LoadingSpinner />
-    }
+    if (status === 'loading') { return <LoadingSpinner /> }
     
-    if(isError) {
-        logout_user()
-        navigate('/login')
-        return false
-    }
+    if (status === 'error') { console.log(error); return <ServerReturnError return_type='business management list'/> }
     
-    const manager_roles = auth?.roles.filter(role => role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role).map(role => role.business_id)
-    business_list = businesses.data.filter(business => manager_roles.includes(business.id))
-
-    const filteredBusinesses = business_list.filter(business => 
+    const filteredBusinesses = management_list.data.filter(business => 
         business.business_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 

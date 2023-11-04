@@ -4,7 +4,35 @@ import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 
-// businessView & business.admin.view 
+
+// management.list
+const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/management') }
+export const useBusinessManagement = () => {
+    const { setAuth } = useAuth();
+    const { dispatch } = useNotification();
+    let navigate = useNavigate();
+
+    return useQuery(['business', 'management'], getManagersBusinesses, {
+        onError: (error) => {
+            console.log(error)
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login')
+            }
+        }
+    })
+}
+
+// business.label, businessView & business.admin.view 
 const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/${id}`) }
 export const useBusinessQuery = (id) => {
     const { dispatch } = useNotification()
@@ -25,7 +53,7 @@ export const useBusinessQuery = (id) => {
     })
 }
 
-// business.label, event.create.form, event.edit.form, role.request, management.list
+// event.create.form, event.edit.form, role.request
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
 export const useBusinessesQuery = () => {
     const { setAuth } = useAuth();
