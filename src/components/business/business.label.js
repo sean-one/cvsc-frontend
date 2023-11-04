@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
+import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
 import { RemoveBusinessIcon } from '../icons/siteIcons';
 
 const BusinessLabelStyles = styled.div`
@@ -55,12 +56,20 @@ const BusinessLabelStyles = styled.div`
 
 
 const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, business_name }) => {
-    const { auth } = useAuth()
+    const { auth } = useAuth();
+    const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
     let navigate = useNavigate()
 
-    const removeEventBusiness = (e) => {
-        e.stopPropagation();
-        console.log('clickity click')
+    const removeBusinessFromEvent = async (e) => {
+        try {
+            e.stopPropagation();
+            const remove_business_response = await removeEventBusiness({ event_id: eventId, business_id: businessId }) 
+            console.log('clickity click')
+            console.log(remove_business_response)
+        } catch (error) {
+            console.log(error)
+            return null
+        }
     }
 
     const isCreator = () => auth?.user?.id === eventCreator
@@ -84,7 +93,7 @@ const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, busin
                 </div>
                 {
                     (!isCreator() && isManagement()) &&
-                        <div onClick={(e) => removeEventBusiness(e)}>
+                        <div onClick={(e) => removeBusinessFromEvent(e)}>
                             <RemoveBusinessIcon />
                         </div>
                 }

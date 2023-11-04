@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
+import useNotification from "./useNotification";
  
 
 // return an array of all events related to business id
@@ -72,17 +73,45 @@ export const useUpdateEventMutation = () => {
     })
 }
 
-// business_label - remove_event_business
-const removeBusiness = async ({ event_id, ...event_updates }) => { return await AxiosInstance.put(`/events/business/remove/${event_id}`, event_updates) }
+// business.label - remove_event_business
+const removeBusiness = async ({ event_id, business_id }) => { return await AxiosInstance.put(`/events/businesses/${business_id}/events/${event_id}`) }
 export const useRemoveEventBusinessMutation = () => {
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
+    const { setAuth } = useAuth();
+    const { dispatch } = useNotification();
+    let navigate = useNavigate();
+
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'events', 'event', data.id])
+            console.log(data)
+            queryClient.refetchQueries(['events'])
+            queryClient.refetchQueries(['events', data.event_id])
+            queryClient.refetchQueries(['business_events', data.business_id])
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: 'business successfully removed'
+                }
+            })
+
+            navigate(-1)
         },
         onError: (error) => {
-            console.log('error inside event business remove mutation')
-            console.log(error)
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login')
+            }
         },
     })
 }

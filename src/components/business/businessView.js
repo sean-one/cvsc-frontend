@@ -6,7 +6,6 @@ import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
 import useAuth from '../../hooks/useAuth';
-// import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import BusinessEventsRelated from '../events/business.events.related';
 import BusinessAdminControls from './admin/business.admin.controls';
@@ -123,27 +122,10 @@ const BusinessViewStyles = styled.div`
 
 const BusinessView = () => {
     const { auth } = useAuth()
-    // const { dispatch } = useNotification()
     let { business_id } = useParams()
     let business_role = {}
 
-    // let navigate = useNavigate()
-
-    const { data: business, status, error } = useBusinessQuery(business_id)
-
-    // useEffect(() => {
-    //     if (status === 'error') {
-    //         dispatch({
-    //             type: "ADD_NOTIFICATION",
-    //             payload: {
-    //                 notification_type: 'ERROR',
-    //                 message: `${responseError.response.data.error.message}`,
-    //             }
-    //         });
-    //         navigate('/');
-    //         return null;
-    //     }
-    // }, [status, dispatch, responseError, navigate]);
+    const { data: business, status } = useBusinessQuery(business_id)
     
     if (status === 'loading') { return <LoadingSpinner /> }
     

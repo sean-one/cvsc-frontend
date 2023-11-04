@@ -115,7 +115,7 @@ const EventView = () => {
 
     const isCreator = () => auth?.user?.id === event.data.created_by
 
-    console.log(event?.data)
+    
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
