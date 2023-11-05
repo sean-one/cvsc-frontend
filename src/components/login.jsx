@@ -46,53 +46,43 @@ const Login = () => {
     
     const navigateTo = location.state?.from || '/profile'
     
-    const sendLogin = (data) => {
-        AxiosInstance.post('/auth/login', data)
-            .then(response => {
-                if(response.status === 200) {
-                    setAuth({ user: response.data.user, roles: response.data.roles })
+    const sendLogin = async (data) => {
+        try {
+            const login_response = await AxiosInstance.post('/auth/login', data)
 
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'SUCCESS',
-                            message: `logged in as: ${data.username}`
-                        }
-                    })
-
-                    navigate(navigateTo)
-
-                    return false;
-
-                } else {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: 'something went wrong, please try again'
-                        }
-                    })
-                    throw new Error('invalid stuffs');
-                }
-            })
-            .catch(err => {
-                console.log(err)
-                if (err.response.status === 400 ) {
-                    setError(`${err.response.data.error.type}`, {
-                        type: 'server',
-                        message: err.response.data.error.message
-                    })
-
-                } else if (err.response.status === 500) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: 'server error, please try again later'
-                        }
-                    })
-                }
-            })
+            if (login_response?.status === 200) {
+                setAuth({ user: login_response.data.user, roles: login_response.data.roles })
+        
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `logged in as: ${data.username}`
+                    }
+                })
+        
+                navigate(navigateTo)
+            } else {
+                throw new Error('unexpected status code at sendLogin')
+            }
+        } catch (error) {
+            console.log(error)
+            if (error?.response?.status === 400 ) {
+                setError(`${error.response.data.error.type}`, {
+                    type: 'server',
+                    message: error.response.data.error.message
+                })
+    
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'unexpected error, please try again later'
+                    }
+                })
+            }
+        }
     }
 
     const googleAuthButton = (e) => {
