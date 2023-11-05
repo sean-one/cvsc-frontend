@@ -136,33 +136,23 @@ const EventEditForm = () => {
         try {
             const delete_event_response = await removeEventMutation(event.event_id)
 
-            if (delete_event_response?.status === 204) {
+            console.log('delete event response....')
+            console.log(delete_event_response)
+            if (delete_event_response?.status === 200) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `event has been deleted`
+                        message: `${delete_event_response?.data?.eventname} has been deleted`
                     }
                 })
 
-                navigate('/profile')
+                navigate('/profile/events')
             }
 
         } catch (error) {
-            if (error?.response?.status === 401) {
-                navigate('/login', { state: { from: `/event/${event.event_id}` } })
-                return null;
-
-            } else {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-            }
-
+            console.log(error)
+            // navigate('/login', { state: { from: `/event/${event.event_id}` } })
         }
     }
 

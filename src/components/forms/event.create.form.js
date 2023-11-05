@@ -32,8 +32,8 @@ const EventCreateForm = ({ business_id }) => {
         defaultValues: {
             eventname: '',
             eventdate: '',
-            eventstart: '0420',
-            eventend: '0710',
+            eventstart: '',
+            eventend: '',
             eventmedia: '',
             venue_id: '',
             details: '',

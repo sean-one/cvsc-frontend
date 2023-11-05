@@ -83,7 +83,6 @@ export const useRemoveEventBusinessMutation = () => {
 
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
-            console.log(data)
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['events', data.event_id])
             queryClient.refetchQueries(['business_events', data.business_id])
@@ -117,15 +116,35 @@ export const useRemoveEventBusinessMutation = () => {
 }
 
 // event.edit.form - remove_event
-const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/remove/${event_id}`) }
+const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/${event_id}`) }
 export const useRemoveEventMutation = () => {
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
+    const { setAuth } = useAuth();
+    const { dispatch } = useNotification();
+    let navigate = useNavigate();
+
     return useMutation(removeEvent, {
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
             queryClient.refetchQueries(['events'])
+            queryClient.refetchQueries(['events', data.event_id])
+            queryClient.refetchQueries(['events', 'user', data.user_id])
+            queryClient.refetchQueries(['business_events', data.venue_id])
+            queryClient.refetchQueries(['business_events', data.brand_id])
         },
         onError: (error) => {
-            console.log(error)
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login', { state: { from: `/profile/events` } });
+            }
         },
     })
 }

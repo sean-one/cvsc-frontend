@@ -63,9 +63,9 @@ const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, busin
     const removeBusinessFromEvent = async (e) => {
         try {
             e.stopPropagation();
-            const remove_business_response = await removeEventBusiness({ event_id: eventId, business_id: businessId }) 
-            console.log('clickity click')
-            console.log(remove_business_response)
+
+            await removeEventBusiness({ event_id: eventId, business_id: businessId })
+
         } catch (error) {
             console.log(error)
             return null
