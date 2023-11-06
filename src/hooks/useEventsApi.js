@@ -37,9 +37,9 @@ export const useUserEventsQuery = (user_id) => {
     })
 }
 
-// event.view - return a single event by event id
-const getEvent = async (id) => { return await AxiosInstance.get(`/events/${id}`) }
-export const useEventQuery = (id) => useQuery(['events', id], () => getEvent(id), { staleTime: 60000, refetchOnMount: false })
+// event.view, event.edit.view - return a single event by event id
+const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
+export const useEventQuery = (event_id) => useQuery(['events', event_id], () => getEvent(event_id), { staleTime: 60000, refetchOnMount: false })
 
 // get an array of all upcoming events
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }

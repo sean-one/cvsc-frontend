@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
 import styled from 'styled-components';
@@ -8,11 +8,12 @@ import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { reformatTime } from '../../helpers/formatTime';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
-import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
+import { useEventQuery, useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
+import AxiosInstance from '../../helpers/axios';
 
 
 const EditEventFormStyles = styled.div`
@@ -34,31 +35,50 @@ const EditEventFormStyles = styled.div`
 `;
 
 const EventEditForm = () => {
-    const { state: event } = useLocation()
+    let { event_id } = useParams()
+    // const { data: event_details, status: event_status } = useEventQuery(event_id)
+    // const { state: event } = useLocation()
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()
     
-    let venue_list, brand_list = []
+    const values = AxiosInstance.get(`/events/${event_id}`)
+        .then(event => {
+            console.log(event)
+            return event.data
+        })
+
+    console.log(values)
+    let event_values = {};
+    let venue_list, brand_list = [];
 
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
     const { mutateAsync: removeEventMutation } = useRemoveEventMutation()
 
     let navigate = useNavigate()
 
-    const { data: business_list, status } = useBusinessesQuery()
+    const { data: business_list, status: business_list_status } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
-            eventname: event?.eventname,
-            eventdate: format(new Date(event?.eventdate), 'yyyy-MM-dd'),
-            eventstart: reformatTime(event?.eventstart),
-            eventend: reformatTime(event?.eventend),
-            eventmedia: null,
-            venue_id: event?.venue_id,
-            details: event?.details,
-            brand_id: event?.brand_id,
-        }
+            eventname: '',
+            eventdate: '',
+            eventstart: '',
+            eventend: '',
+            eventmedia: '',
+            venue_id: '',
+            details: '',
+            brand_id: '',
+            // eventname: event?.eventname,
+            // eventdate: format(new Date(event?.eventdate), 'yyyy-MM-dd'),
+            // eventstart: reformatTime(event?.eventstart),
+            // eventend: reformatTime(event?.eventend),
+            // eventmedia: null,
+            // venue_id: event?.venue_id,
+            // details: event?.details,
+            // brand_id: event?.brand_id,
+        },
+        values,
     })
 
     const update_event = async (data) => {
@@ -91,7 +111,7 @@ const EventEditForm = () => {
                 }
             })
 
-            const edit_event_response = await updateEventMutation({ event_id: event.event_id, event_updates: formData })
+            const edit_event_response = await updateEventMutation({ event_id: event_id, event_updates: formData })
 
             if (edit_event_response.status === 201) {
                 dispatch({
@@ -102,7 +122,7 @@ const EventEditForm = () => {
                     }
                 })
 
-                navigate(`/event/${event.event_id}`)
+                navigate(`/event/${event_id}`)
             }
 
         } catch (error) {
@@ -117,7 +137,7 @@ const EventEditForm = () => {
                     }
                 })
                 
-                navigate('/login', { state: { from: `/event/${event.event_id}` }})
+                navigate('/login', { state: { from: `/event/${event_id}` }})
 
                 return null;
             }
@@ -134,7 +154,7 @@ const EventEditForm = () => {
 
     const sendEventDelete = async () => {
         try {
-            const delete_event_response = await removeEventMutation(event.event_id)
+            const delete_event_response = await removeEventMutation(event_id)
 
             console.log('delete event response....')
             console.log(delete_event_response)
@@ -164,11 +184,11 @@ const EventEditForm = () => {
         return null;
     }
 
-    if(status === 'loading') {
+    if(business_list_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if(status === 'error') {
+    if(business_list_status === 'error') {
         dispatch({
             type: "ADD_NOTIFICATION",
             payload: {
@@ -225,8 +245,8 @@ const EventEditForm = () => {
                             </div>
                             : <div className='formImage'>
                                 <img
-                                    src={image_link(event?.eventmedia)}
-                                    alt={event?.eventname}
+                                    src={image_link(event_values?.eventmedia)}
+                                    alt={event_values?.eventname}
                                 />
                             </div>
                     }
