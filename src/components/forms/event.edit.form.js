@@ -173,6 +173,17 @@ const EventEditForm = () => {
                     brand_id: event_response?.data?.brand_id,
                 })
             } catch (error) {
+                if (error?.response) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+
+                    navigate(-1)
+                }
                 console.log(error)
             }
         };
@@ -183,21 +194,16 @@ const EventEditForm = () => {
         return <LoadingSpinner />
     }
 
-    if(business_list_status === 'error') {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: 'server error, please try again'
-            }
-        })
-
-        navigate(-1);
-        return null;
+    if(business_list_status === 'success') {
+        if (business_list.data.length <= 0) {
+            venue_list = [{ id: eventData.venue_id, business_name: eventData.venue_name }]
+            brand_list = [{ id: eventData.brand_id, business_name: eventData.brand_name }]
+        } else {
+            venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
+            brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
+        }
     }
 
-    venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-    brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
 
     return (
