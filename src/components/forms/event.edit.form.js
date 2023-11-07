@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
 import styled from 'styled-components';
@@ -8,7 +8,7 @@ import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { reformatTime } from '../../helpers/formatTime';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
-import { useEventQuery, useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
+import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
@@ -35,20 +35,11 @@ const EditEventFormStyles = styled.div`
 `;
 
 const EventEditForm = () => {
+    const [ eventData, setEventData ] = useState(null) 
     let { event_id } = useParams()
-    // const { data: event_details, status: event_status } = useEventQuery(event_id)
-    // const { state: event } = useLocation()
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()
-    
-    const values = AxiosInstance.get(`/events/${event_id}`)
-        .then(event => {
-            console.log(event)
-            return event.data
-        })
 
-    console.log(values)
-    let event_values = {};
     let venue_list, brand_list = [];
 
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
@@ -60,25 +51,6 @@ const EventEditForm = () => {
 
     const { register, handleSubmit, setError, clearErrors, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
-        defaultValues: {
-            eventname: '',
-            eventdate: '',
-            eventstart: '',
-            eventend: '',
-            eventmedia: '',
-            venue_id: '',
-            details: '',
-            brand_id: '',
-            // eventname: event?.eventname,
-            // eventdate: format(new Date(event?.eventdate), 'yyyy-MM-dd'),
-            // eventstart: reformatTime(event?.eventstart),
-            // eventend: reformatTime(event?.eventend),
-            // eventmedia: null,
-            // venue_id: event?.venue_id,
-            // details: event?.details,
-            // brand_id: event?.brand_id,
-        },
-        values,
     })
 
     const update_event = async (data) => {
@@ -184,6 +156,29 @@ const EventEditForm = () => {
         return null;
     }
 
+    useEffect(() => {
+        const setDefaultValues = async () => {
+            try {
+                const event_response = await AxiosInstance.get(`/events/${event_id}`)
+                setEventData(event_response?.data)
+                
+                reset({
+                    eventname: event_response?.data?.eventname,
+                    eventdate: format(new Date(event_response?.data?.eventdate), 'yyyy-MM-dd'),
+                    eventstart: reformatTime(event_response?.data?.eventstart),
+                    eventend: reformatTime(event_response?.data?.eventend),
+                    eventmedia: null,
+                    venue_id: event_response?.data?.venue_id,
+                    details: event_response?.data?.details,
+                    brand_id: event_response?.data?.brand_id,
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        };
+        setDefaultValues()
+    }, [reset])
+
     if(business_list_status === 'loading') {
         return <LoadingSpinner />
     }
@@ -245,8 +240,8 @@ const EventEditForm = () => {
                             </div>
                             : <div className='formImage'>
                                 <img
-                                    src={image_link(event_values?.eventmedia)}
-                                    alt={event_values?.eventname}
+                                    src={image_link(eventData?.eventmedia)}
+                                    alt={eventData?.eventname}
                                 />
                             </div>
                     }
