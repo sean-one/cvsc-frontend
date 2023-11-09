@@ -49,11 +49,12 @@ const EventEditForm = () => {
 
     const { data: business_list, status: business_list_status } = useBusinessesQuery()
 
-    const { register, handleSubmit, setError, clearErrors, reset, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
     })
 
-    const update_event = async (data) => {
+    const update_event = async (event_data) => {
+        localStorage.setItem('editEventForm', JSON.stringify(event_data))
         try {
             const formData = new FormData()
 
@@ -64,28 +65,29 @@ const EventEditForm = () => {
                 formData.set('eventmedia', event_media)
             }
 
-            delete data['eventmedia']
+            delete event_data['eventmedia']
 
             // remove entries that are unchanged
-            for (const [key] of Object.entries(data)) {
+            for (const [key] of Object.entries(event_data)) {
                 if (!Object.keys(dirtyFields).includes(key)) {
-                    delete data[key]
+                    delete event_data[key]
                 }
             }
 
-            Object.keys(data).forEach(key => {
+            Object.keys(event_data).forEach(key => {
                 if (key === 'eventdate') {
-                    formData.append(key, format(parseISO(data[key]), 'y-M-d'))
+                    formData.append(key, format(parseISO(event_data[key]), 'y-M-d'))
                 } else if (key === 'eventstart' || key === 'eventend') {
-                    formData.append(key, data[key].replace(':', ''))
+                    formData.append(key, event_data[key].replace(':', ''))
                 } else {
-                    formData.append(key, data[key])
+                    formData.append(key, event_data[key])
                 }
             })
 
             const edit_event_response = await updateEventMutation({ event_id: event_id, event_updates: formData })
 
             if (edit_event_response.status === 201) {
+                localStorage.removeItem('editEventForm')
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -98,29 +100,21 @@ const EventEditForm = () => {
             }
 
         } catch (error) {
-
-            if (error?.response?.status === 401) {
-                
+            console.log(error)
+            if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: `${error?.response?.data?.error?.message}`
+                        message: error?.response?.data?.error?.message
                     }
                 })
                 
-                navigate('/login', { state: { from: `/event/${event_id}` }})
-
-                return null;
-            }
-
-            if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
-                setError(error?.response?.data?.type, {
-                    message: error.response.data.message
+                setError(error?.response?.data?.error?.type, {
+                    message: error?.response?.data?.error?.message
                 })
                 return null;
             }
-
         }
     }
 
@@ -128,9 +122,10 @@ const EventEditForm = () => {
         try {
             const delete_event_response = await removeEventMutation(event_id)
 
-            console.log('delete event response....')
-            console.log(delete_event_response)
             if (delete_event_response?.status === 200) {
+                // remove editEventForm just incase it is saved to local storage
+                localStorage.removeItem('editEventForm')
+                
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -144,34 +139,54 @@ const EventEditForm = () => {
 
         } catch (error) {
             console.log(error)
-            // navigate('/login', { state: { from: `/event/${event.event_id}` } })
         }
     }
 
     const handleClose = () => {
+        // remove editEventForm if it is there so not to leave it stuck on local storage
+        localStorage.removeItem('editEventForm')
         setEditImage(false)
         reset()
 
-        navigate(-1);
-        return null;
+        navigate('/profile/events');
     }
 
     useEffect(() => {
-        const setDefaultValues = async () => {
+        // function to format the event data
+        const formatEventData = (data) => ({
+            eventname: data.eventname,
+            eventdate: format(new Date(data.eventdate), 'yyyy-MM-dd'),
+            eventstart: reformatTime(data.eventstart),
+            eventend: reformatTime(data.eventend),
+            eventmedia: null,
+            venue_id: data.venue_id,
+            details: data.details,
+            brand_id: data.brand_id,
+        })
+
+        // function to get event details and check local storage for changes
+        const getEventDetails = async () => {
             try {
-                const event_response = await AxiosInstance.get(`/events/${event_id}`)
-                setEventData(event_response?.data)
-                
-                reset({
-                    eventname: event_response?.data?.eventname,
-                    eventdate: format(new Date(event_response?.data?.eventdate), 'yyyy-MM-dd'),
-                    eventstart: reformatTime(event_response?.data?.eventstart),
-                    eventend: reformatTime(event_response?.data?.eventend),
-                    eventmedia: null,
-                    venue_id: event_response?.data?.venue_id,
-                    details: event_response?.data?.details,
-                    brand_id: event_response?.data?.brand_id,
-                })
+                const eventResponse = await AxiosInstance.get(`/events/${event_id}`)
+                console.log(eventResponse.data)
+                // save event details to state
+                setEventData(eventResponse?.data);
+
+                // set default values to the event details from api
+                const defaultValues = formatEventData(eventResponse?.data);
+                // adding values to default for isDirty bases
+                reset(defaultValues)
+
+                // check for saved data in local storage
+                const savedFormData = localStorage.getItem('editEventForm');
+                if (savedFormData) {
+                    const parsedData = JSON.parse(savedFormData);
+                    for (let key in parsedData) {
+                        setValue(key, parsedData[key], { shouldDirty: true });
+                    }
+                }
+
+                // set default values to either api call or local storage if available
             } catch (error) {
                 if (error?.response) {
                     dispatch({
@@ -181,14 +196,14 @@ const EventEditForm = () => {
                             message: error?.response?.data?.error?.message
                         }
                     })
-
+        
                     navigate(-1)
                 }
                 console.log(error)
             }
-        };
-        setDefaultValues()
-    }, [reset])
+        }
+        getEventDetails()
+    }, [event_id, reset, dispatch, navigate, setValue])
 
     if(business_list_status === 'loading') {
         return <LoadingSpinner />

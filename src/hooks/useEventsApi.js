@@ -24,7 +24,7 @@ export const useUserEventsQuery = (user_id) => {
     const { setAuth } = useAuth()
     let navigate = useNavigate()
 
-    return useQuery(["events", "user", user_id], () => getAllUserEvents(user_id), {
+    return useQuery(["user_events", user_id], () => getAllUserEvents(user_id), {
         staleTime: 60000,
         refetchOnMount: false,
         onError: (error) => {
@@ -52,6 +52,8 @@ export const useCreateEventMutation = () => {
     return useMutation(createEvent, {
         onSuccess: () => {
             queryClient.refetchQueries(['events'])
+            queryClient.refetchQueries(['business_events'])
+            queryClient.refetchQueries(['user_events'])
         },
         onError: (error) => {
             console.log(error)
@@ -62,13 +64,22 @@ export const useCreateEventMutation = () => {
 // event.edit.form - update_event - UPDATE EVENT
 const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.put(`/events/${event_id}`, event_updates) }
 export const useUpdateEventMutation = () => {
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
+    const { setAuth } = useAuth();
+    let navigate = useNavigate();
+
     return useMutation(updateEvent, {
         onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['inactive', 'events', 'event', 'user', data.event_id])
+            queryClient.refetchQueries(['events'])
+            queryClient.refetchQueries(['business_events'])
+            queryClient.refetchQueries(['user_events'])
         },
         onError: (error) => {
-            console.log(error)
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login')
+            }
         },
     })
 }
@@ -84,8 +95,7 @@ export const useRemoveEventBusinessMutation = () => {
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
             queryClient.refetchQueries(['events'])
-            queryClient.refetchQueries(['events', data.event_id])
-            queryClient.refetchQueries(['business_events', data.business_id])
+            queryClient.refetchQueries(['business_events'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -126,10 +136,8 @@ export const useRemoveEventMutation = () => {
     return useMutation(removeEvent, {
         onSuccess: ({ data }) => {
             queryClient.refetchQueries(['events'])
-            queryClient.refetchQueries(['events', data.event_id])
-            queryClient.refetchQueries(['events', 'user', data.user_id])
-            queryClient.refetchQueries(['business_events', data.venue_id])
-            queryClient.refetchQueries(['business_events', data.brand_id])
+            queryClient.refetchQueries(['business_events'])
+            queryClient.refetchQueries(['user_events'])
         },
         onError: (error) => {
             dispatch({
@@ -143,7 +151,7 @@ export const useRemoveEventMutation = () => {
             if (error?.response?.status === 401) {
                 localStorage.removeItem('jwt');
                 setAuth({});
-                navigate('/login', { state: { from: `/profile/events` } });
+                navigate('/login');
             }
         },
     })
