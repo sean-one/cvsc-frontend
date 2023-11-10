@@ -48,7 +48,11 @@ export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetch
 // event.create.form - CREATE A NEW EVENT
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
-    const queryClient = useQueryClient()
+    const { setAuth } = useAuth();
+    const { dispatch } = useNotification();
+    const queryClient = useQueryClient();
+    let navigate = useNavigate();
+
     return useMutation(createEvent, {
         onSuccess: () => {
             queryClient.refetchQueries(['events'])
@@ -57,6 +61,19 @@ export const useCreateEventMutation = () => {
         },
         onError: (error) => {
             console.log(error)
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login');
+            }
         },
     })
 }
@@ -65,6 +82,7 @@ export const useCreateEventMutation = () => {
 const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.put(`/events/${event_id}`, event_updates) }
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient();
+    const { dispatch } = useNotification();
     const { setAuth } = useAuth();
     let navigate = useNavigate();
 
@@ -75,6 +93,14 @@ export const useUpdateEventMutation = () => {
             queryClient.refetchQueries(['user_events'])
         },
         onError: (error) => {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
             if (error?.response?.status === 401) {
                 localStorage.removeItem('jwt');
                 setAuth({});
