@@ -100,7 +100,6 @@ const EventEditForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
             if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -114,6 +113,8 @@ const EventEditForm = () => {
                     message: error?.response?.data?.error?.message
                 })
                 return null;
+            } else {
+                console.log(`uncaught error ${Object.keys(error)}`);
             }
         }
     }
@@ -138,7 +139,7 @@ const EventEditForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
+            console.log(`uncaught error ${Object.keys(error)}`)
         }
     }
 
@@ -168,7 +169,7 @@ const EventEditForm = () => {
         const getEventDetails = async () => {
             try {
                 const eventResponse = await AxiosInstance.get(`/events/${event_id}`)
-                console.log(eventResponse.data)
+                
                 // save event details to state
                 setEventData(eventResponse?.data);
 

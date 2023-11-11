@@ -4,7 +4,6 @@ import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
 
-import useAuth from '../../hooks/useAuth';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
@@ -17,7 +16,6 @@ const CreateEventFormStyles = styled.div`
 `;
 
 const EventCreateForm = ({ business_id }) => {
-    const { logout_user } = useAuth()
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
@@ -25,7 +23,7 @@ const EventCreateForm = ({ business_id }) => {
     let navigate = useNavigate();
     let location = useLocation()
     
-    const { data: business_list, status } = useBusinessesQuery()
+    const { data: business_list, status: business_list_status } = useBusinessesQuery()
 
     const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -54,31 +52,21 @@ const EventCreateForm = ({ business_id }) => {
         }
     },[setValue])
 
-    if (status === 'loading') {
+    if (business_list_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if (status === 'error') {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: 'server error, please try again'
-            }
-        })
-
-        navigate(-1);
-        return null;
+    if (business_list_status === 'success') {
+        venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
+        brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
+        
+        const foundVenue = venue_list.find(venue => venue.id === location?.state)
+        const foundBrand = brand_list.find(brand => brand.id === location?.state)
+        
+        if(foundVenue) { setValue('venue_id', foundVenue?.id) }
+        if(foundBrand) { setValue('brand_id', foundBrand?.id)}
     }
-    
-    venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-    brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
 
-    const foundVenue = venue_list.find(venue => venue.id === location?.state)
-    const foundBrand = brand_list.find(brand => brand.id === location?.state)
-
-    if(foundVenue) { setValue('venue_id', foundVenue?.id) }
-    if(foundBrand) { setValue('brand_id', foundBrand?.id)}
 
     const createNewEvent = async (event_data) => {
         localStorage.setItem('createEventForm', JSON.stringify(event_data));
@@ -125,19 +113,21 @@ const EventCreateForm = ({ business_id }) => {
                 navigate(`/event/${add_event_response.data.event_id}`)
             }
         } catch (error) {
-            
-            if (error?.response?.status === 401) {
-                logout_user();
-                return null;
-            }
+            if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
 
-            else if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
-                setError(error?.response?.data?.error?.type, { message: error?.response?.data?.error?.message })
+                setError(error?.response?.data?.error?.type, {
+                    message: error?.response?.data?.error?.message
+                })
                 return null;
-            }
-
-            else {
-                setError('server', { message: 'there was an issue creating the event' })
+            } else {
+                console.log(`uncaught error: ${Object.keys(error)}`)
             }
         }
     }

@@ -61,9 +61,7 @@ export const useRoleAction = () => {
 
     return useMutation(roleAction, {
         onSuccess: ({ data }) => {
-            console.log('data from onSuccess inside useRoleAction')
-            console.log(data)
-            queryClient.refetchQueries(['roles', 'business'])
+            queryClient.refetchQueries(['roles'])
         },
         onError: (error, role_error, context) => {
             if (error?.response?.status === 400 || error?.response?.status === 401) {
