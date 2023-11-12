@@ -5,54 +5,6 @@ import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 
 
-// management.list
-const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/management') }
-export const useBusinessManagement = () => {
-    const { setAuth } = useAuth();
-    const { dispatch } = useNotification();
-    let navigate = useNavigate();
-
-    return useQuery(['business', 'management'], getManagersBusinesses, {
-        onError: (error) => {
-            console.log(error)
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-
-            if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt');
-                setAuth({});
-                navigate('/login')
-            }
-        }
-    })
-}
-
-// businessView & business.admin.view 
-const getBusiness = async (id) => { return await AxiosInstance.get(`/businesses/${id}`) }
-export const useBusinessQuery = (id) => {
-    const { dispatch } = useNotification()
-    let navigate = useNavigate()
-
-    return useQuery(['businesses', 'business' , id], () => getBusiness(id), {
-        onError: (error) => {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/');
-        }
-    })
-}
-
 // event.create.form, event.edit.form, role.request
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
 export const useBusinessesQuery = () => {
@@ -85,8 +37,56 @@ export const useCreateBusinessMutation = () => {
     })
 }
 
+// management.list
+const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/managed') }
+export const useBusinessManagement = () => {
+    const { setAuth } = useAuth();
+    const { dispatch } = useNotification();
+    let navigate = useNavigate();
+
+    return useQuery(['business', 'management'], getManagersBusinesses, {
+        onError: (error) => {
+            console.log(error)
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt');
+                setAuth({});
+                navigate('/login')
+            }
+        }
+    })
+}
+
+// businessView & business.admin.view 
+const getBusiness = async (business_id) => { return await AxiosInstance.get(`/businesses/${business_id}`) }
+export const useBusinessQuery = (business_id) => {
+    const { dispatch } = useNotification()
+    let navigate = useNavigate()
+
+    return useQuery(['businesses', 'business', business_id], () => getBusiness(business_id), {
+        onError: (error) => {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/');
+        }
+    })
+}
+
 // business.admin.menu - toggle active & toggle request
-const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/toggle`, toggle_type) }
+const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/status/toggle`, toggle_type) }
 export const useBusinessToggle = () => {
     const queryClient = useQueryClient()
     return useMutation(toggleBusiness, {
