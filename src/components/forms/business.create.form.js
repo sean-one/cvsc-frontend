@@ -108,7 +108,7 @@ const BusinessCreateForm = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `New business: ${new_business.data.business_name}, has been created`
+                        message: `${new_business?.data?.business_name} was created`
                     }
                 })
 
@@ -117,7 +117,7 @@ const BusinessCreateForm = () => {
                 reset()
 
                 // navigate to the newly created business page
-                navigate(`/business/${new_business.data.id}`)
+                navigate(`/business/${new_business?.data.id}`)
 
             }
 
