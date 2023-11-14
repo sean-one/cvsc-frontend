@@ -29,7 +29,8 @@ export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(createBusiness, {
         onSuccess: () => {
-            queryClient.refetchQueries(['businesses', 'roles'])
+            queryClient.refetchQueries(['businesses'])
+            queryClient.refetchQueries(['roles'])
         },
         onError: (error, new_business, context) => {
             console.log(error)
