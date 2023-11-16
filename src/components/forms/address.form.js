@@ -12,12 +12,9 @@ const AddressFormStyles = styled.div`
     }
 `
 
-const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=''}) => {
-    const [ inputValue, setInputValue ] = useState(defaultValue)
-
-    useEffect(() => {
-        setValue('formatted_address', inputValue)
-    }, [setValue, inputValue])
+const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=undefined}) => {
+    const [inputValue, setInputValue] = useState(businessValue);
+    const [isEditing, setIsEditing] = useState(!!businessValue);
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -30,22 +27,37 @@ const AddressForm = ({ register, setValue, errors, clearErrors, defaultValue=''}
         clearErrors('formatted_address');
     }
 
+    const handleEditClick = () => {
+        setIsEditing(true)
+    }
+
+    useEffect(() => {
+        if (businessValue) {
+            setInputValue(businessValue)
+            setIsEditing(false)
+        }
+    }, [businessValue])
+
     return (
         <AddressFormStyles>
             <div className='addressInputWrapper'>
                 <label htmlFor="formatted_address"><AddressIcon /></label>
-                <AutoComplete
-                    apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                    {...register('formatted_address')}
-                    name='formatted_address'
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onClick={() => clearErrors('formatted_address')}
-                    onPlaceSelected={handleSelect}
-                    options={{
-                        types: ['address'],
-                    }}
-                />
+                {isEditing ? (
+                    <AutoComplete
+                        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+                        {...register('formatted_address')}
+                        name='formatted_address'
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        onClick={() => clearErrors('formatted_address')}
+                        onPlaceSelected={handleSelect}
+                        options={{
+                            types: ['address'],
+                        }}
+                    />
+                ) : (
+                    <div onClick={handleEditClick}>{inputValue}</div>
+                )}
                 {errors.formatted_address ? <div className='errormessage'>{errors.formatted_address?.message}</div> : null}
                 {errors.place_id ? <div className='errormessage'>{errors.place_id?.message}</div> : null}
             </div>

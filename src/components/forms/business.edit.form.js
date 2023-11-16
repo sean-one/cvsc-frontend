@@ -1,9 +1,8 @@
-import React from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
@@ -13,43 +12,28 @@ import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, Twit
 import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
 
 import AddressForm from './address.form';
+import AxiosInstance from '../../helpers/axios';
 
 const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = () => {
-    const { auth } = useAuth()
+    const [ businessData, setBusinessData ] = useState(null)
     const { business_id } = useParams()
+    const { dispatch } = useNotification()
 
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
-    const { dispatch } = useNotification()
-    const { state: business } = useLocation()
     
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
-    let business_role = {}
 
     let navigate = useNavigate()
 
     const { register, handleSubmit, clearErrors, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
-        defaultValues: {
-            business_email: business?.business_email,
-            business_description: business?.business_description,
-            place_id: business?.place_id || '',
-            formatted_address: business?.formatted_address,
-            business_avatar: '',
-            business_type: business?.business_type,
-            business_instagram: business?.business_instagram || '',
-            business_website: business?.business_website || '',
-            business_facebook: business?.business_facebook || '',
-            business_phone: business?.business_phone || '',
-            business_twitter: business?.business_twitter || '',
-        }
     })
 
-    if(auth?.roles) { business_role = auth.roles.find(role => role.active_role === true && role.business_id === business_id ) }
-
     const update_business = async (business_updates) => {
+        localStorage.setItem('editBusinessForm', JSON.stringify(business_updates))
         try {
             const formData = new FormData()
             
@@ -83,7 +67,7 @@ const BusinessEditForm = () => {
                 }
             })
 
-            const update_response = await updateBusiness({ business_updates: formData, business_id: business.id })
+            const update_response = await updateBusiness({ business_updates: formData, business_id: business_id })
             
             if (update_response.status === 201) {
                 // remove saved form from local storage
@@ -142,12 +126,42 @@ const BusinessEditForm = () => {
         navigate(`/business/${business_id}`)
     }
 
+    useEffect(() => {
+        const getBusinessDetails = async () => {
+            try {
+                const businessResponse = await AxiosInstance.get(`/businesses/${business_id}`)
+                
+                setBusinessData(businessResponse.data)
+
+                reset({
+                    business_email: businessResponse.data?.business_email,
+                    business_description: businessResponse.data?.business_description,
+                    place_id: businessResponse.data?.place_id || '',
+                    formatted_address: businessResponse.data?.formatted_address,
+                    business_avatar: '',
+                    business_type: businessResponse.data?.business_type,
+                    business_instagram: businessResponse.data?.business_instagram || '',
+                    business_website: businessResponse.data?.business_website || '',
+                    business_facebook: businessResponse.data?.business_facebook || '',
+                    business_phone: businessResponse.data?.business_phone || '',
+                    business_twitter: businessResponse.data?.business_twitter || '',
+                })
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getBusinessDetails()
+
+    }, [business_id, reset])
+
 
     return (
         <BusinessEditFormStyles>
             <div>
                 <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
-                    <h1>{business?.business_name}</h1>
+                    <h1>{businessData?.business_name}</h1>
                     
                     <div className='formImage formCirclePreview'>
                         {
@@ -159,33 +173,30 @@ const BusinessEditForm = () => {
                                 />
                                 : <img
                                     // className=''
-                                    src={image_link(business?.business_avatar)}
-                                    alt={business?.business_name}
+                                    src={image_link(businessData?.business_avatar)}
+                                    alt={businessData?.business_name}
                                 />
                         }
                     </div>
 
-                    {
-                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                            <div className='formRowInputIcon'>
-                                {/* EMAIL */}
-                                <div className='inputWrapper'>
-                                    <input {...register('business_email', {
-                                        pattern: {
-                                            value: emailformat,
-                                            message: 'invalid email format'
-                                        }
-                                    })} type='text' onClick={() => clearErrors('business_email')} />
-                                    {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
-                                </div>
+                    <div className='formRowInputIcon'>
+                        {/* EMAIL - ADMIN ONLY allowed to update */}
+                        <div className='inputWrapper'>
+                            <input {...register('business_email', {
+                                pattern: {
+                                    value: emailformat,
+                                    message: 'invalid email format'
+                                }
+                            })} type='text' onClick={() => clearErrors('business_email')} />
+                            {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
+                        </div>
 
-                                {/* BUSINESS AVATAR UPLOAD */}
-                                <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
-                                    <AddImageIcon />
-                                    <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
-                                </label>
-                            </div>
-                    }
+                        {/* BUSINESS AVATAR UPLOAD - ADMIN ONLY allowed to update */}
+                        <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
+                            <AddImageIcon />
+                            <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                        </label>
+                    </div>
 
                     {/* BUSINESS DESCRIPTION */}
                     <div className='inputWrapper'>
@@ -202,30 +213,27 @@ const BusinessEditForm = () => {
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
-                    {/* BUSINESS TYPE SELECTOR */}
-                    {
-                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                        <div className='inputWrapper'>
-                                <select {...register('business_type', {
-                                    pattern: {
-                                        value: businessTypeList,
-                                        message: 'invalid business type'
-                                    }
-                                })} onClick={() => clearErrors('business_type')}>
-                                    <option value='brand'>Brand</option>
-                                    <option value='venue'>Dispensary</option>
-                                    <option value='both'>{`Brand & Dispensary`}</option>
-                                </select>
-                                {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
-                            </div>
-                    }
+                    {/* BUSINESS TYPE SELECTOR - ADMIN ONLY allowed to update */}
+                    <div className='inputWrapper'>
+                        <select {...register('business_type', {
+                            pattern: {
+                                value: businessTypeList,
+                                message: 'invalid business type'
+                            }
+                        })} onClick={() => clearErrors('business_type')}>
+                            <option value='brand'>Brand</option>
+                            <option value='venue'>Dispensary</option>
+                            <option value='both'>{`Brand & Dispensary`}</option>
+                        </select>
+                        {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
+                    </div>
 
                     <AddressForm
                         register={register}
                         setValue={setValue}
                         clearErrors={clearErrors}
                         errors={errors}
-                        defaultValue={business?.formatted_address}
+                        businessValue={businessData?.formatted_address}
                     />
                     
                     <div className='subheaderText'>Contacts & Social Media:</div>
