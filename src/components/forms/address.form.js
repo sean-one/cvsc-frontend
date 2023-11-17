@@ -14,7 +14,8 @@ const AddressFormStyles = styled.div`
 
 const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=undefined}) => {
     const [inputValue, setInputValue] = useState(businessValue);
-    const [isEditing, setIsEditing] = useState(!!businessValue);
+    // const [isEditing, setIsEditing] = useState(!!businessValue);
+    const [isEditing, setIsEditing] = useState(businessValue === undefined);
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -58,9 +59,9 @@ const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=un
                 ) : (
                     <div onClick={handleEditClick}>{inputValue}</div>
                 )}
-                {errors.formatted_address ? <div className='errormessage'>{errors.formatted_address?.message}</div> : null}
-                {errors.place_id ? <div className='errormessage'>{errors.place_id?.message}</div> : null}
             </div>
+            {errors.formatted_address ? <div className='errormessage'>{errors.formatted_address?.message}</div> : null}
+            {errors.place_id ? <div className='errormessage'>{errors.place_id?.message}</div> : null}
         </AddressFormStyles>
     )
 };

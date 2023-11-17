@@ -191,7 +191,7 @@ const BusinessEditForm = () => {
                             {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
                         </div>
 
-                        {/* BUSINESS AVATAR UPLOAD - ADMIN ONLY allowed to update */}
+                        {/* BUSINESS AVATAR UPLOAD */}
                         <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
                             <AddImageIcon />
                             <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
@@ -228,6 +228,7 @@ const BusinessEditForm = () => {
                         {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
                     </div>
 
+                    {/* ADDRESS INPUT - ADMIN ONLY allowed to update */}
                     <AddressForm
                         register={register}
                         setValue={setValue}
