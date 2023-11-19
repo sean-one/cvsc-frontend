@@ -3,9 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import LoadingSpinner from '../../loadingSpinner';
-import useNotification from '../../../hooks/useNotification';
-import useAuth from '../../../hooks/useAuth';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
+import { useUserBusinessRole } from '../../../hooks/useRolesApi';
 import BusinessRoles from './business.roles';
 
 import ActiveBusinessToggle from './active.business.toggle';
@@ -57,29 +56,21 @@ const BusinessAdminViewStyles = styled.div`
 `;
 
 const BusinessAdminView = () => {
-    const { auth } = useAuth();
-    const { dispatch } = useNotification();
     const { business_id } = useParams();
-    const { data, status, error } = useBusinessQuery(business_id);
+    const { data, status } = useBusinessQuery(business_id);
+    const { data: user_role, status: role_status, } = useUserBusinessRole(business_id)
     let business, business_role = {};
 
     let navigate = useNavigate();
 
+    // if useBusinessQuery returns an error api navigates to root
     if (status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if (status === 'error') {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: error?.response?.data?.error?.message
-            }
-        })
+    if (role_status === 'success') {
+        business_role = user_role.data
     }
-    
-    if (auth?.roles) { business_role = auth.roles.find(role => role.business_id === business_id) }
     
     business = data.data
 
@@ -90,7 +81,7 @@ const BusinessAdminView = () => {
                 <div className='sectionRowSplit'>
                     <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business.business_name}</div>
                     {
-                        (business_role?.role_type < process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&
+                        (business_role?.role_type < process.env.REACT_APP_CREATOR_ACCOUNT) &&
                             <CreateEventButton business_id={business_id} /> 
                     }
                 </div>
@@ -99,15 +90,18 @@ const BusinessAdminView = () => {
                         <div className='subheaderText'>{business?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
                 }
                 {
-                    (business_role?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&
+                    (business_role?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
                         <div className='businessAdminViewControls'>
                             <CreateEventButton business_id={business_id} />
                             <EditBusinessButton business={business} />
-                            <DeleteBusiness business_name={business?.business_name} business_id={business?.id} />
+                            {
+                                (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                                    <DeleteBusiness business_name={business?.business_name} business_id={business?.id} />
+                            }
                         </div>
                 }
                 {
-                    (business_role?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&
+                    (business_role?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='businessAdminViewDetails'>
                             <div className='businessAdminViewStatus'>{`Business Status: ${business?.active_business ? 'Active' : 'Inactive'}`}</div>
                             <div className='businessAdminViewBusinessButtons'>
@@ -117,7 +111,7 @@ const BusinessAdminView = () => {
 
                 }
                 {
-                    (business_role?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT && business_role?.active_role === true) &&
+                    (business_role?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='businessAdminViewCreationRequest'>
                             <div>{`Business Role Request: ${business?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                             <RequestStatusToggle business_id={business_id} isOpen={business?.business_request_open} />
