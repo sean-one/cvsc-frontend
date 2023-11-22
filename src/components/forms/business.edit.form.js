@@ -7,6 +7,7 @@ import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
+import { useUserBusinessRole } from '../../hooks/useRolesApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
@@ -21,7 +22,9 @@ const BusinessEditForm = () => {
     const [ businessData, setBusinessData ] = useState(null)
     const { business_id } = useParams()
     const { dispatch } = useNotification()
+    let business_role = {}
 
+    const { data: user_role, status: role_status } = useUserBusinessRole(business_id)
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
@@ -156,6 +159,21 @@ const BusinessEditForm = () => {
 
     }, [business_id, reset])
 
+    if (role_status === 'error') {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: 'Business role error'
+            }
+        })
+
+        navigate('/')
+    }
+
+    business_role = user_role.data
+
+    console.log(business_role)
 
     return (
         <BusinessEditFormStyles>
@@ -181,15 +199,18 @@ const BusinessEditForm = () => {
 
                     <div className='formRowInputIcon'>
                         {/* EMAIL - ADMIN ONLY allowed to update */}
-                        <div className='inputWrapper'>
-                            <input {...register('business_email', {
-                                pattern: {
-                                    value: emailformat,
-                                    message: 'invalid email format'
-                                }
-                            })} type='text' onClick={() => clearErrors('business_email')} />
-                            {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
-                        </div>
+                        {
+                            (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                                <div className='inputWrapper'>
+                                    <input {...register('business_email', {
+                                        pattern: {
+                                            value: emailformat,
+                                            message: 'invalid email format'
+                                        }
+                                    })} type='text' onClick={() => clearErrors('business_email')} />
+                                    {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
+                                </div>
+                        }
 
                         {/* BUSINESS AVATAR UPLOAD */}
                         <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
@@ -213,29 +234,35 @@ const BusinessEditForm = () => {
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
 
-                    {/* BUSINESS TYPE SELECTOR - ADMIN ONLY allowed to update */}
-                    <div className='inputWrapper'>
-                        <select {...register('business_type', {
-                            pattern: {
-                                value: businessTypeList,
-                                message: 'invalid business type'
-                            }
-                        })} onClick={() => clearErrors('business_type')}>
-                            <option value='brand'>Brand</option>
-                            <option value='venue'>Dispensary</option>
-                            <option value='both'>{`Brand & Dispensary`}</option>
-                        </select>
-                        {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
-                    </div>
+                    {/* BUSINESS TYPE SELECTOR */}
+                    {
+                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                            <div className='inputWrapper'>
+                                <select {...register('business_type', {
+                                    pattern: {
+                                        value: businessTypeList,
+                                        message: 'invalid business type'
+                                    }
+                                })} onClick={() => clearErrors('business_type')}>
+                                    <option value='brand'>Brand</option>
+                                    <option value='venue'>Dispensary</option>
+                                    <option value='both'>{`Brand & Dispensary`}</option>
+                                </select>
+                                {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
+                            </div>
+                    }
 
-                    {/* ADDRESS INPUT - ADMIN ONLY allowed to update */}
-                    <AddressForm
-                        register={register}
-                        setValue={setValue}
-                        clearErrors={clearErrors}
-                        errors={errors}
-                        businessValue={businessData?.formatted_address}
-                    />
+                    {/* ADDRESS INPUT */}
+                    {
+                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                            <AddressForm
+                                register={register}
+                                setValue={setValue}
+                                clearErrors={clearErrors}
+                                errors={errors}
+                                businessValue={businessData?.formatted_address}
+                            />
+                    }
                     
                     <div className='subheaderText'>Contacts & Social Media:</div>
                     {/* INSTAGRAM */}

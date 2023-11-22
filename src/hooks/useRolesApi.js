@@ -9,12 +9,7 @@ const getUserBusinessRole = async (business_id) => { return await AxiosInstance.
 export const useUserBusinessRole = (business_id) => {
     const { auth } = useAuth()
 
-    return useQuery(['roles', 'user_role', auth?.user?.id], () => getUserBusinessRole(business_id), {
-        onError: (error) => {
-            console.log('user business role error')
-            console.log(error)
-        }
-    })
+    return useQuery(['roles', 'user_role', auth?.user?.id], () => getUserBusinessRole(business_id))
 }
 
 // business.roles - returns all roles for selected business
