@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -6,16 +6,52 @@ import styled from 'styled-components';
 import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
+import { useBusinessQuery, useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import { useUserBusinessRole } from '../../hooks/useRolesApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
 
 import AddressForm from './address.form';
-import AxiosInstance from '../../helpers/axios';
 
 const BusinessEditFormStyles = styled.div`
+    .businessImageWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 0.25rem;
+        padding: 1.5rem 0.5rem;
+    }
+
+    .businessImage {
+        position: relative;
+        min-width: 225px;
+        max-width: 450px;
+
+        canvas {
+            max-width: 100%;
+            border: 1px solid var(--trim-color);
+            display: block;
+            border-radius: 50%;
+        }
+        
+        img {
+            width: 100%;
+            border: 1px solid var(--trim-color);
+            display: block;
+            border-radius: 50%;
+        }}
+    
+    .editImageButton {
+        /* padding: 0rem; */
+        position: absolute;
+        right: 15%;
+        bottom: 0;
+        border: 1px solid var(--secondary-color);
+        border-radius: 50%;
+        color: var(--trim-color);
+        background-color: var(--main-color);
+    }
 `;
 
 const BusinessEditForm = () => {
@@ -24,6 +60,7 @@ const BusinessEditForm = () => {
     const { dispatch } = useNotification()
     let business_role = {}
 
+    const { data: business_data, status: business_data_status } = useBusinessQuery(business_id)
     const { data: user_role, status: role_status } = useUserBusinessRole(business_id)
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     
@@ -129,37 +166,7 @@ const BusinessEditForm = () => {
         navigate(`/business/${business_id}`)
     }
 
-    useEffect(() => {
-        const getBusinessDetails = async () => {
-            try {
-                const businessResponse = await AxiosInstance.get(`/businesses/${business_id}`)
-                
-                setBusinessData(businessResponse.data)
-
-                reset({
-                    business_email: businessResponse.data?.business_email,
-                    business_description: businessResponse.data?.business_description,
-                    place_id: businessResponse.data?.place_id || '',
-                    formatted_address: businessResponse.data?.formatted_address,
-                    business_avatar: '',
-                    business_type: businessResponse.data?.business_type,
-                    business_instagram: businessResponse.data?.business_instagram || '',
-                    business_website: businessResponse.data?.business_website || '',
-                    business_facebook: businessResponse.data?.business_facebook || '',
-                    business_phone: businessResponse.data?.business_phone || '',
-                    business_twitter: businessResponse.data?.business_twitter || '',
-                })
-                
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        getBusinessDetails()
-
-    }, [business_id, reset])
-
-    if (role_status === 'error') {
+    if (role_status === 'error' || business_data_status === 'error') {
         dispatch({
             type: "ADD_NOTIFICATION",
             payload: {
@@ -171,9 +178,27 @@ const BusinessEditForm = () => {
         navigate('/')
     }
 
+    if (business_data_status === 'success') {
+        
+        // reset({
+        //     business_email: business_data.data?.business_email,
+        //     business_description: business_data.data?.business_description,
+        //     place_id: business_data.data?.place_id || '',
+        //     formatted_address: business_data.data?.formatted_address,
+        //     business_avatar: '',
+        //     business_type: business_data.data?.business_type,
+        //     business_instagram: business_data.data?.business_instagram || '',
+        //     business_website: business_data.data?.business_website || '',
+        //     business_facebook: business_data.data?.business_facebook || '',
+        //     business_phone: business_data.data?.business_phone || '',
+        //     business_twitter: business_data.data?.business_twitter || '',
+        // })
+
+        // setBusinessData(business_data.data)
+    }
+
     business_role = user_role.data
 
-    console.log(business_role)
 
     return (
         <BusinessEditFormStyles>
@@ -181,20 +206,30 @@ const BusinessEditForm = () => {
                 <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
                     <h1>{businessData?.business_name}</h1>
                     
-                    <div className='formImage formCirclePreview'>
-                        {
-                            editImage
-                                ? <canvas
-                                    // className=''
-                                    id={'avatarImagePreview'}
-                                    ref={canvas}
-                                />
-                                : <img
-                                    // className=''
-                                    src={image_link(businessData?.business_avatar)}
-                                    alt={businessData?.business_name}
-                                />
-                        }
+                    <div className='businessImageWrapper'>
+                        <div className='businessImage'>
+                            {
+                                editImage
+                                    ? <canvas
+                                        // className=''
+                                        id={'avatarImagePreview'}
+                                        ref={canvas}
+                                    />
+                                    : <img
+                                        // className=''
+                                        src={image_link(businessData?.business_avatar)}
+                                        alt={businessData?.business_name}
+                                    />
+                            }
+                            {/* BUSINESS AVATAR UPLOAD */}
+                            <div className='editImageButton'>
+                                <AddImageIcon />
+                                <label htmlFor='business_avatar' className='inputLabelInput' onClick={() => clearErrors('business_avatar')}>
+                                    <input {...register('business_avatar')} id='business_avatar' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div className='formRowInputIcon'>
@@ -212,11 +247,6 @@ const BusinessEditForm = () => {
                                 </div>
                         }
 
-                        {/* BUSINESS AVATAR UPLOAD */}
-                        <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
-                            <AddImageIcon />
-                            <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
-                        </label>
                     </div>
 
                     {/* BUSINESS DESCRIPTION */}
