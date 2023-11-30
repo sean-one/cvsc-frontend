@@ -67,10 +67,20 @@ const App = () => {
                 <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EventEditForm />} />
                 <Route path='/business/create' element={<BusinessCreateForm />} />
-                <Route element={<BusinessManagementAuth />}>
+                <Route path='/business/admin/:business_id' element={
+                    <BusinessManagementAuth>
+                        <BusinessAdminView />
+                    </BusinessManagementAuth>
+                } />
+                <Route path='/business/edit/:business_id' element={
+                    <BusinessManagementAuth>
+                        <BusinessEditForm />
+                    </BusinessManagementAuth>
+                } />
+                {/* <Route element={<BusinessManagementAuth />}>
                     <Route path='/business/admin/:business_id' element={<BusinessAdminView />} />
                     <Route path='/business/edit/:business_id' element={<BusinessEditForm />} />
-                </Route>
+                </Route> */}
               </Route>
 
 
