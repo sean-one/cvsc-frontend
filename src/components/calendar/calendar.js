@@ -45,7 +45,7 @@ const Calendar = () => {
     if(status === 'error') {
         return <ServerDown />
     }
-    
+
 
     return (
         <CalendarStyles>

@@ -7,19 +7,9 @@ import useAuth from "./useAuth";
 // - returns a single business role for a user
 const getUserBusinessRole = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}/user-role`) }
 export const useUserBusinessRole = (business_id) => {
-    const { auth, setAuth } = useAuth()
-    let navigate = useNavigate()
+    const { auth } = useAuth()
 
-    return useQuery(['roles', 'user_role', auth?.user?.id], () => getUserBusinessRole(business_id), {
-        onError: (error) => {
-            if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt')
-                setAuth({})
-                navigate('/login')
-            }
-            console.log(error)
-        }
-    })
+    return useQuery(['roles', 'user_role', auth?.user?.id], () => getUserBusinessRole(business_id))
 }
 
 // business.roles - returns all roles for selected business

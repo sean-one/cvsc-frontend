@@ -15,7 +15,6 @@ const AuthRoute = () => {
 
     const isLoggedIn = (Object.keys(auth).length > 0) && getCookie('jwt')
 
-    // console.log(auth)
     return (
         (isLoggedIn)
             ? <Outlet />
