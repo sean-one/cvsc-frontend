@@ -12,12 +12,15 @@ const BusinessManagementAuth = ({ children }) => {
     const { data: user_role, status: role_status } = useUserBusinessRole(business_id)
 
     let navigate = useNavigate()
+    let user_business_role = user_role?.data
     
-    // if no role is found - returns undefined
-    const user_business_role = user_role?.data
-    
+    console.log('user_business_role - init')
+    console.log(user_business_role)
+    console.log(user_role?.data)
     useEffect(() => {
-        if (user_business_role?.role_type === process.env.REACT_APP_CREATOR_ACCOUNT || user_business_role === undefined) {
+        console.log('inside useEffect')
+        console.log(user_business_role)
+        if (!isLoadingUser && (user_business_role?.role_type === process.env.REACT_APP_CREATOR_ACCOUNT || user_business_role === undefined)) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -28,12 +31,18 @@ const BusinessManagementAuth = ({ children }) => {
 
             navigate('/');
         }
-    }, [user_business_role, dispatch, navigate]);
+    }, [isLoadingUser, user_business_role, dispatch, navigate]);
     
-    if (role_status === 'loading') {
+    if (isLoadingUser) {
         return <div>loading...</div>
     }
 
+    if (role_status === 'success') {
+        setIsLoadingUser(false)
+    }
+    console.log('user_business_role - after role_status success')
+    console.log(user_business_role)
+    console.log(user_role.data)
 
     const childWithProps = React.cloneElement(children, { userBusinessRole: user_business_role })
 
