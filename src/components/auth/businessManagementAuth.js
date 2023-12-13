@@ -4,13 +4,13 @@ import React from 'react';
 import { useParams } from "react-router";
 
 // import useNotification from '../../hooks/useNotification';
-import { useUserBusinessRole } from "../../hooks/useRolesApi";
+import { useManagementRole } from "../../hooks/useRolesApi";
 
 const BusinessManagementAuth = ({ children }) => {
     // const [ isLoadingUser, setIsLoadingUser ] = useState(true)
     const { business_id } = useParams()
     // const { dispatch } = useNotification()
-    const { data: user_role, status: role_status, error } = useUserBusinessRole(business_id)
+    const { data: user_role, status: role_status, error } = useManagementRole(business_id)
 
     // let navigate = useNavigate()
     

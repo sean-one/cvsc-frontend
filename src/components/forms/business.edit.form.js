@@ -7,7 +7,6 @@ import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
-import { useUserBusinessRole } from '../../hooks/useRolesApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
@@ -55,13 +54,11 @@ const BusinessEditFormStyles = styled.div`
     }
 `;
 
-const BusinessEditForm = (props) => {
+const BusinessEditForm = ({ userBusinessRole }) => {
     const [ businessData, setBusinessData ] = useState(null)
     const { business_id } = useParams()
     const { dispatch } = useNotification()
-    let business_role = {}
 
-    const { data: user_role, status: role_status, error } = useUserBusinessRole(business_id)
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
@@ -193,27 +190,7 @@ const BusinessEditForm = (props) => {
         getBusinessDetails()
     }, [business_id, reset])
 
-    if (role_status === 'error') {
-        console.log(error.response)
-        if (error?.response?.status === 401) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
 
-            navigate('/login')
-
-            return null;
-        }
-    }
-
-    business_role = user_role.data
-
-    console.log('BUSINESS EDIT FORM PROPS')
-    console.log(props)
     return (
         <BusinessEditFormStyles>
             <div>
@@ -249,7 +226,7 @@ const BusinessEditForm = (props) => {
                     <div className='formRowInputIcon'>
                         {/* EMAIL - ADMIN ONLY allowed to update */}
                         {
-                            (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                            (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                                 <div className='inputWrapper'>
                                     <input {...register('business_email', {
                                         pattern: {
@@ -280,7 +257,7 @@ const BusinessEditForm = (props) => {
 
                     {/* BUSINESS TYPE SELECTOR */}
                     {
-                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                        (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                             <div className='inputWrapper'>
                                 <select {...register('business_type', {
                                     pattern: {
@@ -298,7 +275,7 @@ const BusinessEditForm = (props) => {
 
                     {/* ADDRESS INPUT */}
                     {
-                        (business_role?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                        (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
                             <AddressForm
                                 register={register}
                                 setValue={setValue}

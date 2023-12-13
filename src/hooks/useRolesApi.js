@@ -7,7 +7,7 @@ import useNotification from "./useNotification";
 
 // - returns a single business role for a user
 const getUserBusinessRole = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}/user-role`) }
-export const useUserBusinessRole = (business_id) => {
+export const useManagementRole = (business_id) => {
     const { auth, setAuth } = useAuth()
     let navigate = useNavigate()
     const { dispatch } = useNotification()
@@ -30,6 +30,19 @@ export const useUserBusinessRole = (business_id) => {
                     message: error?.response?.data?.error?.message
                 }
             })
+        },
+        onSuccess: (data) => {
+            if (data?.data?.role_type < process.env.REACT_APP_MANAGER_ACCOUNT) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'invalid business role'
+                    }
+                })
+
+                navigate('/profile')
+            }
         }
     })
 }
