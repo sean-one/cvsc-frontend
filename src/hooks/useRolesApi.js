@@ -2,14 +2,36 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
+import useNotification from "./useNotification";
 
 
 // - returns a single business role for a user
 const getUserBusinessRole = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}/user-role`) }
 export const useUserBusinessRole = (business_id) => {
-    const { auth } = useAuth()
+    const { auth, setAuth } = useAuth()
+    let navigate = useNavigate()
+    const { dispatch } = useNotification()
 
-    return useQuery(['roles', 'user_role', auth?.user?.id], () => getUserBusinessRole(business_id))
+    return useQuery(['roles', 'user_role', auth?.user?.id], () => getUserBusinessRole(business_id), {
+        onError: (error) => {
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt')
+                setAuth({})
+            }
+
+            if (error?.response?.status === 404) {
+                navigate('/profile')
+            }
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+        }
+    })
 }
 
 // business.roles - returns all roles for selected business
