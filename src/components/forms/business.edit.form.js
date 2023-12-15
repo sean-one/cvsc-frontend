@@ -136,20 +136,6 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     message: error.response.data.error.message
                 }, { shouldFocus: true })
             }
-            // missing, expired, or invalid token
-            else if(error.response.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error.response.data.error.message
-                    }
-                })
-
-                navigate('/login', { state: { from: `/business/admin/${business_id}` } })
-
-                return null
-            }
 
             else { console.log(`uncaught error: ${error}`) }
         }

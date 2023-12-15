@@ -101,12 +101,30 @@ export const useBusinessToggle = () => {
 // business.edit.form - EDIT BUSINESS
 const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/businesses/${business_id}`, business_updates) }
 export const useUpdateBusinessMutation = () => {
+    const { setAuth } = useAuth()
+    const { dispatch } = useNotification()
     const queryClient = useQueryClient()
+
     return useMutation(updateBusiness, {
         onSuccess: () => {
             queryClient.refetchQueries(['businesses', 'business', 'events'])
         },
-        onError: (error, updated_business, context) => { console.log(error) },
+        onError: (error) => {
+            if (error?.response?.status === 401) {
+                localStorage.removeItem('jwt')
+                setAuth({})
+
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
+                navigate('/login')
+            }
+        },
     })
 }
 
