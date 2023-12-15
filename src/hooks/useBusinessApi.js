@@ -104,6 +104,7 @@ export const useUpdateBusinessMutation = () => {
     const { setAuth } = useAuth()
     const { dispatch } = useNotification()
     const queryClient = useQueryClient()
+    let navigate = useNavigate()
 
     return useMutation(updateBusiness, {
         onSuccess: () => {
