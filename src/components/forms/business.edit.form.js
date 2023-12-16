@@ -123,15 +123,8 @@ const BusinessEditForm = ({ userBusinessRole }) => {
             }
 
         } catch (error) {
-            console.log(error.response)
-            // missing all or portion of address
-            if(error.message === 'location_required') {
-                setError('address', {
-                    message: 'address is required for business venues'
-                })
-            }
             // incorrectly formated, missing or invalid data
-            else if(error.response.status === 400) {
+            if(error.response.status === 400) {
                 setError(`${error.response.data.error.type}`, {
                     message: error.response.data.error.message
                 }, { shouldFocus: true })
