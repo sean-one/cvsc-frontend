@@ -34,6 +34,8 @@ export const useCreateBusinessMutation = () => {
         onSuccess: () => {
             queryClient.refetchQueries(['businesses'])
             queryClient.refetchQueries(['roles'])
+            queryClient.refetchQueries(['user_roles'])
+            queryClient.refetchQueries(['business_roles'])
         },
         onError: (error, new_business, context) => {
             console.log(error)
@@ -142,7 +144,17 @@ export const useRemoveBusinessMutation = () => {
     const queryClient = useQueryClient()
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'business', 'roles', 'events', data.business_id])
+            // events table updated
+            queryClient.refetchQueries(['events'])
+            queryClient.refetchQueries(['business_events'])
+            queryClient.refetchQueries(['user_events'])
+            // roles table updated
+            queryClient.refetchQueries(['roles'])
+            queryClient.refetchQueries(['user_roles'])
+            queryClient.refetchQueries(['business_roles'])
+            // business table updated
+            queryClient.refetchQueries(['businesses'])
+            queryClient.refetchQueries(['business_management'])
         },
         onError: (error) => {
             console.log(error)
