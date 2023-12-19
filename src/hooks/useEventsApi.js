@@ -6,6 +6,7 @@ import useNotification from "./useNotification";
  
 
 // return an array of all events related to business id
+// ['business_events', business_id]
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
 export const useBusinessEventsQuery = (business_id) => {
     
@@ -19,6 +20,7 @@ export const useBusinessEventsQuery = (business_id) => {
 }
 
 // return an array of all events related to user id
+// ['user_events', user_id]
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => {
     const { setAuth } = useAuth()
@@ -38,14 +40,17 @@ export const useUserEventsQuery = (user_id) => {
 }
 
 // event.view, event.edit.view - return a single event by event id
+// ['events', event_id]
 const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
 export const useEventQuery = (event_id) => useQuery(['events', event_id], () => getEvent(event_id), { staleTime: 60000, refetchOnMount: false })
 
 // get an array of all upcoming events
+// ['events']
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnMount: false })
 
 // event.create.form - CREATE A NEW EVENT
+// refetch -> ['events'], ['business_events'], ['user_events']
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
     const { setAuth } = useAuth();
@@ -79,6 +84,7 @@ export const useCreateEventMutation = () => {
 }
 
 // event.edit.form - update_event - UPDATE EVENT
+// refetch -> ['events'], ['business_events'], ['user_events']
 const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.put(`/events/${event_id}`, event_updates) }
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient();
@@ -111,6 +117,7 @@ export const useUpdateEventMutation = () => {
 }
 
 // business.label - remove_event_business
+// refetch -> ['events'], ['business_events'], ['user_events']
 const removeBusiness = async ({ event_id, business_id }) => { return await AxiosInstance.put(`/events/businesses/${business_id}/events/${event_id}`) }
 export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient();
@@ -122,6 +129,7 @@ export const useRemoveEventBusinessMutation = () => {
         onSuccess: ({ data }) => {
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events'])
+            queryClient.refetchQueries(['user_events'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -152,6 +160,7 @@ export const useRemoveEventBusinessMutation = () => {
 }
 
 // event.edit.form - remove_event
+// refetch -> ['events'], ['business_events'], ['user_events']
 const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient();

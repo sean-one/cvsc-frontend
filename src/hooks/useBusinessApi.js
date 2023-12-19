@@ -6,6 +6,7 @@ import useNotification from "./useNotification";
 
 
 // event.create.form, event.edit.form, role.request
+// ['businesses']
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
 export const useBusinessesQuery = () => {
     const { setAuth } = useAuth();
@@ -24,6 +25,8 @@ export const useBusinessesQuery = () => {
 }
 
 // business.create.form - CREATE BUSINESS
+// refetch -> ['businesses'], ['roles']
+//! this needs to also update a user_role list of some sort
 const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }
 export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient()
@@ -39,13 +42,14 @@ export const useCreateBusinessMutation = () => {
 }
 
 // management.list
+// ['business_management']
 const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/managed') }
 export const useBusinessManagement = () => {
     const { setAuth } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
-    return useQuery(['business', 'management'], getManagersBusinesses, {
+    return useQuery(['business_management'], getManagersBusinesses, {
         onError: (error) => {
             console.log(error)
             dispatch({
@@ -66,12 +70,13 @@ export const useBusinessManagement = () => {
 }
 
 // businessView & business.admin.view 
+// ['businesses', business_id]
 const getBusiness = async (business_id) => { return await AxiosInstance.get(`/businesses/${business_id}`) }
 export const useBusinessQuery = (business_id) => {
     const { dispatch } = useNotification()
     let navigate = useNavigate()
 
-    return useQuery(['businesses', 'business', business_id], () => getBusiness(business_id), {
+    return useQuery(['businesses', business_id], () => getBusiness(business_id), {
         onError: (error) => {
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -87,12 +92,13 @@ export const useBusinessQuery = (business_id) => {
 }
 
 // business.admin.menu - toggle active & toggle request
+// ['businesses', business_id]
 const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/status/toggle`, toggle_type) }
 export const useBusinessToggle = () => {
     const queryClient = useQueryClient()
     return useMutation(toggleBusiness, {
         onSuccess: ({ data }) => {
-            queryClient.refetchQueries(['businesses', 'business', data.id])
+            queryClient.refetchQueries(['businesses', data.id])
         },
         onError: (error, business_error, context) => { console.log(error) },
     })
@@ -108,7 +114,8 @@ export const useUpdateBusinessMutation = () => {
 
     return useMutation(updateBusiness, {
         onSuccess: () => {
-            queryClient.refetchQueries(['businesses', 'business', 'events'])
+            queryClient.refetchQueries(['businesses'])
+            queryClient.refetchQueries(['events'])
         },
         onError: (error) => {
             if (error?.response?.status === 401) {
