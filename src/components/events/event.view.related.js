@@ -21,7 +21,8 @@ const EventViewRelatedStyles = styled.div`
 `;
 
 const EventViewRelated = ({ event }) => {
-    const { data: events, status, error } = useEventsQuery()
+    const { data: events, status } = useEventsQuery()
+    const business_ids = [event.venue_id, event.brand_id]
     let event_list
 
     if (status === 'loading') {
@@ -29,12 +30,11 @@ const EventViewRelated = ({ event }) => {
     }
 
     if (status === 'error') {
-        console.log(error)
         return <ServerReturnError />;
     }
 
     event_list = events.data.filter(e => business_ids.includes(e.venue_id) || business_ids.includes(e.brand_id))
-    event_list = event_list.filter(e => e.event_id !== event_id)    
+    event_list = event_list.filter(e => e.event_id !== event.event_id)    
 
 
     return (
