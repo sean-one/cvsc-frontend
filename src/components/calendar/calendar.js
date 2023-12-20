@@ -6,6 +6,8 @@ import LoadingSpinner from '../loadingSpinner';
 import ServerDown from '../serverDown';
 import EventCard from '../events/views/event.card';
 
+import { ReactComponent as CVSCLogo } from '../../assets/cvsc_sqr.svg';
+
 const CalendarStyles = styled.div`
     .calendarWrapper {
         width: 100%;
@@ -23,6 +25,15 @@ const CalendarStyles = styled.div`
         justify-content: center;
         align-items: center;
         padding: 0.5rem;
+    }
+
+    .noEventsLogo {
+        svg {
+            width: 100%;
+            height: auto;
+            fill: var(--black-and-white);
+        }
+        
     }
 
     .calendarNoEventsHeader {
@@ -55,7 +66,8 @@ const Calendar = () => {
                     eventList.data.map(event => <EventCard key={event.event_id} event={event} />)
                 ) : (
                     <div className='calendarNoEvents'>
-                        <div className='calendarNoEventsHeader'>No events to show</div>
+                        <CVSCLogo className='noEventsLogo' />
+                        {/* <div className='calendarNoEventsHeader'>No events to show</div> */}
                         <div className='calendarNoEventsLogin'>Login and create a new event.</div>
                     </div>
                 )}

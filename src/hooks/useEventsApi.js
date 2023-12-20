@@ -53,7 +53,7 @@ export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetch
 // refetch -> ['events'], ['business_events'], ['user_events']
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
     let navigate = useNavigate();
@@ -62,7 +62,7 @@ export const useCreateEventMutation = () => {
         onSuccess: () => {
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events'])
+            queryClient.refetchQueries(['user_events', auth?.user?.id])
         },
         onError: (error) => {
             console.log(error)
@@ -89,14 +89,14 @@ const updateEvent = async ({ event_updates, event_id }) => { return await AxiosI
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient();
     const { dispatch } = useNotification();
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
     let navigate = useNavigate();
 
     return useMutation(updateEvent, {
         onSuccess: ({ data }) => {
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events'])
+            queryClient.refetchQueries(['user_events', auth?.user?.id])
         },
         onError: (error) => {
             dispatch({
@@ -164,7 +164,7 @@ export const useRemoveEventBusinessMutation = () => {
 const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient();
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
@@ -172,7 +172,7 @@ export const useRemoveEventMutation = () => {
         onSuccess: ({ data }) => {
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events'])
+            queryClient.refetchQueries(['user_events', auth?.user?.id])
         },
         onError: (error) => {
             dispatch({
