@@ -20,7 +20,7 @@ const EventViewRelatedStyles = styled.div`
     }
 `;
 
-const EventViewRelated = ({ business_ids, event_id }) => {
+const EventViewRelated = ({ event }) => {
     const { data: events, status, error } = useEventsQuery()
     let event_list
 

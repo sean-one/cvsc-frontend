@@ -42,7 +42,35 @@ export const useUserEventsQuery = (user_id) => {
 // event.view, event.edit.view - return a single event by event id
 // ['events', event_id]
 const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
-export const useEventQuery = (event_id) => useQuery(['events', event_id], () => getEvent(event_id), { staleTime: 60000, refetchOnMount: false })
+export const useEventQuery = (event_id) => {
+    const { dispatch } = useNotification()
+    let navigate = useNavigate()
+
+    return useQuery(['events', event_id], () => getEvent(event_id), {
+        staleTime: 60000,
+        refetchOnMount: false,
+        onError: (error) => {
+            if (error?.response?.status === 404) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'An error has occurred in the event fetch'
+                    }
+                })
+            }
+            navigate('/');
+        }
+    })
+}
 
 // get an array of all upcoming events
 // ['events']

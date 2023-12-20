@@ -3,15 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns'
 import styled from 'styled-components';
 
-import useAuth from '../../../hooks/useAuth';
-import { EditIcon } from '../../icons/siteIcons';
 import LoadingSpinner from '../../loadingSpinner';
-import { formatTime } from '../../../helpers/formatTime';
 import BusinessLabel from '../../business/business.label';
-import { useEventQuery } from '../../../hooks/useEventsApi';
-import { image_link } from '../../../helpers/dataCleanUp';
-import ServerDown from '../../serverDown';
 import EventViewRelated from '../event.view.related';
+
+import { formatTime } from '../../../helpers/formatTime';
+import { image_link } from '../../../helpers/dataCleanUp';
+import useAuth from '../../../hooks/useAuth';
+import { useEventQuery } from '../../../hooks/useEventsApi';
+import { EditIcon } from '../../icons/siteIcons';
 
 const EventViewStyles = styled.div`
 
@@ -109,10 +109,6 @@ const EventView = () => {
         return <LoadingSpinner />
     }
 
-    if (status === 'error') {
-        return <ServerDown />
-    }
-
     const isCreator = () => auth?.user?.id === event.data.created_by
 
     
@@ -173,7 +169,7 @@ const EventView = () => {
             </div>
             {
                 (event?.data?.active_event) &&
-                    <EventViewRelated business_ids={[event.data.venue_id, event.data.brand_id]} event_id={event.data.event_id} />
+                    <EventViewRelated event={event.data} />
             }
         </EventViewStyles>
     )
