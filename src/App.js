@@ -77,10 +77,6 @@ const App = () => {
                         <BusinessEditForm />
                     </BusinessManagementAuth>
                 } />
-                {/* <Route element={<BusinessManagementAuth />}>
-                    <Route path='/business/admin/:business_id' element={<BusinessAdminView />} />
-                    <Route path='/business/edit/:business_id' element={<BusinessEditForm />} />
-                </Route> */}
               </Route>
 
 
