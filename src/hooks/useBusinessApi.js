@@ -47,13 +47,12 @@ export const useCreateBusinessMutation = () => {
 // ['business_management']
 const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/managed') }
 export const useBusinessManagement = () => {
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
-    return useQuery(['business_management'], getManagersBusinesses, {
+    return useQuery(['business_management', auth?.user?.id], getManagersBusinesses, {
         onError: (error) => {
-            console.log(error)
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -62,7 +61,7 @@ export const useBusinessManagement = () => {
                 }
             })
 
-            if (error?.response?.status === 401) {
+            if (error?.response?.status === 403 || error?.response?.status === 401) {
                 localStorage.removeItem('jwt');
                 setAuth({});
                 navigate('/login')
@@ -100,9 +99,12 @@ export const useBusinessToggle = () => {
     const queryClient = useQueryClient()
     return useMutation(toggleBusiness, {
         onSuccess: ({ data }) => {
+            
             queryClient.refetchQueries(['businesses', data.id])
         },
-        onError: (error, business_error, context) => { console.log(error) },
+        onError: (error) => {
+            console.log(error)
+        },
     })
 }
 

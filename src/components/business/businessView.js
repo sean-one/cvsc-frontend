@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
-import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../loadingSpinner';
 import BusinessEventsRelated from '../events/business.events.related';
 import BusinessAdminControls from './admin/business.admin.controls';
@@ -37,7 +36,9 @@ const BusinessViewStyles = styled.div`
         width: 100%;
         display: flex;
         flex-direction: column;}
-    
+    .businessViewHeaderLeft {
+        display: flex;
+    }
     .businessViewManagementControls {
         display: flex;
         color: var(--secondary-color);
@@ -121,15 +122,11 @@ const BusinessViewStyles = styled.div`
 `;
 
 const BusinessView = () => {
-    const { auth } = useAuth()
     let { business_id } = useParams()
-    let business_role = {}
 
     const { data: business, status } = useBusinessQuery(business_id)
     
     if (status === 'loading') { return <LoadingSpinner /> }
-    
-    if(auth?.roles) { business_role = auth.roles.find(role => role.active_role && role.business_id === business_id) }
     
     
     return (
@@ -137,15 +134,11 @@ const BusinessView = () => {
             <div className='businessViewWrapper'>
                 <div className='businessViewHeader'>
                     <div className='sectionRowSplit'>
-                        <div className='headerText'>{business?.data?.business_name?.toUpperCase()}</div>
-                        {
-                            (business_role?.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT) &&
-                                <BusinessAdminControls user_role={business_role} business={business?.data} />
-                        }
-                        {
-                            ((business_role === undefined) && !business?.data?.active_business) &&
-                                <InactiveBusiness />
-                        }
+                        <div className='businessViewHeaderLeft'>
+                            { (!business?.data?.active_business) && <InactiveBusiness /> }
+                            <div className='headerText'>{business?.data?.business_name?.toUpperCase()}</div>
+                        </div>
+                        <BusinessAdminControls business={business?.data} />
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&

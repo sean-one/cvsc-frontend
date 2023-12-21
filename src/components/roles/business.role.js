@@ -9,7 +9,7 @@ const BusinessRoleStyles = styled.div``;
 
 const BusinessRole = ({ role, list_type }) => {
     const businessList = {
-        inactive: null,
+        inactive: 'inactive',
         pending: 'approve',
         creator: 'upgrade',
         manager: 'downgrade'

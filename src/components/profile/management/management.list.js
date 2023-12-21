@@ -9,11 +9,13 @@ import ServerReturnError from '../../serverReturnError';
 const ManagementList = () => {
     const [sortCriteria, setSortCriteria] = useState('business_name'); // default sort criteria
     const [searchQuery, setSearchQuery] = useState('');
-    const { data: management_list, status, error } = useBusinessManagement();
+    const { data: management_list, status } = useBusinessManagement();
 
     if (status === 'loading') { return <LoadingSpinner /> }
     
-    if (status === 'error') { console.log(error); return <ServerReturnError return_type='business management list'/> }
+    if (status === 'error') { 
+        return <ServerReturnError return_type='business management list'/>
+    }
     
     const filteredBusinesses = management_list.data.filter(business => 
         business.business_name.toLowerCase().includes(searchQuery.toLowerCase())

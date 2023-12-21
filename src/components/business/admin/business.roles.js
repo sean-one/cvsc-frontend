@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
-import useNotification from '../../../hooks/useNotification';
 import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
 import ServerReturnError from '../../serverReturnError';
@@ -25,29 +24,20 @@ const filterRoles = (roles, user_id) => {
 
 const BusinessRoles = () => {
     const { auth } = useAuth();
-    const { dispatch } = useNotification();
     let { business_id } = useParams();
-    const { data: business_roles, status, error } = useBusinessRolesQuery(business_id);
+    const { data: business_roles, status } = useBusinessRolesQuery(business_id);
 
     if (status === 'loading') {
         return <LoadingSpinner />
     }
 
     if (status === 'error') {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: error?.response?.data?.error?.message
-            }
-        })
-        
         return <ServerReturnError return_type='business user roles'/>
     }
 
     const { inactive, pending, creator, manager } = filterRoles(business_roles.data, auth.user.id)
-
     
+
     return (
         <div>
             {(inactive.length > 0) && <InactiveRoles roles_list={inactive} />}
