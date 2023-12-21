@@ -1,23 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import LoadingSpinner from '../loadingSpinner';
-import useNotification from '../../hooks/useNotification';
-import useAuth from '../../hooks/useAuth';
 import { useCreateRoleMutation } from '../../hooks/useRolesApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { uuidPattern } from './form.validations';
 
-const RoleRequest = () => {
-    const { auth, setAuth } = useAuth()
-    const businessIdList = auth?.roles.map(role => role?.business_id) || []
+const RoleRequest = ({ user_roles }) => {
+    const businessIdList = user_roles.map(role => role?.business_id) || []
     
-    const { dispatch } = useNotification();
     const { data: businessList, status } = useBusinessesQuery()
     const { mutateAsync: createRole } = useCreateRoleMutation()
-
-    let navigate = useNavigate()
 
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -34,37 +27,9 @@ const RoleRequest = () => {
         try {
             if(!data.business_id) return
     
-            const request_response = await createRole(data.business_id)
-            
-            if(request_response.status === 201) {
-                setAuth({ user: auth.user, roles: [ ...auth.roles, request_response.data ] })
-    
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: 'your request has been submitted for approval'
-                    }
-                })
-            }
+            await createRole(data.business_id)
+
         } catch (error) {
-            if (error?.response?.status === 401) {
-                setAuth({})
-                
-                navigate('/login')
-
-                return false
-            }
-
-            if (error?.response?.status === 400) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-            }
             console.log(error)
         } finally {
             reset()
@@ -76,7 +41,7 @@ const RoleRequest = () => {
         <div>
             {
                 (business_filtered.length > 0) &&
-                <div className='sectionContainer'>
+                    <div className='sectionContainer'>
                         <div className='subheaderText'>Create Business Role Request</div>
 
                         <form onSubmit={handleSubmit(roleCreate)} className='standardForm'>
