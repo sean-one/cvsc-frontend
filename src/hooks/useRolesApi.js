@@ -185,19 +185,34 @@ export const useRoleAction = () => {
             })
         },
         onError: (error) => {
-            if (error?.response?.status === 401 || error?.response?.status === 403) {
+            if (error?.response?.status === 403) {
                 localStorage.removeItem('jwt')
                 setAuth({})
                 navigate('/login')
             }
 
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
+            else if (error?.response?.status === 400 || error?.response?.status === 404) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+                
+            }
+            
+            else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'an uncaught error has occurred'
+                    }
+                })
+                
+            }
+
         },
     })
 }
