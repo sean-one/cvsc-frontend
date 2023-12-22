@@ -104,7 +104,7 @@ const UserAccount = () => {
         else { return 'Basic' }
     }
 
-    console.log(auth)
+    
     return (
         <UserAccountStyles>
             {

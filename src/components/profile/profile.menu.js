@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
 import styled from 'styled-components';
+
+import useAuth from '../../hooks/useAuth';
+import { useUserRolesQuery } from '../../hooks/useRolesApi';
 
 const ProfileMenuStyles = styled.div`
     .profileMenu {
@@ -34,18 +36,31 @@ const ProfileMenuStyles = styled.div`
 
 const ProfileMenu = () => {
     const { auth } = useAuth()
+    const { data: user_roles_response } = useUserRolesQuery(auth?.user?.id)
     const { pathname } = useLocation()
+    let user_roles = []
+
     let navigate = useNavigate()
 
-    let menuTab = pathname.split('/')[2] || 'home'
+    let menuTab
+    if (pathname === '/profile/') {
+        menuTab = '';
+    } else {
+        menuTab = pathname.split('/')[2] || 'home';
+    }
     
     const buttonLink = (e) => {
         const route = e.target.getAttribute('data-route');
         navigate(route);
     }
 
-    const userHasRole = (roleType) => {
-        return auth?.roles.some(role => role.active_role === true && role.role_type >= roleType);
+    const userHasRole = (role_type) => {
+        user_roles = user_roles_response?.data.filter(role => (role.role_type >= role_type) && role.active_role)
+        if (user_roles?.length > 0) {
+            return true
+        } else {
+            return false
+        }
     };
 
     const tabs = [
@@ -61,11 +76,16 @@ const ProfileMenu = () => {
             <div className='profileMenu'>
                 {tabs.map(tab => {
                     if (tab.condition === undefined || tab.condition) {
+                        let isActive = menuTab === tab.route.split('/')[2];
+                        if (tab.label === 'Account') {
+                            isActive = isActive || menuTab === '';
+                        }
+
                         return (
                             <div
                                 key={tab.route}
                                 data-route={tab.route}
-                                className={`profileTab ${menuTab === tab.route.split('/')[2] ? 'activeTab' : ''}`}
+                                className={`profileTab ${isActive ? 'activeTab' : ''}`}
                                 onClick={buttonLink}
                             >{tab.label}</div>
                         );

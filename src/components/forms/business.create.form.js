@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components'
 
-import useAuth from '../../hooks/useAuth';
 import { businessTypeList, emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
-import useNotification from '../../hooks/useNotification';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
@@ -21,10 +19,8 @@ const BusinessCreateFormStyles = styled.div`
 `;
 
 const BusinessCreateForm = () => {
-    const { auth, logout_user, setAuth } = useAuth()
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
-    const { dispatch } = useNotification()
 
     const { register, control, handleSubmit, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -88,30 +84,6 @@ const BusinessCreateForm = () => {
             const new_business = await createBusiness(formData)
 
             if (new_business.status === 201) {
-                // remove saved form from local storage
-                localStorage.removeItem('createBusinessForm')
-
-                // add new business to user auth roles
-                setAuth({ user: { ...auth.user, account_type: process.env.REACT_APP_ADMIN_ACCOUNT }, roles: [
-                    ...auth.roles, 
-                    { 
-                        active_role: true,
-                        business_id: new_business.data.id,
-                        business_name: new_business.data.business_name,
-                        id: new_business.data.admin_role_id,
-                        role_type: new_business.data.role_type,
-                    }
-                ]})
-
-                // alert user of successful business creation
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${new_business?.data?.business_name} was created`
-                    }
-                })
-
                 // clear the setEditImage & reset the create business form
                 setEditImage(false)
                 reset()
@@ -140,20 +112,6 @@ const BusinessCreateForm = () => {
                 setError(`${error.response.data.error.type}`, {
                     message: error.response.data.error.message
                 }, { shouldFocus: true })
-            }
-            // token errors (missing, exp, invalid), require user to login
-            else if (error.response.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error.response.data.error.message
-                    }
-                })
-
-                logout_user()
-
-                return null
             }
 
             else { console.log(`uncaught error: ${error}`) }

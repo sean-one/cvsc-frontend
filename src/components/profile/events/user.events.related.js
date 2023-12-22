@@ -26,6 +26,17 @@ const UserEventsRelatedStyles = styled.div`
     }
 `;
 
+// sort events with inactive on top, sorted by date
+const sortEventsRelated = (array) => {
+    array.sort((a,b) => {
+        if (a.active_event !== b.active_event) {
+            return a.active_event ? 1 : -1;
+        }
+
+        return new Date(a.eventdate) - new Date(b.eventdate)
+    });
+};
+
 const UserEventsRelated = () => {
     const { auth } = useAuth()
     const { data: user_events_list, status } = useUserEventsQuery(auth?.user?.id)
@@ -37,16 +48,15 @@ const UserEventsRelated = () => {
         return <LoadingSpinner />
     }
 
+    // returns error text to avoid crashing
     if (status === 'error') {
         return <ServerReturnError />
     }
 
-    const createNewEvent = () => {
-        navigate('/event/create')
-    }
-
     user_events = user_events_list.data
+    sortEventsRelated(user_events)
 
+    
     return (
         <UserEventsRelatedStyles>
             {
@@ -58,7 +68,7 @@ const UserEventsRelated = () => {
                     })
                     : <div className='noUserEvents'>
                         <div>You have no upcoming created events</div>
-                        <div className='noUserEventsLink' onClick={() => createNewEvent()}>Create a new event!</div>
+                        <div className='noUserEventsLink' onClick={() => navigate('/event/create')}>Create a new event!</div>
                     </div>
             }
         </UserEventsRelatedStyles>

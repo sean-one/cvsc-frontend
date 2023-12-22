@@ -8,12 +8,7 @@ const DeleteRole = ({ role }) => {
     const { mutateAsync: deleteRole } = useRoleDelete();
 
     const sendRoleDelete = async (role_id) => {
-        try {
-            await deleteRole(role_id)
-
-        } catch (error) {
-            console.log(error)
-        }
+        await deleteRole(role_id)
     }
 
     return (

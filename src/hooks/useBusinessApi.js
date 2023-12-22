@@ -25,26 +25,57 @@ export const useBusinessesQuery = () => {
 }
 
 // business.create.form - CREATE BUSINESS
-// refetch -> ['businesses'], ['roles']
-//! this needs to also update a user_role list of some sort
+// refetch -> ['businesses'], ['business_management', auth.user.id], ['roles'], ['user_roles', auth.user.id]
 const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }
 export const useCreateBusinessMutation = () => {
-    const queryClient = useQueryClient()
+    const { auth, setAuth } = useAuth();
+    const { dispatch } = useNotification();
+    const queryClient = useQueryClient();
+    let navigate = useNavigate();
+
     return useMutation(createBusiness, {
-        onSuccess: () => {
+        onSuccess: (data) => {
+            
             queryClient.refetchQueries(['businesses'])
+            queryClient.refetchQueries(['business_management', auth?.user?.id])
+            
             queryClient.refetchQueries(['roles'])
-            queryClient.refetchQueries(['user_roles'])
-            queryClient.refetchQueries(['business_roles'])
+            queryClient.refetchQueries(['user_roles', auth?.user?.id])
+
+            // remove saved form from local storage
+            localStorage.removeItem('createBusinessForm');
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${data?.data?.business_name} has been created`
+                }
+            })
         },
-        onError: (error, new_business, context) => {
+        onError: (error) => {
+            if (error?.response?.status === 403) {
+                localStorage.removeItem('jwt');
+                setAuth({})
+                navigate('/login')
+            }
+
+            if (error?.response?.status === 400 || error?.response?.status === 404) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            }
             console.log(error)
         },
     })
 }
 
 // management.list
-// ['business_management']
+// ['business_management', auth.user.id]
 const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/managed') }
 export const useBusinessManagement = () => {
     const { auth, setAuth } = useAuth();
