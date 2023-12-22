@@ -199,7 +199,10 @@ export const useUpdateBusinessMutation = () => {
 //! business.admin.view - REMOVES BUSINESS & INVALIDATES ANY UPCOMING EVENT
 const removeBusiness = async (business_id) => { return await AxiosInstance.delete(`/businesses/${business_id}`) }
 export const useRemoveBusinessMutation = () => {
-    const queryClient = useQueryClient()
+    const { dispatch } = useNotification();
+    const queryClient = useQueryClient();
+    let navigate = useNavigate();
+
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
             // events table updated
@@ -213,9 +216,37 @@ export const useRemoveBusinessMutation = () => {
             // business table updated
             queryClient.refetchQueries(['businesses'])
             queryClient.refetchQueries(['business_management'])
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: 'business has been deleted successfully'
+                }
+            })
+
+            navigate('/profile/admin')
         },
         onError: (error) => {
-            console.log(error)
+            if (error?.response?.status === 403) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
+                navigate('/login')
+            }
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
         },
     })
 }

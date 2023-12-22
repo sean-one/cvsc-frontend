@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 
 import { useUserBusinessRole } from '../../../hooks/useRolesApi';
@@ -17,8 +16,6 @@ const BusinessAdminControlStyles = styled.div`
 const BusinessAdminControls = ({ business }) => {
     const { data: user_business_role_response, status } = useUserBusinessRole(business?.id)
     let business_user_role = {};
-
-    let navigate = useNavigate();
 
     if (status === 'success') {
         business_user_role = user_business_role_response?.data

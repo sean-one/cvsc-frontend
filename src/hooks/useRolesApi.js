@@ -74,7 +74,7 @@ export const useBusinessRolesQuery = (business_id) => {
 
     return useQuery(['business_roles', business_id], () => getBusinessRoles(business_id), {
         onError: (error) => {
-            if (error?.response?.status === 401) {
+            if (error?.response?.status === 403) {
                 localStorage.removeItem('jwt')
                 setAuth({})
                 navigate('/login')

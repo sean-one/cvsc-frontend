@@ -90,7 +90,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                             <EditBusinessButton business={business} />
                             {
                                 (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                    <DeleteBusiness business_name={business?.business_name} business_id={business?.id} />
+                                    <DeleteBusiness business_id={business?.id} />
                             }
                         </div>
                 }
