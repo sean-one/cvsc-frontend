@@ -20,7 +20,7 @@ const BusinessAdminViewStyles = styled.div`
         align-items: center;
 
         margin-top: 0.5rem;
-        padding: 0.5rem 0;
+        padding: 1rem 0;
         border-top: 1px dotted var(--secondary-color);
         border-bottom: 1px dotted var(--secondary-color);
     }
@@ -72,13 +72,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
     return (
         <BusinessAdminViewStyles>
             <div className='sectionContainer removeBorder'>
-                <div className='sectionRowSplit'>
-                    <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business.business_name}</div>
-                    {
-                        (userBusinessRole?.role_type < process.env.REACT_APP_CREATOR_ACCOUNT) &&
-                            <CreateEventButton business_id={business_id} /> 
-                    }
-                </div>
+                <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business.business_name}</div>
                 {
                     (business?.formatted_address !== null) &&
                         <div className='subheaderText'>{business?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
