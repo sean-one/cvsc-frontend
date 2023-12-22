@@ -6,11 +6,10 @@ import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import BusinessRoles from './business.roles';
 
-import BusinessToggle from './business.toggle';
-// import ActiveBusinessToggle from './active.business.toggle';
-// import RequestStatusToggle from './request.status.toggle';
-import EditBusinessButton from './edit.business.button';
-import DeleteBusiness from './delete.business';
+import BusinessToggle from '../buttons/business.toggle';
+import EditBusinessButton from '../buttons/edit.business.button';
+import DeleteBusiness from '../buttons/delete.business';
+
 import CreateEventButton from '../../events/create.event.button';
 import BusinessEventsRelated from '../../events/business.events.related';
 

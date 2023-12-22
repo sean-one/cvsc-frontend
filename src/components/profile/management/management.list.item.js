@@ -2,7 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components'
-import { SettingsIcon, BusinessIcon } from '../../icons/siteIcons';
+import BusinessButton from '../../business/buttons/business.button';
+import SettingsBusinessButton from '../../business/buttons/settings.business.button';
 import { image_link } from '../../../helpers/dataCleanUp';
 
 const ManagementListItemStyles = styled.div`
@@ -85,8 +86,8 @@ const ManagementListItem = ({ business }) => {
                     </div>
 
                     <div className='managementListItemAdminButton'>
-                        <div onClick={() => navigate(`/business/${business.id}`)}><BusinessIcon /></div>
-                        <div onClick={() => navigate(`/business/admin/${business.id}`)}><SettingsIcon /></div>
+                        <BusinessButton business_id={business?.id} />
+                        <SettingsBusinessButton business_id={business?.id} />
                     </div>
                 </div>
             </div>

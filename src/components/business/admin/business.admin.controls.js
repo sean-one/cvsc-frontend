@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 
 import { useUserBusinessRole } from '../../../hooks/useRolesApi';
-import { CreateEventIcon, EditIcon, SettingsIcon } from '../../icons/siteIcons';
+import EditBusinessButton from '../buttons/edit.business.button';
+import CreateEventButton from '../../events/create.event.button';
+import SettingsBusinessButton from '../buttons/settings.business.button';
 
 const BusinessAdminControlStyles = styled.div`
     .businessAdminControls {
@@ -22,8 +24,6 @@ const BusinessAdminControls = ({ business }) => {
         business_user_role = user_business_role_response?.data
     }
 
-    console.log('inside the controls')
-    console.log(business_user_role)
     
     return (
         <BusinessAdminControlStyles>
@@ -32,13 +32,13 @@ const BusinessAdminControls = ({ business }) => {
                     <div className='businessAdminControls'>
                         {
                             (business.active_business) &&
-                                <div onClick={() => navigate(`/event/create`, { state: business.id })}><CreateEventIcon /></div>
+                                <CreateEventButton business_id={business?.id} />
                         }
                         {
                             (((business_user_role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT) && business.active_business) || (business_user_role.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT)) &&
                                 <div className='businessAdminControls'>
-                                    <div onClick={() => navigate(`/business/edit/${business.id}`, { state: business })}><EditIcon /></div>
-                                    <div onClick={() => navigate(`/business/admin/${business.id}`)}><SettingsIcon /></div>
+                                    <EditBusinessButton business={business} />
+                                    <SettingsBusinessButton business_id={business?.id} />
                                 </div>
                         }
                     </div>
