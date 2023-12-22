@@ -228,10 +228,15 @@ export const useRoleDelete = () => {
 
     return useMutation(deleteRole, {
         onSuccess: ({ data }) => {
-
+            // update due to roles table
             queryClient.refetchQueries(['roles']);
-            queryClient.refetchQueries(['user_roles', data.user_id]);
-            queryClient.refetchQueries(['business_roles', data.business_id]);
+            queryClient.refetchQueries(['user_roles', data?.user_id]);
+            queryClient.refetchQueries(['business_roles', data?.business_id]);
+
+            // update due to events table
+            queryClient.refetchQueries(['events'])
+            queryClient.refetchQueries(['business_events', data?.business_id])
+            queryClient.refetchQueries(['user_events', data?.user_id])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
