@@ -96,13 +96,69 @@ export const useBusinessQuery = (business_id) => {
 // ['businesses', business_id]
 const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/status/toggle`, toggle_type) }
 export const useBusinessToggle = () => {
-    const queryClient = useQueryClient()
+    const { auth, setAuth } = useAuth();
+    const { dispatch } = useNotification();
+    const queryClient = useQueryClient();
+    let navigate = useNavigate();
+
     return useMutation(toggleBusiness, {
         onSuccess: ({ data }) => {
-            
-            queryClient.refetchQueries(['businesses', data.id])
+            // update business table touched
+            queryClient.refetchQueries(['businesses'])
+            queryClient.refetchQueries(['businesses', data?.id])
+            queryClient.refetchQueries(['business_management', auth?.user?.id])
+
+            if (data.toggleType === 'request') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${data?.business_name} ${data?.business_request_open ? 'is now' : 'is no longer'} accepting creator request`
+                    }
+                })    
+            }
+
+            if (data.toggleType === 'active') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: `${data?.business_name} has been updated to ${data?.active_business ? 'active' : 'inactive'}`
+                    }
+                })
+
+                // update roles table touched
+                queryClient.refetchQueries(['roles'])
+                queryClient.refetchQueries(['user_business_role'])
+                queryClient.refetchQueries(['user_roles'])
+                queryClient.refetchQueries(['business_roles', data.id])
+            }
         },
         onError: (error) => {
+            
+            if (error?.response?.status === 401 || error?.response?.status === 403) {                                
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
+                localStorage.removeItem('jwt');
+                setAuth({})
+                navigate('/login')
+
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            }
+
             console.log(error)
         },
     })

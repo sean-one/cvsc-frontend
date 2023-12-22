@@ -6,8 +6,9 @@ import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import BusinessRoles from './business.roles';
 
-import ActiveBusinessToggle from './active.business.toggle';
-import RequestStatusToggle from './request.status.toggle';
+import BusinessToggle from './business.toggle';
+// import ActiveBusinessToggle from './active.business.toggle';
+// import RequestStatusToggle from './request.status.toggle';
 import EditBusinessButton from './edit.business.button';
 import DeleteBusiness from './delete.business';
 import CreateEventButton from '../../events/create.event.button';
@@ -99,7 +100,11 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         <div className='businessAdminViewDetails'>
                             <div className='businessAdminViewStatus'>{`Business Status: ${business?.active_business ? 'Active' : 'Inactive'}`}</div>
                             <div className='businessAdminViewBusinessButtons'>
-                                <ActiveBusinessToggle business_id={business_id} isActive={business?.active_business} />
+                                <BusinessToggle
+                                    business_id={business_id}
+                                    toggleStatus={business?.active_business}
+                                    toggleType='active'
+                                />
                             </div>
                         </div>
 
@@ -108,7 +113,11 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                     (userBusinessRole?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='businessAdminViewCreationRequest'>
                             <div>{`Business Role Request: ${business?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
-                            <RequestStatusToggle business_id={business_id} isOpen={business?.business_request_open} />
+                            <BusinessToggle
+                                business_id={business_id}
+                                toggleStatus={business?.business_request_open}
+                                toggleType='request'
+                            />
                         </div>
                 }
             </div>
