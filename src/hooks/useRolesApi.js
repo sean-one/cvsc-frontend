@@ -161,7 +161,6 @@ export const useCreateRoleMutation = () => {
 
 // aprrove.role, upgrade.role, downgrade role
 // refetch -> ['roles'], ['business_roles', data.business_id], ['user_roles', data.user_id], ['user_business_role', data.user_id]
-//! update this to have a business id so that i can just update business_roles instead of all roles & do the same with a user id
 const roleAction = async ({ role_id, action_type }) => { return await AxiosInstance.put(`/roles/${role_id}/actions`, { action_type: action_type }) }
 export const useRoleAction = () => {
     const { setAuth } = useAuth();
