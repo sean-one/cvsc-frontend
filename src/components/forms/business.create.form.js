@@ -121,7 +121,7 @@ const BusinessCreateForm = () => {
     const handleClose = () => {
         // remove create business form save from localhost & go back
         localStorage.removeItem('createBusinessForm')
-        navigate(-1)
+        navigate('/profile')
     }
 
     useEffect(() => {
