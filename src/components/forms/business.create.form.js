@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components'
 
-import { businessTypeList, emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/form.validations';
+import { businessTypeList, emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';

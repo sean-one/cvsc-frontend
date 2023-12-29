@@ -6,7 +6,7 @@ import useImagePreview from '../../hooks/useImagePreview';
 import useNotification from '../../hooks/useNotification';
 import { useEventsQuery } from '../../hooks/useEventsApi';
 import { AddImageIcon } from '../icons/siteIcons';
-import { validatePassword, emailformat, validateUsername } from './form.validations';
+import { validatePassword, emailformat, validateUsername } from './utils/form.validations';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import AxiosInstance from '../../helpers/axios';
 

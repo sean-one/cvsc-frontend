@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
-import { validatePassword, validateUsername } from './forms/form.validations';
+import { validatePassword, validateUsername } from './forms/utils/form.validations';
 
 const LoginStyles = styled.div`
     .loginWrap {

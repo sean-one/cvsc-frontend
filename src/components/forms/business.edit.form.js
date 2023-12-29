@@ -9,7 +9,7 @@ import { setImageForForm } from '../../helpers/setImageForForm';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
-import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './form.validations';
+import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './utils/form.validations';
 import AxiosInstance from '../../helpers/axios';
 
 import AddressForm from './address.form';

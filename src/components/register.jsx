@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import AxiosInstance from '../helpers/axios';
 import useNotification from '../hooks/useNotification.js';
 import useAuth from '../hooks/useAuth.js';
-import { emailformat, validatePassword, validateUsername } from './forms/form.validations.js';
+import { emailformat, validatePassword, validateUsername } from './forms/utils/form.validations.js';
 import useImagePreview from '../hooks/useImagePreview';
 import { AddImageIcon } from './icons/siteIcons';
 import { setImageForForm } from '../helpers/setImageForForm';

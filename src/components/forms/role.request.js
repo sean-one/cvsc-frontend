@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import LoadingSpinner from '../loadingSpinner';
 import { useCreateRoleMutation } from '../../hooks/useRolesApi';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
-import { uuidPattern } from './form.validations';
+import { uuidPattern } from './utils/form.validations';
 
 const RoleRequest = ({ user_roles }) => {
     const businessIdList = user_roles.map(role => role?.business_id) || []
