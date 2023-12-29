@@ -13,6 +13,9 @@ import LoadingSpinner from '../loadingSpinner';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 
 const CreateEventFormStyles = styled.div`
+    .imageError {
+        text-align: right;
+    }
 `;
 
 const EventCreateForm = ({ business_id }) => {
@@ -112,8 +115,17 @@ const EventCreateForm = ({ business_id }) => {
 
                 navigate(`/event/${add_event_response.data.event_id}`)
             }
+
         } catch (error) {
-            if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
+            // handles error for no canvas object for image upload
+            if (error?.message === 'missing_image') {
+                setError('eventmedia', {
+                    message: 'Image required'
+                })
+            }
+
+            // handles events from event.response
+            else if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -126,7 +138,9 @@ const EventCreateForm = ({ business_id }) => {
                     message: error?.response?.data?.error?.message
                 })
                 return null;
-            } else {
+            }
+            
+            else {
                 console.log(`uncaught error: ${Object.keys(error)}`)
             }
         }
@@ -153,26 +167,26 @@ const EventCreateForm = ({ business_id }) => {
                                 required: 'event name is required',
                                 minLength : {
                                     value: 4,
-                                    message: 'event name must be at least 4 characters'
+                                    message: 'Event name must be at least 4 characters'
                                 },
                                 maxLength: {
                                     value: 49,
-                                    message: 'event name is too long'
+                                    message: 'Event name must be less then 50 characters'
                                 }
                             })} type='text' onClick={() => clearErrors('eventname')} placeholder='Event name' />
                         </div>
 
                         {/* EVENT MEDIA UPLOAD */}
                         <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
-                            <AddImageIcon />
+                            <AddImageIcon color={errors.eventmedia ? 'var(--error-color)' : 'var(--trim-color'} />
                             <input {...register('eventmedia')} id='eventmedia' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                         </label>
 
                     </div>
                     {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
-                    {errors.eventmedia ? <div className='errormessage'>{errors.eventmedia?.message}</div> : null}
-                    {errors.media_error ? <div className='errormessage'>{errors.media_error?.message}</div> : null}
+                    {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div> : null}
 
+                    {/* EVENT IMAGE PREVIEW RENDER */}
                     {
                         editImage &&
                                 <div className='formImage'>
@@ -184,7 +198,7 @@ const EventCreateForm = ({ business_id }) => {
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventdate'><DateIcon /></label>
                         <input {...register('eventdate', {
-                            required: 'event date is required'
+                            required: 'Date is required'
                         })} type='date' onClick={() => clearErrors('eventdate')} />
                     </div>
                     {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
