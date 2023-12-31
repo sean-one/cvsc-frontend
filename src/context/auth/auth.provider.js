@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     let navigate = useNavigate()
 
     const logout_user = () => {
-        localStorage.removeItem('jwt')
+        localStorage.clear()
         setAuth({})
         navigate('/login')
     }

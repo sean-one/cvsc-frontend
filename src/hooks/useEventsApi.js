@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
+import useEventImagePreview from "./useEventImagePreview";
  
 
 // business.label - remove_event_business
@@ -195,28 +196,45 @@ export const useCreateEventMutation = () => {
     const { auth, setAuth } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
+    const { setEditImage } = useEventImagePreview()
     let navigate = useNavigate();
 
     return useMutation(createEvent, {
-        onSuccess: () => {
+        onSuccess: (data) => {
+            localStorage.removeItem('createEventForm')
+
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events'])
             queryClient.refetchQueries(['user_events', auth?.user?.id])
-        },
-        onError: (error) => {
-            console.log(error)
+
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
+                    notification_type: 'SUCCESS',
+                    message: `${data.data.eventname} has been created`
                 }
             })
 
-            if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt');
-                setAuth({});
-                navigate('/login');
+            setEditImage(false)
+
+            navigate(`/event/${data.data.event_id}`)
+        },
+        onError: (error) => {
+            if (error?.response?.status === 403) {
+                if (error?.response?.data?.error?.type === 'token') {
+                    localStorage.removeItem('jwt');
+                    setAuth({});
+
+                    navigate('/login');
+                } else {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                }
             }
         },
     })

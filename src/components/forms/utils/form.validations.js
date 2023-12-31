@@ -59,18 +59,61 @@ export const validatePassword = (value, isRequired) => {
     return true;
 }
 
-export const validateEventName = (value, isRequired) => {
+// validate event date is no earlier then today and not past 60 days
+export const validateEventDate = (value, isRequired) => {
+    // confirm that a value has been inputed
     if(!value) {
-        return isRequired ? 'event name is required' : true
+        return isRequired ? 'an event date is required' : true;
     }
 
-    if(value.length < 2) {
-        return 'event name is too short'
-    }
+    // get event date and todays date to compare
+    const eventDate = new Date(value + 'T00:00:00')
+    const todaysDate = new Date()
 
-    if(value.length >= 49) {
-        return 'event name is too long'
-    }
+    // set todays hours to the morning
+    todaysDate.setHours(0, 0, 0, 0);
+    
+    const maxDate = new Date();
+    maxDate.setDate(todaysDate.getDate() + 60);
 
-    return true
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+    if (eventDate >= todaysDate && eventDate <= maxDate) {
+        return true;
+    } else {
+        return `current event dates must be between ${months[todaysDate.getMonth()]}. ${todaysDate.getDate()} - ${months[maxDate.getMonth()]}. ${maxDate.getDate()}`;
+        
+    }
+}
+
+// validate event time is 'hh:mm' in 24 hour format
+export const validateEventTime = (value, isRequired) => {
+    // confirm that a value has been inputed
+    if (!value) { return isRequired ? 'an event starting & ending time is required' : true; }
+
+    // create regex pattern for hh:mm in 24 hour format
+    const timePattern = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/
+
+    // check to see the input pattern matches 24-hour time format
+    if (timePattern.test(value)) {
+        return
+    } else {
+        return 'event time formatting is invalid'
+    }
+}
+
+// validate business identifier is uuid format
+export const validateEventBusiness = (value, isRequired) => {
+    // confirm that a value has been inputed
+    if (!value) { return isRequired ? 'a business name is required' : true; }
+
+    // create regex pattern for uuid format
+    const uuidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+
+    // check to see the input pattern matches the uuid formatting
+    if (uuidPattern.test(value)) {
+        return true
+    } else {
+        return 'business name is invalid'
+    }
 }

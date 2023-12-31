@@ -11,6 +11,7 @@ import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
+import { validateEventDate, validateEventTime, validateEventBusiness } from './utils/form.validations';
 
 const CreateEventFormStyles = styled.div`
     .imageError {
@@ -19,7 +20,7 @@ const CreateEventFormStyles = styled.div`
 `;
 
 const EventCreateForm = ({ business_id }) => {
-    const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
+    const { editImage, imagePreview, canvas } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
@@ -72,8 +73,8 @@ const EventCreateForm = ({ business_id }) => {
 
 
     const createNewEvent = async (event_data) => {
-        localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
+            localStorage.setItem('createEventForm', JSON.stringify(event_data));
             delete event_data['eventmedia']
 
             const formData = new FormData()
@@ -96,48 +97,36 @@ const EventCreateForm = ({ business_id }) => {
                 }
             })
 
-            const add_event_response = await createEvent(formData)
+            await createEvent(formData)
 
-            if (add_event_response.status === 201) {
-                // remove saved form data from localstorage
-                localStorage.removeItem('createEventForm')
-
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${add_event_response.data.eventname} has been created`
-                    }
-                })
-
-                setEditImage(false)
-                reset()
-
-                navigate(`/event/${add_event_response.data.event_id}`)
-            }
+            console.log('after the creatEvent')
+            reset()
+            console.log('after the reset')
 
         } catch (error) {
+            console.log('inside the error')
             // handles error for no canvas object for image upload
             if (error?.message === 'missing_image') {
                 setError('eventmedia', {
-                    message: 'Image required'
+                    message: 'an event image is required'
                 })
             }
 
             // handles events from event.response
-            else if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
+            else if (error?.response?.status === 400 || error?.response?.status === 404) {
+                if (error?.response?.data?.error?.type === 'server') {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                } else {
+                    setError(error?.response?.data?.error?.type, {
                         message: error?.response?.data?.error?.message
-                    }
-                })
-
-                setError(error?.response?.data?.error?.type, {
-                    message: error?.response?.data?.error?.message
-                })
-                return null;
+                    })
+                }
             }
             
             else {
@@ -149,7 +138,10 @@ const EventCreateForm = ({ business_id }) => {
     const handleClose = () => {
         // remove create event form save from localhost & go back
         localStorage.removeItem('createEventForm')
-        navigate(-1)
+        // reset the form
+        reset()
+        
+        navigate('/profile')
     }
 
 
@@ -164,14 +156,14 @@ const EventCreateForm = ({ business_id }) => {
                         {/* EVENT NAME */}
                         <div className='inputWrapper'>
                             <input {...register('eventname', {
-                                required: 'event name is required',
+                                required: 'an event name is required',
                                 minLength : {
                                     value: 4,
-                                    message: 'Event name must be at least 4 characters'
+                                    message: 'an event name must have at least 4 characters'
                                 },
                                 maxLength: {
                                     value: 49,
-                                    message: 'Event name must be less then 50 characters'
+                                    message: 'an event name must have less then 50 characters'
                                 }
                             })} type='text' onClick={() => clearErrors('eventname')} placeholder='Event name' />
                         </div>
@@ -184,6 +176,7 @@ const EventCreateForm = ({ business_id }) => {
 
                     </div>
                     {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
+                    {/* media_error is created by the shared validateImageFile from the response */}
                     {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div> : null}
 
                     {/* EVENT IMAGE PREVIEW RENDER */}
@@ -198,7 +191,8 @@ const EventCreateForm = ({ business_id }) => {
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventdate'><DateIcon /></label>
                         <input {...register('eventdate', {
-                            required: 'Date is required'
+                            required: 'an event date is required',
+                            validate: validateEventDate,
                         })} type='date' onClick={() => clearErrors('eventdate')} />
                     </div>
                     {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
@@ -207,7 +201,8 @@ const EventCreateForm = ({ business_id }) => {
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventstart'><TimeIcon /></label>
                         <input {...register('eventstart', {
-                            required: 'event start time is required'
+                            required: 'an event starting time is required',
+                            validate: validateEventTime,
                         })} type='time' onClick={() => clearErrors('eventstart')} />
                     </div>
                     {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
@@ -216,11 +211,11 @@ const EventCreateForm = ({ business_id }) => {
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventend'><TimeIcon /></label>
                         <input {...register('eventend', {
-                            required: 'event end time is required'
+                            required: 'an event ending time is required',
+                            validate: validateEventTime,
                         })} type='time' onClick={() => clearErrors('eventend')} />
                     </div>
                     {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
-                    {errors.time_format ? <div className='errormessage'>{errors.time_format?.message}</div> : null}
                     
                     {/* VENUE ID / EVENT LOCATION */}
                     <div className='inputWrapper'>
@@ -229,7 +224,7 @@ const EventCreateForm = ({ business_id }) => {
                             name='venue_id'
                             control={control}
                             defaultValue=""
-                            rules={{ required: 'event location / venue is required' }}
+                            rules={{ required: 'a business name is required', validate: validateEventBusiness }}
                             render={({ field }) => (
                                 <select {...field} onClick={() => clearErrors(['venue_id', 'role_rights'])}>
                                     <option value="" disabled>Select a venue...</option>
@@ -260,7 +255,7 @@ const EventCreateForm = ({ business_id }) => {
                             name='brand_id'
                             control={control}
                             defaultValue=""
-                            rules={{ required: 'branding business is required' }}
+                            rules={{ required: 'A business name is required' }}
                             render={({ field }) => (
                                 <select {...field} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
                                     <option value="" disabled>Select a brand...</option>
