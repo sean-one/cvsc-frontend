@@ -127,24 +127,39 @@ export const useUpdateEventMutation = () => {
 
     return useMutation(updateEvent, {
         onSuccess: ({ data }) => {
+            localStorage.removeItem('editEventForm')
+
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events'])
             queryClient.refetchQueries(['user_events', auth?.user?.id])
-        },
-        onError: (error) => {
+
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
+                    notification_type: 'SUCCESS',
+                    message: `${data?.eventname} has been successfully updated`
                 }
             })
 
-            if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt');
-                setAuth({});
-                navigate('/login')
+            navigate(`/event/${data?.event_id}`)
+        },
+        onError: (error) => {
+            if (error?.response?.status === 403) {
+                if (error?.response?.data?.error?.type === 'token') {
+                    localStorage.removeItem('jwt')
+                    setAuth({});
+                    navigate('/login')
+                } else {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                }
             }
+
         },
     })
 }

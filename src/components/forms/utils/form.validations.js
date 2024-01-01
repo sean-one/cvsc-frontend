@@ -117,3 +117,11 @@ export const validateEventBusiness = (value, isRequired) => {
         return 'business name is invalid'
     }
 }
+
+export const validateNONEmptyString = (value) => {
+    if (value.trim() === '') {
+        return 'please select a valid date'
+    } else {
+        return
+    }
+}

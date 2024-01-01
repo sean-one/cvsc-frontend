@@ -73,8 +73,8 @@ const EventCreateForm = ({ business_id }) => {
 
 
     const createNewEvent = async (event_data) => {
+        localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
-            localStorage.setItem('createEventForm', JSON.stringify(event_data));
             delete event_data['eventmedia']
 
             const formData = new FormData()
@@ -99,14 +99,11 @@ const EventCreateForm = ({ business_id }) => {
 
             await createEvent(formData)
 
-            console.log('after the creatEvent')
             reset()
-            console.log('after the reset')
 
         } catch (error) {
-            console.log('inside the error')
             // handles error for no canvas object for image upload
-            if (error?.message === 'missing_image') {
+            if (error?.message === 'missing_image' || (error?.response?.data?.error?.type === 'media_error')) {
                 setError('eventmedia', {
                     message: 'an event image is required'
                 })
@@ -176,7 +173,6 @@ const EventCreateForm = ({ business_id }) => {
 
                     </div>
                     {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
-                    {/* media_error is created by the shared validateImageFile from the response */}
                     {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div> : null}
 
                     {/* EVENT IMAGE PREVIEW RENDER */}

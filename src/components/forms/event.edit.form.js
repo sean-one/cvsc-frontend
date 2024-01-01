@@ -14,6 +14,7 @@ import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import AxiosInstance from '../../helpers/axios';
+import { validateEventDate, validateNONEmptyString } from './utils/form.validations';
 
 
 const EditEventFormStyles = styled.div`
@@ -54,15 +55,16 @@ const EventEditForm = () => {
     })
 
     const update_event = async (event_data) => {
+        console.log(event_data)
         localStorage.setItem('editEventForm', JSON.stringify(event_data))
         try {
             const formData = new FormData()
 
             // if eventmedia has a file set in formData, for some reason it does not show in dirtyFields
             if(canvas.current !== null) {
-                let event_media = setImageForForm(canvas)
+                let eventmediaUpload = setImageForForm(canvas)
 
-                formData.set('eventmedia', event_media)
+                formData.set('eventmedia', eventmediaUpload)
             }
 
             delete event_data['eventmedia']
@@ -84,36 +86,31 @@ const EventEditForm = () => {
                 }
             })
 
-            const edit_event_response = await updateEventMutation({ event_id: event_id, event_updates: formData })
-
-            if (edit_event_response.status === 201) {
-                localStorage.removeItem('editEventForm')
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${edit_event_response.data.eventname} has been updated`
-                    }
-                })
-
-                navigate(`/event/${event_id}`)
-            }
+            await updateEventMutation({ event_id: event_id, event_updates: formData })
 
         } catch (error) {
-            if (error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
+            if (error?.response?.status === 400 || error?.response?.status === 404) {
+                if (error?.response?.data?.error?.type === 'media_error') {
+                    setError('eventmedia', { message: error?.response?.data?.error?.message })
+                }
+
+                else if (error?.response?.data?.error?.type === 'server') {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                } else {
+                    setError(error?.response?.data?.error?.type, {
                         message: error?.response?.data?.error?.message
-                    }
-                })
-                
-                setError(error?.response?.data?.error?.type, {
-                    message: error?.response?.data?.error?.message
-                })
-                return null;
-            } else {
+                    })
+                }
+            }
+            
+            else {
+                console.log(error)
                 console.log(`uncaught error ${Object.keys(error)}`);
             }
         }
@@ -235,11 +232,11 @@ const EventEditForm = () => {
                             <input {...register('eventname', {
                                 minLength: {
                                     value: 4,
-                                    message: 'event name must be at least 4 characters'
+                                    message: 'an event name must have at least 4 characters'
                                 },
                                 maxLength: {
                                     value: 49,
-                                    message: 'event name is too long'
+                                    message: 'an event name must have less then 50 characters'
                                 }
                             })} type='text' onClick={() => clearErrors('eventname')} />
                         </div>
@@ -251,6 +248,8 @@ const EventEditForm = () => {
                         </label>
 
                     </div>
+                    {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
+                    {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div>: null}
 
                     {
                         editImage
@@ -271,9 +270,14 @@ const EventEditForm = () => {
                     {/* EVENT DATE */}
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventdate'><DateIcon /></label>
-                        <input {...register('eventdate')} type='date' onClick={() => clearErrors('eventdate')} />
-                        {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
+                        <input {...register('eventdate', {
+                            validate: {
+                                checkEmptyString: validateNONEmptyString,
+                                validateDateFormat: (value) => validateEventDate(value, false)
+                            }
+                        })} type='date' onClick={() => clearErrors('eventdate')} />
                     </div>
+                    {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
 
                     {/* EVENT START TIME */}
                     <div className='dateTimeInputWrapper'>
