@@ -55,7 +55,6 @@ const EventEditForm = () => {
     })
 
     const update_event = async (event_data) => {
-        console.log(event_data)
         localStorage.setItem('editEventForm', JSON.stringify(event_data))
         try {
             const formData = new FormData()
@@ -110,7 +109,6 @@ const EventEditForm = () => {
             }
             
             else {
-                console.log(error)
                 console.log(`uncaught error ${Object.keys(error)}`);
             }
         }
@@ -118,22 +116,7 @@ const EventEditForm = () => {
 
     const sendEventDelete = async () => {
         try {
-            const delete_event_response = await removeEventMutation(event_id)
-
-            if (delete_event_response?.status === 200) {
-                // remove editEventForm just incase it is saved to local storage
-                localStorage.removeItem('editEventForm')
-                
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${delete_event_response?.data?.eventname} has been deleted`
-                    }
-                })
-
-                navigate('/profile/events')
-            }
+            await removeEventMutation(event_id)
 
         } catch (error) {
             console.log(`uncaught error ${Object.keys(error)}`)

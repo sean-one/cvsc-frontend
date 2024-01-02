@@ -118,6 +118,7 @@ export const validateEventBusiness = (value, isRequired) => {
     }
 }
 
+// validate not an empty string - check for an empty string / used on input validation on non required fields
 export const validateNONEmptyString = (value) => {
     if (value.trim() === '') {
         return 'empty string is not allowed'

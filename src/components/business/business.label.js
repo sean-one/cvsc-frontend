@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
 import { RemoveBusinessIcon } from '../icons/siteIcons';
+import { useManagementRole } from '../../hooks/useRolesApi';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
@@ -57,6 +58,7 @@ const BusinessLabelStyles = styled.div`
 
 const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, business_name }) => {
     const { auth } = useAuth();
+    const { data: user_role, status: role_status } = useManagementRole(businessId)
     const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
     let navigate = useNavigate()
 
@@ -70,6 +72,11 @@ const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, busin
             console.log(error)
             return null
         }
+    }
+    
+    if ( role_status === 'success') {
+        console.log('this is the user role')
+        console.log(user_role)
     }
 
     const isCreator = () => auth?.user?.id === eventCreator
