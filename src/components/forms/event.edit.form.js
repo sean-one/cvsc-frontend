@@ -14,7 +14,7 @@ import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import AxiosInstance from '../../helpers/axios';
-import { validateEventDate, validateNONEmptyString } from './utils/form.validations';
+import { validateEventBusiness, validateEventDate, validateEventTime, validateNONEmptyString } from './utils/form.validations';
 
 
 const EditEventFormStyles = styled.div`
@@ -282,20 +282,32 @@ const EventEditForm = () => {
                     {/* EVENT START TIME */}
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventstart'><TimeIcon /></label>
-                        <input {...register('eventstart')} type='time' onClick={() => clearErrors('eventstart')} />
-                        {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
+                        <input {...register('eventstart', {
+                            validate: {
+                                checkEmptyString: validateNONEmptyString,
+                                validateTimeFormat: (value) => validateEventTime(value, false)
+                            }
+                        })} type='time' onClick={() => clearErrors('eventstart')} />
                     </div>
+                    {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
 
                     {/* EVENT END TIME */}
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventend'><TimeIcon /></label>
-                        <input {...register('eventend')} type='time' onClick={() => clearErrors('eventend')} />
-                        {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
+                        <input {...register('eventend', {
+                            validate: {
+                                checkEmptyString: validateNONEmptyString,
+                                validateTimeFormat: (value) => validateEventTime(value, false)
+                            }
+                        })} type='time' onClick={() => clearErrors('eventend')} />
                     </div>
+                    {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
 
                     {/* VENUE ID / EVENT LOCATION */}
                     <div className='inputWrapper'>
-                        <select {...register('venue_id')} onClick={() => clearErrors(['venue_id', 'role_rights'])}>
+                        <select {...register('venue_id', {
+                            validate: (value) => validateEventBusiness(value, false)
+                        })} onClick={() => clearErrors(['venue_id', 'role_rights'])}>
                             {
                                 venue_list.map(venue => (
                                     <option key={venue.id} value={venue.id}>{venue.business_name}</option>
@@ -314,7 +326,9 @@ const EventEditForm = () => {
 
                     {/* EVENT BUSINESS BRANDING */}
                     <div className='inputWrapper'>
-                        <select {...register('brand_id')} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                        <select {...register('brand_id', {
+                            validate: (value) => validateEventBusiness(value, false)
+                        })} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
                             {
                                 brand_list.map(brand => (
                                     <option key={brand.id} value={brand.id}>{brand.business_name}</option>

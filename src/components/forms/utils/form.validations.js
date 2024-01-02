@@ -120,7 +120,7 @@ export const validateEventBusiness = (value, isRequired) => {
 
 export const validateNONEmptyString = (value) => {
     if (value.trim() === '') {
-        return 'please select a valid date'
+        return 'empty string is not allowed'
     } else {
         return
     }
