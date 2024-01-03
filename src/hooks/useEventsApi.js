@@ -11,7 +11,7 @@ import useEventImagePreview from "./useEventImagePreview";
 const removeBusiness = async ({ event_id, business_id }) => { return await AxiosInstance.put(`/events/${event_id}/remove/${business_id}`) }
 export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient();
-    const { setAuth } = useAuth();
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
@@ -41,9 +41,7 @@ export const useRemoveEventBusinessMutation = () => {
             })
 
             if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt');
-                setAuth({});
-                navigate('/login')
+                sendToLogin()
             }
         },
     })
@@ -67,17 +65,14 @@ export const useBusinessEventsQuery = (business_id) => {
 // ['user_events', user_id]
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => {
-    const { setAuth } = useAuth()
-    let navigate = useNavigate()
+    const { sendToLogin } = useAuth()
 
     return useQuery(["user_events", user_id], () => getAllUserEvents(user_id), {
         staleTime: 60000,
         refetchOnMount: false,
         onError: (error) => {
             if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt')
-                setAuth({})
-                navigate('/login')
+                sendToLogin()
             }
         }
     })
@@ -122,7 +117,7 @@ const updateEvent = async ({ event_updates, event_id }) => { return await AxiosI
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient();
     const { dispatch } = useNotification();
-    const { auth, setAuth } = useAuth();
+    const { auth, sendToLogin } = useAuth();
     let navigate = useNavigate();
 
     return useMutation(updateEvent, {
@@ -146,9 +141,7 @@ export const useUpdateEventMutation = () => {
         onError: (error) => {
             if (error?.response?.status === 403) {
                 if (error?.response?.data?.error?.type === 'token') {
-                    localStorage.removeItem('jwt')
-                    setAuth({});
-                    navigate('/login')
+                    sendToLogin()
                 } else {
                     dispatch({
                         type: "ADD_NOTIFICATION",
@@ -169,7 +162,7 @@ export const useUpdateEventMutation = () => {
 const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient();
-    const { auth, setAuth } = useAuth();
+    const { auth, sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
@@ -194,9 +187,7 @@ export const useRemoveEventMutation = () => {
         onError: (error) => {
             if (error?.response?.status === 403) {
                 if (error?.response?.data?.error?.type === 'token') {
-                    localStorage.removeItem('jwt');
-                    setAuth({});
-                    navigate('/login');
+                    sendToLogin()
                 } else {
                     dispatch({
                         type: "ADD_NOTIFICATION",
@@ -230,7 +221,7 @@ export const useEventsQuery = () => {
 // refetch -> ['events'], ['business_events'], ['user_events']
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
-    const { auth, setAuth } = useAuth();
+    const { auth, sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
     const { setEditImage } = useEventImagePreview()
@@ -259,10 +250,7 @@ export const useCreateEventMutation = () => {
         onError: (error) => {
             if (error?.response?.status === 403) {
                 if (error?.response?.data?.error?.type === 'token') {
-                    localStorage.removeItem('jwt');
-                    setAuth({});
-
-                    navigate('/login');
+                    sendToLogin()
                 } else {
                     dispatch({
                         type: "ADD_NOTIFICATION",

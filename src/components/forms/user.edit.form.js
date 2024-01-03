@@ -11,7 +11,7 @@ import { setImageForForm } from '../../helpers/setImageForForm';
 import AxiosInstance from '../../helpers/axios';
 
 const UserEditForm =({ setEditView }) => {
-    const { auth, setAuth, logout_user } = useAuth()
+    const { auth, setAuth } = useAuth()
     const { dispatch } = useNotification()
     const { refetch } = useEventsQuery()
     const { editImage, canvas, imagePreview, setEditImage } = useImagePreview()
@@ -105,7 +105,7 @@ const UserEditForm =({ setEditView }) => {
             
         } catch (error) {
             if(error?.response?.status === 401) {
-                logout_user()
+                // logout_user()
                 
                 dispatch({
                     type:"ADD_NOTIFICATION",
@@ -156,7 +156,7 @@ const UserEditForm =({ setEditView }) => {
                 })
             }
 
-            logout_user()
+            // logout_user()
             refetch()
 
             navigate('/')
@@ -172,7 +172,7 @@ const UserEditForm =({ setEditView }) => {
                     }
                 })
 
-                logout_user()
+                // logout_user()
                 
                 refetch()
 

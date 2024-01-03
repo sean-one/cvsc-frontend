@@ -4,17 +4,25 @@ import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext({})
 
 export const AuthProvider = ({ children }) => {
-    const [ auth, setAuth ] = useState({})
+    const [ auth, setAuth ] = useState(null)
+    const isLoggedIn = auth != null;
     let navigate = useNavigate()
 
-    const logout_user = () => {
-        localStorage.clear()
-        setAuth({})
+    const sendToLogin = () => {
+        localStorage.removeItem('jwt')
+        setAuth(null)
         navigate('/login')
+    }
+    // logout_user
+    const user_logout = () => {
+        // localStorage.removeItem('jwt')
+        localStorage.clear()
+        setAuth(null)
+        navigate('/')
     }
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth, logout_user }}>
+        <AuthContext.Provider value={{ auth, setAuth, isLoggedIn, sendToLogin, user_logout }}>
             {children}
         </AuthContext.Provider>
     )

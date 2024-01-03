@@ -17,7 +17,7 @@ export const useManagementRole = (business_id) => {
         onError: (error) => {
             if (error?.response?.status === 401) {
                 localStorage.removeItem('jwt')
-                setAuth({})
+                setAuth(null)
             }
 
             if (error?.response?.status === 404) {
@@ -59,7 +59,7 @@ export const useUserBusinessRole = (business_id) => {
             // if token is not missing but is expired then the user will be cleared out
             if (error?.response?.status === 403) {
                 localStorage.removeItem('jwt')
-                setAuth({})
+                setAuth(null)
             }
         }
     })
@@ -69,15 +69,12 @@ export const useUserBusinessRole = (business_id) => {
 // ['business_roles', business_id]
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
 export const useBusinessRolesQuery = (business_id) => {
-    const { setAuth } = useAuth()
-    let navigate = useNavigate()
+    const { sendToLogin } = useAuth()
 
     return useQuery(['business_roles', business_id], () => getBusinessRoles(business_id), {
         onError: (error) => {
             if (error?.response?.status === 403) {
-                localStorage.removeItem('jwt')
-                setAuth({})
-                navigate('/login')
+                sendToLogin()
             }
         }
     })
@@ -87,16 +84,13 @@ export const useBusinessRolesQuery = (business_id) => {
 // ['user_roles', user_id]
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
 export const useUserRolesQuery = (user_id) => {
-    const { setAuth } = useAuth();
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
-    let navigate = useNavigate();
 
     return useQuery(['user_roles', user_id], () => getUserRoles(user_id), {
         onError: (error) => {
             if (error?.response?.status === 403) {
-                localStorage.removeItem('jwt');
-                setAuth({});
-                navigate('/login');
+                sendToLogin()
             }
 
             if (error?.response?.status === 400) {
@@ -163,10 +157,9 @@ export const useCreateRoleMutation = () => {
 // refetch -> ['roles'], ['business_roles', data.business_id], ['user_roles', data.user_id], ['user_business_role', data.user_id]
 const roleAction = async ({ role_id, action_type }) => { return await AxiosInstance.put(`/roles/${role_id}/actions`, { action_type: action_type }) }
 export const useRoleAction = () => {
-    const { setAuth } = useAuth();
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
-    let navigate = useNavigate();
 
     return useMutation(roleAction, {
         onSuccess: ({ data }) => {
@@ -186,9 +179,7 @@ export const useRoleAction = () => {
         },
         onError: (error) => {
             if (error?.response?.status === 403) {
-                localStorage.removeItem('jwt')
-                setAuth({})
-                navigate('/login')
+                sendToLogin()
             }
 
             else if (error?.response?.status === 400 || error?.response?.status === 404) {
@@ -221,10 +212,9 @@ export const useRoleAction = () => {
 // refetch -> ['user_roles', data.user_id], ['business_roles', data.business_id]
 const deleteRole = async (role_id) => { return await AxiosInstance.delete(`/roles/${role_id}`) }
 export const useRoleDelete = () => {
-    const { setAuth } = useAuth();
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
-    let navigate = useNavigate();
 
     return useMutation(deleteRole, {
         onSuccess: ({ data }) => {
@@ -249,9 +239,7 @@ export const useRoleDelete = () => {
         onError: (error) => {
             
             if (error?.response?.status === 403) {
-                localStorage.removeItem('jwt')
-                setAuth({})
-                navigate('/login')
+                sendToLogin()
             }
 
             dispatch({

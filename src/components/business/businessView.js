@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAuth from '../../hooks/useAuth';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
@@ -122,6 +123,7 @@ const BusinessViewStyles = styled.div`
 `;
 
 const BusinessView = () => {
+    const { isLoggedIn } = useAuth()
     let { business_id } = useParams()
 
     const { data: business, status } = useBusinessQuery(business_id)
@@ -138,7 +140,9 @@ const BusinessView = () => {
                             { (!business?.data?.active_business) && <InactiveBusiness /> }
                             <div className='headerText'>{business?.data?.business_name?.toUpperCase()}</div>
                         </div>
-                        <BusinessAdminControls business={business?.data} />
+                        {
+                            isLoggedIn ? <BusinessAdminControls business={business?.data} /> : null
+                        }
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&

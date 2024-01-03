@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
 import { RemoveBusinessIcon } from '../icons/siteIcons';
-import { useManagementRole } from '../../hooks/useRolesApi';
+import { useUserBusinessRole } from '../../hooks/useRolesApi';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
@@ -58,8 +58,10 @@ const BusinessLabelStyles = styled.div`
 
 const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, business_name }) => {
     const { auth } = useAuth();
-    const { data: user_role, status: role_status } = useManagementRole(businessId)
+    const { data: user_role, status: role_status, error: role_error } = useUserBusinessRole(businessId)
     const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
+    
+    let business_user_role = {}
     let navigate = useNavigate()
 
     const removeBusinessFromEvent = async (e) => {
@@ -72,6 +74,11 @@ const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, busin
             console.log(error)
             return null
         }
+    }
+
+    if (role_status === 'error') {
+        console.log('there was an error')
+        console.log(role_error)
     }
     
     if ( role_status === 'success') {

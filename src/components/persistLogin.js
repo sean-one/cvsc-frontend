@@ -19,7 +19,7 @@ const PersistLogin = () => {
                 await refresh()
             }
             catch (err) {
-                setAuth({})
+                setAuth(null)
             }
             finally {
                 isMounted && setIsLoading(false)

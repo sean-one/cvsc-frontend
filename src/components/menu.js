@@ -39,7 +39,7 @@ const MenuStyles = styled.div`
 `;
 
 const Menu = ({ toggle }) => {
-    const { auth, logout_user } = useAuth()
+    const { auth, user_logout, isLoggedIn } = useAuth()
     let navigate = useNavigate()
 
     const navMenuClick = (link) => {
@@ -52,30 +52,29 @@ const Menu = ({ toggle }) => {
         
         if(logoutResponse.status === 204) {
             toggle(false)
-            logout_user()
-            navigate('/')
+            user_logout()
         }
     }
 
     const menuItems = [
         { label: 'Calendar', link: '/' },
         {
-            label: () => auth?.user ? 'Profile' : 'Register',
-            link: `${auth?.user ? '/profile' : '/register'}`
+            label: () => isLoggedIn ? 'Profile' : 'Register',
+            link: `${isLoggedIn ? '/profile' : '/register'}`
         },
         {
             label: 'Create Business',
             link: '/business/create',
-            condition: () => auth?.user
+            condition: () => isLoggedIn
         },
         {
             label: 'Create Event',
             link: '/event/create',
-            condition: () => auth?.user && auth?.roles.some(role => role.active_role && role.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT)
+            condition: () => isLoggedIn && auth?.roles.some(role => role.active_role && role.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT)
         },
         {
-            label: () => auth?.user ? 'Logout' : 'Login',
-            action: () => auth?.user ? logOutUser : () => navMenuClick('/login')
+            label: () => isLoggedIn ? 'Logout' : 'Login',
+            action: () => isLoggedIn ? logOutUser : () => navMenuClick('/login')
         }
     ];
 
