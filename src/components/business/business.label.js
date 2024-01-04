@@ -4,9 +4,8 @@ import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
-import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
-import { RemoveBusinessIcon } from '../icons/siteIcons';
-import { useUserBusinessRole } from '../../hooks/useRolesApi';
+
+import RemoveEventBusinessButton from '../buttons/removeEventBusinessButton';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
@@ -57,43 +56,9 @@ const BusinessLabelStyles = styled.div`
 
 
 const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, business_name }) => {
-    const { auth } = useAuth();
-    const { data: user_role, status: role_status, error: role_error } = useUserBusinessRole(businessId)
-    const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
+    const { isLoggedIn } = useAuth();
     
-    let business_user_role = {}
     let navigate = useNavigate()
-
-    const removeBusinessFromEvent = async (e) => {
-        try {
-            e.stopPropagation();
-
-            await removeEventBusiness({ event_id: eventId, business_id: businessId })
-
-        } catch (error) {
-            console.log(error)
-            return null
-        }
-    }
-
-    if (role_status === 'error') {
-        console.log('there was an error')
-        console.log(role_error)
-    }
-    
-    if ( role_status === 'success') {
-        console.log('this is the user role')
-        console.log(user_role)
-    }
-
-    const isCreator = () => auth?.user?.id === eventCreator
-
-    // Check if auth.roles contains event.brand_id or event.venue_id and has a certain role_type
-    const isManagement = () => {
-        return auth?.roles && auth?.roles.some(role =>
-            (role.business_id === businessId) && role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role === true
-        );
-    };
 
 
     return (
@@ -104,13 +69,10 @@ const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, busin
                         <img className='businessLogo' src={image_link(business_logo)} alt={`${business_name} logo`} />
                     </div>
                     <div className='businessName'>{business_name}</div>
+                    {
+                        isLoggedIn && <RemoveEventBusinessButton eventId={eventId} businessId={businessId} eventCreator={eventCreator} />
+                    }
                 </div>
-                {
-                    (!isCreator() && isManagement()) &&
-                        <div onClick={(e) => removeBusinessFromEvent(e)}>
-                            <RemoveBusinessIcon />
-                        </div>
-                }
             </div>
         </BusinessLabelStyles>
     )

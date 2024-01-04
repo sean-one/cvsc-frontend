@@ -92,7 +92,7 @@ const EventSmallPreviewStyles = styled.div`
 `;
 
 const EventSmallPreview = ({ event }) => {
-    const { auth } = useAuth()
+    const { auth, isLoggedIn } = useAuth()
     let navigate = useNavigate()
 
     if (!event) { return null; }
@@ -104,7 +104,7 @@ const EventSmallPreview = ({ event }) => {
         <EventSmallPreviewStyles>
             <div className={`${event?.active_event ? 'sectionContainer' : 'eventSmallPreviewInactive'} eventSmallPreviewWrapper`} onClick={() => navigate(`/event/${event.event_id}`)}>
                 {
-                    (Object.keys(auth).length > 0) &&
+                    (isLoggedIn) &&
                         <div className='eventSmallPreviewAdminControls'>
                             {
                                 (isCreator()) && <div onClick={(e) => {

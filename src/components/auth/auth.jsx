@@ -3,7 +3,7 @@ import { useLocation, Navigate, Outlet } from "react-router";
 import useAuth from "../../hooks/useAuth";
 
 const AuthRoute = () => {
-    const { auth } = useAuth()
+    const { isLoggedIn } = useAuth()
     const { pathname } = useLocation()
 
     const getCookie = (name) => {
@@ -13,10 +13,9 @@ const AuthRoute = () => {
         return null;
     }
 
-    const isLoggedIn = (Object.keys(auth).length > 0) && getCookie('jwt')
 
     return (
-        (isLoggedIn)
+        (isLoggedIn && getCookie('jwt'))
             ? <Outlet />
             : <Navigate to="/login" state={{ from: pathname }} replace />
     )

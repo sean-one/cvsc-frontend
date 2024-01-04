@@ -32,16 +32,24 @@ export const useRemoveEventBusinessMutation = () => {
             navigate(-1)
         },
         onError: (error) => {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-
-            if (error?.response?.status === 401) {
+            if (error?.response?.data?.error?.type === 'token') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+                
                 sendToLogin()
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
             }
         },
     })
