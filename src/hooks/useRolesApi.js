@@ -65,7 +65,7 @@ export const useUserBusinessRole = (business_id) => {
         },
         retry: (failureCount, error) => {
             // Don't retry if the error status is 404
-            if (error?.response?.status === 404) {
+            if (error?.response?.status === 404 || error?.response?.status === 400) {
                 return false;
             }
 

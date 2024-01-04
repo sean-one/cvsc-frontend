@@ -22,6 +22,10 @@ const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
         return null;
     }
 
+    // if (role_status === 'error') {
+    //     return null;
+    // }
+
     const removeBusinessFromEvent = async (e) => {
         try {
             e.stopPropagation()
@@ -33,11 +37,14 @@ const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
         }
     }
 
-    
+    const userRoleType = parseInt(user_business_role?.data?.role_type, 10);
+    const managerAccountThreshold = parseInt(process.env.REACT_APP_MANAGER_ACCOUNT, 10);
+
+
     return (
         <RemoveEventBusinessButtonStyles>
             {
-                (user_business_role?.data?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT || isCreator)
+                ((userRoleType >= managerAccountThreshold) || isCreator())
                     ? <div className='removeBusinessIconWrapper' onClick={(e) => removeBusinessFromEvent(e)}>
                         <RemoveBusinessIcon />
                     </div>
