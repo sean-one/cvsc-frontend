@@ -95,24 +95,30 @@ export const useBusinessRolesQuery = (business_id) => {
 // ['user_roles', user_id]
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
 export const useUserRolesQuery = (user_id) => {
-    const { sendToLogin } = useAuth();
-    const { dispatch } = useNotification();
+    // const { sendToLogin } = useAuth();
+    // const { dispatch } = useNotification();
 
     return useQuery(['user_roles', user_id], () => getUserRoles(user_id), {
+        onSuccess: ({ data }) => {
+            console.log('success')
+            console.log(data)
+        },
         onError: (error) => {
-            if (error?.response?.status === 403) {
-                sendToLogin()
-            }
+            console.log('error')
+            console.log(error)
+            // if (error?.response?.status === 403) {
+            //     sendToLogin()
+            // }
 
-            if (error?.response?.status === 400) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-            }
+            // if (error?.response?.status === 400) {
+            //     dispatch({
+            //         type: "ADD_NOTIFICATION",
+            //         payload: {
+            //             notification_type: 'ERROR',
+            //             message: error?.response?.data?.error?.message
+            //         }
+            //     })
+            // }
         }
     })
 }
