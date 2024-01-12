@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
@@ -95,35 +95,48 @@ export const useBusinessRolesQuery = (business_id) => {
 // ['user_roles', user_id]
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
 export const useUserRolesQuery = (user_id) => {
-    // const { sendToLogin } = useAuth();
-    // const { dispatch } = useNotification();
+    const { sendToLogin } = useAuth();
+    const { dispatch } = useNotification();
+    let { pathname } = useLocation();
 
     return useQuery(['user_roles', user_id], () => getUserRoles(user_id), {
-        onSuccess: ({ data }) => {
-            console.log('success')
-            console.log(data)
-        },
+        // staleTime: Infinity,
+        // refetchOnWindowFocus: false,
         onError: (error) => {
             console.log('error')
-            console.log(error)
-            // if (error?.response?.status === 403) {
-            //     sendToLogin()
-            // }
+            if (error?.response?.data?.error?.type === 'token') {
+                // 401 - no token (returns as 'token' type)
+                // 403 - token expired / token invalid (return as ‘token’ type)
+                if (pathname.includes('profile')) {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload : {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
 
-            // if (error?.response?.status === 400) {
-            //     dispatch({
-            //         type: "ADD_NOTIFICATION",
-            //         payload: {
-            //             notification_type: 'ERROR',
-            //             message: error?.response?.data?.error?.message
-            //         }
-            //     })
-            // }
+                    sendToLogin()
+                    
+                }
+            } else if (error?.response?.status === 400) {
+                // 400 - bad request, improper formatting (returns as 'user_id' or ‘server’ type)
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            } else {
+                // fallback for uncaught error
+                console.log(error?.response)
+            }
         }
     })
 }
 
-// role.request - CREATES NEW ROLE REQUEST
+// role.request - creates a new role request
 // refetch -> ['business_roles', business_id], ['user_roles', user_id]
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/businesses/${business_id}/role-requests`) }
 export const useCreateRoleMutation = () => {

@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
-import useNotification from '../../hooks/useNotification';
 import { useUserRolesQuery } from '../../hooks/useRolesApi';
 
 const ProfileMenuStyles = styled.div`
@@ -37,23 +36,12 @@ const ProfileMenuStyles = styled.div`
 
 const ProfileMenu = () => {
     const { auth } = useAuth();
-    const { dispatch } = useNotification();
-    const { data: user_roles_response, status: user_roles_status, error: user_roles_error } = useUserRolesQuery(auth?.user?.id)
+    const { data: user_roles_response, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
     const { pathname } = useLocation()
     let user_roles = []
 
-    if (user_roles_status === 'error') {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: user_roles_error?.response?.data?.error?.message
-            }
-        })
-    }
-
     if (user_roles_status === 'success') {
-        console.log('did that shit')
+        user_roles = user_roles_response?.data
     }
 
     let navigate = useNavigate()

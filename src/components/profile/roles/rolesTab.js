@@ -5,7 +5,7 @@ import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import RoleRequest from '../../forms/role.request';
 import UserRoles from './user.roles';
 import LoadingSpinner from '../../loadingSpinner';
-import ServerReturnError from '../../serverReturnError';
+// import ServerReturnError from '../../serverReturnError';
 
 
 const RolesTab = () => {
@@ -17,9 +17,9 @@ const RolesTab = () => {
         return <LoadingSpinner />
     }
 
-    if (status === 'error') {
-        return <ServerReturnError />
-    }
+    // if (status === 'error') {
+    //     return <ServerReturnError />
+    // }
     
     userRoles = roles?.data
 

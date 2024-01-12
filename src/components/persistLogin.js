@@ -9,7 +9,7 @@ import LoadingSpinner from './loadingSpinner';
 const PersistLogin = () => {
     const [ isLoading, setIsLoading ] = useState(true)
     const refresh = useRefreshToken()
-    const { auth, setAuth } = useAuth()
+    const { auth, isLoggedIn, setAuth } = useAuth()
 
     useEffect(() => {
         let isMounted = true
@@ -26,11 +26,15 @@ const PersistLogin = () => {
             }
         }
 
-        !auth?.user?.accessToken ? verifyRefreshToken() : setIsLoading(false)
+        if (isLoggedIn && !auth?.user?.accessToken) {
+            verifyRefreshToken()
+        } else {
+            setIsLoading(false)
+        }
         
         return () => isMounted = false
         // eslint-disable-next-line
-    }, [])
+    }, [isLoggedIn, auth])
 
     if (isLoading) {
         return <LoadingSpinner />
