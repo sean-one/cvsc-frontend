@@ -68,17 +68,29 @@ export const useBusinessManagement = () => {
 
     return useQuery(['business_management', auth?.user?.id], getManagersBusinesses, {
         onError: (error) => {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
 
-            if (error?.response?.status === 403 || error?.response?.status === 401) {
                 sendToLogin()
+            } else  {
+                // 400, 404 - type: 'server'
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+                
             }
+
         }
     })
 }

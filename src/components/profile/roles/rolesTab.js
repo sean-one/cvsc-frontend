@@ -5,7 +5,6 @@ import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import RoleRequest from '../../forms/role.request';
 import UserRoles from './user.roles';
 import LoadingSpinner from '../../loadingSpinner';
-// import ServerReturnError from '../../serverReturnError';
 
 
 const RolesTab = () => {
