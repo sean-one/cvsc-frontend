@@ -103,7 +103,6 @@ export const useUserRolesQuery = (user_id) => {
         // staleTime: Infinity,
         // refetchOnWindowFocus: false,
         onError: (error) => {
-            console.log('error')
             if (error?.response?.data?.error?.type === 'token') {
                 // 401 - no token (returns as 'token' type)
                 // 403 - token expired / token invalid (return as ‘token’ type)
@@ -140,27 +139,26 @@ export const useUserRolesQuery = (user_id) => {
 // refetch -> ['business_roles', business_id], ['user_roles', user_id]
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/businesses/${business_id}/role-requests`) }
 export const useCreateRoleMutation = () => {
-    const { auth } = useAuth();
+    const { auth, sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
-    let navigate = useNavigate();
 
     return useMutation(createRoleRequest, {
-        onSuccess: (data) => {
+        onSuccess: ({data}) => {
 
-            queryClient.refetchQueries(['business_roles', data?.data?.business_id])
+            queryClient.refetchQueries(['business_roles', data?.business_id])
             queryClient.refetchQueries(['user_roles', auth?.user?.id])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: 'your request has been submitted for approval'
+                    message: `a role request for ${data.business_name} has been sent`
                 }
             })
         },
         onError: (error) => {
-            if (error?.response?.status === 403) {
+            if (error?.response?.data?.error?.type === 'token') {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -169,7 +167,7 @@ export const useCreateRoleMutation = () => {
                     }
                 })
 
-                navigate('/login')
+                sendToLogin()
             } else {
                 dispatch({
                     type: "ADD_NOTIFICATION",

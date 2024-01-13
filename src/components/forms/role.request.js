@@ -15,7 +15,7 @@ const RoleRequest = ({ user_roles }) => {
     const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
         mode: 'onBlur',
     });
-    
+
     if(status === 'loading') { return <LoadingSpinner /> }
 
     // filter out businesses that are not currently excepting request
@@ -26,10 +26,10 @@ const RoleRequest = ({ user_roles }) => {
     const roleCreate = async (data) => {
         try {
             if(!data.business_id) return
-    
             await createRole(data.business_id)
-
+            reset()   
         } catch (error) {
+            console.log('ERROR!')
             console.log(error)
         } finally {
             reset()

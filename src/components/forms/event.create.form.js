@@ -251,7 +251,7 @@ const EventCreateForm = ({ business_id }) => {
                             name='brand_id'
                             control={control}
                             defaultValue=""
-                            rules={{ required: 'A business name is required' }}
+                            rules={{ required: 'A business name is required', validate: validateEventBusiness }}
                             render={({ field }) => (
                                 <select {...field} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
                                     <option value="" disabled>Select a brand...</option>

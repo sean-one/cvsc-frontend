@@ -16,12 +16,8 @@ const RolesTab = () => {
     if (status === 'loading') {
         return <LoadingSpinner />
     }
-
-    // if (status === 'error') {
-    //     return <ServerReturnError />
-    // }
     
-    userRoles = roles?.data
+    userRoles = roles?.data || []
 
 
     return (
@@ -30,9 +26,8 @@ const RolesTab = () => {
             
             {/* current user roles */}
             {
-                (userRoles.length > 0)
-                    ? <UserRoles roles={userRoles} />
-                    : <div>no roles to show</div>
+                (userRoles.length > 0) &&
+                    <UserRoles roles={userRoles} />
                 }
         </div>
     )

@@ -9,16 +9,7 @@ import useNotification from "./useNotification";
 // ['businesses']
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
 export const useBusinessesQuery = () => {
-    const { sendToLogin } = useAuth();
-
-    return useQuery(['businesses'], getBusinesses, {
-        refetchOnMount: false,
-        onError: (error) => {
-            if (error?.response?.status === 401) {
-                sendToLogin();
-            }
-        }
-    })
+    return useQuery(['businesses'], getBusinesses, { refetchOnMount: false })
 }
 
 // business.create.form - CREATE BUSINESS
