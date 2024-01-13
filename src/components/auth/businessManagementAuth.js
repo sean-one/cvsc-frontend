@@ -1,19 +1,30 @@
-import React from 'react';
-import { useParams } from "react-router";
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from "react-router";
 
-import { useManagementRole } from "../../hooks/useRolesApi";
+import useAuth from '../../hooks/useAuth';
+import { useUserRolesQuery } from "../../hooks/useRolesApi";
 
 const BusinessManagementAuth = ({ children }) => {
+    const { auth } = useAuth();
     const { business_id } = useParams()
-    const { data: user_role, status: role_status } = useManagementRole(business_id)
+    const { data: user_roles, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
 
-    if (role_status === 'loading') {
+    let navigate = useNavigate();
+    
+    useEffect(() => {
+        if (user_roles_status === 'error') {
+            navigate('/profile')
+        }
+
+    }, [navigate, user_roles_status])
+
+    if (user_roles_status === 'loading') {
         return (
             <div>loading...</div>
             )
     }
 
-    const user_business_role = user_role?.data
+    const user_business_role = user_roles?.data.find(role => role.business_id === business_id && role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role === true)
     const childWithProps = React.cloneElement(children, { userBusinessRole: user_business_role })
 
 

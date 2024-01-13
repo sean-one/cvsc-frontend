@@ -7,49 +7,6 @@ import useNotification from "./useNotification";
 
 const getUserBusinessRole = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}/user-role`) }
 
-// using getUserBusinessRole - returns a single business management or admin role for a user
-// ['user_management_role, business_id, auth.user.id]
-export const useManagementRole = (business_id) => {
-    const { auth, setAuth } = useAuth()
-    let navigate = useNavigate()
-    const { dispatch } = useNotification()
-
-    // 404 - no role found
-    return useQuery(['user_management_role', business_id, auth?.user?.id], () => getUserBusinessRole(business_id), {
-        onError: (error) => {
-            if (error?.response?.status === 401) {
-                localStorage.removeItem('jwt')
-                setAuth(null)
-            }
-
-            if (error?.response?.status === 404) {
-                navigate('/profile')
-            }
-
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-        },
-        onSuccess: (data) => {
-            if (data?.data?.role_type < process.env.REACT_APP_MANAGER_ACCOUNT) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: 'invalid business role'
-                    }
-                })
-
-                navigate('/profile')
-            }
-        }
-    })
-}
-
 // using getUserBusinessRole - returns a single business role for a user
 // ['user_business_role', business_id, auth.user.id]
 export const useUserBusinessRole = (business_id) => {
@@ -182,7 +139,7 @@ export const useCreateRoleMutation = () => {
 }
 
 // aprrove.role, upgrade.role, downgrade role
-// refetch -> ['roles'], ['business_roles', data.business_id], ['user_roles', data.user_id], ['user_business_role'], ['user_management_role']
+// refetch -> ['roles'], ['business_roles', data.business_id], ['user_roles', data.user_id], ['user_business_role']
 const roleAction = async ({ role_id, action_type }) => { return await AxiosInstance.put(`/roles/${role_id}/actions`, { action_type: action_type }) }
 export const useRoleAction = () => {
     const { sendToLogin } = useAuth();
@@ -196,7 +153,6 @@ export const useRoleAction = () => {
             queryClient.refetchQueries(['business_roles', data?.business_id])
             queryClient.refetchQueries(['user_roles', data?.user_id])
             queryClient.refetchQueries(['user_business_role'])
-            queryClient.refetchQueries(['user_management_role'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
