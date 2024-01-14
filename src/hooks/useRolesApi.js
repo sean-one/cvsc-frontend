@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
@@ -38,11 +38,30 @@ export const useUserBusinessRole = (business_id) => {
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
 export const useBusinessRolesQuery = (business_id) => {
     const { sendToLogin } = useAuth()
+    const { dispatch } = useNotification();
 
     return useQuery(['business_roles', business_id], () => getBusinessRoles(business_id), {
         onError: (error) => {
-            if (error?.response?.status === 403) {
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
                 sendToLogin()
+            } else {
+                // 400 - type: 'business_id', 400, 404 - type: 'server'
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
             }
         }
     })

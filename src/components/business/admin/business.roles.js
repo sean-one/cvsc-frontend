@@ -1,16 +1,16 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
-import ServerReturnError from '../../serverReturnError';
 import InactiveRoles from './rolesList/inactive.roles';
 import PendingRoles from './rolesList/pending.roles';
 import CreatorRoles from './rolesList/creator.roles';
 import ManagerRoles from './rolesList/manager.roles';
 
 const filterRoles = (roles, user_id) => {
+    if (roles === undefined) { roles = [] }
     const user_removed_roles = roles.filter(role => role.user_id !== user_id);
 
     return {
@@ -25,17 +25,21 @@ const filterRoles = (roles, user_id) => {
 const BusinessRoles = () => {
     const { auth } = useAuth();
     let { business_id } = useParams();
-    const { data: business_roles, status } = useBusinessRolesQuery(business_id);
+    const { data: business_roles, status: business_roles_status } = useBusinessRolesQuery(business_id);
 
-    if (status === 'loading') {
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        if (business_roles_status === 'error') {
+            navigate('/profile')
+        }
+    }, [navigate, business_roles_status])
+
+    if (business_roles_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if (status === 'error') {
-        return <ServerReturnError return_type='business user roles'/>
-    }
-
-    const { inactive, pending, creator, manager } = filterRoles(business_roles.data, auth.user.id)
+    const { inactive, pending, creator, manager } = filterRoles(business_roles?.data, auth.user.id)
     
 
     return (
