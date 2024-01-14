@@ -238,18 +238,29 @@ export const useRoleDelete = () => {
             })
         },
         onError: (error) => {
-            
-            if (error?.response?.status === 403) {
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
                 sendToLogin()
+            } else {
+                // 400 - type: 'role_id' or 'server', 404 - type: 'server'
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
             }
 
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
             
         }
     })
