@@ -13,11 +13,7 @@ import LoadingSpinner from '../loadingSpinner';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import { validateEventDate, validateEventTime, validateEventBusiness } from './utils/form.validations';
 
-const CreateEventFormStyles = styled.div`
-    .imageError {
-        text-align: right;
-    }
-`;
+const CreateEventFormStyles = styled.div``;
 
 const EventCreateForm = ({ business_id }) => {
     const { editImage, imagePreview, canvas } = useEventImagePreview()

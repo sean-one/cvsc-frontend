@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components'
 
+import useNotification from '../../hooks/useNotification';
 import { businessTypeList, emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useImagePreview from '../../hooks/useImagePreview';
@@ -19,6 +20,7 @@ const BusinessCreateFormStyles = styled.div`
 `;
 
 const BusinessCreateForm = () => {
+    const { dispatch } = useNotification();
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
 
@@ -94,26 +96,38 @@ const BusinessCreateForm = () => {
             }
 
         } catch (error) {
-            console.log(error)
             // missing required business branding logo image
             if (error.message === 'missing_image') {
                 setError('business_avatar', {
-                    message: 'Business branding (logo) is required'
+                    message: 'a business logo is required to create a new business'
                 }, { shouldFocus: true })
             }
             // business type was venue or both but did not include required address components
             else if (error.message === 'location_required') {
                 setError('formatted_address', {
-                    message: 'Business address required for venue business type'
+                    message: 'a business address is required for venue or both business types'
                 })
             }
             // form data is incorrectly formatted, missing, or invalid 
-            else if (error.response.status === 400) {
-                setError(`${error.response.data.error.type}`, {
-                    message: error.response.data.error.message
-                }, { shouldFocus: true })
+            else if (error?.response?.status === 400 || error?.response?.status === 409) {
+                if (error?.response?.data?.error?.type === 'server') {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                } else if (error?.response?.data?.error?.type === 'media_error') {
+                    setError('business_avatar', {
+                        message: error.response.data.error.message
+                    }, { shouldFocus: true })
+                } else {
+                    setError(`${error.response.data.error.type}`, {
+                        message: error.response.data.error.message
+                    }, { shouldFocus: true })
+                } 
             }
-
             else { console.log(`uncaught error: ${error}`) }
         }
     }
@@ -186,7 +200,7 @@ const BusinessCreateForm = () => {
                         </label>
                     </div>
                     {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
-                    {errors.business_avatar ? <div className='errormessage'>{errors.business_avatar?.message}</div> : null}
+                    {errors.business_avatar ? <div className='errormessage imageError'>{errors.business_avatar?.message}</div> : null}
 
                     {/* BUSINESS DESCRIPTION */}
                     <div className='inputWrapper'>
@@ -213,7 +227,7 @@ const BusinessCreateForm = () => {
                             defaultValue=""
                             rules={{ required: 'business type is required', pattern: { value: businessTypeList, message: 'invalid business type'}}}
                             render={({ field }) => (
-                                <select {...field} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                                <select {...field} onClick={() => clearErrors(['business_type'])}>
                                     <option value="" disabled>Select business type...</option>
                                     <option value='brand'>Brand</option>
                                     <option value='venue'>Dispensary</option>

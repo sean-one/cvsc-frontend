@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -126,9 +126,16 @@ const BusinessView = () => {
     const { isLoggedIn } = useAuth()
     let { business_id } = useParams()
 
-    const { data: business, status } = useBusinessQuery(business_id)
+    let navigate = useNavigate();
+    const { data: business, status: business_status } = useBusinessQuery(business_id)
     
-    if (status === 'loading') { return <LoadingSpinner /> }
+    useEffect(() => {
+        if (business_status === 'error') {
+            navigate('/')
+        }
+    }, [navigate, business_status])
+
+    if (business_status === 'loading') { return <LoadingSpinner /> }
     
     
     return (

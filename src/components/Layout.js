@@ -320,6 +320,10 @@ const Styles = styled.div`
         color: var(--error-color);
     }
 
+    .imageError {
+        text-align: right;
+    }
+
     .formButtonWrapper {
         display: flex;
         justify-content: space-around;

@@ -21,7 +21,7 @@ export const useCreateBusinessMutation = () => {
     const queryClient = useQueryClient();
 
     return useMutation(createBusiness, {
-        onSuccess: (data) => {
+        onSuccess: ({data}) => {
             // remove saved form from local storage
             localStorage.removeItem('createBusinessForm');
             
@@ -36,16 +36,14 @@ export const useCreateBusinessMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.data?.business_name} has been created`
+                    message: `${data?.business_name} has been created`
                 }
             })
+
         },
         onError: (error) => {
-            if (error?.response?.status === 403) {
-                sendToLogin()
-            }
-
-            if (error?.response?.status === 400 || error?.response?.status === 404) {
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -53,8 +51,10 @@ export const useCreateBusinessMutation = () => {
                         message: error?.response?.data?.error?.message
                     }
                 })
+
+                sendToLogin()
             }
-            console.log(error)
+            // 400 - type: *path, 'media_error', 'server' & 409 - type: 'business_name' handled on component
         },
     })
 }
@@ -100,10 +100,10 @@ export const useBusinessManagement = () => {
 const getBusiness = async (business_id) => { return await AxiosInstance.get(`/businesses/${business_id}`) }
 export const useBusinessQuery = (business_id) => {
     const { dispatch } = useNotification()
-    let navigate = useNavigate()
 
     return useQuery(['businesses', business_id], () => getBusiness(business_id), {
         onError: (error) => {
+            // 400 - type: 'business_id'
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -111,8 +111,6 @@ export const useBusinessQuery = (business_id) => {
                     message: error?.response?.data?.error?.message
                 }
             })
-
-            navigate('/');
         }
     })
 }

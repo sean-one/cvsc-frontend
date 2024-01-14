@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -56,46 +56,51 @@ const BusinessAdminViewStyles = styled.div`
 
 const BusinessAdminView = ({ userBusinessRole }) => {
     const { business_id } = useParams();
-    const { data, status } = useBusinessQuery(business_id);
-    let business = {};
+    const { data: business, status: business_status } = useBusinessQuery(business_id);
+    let business_data = {};
 
     let navigate = useNavigate();
 
-    // if useBusinessQuery returns an error api navigates to root
-    if (status === 'loading') {
+    useEffect(() => {
+        if (business_status === 'error') {
+            navigate('/')
+        }
+    }, [navigate, business_status])
+    
+    if (business_status === 'loading') {
         return <LoadingSpinner />
     }
     
-    business = data.data
+    business_data = business?.data || {}
 
 
     return (
         <BusinessAdminViewStyles>
             <div className='sectionContainer removeBorder'>
-                <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business.business_name}</div>
+                <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data.business_name}</div>
                 {
-                    (business?.formatted_address !== null) &&
-                        <div className='subheaderText'>{business?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
+                    (business_data?.formatted_address !== null) &&
+                        <div className='subheaderText'>{business_data?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
                 }
                 {
                     (userBusinessRole?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
                         <div className='businessAdminViewControls'>
                             <CreateEventButton business_id={business_id} />
-                            <EditBusinessButton business={business} />
+                            <EditBusinessButton business={business_data} />
                             {
                                 (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                    <DeleteBusiness business_id={business?.id} />
+                                    <DeleteBusiness business_id={business_data?.id} />
                             }
                         </div>
                 }
                 {
                     (userBusinessRole?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='businessAdminViewDetails'>
-                            <div className='businessAdminViewStatus'>{`Business Status: ${business?.active_business ? 'Active' : 'Inactive'}`}</div>
+                            <div className='businessAdminViewStatus'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
                             <div className='businessAdminViewBusinessButtons'>
                                 <BusinessToggle
                                     business_id={business_id}
-                                    toggleStatus={business?.active_business}
+                                    toggleStatus={business_data?.active_business}
                                     toggleType='active'
                                 />
                             </div>
@@ -105,10 +110,10 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                 {
                     (userBusinessRole?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT) &&
                         <div className='businessAdminViewCreationRequest'>
-                            <div>{`Business Role Request: ${business?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
+                            <div>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                             <BusinessToggle
                                 business_id={business_id}
-                                toggleStatus={business?.business_request_open}
+                                toggleStatus={business_data?.business_request_open}
                                 toggleType='request'
                             />
                         </div>
