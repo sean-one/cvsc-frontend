@@ -213,21 +213,23 @@ export const useRoleAction = () => {
 // refetch -> ['user_roles', data.user_id], ['business_roles', data.business_id]
 const deleteRole = async (role_id) => { return await AxiosInstance.delete(`/roles/${role_id}`) }
 export const useRoleDelete = () => {
-    const { sendToLogin } = useAuth();
+    const { auth, sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
 
     return useMutation(deleteRole, {
         onSuccess: ({ data }) => {
+            // incase deleting your own business role
+            queryClient.refetchQueries(['user_roles', auth?.user?.id])
             // update due to roles table
             queryClient.refetchQueries(['roles']);
-            queryClient.refetchQueries(['user_roles', data?.user_id]);
+            queryClient.refetchQueries(['user_roles']);
             queryClient.refetchQueries(['business_roles', data?.business_id]);
 
             // update due to events table
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events', data?.business_id])
-            queryClient.refetchQueries(['user_events', data?.user_id])
+            queryClient.refetchQueries(['user_events'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -249,8 +251,10 @@ export const useRoleDelete = () => {
                 })
 
                 sendToLogin()
-            } else {
-                // 400 - type: 'role_id' or 'server', 404 - type: 'server'
+            }
+            
+            // 400 - type: 'role_id' or 'server', 404 - type: 'server'
+            else {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
