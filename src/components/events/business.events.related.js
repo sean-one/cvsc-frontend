@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { useBusinessEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
-import ServerReturnError from '../serverReturnError';
 import EventCard from './views/event.card';
 import EventSmallPreview from './views/event.small.preview';
 
@@ -20,7 +19,7 @@ const BusinessEventsRelatedStyles = styled.div`
 `;
 
 const BusinessEventsRelated = ({ business_id }) => {
-    const { data: business_events_list, status, error } = useBusinessEventsQuery(business_id);
+    const { data: business_events_list, status } = useBusinessEventsQuery(business_id);
     let business_events = {}
     let location = useLocation()
 
@@ -29,12 +28,7 @@ const BusinessEventsRelated = ({ business_id }) => {
         return <LoadingSpinner />
     }
 
-    if (status === 'error') {
-        console.log(error)
-        return <ServerReturnError />
-    }
-
-    business_events = business_events_list.data
+    business_events = business_events_list?.data || []
 
     return (
         <BusinessEventsRelatedStyles>

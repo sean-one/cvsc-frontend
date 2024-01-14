@@ -115,12 +115,7 @@ const EventEditForm = () => {
     }
 
     const sendEventDelete = async () => {
-        try {
-            await removeEventMutation(event_id)
-
-        } catch (error) {
-            console.log(`uncaught error ${Object.keys(error)}`)
-        }
+        await removeEventMutation(event_id)
     }
 
     const handleClose = () => {

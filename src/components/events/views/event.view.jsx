@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns'
 import styled from 'styled-components';
@@ -103,9 +103,15 @@ const EventView = () => {
 
     let navigate = useNavigate()
     
-    const { data: event, status } = useEventQuery(event_id)
+    const { data: event, status: event_status } = useEventQuery(event_id)
 
-    if (status === 'loading') {
+    useEffect(() => {
+        if (event_status === 'error') {
+            navigate('/profile')
+        }
+    }, [navigate, event_status])
+
+    if (event_status === 'loading') {
         return <LoadingSpinner />
     }
 

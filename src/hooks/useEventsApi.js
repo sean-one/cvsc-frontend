@@ -32,6 +32,7 @@ export const useRemoveEventBusinessMutation = () => {
             navigate(`/business/${data?.business_id}`)
         },
         onError: (error) => {
+            // 401, 403 'token', 400 'business_id', 'event_id' & 'server'
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -47,12 +48,19 @@ export const useRemoveEventBusinessMutation = () => {
 // ['business_events', business_id]
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
 export const useBusinessEventsQuery = (business_id) => {
+    const { dispatch } = useNotification();
     
     return useQuery(["business_events", business_id], () => getBusinessEvents(business_id), {
         refetchOnMount: false,
         onError: (error) => {
-            console.log('error inside the useBusinessEventsQuery')
-            console.log(error)
+            // 400 - type: 'business_id'
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
         }
     })
 }
@@ -61,48 +69,43 @@ export const useBusinessEventsQuery = (business_id) => {
 // ['user_events', user_id]
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => {
-    const { sendToLogin } = useAuth()
+    const { dispatch } = useNotification()
 
     return useQuery(["user_events", user_id], () => getAllUserEvents(user_id), {
         staleTime: 60000,
         refetchOnMount: false,
         onError: (error) => {
-            if (error?.response?.status === 401) {
-                sendToLogin()
-            }
+            // 401, 403 - type: 'token', 400 - type: 'user_id'
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
         }
     })
 }
 
-// event.view, event.edit.view - return a single event by event id
+// event.view - return a single event by event id
+// event.edit.view - uses endpoint directly without query
 // ['events', event_id]
 const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
 export const useEventQuery = (event_id) => {
     const { dispatch } = useNotification()
-    let navigate = useNavigate()
 
     return useQuery(['events', event_id], () => getEvent(event_id), {
         staleTime: 60000,
         refetchOnMount: false,
         onError: (error) => {
-            if (error?.response?.status === 404) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-            } else {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: 'An error has occurred in the event fetch'
-                    }
-                })
-            }
-            navigate('/');
+            // 400 - type: 'event_id', 404 - type: 'server'
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
         }
     })
 }
@@ -135,20 +138,18 @@ export const useUpdateEventMutation = () => {
             navigate(`/event/${data?.event_id}`)
         },
         onError: (error) => {
-            if (error?.response?.status === 403) {
-                if (error?.response?.data?.error?.type === 'token') {
-                    sendToLogin()
-                } else {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: error?.response?.data?.error?.message
-                        }
-                    })
-                }
-            }
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
 
+                sendToLogin()
+            }
         },
     })
 }
@@ -181,19 +182,20 @@ export const useRemoveEventMutation = () => {
             navigate('/profile/events')
         },
         onError: (error) => {
-            if (error?.response?.status === 403) {
-                if (error?.response?.data?.error?.type === 'token') {
-                    sendToLogin()
-                } else {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: error?.response?.data?.error?.message
-                        }
-                    })  
-                }
-            } else {
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })  
+                
+                sendToLogin()
+            }
+            // 400 - type: 'event_id', 'server', 404 - type: 'server'
+            else {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -201,6 +203,8 @@ export const useRemoveEventMutation = () => {
                         message: error?.response?.data?.error?.message
                     }
                 })
+
+                navigate('/profile/events')
             }
         },
     })
@@ -210,7 +214,7 @@ export const useRemoveEventMutation = () => {
 // ['events']
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => {
-    return useQuery(["events"], getAllEvents, {refetchOnMount: false,})
+    return useQuery(["events"], getAllEvents, {refetchOnMount: false})
 }
 
 // event.create.form - CREATE A NEW EVENT
@@ -244,19 +248,19 @@ export const useCreateEventMutation = () => {
             navigate(`/event/${data.data.event_id}`)
         },
         onError: (error) => {
-            if (error?.response?.status === 403) {
-                if (error?.response?.data?.error?.type === 'token') {
-                    sendToLogin()
-                } else {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: error?.response?.data?.error?.message
-                        }
-                    })
-                }
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
+                sendToLogin()
             }
+            // 400 - type: *path, 'role_rights', 'media_error' handled on component
         },
     })
 }

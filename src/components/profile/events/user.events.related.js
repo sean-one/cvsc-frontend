@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -6,7 +6,6 @@ import useAuth from '../../../hooks/useAuth';
 import { useUserEventsQuery } from '../../../hooks/useEventsApi';
 import EventSmallPreview from '../../events/views/event.small.preview';
 import LoadingSpinner from '../../loadingSpinner';
-import ServerReturnError from '../../serverReturnError';
 
 const UserEventsRelatedStyles = styled.div`
     .noUserEvents {
@@ -39,29 +38,30 @@ const sortEventsRelated = (array) => {
 
 const UserEventsRelated = () => {
     const { auth } = useAuth()
-    const { data: user_events_list, status } = useUserEventsQuery(auth?.user?.id)
-    let user_events = {}
+    const { data: user_events, status: user_events_status } = useUserEventsQuery(auth?.user?.id)
+    let user_events_list = []
     
     let navigate = useNavigate()
 
-    if (status === 'loading') {
+    useEffect(() => {
+        if (user_events_status === 'error') {
+            navigate('/profile')
+        }
+    }, [navigate, user_events_status])
+
+    if (user_events_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    // returns error text to avoid crashing
-    if (status === 'error') {
-        return <ServerReturnError />
-    }
-
-    user_events = user_events_list.data
-    sortEventsRelated(user_events)
+    user_events_list = user_events?.data || []
+    sortEventsRelated(user_events_list)
 
     
     return (
         <UserEventsRelatedStyles>
             {
-                (user_events.length > 0)
-                    ? user_events.map(event => {
+                (user_events_list.length > 0)
+                    ? user_events_list.map(event => {
                         return (
                             <EventSmallPreview key={event.event_id} event={event} />
                         )
