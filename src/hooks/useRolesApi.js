@@ -169,24 +169,21 @@ export const useRoleAction = () => {
         onSuccess: ({ data }) => {
 
             queryClient.refetchQueries(['roles'])
-            queryClient.refetchQueries(['business_roles', data?.business_id])
-            queryClient.refetchQueries(['user_roles', data?.user_id])
+            queryClient.refetchQueries(['business_roles'])
+            queryClient.refetchQueries(['user_roles'])
             queryClient.refetchQueries(['user_business_role'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: 'business role has been updated'
+                    message: `the business role for ${data?.username} has been updated`
                 }
             })
         },
         onError: (error) => {
-            if (error?.response?.status === 403) {
-                sendToLogin()
-            }
-
-            else if (error?.response?.status === 400 || error?.response?.status === 404) {
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -194,18 +191,18 @@ export const useRoleAction = () => {
                         message: error?.response?.data?.error?.message
                     }
                 })
-                
+
+                sendToLogin()
             }
-            
+            // 400 - type: 'role_id' or 'server', 404 - type: 'server'
             else {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: 'an uncaught error has occurred'
+                        message: error?.response?.data?.error?.message
                     }
                 })
-                
             }
 
         },

@@ -44,9 +44,13 @@ const BusinessRoles = () => {
 
     return (
         <div>
+            {/* roles that HAVE been approved - HOWEVER active_role is set to FALSE */}
             {(inactive.length > 0) && <InactiveRoles roles_list={inactive} />}
+            {/* roles that HAVE NOT been approved yet */}
             {(pending.length > 0) && <PendingRoles roles_list={pending} />}
+            {/* APPROVED CREATOR roles */}
             {(creator.length > 0) && <CreatorRoles roles_list={creator} />}
+            {/* APPROVED MANAGER roles */}
             {(manager.length > 0) && <ManagerRoles roles_list={manager} />}
         </div>
     )
