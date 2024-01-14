@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components'
 
-import { useUserBusinessRole } from '../../../hooks/useRolesApi';
+import useAuth from '../../../hooks/useAuth';
+import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import EditBusinessButton from '../buttons/edit.business.button';
 import CreateEventButton from '../../events/create.event.button';
 import SettingsBusinessButton from '../buttons/settings.business.button';
@@ -14,14 +15,14 @@ const BusinessAdminControlStyles = styled.div`
 `
 
 const BusinessAdminControls = ({ business }) => {
-    const { data: user_business_role_response, status } = useUserBusinessRole(business?.id)
+    const { auth } = useAuth();
+    const { data: user_roles, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
     let business_user_role = {};
 
-    if (status === 'success') {
-        business_user_role = user_business_role_response?.data
+    if (user_roles_status === 'success') {
+        business_user_role = user_roles?.data.find(role => role.business_id === business.id && role.active_role) || {}
     }
 
-    
     return (
         <BusinessAdminControlStyles>
             {

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import { RemoveBusinessIcon } from '../icons/siteIcons';
-// import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
-import { useUserBusinessRole } from '../../hooks/useRolesApi';
+import { useRemoveEventBusinessMutation } from '../../hooks/useEventsApi';
+import { useUserRolesQuery } from '../../hooks/useRolesApi';
 
 const RemoveEventBusinessButtonStyles = styled.div`
     .removeBusinessIconWrapper {
@@ -14,37 +14,37 @@ const RemoveEventBusinessButtonStyles = styled.div`
 
 const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
     const { auth } = useAuth();
-    // const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
-    const { data: user_business_role, status: role_status } = useUserBusinessRole(businessId);
+    const { data: user_roles, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
+    const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
+    let business_user_role = {}
+    
     const isCreator = () => auth?.user?.id === eventCreator
 
-    if (role_status === 'loading') {
+    if (user_roles_status === 'loading') {
         return null;
     }
 
-    // if (role_status === 'error') {
-    //     return null;
-    // }
+    if (user_roles_status === 'success') {
+        business_user_role = user_roles?.data.find(role => role.business_id === businessId && role.active_role && role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT) || {}
+    }
+
 
     const removeBusinessFromEvent = async (e) => {
         try {
             e.stopPropagation()
 
             console.log(`click - bus: ${businessId}, event: ${eventId}`)
-            // await removeEventBusiness({ event_id: eventId, business_id: businessId })
+            await removeEventBusiness({ event_id: eventId, business_id: businessId })
         } catch (error) {
             console.log(error)
         }
     }
 
-    const userRoleType = parseInt(user_business_role?.data?.role_type, 10);
-    const managerAccountThreshold = parseInt(process.env.REACT_APP_MANAGER_ACCOUNT, 10);
-
 
     return (
         <RemoveEventBusinessButtonStyles>
             {
-                ((userRoleType >= managerAccountThreshold) || isCreator())
+                ((Object.keys(business_user_role).length > 0) || isCreator())
                     ? <div className='removeBusinessIconWrapper' onClick={(e) => removeBusinessFromEvent(e)}>
                         <RemoveBusinessIcon />
                     </div>

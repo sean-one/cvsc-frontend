@@ -11,12 +11,12 @@ import useEventImagePreview from "./useEventImagePreview";
 const removeBusiness = async ({ event_id, business_id }) => { return await AxiosInstance.put(`/events/${event_id}/remove/${business_id}`) }
 export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient();
-    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
+
             queryClient.refetchQueries(['events'])
             queryClient.refetchQueries(['business_events'])
             queryClient.refetchQueries(['user_events'])
@@ -25,32 +25,20 @@ export const useRemoveEventBusinessMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: 'business successfully removed'
+                    message: 'business successfully removed from event'
                 }
             })
 
-            navigate(-1)
+            navigate(`/business/${data?.business_id}`)
         },
         onError: (error) => {
-            if (error?.response?.data?.error?.type === 'token') {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-                
-                sendToLogin()
-            } else {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-            }
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
         },
     })
 }

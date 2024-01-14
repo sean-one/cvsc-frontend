@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import { useUserRolesQuery } from '../../../hooks/useRolesApi';
@@ -9,14 +10,23 @@ import LoadingSpinner from '../../loadingSpinner';
 
 const RolesTab = () => {
     const { auth } = useAuth();
-    const { data: roles, status } = useUserRolesQuery(auth?.user?.id)
+    const { data: user_roles, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
     let userRoles = [];
+    let navigate = useNavigate();
 
-    if (status === 'loading') {
+    useEffect(() => {
+        if (user_roles_status === 'error') {
+            navigate('/profile')
+        }
+
+    }, [navigate, user_roles_status])
+
+
+    if (user_roles_status === 'loading') {
         return <LoadingSpinner />
     }
     
-    userRoles = roles?.data || []
+    userRoles = user_roles?.data || []
 
 
     return (

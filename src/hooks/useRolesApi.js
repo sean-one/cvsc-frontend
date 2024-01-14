@@ -1,37 +1,8 @@
-import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 
-
-const getUserBusinessRole = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}/user-role`) }
-
-// using getUserBusinessRole - returns a single business role for a user
-// ['user_business_role', business_id, auth.user.id]
-export const useUserBusinessRole = (business_id) => {
-    const { auth, setAuth } = useAuth();
-
-    return useQuery(['user_business_role', business_id, auth?.user?.id], () => getUserBusinessRole(business_id), {
-        onError: (error) => {
-            // if token is not missing but is expired then the user will be cleared out
-            if (error?.response?.status === 403) {
-                localStorage.removeItem('jwt')
-                setAuth(null)
-            }
-        },
-        retry: (failureCount, error) => {
-            // Don't retry if the error status is 404
-            if (error?.response?.status === 404 || error?.response?.status === 400) {
-                return false;
-            }
-
-            // You can specify other conditions for retry here
-            // For example, retry up to 3 times for other errors
-            return failureCount < 3;
-        }
-    })
-}
 
 // business.roles - returns all roles for selected business
 // ['business_roles', business_id]
@@ -71,42 +42,20 @@ export const useBusinessRolesQuery = (business_id) => {
 // ['user_roles', user_id]
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
 export const useUserRolesQuery = (user_id) => {
-    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
-    let { pathname } = useLocation();
 
     return useQuery(['user_roles', user_id], () => getUserRoles(user_id), {
         // staleTime: Infinity,
         // refetchOnWindowFocus: false,
         onError: (error) => {
-            if (error?.response?.data?.error?.type === 'token') {
-                // 401 - no token (returns as 'token' type)
-                // 403 - token expired / token invalid (return as ‘token’ type)
-                if (pathname.includes('profile')) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload : {
-                            notification_type: 'ERROR',
-                            message: error?.response?.data?.error?.message
-                        }
-                    })
-
-                    sendToLogin()
-                    
+            
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload : {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
                 }
-            } else if (error?.response?.status === 400) {
-                // 400 - bad request, improper formatting (returns as 'user_id' or ‘server’ type)
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-            } else {
-                // fallback for uncaught error
-                console.log(error?.response)
-            }
+            })
         }
     })
 }
@@ -158,7 +107,7 @@ export const useCreateRoleMutation = () => {
 }
 
 // aprrove.role, upgrade.role, downgrade role
-// refetch -> ['roles'], ['business_roles', data.business_id], ['user_roles', data.user_id], ['user_business_role']
+// refetch -> ['roles'], ['business_roles', data.business_id], ['user_roles', data.user_id]
 const roleAction = async ({ role_id, action_type }) => { return await AxiosInstance.put(`/roles/${role_id}/actions`, { action_type: action_type }) }
 export const useRoleAction = () => {
     const { sendToLogin } = useAuth();
@@ -171,7 +120,6 @@ export const useRoleAction = () => {
             queryClient.refetchQueries(['roles'])
             queryClient.refetchQueries(['business_roles'])
             queryClient.refetchQueries(['user_roles'])
-            queryClient.refetchQueries(['user_business_role'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",

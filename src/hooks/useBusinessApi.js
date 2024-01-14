@@ -153,7 +153,6 @@ export const useBusinessToggle = () => {
 
                 // update roles table touched
                 queryClient.refetchQueries(['roles'])
-                queryClient.refetchQueries(['user_business_role'])
                 queryClient.refetchQueries(['user_roles'])
                 queryClient.refetchQueries(['business_roles', data.id])
             }
