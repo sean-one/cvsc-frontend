@@ -156,8 +156,8 @@ export const useBusinessToggle = () => {
             }
         },
         onError: (error) => {
-            
-            if (error?.response?.status === 401 || error?.response?.status === 403) {                                
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -165,10 +165,10 @@ export const useBusinessToggle = () => {
                         message: error?.response?.data?.error?.message
                     }
                 })
-
+    
                 sendToLogin()
-
             } else {
+                // 400 - type: 'business_id', 'server', 403, 404 - type: 'server'
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -177,8 +177,6 @@ export const useBusinessToggle = () => {
                     }
                 })
             }
-
-            console.log(error)
         },
     })
 }
@@ -189,14 +187,29 @@ export const useUpdateBusinessMutation = () => {
     const { sendToLogin } = useAuth()
     const { dispatch } = useNotification()
     const queryClient = useQueryClient()
+    let navigate = useNavigate();
 
     return useMutation(updateBusiness, {
-        onSuccess: () => {
+        onSuccess: ({data}) => {
+            // remove saved from local storage
+            localStorage.removeItem('editBusinessForm')
+
             queryClient.refetchQueries(['businesses'])
             queryClient.refetchQueries(['events'])
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: `${data?.business_name} has successfully been updated`
+                }
+            })
+
+            navigate(`/business/${data?.id}`)
         },
         onError: (error) => {
-            if (error?.response?.status === 401) {
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -204,16 +217,18 @@ export const useUpdateBusinessMutation = () => {
                         message: error?.response?.data?.error?.message
                     }
                 })
-
+    
                 sendToLogin()
             }
+            // 400 - type: *path, 'media_error', 'server', 403, 404 - type: 'server' handled on component
         },
     })
 }
 
-//! business.admin.view - REMOVES BUSINESS & INVALIDATES ANY UPCOMING EVENT
+// business.admin.view - REMOVES BUSINESS & INVALIDATES ANY UPCOMING EVENT
 const removeBusiness = async (business_id) => { return await AxiosInstance.delete(`/businesses/${business_id}`) }
 export const useRemoveBusinessMutation = () => {
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
     let navigate = useNavigate();
@@ -221,16 +236,16 @@ export const useRemoveBusinessMutation = () => {
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
             // events table updated
-            queryClient.refetchQueries(['events'])
-            queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events'])
+            queryClient.invalidateQueries(['events'])
+            queryClient.invalidateQueries(['business_events'])
+            queryClient.invalidateQueries(['user_events'])
             // roles table updated
-            queryClient.refetchQueries(['roles'])
-            queryClient.refetchQueries(['user_roles'])
-            queryClient.refetchQueries(['business_roles'])
+            queryClient.invalidateQueries(['roles'])
+            queryClient.invalidateQueries(['user_roles'])
+            queryClient.invalidateQueries(['business_roles'])
             // business table updated
-            queryClient.refetchQueries(['businesses'])
-            queryClient.refetchQueries(['business_management'])
+            queryClient.invalidateQueries(['businesses'])
+            queryClient.invalidateQueries(['business_management'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -243,7 +258,8 @@ export const useRemoveBusinessMutation = () => {
             navigate('/profile/admin')
         },
         onError: (error) => {
-            if (error?.response?.status === 403) {
+            // 401, 403 - type: 'token'
+            if (error?.response?.data?.error?.type === 'token') {
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -252,16 +268,17 @@ export const useRemoveBusinessMutation = () => {
                     }
                 })
 
-                navigate('/login')
+                sendToLogin()
+            } else {
+                // 403, 404 - type: 'server'
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
             }
-
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
         },
     })
 }

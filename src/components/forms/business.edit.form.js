@@ -104,30 +104,29 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                 }
             })
 
-            const update_response = await updateBusiness({ business_updates: formData, business_id: business_id })
-            
-            if (update_response.status === 201) {
-                // remove saved form from local storage
-                localStorage.removeItem('editBusinessForm')
-
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: `${update_response.data.business_name} has been updated`
-
-                    }
-                })
-
-                navigate(`/business/${update_response.data.id}`)
-            }
+            await updateBusiness({ business_updates: formData, business_id: business_id })
 
         } catch (error) {
             // incorrectly formated, missing or invalid data
-            if(error.response.status === 400) {
-                setError(`${error.response.data.error.type}`, {
-                    message: error.response.data.error.message
-                }, { shouldFocus: true })
+            if(error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
+                if (error?.response?.data?.error?.type === 'server') {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                } else if (error?.response?.data?.error?.type === 'media_error') {
+                    setError(`business_avatar`, {
+                        message: error?.response?.data?.error?.message
+                    }, { shouldFocus: true })
+
+                } else {
+                    setError(`${error?.response?.data?.error?.type}`, {
+                        message: error?.response?.data?.error?.message
+                    }, { shouldFocus: true })
+                }
             }
 
             else { console.log(`uncaught error: ${error}`) }
