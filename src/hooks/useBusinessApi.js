@@ -235,17 +235,20 @@ export const useRemoveBusinessMutation = () => {
 
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
+            console.log(data)
             // events table updated
             queryClient.invalidateQueries(['events'])
-            queryClient.invalidateQueries(['business_events'])
             queryClient.invalidateQueries(['user_events'])
             // roles table updated
             queryClient.invalidateQueries(['roles'])
             queryClient.invalidateQueries(['user_roles'])
-            queryClient.invalidateQueries(['business_roles'])
             // business table updated
             queryClient.invalidateQueries(['businesses'])
-            queryClient.invalidateQueries(['business_management'])
+
+            // removed deleted business from queries
+            queryClient.removeQueries(['business_events', data?.business_id])
+            queryClient.removeQueries(['business_roles', data?.business_id])
+            queryClient.removeQueries(['business_management', data?.business_id])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
