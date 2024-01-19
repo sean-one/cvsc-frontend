@@ -4,10 +4,11 @@ import { useRemoveBusinessMutation } from '../../../hooks/useBusinessApi';
 import { DeleteIcon } from '../../icons/siteIcons';
 
 
-const DeleteBusiness = ({ business_id }) => {
-    const { mutateAsync: removeBusiness } = useRemoveBusinessMutation()
+const DeleteBusiness = ({ business_id, onDeleteStart, onDeleteSuccess }) => {
+    const { mutateAsync: removeBusiness } = useRemoveBusinessMutation(onDeleteSuccess);
 
     const delete_business = async () => {
+        onDeleteStart()
         await removeBusiness(business_id)
     }
 

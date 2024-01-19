@@ -96,12 +96,12 @@ export const useBusinessManagement = () => {
 }
 
 // businessView & business.admin.view 
-// ['businesses', business_id]
+// ['business', business_id]
 const getBusiness = async (business_id) => { return await AxiosInstance.get(`/businesses/${business_id}`) }
 export const useBusinessQuery = (business_id) => {
     const { dispatch } = useNotification()
 
-    return useQuery(['businesses', business_id], () => getBusiness(business_id), {
+    return useQuery(['business', business_id], () => getBusiness(business_id), {
         onError: (error) => {
             // 400 - type: 'business_id'
             dispatch({
@@ -116,7 +116,7 @@ export const useBusinessQuery = (business_id) => {
 }
 
 // business.admin.menu - toggle active & toggle request
-// ['businesses', business_id]
+// ['business', business_id]
 const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/status/toggle`, toggle_type) }
 export const useBusinessToggle = () => {
     const { auth, sendToLogin } = useAuth();
@@ -127,7 +127,7 @@ export const useBusinessToggle = () => {
         onSuccess: ({ data }) => {
             // update business table touched
             queryClient.refetchQueries(['businesses'])
-            queryClient.refetchQueries(['businesses', data?.id])
+            queryClient.refetchQueries(['business', data?.id])
             queryClient.refetchQueries(['business_management', auth?.user?.id])
 
             if (data.toggleType === 'request') {
@@ -227,15 +227,14 @@ export const useUpdateBusinessMutation = () => {
 
 // business.admin.view - REMOVES BUSINESS & INVALIDATES ANY UPCOMING EVENT
 const removeBusiness = async (business_id) => { return await AxiosInstance.delete(`/businesses/${business_id}`) }
-export const useRemoveBusinessMutation = () => {
+export const useRemoveBusinessMutation = (onDeleteSuccess) => {
     const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
-    let navigate = useNavigate();
 
     return useMutation(removeBusiness, {
         onSuccess: ({ data }) => {
-            console.log(data)
+            console.log(data?.business_id)
             // events table updated
             queryClient.invalidateQueries(['events'])
             queryClient.invalidateQueries(['user_events'])
@@ -246,6 +245,7 @@ export const useRemoveBusinessMutation = () => {
             queryClient.invalidateQueries(['businesses'])
 
             // removed deleted business from queries
+            queryClient.removeQueries(['business', data?.business_id])
             queryClient.removeQueries(['business_events', data?.business_id])
             queryClient.removeQueries(['business_roles', data?.business_id])
             queryClient.removeQueries(['business_management', data?.business_id])
@@ -257,8 +257,7 @@ export const useRemoveBusinessMutation = () => {
                     message: 'business has been deleted successfully'
                 }
             })
-
-            navigate('/profile/admin')
+            onDeleteSuccess()
         },
         onError: (error) => {
             // 401, 403 - type: 'token'

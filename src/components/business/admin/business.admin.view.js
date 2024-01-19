@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -55,23 +55,31 @@ const BusinessAdminViewStyles = styled.div`
 `;
 
 const BusinessAdminView = ({ userBusinessRole }) => {
+    const [isDeleting, setIsDeleting] = useState(false);
     const { business_id } = useParams();
-    const { data: business, status: business_status } = useBusinessQuery(business_id);
-    let business_data = {};
-
     let navigate = useNavigate();
+    
+    const { data: business, status: business_status } = useBusinessQuery(business_id);
+
+    const handleDeleteStart = () => {
+        setIsDeleting(true)
+    };
+
+    const handleDeleteSuccess = () => {
+        navigate('/profile/admin')
+    };
 
     useEffect(() => {
-        if (business_status === 'error') {
+        if (business_status === 'error' && !isDeleting) {
             navigate('/')
         }
-    }, [navigate, business_status])
+    }, [navigate, business_status, isDeleting])
     
-    if (business_status === 'loading') {
+    if (isDeleting || business_status === 'loading') {
         return <LoadingSpinner />
     }
     
-    business_data = business?.data || {}
+    const business_data = business?.data || {}
 
 
     return (
@@ -89,7 +97,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                             <EditBusinessButton business={business_data} />
                             {
                                 (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
-                                    <DeleteBusiness business_id={business_data?.id} />
+                                    <DeleteBusiness business_id={business_data?.id} onDeleteStart={handleDeleteStart} onDeleteSuccess={handleDeleteSuccess} />
                             }
                         </div>
                 }
