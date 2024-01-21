@@ -70,7 +70,8 @@ const Menu = ({ toggle }) => {
         {
             label: 'Create Event',
             link: '/event/create',
-            condition: () => isLoggedIn && auth?.roles.some(role => role.active_role && role.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT)
+            condition: () => isLoggedIn
+            // condition: () => isLoggedIn && auth?.roles.some(role => role.active_role && role.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT)
         },
         {
             label: () => isLoggedIn ? 'Logout' : 'Login',

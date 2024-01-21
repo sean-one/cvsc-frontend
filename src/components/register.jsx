@@ -97,7 +97,8 @@ const Register = () => {
             
             // if successful add newly loggen in user to auth and forward to profile
             if (response.status === 201) {
-                setAuth({ user: response.data.user, roles: response.data.roles })
+                console.log(response.data)
+                setAuth({ user: response?.data })
                 
                 dispatch({
                     type: "ADD_NOTIFICATION",

@@ -96,13 +96,13 @@ const UserAccount = () => {
     const [ editView, setEditView ] = useState(false)
     const { auth } = useAuth()
 
-    const userRoleType = (userRoles) => {
-        if (userRoles.length <= 0) return 'Basic';
-        else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) return 'Admin';
-        else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT)) return 'Manager';
-        else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_CREATOR_ACCOUNT)) return 'Creator';
-        else { return 'Basic' }
-    }
+    // const userRoleType = (userRoles) => {
+    //     if (userRoles.length <= 0) return 'Basic';
+    //     else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) return 'Admin';
+    //     else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT)) return 'Manager';
+    //     else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_CREATOR_ACCOUNT)) return 'Creator';
+    //     else { return 'Basic' }
+    // }
 
     
     return (
@@ -126,7 +126,7 @@ const UserAccount = () => {
 
                             <div className='profileHeader'>
                                 <div className='usernameHeader'>{auth?.user.username}</div>
-                                <div className='accountTypeHeader'>{userRoleType(auth?.roles)}</div>
+                                {/* <div className='accountTypeHeader'>{userRoleType(auth?.roles)}</div> */}
                             </div>
 
                             <div className='userDetails'>

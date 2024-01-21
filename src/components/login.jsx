@@ -51,7 +51,7 @@ const Login = () => {
             const login_response = await AxiosInstance.post('/auth/login', data)
 
             if (login_response?.status === 200) {
-                setAuth({ user: login_response.data.user, roles: login_response.data.roles })
+                setAuth({ user: login_response?.data })
         
                 dispatch({
                     type: "ADD_NOTIFICATION",
