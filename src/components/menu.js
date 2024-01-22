@@ -39,7 +39,7 @@ const MenuStyles = styled.div`
 `;
 
 const Menu = ({ toggle }) => {
-    const { auth, user_logout, isLoggedIn } = useAuth()
+    const { user_logout, isLoggedIn } = useAuth()
     let navigate = useNavigate()
 
     const navMenuClick = (link) => {
@@ -71,7 +71,6 @@ const Menu = ({ toggle }) => {
             label: 'Create Event',
             link: '/event/create',
             condition: () => isLoggedIn
-            // condition: () => isLoggedIn && auth?.roles.some(role => role.active_role && role.role_type >= process.env.REACT_APP_CREATOR_ACCOUNT)
         },
         {
             label: () => isLoggedIn ? 'Logout' : 'Login',
