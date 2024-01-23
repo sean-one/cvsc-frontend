@@ -25,12 +25,13 @@ const filterRoles = (roles, user_id) => {
 const BusinessRoles = () => {
     const { auth } = useAuth();
     let { business_id } = useParams();
-    const { data: business_roles, status: business_roles_status } = useBusinessRolesQuery(business_id);
+    const { data: business_roles, status: business_roles_status, error: business_roles_error } = useBusinessRolesQuery(business_id);
 
     let navigate = useNavigate();
 
     useEffect(() => {
         if (business_roles_status === 'error') {
+            console.log(business_roles_error)
             navigate('/profile')
         }
     }, [navigate, business_roles_status])

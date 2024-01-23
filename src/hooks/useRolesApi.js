@@ -8,35 +8,36 @@ import useNotification from "./useNotification";
 // ['business_roles', business_id]
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
 export const useBusinessRolesQuery = (business_id) => {
-    const { sendToLogin } = useAuth()
-    const { dispatch } = useNotification();
+    return useQuery(['business_roles', business_id], () => getBusinessRoles(business_id)
+    // const { sendToLogin } = useAuth()
+    // const { dispatch } = useNotification();
 
-    return useQuery(['business_roles', business_id], () => getBusinessRoles(business_id), {
-        onError: (error) => {
-            // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
+    // return useQuery(['business_roles', business_id], () => getBusinessRoles(business_id), {
+    //     onError: (error) => {
+    //         // 401, 403 - type: 'token'
+    //         if (error?.response?.data?.error?.type === 'token') {
+    //             dispatch({
+    //                 type: "ADD_NOTIFICATION",
+    //                 payload: {
+    //                     notification_type: 'ERROR',
+    //                     message: error?.response?.data?.error?.message
+    //                 }
+    //             })
 
-                sendToLogin()
-            } else {
-                // 400 - type: 'business_id', 400, 404 - type: 'server'
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-            }
-        }
-    })
-}
+    //             sendToLogin()
+    //         } else {
+    //             // 400 - type: 'business_id', 400, 404 - type: 'server'
+    //             dispatch({
+    //                 type: "ADD_NOTIFICATION",
+    //                 payload: {
+    //                     notification_type: 'ERROR',
+    //                     message: error?.response?.data?.error?.message
+    //                 }
+    //             })
+    //         }
+    //     }
+    // })
+)}
 
 // rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
 // ['user_roles', user_id]
@@ -52,6 +53,29 @@ export const useUserRolesQuery = (user_id) => {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload : {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
+        }
+    })
+}
+
+// user.account - returns the highest role type for a specific user
+// ['user_account_role', user_id]
+const getUserAccountRole = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}/account-role`) }
+export const useUserAccountRole = (user_id) => {
+    const { dispatch } = useNotification()
+
+    return useQuery(['user_account_role', user_id], () => getUserAccountRole(user_id), {
+        onSuccess: ({data}) => {
+            console.log('success!')
+            console.log(data)
+        },
+        onError: (error) => {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
                     notification_type: 'ERROR',
                     message: error?.response?.data?.error?.message
                 }

@@ -5,6 +5,7 @@ import { getImageSrc } from '../../../helpers/getImageSrc';
 import useAuth from '../../../hooks/useAuth';
 import UserEditForm from '../../forms/user.edit.form';
 import { UserEditIcon } from '../../icons/siteIcons';
+import { useUserAccountRole } from '../../../hooks/useRolesApi';
 
 const UserAccountStyles = styled.div`
     .userAccountPage {
@@ -93,8 +94,9 @@ const UserAccountStyles = styled.div`
 `
 
 const UserAccount = () => {
-    const [ editView, setEditView ] = useState(false)
     const { auth } = useAuth()
+    const [ editView, setEditView ] = useState(false)
+    const { data: account_role, status: account_role_status } = useUserAccountRole(auth?.user?.id) 
 
     // const userRoleType = (userRoles) => {
     //     if (userRoles.length <= 0) return 'Basic';
@@ -104,7 +106,7 @@ const UserAccount = () => {
     //     else { return 'Basic' }
     // }
 
-    
+    console.log(account_role)
     return (
         <UserAccountStyles>
             {
