@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
-import ServerReturnError from '../serverReturnError';
+// import ServerReturnError from '../serverReturnError';
 import EventSmallPreview from './views/event.small.preview';
 
 const EventViewRelatedStyles = styled.div`
@@ -21,16 +21,17 @@ const EventViewRelatedStyles = styled.div`
 `;
 
 const EventViewRelated = ({ event }) => {
-    const { data: events, status } = useEventsQuery()
+    const { data: events, status: events_status } = useEventsQuery()
     const business_ids = [event.venue_id, event.brand_id]
     let event_list
 
-    if (status === 'loading') {
+    if (events_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if (status === 'error') {
-        return <ServerReturnError />;
+    if (events_status === 'error') {
+        event_list = []
+        // return <ServerReturnError return_type='related events' />;
     }
 
     event_list = events.data.filter(e => business_ids.includes(e.venue_id) || business_ids.includes(e.brand_id))

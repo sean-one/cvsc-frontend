@@ -213,9 +213,7 @@ export const useRemoveEventMutation = () => {
 // get an array of all upcoming events
 // ['events']
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
-export const useEventsQuery = () => {
-    return useQuery(["events"], getAllEvents, {refetchOnMount: false})
-}
+export const useEventsQuery = () => useQuery(["events"], getAllEvents, {refetchOnMount: false})
 
 // event.create.form - CREATE A NEW EVENT
 // refetch -> ['events'], ['business_events'], ['user_events']

@@ -47,13 +47,13 @@ const CalendarStyles = styled.div`
 `
 
 const Calendar = () => {
-    const { data: eventList, status } = useEventsQuery()
+    const { data: eventList, status: events_status } = useEventsQuery()
 
-    if(status === 'loading') {
+    if (events_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if(status === 'error') {
+    if (events_status === 'error') {
         return <ServerDown />
     }
 
@@ -63,7 +63,7 @@ const Calendar = () => {
 
             <div className='calendarWrapper'>
                 {eventList.data.length > 0 ? (
-                    eventList.data.map(event => <EventCard key={event.event_id} event={event} />)
+                    eventList?.data.map(event => <EventCard key={event.event_id} event={event} />)
                 ) : (
                     <div className='calendarNoEvents'>
                         <CVSCLogo className='noEventsLogo' />

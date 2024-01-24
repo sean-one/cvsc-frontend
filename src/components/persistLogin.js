@@ -19,6 +19,7 @@ const PersistLogin = () => {
                 await refresh()
             }
             catch (err) {
+                console.log('hit refresh error')
                 setAuth(null)
             }
             finally {
@@ -40,7 +41,8 @@ const PersistLogin = () => {
         return <LoadingSpinner />
     }
 
-    
+    console.log('INSIDE PERSIST')
+    console.log(auth)
     return (
         <Outlet />
     )
