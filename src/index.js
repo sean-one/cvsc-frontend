@@ -15,18 +15,16 @@ const container = document.getElementById('root')
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider>
-        <AuthProvider>
-          <NotificationsProvider>
-            <Routes>
-              <Route path="/*" element={<App />} />
-            </Routes>
-          </NotificationsProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <ThemeProvider>
+      <AuthProvider>
+        <NotificationsProvider>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </NotificationsProvider>
+      </AuthProvider>
+    </ThemeProvider>
+  </BrowserRouter>
 );
 

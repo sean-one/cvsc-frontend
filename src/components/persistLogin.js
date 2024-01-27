@@ -41,8 +41,7 @@ const PersistLogin = () => {
         return <LoadingSpinner />
     }
 
-    console.log('INSIDE PERSIST')
-    console.log(auth)
+    
     return (
         <Outlet />
     )
