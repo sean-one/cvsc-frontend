@@ -5,7 +5,7 @@ import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import { SmallEditIcon } from '../../icons/siteIcons';
+import { SmallEditIcon, SmallUserIcon } from '../../icons/siteIcons';
 
 import useAuth from '../../../hooks/useAuth';
 
@@ -89,6 +89,15 @@ const EventSmallPreviewStyles = styled.div`
         line-height: calc(var(--small-font) + 0.1rem);
         cursor: pointer;
     }
+
+    .eventCreator {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.2rem;
+        margin-top: 1rem;
+        font-size: var(--small-font);
+    }
 `;
 
 const EventSmallPreview = ({ event }) => {
@@ -124,8 +133,8 @@ const EventSmallPreview = ({ event }) => {
                     <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), 'MMM. dd')} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                     <div className='smallHeaderText'>{event.eventname}</div>
                     <div className='eventSmallPreviewDetails'>{event.details}</div>
+                    <div className='eventCreator'><SmallUserIcon />{event.event_creator}</div>
                 </div>
-
             </div>
         </EventSmallPreviewStyles>
     )

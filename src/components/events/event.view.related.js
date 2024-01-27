@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import useNotification from '../../hooks/useNotification';
 import { useEventRelatedEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
-// import ServerReturnError from '../serverReturnError';
 import EventSmallPreview from './views/event.small.preview';
 
 const EventViewRelatedStyles = styled.div`
@@ -44,7 +43,7 @@ const EventViewRelated = ({ event_id }) => {
 
     events_related_list = event_related_events?.data || []
 
-    console.log(events_related_list)
+
     return (
         <EventViewRelatedStyles>
             <div>
@@ -55,7 +54,7 @@ const EventViewRelated = ({ event_id }) => {
                             {
                                 event_related_events?.data.map(event => {
                                     return (
-                                        <EventSmallPreview key={event.id} event={event} />
+                                        <EventSmallPreview key={event.event_id} event={event} />
                                     )
                                 })
                             }

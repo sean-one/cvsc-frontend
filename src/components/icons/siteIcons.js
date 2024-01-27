@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
-import { Phone, ToggleRight, UserCheck, Map } from "@styled-icons/boxicons-solid"
+import { Phone, ToggleRight, UserCheck, Map, User } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
 import { Mail } from "@styled-icons/fluentui-system-filled"
 import { Edit, CameraAdd, Settings, CalendarAdd } from "@styled-icons/fluentui-system-regular";
@@ -51,6 +51,8 @@ export const HideIcon = styled(ChevronUp)`color: var(--secondary-color); width: 
 // various delete buttons (roles, business)
 export const DeleteIcon = styled(Trash)`color: var(--error-color); width: var(--site-icon-size);`
 
+// export const UserIcon = styled(User)`width: var(--site-icon-size);`
+export const SmallUserIcon = styled(User)`width: 0.9rem;`
 export const ApproveUserIcon = styled(UserCheck)`width: var(--site-icon-size);`
 export const CreateEventIcon = styled(CalendarAdd)`color: var(--trim-color); width: var(--site-icon-size);`
 
