@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { useEventsQuery } from '../../hooks/useEventsApi';
+import useNotification from '../../hooks/useNotification';
+import { useEventRelatedEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
 // import ServerReturnError from '../serverReturnError';
 import EventSmallPreview from './views/event.small.preview';
@@ -20,35 +21,41 @@ const EventViewRelatedStyles = styled.div`
     }
 `;
 
-const EventViewRelated = ({ event }) => {
-    const { data: events, status: events_status } = useEventsQuery()
-    const business_ids = [event.venue_id, event.brand_id]
-    let event_list
+const EventViewRelated = ({ event_id }) => {
+    const { dispatch } = useNotification();
+    const { data: event_related_events, status: event_related_events_status, error: event_related_events_error } = useEventRelatedEventsQuery(event_id)
+    let events_related_list = []
 
-    if (events_status === 'loading') {
+    useEffect(() => {
+        if (event_related_events_status === 'error') {
+            dispatch({
+                typpe: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: event_related_events_error?.response?.data?.error?.message
+                }
+            })
+        }
+    }, [dispatch, event_related_events_status, event_related_events_error])
+
+    if (event_related_events_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if (events_status === 'error') {
-        event_list = []
-        // return <ServerReturnError return_type='related events' />;
-    }
+    events_related_list = event_related_events?.data || []
 
-    event_list = events.data.filter(e => business_ids.includes(e.venue_id) || business_ids.includes(e.brand_id))
-    event_list = event_list.filter(e => e.event_id !== event.event_id)    
-
-
+    console.log(events_related_list)
     return (
         <EventViewRelatedStyles>
             <div>
                 {
-                    (event_list.length > 0)
+                    (events_related_list.length > 0)
                         ? <div className='eventViewRelatedWrapper'>
                             <div className='subheaderText eventViewRelatedHeader'>Upcoming Related Events</div>
                             {
-                                event_list.map(event => {
+                                event_related_events?.data.map(event => {
                                     return (
-                                        <EventSmallPreview key={event.event_id} event={event} />
+                                        <EventSmallPreview key={event.id} event={event} />
                                     )
                                 })
                             }

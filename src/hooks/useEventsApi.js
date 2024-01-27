@@ -46,36 +46,28 @@ export const useRemoveEventBusinessMutation = () => {
 
 // return an array of all events related to business id
 // ['business_events', business_id]
+//! update ready
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
 export const useBusinessEventsQuery = (business_id) => useQuery(["business_events", business_id], () => getBusinessEvents(business_id), { refetchOnMount: false })
 
+// return an array of all events related to event id (all events including venue business or brad business)
+// ['event_related_events', event_id]
+//! update ready
+const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.get(`/events/event-related/${event_id}`) }
+export const useEventRelatedEventsQuery = (event_id) => useQuery(['event_related_events', event_id], () => getEventRelatedEvents(event_id), { refetchOnMount: false })
+
 // return an array of all events related to user id
 // ['user_events', user_id]
+//! update ready
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => useQuery(["user_events", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false });
 
 // event.view - return a single event by event id
 // event.edit.view - uses endpoint directly without query
 // ['events', event_id]
+//! update ready
 const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
-export const useEventQuery = (event_id) => {
-    const { dispatch } = useNotification()
-
-    return useQuery(['events', event_id], () => getEvent(event_id), {
-        staleTime: 60000,
-        refetchOnMount: false,
-        onError: (error) => {
-            // 400 - type: 'event_id', 404 - type: 'server'
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-        }
-    })
-}
+export const useEventQuery = (event_id) => useQuery(['events', event_id], () => getEvent(event_id), { staleTime: 60000, refetchOnMount: false })
 
 // event.edit.form - update_event - UPDATE EVENT
 // refetch -> ['events'], ['business_events'], ['user_events']
@@ -179,6 +171,7 @@ export const useRemoveEventMutation = () => {
 
 // get an array of all upcoming events
 // ['events']
+//! update ready
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery(["events"], getAllEvents, {refetchOnMount: false})
 

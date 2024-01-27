@@ -7,9 +7,10 @@ import LoadingSpinner from '../../loadingSpinner';
 import BusinessLabel from '../../business/business.label';
 import EventViewRelated from '../event.view.related';
 
+import useAuth from '../../../hooks/useAuth';
+import useNotification from '../../../hooks/useNotification';
 import { formatTime } from '../../../helpers/formatTime';
 import { image_link } from '../../../helpers/dataCleanUp';
-import useAuth from '../../../hooks/useAuth';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 import { EditIcon } from '../../icons/siteIcons';
 
@@ -98,18 +99,26 @@ const EventViewStyles = styled.div`
 
 
 const EventView = () => {
-    const { auth } = useAuth()
+    const { auth } = useAuth();
+    const { dispatch } = useNotification();
     let { event_id } = useParams()
 
     let navigate = useNavigate()
     
-    const { data: event, status: event_status } = useEventQuery(event_id)
+    const { data: event, status: event_status, error: event_error } = useEventQuery(event_id)
 
     useEffect(() => {
         if (event_status === 'error') {
-            navigate('/profile')
+            // 400 - type: 'event_id', 404 - type: 'server'
+            dispatch({
+                type: "ADD_NOTIFICATION", 
+                payload: {
+                    notification_type: 'ERROR',
+                    message: event_error?.response?.data?.error?.message
+                }
+            })
         }
-    }, [navigate, event_status])
+    }, [dispatch, event_status, event_error])
 
     if (event_status === 'loading') {
         return <LoadingSpinner />
@@ -175,7 +184,7 @@ const EventView = () => {
             </div>
             {
                 (event?.data?.active_event) &&
-                    <EventViewRelated event={event.data} />
+                    <EventViewRelated event={event.data} event_id={event?.data?.event_id} />
             }
         </EventViewStyles>
     )
