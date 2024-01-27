@@ -47,23 +47,7 @@ export const useRemoveEventBusinessMutation = () => {
 // return an array of all events related to business id
 // ['business_events', business_id]
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
-export const useBusinessEventsQuery = (business_id) => {
-    const { dispatch } = useNotification();
-    
-    return useQuery(["business_events", business_id], () => getBusinessEvents(business_id), {
-        refetchOnMount: false,
-        onError: (error) => {
-            // 400 - type: 'business_id'
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-        }
-    })
-}
+export const useBusinessEventsQuery = (business_id) => useQuery(["business_events", business_id], () => getBusinessEvents(business_id), { refetchOnMount: false })
 
 // return an array of all events related to user id
 // ['user_events', user_id]

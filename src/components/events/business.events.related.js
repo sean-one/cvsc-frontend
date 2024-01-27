@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useNotification from '../../hooks/useNotification';
 import { useBusinessEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
 import EventCard from './views/event.card';
@@ -19,12 +20,26 @@ const BusinessEventsRelatedStyles = styled.div`
 `;
 
 const BusinessEventsRelated = ({ business_id }) => {
-    const { data: business_events_list, status } = useBusinessEventsQuery(business_id);
+    const { dispatch } = useNotification();
+    const { data: business_events_list, status: business_events_list_status, error: business_events_list_error } = useBusinessEventsQuery(business_id);
     let business_events = {}
     let location = useLocation()
 
+    useEffect(() => {
+    
+        if (business_events_list_status === 'error') {
+            // 400 - type 'business_id'
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: business_events_list_error?.response?.data?.error?.message
+                }
+            })
+        }
+    }, [business_events_list_status, business_events_list_error, dispatch])
 
-    if (status === 'loading') {
+    if (business_events_list_status === 'loading') {
         return <LoadingSpinner />
     }
 

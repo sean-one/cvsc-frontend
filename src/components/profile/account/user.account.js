@@ -96,7 +96,7 @@ const UserAccountStyles = styled.div`
 const UserAccount = () => {
     const { auth } = useAuth()
     const [ editView, setEditView ] = useState(false)
-    const { data: account_role, status: account_role_status } = useUserAccountRole(auth?.user?.id) 
+    const { data: account_role } = useUserAccountRole(auth?.user?.id) 
 
     // const userRoleType = (userRoles) => {
     //     if (userRoles.length <= 0) return 'Basic';
@@ -106,7 +106,7 @@ const UserAccount = () => {
     //     else { return 'Basic' }
     // }
 
-    console.log(account_role)
+
     return (
         <UserAccountStyles>
             {
@@ -128,7 +128,7 @@ const UserAccount = () => {
 
                             <div className='profileHeader'>
                                 <div className='usernameHeader'>{auth?.user.username}</div>
-                                {/* <div className='accountTypeHeader'>{userRoleType(auth?.roles)}</div> */}
+                                <div className='accountTypeHeader'>{account_role?.data?.role_type || 'Basic'}</div>
                             </div>
 
                             <div className='userDetails'>
