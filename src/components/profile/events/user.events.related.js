@@ -7,6 +7,8 @@ import { useUserEventsQuery } from '../../../hooks/useEventsApi';
 import EventSmallPreview from '../../events/views/event.small.preview';
 import LoadingSpinner from '../../loadingSpinner';
 
+import useNotification from '../../../hooks/useNotification';
+
 const UserEventsRelatedStyles = styled.div`
     .noUserEvents {
         border-top: 0.01rem dotted var(--main-text-color);
@@ -38,16 +40,24 @@ const sortEventsRelated = (array) => {
 
 const UserEventsRelated = () => {
     const { auth } = useAuth()
-    const { data: user_events, status: user_events_status } = useUserEventsQuery(auth?.user?.id)
+    const { dispatch } = useNotification();
+    const { data: user_events, status: user_events_status, error: user_events_error } = useUserEventsQuery(auth?.user?.id)
     let user_events_list = []
     
     let navigate = useNavigate()
 
     useEffect(() => {
         if (user_events_status === 'error') {
-            navigate('/profile')
+            // 401, 403 - type 'token', 400 - type: 'user_id'
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: user_events_error?.response?.data?.error?.message
+                }
+            })
         }
-    }, [navigate, user_events_status])
+    }, [user_events_status, user_events_error, dispatch])
 
     if (user_events_status === 'loading') {
         return <LoadingSpinner />

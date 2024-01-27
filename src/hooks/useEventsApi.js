@@ -52,24 +52,7 @@ export const useBusinessEventsQuery = (business_id) => useQuery(["business_event
 // return an array of all events related to user id
 // ['user_events', user_id]
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
-export const useUserEventsQuery = (user_id) => {
-    const { dispatch } = useNotification()
-
-    return useQuery(["user_events", user_id], () => getAllUserEvents(user_id), {
-        staleTime: 60000,
-        refetchOnMount: false,
-        onError: (error) => {
-            // 401, 403 - type: 'token', 400 - type: 'user_id'
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-        }
-    })
-}
+export const useUserEventsQuery = (user_id) => useQuery(["user_events", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false });
 
 // event.view - return a single event by event id
 // event.edit.view - uses endpoint directly without query
