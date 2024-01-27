@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
@@ -103,6 +103,10 @@ const EventSmallPreviewStyles = styled.div`
 const EventSmallPreview = ({ event }) => {
     const { auth, isLoggedIn } = useAuth()
     let navigate = useNavigate()
+    let { pathname } = useLocation()
+
+    // event creator will show on preview inside of business admin view
+    const isBusinessAdminView = pathname.includes('/business/admin/');
 
     if (!event) { return null; }
 
@@ -133,7 +137,9 @@ const EventSmallPreview = ({ event }) => {
                     <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), 'MMM. dd')} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                     <div className='smallHeaderText'>{event.eventname}</div>
                     <div className='eventSmallPreviewDetails'>{event.details}</div>
-                    <div className='eventCreator'><SmallUserIcon />{event.event_creator}</div>
+                    {
+                        isBusinessAdminView && <div className='eventCreator'><SmallUserIcon />{event.event_creator}</div>
+                    }
                 </div>
             </div>
         </EventSmallPreviewStyles>
