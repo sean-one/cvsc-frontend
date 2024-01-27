@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { AuthProvider } from './context/auth/auth.provider';
@@ -11,8 +11,10 @@ import App from './App';
 
 require('dotenv').config();
 
+const container = document.getElementById('root')
+const root = createRoot(container);
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
@@ -25,7 +27,6 @@ ReactDOM.render(
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
