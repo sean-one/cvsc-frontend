@@ -104,7 +104,7 @@ const EventCard = ({ event }) => {
         return null;
     }
 
-
+    
     return (
         <EventCardStyles>
             <div className="eventCardWrapper" onClick={(e) => event?.active_event ? navigate(`/event/${event?.event_id}`) : null}>
@@ -112,8 +112,8 @@ const EventCard = ({ event }) => {
                 <div className="eventCardOverlay">
                     <div className='eventCardRow eventCardTopRow'>
                         <div className='eventCardDateContainer'>
-                            <div className='eventCardDate'>{format(new Date(event?.eventdate), 'dd')}</div>
-                            <div className='eventCardMonth'>{format(new Date(event?.eventdate), 'MMM')}</div>
+                            <div className='eventCardDate'>{format(new Date(event?.eventdate), "dd")}</div>
+                            <div className='eventCardMonth'>{format(new Date(event?.eventdate), "MMM")}</div>
                         </div>
                     </div>
                     <div className='eventCardRow eventCardBottomRow'>

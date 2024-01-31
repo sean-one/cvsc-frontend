@@ -87,7 +87,7 @@ const Login = () => {
 
     const googleAuthButton = (e) => {
         e.preventDefault()
-        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
+        window.open(`http://localhost:3333/auth/google`, "_self")
     }
 
     

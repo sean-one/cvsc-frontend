@@ -8,8 +8,7 @@ import NotificationsProvider from './context/notifications/notifications.provide
 
 // import './index.css';
 import App from './App';
-
-require('dotenv').config();
+import 'dotenv/config'
 
 const container = document.getElementById('root')
 const root = createRoot(container);

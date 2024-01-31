@@ -21,9 +21,9 @@ const UserRoles = ({ roles }) => {
         active_roles = roles.filter(role => role.active_role)
         inactive_roles = roles.filter(role => !role.active_role)
 
-        admin_roles = active_roles.filter(role => role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)
-        manager_roles = active_roles.filter(role => role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT)
-        creator_roles = active_roles.filter(role => role.role_type === process.env.REACT_APP_CREATOR_ACCOUNT)
+        admin_roles = active_roles.filter(role => role.role_type === 'admin')
+        manager_roles = active_roles.filter(role => role.role_type === 'manager')
+        creator_roles = active_roles.filter(role => role.role_type === 'creator')
     }
 
     const toggleAdminList = () => {

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
-import { useUserRolesQuery } from '../../hooks/useRolesApi';
+import useNotification from '../../hooks/useNotification';
+import { useUserAccountRole } from '../../hooks/useRolesApi';
 
 const ProfileMenuStyles = styled.div`
     .profileMenu {
@@ -36,15 +37,23 @@ const ProfileMenuStyles = styled.div`
 
 const ProfileMenu = () => {
     const { auth } = useAuth();
-    const { data: user_roles_response, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
+    const { dispatch } = useNotification();
+    const { data: user_account_role, status: user_account_role_status, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
     const { pathname } = useLocation()
-    let user_roles = []
-
-    if (user_roles_status === 'success') {
-        user_roles = user_roles_response?.data
-    }
 
     let navigate = useNavigate()
+
+    useEffect(() => {
+        if (user_account_role_status === 'error') {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: user_account_role_error?.response?.data?.error?.message
+                }
+            })
+        }
+    }, [dispatch, user_account_role_status, user_account_role_error])
 
     let menuTab
     if (pathname === '/profile/') {
@@ -58,20 +67,23 @@ const ProfileMenu = () => {
         navigate(route);
     }
 
-    const userHasRole = (role_type) => {
-        user_roles = user_roles_response?.data.filter(role => (role.role_type >= role_type) && role.active_role)
-        if (user_roles?.length > 0) {
-            return true
-        } else {
-            return false
-        }
+    const userHasRole = (role_constraint, user_role) => {
+        const roleHierarchy = {
+            'basic': 1,
+            'creator': 2,
+            'manager': 3,
+            'admin': 4
+        };
+
+        return roleHierarchy[user_role] >= roleHierarchy[role_constraint]
+        
     };
 
     const tabs = [
         { label: 'Account', route: '/profile/' },
         { label: 'Roles', route: '/profile/roles' },
-        { label: 'Events', route: '/profile/events', condition: userHasRole(process.env.REACT_APP_CREATOR_ACCOUNT) },
-        { label: 'Admin', route: '/profile/admin', condition: userHasRole(process.env.REACT_APP_MANAGER_ACCOUNT) },
+        { label: 'Events', route: '/profile/events', condition: userHasRole('creator', user_account_role?.data?.role_type) },
+        { label: 'Admin', route: '/profile/admin', condition: userHasRole('manager', user_account_role?.data?.role_type) },
     ];
 
     

@@ -147,7 +147,7 @@ const EventView = () => {
                     {
                         (event?.data?.active_event) &&
                             <div className='sectionRowSplit'>
-                                <div className='subheaderText'>{format(new Date(event.data.eventdate), 'E, MMMM d')}</div>
+                                <div className='subheaderText'>{format(new Date(event.data.eventdate), "E, MMMM d")}</div>
                                 <div className='subheaderText'>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
                             </div>
                     }

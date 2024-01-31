@@ -9,5 +9,5 @@ export const getImageSrc = (imageValue) => {
         return imageValue
     }
 
-    return `${process.env.REACT_APP_BACKEND_IMAGE_URL}${imageValue}`
+    return `https://coachellavalleysmokers-images.s3.amazonaws.com/${imageValue}`
 }

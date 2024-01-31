@@ -134,7 +134,7 @@ const EventSmallPreview = ({ event }) => {
                 </div>
                 
                 <div className='eventSmallPreviewInfo'>
-                    <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), 'MMM. dd')} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
+                    <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), "MMM. dd")} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
                     <div className='smallHeaderText'>{event.eventname}</div>
                     <div className='eventSmallPreviewDetails'>{event.details}</div>
                     {

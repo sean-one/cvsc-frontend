@@ -33,7 +33,7 @@ const BusinessAdminControls = ({ business }) => {
                                 <CreateEventButton business_id={business?.id} />
                         }
                         {
-                            (((business_user_role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT) && business.active_business) || (business_user_role.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT)) &&
+                            (((business_user_role.role_type >= 456) && business.active_business) || (business_user_role.role_type >= 789)) &&
                                 <div className='businessAdminControls'>
                                     <EditBusinessButton business={business} />
                                     <SettingsBusinessButton business_id={business?.id} />

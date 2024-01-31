@@ -21,7 +21,7 @@ const UserRole = ({ role }) => {
                             <CreateEventButton business_id={role?.business_id} />
                     }
                     {
-                        (role?.role_type < process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                        (role?.role_type < 789) &&
                             <DeleteRole role={role} />
                     }
                 </div>

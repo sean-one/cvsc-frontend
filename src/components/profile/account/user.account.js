@@ -98,14 +98,6 @@ const UserAccount = () => {
     const [ editView, setEditView ] = useState(false)
     const { data: account_role } = useUserAccountRole(auth?.user?.id) 
 
-    // const userRoleType = (userRoles) => {
-    //     if (userRoles.length <= 0) return 'Basic';
-    //     else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_ADMIN_ACCOUNT)) return 'Admin';
-    //     else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_MANAGER_ACCOUNT)) return 'Manager';
-    //     else if (userRoles.some(role => role.active_role === true && role.role_type === process.env.REACT_APP_CREATOR_ACCOUNT)) return 'Creator';
-    //     else { return 'Basic' }
-    // }
-
 
     return (
         <UserAccountStyles>

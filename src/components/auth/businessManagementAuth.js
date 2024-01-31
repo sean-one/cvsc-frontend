@@ -24,7 +24,7 @@ const BusinessManagementAuth = ({ children }) => {
             )
     }
 
-    const user_business_role = user_roles?.data.find(role => role.business_id === business_id && role.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT && role.active_role === true)
+    const user_business_role = user_roles?.data.find(role => role.business_id === business_id && role.role_type >= 456 && role.active_role === true)
     const childWithProps = React.cloneElement(children, { userBusinessRole: user_business_role })
 
 

@@ -77,7 +77,7 @@ const EventEditForm = () => {
 
             Object.keys(event_data).forEach(key => {
                 if (key === 'eventdate') {
-                    formData.append(key, format(parseISO(event_data[key]), 'y-M-d'))
+                    formData.append(key, format(parseISO(event_data[key]), "y-M-d"))
                 } else if (key === 'eventstart' || key === 'eventend') {
                     formData.append(key, event_data[key].replace(':', ''))
                 } else {
@@ -131,7 +131,7 @@ const EventEditForm = () => {
         // function to format the event data
         const formatEventData = (data) => ({
             eventname: data.eventname,
-            eventdate: format(new Date(data.eventdate), 'yyyy-MM-dd'),
+            eventdate: format(new Date(data.eventdate), "yyyy-MM-dd"),
             eventstart: reformatTime(data.eventstart),
             eventend: reformatTime(data.eventend),
             eventmedia: null,

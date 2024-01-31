@@ -85,7 +85,7 @@ const EventCreateForm = ({ business_id }) => {
 
             Object.keys(event_data).forEach(key => {
                 if (key === 'eventdate') {
-                    formData.append(key, format(parseISO(event_data[key]), 'y-M-d'))
+                    formData.append(key, format(parseISO(event_data[key]), "y-M-d"))
                 } else if (key === 'eventstart' || key === 'eventend') {
                     formData.append(key, event_data[key].replace(':', ''))
                 } else {

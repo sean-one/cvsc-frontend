@@ -91,18 +91,18 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         <div className='subheaderText'>{business_data?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
                 }
                 {
-                    (userBusinessRole?.role_type >= process.env.REACT_APP_MANAGER_ACCOUNT) &&
+                    (userBusinessRole?.role_type >= 456) &&
                         <div className='businessAdminViewControls'>
                             <CreateEventButton business_id={business_id} />
                             <EditBusinessButton business={business_data} />
                             {
-                                (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                                (userBusinessRole?.role_type === 789) &&
                                     <DeleteBusiness business_id={business_data?.id} onDeleteStart={handleDeleteStart} onDeleteSuccess={handleDeleteSuccess} />
                             }
                         </div>
                 }
                 {
-                    (userBusinessRole?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                    (userBusinessRole?.role_type >= 789) &&
                         <div className='businessAdminViewDetails'>
                             <div className='businessAdminViewStatus'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
                             <div className='businessAdminViewBusinessButtons'>
@@ -116,7 +116,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
 
                 }
                 {
-                    (userBusinessRole?.role_type >= process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                    (userBusinessRole?.role_type >= 789) &&
                         <div className='businessAdminViewCreationRequest'>
                             <div>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                             <BusinessToggle

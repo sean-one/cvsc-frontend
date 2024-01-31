@@ -204,7 +204,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     <div className='formRowInputIcon'>
                         {/* EMAIL - ADMIN ONLY allowed to update */}
                         {
-                            (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                            (userBusinessRole?.role_type === 789) &&
                                 <div className='inputWrapper'>
                                     <input {...register('business_email', {
                                         pattern: {
@@ -235,7 +235,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
 
                     {/* BUSINESS TYPE SELECTOR */}
                     {
-                        (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                        (userBusinessRole?.role_type === 789) &&
                             <div className='inputWrapper'>
                                 <select {...register('business_type', {
                                     pattern: {
@@ -253,7 +253,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
 
                     {/* ADDRESS INPUT */}
                     {
-                        (userBusinessRole?.role_type === process.env.REACT_APP_ADMIN_ACCOUNT) &&
+                        (userBusinessRole?.role_type === 789) &&
                             <AddressForm
                                 register={register}
                                 setValue={setValue}
