@@ -14,7 +14,7 @@
     "@styled-icons/fluentui-system-filled": "^10.47.0",
     "@styled-icons/fluentui-system-regular": "^10.47.0",
     "@styled-icons/foundation": "^10.46.0",
-    "axios": "0.27.2",
+    "axios": "^1.6.7",
     "bootstrap": "5.3.2",
     "date-fns": "3.3.1",
     "os-browserify": "^0.3.0",
