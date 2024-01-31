@@ -45,7 +45,7 @@ const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=un
                 <label htmlFor="formatted_address"><AddressIcon /></label>
                 {isEditing ? (
                     <AutoComplete
-                        apiKey='AIzaSyD-MiAAIkq2sj2Lh2jxi6pmwF0RJMYtW0s'
+                        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
                         {...register('formatted_address')}
                         name='formatted_address'
                         value={inputValue}
