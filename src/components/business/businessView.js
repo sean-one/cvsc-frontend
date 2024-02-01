@@ -27,10 +27,10 @@ const BusinessViewStyles = styled.div`
         align-items: center;
         width: 100%;
         max-width: 1080px;
-        padding: 0 0.5rem;
+        padding: 0 0.75rem;
         
         @media (min-width: 768px) {
-            padding: 1rem 0.5rem;
+            padding: 1.5rem 0.75rem;
         }}
 
     .businessViewHeader {
@@ -43,7 +43,7 @@ const BusinessViewStyles = styled.div`
     .businessViewManagementControls {
         display: flex;
         color: var(--secondary-color);
-        gap: 0.5rem;}
+        gap: 0.75rem;}
     
     .businessViewControl {
         cursor: pointer;}
@@ -52,7 +52,7 @@ const BusinessViewStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 0.75rem 0 1.25rem;
+        padding: 1.125rem 0 1.875rem;
         border-bottom: 1px solid var(--secondary-color);
         
         @media (min-width: 768px) {
@@ -65,7 +65,7 @@ const BusinessViewStyles = styled.div`
         display: flex;
         align-items: center;
         flex-direction: column;
-        padding: 0 0.5rem;
+        padding: 0 0.75rem;
 
         @media (min-width: 768px) {
             flex-basis: 50%;
@@ -76,7 +76,7 @@ const BusinessViewStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0.75rem 0;
+        margin: 1.125rem 0;
 
         img {
             width: 100%;
@@ -94,21 +94,21 @@ const BusinessViewStyles = styled.div`
         @media (min-width: 768px) {
             flex-direction: column;
             flex-basis: 50%;
-            padding: 2rem 0;
+            padding: 3rem 0;
         }}
 
     .businessContacts {
         width: 100%;
         display: flex;
         justify-content: space-around;
-        padding: 0.5rem 0;
-        margin: 0.5rem 0;
+        padding: 0.75rem 0;
+        margin: 0.75rem 0;
         background-color: var(--black-and-white);
         border-radius: 5px;
         gap: 10px;
         
         @media (min-width: 768px) {
-            margin: 1.5rem 0;
+            margin: 2.25rem 0;
             border: none;
             align-self: flex-start;
         }}

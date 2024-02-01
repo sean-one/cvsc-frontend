@@ -14,7 +14,7 @@ import AddressForm from './address.form';
 
 const BusinessCreateFormStyles = styled.div`
     label {
-        padding-bottom: 0.5rem;
+        padding-bottom: 0.75rem;
         align-self: flex-end;
     }
 `;

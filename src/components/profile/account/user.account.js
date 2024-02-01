@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { getImageSrc } from '../../../helpers/getImageSrc';
 
 import useAuth from '../../../hooks/useAuth';
+import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
 import { UserEditIcon } from '../../icons/siteIcons';
 import { useUserAccountRole } from '../../../hooks/useRolesApi';
@@ -13,24 +14,15 @@ const UserAccountStyles = styled.div`
         border: 1px solid var(--trim-color);
         flex-direction: column;
         align-items: center;
-        margin: 0 0.25rem;
-        padding: 1.5rem 0.5rem;
+        margin: 0 0.375rem;
+        padding: 2.25rem 0.75rem 0.75rem;
         border-radius: 5px;
-        
-        @media (min-width: 500px) {
-            flex-direction: row;
-            justify-content: space-between;
-        }}
+    }
 
     .profileImage {
         position: relative;
         min-width: 225px;
         max-width: 275px;
-        
-        @media (min-width: 500px) {
-            margin: 0.5rem;
-            width: 40%;
-        }
 
         canvas {
             max-width: 100%;
@@ -44,10 +36,11 @@ const UserAccountStyles = styled.div`
             border: 1px solid var(--trim-color);
             display: block;
             border-radius: 50%;
-        }}
+        }
+    }
     
     .userEditButton {
-        padding: 0.5rem;
+        padding: 0.75rem;
         position: absolute;
         right: 15%;
         bottom: 0;
@@ -58,46 +51,64 @@ const UserAccountStyles = styled.div`
     }
 
     .accountDetails {
+        display: flex;
+        flex-direction: column;
         width: 100%;
         align-self: start;
-        padding-top: 1rem;
-        
-        @media (min-width: 500px) {
-            display: flex;
-            flex-direction: column;
-            width: 60%;
-            padding-top: 0;
-            padding-left: 1rem;
-            align-self: stretch;
-        }}
+        padding: 1.5rem 0 0.75rem;
+        gap: 0.5rem;
+    }
     
     .profileHeader {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;}
+        align-items: flex-start;
+        margin: 0.5rem 0;
+    }
     
     .usernameHeader {
         font-weight: bold;
-        font-size: 1.5rem;
-        align-self: flex-end;}
+        font-size: 2.25rem;
+        align-self: flex-end;
+    }
     
     .accountTypeHeader {
-        align-self: flex-end;}
+        align-self: flex-end;
+    }
 
     .userDetails {
-        height: 100%;}
+        height: 100%;
+    }
 
     .updateWrapper {
         display: flex;
         justify-content: space-between;
-        align-content: center;}
+        align-content: center;
+    }
+    
+    .notificationTester {
+        color: black;
+        background-color: green;
+        border: 1px solid black;
+        padding: 0.75rem;
+    }
 `
 
 const UserAccount = () => {
-    const { auth } = useAuth()
+    const { auth } = useAuth();
+    const { dispatch } = useNotification();
     const [ editView, setEditView ] = useState(false)
     const { data: account_role } = useUserAccountRole(auth?.user?.id) 
 
+    const testNotification = () => {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: 'this is the tester for notifications'
+            }
+        })
+    }
 
     return (
         <UserAccountStyles>
@@ -131,6 +142,8 @@ const UserAccount = () => {
                                         </div>
                                 }
                             </div>
+
+                            {/* <div className='notificationTester' onClick={testNotification}>test notification</div> */}
                             
                         </div>
                     </div>

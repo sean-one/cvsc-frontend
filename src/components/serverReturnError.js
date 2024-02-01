@@ -7,7 +7,7 @@ const ServerReturnErrorStyles = styled.div`
         width: 100%;
         color: var(--error-color);
         text-align: center;
-        padding: 0.5rem 0;
+        padding: 0.75rem 0;
     }
 `;
 

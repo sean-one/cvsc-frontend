@@ -9,8 +9,9 @@ const EventCardStyles = styled.div`
     .eventCardWrapper {
         position: relative;
         width: 100%;
-        border-radius: 1.2rem;
-        margin-bottom: 1.25rem;
+        max-width: var(--max-page-width);
+        border-radius: 1.8rem;
+        margin-bottom: 1.875rem;
         overflow: hidden;
         border: 2px solid var(--trim-color);
 
@@ -44,11 +45,11 @@ const EventCardStyles = styled.div`
 
     .eventCardRow {
         width: 100%;
-        padding: 0.25rem 0.75rem 0.75rem;
+        padding: 0.375rem 1.125rem 1.125rem;
     }    
 
     .eventCardTopRow {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -56,7 +57,7 @@ const EventCardStyles = styled.div`
     
     .eventCardBottomRow {
         color: var(--black-and-white);
-        border-radius: 1rem;
+        border-radius: 1.5rem;
         background-color: var(--trim-color);
     }
 
@@ -65,8 +66,8 @@ const EventCardStyles = styled.div`
         flex-direction: column;
         align-items: center;
         border: 2px solid var(--black-and-white);
-        padding: 0.7rem;
-        border-radius: 1.2rem;
+        padding: 1.05rem;
+        border-radius: 1.8rem;
         color: var(--secondary-color);
         background-color: var(--main-color);
         line-height: 1;
@@ -90,7 +91,7 @@ const EventCardStyles = styled.div`
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-height: 4.8rem;
+        max-height: 7.2rem;
         cursor: pointer;
         text-align: justify;
     }

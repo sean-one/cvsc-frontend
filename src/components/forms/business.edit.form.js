@@ -19,8 +19,8 @@ const BusinessEditFormStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 0 0.25rem;
-        padding: 1.5rem 0.5rem;
+        margin: 0 0.375rem;
+        padding: 2.25rem 0.75rem;
     }
 
     .businessImage {
@@ -43,7 +43,6 @@ const BusinessEditFormStyles = styled.div`
         }}
     
     .editImageButton {
-        /* padding: 0rem; */
         position: absolute;
         right: 15%;
         bottom: 0;
@@ -51,6 +50,7 @@ const BusinessEditFormStyles = styled.div`
         border-radius: 50%;
         color: var(--trim-color);
         background-color: var(--main-color);
+        padding: 0.75rem;
     }
 `;
 

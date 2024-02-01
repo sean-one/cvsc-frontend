@@ -15,8 +15,8 @@ const EventViewRelatedStyles = styled.div`
     }
 
     .eventViewRelatedHeader {
-        padding-left: 0.75rem;
-        margin: 0.5rem 0;
+        padding-left: 1.125rem;
+        margin: 0.75rem 0;
     }
 `;
 

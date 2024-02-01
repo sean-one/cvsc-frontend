@@ -9,8 +9,8 @@ import RemoveEventBusinessButton from '../buttons/removeEventBusinessButton';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
-        padding: 0.5rem;
-        margin-top: 0.25rem;
+        padding: 0.75rem;
+        margin-top: 0.375rem;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -25,7 +25,7 @@ const BusinessLabelStyles = styled.div`
     
     .businessLogo {
         width: 100%;
-        max-width: 3.4rem;
+        max-width: 5.1rem;
         border: 2px solid var(--trim-color);
         border-radius: 50%;
     }

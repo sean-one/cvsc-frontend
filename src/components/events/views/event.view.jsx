@@ -23,7 +23,7 @@ const EventViewStyles = styled.div`
         width: 100%;
         
         @media (min-width: 768px) {
-            padding: 0.75rem;
+            padding: 1.125rem;
         }
     }
 
@@ -31,7 +31,7 @@ const EventViewStyles = styled.div`
         width: 100%;
         display: flex;
         flex-direction: column;
-        padding: 0rem 0.5rem;
+        padding: 0rem 0.75rem;
     }
 
     .eventViewEventInactive {
@@ -62,10 +62,10 @@ const EventViewStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0.75rem auto;
+        margin: 1.125rem auto;
 
         @media (min-width: 768px) {
-            margin: 0.5rem;
+            margin: 0.75rem;
         }
     }
     
@@ -82,15 +82,15 @@ const EventViewStyles = styled.div`
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        padding: 0 0.5rem;
+        padding: 0 0.75rem;
     
         @media (min-width: 768px) {
-            padding: 0 0 0 0.5rem;
+            padding: 0 0 0 0.75rem;
         }
     }
 
     .eventViewBusiness {
-        margin: 0.5rem 0;
+        margin: 0.75rem 0;
         width: 100%;
         display: flex;
         flex-direction: column;

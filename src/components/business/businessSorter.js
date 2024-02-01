@@ -17,7 +17,7 @@ const BusinessSorterStyles = styled.div`
         align-items: center;
 
         input, select {
-            font-size: 1.1rem;
+            font-size: 1.65rem;
 
             ::placeholder {
                 color: var(--secondary-color);
@@ -26,7 +26,7 @@ const BusinessSorterStyles = styled.div`
 
         label {
             align-self: flex-end;
-            padding-bottom: 0.25rem;
+            padding-bottom: 0.375rem;
             border-bottom: 1px solid var(--secondary-color);
         }
     }

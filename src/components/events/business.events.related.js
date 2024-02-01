@@ -10,12 +10,12 @@ import EventSmallPreview from './views/event.small.preview';
 
 const BusinessEventsRelatedStyles = styled.div`
     .businessEventsRelatedWrapper {
-        margin: 0.5rem;
+        margin: 0.75rem;
     }
 
     .businessEventsRelatedHeader {
-        padding-left: 0.75rem;
-        margin: 0.5rem 0;
+        padding-left: 1.125rem;
+        margin: 0.75rem 0;
     }
 `;
 

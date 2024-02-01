@@ -6,9 +6,10 @@ import { AuthProvider } from './context/auth/auth.provider';
 import { ThemeProvider } from './context/theme/theme.provider';
 import NotificationsProvider from './context/notifications/notifications.provider';
 
-// import './index.css';
 import App from './App';
 import 'dotenv/config'
+
+import './index.css';
 
 const container = document.getElementById('root')
 const root = createRoot(container);

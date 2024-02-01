@@ -21,17 +21,18 @@ const RegisterStyles = styled.div`
         width: 100%;
         max-width: var(--max-page-width);
         margin: 0 auto;
-        padding: 1.5rem 0.5rem;
+        padding: 2.25rem 0.75rem;
     }
 
     .registerHeader {
-        text-align: center;
+        padding-left: 0.75rem
+        align-self: flex-start;
     }
 
     .registerImagePreview {
         width: 100%;
         max-width: 350px;
-        margin: 1rem auto;
+        margin: 1.5rem auto;
 
         @media (min-width: 500px) {
             width: 100%;
@@ -49,7 +50,7 @@ const RegisterStyles = styled.div`
     .loginLinkWrapper {
         display: flex;
         justify-content: center;
-        margin-top: 2rem;
+        margin-top: 3rem;
     }
 `;
 

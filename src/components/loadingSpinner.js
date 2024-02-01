@@ -17,11 +17,11 @@ const LoadingSpinnerStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 0.75rem;
+        margin-top: 1.125rem;
     }
 
     .loadingIcon {
-        font-size: 3rem;
+        font-size: 4.5rem;
         color: green;
         animation: ${spin} 2s linear infinite;
     }

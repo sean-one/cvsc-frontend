@@ -12,8 +12,8 @@ const ManagementListItemStyles = styled.div`
         flex-direction: row;
         align-items: stretch;
         width: 100%;
-        margin: 1rem 0;
-        padding: 0.5rem;
+        margin: 1.5rem 0;
+        padding: 0.75rem;
         border: 1px solid var(--trim-color);
         border-radius: 15px;
     }
@@ -24,7 +24,7 @@ const ManagementListItemStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0.75rem 0.5rem;
+        margin: 1.125rem 0.75rem;
 
         img {
             width: 100%;
@@ -39,24 +39,23 @@ const ManagementListItemStyles = styled.div`
         flex-direction: column;
         width: 100%;
         height: 100%;
-        margin: 0.5rem;
-        /* margin-left: 0.5rem; */
+        margin: 0.75rem;
     }
 
     .managementListItemBusinessname {
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1.8rem;
         letter-spacing: 1.5;
     }
 
     .managementListItemStatus {
-        font-size: 0.8rem;
+        font-size: 1.2rem;
     }
 
     .managementListItemAdminButton {
-        margin-top: 0.5rem;
+        margin-top: 0.75rem;
         display: flex;
-        gap: 1rem;
+        gap: 1.5rem;
         align-self: flex-end;
     }
 `

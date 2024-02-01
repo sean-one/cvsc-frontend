@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Toast } from 'react-bootstrap';
 import styled, { keyframes } from 'styled-components';
 
 const rightSlideIn = keyframes`
@@ -24,20 +23,28 @@ const leftSlideOut = keyframes`
 
 const Styles = styled.div`
     .my-toast {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        background-color: var(--form-input-background);
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 0.6rem 1.2rem rgba(0,0,0,0.1);
         animation: ${rightSlideIn} 0.75s;
         animation-fill-mode: forwards;
     }
 
     .progressBar {
-        height: 0.25rem;
+        height: 0.375rem;
+        background-color: currentColor;
     }
     
     .success {
-        background-color: green;
+        background-color: var(--main-text-color);
     }
 
     .error {
-        background-color: red;
+        background-color: var(--error-color);
     }
 
     .exit {
@@ -62,7 +69,7 @@ const Notification = (props) => {
                 clearInterval(id);
                 return prev
             })
-        }, 12)
+        }, 20)
 
         setIntervalID(id)
     }
@@ -79,7 +86,7 @@ const Notification = (props) => {
                 type: "REMOVE_NOTIFICATION",
                 id: props.id
             })
-        }, 500)
+        }, 750)
     }
 
     useEffect(() => {
@@ -95,12 +102,10 @@ const Notification = (props) => {
 
     return(
         <Styles>
-            <Toast onMouseEnter={pauseTimer} onMouseLeave={startTimer} className={`my-toast ${exit ? 'exit' : ''}`}>
-                <Toast.Body>
-                    {props.message}
-                    <div className={`progressBar ${props.notification_type === 'SUCCESS' ? 'success' : 'error'}`} style={{ width: `${width}%` }} />
-                </Toast.Body>
-            </Toast>
+            <div onMouseEnter={pauseTimer} onMouseLeave={startTimer} className={`my-toast ${exit ? 'exit' : ''}`}>
+                {props.message}
+                <div className={`progressBar ${props.notification_type === 'SUCCESS' ? 'success' : 'error'}`} style={{ width: `${width}%` }} />
+            </div>
         </Styles>
     )
 }

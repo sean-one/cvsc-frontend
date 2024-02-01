@@ -19,8 +19,8 @@ const BusinessAdminViewStyles = styled.div`
         justify-content: space-around;
         align-items: center;
 
-        margin-top: 0.5rem;
-        padding: 1rem 0;
+        margin-top: 0.75rem;
+        padding: 1.5rem 0;
         border-top: 1px dotted var(--secondary-color);
         border-bottom: 1px dotted var(--secondary-color);
     }
@@ -91,18 +91,18 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         <div className='subheaderText'>{business_data?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
                 }
                 {
-                    (userBusinessRole?.role_type >= 456) &&
+                    (userBusinessRole?.role_type === 'manager' || userBusinessRole?.role_type === 'admin') &&
                         <div className='businessAdminViewControls'>
                             <CreateEventButton business_id={business_id} />
                             <EditBusinessButton business={business_data} />
                             {
-                                (userBusinessRole?.role_type === 789) &&
+                                (userBusinessRole?.role_type === 'admin') &&
                                     <DeleteBusiness business_id={business_data?.id} onDeleteStart={handleDeleteStart} onDeleteSuccess={handleDeleteSuccess} />
                             }
                         </div>
                 }
                 {
-                    (userBusinessRole?.role_type >= 789) &&
+                    (userBusinessRole?.role_type === 'admin') &&
                         <div className='businessAdminViewDetails'>
                             <div className='businessAdminViewStatus'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
                             <div className='businessAdminViewBusinessButtons'>
@@ -116,7 +116,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
 
                 }
                 {
-                    (userBusinessRole?.role_type >= 789) &&
+                    (userBusinessRole?.role_type === 'admin') &&
                         <div className='businessAdminViewCreationRequest'>
                             <div>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                             <BusinessToggle

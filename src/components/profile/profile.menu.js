@@ -11,7 +11,7 @@ const ProfileMenuStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
     }
 
     .profileTab {
@@ -20,7 +20,7 @@ const ProfileMenuStyles = styled.div`
         border-right: 1px solid var(--secondary-text-color);
         width: 100%;
         text-align: center;
-        padding: 0.5rem 0;
+        padding: 0.75rem 0;
     }
 
     .profileTab:first-child {
@@ -30,7 +30,7 @@ const ProfileMenuStyles = styled.div`
     .activeTab {
         color: var(--trim-color);
         font-weight: bold;
-        letter-spacing: 0.01rem;
+        letter-spacing: 0.015rem;
     }
 `;
 

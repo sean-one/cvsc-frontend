@@ -26,7 +26,7 @@ const NavbarStyles = styled.div`
     }
 
     .navContainer {
-        width: calc(100vw - 1.5rem);
+        width: calc(100vw - 2.25rem);
         min-width: 200px;
         max-width: var(--max-page-width);
         display: flex;
@@ -57,8 +57,8 @@ const NavbarStyles = styled.div`
     .toggler {
         display: flex;
         justify-content: center;
-        width: 3rem;
-        padding: 0.5rem;
+        width: 4.5rem;
+        padding: 0.75rem;
     }
 `;
 

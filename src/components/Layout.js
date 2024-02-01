@@ -5,7 +5,7 @@ import useTheme from '../hooks/useTheme';
 
 const GlobalStyle = createGlobalStyle`
     :root {
-        --header-height: 5rem;
+        --header-height: 7.5rem;
         --main-color: ${(props) => props.theme['--main-color']};
         --secondary-color: ${(props) => props.theme['--secondary-color']};
         --main-text-color: ${(props) => props.theme['--main-text-color']};
@@ -13,21 +13,21 @@ const GlobalStyle = createGlobalStyle`
         --trim-color: #286237;
         --opacity: ${(props) => props.theme['--opacity']};
         --black-and-white: ${(props) => props.theme['--black-and-white']};
-        --site-icon-size: 1.8rem;
-        --contact-icon-size: 2.2rem;
+        --site-icon-size: 2.7rem;
+        --contact-icon-size: 3.3rem;
         --error-color: #D32F2F;
         // added to label to make it look like an input for image upload
         --form-input-background: #F4F6F5;
         --input-text-color: #263238;
         --input-placeholder: #286237;
         
-        --header-font-size: 1.6rem;
-        --small-header-font: 1.2rem;
-        --subheader-font-size: 1.2rem;
-        --small-subheader-font: 1rem;
-        --main-font-size: 1.1rem;
-        --small-font: 0.9rem;
-        --max-page-width: 875px;
+        --header-font-size: 2.4rem;
+        --small-header-font: 1.8rem;
+        --subheader-font-size: 1.8rem;
+        --small-subheader-font: 1.5rem;
+        --main-font-size: 1.65rem;
+        --small-font: 1.35rem;
+        --max-page-width: 52.5rem;
         --main-break-width: 500px;
 
     }
@@ -70,19 +70,18 @@ const Styles = styled.div`
     .smallText {}
     
     .innerContainer {
-        padding: calc(var(--header-height) + 0.75rem) 0 0.5rem 0;
+        padding: calc(var(--header-height) + 1.125rem) 0.75rem 0.75rem 0.75rem;
         box-sizing: border-box;
         
         @media (min-width: 500px) {
-            padding: calc(var(--header-height) + 0.75rem) 0.5rem 0.5rem;
             max-width: var(--max-page-width);
             margin: 0 auto;
         }
     }
 
     .sectionContainer {
-        margin: 0.5rem;
-        padding: 0.5rem;
+        margin: 0.75rem;
+        padding: 0.75rem;
         border-radius: 5px;
         border: 1px solid var(--trim-color);
     }
@@ -98,7 +97,7 @@ const Styles = styled.div`
     }
 
     button {
-        padding: 0.5rem 1.25rem;
+        padding: 0.75rem 1.875rem;
         border: none;
         border: 1px solid var(--secondary-color);
         color: var(--trim-color);
@@ -121,8 +120,8 @@ const Styles = styled.div`
 
     input, textarea, select {
         width: 100%;
-        font-size: 1.4rem;
-        padding: 0.5rem 1rem;
+        font-size: 2.1rem;
+        padding: 0.75rem 1.5rem;
         margin: 0; 
         border: none; 
         border-radius: 0;
@@ -149,8 +148,8 @@ const Styles = styled.div`
     }
 
     .roleWrapper {
-        margin: 0.1rem 0;
-        padding: 0.2rem 0.75rem;
+        margin: 0.15rem 0;
+        padding: 0.3rem 1.125rem;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -163,7 +162,7 @@ const Styles = styled.div`
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        gap: 0.5rem;
+        gap: 0.75rem;
     }
 
     .visuallyHidden {
@@ -181,7 +180,7 @@ const Styles = styled.div`
     .dateTimeInputWrapper {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
 
         input {
             &[type=time], &[type=date] {
@@ -211,7 +210,7 @@ const Styles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 1rem auto;
+        margin: 1.5rem auto;
         
         @media (min-width: 500px) {
             width: 100%;
@@ -242,8 +241,8 @@ const Styles = styled.div`
 
     .standardForm {
         width: 95%;
-        max-width: 35rem;
-        margin: 0.5rem auto;
+        max-width: 52.5rem;
+        margin: 0.75rem auto;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -255,19 +254,19 @@ const Styles = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin: 0.25rem 0 0.1rem;
+        margin: 0.375rem 0 0.15rem;
     }
 
     .contactLabelWrapper {
         width: 100%;
         display: flex;
-        gap: 0.5rem;
+        gap: 0.75rem;
     }
 
     .formInput {
         width: 100%;
         font-size: 1.4rem;
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1.5rem;
         border: none;
         color: var(--input-text-color);
         border-radius: 5px;
@@ -296,12 +295,12 @@ const Styles = styled.div`
 
         div {
             flex-grow: 1;
-            margin-right: 0.5rem;
+            margin-right: 1.125rem;
         }
     }
 
     .inputLabel {
-        padding-top: 0.75rem;
+        padding-top: 1.125rem;
         display: flex;
         align-items: center;
         cursor: pointer;
@@ -313,9 +312,9 @@ const Styles = styled.div`
 
     .errormessage {
         width: 100%;
-        font-size: 0.8rem;
+        font-size: 1.2rem;
         text-align: left;
-        letter-spacing: 0.05rem;
+        letter-spacing: 0.075rem;
         font-weight: bold;
         color: var(--error-color);
     }
@@ -327,7 +326,7 @@ const Styles = styled.div`
     .formButtonWrapper {
         display: flex;
         justify-content: space-around;
-        padding-top: 0.75rem;
+        padding-top: 1.125rem;
     }
 
 `;

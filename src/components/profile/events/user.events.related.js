@@ -11,8 +11,8 @@ import useNotification from '../../../hooks/useNotification';
 
 const UserEventsRelatedStyles = styled.div`
     .noUserEvents {
-        border-top: 0.01rem dotted var(--main-text-color);
-        padding-top: 0.5rem;
+        border-top: 0.015rem dotted var(--main-text-color);
+        padding-top: 0.75rem;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -20,7 +20,7 @@ const UserEventsRelatedStyles = styled.div`
     }
 
     .noUserEventsLink {
-        padding: 0.5rem 0;
+        padding: 0.75rem 0;
         font-weight: bold;
         cursor: pointer;
         

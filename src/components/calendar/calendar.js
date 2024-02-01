@@ -11,20 +11,20 @@ import { ReactComponent as CVSCLogo } from '../../assets/cvsc_sqr.svg';
 const CalendarStyles = styled.div`
     .calendarWrapper {
         width: 100%;
-        padding: 0 0.25rem;
+        padding: 0 0.375rem;
         max-width: var(--max-page-width);
         display: flex;
         flex-direction: column;
     }
 
     .calendarNoEvents {
-        margin-top:1.5rem;
+        margin-top: 2.25rem;
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 0.5rem;
+        padding: 0.75rem;
     }
 
     .noEventsLogo {
@@ -38,11 +38,11 @@ const CalendarStyles = styled.div`
 
     .calendarNoEventsHeader {
         font-weight: bold;
-        letter-spacing: 0.05rem;
+        letter-spacing: 0.075rem;
     }
 
     .calendarNoEventsLogin {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
     }
 `
 

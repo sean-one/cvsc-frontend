@@ -19,8 +19,8 @@ const EventSmallPreviewStyles = styled.div`
     }
 
     .eventSmallPreviewInactive {
-        margin: 0.5rem;
-        padding: 0.5rem;
+        margin: 0.75rem;
+        padding: 0.75rem;
         border-radius: 5px;
         color: var(--error-color);
         border: 1px solid var(--error-color);
@@ -28,8 +28,8 @@ const EventSmallPreviewStyles = styled.div`
 
     .eventSmallPreviewAdminControls {
         position: absolute;
-        right: 0.5rem;
-        top: 0.5rem;
+        right: 0.75rem;
+        top: 0.75rem;
         cursor: pointer;
         display: flex;
     }
@@ -42,8 +42,8 @@ const EventSmallPreviewStyles = styled.div`
     }
 
     .eventSmallPreviewImageContainer {
-        width: 7rem;
-        height: 7rem;
+        width: 10.5rem;
+        height: 10.5rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -73,7 +73,7 @@ const EventSmallPreviewStyles = styled.div`
 
     .eventSmallPreviewDate {
         font-size: var(--small-font);
-        line-height: calc(var(--small-font) + 0.1rem);
+        line-height: calc(var(--small-font) + 0.15rem);
         font-weight: thin;
         color: #F4F6F5;
     }
@@ -85,8 +85,8 @@ const EventSmallPreviewStyles = styled.div`
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-height: 4.8rem;
-        line-height: calc(var(--small-font) + 0.1rem);
+        max-height: 7.2rem;
+        line-height: calc(var(--small-font) + 0.15rem);
         cursor: pointer;
     }
 
@@ -94,8 +94,8 @@ const EventSmallPreviewStyles = styled.div`
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        gap: 0.2rem;
-        margin-top: 1rem;
+        gap: 0.3rem;
+        margin-top: 1.5rem;
         font-size: var(--small-font);
     }
 `;

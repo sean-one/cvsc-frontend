@@ -16,18 +16,18 @@ const LoginStyles = styled.div`
         width: 100%;
         max-width: var(--max-page-width);
         margin: 0 auto;
-        padding: 1.5rem 0.5rem;
+        padding: 2.25rem 0.75rem;
     }
 
     .loginHeader {
-        padding-left: 0.5rem;
+        padding-left: 0.75rem;
         align-self: flex-start;
     }
 
     .registerLinkWrapper {
         display: flex;
         justify-content: center;
-        margin-top: 2rem;
+        margin-top: 3rem;
     }
 
 
