@@ -40,7 +40,6 @@ const RolesTab = () => {
     userRoles = user_roles?.data || []
 
 
-    console.log(userRoles)
     return (
         <div>
             <RoleRequest user_roles={userRoles} />

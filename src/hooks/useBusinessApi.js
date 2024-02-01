@@ -7,10 +7,9 @@ import useNotification from "./useNotification";
 
 // event.create.form, event.edit.form, role.request
 // ['businesses']
+//! update ready
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
-export const useBusinessesQuery = () => {
-    return useQuery(['businesses'], getBusinesses, { refetchOnMount: false })
-}
+export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses, { refetchOnMount: false });
 
 // business.create.form - CREATE BUSINESS
 // refetch -> ['businesses'], ['business_management', auth.user.id], ['roles'], ['user_roles', auth.user.id]
@@ -63,36 +62,8 @@ export const useCreateBusinessMutation = () => {
 // ['business_management', auth.user.id]
 const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/managed') }
 export const useBusinessManagement = () => {
-    const { auth, sendToLogin } = useAuth();
-    const { dispatch } = useNotification();
-
-    return useQuery(['business_management', auth?.user?.id], getManagersBusinesses, {
-        onError: (error) => {
-            // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-
-                sendToLogin()
-            } else  {
-                // 400, 404 - type: 'server'
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-                
-            }
-
-        }
-    })
+    const { auth } = useAuth();
+    return useQuery(['business_management', auth?.user?.id], getManagersBusinesses)
 }
 
 // businessView & business.admin.view 

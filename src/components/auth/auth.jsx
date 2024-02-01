@@ -13,7 +13,7 @@ const AuthRoute = () => {
         return null;
     }
 
-
+    
     return (
         (isLoggedIn && getCookie('jwt'))
             ? <Outlet />

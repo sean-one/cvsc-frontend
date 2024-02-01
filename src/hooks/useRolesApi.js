@@ -41,14 +41,14 @@ export const useBusinessRolesQuery = (business_id) => {
 
 // rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
 // ['user_roles', user_id]
+//! update ready - only updated rolesTab
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
 export const useUserRolesQuery = (user_id) => useQuery(['user_roles', user_id], () => getUserRoles(user_id))
 
 // user.account - returns the highest role type for a specific user
 // ['user_account_role', user_id]
-//! update ready - only updated rolesTab
 const getUserAccountRole = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}/account-role`) }
-export const useUserAccountRole = (user_id) => useQuery(['user_account_role', user_id], () => getUserAccountRole(user_id))
+export const useUserAccountRole = (user_id) => useQuery(['user_account_role', user_id], () => getUserAccountRole(user_id), { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 })
 
 // role.request - creates a new role request
 // refetch -> ['business_roles', business_id], ['user_roles', user_id]

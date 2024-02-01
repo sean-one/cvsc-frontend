@@ -23,7 +23,7 @@ const EventCreateForm = ({ business_id }) => {
     let navigate = useNavigate();
     let location = useLocation()
     
-    const { data: business_list, status: business_list_status } = useBusinessesQuery()
+    const { data: businesses_list, status: businesses_list_status, error: businesses_list_error } = useBusinessesQuery()
 
     const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
@@ -40,6 +40,21 @@ const EventCreateForm = ({ business_id }) => {
     });
     
     useEffect(() => {
+        if (businesses_list_status === 'error') {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: businesses_list_error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/profile')
+        }
+
+    },[dispatch, businesses_list_status, businesses_list_error, navigate])
+    
+    useEffect(() => {
         // check for saved form in local storage
         const savedFormData = localStorage.getItem('createEventForm');
 
@@ -52,20 +67,18 @@ const EventCreateForm = ({ business_id }) => {
         }
     },[setValue])
 
-    if (business_list_status === 'loading') {
+    if (businesses_list_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if (business_list_status === 'success') {
-        venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-        brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
-        
-        const foundVenue = venue_list.find(venue => venue.id === location?.state)
-        const foundBrand = brand_list.find(brand => brand.id === location?.state)
-        
-        if(foundVenue) { setValue('venue_id', foundVenue?.id) }
-        if(foundBrand) { setValue('brand_id', foundBrand?.id)}
-    }
+    venue_list = businesses_list?.data.filter(business => business.business_type !== 'brand' && business.active_business) || []
+    brand_list = businesses_list?.data.filter(business => business.business_type !== 'venue' && business.active_business) || []
+    
+    const foundVenue = venue_list.find(venue => venue.id === location?.state)
+    const foundBrand = brand_list.find(brand => brand.id === location?.state)
+    
+    if(foundVenue) { setValue('venue_id', foundVenue?.id) }
+    if(foundBrand) { setValue('brand_id', foundBrand?.id)}
 
 
     const createNewEvent = async (event_data) => {

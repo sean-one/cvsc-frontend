@@ -48,7 +48,7 @@ const EventEditForm = () => {
 
     let navigate = useNavigate()
 
-    const { data: business_list, status: business_list_status } = useBusinessesQuery()
+    const { data: businesses_list, status: businesses_list_status, error: businesses_list_error } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -128,6 +128,20 @@ const EventEditForm = () => {
     }
 
     useEffect(() => {
+        if (businesses_list_status === 'error') {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: businesses_list_error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/profile')
+        }
+    }, [dispatch, businesses_list_status, businesses_list_error, navigate])
+
+    useEffect(() => {
         // function to format the event data
         const formatEventData = (data) => ({
             eventname: data.eventname,
@@ -181,20 +195,17 @@ const EventEditForm = () => {
         getEventDetails()
     }, [event_id, reset, dispatch, navigate, setValue])
 
-    if(business_list_status === 'loading') {
+    if(businesses_list_status === 'loading') {
         return <LoadingSpinner />
     }
 
-    if(business_list_status === 'success') {
-        if (business_list.data.length <= 0) {
-            venue_list = [{ id: eventData.venue_id, business_name: eventData.venue_name }]
-            brand_list = [{ id: eventData.brand_id, business_name: eventData.brand_name }]
-        } else {
-            venue_list = business_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-            brand_list = business_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
-        }
+    if (businesses_list.data.length <= 0) {
+        venue_list = [{ id: eventData?.venue_id || '', business_name: eventData?.venue_name || 'Select a venue...' }]
+        brand_list = [{ id: eventData?.brand_id || '', business_name: eventData?.brand_name || 'Select a brand...' }]
+    } else {
+        venue_list = businesses_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
+        brand_list = businesses_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
     }
-
 
 
     return (
@@ -286,6 +297,7 @@ const EventEditForm = () => {
                         <select {...register('venue_id', {
                             validate: (value) => validateEventBusiness(value, false)
                         })} onClick={() => clearErrors(['venue_id', 'role_rights'])}>
+                            <option value="" disabled>Select a venue...</option>
                             {
                                 venue_list.map(venue => (
                                     <option key={venue.id} value={venue.id}>{venue.business_name}</option>
@@ -307,6 +319,7 @@ const EventEditForm = () => {
                         <select {...register('brand_id', {
                             validate: (value) => validateEventBusiness(value, false)
                         })} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
+                            <option value="" disabled>Select a brand...</option>
                             {
                                 brand_list.map(brand => (
                                     <option key={brand.id} value={brand.id}>{brand.business_name}</option>
