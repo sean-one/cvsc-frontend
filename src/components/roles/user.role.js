@@ -21,7 +21,7 @@ const UserRole = ({ role }) => {
                             <CreateEventButton business_id={role?.business_id} />
                     }
                     {
-                        (role?.role_type < 789) &&
+                        (role?.role_type !== 'admin') &&
                             <DeleteRole role={role} />
                     }
                 </div>

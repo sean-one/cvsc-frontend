@@ -33,7 +33,7 @@ const BusinessAdminControls = ({ business }) => {
                                 <CreateEventButton business_id={business?.id} />
                         }
                         {
-                            (((business_user_role.role_type >= 456) && business.active_business) || (business_user_role.role_type >= 789)) &&
+                            (((business_user_role.role_type === 'manager') && business.active_business) || (business_user_role.role_type === 'admin')) &&
                                 <div className='businessAdminControls'>
                                     <EditBusinessButton business={business} />
                                     <SettingsBusinessButton business_id={business?.id} />

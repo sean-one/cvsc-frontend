@@ -25,7 +25,7 @@ const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
     }
 
     if (user_roles_status === 'success') {
-        business_user_role = user_roles?.data.find(role => role.business_id === businessId && role.active_role && role.role_type >= 456) || {}
+        business_user_role = user_roles?.data.find(role => role.business_id === businessId && role.active_role && (role.role_type === 'manager' || role.role_type === 'admin')) || {}
     }
 
 

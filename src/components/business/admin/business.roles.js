@@ -16,8 +16,8 @@ const filterRoles = (roles, user_id) => {
     return {
         inactive: user_removed_roles.filter(role => !role.active_role && role.approved_by !== null),
         pending: user_removed_roles.filter(role => !role.active_role && role.approved_by === null),
-        creator: user_removed_roles.filter(role => role.role_type === 123 && role.active_role),
-        manager: user_removed_roles.filter(role => role.role_type === 456 && role.active_role),
+        creator: user_removed_roles.filter(role => role.role_type === 'creator' && role.active_role),
+        manager: user_removed_roles.filter(role => role.role_type === 'manager' && role.active_role),
     }
 }
 

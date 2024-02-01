@@ -12,9 +12,15 @@ const RoleRequest = ({ user_roles }) => {
     const { data: businessList, status } = useBusinessesQuery()
     const { mutateAsync: createRole } = useCreateRoleMutation()
 
-    const { register, handleSubmit, reset, clearErrors, formState:{ errors } } = useForm({
+    const { register, handleSubmit, reset, clearErrors, watch, formState:{ errors } } = useForm({
         mode: 'onBlur',
+        defaultValues: {
+            business_id: ''
+        }
     });
+
+    // make sure business id is selected or submit button is disabled
+    const selectedBusinessId = watch('business_id');
 
     if(status === 'loading') { return <LoadingSpinner /> }
 
@@ -49,6 +55,7 @@ const RoleRequest = ({ user_roles }) => {
                                 required: 'valid business is required',
                                 pattern: uuidPattern
                             })} type='text' onClick={() => clearErrors('business_id')}>
+                                <option value='' selected>Select a business...</option>
                                 {
                                     business_filtered.map(business => (
                                         <option key={business.id} value={business.id}>
@@ -58,7 +65,7 @@ const RoleRequest = ({ user_roles }) => {
                                 }
                             </select>
                             {errors.business_id ? <div className='errormessage'>{errors.business_id?.message}</div> : null}
-                            <button type='submit'>Submit Role Request</button>
+                            <button disabled={!selectedBusinessId} type='submit'>Submit Role Request</button>
                         </form>
                     </div>
             }
