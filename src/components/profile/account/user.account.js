@@ -143,7 +143,7 @@ const UserAccount = () => {
                                 }
                             </div>
 
-                            {/* <div className='notificationTester' onClick={testNotification}>test notification</div> */}
+                            <div className='notificationTester' onClick={testNotification}>test notification</div>
                             
                         </div>
                     </div>
