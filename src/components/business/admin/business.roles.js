@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
+import useNotification from '../../../hooks/useNotification';
 import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
 import InactiveRoles from './rolesList/inactive.roles';
@@ -21,20 +22,33 @@ const filterRoles = (roles, user_id) => {
     }
 }
 
-
+// inside business.admin.view
 const BusinessRoles = () => {
-    const { auth } = useAuth();
+    const { auth, user_logout } = useAuth();
+    const { dispatch } = useNotification();
     let { business_id } = useParams();
-    const { data: business_roles, status: business_roles_status } = useBusinessRolesQuery(business_id);
+    const { data: business_roles, status: business_roles_status, error: business_roles_error } = useBusinessRolesQuery(business_id);
 
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
 
     useEffect(() => {
+        // 400 - type: 'business_id', 400, 404 - type: 'server', 401, 403 - type: 'token'
         if (business_roles_status === 'error') {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: business_roles_error?.response?.data?.error?.message
+                }
+            })
+
+            if (business_roles_error?.response?.data?.error?.type === 'token') {
+                user_logout()
+            }
             // console.log(business_roles_error)
-            navigate('/profile')
+            // navigate('/profile')
         }
-    }, [navigate, business_roles_status])
+    }, [dispatch, business_roles_status, business_roles_error, user_logout])
 
     if (business_roles_status === 'loading') {
         return <LoadingSpinner />
