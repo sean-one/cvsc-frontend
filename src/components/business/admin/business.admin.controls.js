@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components'
 
 import useAuth from '../../../hooks/useAuth';
@@ -14,21 +14,15 @@ const BusinessAdminControlStyles = styled.div`
     }
 `
 
+// visible in business view when user is logged in
 const BusinessAdminControls = ({ business }) => {
-    const { auth, user_logout } = useAuth();
-    const { data: user_roles, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
+    const { auth } = useAuth();
+    // if any errors are hit do nothing and show nothing
+    const { data: user_roles } = useUserRolesQuery(auth?.user?.id)
     let business_user_role = {};
 
-    useEffect(() => {
-        if (user_roles_status === 'error') {
-            business_user_role = {}
-        }
-
-    }, [user_roles_status, user_logout])
-
     business_user_role = user_roles?.data.find(role => role.business_id === business.id && role.active_role) || {}
-    // if (user_roles_status === 'success') {
-    // }
+
 
     return (
         <BusinessAdminControlStyles>
