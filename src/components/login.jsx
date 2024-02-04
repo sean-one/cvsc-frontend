@@ -117,7 +117,7 @@ const Login = () => {
                     </div>
                     
                     {/* PASSWORD */}
-                    <div className='inputWrapper'>
+                    <div className='inputWrapper passwordInput'>
                         <input {...register('password', {
                             validate: value => validatePassword(value, true)
                         })} type='password' onFocus={() => clearErrors('password')} placeholder='Password' />

@@ -14,6 +14,7 @@ const RemoveEventBusinessButtonStyles = styled.div`
 
 const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
     const { auth } = useAuth();
+    // if any errors are hit do nothing and show nothing
     const { data: user_roles, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
     const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
     let business_user_role = {}

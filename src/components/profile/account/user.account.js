@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getImageSrc } from '../../../helpers/getImageSrc';
 
@@ -98,7 +98,19 @@ const UserAccount = () => {
     const { auth } = useAuth();
     const { dispatch } = useNotification();
     const [ editView, setEditView ] = useState(false)
-    const { data: account_role } = useUserAccountRole(auth?.user?.id) 
+    const { data: user_account_role, status: user_account_role_status, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
+
+    useEffect(() => {
+        if (user_account_role_status === 'error') {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: user_account_role_error?.response?.data?.error?.message
+                }
+            })
+        }
+    }, [dispatch, user_account_role_status, user_account_role_error])
 
     const testNotification = () => {
         dispatch({
@@ -131,7 +143,7 @@ const UserAccount = () => {
 
                             <div className='profileHeader'>
                                 <div className='usernameHeader'>{auth?.user.username}</div>
-                                <div className='accountTypeHeader'>{account_role?.data?.role_type || 'Basic'}</div>
+                                <div className='accountTypeHeader'>{user_account_role?.data?.role_type || 'Basic'}</div>
                             </div>
 
                             <div className='userDetails'>
