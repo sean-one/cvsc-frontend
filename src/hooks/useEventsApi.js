@@ -50,7 +50,7 @@ export const useRemoveEventBusinessMutation = () => {
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
 export const useBusinessEventsQuery = (business_id) => useQuery(["business_events", business_id], () => getBusinessEvents(business_id), { refetchOnMount: false })
 
-// return an array of all events related to event id (all events including venue business or brad business)
+// return an array of all events related to event id (all events including venue business or brand business)
 // ['event_related_events', event_id]
 //! update ready
 const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.get(`/events/event-related/${event_id}`) }

@@ -21,7 +21,7 @@ const BusinessAdminControls = ({ business }) => {
     const { data: user_roles } = useUserRolesQuery(auth?.user?.id)
     let business_user_role = {};
 
-    business_user_role = user_roles?.data.find(role => role.business_id === business.id && role.active_role) || {}
+    business_user_role = user_roles?.data.find(role => role.business_id === business?.id && role.active_role) || {}
 
 
     return (

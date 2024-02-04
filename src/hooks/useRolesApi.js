@@ -5,19 +5,19 @@ import useNotification from "./useNotification";
 
 
 // business.roles - returns all roles for selected business
-// ['business_roles', business_id]
+// ['business_roles', business_id] --- 5m stale
 //! update ready
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
-export const useBusinessRolesQuery = (business_id) => useQuery(['business_roles', business_id], () => getBusinessRoles(business_id))
+export const useBusinessRolesQuery = (business_id) => useQuery(['business_roles', business_id], () => getBusinessRoles(business_id), { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 })
 
 // rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
-// ['user_roles', user_id]
+// ['user_roles', user_id] --- 5m stale
 //! update ready
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
-export const useUserRolesQuery = (user_id) => useQuery(['user_roles', user_id], () => getUserRoles(user_id))
+export const useUserRolesQuery = (user_id) => useQuery(['user_roles', user_id], () => getUserRoles(user_id), { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 })
 
 // user.account - returns the highest role type for a specific user
-// ['user_account_role', user_id]
+// ['user_account_role', user_id] --- 5m stale
 //! update ready
 const getUserAccountRole = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}/account-role`) }
 export const useUserAccountRole = (user_id) => useQuery(['user_account_role', user_id], () => getUserAccountRole(user_id), { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 })

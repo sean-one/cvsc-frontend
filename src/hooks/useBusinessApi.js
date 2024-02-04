@@ -6,10 +6,10 @@ import useNotification from "./useNotification";
 
 
 // event.create.form, event.edit.form, role.request
-// ['businesses']
+// ['businesses'] --- 10m stale
 //! update ready
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
-export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses, { refetchOnMount: false });
+export const useBusinessesQuery = () => useQuery(['businesses'], getBusinesses, { refetchOnMount: false, staleTime: 10 * 60 * 1000 });
 
 // business.create.form - CREATE BUSINESS
 // refetch -> ['businesses'], ['business_management', auth.user.id], ['roles'], ['user_roles', auth.user.id]
@@ -59,32 +59,19 @@ export const useCreateBusinessMutation = () => {
 }
 
 // management.list
-// ['business_management', auth.user.id]
+// ['business_management', auth.user.id] --- 5m stale
+//! update ready
 const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/managed') }
 export const useBusinessManagement = () => {
     const { auth } = useAuth();
-    return useQuery(['business_management', auth?.user?.id], getManagersBusinesses)
+    return useQuery(['business_management', auth?.user?.id], getManagersBusinesses, { refetchOnMount: false, staleTime: 5 * 60 * 1000 })
 }
 
 // businessView & business.admin.view 
-// ['business', business_id]
+// ['business', business_id] --- 10m stale
+//! update ready
 const getBusiness = async (business_id) => { return await AxiosInstance.get(`/businesses/${business_id}`) }
-export const useBusinessQuery = (business_id) => {
-    const { dispatch } = useNotification()
-
-    return useQuery(['business', business_id], () => getBusiness(business_id), {
-        onError: (error) => {
-            // 400 - type: 'business_id'
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
-        }
-    })
-}
+export const useBusinessQuery = (business_id) => useQuery(['business', business_id], () => getBusiness(business_id), { refetchOnMount: false, staleTime: 10 * 60 * 1000 });
 
 // business.admin.menu - toggle active & toggle request
 // ['business', business_id]

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import BusinessRoles from './business.roles';
@@ -56,10 +57,11 @@ const BusinessAdminViewStyles = styled.div`
 
 const BusinessAdminView = ({ userBusinessRole }) => {
     const [isDeleting, setIsDeleting] = useState(false);
+    const { dispatch } = useNotification();
     const { business_id } = useParams();
     let navigate = useNavigate();
     
-    const { data: business, status: business_status } = useBusinessQuery(business_id);
+    const { data: business, status: business_status, error: business_error } = useBusinessQuery(business_id);
 
     const handleDeleteStart = () => {
         setIsDeleting(true)
@@ -71,9 +73,17 @@ const BusinessAdminView = ({ userBusinessRole }) => {
 
     useEffect(() => {
         if (business_status === 'error' && !isDeleting) {
-            navigate('/')
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: business_error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/profile/admin')
         }
-    }, [navigate, business_status, isDeleting])
+    }, [dispatch, navigate, business_status, business_error, isDeleting])
     
     if (isDeleting || business_status === 'loading') {
         return <LoadingSpinner />
@@ -88,7 +98,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                 <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data.business_name}</div>
                 {
                     (business_data?.formatted_address !== null) &&
-                        <div className='subheaderText'>{business_data?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
+                        <div className='subheaderText'>{business_data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
                 }
                 {
                     (userBusinessRole?.role_type === 'manager' || userBusinessRole?.role_type === 'admin') &&

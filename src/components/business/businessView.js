@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useNotification from '../../hooks/useNotification';
 import useAuth from '../../hooks/useAuth';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
@@ -123,17 +124,27 @@ const BusinessViewStyles = styled.div`
 `;
 
 const BusinessView = () => {
-    const { isLoggedIn } = useAuth()
-    let { business_id } = useParams()
+    const { isLoggedIn } = useAuth();
+    const { dispatch } = useNotification();
+    let { business_id } = useParams();
 
     let navigate = useNavigate();
-    const { data: business, status: business_status } = useBusinessQuery(business_id)
+    const { data: business, status: business_status, error: business_error } = useBusinessQuery(business_id)
     
     useEffect(() => {
+        // 400 - type: 'business_id'
         if (business_status === 'error') {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: business_error?.response?.data?.error?.message
+                }
+            })
+            
             navigate('/')
         }
-    }, [navigate, business_status])
+    }, [dispatch, navigate, business_status, business_error])
 
     if (business_status === 'loading') { return <LoadingSpinner /> }
     
@@ -153,7 +164,7 @@ const BusinessView = () => {
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&
-                            <div>{business?.data?.formatted_address.split(/\s\d{5},\sUSA/)[0]}</div>
+                            <div>{business?.data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
                     }
                 </div>
 
