@@ -5,4 +5,5 @@ const AxiosInstance = Axios.create({
     method: [ 'GET', 'POST', 'OPTIONS', 'PUT' ],
 });
 
+
 export default AxiosInstance;

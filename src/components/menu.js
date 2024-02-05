@@ -49,7 +49,7 @@ const Menu = ({ toggle }) => {
 
     const logOutUser = async () => {
         const logoutResponse = await AxiosInstance.get('/auth/logout')
-        
+
         if(logoutResponse.status === 204) {
             toggle(false)
             user_logout()

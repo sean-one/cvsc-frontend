@@ -45,29 +45,29 @@ export const useRemoveEventBusinessMutation = () => {
 }
 
 // return an array of all events related to business id
-// ['business_events', business_id]
+// ['business_events', business_id] --- 5m stale
 //! update ready
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
-export const useBusinessEventsQuery = (business_id) => useQuery(["business_events", business_id], () => getBusinessEvents(business_id), { refetchOnMount: false })
+export const useBusinessEventsQuery = (business_id) => useQuery(["business_events", business_id], () => getBusinessEvents(business_id), { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 })
 
 // return an array of all events related to event id (all events including venue business or brand business)
-// ['event_related_events', event_id]
+// ['event_related_events', event_id] --- 5m stale
 //! update ready
 const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.get(`/events/event-related/${event_id}`) }
-export const useEventRelatedEventsQuery = (event_id) => useQuery(['event_related_events', event_id], () => getEventRelatedEvents(event_id), { refetchOnMount: false })
+export const useEventRelatedEventsQuery = (event_id) => useQuery(['event_related_events', event_id], () => getEventRelatedEvents(event_id), { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 })
 
 // return an array of all events related to user id
-// ['user_events', user_id]
+// ['user_events', user_id] --- 5m stale
 //! update ready
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
-export const useUserEventsQuery = (user_id) => useQuery(["user_events", user_id], () => getAllUserEvents(user_id), { staleTime: 60000, refetchOnMount: false });
+export const useUserEventsQuery = (user_id) => useQuery(["user_events", user_id], () => getAllUserEvents(user_id), { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 });
 
 // event.view - return a single event by event id
 // event.edit.view - uses endpoint directly without query
-// ['events', event_id]
+// ['events', event_id] --- 10m stale
 //! update ready
 const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
-export const useEventQuery = (event_id) => useQuery(['events', event_id], () => getEvent(event_id), { staleTime: 60000, refetchOnMount: false })
+export const useEventQuery = (event_id) => useQuery(['events', event_id], () => getEvent(event_id), { refetchOnWindowFocus: false, staleTime: 10 * 60 * 1000 })
 
 // event.edit.form - update_event - UPDATE EVENT
 // refetch -> ['events'], ['business_events'], ['user_events']
@@ -170,10 +170,10 @@ export const useRemoveEventMutation = () => {
 }
 
 // get an array of all upcoming events
-// ['events']
+// ['events'] --- 5m stale
 //! update ready
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
-export const useEventsQuery = () => useQuery(["events"], getAllEvents, {refetchOnMount: false})
+export const useEventsQuery = () => useQuery(["events"], getAllEvents, { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 })
 
 // event.create.form - CREATE A NEW EVENT
 // refetch -> ['events'], ['business_events'], ['user_events']
