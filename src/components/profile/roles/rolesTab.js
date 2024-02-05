@@ -33,7 +33,7 @@ const RolesTab = () => {
     }, [dispatch, navigate, user_roles_status, user_roles_error])
 
 
-    if (user_roles_status === 'loading') {
+    if (user_roles_status === 'pending') {
         return <LoadingSpinner />
     }
     

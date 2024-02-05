@@ -59,7 +59,7 @@ const UserEventsRelated = () => {
         }
     }, [user_events_status, user_events_error, dispatch])
 
-    if (user_events_status === 'loading') {
+    if (user_events_status === 'pending') {
         return <LoadingSpinner />
     }
 

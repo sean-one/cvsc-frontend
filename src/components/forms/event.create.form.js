@@ -67,7 +67,7 @@ const EventCreateForm = ({ business_id }) => {
         }
     },[setValue])
 
-    if (businesses_list_status === 'loading') {
+    if (businesses_list_status === 'pending') {
         return <LoadingSpinner />
     }
 

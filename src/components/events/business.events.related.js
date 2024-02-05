@@ -21,13 +21,12 @@ const BusinessEventsRelatedStyles = styled.div`
 
 const BusinessEventsRelated = ({ business_id }) => {
     const { dispatch } = useNotification();
-    const { data: business_events_list, status: business_events_list_status, error: business_events_list_error } = useBusinessEventsQuery(business_id);
-    let business_events = {}
+    const { data: business_events_list, isPending, isError, error: business_events_list_error } = useBusinessEventsQuery(business_id);
     let location = useLocation()
 
     useEffect(() => {
     
-        if (business_events_list_status === 'error') {
+        if (isError) {
             // 400 - type 'business_id'
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -37,36 +36,36 @@ const BusinessEventsRelated = ({ business_id }) => {
                 }
             })
         }
-    }, [business_events_list_status, business_events_list_error, dispatch])
+    }, [isError, business_events_list_error, dispatch])
 
-    if (business_events_list_status === 'loading') {
-        return <LoadingSpinner />
-    }
-
-    business_events = business_events_list?.data || []
 
     return (
         <BusinessEventsRelatedStyles>
             <div className='businessEventsRelatedWrapper'>
                 {
-                    (business_events.length > 0)
-                        ? <div>
-                            <div className='businessEventsRelatedHeader subheaderText'>Upcoming Events</div>
-                            {
-                                business_events.map(event => {
-                                    if (location.pathname.includes('admin')) {
-                                        return (
-                                            <EventSmallPreview key={event.event_id} event={event} />
-                                        )
-                                    } else {
-                                        return (
-                                            <EventCard key={event.event_id} event={event} />
-                                        )
-                                    }
-                                })
-                            }
-                        </div>
-                        : null
+                    isPending ? (
+                        <LoadingSpinner />
+                    ) : isError ? (
+                        null
+                    ) :
+                        (business_events_list?.data.length > 0)
+                            ? <div>
+                                <div className='businessEventsRelatedHeader subheaderText'>Upcoming Events</div>
+                                {
+                                    business_events_list?.data.map(event => {
+                                        if (location.pathname.includes('admin')) {
+                                            return (
+                                                <EventSmallPreview key={event.event_id} event={event} />
+                                            )
+                                        } else {
+                                            return (
+                                                <EventCard key={event.event_id} event={event} />
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                            : null
                 }
             </div>
         </BusinessEventsRelatedStyles>

@@ -49,7 +49,7 @@ const CalendarStyles = styled.div`
 const Calendar = () => {
     const { data: events_list, status: events_list_status, error: events_list_error } = useEventsQuery()
 
-    if (events_list_status === 'loading') {
+    if (events_list_status === 'pending') {
         return <LoadingSpinner />
     }
 
@@ -57,12 +57,12 @@ const Calendar = () => {
         return <ServerDown />
     }
     
-
+    
     return (
         <CalendarStyles>
 
             <div className='calendarWrapper'>
-                {events_list?.data.length > 0 ? (
+                {events_list?.data?.length > 0 ? (
                     events_list?.data.map(event => <EventCard key={event.event_id} event={event} />)
                 ) : (
                     <div className='calendarNoEvents'>

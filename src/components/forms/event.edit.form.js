@@ -195,7 +195,7 @@ const EventEditForm = () => {
         getEventDetails()
     }, [event_id, reset, dispatch, navigate, setValue])
 
-    if(businesses_list_status === 'loading') {
+    if (businesses_list_status === 'pending') {
         return <LoadingSpinner />
     }
 

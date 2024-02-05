@@ -129,11 +129,11 @@ const BusinessView = () => {
     let { business_id } = useParams();
 
     let navigate = useNavigate();
-    const { data: business, status: business_status, error: business_error } = useBusinessQuery(business_id)
+    const { data: business, isPending, isError, error: business_error } = useBusinessQuery(business_id)
     
     useEffect(() => {
         // 400 - type: 'business_id'
-        if (business_status === 'error') {
+        if (isError) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -144,9 +144,9 @@ const BusinessView = () => {
             
             navigate('/')
         }
-    }, [dispatch, navigate, business_status, business_error])
+    }, [dispatch, navigate, isError, business_error])
 
-    if (business_status === 'loading') { return <LoadingSpinner /> }
+    if (isPending) { return <LoadingSpinner /> }
     
     
     return (

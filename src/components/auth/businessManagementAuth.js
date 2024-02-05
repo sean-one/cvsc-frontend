@@ -32,7 +32,7 @@ const BusinessManagementAuth = ({ children }) => {
 
     }, [dispatch, navigate, user_roles_status, user_roles_error, user_logout])
 
-    if (user_roles_status === 'loading') {
+    if (user_roles_status === 'pending') {
         return (
             <div>loading...</div>
             )

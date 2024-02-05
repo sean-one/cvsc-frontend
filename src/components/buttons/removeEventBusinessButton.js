@@ -21,7 +21,7 @@ const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
     
     const isCreator = () => auth?.user?.id === eventCreator
 
-    if (user_roles_status === 'loading') {
+    if (user_roles_status === 'pending') {
         return null;
     }
 

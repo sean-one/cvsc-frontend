@@ -22,33 +22,30 @@ const EventViewRelatedStyles = styled.div`
 
 const EventViewRelated = ({ event_id }) => {
     const { dispatch } = useNotification();
-    const { data: event_related_events, status: event_related_events_status, error: event_related_events_error } = useEventRelatedEventsQuery(event_id)
-    let events_related_list = []
+    const { data: event_related_events, isPending, isFetching, isError, error: event_related_events_error } = useEventRelatedEventsQuery(event_id)
 
     useEffect(() => {
-        if (event_related_events_status === 'error') {
+        if (isError) {
             dispatch({
-                typpe: "ADD_NOTIFICATION",
+                type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'ERROR',
                     message: event_related_events_error?.response?.data?.error?.message
                 }
             })
         }
-    }, [dispatch, event_related_events_status, event_related_events_error])
-
-    if (event_related_events_status === 'loading') {
-        return <LoadingSpinner />
-    }
-
-    events_related_list = event_related_events?.data || []
-
+    }, [dispatch, isError, event_related_events_error])
 
     return (
         <EventViewRelatedStyles>
             <div>
                 {
-                    (events_related_list.length > 0)
+                    isPending ? (
+                        <LoadingSpinner />
+                    ) : isError ? (
+                        null
+                    ) : 
+                        (!isFetching && event_related_events?.data?.length > 0)
                         ? <div className='eventViewRelatedWrapper'>
                             <div className='subheaderText eventViewRelatedHeader'>Upcoming Related Events</div>
                             {

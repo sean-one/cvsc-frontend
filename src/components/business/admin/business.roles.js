@@ -50,7 +50,7 @@ const BusinessRoles = () => {
         }
     }, [dispatch, business_roles_status, business_roles_error, user_logout])
 
-    if (business_roles_status === 'loading') {
+    if (business_roles_status === 'pending') {
         return <LoadingSpinner />
     }
 

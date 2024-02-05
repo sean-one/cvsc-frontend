@@ -105,10 +105,10 @@ const EventView = () => {
 
     let navigate = useNavigate()
     
-    const { data: event, status: event_status, error: event_error } = useEventQuery(event_id)
+    const { data: event, isPending, isError, error: event_error } = useEventQuery(event_id)
 
     useEffect(() => {
-        if (event_status === 'error') {
+        if (isError) {
             // 400 - type: 'event_id', 404 - type: 'server'
             dispatch({
                 type: "ADD_NOTIFICATION", 
@@ -117,22 +117,24 @@ const EventView = () => {
                     message: event_error?.response?.data?.error?.message
                 }
             })
-        }
-    }, [dispatch, event_status, event_error])
 
-    if (event_status === 'loading') {
+            navigate('/')
+        }
+    }, [dispatch, isError, event_error])
+
+    if (isPending) {
         return <LoadingSpinner />
     }
 
-    const isCreator = () => auth?.user?.id === event.data.created_by
-
+    const isCreator = () => auth?.user?.id === event?.data.created_by
+    
     
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
                 <div className='eventViewTopInfo'>
                     <div className='sectionRowSplit'>
-                        <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event.data.eventname}</div>
+                        <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>
                         {
                             (isCreator()) &&
                                 <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>
@@ -147,30 +149,30 @@ const EventView = () => {
                     {
                         (event?.data?.active_event) &&
                             <div className='sectionRowSplit'>
-                                <div className='subheaderText'>{format(new Date(event.data.eventdate), "E, MMMM d")}</div>
-                                <div className='subheaderText'>{`${formatTime(event.data.eventstart)} - ${formatTime(event.data.eventend)}`}</div>
+                                <div className='subheaderText'>{format(new Date(event?.data.eventdate), "E, MMMM d")}</div>
+                                <div className='subheaderText'>{`${formatTime(event?.data.eventstart)} - ${formatTime(event?.data.eventend)}`}</div>
                             </div>
                     }
                 </div>
                 <div className='eventViewBody'>
                     <div className='eventViewImageContainer'>
-                        <img className='eventViewImage' src={image_link(event.data.eventmedia)} alt={event.data.eventname} />
+                        <img className='eventViewImage' src={image_link(event?.data.eventmedia)} alt={event?.data.eventname} />
                     </div>
                     <div className='eventViewDetails'>
-                        <div>{event.data.details}</div>
+                        <div>{event?.data.details}</div>
                         <div>
                             {
                                 (event?.data?.active_event) &&
                                     <div className='eventViewBusiness'>
                                         <BusinessLabel
-                                            businessId={event.data.venue_id}
+                                            businessId={event?.data.venue_id}
                                             eventCreator={event?.data?.created_by}
                                             eventId={event?.data?.event_id}
                                             business_logo={event?.data?.venue_logo}
                                             business_name={event?.data?.venue_name}
                                             />
                                         <BusinessLabel
-                                            businessId={event.data.brand_id}
+                                            businessId={event?.data.brand_id}
                                             eventCreator={event?.data?.created_by}
                                             eventId={event?.data?.event_id}
                                             business_logo={event?.data?.brand_logo}
@@ -184,7 +186,7 @@ const EventView = () => {
             </div>
             {
                 (event?.data?.active_event) &&
-                    <EventViewRelated event={event.data} event_id={event?.data?.event_id} />
+                    <EventViewRelated event={event?.data} event_id={event?.data?.event_id} />
             }
         </EventViewStyles>
     )

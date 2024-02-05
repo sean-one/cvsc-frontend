@@ -36,7 +36,7 @@ const RoleRequest = ({ user_roles }) => {
         }
     },[dispatch, businesses_list_status, businesses_list_error])
 
-    if(businesses_list_status === 'loading') { return <LoadingSpinner /> }
+    if (businesses_list_status === 'pending') { return <LoadingSpinner /> }
 
     // filter out businesses that are not currently excepting request
     const request_open = businesses_list.data.filter(business => business.business_request_open && business.active_business)

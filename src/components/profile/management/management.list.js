@@ -38,7 +38,7 @@ const ManagementList = () => {
         }
     }, [dispatch, management_list_status, management_list_error, navigate, user_logout])
 
-    if (management_list_status === 'loading') { return <LoadingSpinner /> }
+    if (management_list_status === 'pending') { return <LoadingSpinner /> }
     
     const filteredBusinesses = management_list.data.filter(business => 
         business.business_name.toLowerCase().includes(searchQuery.toLowerCase())

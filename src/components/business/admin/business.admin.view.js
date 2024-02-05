@@ -85,7 +85,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
         }
     }, [dispatch, navigate, business_status, business_error, isDeleting])
     
-    if (isDeleting || business_status === 'loading') {
+    if (isDeleting || business_status === 'pending') {
         return <LoadingSpinner />
     }
     
