@@ -35,7 +35,13 @@ import PersistLogin from './components/persistLogin';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false
+    }
+  }
+})
 
 
 const App = () => {

@@ -12,8 +12,8 @@ const getBusinessRoles = async (business_id) => { return await AxiosInstance.get
 export const useBusinessRolesQuery = (business_id) => useQuery({
     queryKey: ['business_roles', business_id],
     queryFn: () => getBusinessRoles(business_id),
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000
 });
 
 // rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
@@ -23,8 +23,8 @@ const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles
 export const useUserRolesQuery = (user_id) => useQuery({
     queryKey: ['user_roles', user_id],
     queryFn: () => getUserRoles(user_id),
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000
 });
 
 // user.account - returns the highest role type for a specific user
@@ -34,8 +34,8 @@ const getUserAccountRole = async (user_id) => { return await AxiosInstance.get(`
 export const useUserAccountRole = (user_id) => useQuery({
     queryKey: ['user_account_role', user_id],
     queryFn: () => getUserAccountRole(user_id),
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000
 });
 
 // role.request - creates a new role request

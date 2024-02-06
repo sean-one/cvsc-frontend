@@ -52,8 +52,8 @@ const getBusinessEvents = async (business_id) => { return await AxiosInstance.ge
 export const useBusinessEventsQuery = (business_id) => useQuery({
     queryKey: ["business_events", business_id],
     queryFn: () => getBusinessEvents(business_id),
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000
 })
 
 // return an array of all events related to event id (all events including venue business or brand business)
@@ -63,8 +63,8 @@ const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.g
 export const useEventRelatedEventsQuery = (event_id) => useQuery({
     queryKey: ['event_related_events', event_id],
     queryFn: () => getEventRelatedEvents(event_id),
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000
 })
 
 // return an array of all events related to user id
@@ -74,8 +74,8 @@ const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/e
 export const useUserEventsQuery = (user_id) => useQuery({
     queryKey: ["user_events", user_id],
     queryFn: () => getAllUserEvents(user_id),
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000
 });
 
 // event.view - return a single event by event id
@@ -86,8 +86,8 @@ const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/$
 export const useEventQuery = (event_id) => useQuery({
     queryKey: ['events', event_id],
     queryFn: () => getEvent(event_id),
-    refetchOnWindowFocus: false,
-    staleTime: 10 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 10 * 60 * 1000
 });
 
 // event.edit.form - update_event - UPDATE EVENT
@@ -197,8 +197,8 @@ const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery({
     queryKey: ["events"],
     queryFn: () => getAllEvents(),
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000
+    // refetchOnWindowFocus: false,
+    // staleTime: 5 * 60 * 1000
 })
 
 // event.create.form - CREATE A NEW EVENT
