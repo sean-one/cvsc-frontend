@@ -27,6 +27,7 @@
     "react-router-dom": "6",
     "react-scripts": "^5.0.1",
     "styled-components": "^5.3.3",
+    "uuid": "^9.0.1",
     "webpack": "^5.90.0"
   },
   "scripts": {

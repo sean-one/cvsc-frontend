@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 
 export const NOTIFICATIONS_INITIAL_STATE = [
     // {
@@ -15,7 +16,7 @@ export const NOTIFICATIONS_INITIAL_STATE = [
 const notificationsReducer = (state, action) => {
     switch(action.type) {
         case "ADD_NOTIFICATION":
-            return [...state, {...action.payload, id: crypto.randomUUID()}];
+            return [...state, {...action.payload, id: uuidv4()}];
         case "REMOVE_NOTIFICATION":
             return state.filter(note => note.id !== action.id)
         default:

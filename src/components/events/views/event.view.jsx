@@ -120,7 +120,7 @@ const EventView = () => {
 
             navigate('/')
         }
-    }, [dispatch, isError, event_error])
+    }, [dispatch, isError, event_error, navigate])
 
     if (isPending) {
         return <LoadingSpinner />
