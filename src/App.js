@@ -35,9 +35,8 @@ import PersistLogin from './components/persistLogin';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 
-// import 'bootstrap/dist/css/bootstrap.min.css'
-
 const queryClient = new QueryClient()
+
 
 const App = () => {
 
@@ -53,6 +52,7 @@ const App = () => {
               
               {/* public routes */}
               <Route exact path='/' element={<Calendar />} />
+              {/* <Route path='/businesses' element={<Businesses />} /> */}
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/event/:event_id' element={<EventView />} />

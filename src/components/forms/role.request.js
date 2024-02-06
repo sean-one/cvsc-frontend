@@ -11,7 +11,7 @@ const RoleRequest = ({ user_roles }) => {
     const businessIdList = user_roles.map(role => role?.business_id) || []
     const { dispatch } = useNotification();
 
-    const { data: businesses_list, status: businesses_list_status, error: businesses_list_error } = useBusinessesQuery()
+    const { data: businesses_list, isPending, isError, error: businesses_list_error } = useBusinessesQuery()
     const { mutateAsync: createRole } = useCreateRoleMutation()
 
     const { register, handleSubmit, reset, clearErrors, watch, formState:{ errors } } = useForm({
@@ -25,7 +25,7 @@ const RoleRequest = ({ user_roles }) => {
     const selectedBusinessId = watch('business_id');
 
     useEffect(() => {
-        if (businesses_list_status === 'error') {
+        if (isError) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -34,9 +34,9 @@ const RoleRequest = ({ user_roles }) => {
                 }
             })
         }
-    },[dispatch, businesses_list_status, businesses_list_error])
+    },[dispatch, isError, businesses_list_error])
 
-    if (businesses_list_status === 'pending') { return <LoadingSpinner /> }
+    if (isPending) { return <LoadingSpinner /> }
 
     // filter out businesses that are not currently excepting request
     const request_open = businesses_list.data.filter(business => business.business_request_open && business.active_business)
@@ -50,7 +50,7 @@ const RoleRequest = ({ user_roles }) => {
             reset()   
         } catch (error) {
             console.log('ERROR!')
-            console.log(error)
+            // console.log(error)
         } finally {
             reset()
         }

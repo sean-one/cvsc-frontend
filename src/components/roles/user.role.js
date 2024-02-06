@@ -16,10 +16,10 @@ const UserRole = ({ role }) => {
             <div className='roleWrapper'>
                 <div onClick={() => navigate(`/business/${role?.business_id}`)}>{role?.business_name}</div>
                 <div className='roleButtonWrapper'>
-                    {
+                    {/* {
                         (role?.active_role) &&
                             <CreateEventButton business_id={role?.business_id} />
-                    }
+                    } */}
                     {
                         (role?.role_type !== 'admin') &&
                             <DeleteRole role={role} />

@@ -7,6 +7,7 @@ import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
 import { UserEditIcon } from '../../icons/siteIcons';
 import { useUserAccountRole } from '../../../hooks/useRolesApi';
+import LoadingSpinner from '../../loadingSpinner';
 
 const UserAccountStyles = styled.div`
     .userAccountPage {
@@ -98,10 +99,10 @@ const UserAccount = () => {
     const { auth } = useAuth();
     const { dispatch } = useNotification();
     const [ editView, setEditView ] = useState(false)
-    const { data: user_account_role, status: user_account_role_status, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
+    const { data: user_account_role, isPending, isError, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
 
     useEffect(() => {
-        if (user_account_role_status === 'error') {
+        if (isError) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -110,7 +111,7 @@ const UserAccount = () => {
                 }
             })
         }
-    }, [dispatch, user_account_role_status, user_account_role_error])
+    }, [dispatch, isError, user_account_role_error])
 
     const testNotification = () => {
         dispatch({
@@ -121,6 +122,7 @@ const UserAccount = () => {
             }
         })
     }
+
 
     return (
         <UserAccountStyles>
@@ -143,7 +145,13 @@ const UserAccount = () => {
 
                             <div className='profileHeader'>
                                 <div className='usernameHeader'>{auth?.user.username}</div>
-                                <div className='accountTypeHeader'>{user_account_role?.data?.role_type || 'Basic'}</div>
+                                {
+                                    isPending ? (
+                                        <LoadingSpinner />
+                                    ) : (
+                                        <div className='accountTypeHeader'>{user_account_role?.data?.role_type || 'basic'}</div>
+                                    )
+                                }
                             </div>
 
                             <div className='userDetails'>

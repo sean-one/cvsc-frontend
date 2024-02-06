@@ -12,13 +12,12 @@ import LoadingSpinner from '../../loadingSpinner';
 const RolesTab = () => {
     const { auth } = useAuth();
     const { dispatch } = useNotification();
-    const { data: user_roles, status: user_roles_status, error: user_roles_error } = useUserRolesQuery(auth?.user?.id)
+    const { data: user_roles, isPending, isError, error: user_roles_error } = useUserRolesQuery(auth?.user?.id)
     
     let navigate = useNavigate();
-    let userRoles = [];
 
     useEffect(() => {
-        if (user_roles_status === 'error') {
+        if (isError) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -30,25 +29,33 @@ const RolesTab = () => {
             navigate('/profile')
         }
 
-    }, [dispatch, navigate, user_roles_status, user_roles_error])
+    }, [dispatch, navigate, isError, user_roles_error])
 
 
-    if (user_roles_status === 'pending') {
+    if (isPending) {
         return <LoadingSpinner />
     }
     
-    userRoles = user_roles?.data || []
-
 
     return (
         <div>
-            <RoleRequest user_roles={userRoles} />
-            
-            {/* current user roles */}
             {
-                (userRoles.length > 0) &&
-                    <UserRoles roles={userRoles} />
-                }
+                isPending ? (
+                    <LoadingSpinner />
+                ) : isError ? (
+                    null
+                ) : (
+                    <div>
+                        <RoleRequest user_roles={user_roles?.data} />
+                        
+                        {/* current user roles */}
+                        {
+                            (user_roles?.data?.length > 0) &&
+                                <UserRoles roles={user_roles?.data} />
+                        }
+                    </div>
+                )
+            }
         </div>
     )
 }
