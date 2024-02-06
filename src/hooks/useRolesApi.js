@@ -1,42 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-// import { useMutation, useQuery, useQueryClient } from "react-query";
 import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 
 
 // business.roles - returns all roles for selected business
-// ['business_roles', business_id] --- 5m stale
+// ['business_roles', business_id]
 //! update ready
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
-export const useBusinessRolesQuery = (business_id) => useQuery({
-    queryKey: ['business_roles', business_id],
-    queryFn: () => getBusinessRoles(business_id),
-    // refetchOnWindowFocus: false,
-    // staleTime: 5 * 60 * 1000
-});
+export const useBusinessRolesQuery = (business_id) => useQuery({ queryKey: ['business_roles', business_id], queryFn: () => getBusinessRoles(business_id) });
 
 // rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
-// ['user_roles', user_id] --- 5m stale
+// ['user_roles', user_id]
 //! update ready
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
-export const useUserRolesQuery = (user_id) => useQuery({
-    queryKey: ['user_roles', user_id],
-    queryFn: () => getUserRoles(user_id),
-    // refetchOnWindowFocus: false,
-    // staleTime: 5 * 60 * 1000
-});
+export const useUserRolesQuery = (user_id) => useQuery({ queryKey: ['user_roles', user_id], queryFn: () => getUserRoles(user_id) });
 
 // user.account - returns the highest role type for a specific user
-// ['user_account_role', user_id] --- 5m stale
+// ['user_account_role', user_id]
 //! update ready
 const getUserAccountRole = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}/account-role`) }
-export const useUserAccountRole = (user_id) => useQuery({
-    queryKey: ['user_account_role', user_id],
-    queryFn: () => getUserAccountRole(user_id),
-    // refetchOnWindowFocus: false,
-    // staleTime: 5 * 60 * 1000
-});
+export const useUserAccountRole = (user_id) => useQuery({ queryKey: ['user_account_role', user_id], queryFn: () => getUserAccountRole(user_id) });
 
 // role.request - creates a new role request
 // refetch -> ['business_roles', business_id], ['user_roles', user_id]
