@@ -211,7 +211,8 @@ export const useCreateEventMutation = () => {
     const { setEditImage } = useEventImagePreview()
     let navigate = useNavigate();
 
-    return useMutation(createEvent, {
+    return useMutation({
+        queryKey: () => createEvent(),
         onSuccess: (data) => {
             localStorage.removeItem('createEventForm')
 
