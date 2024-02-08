@@ -18,7 +18,7 @@ const UserRole = ({ role }) => {
                 <div className='roleButtonWrapper'>
                     {
                         (role?.active_role) &&
-                            <CreateEventButton business_id={role?.business_id} />
+                            <CreateEventButton />
                     }
                     {
                         (role?.role_type !== 'admin') &&

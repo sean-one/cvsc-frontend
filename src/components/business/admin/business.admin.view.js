@@ -103,7 +103,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                 {
                     (userBusinessRole?.role_type === 'manager' || userBusinessRole?.role_type === 'admin') &&
                         <div className='businessAdminViewControls'>
-                            <CreateEventButton business_id={business_id} />
+                            <CreateEventButton />
                             <EditBusinessButton business={business_data} />
                             {
                                 (userBusinessRole?.role_type === 'admin') &&

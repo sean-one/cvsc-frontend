@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
@@ -15,13 +15,12 @@ import { validateEventDate, validateEventTime, validateEventBusiness } from './u
 
 const CreateEventFormStyles = styled.div``;
 
-const EventCreateForm = ({ business_id }) => {
+const EventCreateForm = () => {
     const { editImage, imagePreview, canvas } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
     let navigate = useNavigate();
-    let location = useLocation()
     
     const { data: businesses_list, isPending, isError, isSuccess, error: businesses_list_error } = useBusinessesQuery()
 
@@ -65,6 +64,7 @@ const EventCreateForm = ({ business_id }) => {
                 setValue(key, parsedData[key]);
             }
         }
+
     },[setValue])
 
     if (isPending) {
@@ -74,14 +74,6 @@ const EventCreateForm = ({ business_id }) => {
     if (isSuccess) {
         venue_list = businesses_list?.data.filter(business => business.business_type !== 'brand' && business.active_business) || []
         brand_list = businesses_list?.data.filter(business => business.business_type !== 'venue' && business.active_business) || []
-    }
-
-    if (business_id) {
-        const foundVenue = venue_list.find(venue => venue.id === location?.state)
-        const foundBrand = brand_list.find(brand => brand.id === location?.state)
-        
-        if(foundVenue) { setValue('venue_id', foundVenue?.id) }
-        if(foundBrand) { setValue('brand_id', foundBrand?.id)}
     }
     
     const createNewEvent = async (event_data) => {
@@ -114,6 +106,8 @@ const EventCreateForm = ({ business_id }) => {
             reset()
 
         } catch (error) {
+            console.log('INSIADE THE CREATE FORM')
+            console.log(error)
             // handles error for no canvas object for image upload
             if (error?.message === 'missing_image' || (error?.response?.data?.error?.type === 'media_error')) {
                 setError('eventmedia', {
@@ -139,6 +133,7 @@ const EventCreateForm = ({ business_id }) => {
             }
             
             else {
+                console.log(error)
                 console.log(`uncaught error: ${Object.keys(error)}`)
             }
         }

@@ -15,12 +15,16 @@ export const useRemoveEventBusinessMutation = () => {
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
-    return useMutation(removeBusiness, {
-        onSuccess: ({ data }) => {
-
-            queryClient.refetchQueries(['events'])
-            queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events'])
+    return useMutation({
+        mutationFn: ({ event_id, business_id }) => removeBusiness({ event_id, business_id }),
+        onSuccess: async ({ data }) => {
+            console.log('data:')
+            console.log(data)
+            await queryClient.refetchQueries({ queryKey: ['events'] })
+            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.business_id], refetchType: 'none' })
+            // queryClient.removeQueries({ queryKey: ['events', data?.event_id], exact: true })
+            // queryClient.removeQueries({ queryKey: ['event_related_events', data?.event_id], exact: true })
+            // await queryClient.invalidateQueries(['user_events'])
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -33,6 +37,8 @@ export const useRemoveEventBusinessMutation = () => {
             navigate(`/business/${data?.business_id}`)
         },
         onError: (error) => {
+            console.log('THE API ERROR HERE!')
+            console.log(Object.keys(error))
             // 401, 403 'token', 400 'business_id', 'event_id' & 'server'
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -76,16 +82,21 @@ const updateEvent = async ({ event_updates, event_id }) => { return await AxiosI
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient();
     const { dispatch } = useNotification();
-    const { auth, sendToLogin } = useAuth();
+    const { sendToLogin } = useAuth();
     let navigate = useNavigate();
 
-    return useMutation(updateEvent, {
-        onSuccess: ({ data }) => {
+    return useMutation({
+        mutationFn: (event) => updateEvent(event),
+        onSuccess: async ({ data }) => {
             localStorage.removeItem('editEventForm')
 
-            queryClient.refetchQueries(['events'])
-            queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events', auth?.user?.id])
+            await queryClient.invalidateQueries({ queryKey: ['events', data?.event_id] })
+            await queryClient.invalidateQueries({ queryKey: ['event_related_events', data?.event_id] })
+
+            await queryClient.invalidateQueries({ queryKey: ['events'], refetchType: 'none'})
+            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.venue_id], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.brand_id], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by] , refetchType: 'none' })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -119,17 +130,20 @@ export const useUpdateEventMutation = () => {
 const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient();
-    const { auth, sendToLogin } = useAuth();
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
-    return useMutation(removeEvent, {
-        onSuccess: ({ data }) => {
+    return useMutation({
+        mutationFn: (event_id) => removeEvent(event_id),
+        onSuccess: async ({ data }) => {
             localStorage.removeItem('editEventForm')
 
-            queryClient.refetchQueries(['events'])
-            queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events', auth?.user?.id])
+            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by] })
+            await queryClient.invalidateQueries({ queryKey: ['events'], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: ['events', data?.deleted_event_id], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.venue_id], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.brand_id], refetchType: 'none' })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -177,35 +191,37 @@ const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery({ queryKey: ["events"], queryFn: () => getAllEvents() })
 
 // event.create.form - CREATE A NEW EVENT
-// refetch -> ['events'], ['business_events'], ['user_events']
+// refetch -> ['events'], ['business_events', venue_id], ['business_events', brand_id], ['user_events', user_id]
+//! update ready
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
-    const { auth, sendToLogin } = useAuth();
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
     const { setEditImage } = useEventImagePreview()
     let navigate = useNavigate();
 
     return useMutation({
-        queryKey: () => createEvent(),
-        onSuccess: (data) => {
+        mutationFn: (event) => createEvent(event),
+        onSuccess: async ({data}) => {
             localStorage.removeItem('createEventForm')
 
-            queryClient.refetchQueries(['events'])
-            queryClient.refetchQueries(['business_events'])
-            queryClient.refetchQueries(['user_events', auth?.user?.id])
+            await queryClient.invalidateQueries({ queryKey: ['events'] })
+            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.venue_id], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.brand_id], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by], refetchType: 'none' })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data.data.eventname} has been created`
+                    message: `${data?.eventname} has been created`
                 }
             })
 
             setEditImage(false)
 
-            navigate(`/event/${data.data.event_id}`)
+            navigate(`/event/${data?.event_id}`)
         },
         onError: (error) => {
             // 401, 403 - type: 'token'

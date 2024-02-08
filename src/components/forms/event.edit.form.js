@@ -48,7 +48,7 @@ const EventEditForm = () => {
 
     let navigate = useNavigate()
 
-    const { data: businesses_list, status: businesses_list_status, error: businesses_list_error } = useBusinessesQuery()
+    const { data: businesses_list, isPending, isError, error: businesses_list_error } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -128,7 +128,7 @@ const EventEditForm = () => {
     }
 
     useEffect(() => {
-        if (businesses_list_status === 'error') {
+        if (isError) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -139,7 +139,7 @@ const EventEditForm = () => {
 
             navigate('/profile')
         }
-    }, [dispatch, businesses_list_status, businesses_list_error, navigate])
+    }, [dispatch, isError, businesses_list_error, navigate])
 
     useEffect(() => {
         // function to format the event data
@@ -195,7 +195,7 @@ const EventEditForm = () => {
         getEventDetails()
     }, [event_id, reset, dispatch, navigate, setValue])
 
-    if (businesses_list_status === 'pending') {
+    if (isPending) {
         return <LoadingSpinner />
     }
 

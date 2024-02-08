@@ -15,28 +15,29 @@ const RemoveEventBusinessButtonStyles = styled.div`
 const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
     const { auth } = useAuth();
     // if any errors are hit do nothing and show nothing
-    const { data: user_roles, status: user_roles_status } = useUserRolesQuery(auth?.user?.id)
+    const { data: user_roles, isPending, isSuccess } = useUserRolesQuery(auth?.user?.id)
     const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
     let business_user_role = {}
     
     const isCreator = () => auth?.user?.id === eventCreator
 
-    if (user_roles_status === 'pending') {
+    if (isPending) {
         return null;
     }
 
-    if (user_roles_status === 'success') {
+    if (isSuccess) {
         business_user_role = user_roles?.data.find(role => role.business_id === businessId && role.active_role && (role.role_type === 'manager' || role.role_type === 'admin')) || {}
     }
 
 
     const removeBusinessFromEvent = async (e) => {
         try {
-            e.stopPropagation()
+            // e.stopPropagation()
 
             console.log(`click - bus: ${businessId}, event: ${eventId}`)
             await removeEventBusiness({ event_id: eventId, business_id: businessId })
         } catch (error) {
+            console.log('error inside remove business button')
             console.log(error)
         }
     }
