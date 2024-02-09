@@ -25,15 +25,13 @@ const EventViewRelated = ({ event_id }) => {
     const { data: event_related_events, isPending, isFetching, isError, error: event_related_events_error } = useEventRelatedEventsQuery(event_id)
 
     if (isError) {
-        if (isError) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: event_related_events_error?.response?.data?.error?.message
-                }
-            })
-        }
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: event_related_events_error?.response?.data?.error?.message
+            }
+        })
     }
 
 
