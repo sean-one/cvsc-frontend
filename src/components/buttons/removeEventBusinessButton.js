@@ -32,10 +32,9 @@ const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
 
     const removeBusinessFromEvent = async (e) => {
         try {
-            // e.stopPropagation()
-
-            console.log(`click - bus: ${businessId}, event: ${eventId}`)
-            await removeEventBusiness({ event_id: eventId, business_id: businessId })
+            e.stopPropagation()
+            const removed_response = await removeEventBusiness({ event_id: eventId, business_id: businessId })
+            console.log(removed_response)
         } catch (error) {
             console.log('error inside remove business button')
             console.log(error)

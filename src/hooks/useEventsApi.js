@@ -9,7 +9,7 @@ import useEventImagePreview from "./useEventImagePreview";
 
 // business.label - remove_event_business
 // refetch -> ['events'], ['business_events'], ['user_events']
-const removeBusiness = async ({ event_id, business_id }) => { return await AxiosInstance.put(`/events/${event_id}/remove/${business_id}`) }
+const removeBusiness = ({ event_id, business_id }) => { return AxiosInstance.put(`/events/${event_id}/remove/${business_id}`)}
 export const useRemoveEventBusinessMutation = () => {
     const queryClient = useQueryClient();
     const { dispatch } = useNotification();
@@ -18,12 +18,13 @@ export const useRemoveEventBusinessMutation = () => {
     return useMutation({
         mutationFn: ({ event_id, business_id }) => removeBusiness({ event_id, business_id }),
         onSuccess: async ({ data }) => {
-            console.log('data:')
-            console.log(data)
-            await queryClient.refetchQueries({ queryKey: ['events'] })
-            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.business_id], refetchType: 'none' })
-            // queryClient.removeQueries({ queryKey: ['events', data?.event_id], exact: true })
-            // queryClient.removeQueries({ queryKey: ['event_related_events', data?.event_id], exact: true })
+            console.log('data', data)
+            await Promise.all([
+                queryClient.refetchQueries({ queryKey: ['events'], exact: true }),
+                queryClient.refetchQueries({ queryKey: ['business_events', data?.business_id], exact: true })
+            ])
+            queryClient.removeQueries({ queryKey: ['events', data?.event_id], exact: true })
+            queryClient.removeQueries({ queryKey: ['event_related_events', data?.event_id], exact: true })
             // await queryClient.invalidateQueries(['user_events'])
 
             dispatch({

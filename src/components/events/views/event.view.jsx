@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns'
 import styled from 'styled-components';
@@ -107,24 +107,22 @@ const EventView = () => {
     
     const { data: event, isPending, isError, error: event_error } = useEventQuery(event_id)
 
-    useEffect(() => {
-        if (isError) {
-            // 400 - type: 'event_id', 404 - type: 'server'
-            dispatch({
-                type: "ADD_NOTIFICATION", 
-                payload: {
-                    notification_type: 'ERROR',
-                    message: event_error?.response?.data?.error?.message
-                }
-            })
+    if (isError) {
+        // 400 - type: 'event_id', 404 - type: 'server'
+        dispatch({
+            type: "ADD_NOTIFICATION", 
+            payload: {
+                notification_type: 'ERROR',
+                message: event_error?.response?.data?.error?.message
+            }
+        })
 
-            navigate('/')
-        }
-    }, [dispatch, isError, event_error, navigate])
+        return navigate('/');
+    };
 
     if (isPending) {
         return <LoadingSpinner />
-    }
+    };
 
     const isCreator = () => auth?.user?.id === event?.data.created_by
     

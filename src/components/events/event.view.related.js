@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import useNotification from '../../hooks/useNotification';
@@ -24,7 +24,7 @@ const EventViewRelated = ({ event_id }) => {
     const { dispatch } = useNotification();
     const { data: event_related_events, isPending, isFetching, isError, error: event_related_events_error } = useEventRelatedEventsQuery(event_id)
 
-    useEffect(() => {
+    if (isError) {
         if (isError) {
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -34,7 +34,8 @@ const EventViewRelated = ({ event_id }) => {
                 }
             })
         }
-    }, [dispatch, isError, event_related_events_error])
+    }
+
 
     return (
         <EventViewRelatedStyles>
