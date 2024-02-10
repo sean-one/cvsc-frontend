@@ -71,11 +71,10 @@ export const useUpdateEventMutation = () => {
 
             await queryClient.refetchQueries({ queryKey: ['events']})
             await queryClient.refetchQueries({ queryKey: ['events', data?.event_id], exact: true })
-            await queryClient.refetchQueries({ queryKey: ['event_related_events', data?.event_id], exact: true })
-
-            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.venue_id], refetchType: 'none' })
-            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.brand_id], refetchType: 'none' })
-            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by] , refetchType: 'none' })
+            
+            await queryClient.invalidate({ queryKey: ['event_related_events'] })
+            await queryClient.invalidateQueries({ queryKey: ['business_events'] })
+            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by] })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -184,13 +183,11 @@ export const useCreateEventMutation = () => {
         mutationFn: (event) => createEvent(event),
         onSuccess: async ({data}) => {
             localStorage.removeItem('createEventForm')
-
-            await queryClient.refetchQueries({ queryKey: ['events'] })
             
-            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.venue_id], refetchType: 'none' })
-            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.brand_id], refetchType: 'none' })
-            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by], refetchType: 'none' })
-
+            await queryClient.invalidateQueries({ queryKey: ['events'] })
+            await queryClient.invalidateQueries({ queryKey: ['business_events'] })
+            await queryClient.invalidateQueries({ queryKey: ['user_events'] })
+            
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
