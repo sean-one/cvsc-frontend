@@ -5,7 +5,15 @@ import AxiosInstance from "../helpers/axios";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 import useEventImagePreview from "./useEventImagePreview";
- 
+
+const eventKeys = {
+    all: ['events'],
+    list: (filter) => [...eventKeys.all, { filter }],
+    detail: (event_id) => [...eventKeys.all, 'detail', event_id],
+    relatedToEvent: (event_id) => [...eventKeys.all, 'relatedToEvent', event_id],
+    relatedToBusiness: (business_id) => [...eventKeys.all, 'relatedToBusiness', business_id],
+    relatedToUser: (user_id) => [...eventKeys.all, 'relatedToUser', user_id],
+};
 
 // business.label - remove_event_business
 const removeBusiness = ({ event_id, business_id }) => { return AxiosInstance.put(`/events/${event_id}/remove/${business_id}`)}
@@ -17,13 +25,7 @@ export const useRemoveEventBusinessMutation = () => {
     return useMutation({
         mutationFn: ({ event_id, business_id }) => removeBusiness({ event_id, business_id }),
         onSuccess: async ({ data }) => {
-            await Promise.all([
-                queryClient.refetchQueries({ queryKey: ['events'], exact: true }),
-                queryClient.refetchQueries({ queryKey: ['business_events', data?.business_id], exact: true })
-            ])
-            queryClient.removeQueries({ queryKey: ['events', data?.event_id], exact: true })
-            queryClient.removeQueries({ queryKey: ['event_related_events', data?.event_id], exact: true })
-            // await queryClient.invalidateQueries(['user_events'])
+            await queryClient.invalidateQueries({ queryKey: eventKeys.all })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -40,23 +42,22 @@ export const useRemoveEventBusinessMutation = () => {
 
 // return an array of all events related to business id
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
-export const useBusinessEventsQuery = (business_id) => useQuery({ queryKey: ["business_events", business_id], queryFn: () => getBusinessEvents(business_id) })
+export const useBusinessEventsQuery = (business_id) => useQuery({ queryKey: eventKeys.relatedToBusiness(business_id), queryFn: () => getBusinessEvents(business_id) })
 
 // return an array of all events related to event id (all events including venue business or brand business)
 const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.get(`/events/event-related/${event_id}`) }
-export const useEventRelatedEventsQuery = (event_id) => useQuery({ queryKey: ['event_related_events', event_id], queryFn: () => getEventRelatedEvents(event_id) })
+export const useEventRelatedEventsQuery = (event_id) => useQuery({ queryKey: eventKeys.relatedToEvent(event_id), queryFn: () => getEventRelatedEvents(event_id) })
 
 // return an array of all events related to user id
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
-export const useUserEventsQuery = (user_id) => useQuery({ queryKey: ["user_events", user_id], queryFn: () => getAllUserEvents(user_id) });
+export const useUserEventsQuery = (user_id) => useQuery({ queryKey: eventKeys.relatedToUser(user_id), queryFn: () => getAllUserEvents(user_id) });
 
 // event.view - return a single event by event id
 // event.edit.view - uses endpoint directly without query
 const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
-export const useEventQuery = (event_id) => useQuery({ queryKey: ['events', event_id], queryFn: () => getEvent(event_id) });
+export const useEventQuery = (event_id) => useQuery({ queryKey: eventKeys.detail(event_id), queryFn: () => getEvent(event_id) });
 
 // event.edit.form - update_event - UPDATE EVENT
-// refetch -> ['events'], ['business_events'], ['user_events']
 const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.put(`/events/${event_id}`, event_updates) }
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient();
@@ -69,12 +70,7 @@ export const useUpdateEventMutation = () => {
         onSuccess: async ({ data }) => {
             localStorage.removeItem('editEventForm')
 
-            await queryClient.refetchQueries({ queryKey: ['events']})
-            await queryClient.refetchQueries({ queryKey: ['events', data?.event_id], exact: true })
-            
-            await queryClient.invalidate({ queryKey: ['event_related_events'] })
-            await queryClient.invalidateQueries({ queryKey: ['business_events'] })
-            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by] })
+            await queryClient.invalidateQueries({ queryKey: eventKeys.all })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -104,7 +100,6 @@ export const useUpdateEventMutation = () => {
 }
 
 // event.edit.form - remove_event
-// refetch -> ['events'], ['business_events'], ['user_events']
 const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient();
@@ -117,11 +112,7 @@ export const useRemoveEventMutation = () => {
         onSuccess: async ({ data }) => {
             localStorage.removeItem('editEventForm')
 
-            await queryClient.invalidateQueries({ queryKey: ['user_events', data?.created_by] })
-            await queryClient.invalidateQueries({ queryKey: ['events'], refetchType: 'none' })
-            await queryClient.invalidateQueries({ queryKey: ['events', data?.deleted_event_id], refetchType: 'none' })
-            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.venue_id], refetchType: 'none' })
-            await queryClient.invalidateQueries({ queryKey: ['business_events', data?.brand_id], refetchType: 'none' })
+            await queryClient.invalidateQueries({ queryKey: eventKeys.all })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -163,14 +154,10 @@ export const useRemoveEventMutation = () => {
 }
 
 // get an array of all upcoming events
-// ['events'] --- 5m stale
-//! update ready
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
-export const useEventsQuery = () => useQuery({ queryKey: ["events"], queryFn: () => getAllEvents() })
+export const useEventsQuery = () => useQuery({ queryKey: eventKeys.all, queryFn: () => getAllEvents() })
 
 // event.create.form - CREATE A NEW EVENT
-// refetch -> ['events'], ['business_events', venue_id], ['business_events', brand_id], ['user_events', user_id]
-//! update ready
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
     const { sendToLogin } = useAuth();
@@ -184,9 +171,7 @@ export const useCreateEventMutation = () => {
         onSuccess: async ({data}) => {
             localStorage.removeItem('createEventForm')
             
-            await queryClient.invalidateQueries({ queryKey: ['events'] })
-            await queryClient.invalidateQueries({ queryKey: ['business_events'] })
-            await queryClient.invalidateQueries({ queryKey: ['user_events'] })
+            await queryClient.invalidateQueries({ queryKey: eventKeys.all })
             
             dispatch({
                 type: "ADD_NOTIFICATION",

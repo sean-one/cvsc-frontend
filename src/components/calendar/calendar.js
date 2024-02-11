@@ -47,33 +47,28 @@ const CalendarStyles = styled.div`
 `
 
 const Calendar = () => {
-    const { data: events_list, status: events_list_status, error: events_list_error } = useEventsQuery()
-
-    if (events_list_status === 'pending') {
-        return <LoadingSpinner />
-    }
-
-    if (events_list_error?.response?.status === 500) {
-        return <ServerDown />
-    }
+    const { data: events_list, isPending, isError } = useEventsQuery()
     
     
     return (
         <CalendarStyles>
-
             <div className='calendarWrapper'>
-                {events_list?.data?.length > 0 ? (
-                    events_list?.data.map(event => <EventCard key={event.event_id} event={event} />)
-                ) : (
-                    <div className='calendarNoEvents'>
-                        <CVSCLogo className='noEventsLogo' />
-                        {/* <div className='calendarNoEventsHeader'>No events to show</div> */}
-                        <div className='calendarNoEventsLogin'>Login and create a new event.</div>
-                    </div>
-                )}
+                {
+                    isPending ? (
+                        <LoadingSpinner />
+                    ) : isError ? (
+                        <ServerDown />
+                    ) : (events_list?.data?.length > 0) ? (
+                        events_list?.data.map(event => <EventCard key={event.event_id} event={event} />)
+                    ) : (
+                        <div className='calendarNoEvents'>
+                            <CVSCLogo className='noEventsLogo' />
+                            {/* <div className='calendarNoEventsHeader'>No events to show</div> */}
+                            <div className='calendarNoEventsLogin'>Login and create a new event.</div>
+                        </div>
+                    )
+                }
             </div>
-
-
         </CalendarStyles>
     )
 }

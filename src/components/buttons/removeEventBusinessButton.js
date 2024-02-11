@@ -18,7 +18,7 @@ const RemoveEventBusinessButton = ({ eventId, businessId, eventCreator }) => {
     const { dispatch } = useNotification();
     // if any errors are hit do nothing and show nothing
     const { data: user_roles, isPending, isSuccess } = useUserRolesQuery(auth?.user?.id)
-    const { mutateAsync: removeEventBusiness } = useRemoveEventBusinessMutation();
+    const { mutate: removeEventBusiness } = useRemoveEventBusinessMutation();
     let business_user_role = {}
     
     const isCreator = () => auth?.user?.id === eventCreator

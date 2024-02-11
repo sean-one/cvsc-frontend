@@ -43,8 +43,8 @@ const EventEditForm = () => {
 
     let venue_list, brand_list = [];
 
-    const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
-    const { mutateAsync: removeEventMutation } = useRemoveEventMutation()
+    const { mutate: updateEventMutation } = useUpdateEventMutation()
+    const { mutate: removeEventMutation } = useRemoveEventMutation()
 
     let navigate = useNavigate()
 
@@ -115,7 +115,13 @@ const EventEditForm = () => {
     }
 
     const sendEventDelete = async () => {
-        await removeEventMutation(event_id)
+        try {
+            removeEventMutation(event_id)
+            
+        } catch (error) {
+            console.log('error in the event edit form')
+            console.log(error)
+        }
     }
 
     const handleClose = () => {
@@ -126,20 +132,6 @@ const EventEditForm = () => {
 
         navigate('/profile/events');
     }
-
-    useEffect(() => {
-        if (isError) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: businesses_list_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/profile')
-        }
-    }, [dispatch, isError, businesses_list_error, navigate])
 
     useEffect(() => {
         // function to format the event data
@@ -197,6 +189,18 @@ const EventEditForm = () => {
 
     if (isPending) {
         return <LoadingSpinner />
+    }
+
+    if (isError) {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: businesses_list_error?.response?.data?.error?.message
+            }
+        })
+
+        navigate('/profile')
     }
 
     if (businesses_list.data.length <= 0) {

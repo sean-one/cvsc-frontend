@@ -17,7 +17,7 @@ const CreateEventFormStyles = styled.div``;
 
 const EventCreateForm = () => {
     const { editImage, imagePreview, canvas } = useEventImagePreview()
-    const { mutateAsync: createEvent } = useCreateEventMutation()
+    const { mutate: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
     let venue_list, brand_list = []
     let navigate = useNavigate();
@@ -39,21 +39,6 @@ const EventCreateForm = () => {
     });
     
     useEffect(() => {
-        if (isError) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: businesses_list_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/profile')
-        }
-
-    },[dispatch, isError, businesses_list_error, navigate])
-    
-    useEffect(() => {
         // check for saved form in local storage
         const savedFormData = localStorage.getItem('createEventForm');
 
@@ -69,6 +54,18 @@ const EventCreateForm = () => {
 
     if (isPending) {
         return <LoadingSpinner />
+    }
+
+    if (isError) {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: businesses_list_error?.response?.data?.error?.message
+            }
+        })
+
+        navigate('/profile')
     }
 
     if (isSuccess) {

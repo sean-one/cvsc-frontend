@@ -38,7 +38,7 @@ import { Layout } from './components/Layout';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnMount: false
+      staleTime: 5 * 60 * 1000,
     }
   }
 })
