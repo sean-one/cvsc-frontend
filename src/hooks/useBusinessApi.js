@@ -19,16 +19,14 @@ export const useCreateBusinessMutation = () => {
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
 
-    return useMutation(createBusiness, {
+    return useMutation({
+        mutationFn: (business) => createBusiness(business),
         onSuccess: ({data}) => {
             // remove saved form from local storage
             localStorage.removeItem('createBusinessForm');
             
-            queryClient.refetchQueries(['businesses'])
-            queryClient.refetchQueries(['business_management', auth?.user?.id])
-            
-            queryClient.refetchQueries(['roles'])
-            queryClient.refetchQueries(['user_roles', auth?.user?.id])
+            queryClient.invalidateQueries({ queryKey: businessKeys.all })
+            queryClient.invalidateQueries({ queryKey: roleKeys.all })
 
 
             dispatch({
