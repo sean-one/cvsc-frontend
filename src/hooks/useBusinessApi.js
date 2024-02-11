@@ -15,7 +15,7 @@ export const useBusinessesQuery = () => useQuery({ queryKey: businessKeys.all, q
 // refetch -> ['businesses'], ['business_management', auth.user.id], ['roles'], ['user_roles', auth.user.id]
 const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }
 export const useCreateBusinessMutation = () => {
-    const { auth, sendToLogin } = useAuth();
+    const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
 

@@ -12,10 +12,10 @@ const AddressFormStyles = styled.div`
     }
 `
 
-const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=undefined}) => {
+const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=''}) => {
     const [inputValue, setInputValue] = useState(businessValue);
     // const [isEditing, setIsEditing] = useState(!!businessValue);
-    const [isEditing, setIsEditing] = useState(businessValue === undefined);
+    const [isEditing, setIsEditing] = useState(businessValue === '');
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
