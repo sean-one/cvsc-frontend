@@ -6,10 +6,10 @@ import { ToggleOnIcon, ToggleOffIcon } from '../../icons/siteIcons';
 
 
 const BusinessToggle = ({ business_id, toggleStatus=false, toggleType }) => {
-    const { mutateAsync: toggleBusiness } = useBusinessToggle();
+    const { mutate: toggleBusiness } = useBusinessToggle();
     
-    const toggleButtonAction = async () => {
-        await toggleBusiness({ toggle_type: { toggleType: toggleType }, business_id: business_id })
+    const toggleButtonAction = () => {
+        toggleBusiness({ toggle_type: { toggleType: toggleType }, business_id: business_id })
     }
     
     return (

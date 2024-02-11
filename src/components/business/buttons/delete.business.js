@@ -5,11 +5,11 @@ import { DeleteIcon } from '../../icons/siteIcons';
 
 
 const DeleteBusiness = ({ business_id, onDeleteStart, onDeleteSuccess }) => {
-    const { mutateAsync: removeBusiness } = useRemoveBusinessMutation(onDeleteSuccess);
+    const { mutate: removeBusiness } = useRemoveBusinessMutation(onDeleteSuccess);
 
-    const delete_business = async () => {
+    const delete_business = () => {
         onDeleteStart()
-        await removeBusiness(business_id)
+        removeBusiness(business_id)
     }
 
 

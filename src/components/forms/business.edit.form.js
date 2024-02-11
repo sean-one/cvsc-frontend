@@ -59,7 +59,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
     const { business_id } = useParams()
     const { dispatch } = useNotification()
 
-    const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
+    const { mutate: updateBusiness } = useUpdateBusinessMutation()
     
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
 
@@ -104,7 +104,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                 }
             })
 
-            await updateBusiness({ business_updates: formData, business_id: business_id })
+            updateBusiness({ business_updates: formData, business_id: business_id })
 
         } catch (error) {
             // incorrectly formated, missing or invalid data

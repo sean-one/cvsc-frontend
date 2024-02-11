@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import useNotification from '../../hooks/useNotification';
@@ -12,7 +12,7 @@ const RoleRequest = ({ user_roles }) => {
     const { dispatch } = useNotification();
 
     const { data: businesses_list, isPending, isError, error: businesses_list_error } = useBusinessesQuery()
-    const { mutateAsync: createRole } = useCreateRoleMutation()
+    const { mutate: createRole } = useCreateRoleMutation()
 
     const { register, handleSubmit, reset, clearErrors, watch, formState:{ errors } } = useForm({
         mode: 'onBlur',
@@ -24,17 +24,15 @@ const RoleRequest = ({ user_roles }) => {
     // make sure business id is selected or submit button is disabled
     const selectedBusinessId = watch('business_id');
 
-    useEffect(() => {
-        if (isError) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: businesses_list_error?.response?.data?.error?.message
-                }
-            })
-        }
-    },[dispatch, isError, businesses_list_error])
+    if (isError) {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: businesses_list_error?.response?.data?.error?.message
+            }
+        })
+    }
 
     if (isPending) { return <LoadingSpinner /> }
 
@@ -46,7 +44,7 @@ const RoleRequest = ({ user_roles }) => {
     const roleCreate = async (data) => {
         try {
             if(!data.business_id) return
-            await createRole(data.business_id)
+            createRole(data.business_id)
             reset()   
         } catch (error) {
             console.log('ERROR!')

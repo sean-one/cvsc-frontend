@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -12,36 +11,32 @@ import ServerReturnError from '../../serverReturnError';
 const ManagementList = () => {
     const [sortCriteria, setSortCriteria] = useState('business_name'); // default sort criteria
     const [searchQuery, setSearchQuery] = useState('');
-    const { user_logout } = useAuth();
+    const { auth, user_logout } = useAuth();
     const { dispatch } = useNotification();
     
-    const { data: management_list, status: management_list_status, error: management_list_error } = useBusinessManagement();
+    const { data: management_list, isPending, isError, error: management_list_error } = useBusinessManagement(auth?.user?.id);
 
-    let navigate = useNavigate();
-
-    useEffect(() => {
+    if (isError) {
         // 400, 404 - type: 'server', 401, 403 - type: 'token'
-        if (management_list_status === 'error') {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: management_list_error?.response?.data?.error?.message
-                }
-            })
-
-            if (management_list_error?.response?.data?.error?.type === 'token') {
-                user_logout()
-            } else {
-                return <ServerReturnError return_type='business management list'/>
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: management_list_error?.response?.data?.error?.message
             }
-        }
-    }, [dispatch, management_list_status, management_list_error, navigate, user_logout])
+        })
 
-    if (management_list_status === 'pending') { return <LoadingSpinner /> }
+        if (management_list_error?.response?.data?.error?.type === 'token') {
+            user_logout()
+        } else {
+            return <ServerReturnError return_type='business management list'/>
+        }
+    }
     
-    const filteredBusinesses = management_list.data.filter(business => 
-        business.business_name.toLowerCase().includes(searchQuery.toLowerCase())
+    if (isPending) { return <LoadingSpinner /> }
+    
+    const filteredBusinesses = management_list?.data.filter(business => 
+        business?.business_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     const sortedBusinessList = [...filteredBusinesses].sort((a, b) => {

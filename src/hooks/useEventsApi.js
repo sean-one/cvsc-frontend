@@ -1,19 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-// import { useMutation, useQuery, useQueryClient } from "react-query";
+
 import AxiosInstance from "../helpers/axios";
+import { eventKeys } from "../helpers/queryKeyFactories";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 import useEventImagePreview from "./useEventImagePreview";
 
-const eventKeys = {
-    all: ['events'],
-    list: (filter) => [...eventKeys.all, { filter }],
-    detail: (event_id) => [...eventKeys.all, 'detail', event_id],
-    relatedToEvent: (event_id) => [...eventKeys.all, 'relatedToEvent', event_id],
-    relatedToBusiness: (business_id) => [...eventKeys.all, 'relatedToBusiness', business_id],
-    relatedToUser: (user_id) => [...eventKeys.all, 'relatedToUser', user_id],
-};
 
 // business.label - remove_event_business
 const removeBusiness = ({ event_id, business_id }) => { return AxiosInstance.put(`/events/${event_id}/remove/${business_id}`)}

@@ -4,10 +4,10 @@ import { useRoleAction } from '../../../hooks/useRolesApi';
 import { ApproveUserIcon } from '../../icons/siteIcons';
 
 const RoleAction = ({ role_id, actionType }) => {
-    const { mutateAsync: roleAction } = useRoleAction();
+    const { mutate: roleAction } = useRoleAction();
 
-    const handleRoleAction = async () => {
-        await roleAction({ role_id, action_type: actionType });
+    const handleRoleAction = () => {
+        roleAction({ role_id, action_type: actionType });
     };
 
     const renderButtonContent = () => {
