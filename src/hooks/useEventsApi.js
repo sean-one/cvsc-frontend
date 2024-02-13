@@ -18,6 +18,7 @@ export const useRemoveEventBusinessMutation = () => {
     return useMutation({
         mutationFn: ({ event_id, business_id }) => removeBusiness({ event_id, business_id }),
         onSuccess: async ({ data }) => {
+            
             await queryClient.invalidateQueries({ queryKey: eventKeys.all })
 
             dispatch({

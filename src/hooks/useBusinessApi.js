@@ -12,7 +12,6 @@ const getBusinesses = async () => { return await AxiosInstance.get('/businesses'
 export const useBusinessesQuery = () => useQuery({ queryKey: businessKeys.all, queryFn: () => getBusinesses() });
 
 // business.create.form - CREATE BUSINESS
-// refetch -> ['businesses'], ['business_management', auth.user.id], ['roles'], ['user_roles', auth.user.id]
 const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }
 export const useCreateBusinessMutation = () => {
     const { sendToLogin } = useAuth();
@@ -25,8 +24,10 @@ export const useCreateBusinessMutation = () => {
             // remove saved form from local storage
             localStorage.removeItem('createBusinessForm');
             
+            // update business list to include newly created business
             queryClient.invalidateQueries({ queryKey: businessKeys.all })
-            queryClient.invalidateQueries({ queryKey: roleKeys.all })
+            // update roles for the user
+            queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser() })
 
 
             dispatch({
@@ -78,11 +79,10 @@ export const useBusinessToggle = () => {
 
     return useMutation({
         mutationFn: (toggleEvent) => toggleBusiness(toggleEvent),
-        onSuccess: async ({ data }) => {
+        onSuccess: async ({data}) => {
             // update business table touched
             await queryClient.invalidateQueries({ queryKey: businessKeys.all })
-            await queryClient.invalidateQueries({ queryKey: roleKeys.all })
-
+            
             if (data.toggleType === 'request') {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -92,8 +92,11 @@ export const useBusinessToggle = () => {
                     }
                 })    
             }
-
+            
             if (data.toggleType === 'active') {
+                // invalidate roles incase role table was touched ('active' toggle)
+                await queryClient.invalidateQueries({ queryKey: roleKeys.all })
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -182,10 +185,11 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
     const { sendToLogin } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
+    let navigate = useNavigate();
 
     return useMutation({
         mutationFn: (business_id) => removeBusiness(business_id),
-        onSuccess: async () => {
+        onSuccess: async ({ data }) => {
             // events table updated
             await queryClient.invalidateQueries({ queryKey: eventKeys.all })
             // roles table updated
@@ -197,10 +201,11 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: 'business has been deleted successfully'
+                    message: `${data?.business_name} has been deleted successfully`
                 }
             })
-            onDeleteSuccess()
+
+            navigate('/profile')
         },
         onError: (error) => {
             // 401, 403 - type: 'token'

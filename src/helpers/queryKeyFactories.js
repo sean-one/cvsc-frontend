@@ -16,8 +16,9 @@ export const businessKeys = {
 
 export const roleKeys ={
     all: ['roles'],
-    userAccountRole: (user_id) => [...roleKeys.all, 'userAccountRole', user_id],
+    relatedToUser: () => [...roleKeys.all, 'relatedToUser'],
     relatedToBusiness: (business_id) => [...roleKeys.all, 'relatedToBusiness', business_id],
-    relatedToUser: (user_id) => [...roleKeys.all, 'relatedToUser', user_id],
+    userAccountRole: (user_id) => [...roleKeys.relatedToUser(), 'userAccountRole', user_id],
+    userRoles: (user_id) => [...roleKeys.relatedToUser(), 'allRolesFor', user_id],
     // relatedToUser: (user_id) => [...roleKeys.all, 'relatedToUser', user_id],
 }

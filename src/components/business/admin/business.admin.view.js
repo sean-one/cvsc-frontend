@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -56,36 +56,25 @@ const BusinessAdminViewStyles = styled.div`
 `;
 
 const BusinessAdminView = ({ userBusinessRole }) => {
-    const [isDeleting, setIsDeleting] = useState(false);
     const { dispatch } = useNotification();
     const { business_id } = useParams();
     let navigate = useNavigate();
     
-    const { data: business, status: business_status, error: business_error } = useBusinessQuery(business_id);
+    const { data: business, isPending, isError, error: business_error } = useBusinessQuery(business_id);
 
-    const handleDeleteStart = () => {
-        setIsDeleting(true)
-    };
+    if (isError) {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: business_error?.response?.data?.error?.message
+            }
+        })
 
-    const handleDeleteSuccess = () => {
         navigate('/profile/admin')
-    };
+    }
 
-    useEffect(() => {
-        if (business_status === 'error' && !isDeleting) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: business_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/profile/admin')
-        }
-    }, [dispatch, navigate, business_status, business_error, isDeleting])
-    
-    if (isDeleting || business_status === 'pending') {
+    if (isPending) {
         return <LoadingSpinner />
     }
     
@@ -95,7 +84,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
     return (
         <BusinessAdminViewStyles>
             <div className='sectionContainer removeBorder'>
-                <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data.business_name}</div>
+                <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data?.business_name}</div>
                 {
                     (business_data?.formatted_address !== null) &&
                         <div className='subheaderText'>{business_data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
@@ -107,7 +96,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                             <EditBusinessButton business={business_data} />
                             {
                                 (userBusinessRole?.role_type === 'admin') &&
-                                    <DeleteBusiness business_id={business_data?.id} onDeleteStart={handleDeleteStart} onDeleteSuccess={handleDeleteSuccess} />
+                                    <DeleteBusiness business_id={business_data?.id} />
                             }
                         </div>
                 }

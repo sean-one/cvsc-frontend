@@ -43,7 +43,7 @@ const EventEditForm = () => {
 
     let venue_list, brand_list = [];
 
-    const { mutate: updateEventMutation } = useUpdateEventMutation()
+    const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
     const { mutate: removeEventMutation } = useRemoveEventMutation()
 
     let navigate = useNavigate()
