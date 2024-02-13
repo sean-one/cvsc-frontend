@@ -1,41 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessQuery } from '../../../hooks/useBusinessApi';
+import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import BusinessRoles from './business.roles';
 
 import BusinessToggle from '../buttons/business.toggle';
 import EditBusinessButton from '../buttons/edit.business.button';
 import DeleteBusiness from '../buttons/delete.business';
+import { AdminFallbackIcon } from '../../icons/siteIcons';
 
 import CreateEventButton from '../../events/create.event.button';
 import BusinessEventsRelated from '../../events/business.events.related';
 
 const BusinessAdminViewStyles = styled.div`
-    .businessAdminViewControls {
+    .businessAdminDetailSection {
         display: flex;
         justify-content: space-around;
         align-items: center;
-
+        height: 5rem;
+        border-top: 1px dotted var(--secondary-color);
+        border-bottom: 1px dotted var(--secondary-color);
+    }
+    .businessAdminViewControls {
         margin-top: 0.75rem;
         padding: 1.5rem 0;
-        border-top: 1px dotted var(--secondary-color);
-        border-bottom: 1px dotted var(--secondary-color);
     }
     
-    .businessAdminViewDetails {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        border-top: 1px dotted var(--secondary-color);
-        border-bottom: 1px dotted var(--secondary-color);
-    }
-    
-    .businessAdminViewStatus {
+    .businessAdminDetailText {
         width: 100%;
     }
     
@@ -45,22 +40,23 @@ const BusinessAdminViewStyles = styled.div`
         justify-content: space-around;
         gap: 10px;
     }
-    
-    .businessAdminViewCreationRequest {
+
+    .adminFallbackNull {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        border-top: 1px dotted var(--secondary-color);
-        border-bottom: 1px dotted var(--secondary-color);
+        justify-content: space-around;
+        gap: 10px;
     }
 `;
 
 const BusinessAdminView = ({ userBusinessRole }) => {
     const { dispatch } = useNotification();
+    const [fallbackSelectorView, setFallbackSelectorView] = useState(false)
     const { business_id } = useParams();
     let navigate = useNavigate();
     
     const { data: business, isPending, isError, error: business_error } = useBusinessQuery(business_id);
+    const { data: manager_list, isPending: managerListPening, isError: managerListError } = useBusinessRolesQuery(business_id)
 
     if (isError) {
         dispatch({
@@ -79,8 +75,14 @@ const BusinessAdminView = ({ userBusinessRole }) => {
     }
     
     const business_data = business?.data || {}
+    const management_list = manager_list?.data?.filter(manager_role => manager_role.role_type === 'manager') || []
 
+    const toggleAdminFallbackSelector = () => {
+        setFallbackSelectorView(!fallbackSelectorView)
+        console.log(fallbackSelectorView)
+    }
 
+    console.log(management_list)
     return (
         <BusinessAdminViewStyles>
             <div className='sectionContainer removeBorder'>
@@ -91,7 +93,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                 }
                 {
                     (userBusinessRole?.role_type === 'manager' || userBusinessRole?.role_type === 'admin') &&
-                        <div className='businessAdminViewControls'>
+                        <div className='businessAdminDetailSection businessAdminViewControls'>
                             <CreateEventButton />
                             <EditBusinessButton business={business_data} />
                             {
@@ -102,27 +104,35 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                 }
                 {
                     (userBusinessRole?.role_type === 'admin') &&
-                        <div className='businessAdminViewDetails'>
-                            <div className='businessAdminViewStatus'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
-                            <div className='businessAdminViewBusinessButtons'>
+                        <div className='businessAdminSection'>
+                            <div className='businessAdminDetailSection'>
+                                <div className='businessAdminDetailText'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
+                                <div className='businessAdminViewBusinessButtons'>
+                                    <BusinessToggle
+                                        business_id={business_id}
+                                        toggleStatus={business_data?.active_business}
+                                        toggleType='active'
+                                    />
+                                </div>
+                            </div>
+
+                            <div className='businessAdminDetailSection'>
+                                <div className='businessAdminDetailText'>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                                 <BusinessToggle
                                     business_id={business_id}
-                                    toggleStatus={business_data?.active_business}
-                                    toggleType='active'
+                                    toggleStatus={business_data?.business_request_open}
+                                    toggleType='request'
                                 />
                             </div>
-                        </div>
 
-                }
-                {
-                    (userBusinessRole?.role_type === 'admin') &&
-                        <div className='businessAdminViewCreationRequest'>
-                            <div>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
-                            <BusinessToggle
-                                business_id={business_id}
-                                toggleStatus={business_data?.business_request_open}
-                                toggleType='request'
-                            />
+                            <div className='businessAdminDetailSection'>
+                                <div className='businessAdminDetailText'>Admin Fallback</div>
+                                {
+                                    (business_data?.admin_fallback === null)
+                                        ? <div className='adminFallbackNull' onClick={() => toggleAdminFallbackSelector()}>Set: <AdminFallbackIcon /></div>
+                                        : <div>got one</div>
+                                }
+                            </div>
                         </div>
                 }
             </div>

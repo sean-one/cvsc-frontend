@@ -27,7 +27,7 @@ export const useCreateBusinessMutation = () => {
             // update business list to include newly created business
             queryClient.invalidateQueries({ queryKey: businessKeys.all })
             // update roles for the user
-            queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser() })
+            queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.business_admin) })
 
 
             dispatch({

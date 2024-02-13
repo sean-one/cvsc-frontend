@@ -8,7 +8,10 @@ import useNotification from "./useNotification";
 
 // business.roles - returns all roles for selected business
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
-export const useBusinessRolesQuery = (business_id) => useQuery({ queryKey: roleKeys.relatedToBusiness(business_id), queryFn: () => getBusinessRoles(business_id) });
+export const useBusinessRolesQuery = (business_id) => useQuery({ queryKey: roleKeys.businessRoles(business_id), queryFn: () => getBusinessRoles(business_id) });
+
+const getBusinessManagers = async (business_id) => { return await AxiosInstance.get(`/roles/managers/${business_id}`) }
+export const useBusinessManagerQuery = (business_id) => useQuery({ queryKey: roleKeys.managerRoles(business_id), queryFn: () => getBusinessManagers(business_id) });
 
 // rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
