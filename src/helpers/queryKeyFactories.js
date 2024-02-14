@@ -22,5 +22,4 @@ export const roleKeys ={
     relatedToBusiness: (business_id) => [...roleKeys.all, 'relatedToBusiness', business_id],
     businessRoles: (business_id) => [...roleKeys.relatedToBusiness(business_id), 'allRoles'],
     managerRoles: (business_id) => [...roleKeys.relatedToBusiness(business_id), 'managementRoles'],
-    // relatedToUser: (user_id) => [...roleKeys.all, 'relatedToUser', user_id],
 }

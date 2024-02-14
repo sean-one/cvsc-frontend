@@ -136,17 +136,28 @@ export const useBusinessToggle = () => {
 // business transfer
 const tranferBusiness = async ({ business_id, manager_id }) => { return await AxiosInstance.put(`/businesses/${business_id}/transfer/${manager_id}`) }
 export const useBusinessTransferMutation = () => {
-    // const queryClient = useQueryClient();
+    const { dispatch } = useNotification();
+    const queryClient = useQueryClient();
     let navigate = useNavigate();
 
     return useMutation({
         mutationFn: (transfer_details) => tranferBusiness(transfer_details),
         onSuccess: async ({data}) => {
-            console.log(data)
+            await queryClient.invalidateQueries({ queryKey: businessKeys.detail(data?.business_id) })
+
+            await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.admin_id) })
+            await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToBusiness(data?.business_id) })
+            
             navigate('/profile')
         },
         onError: (error) => {
-            console.log(error)
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
         }
     })
 }
