@@ -32,7 +32,7 @@ export const useCreateRoleMutation = () => {
         mutationFn: (business_id) => createRoleRequest(business_id),
         onSuccess: async ({ data }) => {
             // invalidate all queries related to the user only
-            await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser() })
+            await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.user_id) })
 
             dispatch({
                 type: "ADD_NOTIFICATION",

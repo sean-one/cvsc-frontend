@@ -11,7 +11,6 @@ import BusinessRoles from './business.roles';
 import BusinessToggle from '../buttons/business.toggle';
 import EditBusinessButton from '../buttons/edit.business.button';
 import DeleteBusiness from '../buttons/delete.business';
-import { AdminFallbackIcon } from '../../icons/siteIcons';
 
 import CreateEventButton from '../../events/create.event.button';
 import BusinessEventsRelated from '../../events/business.events.related';
@@ -50,8 +49,8 @@ const BusinessAdminViewStyles = styled.div`
 `;
 
 const BusinessAdminView = ({ userBusinessRole }) => {
+    const [ transferAdminEditView, setTransferAdminEditView ] = useState(false)
     const { dispatch } = useNotification();
-    const [fallbackSelectorView, setFallbackSelectorView] = useState(false)
     const { business_id } = useParams();
     let navigate = useNavigate();
     
@@ -77,12 +76,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
     const business_data = business?.data || {}
     const management_list = manager_list?.data?.filter(manager_role => manager_role.role_type === 'manager') || []
 
-    const toggleAdminFallbackSelector = () => {
-        setFallbackSelectorView(!fallbackSelectorView)
-        console.log(fallbackSelectorView)
-    }
 
-    console.log(management_list)
     return (
         <BusinessAdminViewStyles>
             <div className='sectionContainer removeBorder'>
@@ -126,13 +120,22 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                             </div>
 
                             <div className='businessAdminDetailSection'>
-                                <div className='businessAdminDetailText'>Admin Fallback</div>
-                                {
-                                    (business_data?.admin_fallback === null)
-                                        ? <div className='adminFallbackNull' onClick={() => toggleAdminFallbackSelector()}>Set: <AdminFallbackIcon /></div>
-                                        : <div>got one</div>
-                                }
+                                <div className='businessAdminDetailText'>Transfer Admin</div>
+                                <div className='transferAdminEditButton' onClick={() => setTransferAdminEditView(!transferAdminEditView)}>{transferAdminEditView ? 'close' : 'edit'}</div>
                             </div>
+                            {
+                                transferAdminEditView &&
+                                    <div className='businessAdminDetailSection'>
+                                        <select>
+                                            {
+                                                management_list?.map(manager => (
+                                                    <option key={manager.user_id} value={manager.user_id}>{manager.username}</option>
+                                                ))
+                                            }
+                                        </select>
+                                        <p>+</p>
+                                    </div>
+                            }
                         </div>
                 }
             </div>
