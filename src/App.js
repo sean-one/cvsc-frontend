@@ -2,8 +2,6 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-// import { QueryClient, QueryClientProvider } from 'react-query';
-// import { ReactQueryDevtools } from 'react-query/devtools'
 
 // components
 import Calendar from './components/calendar/calendar';
@@ -22,6 +20,7 @@ import EventView from './components/events/views/event.view';
 import EventCreateForm from './components/forms/event.create.form';
 import EventEditForm from './components/forms/event.edit.form';
 
+import BusinessesView from './components/business/businesses.view.js';
 import BusinessView from './components/business/businessView';
 import BusinessAdminView from './components/business/admin/business.admin.view';
 import BusinessCreateForm from './components/forms/business.create.form';
@@ -58,7 +57,7 @@ const App = () => {
               
               {/* public routes */}
               <Route exact path='/' element={<Calendar />} />
-              {/* <Route path='/businesses' element={<Businesses />} /> */}
+              <Route path='/businesses' element={<BusinessesView />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/event/:event_id' element={<EventView />} />

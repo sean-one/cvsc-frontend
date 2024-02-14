@@ -67,7 +67,7 @@ const Menu = ({ toggle }) => {
 
     const menuItems = [
         { label: 'Calendar', link: '/' },
-        // { label: 'Businesses', link: '/businesses'},
+        { label: 'Businesses', link: '/businesses' },
         {
             label: () => isLoggedIn ? 'Profile' : 'Register',
             link: `${isLoggedIn ? '/profile' : '/register'}`
