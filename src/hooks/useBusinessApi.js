@@ -133,6 +133,24 @@ export const useBusinessToggle = () => {
     })
 }
 
+// business transfer
+const tranferBusiness = async ({ business_id, manager_id }) => { return await AxiosInstance.put(`/businesses/${business_id}/transfer/${manager_id}`) }
+export const useBusinessTransferMutation = () => {
+    // const queryClient = useQueryClient();
+    let navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: (transfer_details) => tranferBusiness(transfer_details),
+        onSuccess: async ({data}) => {
+            console.log(data)
+            navigate('/profile')
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+}
+
 // business.edit.form - EDIT BUSINESS
 const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/businesses/${business_id}`, business_updates) }
 export const useUpdateBusinessMutation = () => {
