@@ -5,13 +5,14 @@ import { Phone, ToggleRight, UserCheck, Map, User } from "@styled-icons/boxicons
 import { Web } from "@styled-icons/foundation"
 import { Mail } from "@styled-icons/fluentui-system-filled"
 import { Edit, CameraAdd, Settings, CalendarAdd } from "@styled-icons/fluentui-system-regular";
-import { Cannabis } from "@styled-icons/fa-solid"
+import { Cannabis, Xmark } from "@styled-icons/fa-solid"
 import {
     ArrowToTop,
     CalendarEvent,
     // CalendarPlus,
     // Edit,
     ErrorCircle,
+    Filter,
     ToggleLeft,
     ChevronDown,
     ChevronUp,
@@ -27,6 +28,8 @@ export const AddImageIcon = styled(CameraAdd)`width: var(--site-icon-size);`
 
 export const SearchIcon = styled(Search)`width: var(--site-icon-size);`
 export const FilterTopIcon = styled(ArrowToTop)`width: var(--site-icon-size);`
+export const FilterIcon = styled(Filter)`width: var(--site-icon-size);`
+export const CloseIcon = styled(Xmark)`width: var(--site-icon-size);`
 
 export const AddressIcon = styled(Map)`width: var(--site-icon-size);`
 export const DateIcon = styled(CalendarEvent)`width: var(--site-icon-size);`
