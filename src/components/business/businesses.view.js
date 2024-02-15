@@ -34,7 +34,7 @@ const BusinessesView = () => {
 
     const filteredBusinesses = businesses_list?.data.filter(business =>
         business?.business_name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    ) || [];
 
     const sortedBusinessList = [...filteredBusinesses].sort((a, b) => {
         switch (sortCriteria) {
@@ -77,30 +77,6 @@ const BusinessesView = () => {
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                 />
-                {/* <div className='searchFilterControl'>
-                    {view === 'searchView' ? (
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    ) : view === 'filterView' ? (
-                        <select
-                            onChange={(e) => setFilterCriteria(e.target.value)}
-                        >
-                            {filterOptions.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                    ) : (
-                        <>
-                            <button onClick={handleSearchIconClick}>Search Icon</button>
-                            <button onClick={handleFilterIconClick}>Filter Icon</button>
-                        </>
-                    )}
-                </div> */}
                 {
                     isPending ? (
                         <LoadingSpinner />
