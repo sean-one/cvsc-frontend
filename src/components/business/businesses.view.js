@@ -87,7 +87,7 @@ const BusinessesView = () => {
                             {
                                 sortedBusinessList?.map(business => {
                                     return (
-                                        <BusinessesViewCard keu={business.id} business={business} />
+                                        <BusinessesViewCard key={business.id} business={business} />
                                     )
                                 })
                             }

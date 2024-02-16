@@ -1,13 +1,18 @@
 import default_profile from '../assets/default_user.png';
 
 export const getImageSrc = (imageValue) => {
+    const s3Base = 'https://coachellavalleysmokers-images.s3.amazonaws.com/'
+
     if(!imageValue) {
         return default_profile;
     }
 
-    if(imageValue.startsWith('http')) {
+    else if(imageValue.startsWith('http')) {
         return imageValue
     }
 
-    return `https://coachellavalleysmokers-images.s3.amazonaws.com/${imageValue}`
+    else {
+        return `${s3Base}${imageValue}`
+    }
+
 }
