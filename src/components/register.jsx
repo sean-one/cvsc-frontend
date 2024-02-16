@@ -47,6 +47,10 @@ const RegisterStyles = styled.div`
         }
     }
 
+    .passwordContraintText {
+        font-size: var(--small-font);
+    }
+
     .loginLinkWrapper {
         display: flex;
         justify-content: center;
@@ -84,11 +88,11 @@ const Register = () => {
 
             // confirm password and delete extra confirmation field
             if(data.password !== data.confirmation) {
-                setError('credentials', { message: 'password and confirmation must match' })
+                throw new Error('no_match')
             } else {
                 delete data['confirmation']
             }
-
+            
             // add data fields to formData object for post request
             Object.keys(data).forEach(key => {
                 formData.append(key, data[key])
@@ -113,8 +117,10 @@ const Register = () => {
                 navigate('/profile');
             }
         } catch (error) {
-            
-            if(error?.response?.status === 400) {
+            if (error?.message === 'no_match') {
+                setError('credentials', { message: 'password and confirmation must match' })
+            }
+            else if(error?.response?.status === 400) {
                 setError(error.response.data.error.type, { message: error.response.data.error.message })
             }
             
@@ -150,6 +156,7 @@ const Register = () => {
         window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, '_self')
     }
     
+
     return (
         <RegisterStyles>
             <div className='registerWrap'>
@@ -210,6 +217,7 @@ const Register = () => {
                             validate: validatePassword
                         })} type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='Password' />
                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
+                        {/* <div className='passwordContraintText'>must be 8+ characters with a mix of upper, lower, numbers</div> */}
                     </div>
                     
                     {/* CONFIRMATION */}

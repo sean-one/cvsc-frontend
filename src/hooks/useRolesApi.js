@@ -19,7 +19,7 @@ export const useUserRolesQuery = (user_id) => useQuery({ queryKey: roleKeys.user
 
 // user.account - returns the highest role type for a specific user
 const getUserAccountRole = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}/account-role`) }
-export const useUserAccountRole = (user_id) => useQuery({ queryKey: roleKeys.userAccountRole(user_id), queryFn: () => getUserAccountRole(user_id) });
+export const useUserAccountRole = (user_id) => useQuery({ queryKey: roleKeys.userAccountRole(user_id), queryFn: () => getUserAccountRole(user_id), enabled: !!user_id });
 
 // role.request - creates a new role request
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/businesses/${business_id}/role-requests`) }

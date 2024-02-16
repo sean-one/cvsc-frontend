@@ -1,3 +1,8 @@
+export const userKeys = {
+    all: ['users'],
+    detail: (user_id) => [...userKeys.all, 'detail', user_id],
+};
+
 export const eventKeys = {
     all: ['events'],
     list: (filter) => [...eventKeys.all, { filter }],

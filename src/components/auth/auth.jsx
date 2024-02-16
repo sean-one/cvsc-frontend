@@ -1,14 +1,19 @@
 import { useEffect } from 'react';
+// import { Outlet } from "react-router";
 import { useLocation, Navigate, Outlet } from "react-router";
+// import AxiosInstance from '../../helpers/axios';
 
 import useAuth from "../../hooks/useAuth";
+// import { useUserQuery } from '../../hooks/useUserApi';
 import useNotification from "../../hooks/useNotification";
 
 const AuthRoute = () => {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, setAuth } = useAuth()
     const { dispatch } = useNotification();
+    // const { data: user_data } = useUserQuery()
     const { pathname } = useLocation()
 
+    // check for token, return token or null if no token is present
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -16,20 +21,11 @@ const AuthRoute = () => {
         return null;
     }
 
-    useEffect(() => {
-        if (!isLoggedIn) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: 'must be logged in to view'
-                }
-            })
-        }
-    }, [dispatch, isLoggedIn])
-
+    // const jwt = getCookie('jwt')
     
+    // console.log(user_data)
     return (
+        // <Outlet />
         (isLoggedIn && getCookie('jwt'))
             ? <Outlet />
             : <Navigate to="/login" state={{ from: pathname }} replace />
