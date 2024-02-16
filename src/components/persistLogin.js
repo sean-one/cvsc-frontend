@@ -27,7 +27,7 @@ const PersistLogin = () => {
             }
         }
 
-        if (isLoggedIn && !auth?.user?.accessToken) {
+        if (!auth?.user?.accessToken && !isLoggedIn) {
             verifyRefreshToken()
         } else {
             setIsLoading(false)
