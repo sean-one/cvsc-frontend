@@ -7,9 +7,11 @@ const useRefreshToken = () => {
     const refresh = async () => {
         const response = await AxiosInstance.get('/auth/refresh')
         
-        setAuth({ user: response?.data, isLoggedIn: true })
+        console.log('response in the refresh')
+        console.log(response)
+        setAuth({ user: response?.data })
 
-        return response.data.user.accessToken
+        return response.data.accessToken
     }
 
     return refresh;
