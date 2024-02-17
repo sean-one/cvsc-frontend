@@ -29,6 +29,7 @@ const UserEditForm =({ setEditView }) => {
     let navigate = useNavigate()
 
     const sendUpdate = async (data) => {
+        console.log(data)
         try {
             const formData = new FormData()
     
@@ -78,6 +79,8 @@ const UserEditForm =({ setEditView }) => {
                 // setEditImage(false)
             }
 
+            console.log('data beofre formdata append')
+            console.log(data)
             // append any remaining updated fields to formData
             Object.keys(data).forEach(key => {
                 formData.append(key, data[key])
@@ -85,6 +88,8 @@ const UserEditForm =({ setEditView }) => {
     
             const userUpdateResponse = await AxiosInstance.post('/users/update', formData)
     
+            console.log('after user update')
+            console.log(userUpdateResponse)
             if(userUpdateResponse.status === 201) {
                 setAuth({ user: userUpdateResponse.data.user, roles: userUpdateResponse.data.roles })
     
@@ -104,6 +109,8 @@ const UserEditForm =({ setEditView }) => {
             return
             
         } catch (error) {
+            console.log('error in sendupdate')
+            console.log(error)
             if(error?.response?.status === 401) {
                 // logout_user()
                 
