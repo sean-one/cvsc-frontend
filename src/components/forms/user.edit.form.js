@@ -126,8 +126,8 @@ const UserEditForm =({ setEditView }) => {
 
             } else if(error?.response?.status === 400) {
                 
-                setError(`${error.response.data.error.type}`, {
-                    message: `${error.response.data.error.message}`
+                setError(`${error?.response?.data?.error?.type}`, {
+                    message: `${error?.response?.data?.error?.message}`
                 })
 
             } else {
@@ -213,6 +213,7 @@ const UserEditForm =({ setEditView }) => {
                         },
                         validate: validateUsername
                     })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                    {errors.username ? <div className='errormessage'>{errors?.username?.message}</div> : null}
                 </div>
 
                 {/* EVENT AND PROFILE IMAGE UPDATE */}
@@ -234,7 +235,7 @@ const UserEditForm =({ setEditView }) => {
                         <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                     </label>
                 </div>
-                {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
+                {errors.email ? <div className='errormessage'>{errors?.email?.message}</div> : null}
 
                 {/* PASSWORD */}
                 <div className='inputWrapper'>

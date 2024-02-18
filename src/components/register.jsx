@@ -88,7 +88,7 @@ const Register = () => {
 
             // confirm password and delete extra confirmation field
             if(data.password !== data.confirmation) {
-                throw new Error('no_match')
+                throw new Error('non_matching_password')
             } else {
                 delete data['confirmation']
             }
@@ -102,7 +102,6 @@ const Register = () => {
             
             // if successful add newly loggen in user to auth and forward to profile
             if (response.status === 201) {
-                console.log(response.data)
                 setAuth({ user: response?.data })
                 
                 dispatch({
@@ -117,7 +116,7 @@ const Register = () => {
                 navigate('/profile');
             }
         } catch (error) {
-            if (error?.message === 'no_match') {
+            if (error?.message === 'non_matching_password') {
                 setError('credentials', { message: 'password and confirmation must match' })
             }
             else if(error?.response?.status === 400) {
@@ -171,11 +170,11 @@ const Register = () => {
                             required: 'username is required',
                             minLength: {
                                 value: 4,
-                                message: 'must be at least 4 characters'
+                                message: 'username must be at least 4 characters'
                             },
                             maxLength: {
                                 value: 50,
-                                message: 'username too long'
+                                message: 'username is too long'
                             },
                             validate: validateUsername
                         })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
