@@ -62,9 +62,8 @@ const Login = () => {
                 })
         
                 navigate(navigateTo)
-            } else {
-                throw new Error('unexpected status code at sendLogin')
             }
+            
         } catch (error) {
             console.log(error)
             if (error?.response?.status === 400 ) {
@@ -104,11 +103,11 @@ const Login = () => {
                         <input {...register('username', {
                             required: 'username is required',
                             minLength: {
-                                value: 3,
+                                value: 4,
                                 message: 'must be at least 4 letters'
                             },
                             maxLength: {
-                                value: 20,
+                                value: 50,
                                 message: 'too long, must be 20 characters or less'
                             },
                             validate: validateUsername,
