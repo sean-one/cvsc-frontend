@@ -29,7 +29,6 @@ const UserEditForm =({ setEditView }) => {
     let navigate = useNavigate()
 
     const sendUpdate = async (data) => {
-        console.log(data)
         try {
             const formData = new FormData()
     
@@ -79,8 +78,6 @@ const UserEditForm =({ setEditView }) => {
                 // setEditImage(false)
             }
 
-            console.log('data beofre formdata append')
-            console.log(data)
             // append any remaining updated fields to formData
             Object.keys(data).forEach(key => {
                 formData.append(key, data[key])
@@ -88,10 +85,8 @@ const UserEditForm =({ setEditView }) => {
     
             const userUpdateResponse = await AxiosInstance.post('/users/update', formData)
     
-            console.log('after user update')
-            console.log(userUpdateResponse)
             if(userUpdateResponse.status === 201) {
-                setAuth({ user: userUpdateResponse.data.user, roles: userUpdateResponse.data.roles })
+                setAuth({ user: userUpdateResponse.data.user })
     
                 setEditView(false)
     
@@ -99,7 +94,7 @@ const UserEditForm =({ setEditView }) => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: 'account has been updated'
+                        message: 'your account has been successfully updated'
                     }
                 })
     
@@ -109,10 +104,18 @@ const UserEditForm =({ setEditView }) => {
             return
             
         } catch (error) {
-            console.log('error in sendupdate')
-            console.log(error)
-            if(error?.response?.status === 401) {
-                // logout_user()
+            if(error?.response?.status === 404) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            } else if(error?.response?.status === 401 || error?.response?.status === 403) {
+                // removed expired token and remove auth
+                localStorage.removeItem('jwt')
+                setAuth(null)
                 
                 dispatch({
                     type:"ADD_NOTIFICATION",
@@ -122,21 +125,29 @@ const UserEditForm =({ setEditView }) => {
                     }
                 })
 
-                return
+                return navigate('/login')
 
             } else if(error?.response?.status === 400) {
-                
-                setError(`${error?.response?.data?.error?.type}`, {
-                    message: `${error?.response?.data?.error?.message}`
-                })
-
+                if (error?.response?.data?.error?.type === 'server') {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                } else {
+                    setError(`${error?.response?.data?.error?.type}`, {
+                        message: `${error?.response?.data?.error?.message}`
+                    })
+                }
             } else {
 
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'ERROR',
-                        message: 'user update server error'
+                        message: 'unhandled user edit error'
                     }
                 })
             }
