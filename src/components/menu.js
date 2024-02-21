@@ -4,6 +4,7 @@ import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
 import useAuth from '../hooks/useAuth';
+import useNotification from '../hooks/useNotification';
 
 const MenuStyles = styled.div`
     .menuWrapper {
@@ -48,8 +49,9 @@ const MenuStyles = styled.div`
 `;
 
 const Menu = ({ toggle }) => {
-    const { user_logout, isLoggedIn } = useAuth()
-    let navigate = useNavigate()
+    const { user_logout, isLoggedIn } = useAuth();
+    const { dispatch } = useNotification();
+    let navigate = useNavigate();
 
     const navMenuClick = (link) => {
         toggle(false)
@@ -57,12 +59,28 @@ const Menu = ({ toggle }) => {
     }
 
     const logOutUser = async () => {
-        const logoutResponse = await AxiosInstance.get('/auth/logout')
+        try {
+            const logoutResponse = await AxiosInstance.get('/auth/logout')
+            
+            if(logoutResponse.status === 204) {
+                toggle(false)
+                user_logout()
+            }
 
-        if(logoutResponse.status === 204) {
-            toggle(false)
-            user_logout()
+        } catch (error) {
+            if(error?.response?.status === 400) {
+                toggle(false)
+                
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+            }
         }
+
     }
 
     const menuItems = [
