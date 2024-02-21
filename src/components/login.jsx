@@ -65,7 +65,6 @@ const Login = () => {
             }
             
         } catch (error) {
-            console.log(error)
             if (error?.response?.status === 400 ) {
                 setError(`${error.response.data.error.type}`, {
                     type: 'server',
@@ -123,7 +122,6 @@ const Login = () => {
                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                     </div>
                     
-                    {errors.credentials ? <div className='errormessage'>{errors?.credentials?.message}</div> : null}
                     {errors.server ? <div className='errormessage'>{errors?.server?.message}</div> : null}
 
                     <div className='formButtonWrapper'>

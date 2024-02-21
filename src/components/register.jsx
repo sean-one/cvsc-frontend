@@ -82,7 +82,7 @@ const Register = () => {
                     setEditImage(false)
 
                 } catch (error) {
-                    setError('avatar', { message: 'image upload error' })
+                    setError('avatar', { message: 'image upload error, please try again' })
                 }
             }
 
@@ -120,11 +120,7 @@ const Register = () => {
                 setError('credentials', { message: 'password and confirmation must match' })
             }
             else if(error?.response?.status === 400) {
-                setError(error.response.data.error.type, { message: error.response.data.error.message })
-            }
-            
-            else if(error?.response?.status === 409) {
-                setError(error.response.data.error.type, { message: error.response.data.error.message })
+                setError(error?.response?.data?.error?.type, { message: error?.response?.data?.error?.message })
             }
 
             else if(error?.response?.status === 500) {
