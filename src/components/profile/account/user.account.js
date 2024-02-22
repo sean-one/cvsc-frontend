@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getImageSrc } from '../../../helpers/getImageSrc';
 
@@ -96,22 +97,39 @@ const UserAccountStyles = styled.div`
 `
 
 const UserAccount = () => {
-    const { auth } = useAuth();
+    const { auth, user_reset } = useAuth();
     const { dispatch } = useNotification();
     const [ editView, setEditView ] = useState(false)
     const { data: user_account_role, isPending, isError, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
 
+    let navigate = useNavigate();
+
     useEffect(() => {
         if (isError) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: user_account_role_error?.response?.data?.error?.message
-                }
-            })
+            if (user_account_role_error?.response?.status === 401 || user_account_role_error?.response?.data?.error?.type === 'token') {
+                // remove expired or bad token and reset auth
+                user_reset()
+
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_account_role_error?.response?.data?.error?.message
+                    }
+                })
+
+                return navigate('/login')
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_account_role_error?.response?.data?.error?.message
+                    }
+                })
+            }
         }
-    }, [dispatch, isError, user_account_role_error])
+    }, [dispatch, isError, navigate, user_account_role_error, user_reset])
 
     const testNotification = () => {
         dispatch({

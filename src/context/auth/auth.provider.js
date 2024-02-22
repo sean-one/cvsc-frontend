@@ -8,6 +8,13 @@ export const AuthProvider = ({ children }) => {
     const isLoggedIn = auth != null;
     let navigate = useNavigate()
 
+    const user_reset = () => {
+        // remove expired or bad token
+        localStorage.removeItem('jwt')
+        // reset auth
+        setAuth(null)
+    }
+
     const sendToLogin = () => {
         localStorage.removeItem('jwt')
         setAuth(null)
@@ -22,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth, isLoggedIn, sendToLogin, user_logout }}>
+        <AuthContext.Provider value={{ auth, setAuth, isLoggedIn, sendToLogin, user_logout, user_reset }}>
             {children}
         </AuthContext.Provider>
     )

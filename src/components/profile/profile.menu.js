@@ -36,24 +36,39 @@ const ProfileMenuStyles = styled.div`
 
 
 const ProfileMenu = () => {
-    const { auth } = useAuth();
+    const { auth, user_reset } = useAuth();
     const { dispatch } = useNotification();
-    const { data: user_account_role, status: user_account_role_status, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
+    const { data: user_account_role, isError, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
     const { pathname } = useLocation()
 
     let navigate = useNavigate()
 
     useEffect(() => {
-        if (user_account_role_status === 'error') {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: user_account_role_error?.response?.data?.error?.message
-                }
-            })
+        if (isError) {
+            if (user_account_role_error?.response?.status === 401 || user_account_role_error?.response?.data?.error?.type === 'token') {
+                // remove expired or bad token and reset auth
+                user_reset()
+
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_account_role_error?.response?.data?.error?.message
+                    }
+                })
+
+                return navigate('/login')
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_account_role_error?.response?.data?.error?.message
+                    }
+                })
+            }
         }
-    }, [dispatch, user_account_role_status, user_account_role_error])
+    }, [dispatch, isError, navigate, user_account_role_error, user_reset])
 
     let menuTab
     if (pathname === '/profile/') {
