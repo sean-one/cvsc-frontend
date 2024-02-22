@@ -7,7 +7,7 @@ import { useUserRolesQuery } from "../../hooks/useRolesApi";
 import LoadingSpinner from '../loadingSpinner';
 
 const BusinessManagementAuth = ({ children }) => {
-    const { auth, user_logout } = useAuth();
+    const { auth, user_reset } = useAuth();
     const { dispatch } = useNotification();
     const { business_id } = useParams()
     const { data: user_roles, isPending, isError, error: user_roles_error } = useUserRolesQuery(auth?.user?.id)
@@ -15,17 +15,28 @@ const BusinessManagementAuth = ({ children }) => {
     let navigate = useNavigate();
     
     if (isError) {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: user_roles_error?.response?.data?.error?.message
-            }
-        })
+        if (user_roles_error?.response?.status === 401 || user_roles_error?.response?.data?.error?.type === 'token') {
+            // remove expired or bad token and reset user
+            user_reset()
 
-        if (user_roles_error?.response?.data?.error?.type === 'token') {
-            user_logout()
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: user_roles_error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/login')
         } else {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: user_roles_error?.response?.data?.error?.message
+                }
+            })
+
             navigate('/profile')
         }
     }

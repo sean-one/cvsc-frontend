@@ -10,7 +10,7 @@ import LoadingSpinner from '../../loadingSpinner';
 
 
 const RolesTab = () => {
-    const { auth } = useAuth();
+    const { auth, user_reset } = useAuth();
     const { dispatch } = useNotification();
     const { data: user_roles, isPending, isError, error: user_roles_error } = useUserRolesQuery(auth?.user?.id)
     
@@ -18,23 +18,34 @@ const RolesTab = () => {
 
     useEffect(() => {
         if (isError) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: user_roles_error?.response?.data?.error?.message
-                }
-            })
+            if (user_roles_error?.response?.status === 401 || user_roles_error?.response?.data?.error?.type === 'token') {
+                // remove expired or bad token and reset user
+                user_reset()
 
-            navigate('/profile')
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_roles_error?.response?.data?.error?.message
+                    }
+                })
+
+                navigate('/login')
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_roles_error?.response?.data?.error?.message
+                    }
+                })
+    
+                navigate('/profile')
+
+            }
         }
 
-    }, [dispatch, navigate, isError, user_roles_error])
-
-
-    if (isPending) {
-        return <LoadingSpinner />
-    }
+    }, [dispatch, navigate, isError, user_roles_error, user_reset])
     
 
     return (
