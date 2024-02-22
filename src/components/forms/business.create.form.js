@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components'
 
 import useNotification from '../../hooks/useNotification';
-import { businessTypeList, emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
+import { emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
@@ -24,14 +24,13 @@ const BusinessCreateForm = () => {
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
 
-    const { register, control, handleSubmit, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             business_name: null,
             business_email: null,
             business_avatar: '',
             business_description: null,
-            business_type: 'brand',
             business_instagram: '',
             business_facebook: '',
             business_website: '',
@@ -56,12 +55,6 @@ const BusinessCreateForm = () => {
                 let business_avatar = setImageForForm(canvas)
 
                 formData.set('business_avatar', business_avatar)
-            }
-
-            // check business type and confirm business address when required
-            if ((business_data.business_type === 'both' || business_data.business_type === 'venue') && !business_data.place_id) {
-                // if business type is not brand business address is required
-                throw new Error('location_required')
             }
 
             // clean phone number to consist of 10 numbers only
@@ -101,12 +94,6 @@ const BusinessCreateForm = () => {
                 setError('business_avatar', {
                     message: 'a business logo is required to create a new business'
                 }, { shouldFocus: true })
-            }
-            // business type was venue or both but did not include required address components
-            else if (error.message === 'location_required') {
-                setError('formatted_address', {
-                    message: 'a business address is required for venue or both business types'
-                })
             }
             // form data is incorrectly formatted, missing, or invalid 
             else if (error?.response?.status === 400 || error?.response?.status === 409) {
@@ -216,26 +203,6 @@ const BusinessCreateForm = () => {
                             }
                         })} rows='8' onClick={() => clearErrors('business_description')} placeholder='Business details' />
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
-                    </div>
-
-                    {/* BUSINESS TYPE SELECTOR */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='business_type' className='visuallyHidden'>Business type:</label>
-                        <Controller
-                            name='business_type'
-                            control={control}
-                            defaultValue=""
-                            rules={{ required: 'business type is required', pattern: { value: businessTypeList, message: 'invalid business type'}}}
-                            render={({ field }) => (
-                                <select {...field} onClick={() => clearErrors(['business_type'])}>
-                                    <option value="" disabled>Select business type...</option>
-                                    <option value='brand'>Brand</option>
-                                    <option value='venue'>Dispensary</option>
-                                    <option value='both'>{`Brand & Dispensary`}</option>
-                                </select>
-                            )}
-                        />
-                        {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
                     </div>
 
                     <AddressForm

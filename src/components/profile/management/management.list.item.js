@@ -72,7 +72,6 @@ const ManagementListItem = ({ business }) => {
                     <img src={image_link(business?.business_avatar)} alt={business.business_name} />
                 </div>
                 <div className='managementListItemDetails'>
-                    <div>{business.business_type === 'both' ? `Dispensary / Brand` : `${business.business_type.charAt(0).toUpperCase() + business.business_type.slice(1)}`}</div>
                     <div className='managementListItemBusinessname'>{business.business_name}</div>
                     <div className='managementListItemStatus'>
                         <span style={{ color: business.active_business ? 'inherit' : `var(--error-color)` }}>

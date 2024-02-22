@@ -9,7 +9,7 @@ import { setImageForForm } from '../../helpers/setImageForForm';
 import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
-import { businessTypeList, emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './utils/form.validations';
+import { emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './utils/form.validations';
 import AxiosInstance from '../../helpers/axios';
 
 import AddressForm from './address.form';
@@ -153,7 +153,6 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     business_description: businessResponse.data?.business_description,
                     place_id: businessResponse.data?.place_id || '',
                     formatted_address: businessResponse.data?.formatted_address,
-                    business_type: businessResponse.data?.business_type,
                     business_instagram: businessResponse.data?.business_instagram || '',
                     business_website: businessResponse.data?.business_website || '',
                     business_facebook: businessResponse.data?.business_facebook || '',
@@ -232,24 +231,6 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                         })} rows='8' onClick={() => clearErrors('business_description')} />
                         {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
                     </div>
-
-                    {/* BUSINESS TYPE SELECTOR */}
-                    {
-                        (userBusinessRole?.role_type === 'admin') &&
-                            <div className='inputWrapper'>
-                                <select {...register('business_type', {
-                                    pattern: {
-                                        value: businessTypeList,
-                                        message: 'invalid business type'
-                                    }
-                                })} onClick={() => clearErrors('business_type')}>
-                                    <option value='brand'>Brand</option>
-                                    <option value='venue'>Dispensary</option>
-                                    <option value='both'>{`Brand & Dispensary`}</option>
-                                </select>
-                                {errors.business_type ? <div className='errormessage'>{errors.business_type?.message}</div> : null}
-                            </div>
-                    }
 
                     {/* ADDRESS INPUT */}
                     {

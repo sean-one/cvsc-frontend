@@ -20,8 +20,6 @@ export const twitterFormat = /^@?[a-zA-Z0-9_]{1,15}$/
 
 export const uuidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
-export const businessTypeList = /^(?:BRAND|VENUE|BOTH)$/i;
-
 
 export const validateUsername = (value) => {
     const alphanumeric = /^[a-zA-Z0-9*@_.\-!$]+$/;

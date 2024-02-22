@@ -41,18 +41,6 @@ const ManagementList = () => {
 
     const sortedBusinessList = [...filteredBusinesses].sort((a, b) => {
         switch (sortCriteria) {
-            case 'business_type_brand':
-                if (a.business_type === 'brand' && b.business_type !== 'brand') return -1;
-                if (a.business_type !== 'brand' && b.business_type === 'brand') return 1;
-                return 0;
-            case 'business_type_venue':
-                if (a.business_type === 'venue' && b.business_type !== 'venue') return -1;
-                if (a.business_type !== 'venue' && b.business_type === 'venue') return 1;
-                return 0;
-            case 'business_type_both':
-                if (a.business_type === 'both' && b.business_type !== 'both') return -1;
-                if (a.business_type !== 'both' && b.business_type === 'both') return 1;
-                return 0;
             case 'active_business':
                 if (a.active_business && !b.active_business) return -1;
                 if (!a.active_business && b.active_business) return 1;

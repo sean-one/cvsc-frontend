@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
-import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
-import LoadingSpinner from '../loadingSpinner';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
-import { validateEventDate, validateEventTime, validateEventBusiness } from './utils/form.validations';
+import { validateEventDate, validateEventTime } from './utils/form.validations';
 
 const CreateEventFormStyles = styled.div``;
 
@@ -19,12 +17,9 @@ const EventCreateForm = () => {
     const { editImage, imagePreview, canvas } = useEventImagePreview()
     const { mutate: createEvent } = useCreateEventMutation()
     const { dispatch } = useNotification();
-    let venue_list, brand_list = []
     let navigate = useNavigate();
     
-    const { data: businesses_list, isPending, isError, isSuccess, error: businesses_list_error } = useBusinessesQuery()
-
-    const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             eventname: '',
@@ -52,27 +47,6 @@ const EventCreateForm = () => {
 
     },[setValue])
 
-    if (isPending) {
-        return <LoadingSpinner />
-    }
-
-    if (isError) {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: businesses_list_error?.response?.data?.error?.message
-            }
-        })
-
-        navigate('/profile')
-    }
-
-    if (isSuccess) {
-        venue_list = businesses_list?.data.filter(business => business.business_type !== 'brand' && business.active_business) || []
-        brand_list = businesses_list?.data.filter(business => business.business_type !== 'venue' && business.active_business) || []
-    }
-    
     const createNewEvent = async (event_data) => {
         localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
@@ -216,29 +190,6 @@ const EventCreateForm = () => {
                         })} type='time' onClick={() => clearErrors('eventend')} />
                     </div>
                     {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
-                    
-                    {/* VENUE ID / EVENT LOCATION */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='venue_id' className='visuallyHidden'>Venue:</label>
-                        <Controller
-                            name='venue_id'
-                            control={control}
-                            defaultValue=""
-                            rules={{ required: 'a business name is required', validate: validateEventBusiness }}
-                            render={({ field }) => (
-                                <select {...field} onClick={() => clearErrors(['venue_id', 'role_rights'])}>
-                                    <option value="" disabled>Select a venue...</option>
-                                    {
-                                        venue_list.map(venue => (
-                                            <option key={venue.id} value={venue.id}>{venue.business_name}</option>
-                                        ))
-                                    }
-                                </select>
-                            )}
-                        />
-                        {errors.venue_id && <div className='errormessage'>{errors.venue_id.message}</div>}
-                        {errors.role_rights && <div className='errormessage'>{errors.role_rights.message}</div>}
-                    </div>
 
                     {/* EVENT DETAILS */}
                     <div className='inputWrapper'>
@@ -246,29 +197,6 @@ const EventCreateForm = () => {
                             required: 'event details are required'
                         })} rows='8' onClick={() => clearErrors('details')} placeholder='Event details ...'/>
                         {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
-                    </div>
-
-                    {/* EVENT BUSINESS BRANDING */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='brand_id' className='visuallyHidden'>Brand:</label>
-                        <Controller
-                            name='brand_id'
-                            control={control}
-                            defaultValue=""
-                            rules={{ required: 'A business name is required', validate: validateEventBusiness }}
-                            render={({ field }) => (
-                                <select {...field} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
-                                    <option value="" disabled>Select a brand...</option>
-                                    {
-                                        brand_list.map(brand => (
-                                            <option key={brand.id} value={brand.id}>{brand.business_name}</option>
-                                        ))
-                                    }
-                                </select>
-                            )}
-                        />
-                        {errors.brand_id ? <div className='errormessage'>{errors.brand_id?.message}</div> : null}
-                        {errors.role_rights ? <div className='errormessage'>{errors.role_rights?.message}</div> : null}
                     </div>
 
                     <div className='formButtonWrapper'>

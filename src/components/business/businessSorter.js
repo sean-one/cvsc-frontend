@@ -54,9 +54,6 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                     <div className='sortView'>
                         <select value={sortCriteria} onChange={e => onSortChange(e.target.value)}>
                             <option value="business_name">Name</option>
-                            <option value="business_type_brand">Type: Brand</option>
-                            <option value="business_type_venue">Type: Venue</option>
-                            <option value="business_type_both">Type: Both</option>
                             <option value="active_business">Active</option>
                             <option value="inactive_business">Inactive</option>
                             <option value="request_closed">Request Closed</option>

@@ -7,14 +7,12 @@ import styled from 'styled-components';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { reformatTime } from '../../helpers/formatTime';
-import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
 import useNotification from '../../hooks/useNotification';
-import LoadingSpinner from '../loadingSpinner';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import AxiosInstance from '../../helpers/axios';
-import { validateEventBusiness, validateEventDate, validateEventTime, validateNONEmptyString } from './utils/form.validations';
+import { validateEventDate, validateEventTime, validateNONEmptyString } from './utils/form.validations';
 
 
 const EditEventFormStyles = styled.div`
@@ -41,14 +39,11 @@ const EventEditForm = () => {
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()
 
-    let venue_list, brand_list = [];
-
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
     const { mutate: removeEventMutation } = useRemoveEventMutation()
 
     let navigate = useNavigate()
 
-    const { data: businesses_list, isPending, isError, error: businesses_list_error } = useBusinessesQuery()
 
     const { register, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -141,9 +136,7 @@ const EventEditForm = () => {
             eventstart: reformatTime(data.eventstart),
             eventend: reformatTime(data.eventend),
             eventmedia: null,
-            venue_id: data.venue_id,
             details: data.details,
-            brand_id: data.brand_id,
         })
 
         // function to get event details and check local storage for changes
@@ -186,30 +179,6 @@ const EventEditForm = () => {
         }
         getEventDetails()
     }, [event_id, reset, dispatch, navigate, setValue])
-
-    if (isPending) {
-        return <LoadingSpinner />
-    }
-
-    if (isError) {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: businesses_list_error?.response?.data?.error?.message
-            }
-        })
-
-        navigate('/profile')
-    }
-
-    if (businesses_list.data.length <= 0) {
-        venue_list = [{ id: eventData?.venue_id || '', business_name: eventData?.venue_name || 'Select a venue...' }]
-        brand_list = [{ id: eventData?.brand_id || '', business_name: eventData?.brand_name || 'Select a brand...' }]
-    } else {
-        venue_list = businesses_list.data.filter(business => business.business_type !== 'brand' && business.active_business)
-        brand_list = businesses_list.data.filter(business => business.business_type !== 'venue' && business.active_business)
-    }
 
 
     return (
@@ -296,42 +265,10 @@ const EventEditForm = () => {
                     </div>
                     {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
 
-                    {/* VENUE ID / EVENT LOCATION */}
-                    <div className='inputWrapper'>
-                        <select {...register('venue_id', {
-                            validate: (value) => validateEventBusiness(value, false)
-                        })} onClick={() => clearErrors(['venue_id', 'role_rights'])}>
-                            <option value="" disabled>Select a venue...</option>
-                            {
-                                venue_list.map(venue => (
-                                    <option key={venue.id} value={venue.id}>{venue.business_name}</option>
-                                ))
-                            }
-                        </select>
-                        {errors.venue_id ? <div className='errormessage'>{errors.venue_id?.message}</div> : null}
-                        {errors.role_rights ? <div className='errormessage'>{errors.role_rights?.message}</div> : null}
-                    </div>
-
                     {/* EVENT DETAILS */}
                     <div className='inputWrapper'>
                         <textarea {...register('details')} rows='8' onClick={() => clearErrors('details')} />
                         {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
-                    </div>
-
-                    {/* EVENT BUSINESS BRANDING */}
-                    <div className='inputWrapper'>
-                        <select {...register('brand_id', {
-                            validate: (value) => validateEventBusiness(value, false)
-                        })} onClick={() => clearErrors(['brand_id', 'role_rights'])}>
-                            <option value="" disabled>Select a brand...</option>
-                            {
-                                brand_list.map(brand => (
-                                    <option key={brand.id} value={brand.id}>{brand.business_name}</option>
-                                ))
-                            }
-                        </select>
-                        {errors.brand_id ? <div className='errormessage'>{errors.brand_id?.message}</div> : null}
-                        {errors.role_rights ? <div className='errormessage'>{errors.role_rights?.message}</div> : null}
                     </div>
                     
                     <div className='formButtonWrapper'>

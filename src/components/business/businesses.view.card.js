@@ -36,10 +36,6 @@ const BusinessesViewCardStyles = styled.div`
         flex-direction: column;
     }
 
-    .businessViewCardBusinessType {
-        font-size: var(--small-font);
-    }
-
     .businessViewCardBusinessName {
         font-size: var(--small-header-font);
         font-weight: bold;
@@ -69,7 +65,6 @@ const BusinessesViewCard = ({ business }) => {
                     <img src={business.business_avatar} alt={business.business_name} />
                 </div>
                 <div className='businessViewCardDetails'>
-                    <div className='businessViewCardBusinessType'>{business.business_type === 'both' ? `Dispensary / Brand` : `${business.business_type.charAt(0).toUpperCase() + business.business_type.slice(1)}`}</div>
                     <div className='businessViewCardBusinessName'>{business.business_name}</div>
                     <div className='businessViewCardBusinessDescription'>{business?.business_description}</div>
                 </div>
