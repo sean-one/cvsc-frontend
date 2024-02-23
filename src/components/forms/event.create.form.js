@@ -27,9 +27,7 @@ const EventCreateForm = () => {
             eventstart: '',
             eventend: '',
             eventmedia: '',
-            venue_id: '',
             details: '',
-            brand_id: '',
         }
     });
     

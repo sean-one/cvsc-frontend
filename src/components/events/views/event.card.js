@@ -121,18 +121,6 @@ const EventCard = ({ event }) => {
                         <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                         <div className='smallHeaderText'>{event?.eventname}</div>
                         <div className='eventCardDetails'>{event?.details}</div>
-                        {event?.active_event &&
-                            <div className='sectionRowSplit'>
-                                <div className='smallSubheaderText' onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate(`/business/${event?.venue_id}`);
-                                }}>{event?.venue_name}</div>
-                                <div className='smallSubheaderText' onClick={(e) => {
-                                    e.stopPropagation()
-                                    navigate(`/business/${event?.brand_id}`);
-                                }}>{event?.brand_name}</div>
-                            </div>
-                        }
                     </div>
                 </div>
             </div>

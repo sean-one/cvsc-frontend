@@ -14,7 +14,7 @@ import DeleteBusiness from '../buttons/delete.business';
 import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 
 import CreateEventButton from '../../events/create.event.button';
-import BusinessEventsRelated from '../../events/business.events.related';
+// import BusinessEventsRelated from '../../events/business.events.related';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminDetailSection {
@@ -206,7 +206,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         </div>
                 }
                 <BusinessRoles />
-                <BusinessEventsRelated business_id={business_id} />
+                {/* <BusinessEventsRelated business_id={business_id} /> */}
             </div>
         </BusinessAdminViewStyles>
     )

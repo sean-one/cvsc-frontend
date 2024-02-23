@@ -4,8 +4,7 @@ import { format } from 'date-fns'
 import styled from 'styled-components';
 
 import LoadingSpinner from '../../loadingSpinner';
-import BusinessLabel from '../../business/business.label';
-import EventViewRelated from '../event.view.related';
+// import EventViewRelated from '../event.view.related';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -88,13 +87,6 @@ const EventViewStyles = styled.div`
             padding: 0 0 0 0.75rem;
         }
     }
-
-    .eventViewBusiness {
-        margin: 0.75rem 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
 `;
 
 
@@ -142,7 +134,7 @@ const EventView = () => {
                     </div>
                     {
                         (event?.data?.active_event) &&
-                            <div className='eventViewAddress'>{event.data?.venue_location.split(/\s\d{5},\sUSA/)[0]}</div>
+                            <div className='eventViewAddress'>1234 lovely event address will go here</div>
                     }
                     {
                         (event?.data?.active_event) &&
@@ -158,34 +150,13 @@ const EventView = () => {
                     </div>
                     <div className='eventViewDetails'>
                         <div>{event?.data.details}</div>
-                        <div>
-                            {
-                                (event?.data?.active_event) &&
-                                    <div className='eventViewBusiness'>
-                                        <BusinessLabel
-                                            businessId={event?.data.venue_id}
-                                            eventCreator={event?.data?.created_by}
-                                            eventId={event?.data?.event_id}
-                                            business_logo={event?.data?.venue_logo}
-                                            business_name={event?.data?.venue_name}
-                                            />
-                                        <BusinessLabel
-                                            businessId={event?.data.brand_id}
-                                            eventCreator={event?.data?.created_by}
-                                            eventId={event?.data?.event_id}
-                                            business_logo={event?.data?.brand_logo}
-                                            business_name={event?.data?.brand_name}
-                                        />
-                                    </div>
-                            }
-                        </div>
                     </div>
                 </div>
             </div>
-            {
+            {/* {
                 (event?.data?.active_event) &&
                     <EventViewRelated event={event?.data} event_id={event?.data?.event_id} />
-            }
+            } */}
         </EventViewStyles>
     )
 }

@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useAuth from '../../hooks/useAuth';
+// import useAuth from '../../hooks/useAuth';
 import { image_link } from '../../helpers/dataCleanUp';
 
-import RemoveEventBusinessButton from '../buttons/removeEventBusinessButton';
+// import RemoveEventBusinessButton from '../buttons/removeEventBusinessButton';
 
 const BusinessLabelStyles = styled.div`
     .businessLabelsContainer {
@@ -55,8 +55,9 @@ const BusinessLabelStyles = styled.div`
 `;
 
 
-const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, business_name }) => {
-    const { isLoggedIn } = useAuth();
+// const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, business_name }) => {
+const BusinessLabel = ({ businessId, business_logo, business_name }) => {
+    // const { isLoggedIn } = useAuth();
     
     let navigate = useNavigate()
 
@@ -69,9 +70,9 @@ const BusinessLabel = ({ businessId, eventCreator, eventId, business_logo, busin
                         <img className='businessLogo' src={image_link(business_logo)} alt={`${business_name} logo`} />
                     </div>
                     <div className='businessName'>{business_name}</div>
-                    {
+                    {/* {
                         isLoggedIn && <RemoveEventBusinessButton eventId={eventId} businessId={businessId} eventCreator={eventCreator} />
-                    }
+                    } */}
                 </div>
             </div>
         </BusinessLabelStyles>
