@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 
 import useNotification from '../../hooks/useNotification';
@@ -7,12 +6,7 @@ import LoadingSpinner from '../loadingSpinner';
 import BusinessSorter from './businessSorter';
 
 import BusinessesViewCard from './businesses.view.card';
-
-const BusinessesViewStyles = styled.div`
-    .businessesViewWrapper {
-        /* background-color: red; */
-    }
-`;
+import EmptyListReturn from '../emptylist.return';
 
 
 const BusinessesView = () => {
@@ -57,21 +51,26 @@ const BusinessesView = () => {
     });
     
     return (
-        <BusinessesViewStyles>
-            <div className='businessesViewWrapper'>
-                <BusinessSorter
-                    sortCriteria={sortCriteria}
-                    onSortChange={setSortCriteria}
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                />
-                {
-                    isPending ? (
-                        <LoadingSpinner />
-                    ) : isError ? (
-                        null
-                    ) : (
-                        <div>
+        <div>
+            {
+                (businesses_list?.data?.length !== 0) &&
+                    <BusinessSorter
+                        sortCriteria={sortCriteria}
+                        onSortChange={setSortCriteria}
+                        searchQuery={searchQuery}
+                        onSearchChange={setSearchQuery}
+                    />
+            }
+            {
+                isPending ? (
+                    <LoadingSpinner />
+                ) : isError ? (
+                    null
+                ) : (
+                    (businesses_list?.data?.length === 0)
+                        ? <EmptyListReturn listtype='business' />
+                        
+                        : <div>
                             {
                                 sortedBusinessList?.map(business => {
                                     return (
@@ -80,10 +79,9 @@ const BusinessesView = () => {
                                 })
                             }
                         </div>
-                    )
-                }
-            </div>
-        </BusinessesViewStyles>
+                )
+            }
+        </div>
     )
 }
 
