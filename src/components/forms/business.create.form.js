@@ -92,7 +92,7 @@ const BusinessCreateForm = () => {
             // missing required business branding logo image
             if (error.message === 'missing_image') {
                 setError('business_avatar', {
-                    message: 'a business logo is required to create a new business'
+                    message: 'business logo is required to create a new business'
                 }, { shouldFocus: true })
             }
             // form data is incorrectly formatted, missing, or invalid 

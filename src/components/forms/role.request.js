@@ -97,7 +97,7 @@ const RoleRequest = ({ user_roles }) => {
                             </form>
                         </div>
                         : <div className='noShowRoleRequest'>
-                            <div>Role request will be shown when businesses are available.</div>
+                            <div>Role request will be shown when more businesses are available.</div>
                             <div onClick={() => navigate('/business/create')}>click here to create a new business</div>
                         </div>
                 }
