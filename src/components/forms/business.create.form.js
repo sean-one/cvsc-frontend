@@ -92,11 +92,11 @@ const BusinessCreateForm = () => {
             // missing required business branding logo image
             if (error.message === 'missing_image') {
                 setError('business_avatar', {
-                    message: 'business logo is required to create a new business'
+                    message: 'business logo is required'
                 }, { shouldFocus: true })
             }
-            // form data is incorrectly formatted, missing, or invalid 
-            else if (error?.response?.status === 400 || error?.response?.status === 409) {
+            // form data is incorrectly formatted, missing, or invalid
+            else if (error?.response?.status === 400) {
                 if (error?.response?.data?.error?.type === 'server') {
                     dispatch({
                         type: "ADD_NOTIFICATION",

@@ -14,9 +14,10 @@ export const useBusinessesQuery = () => useQuery({ queryKey: businessKeys.all, q
 // business.create.form - CREATE BUSINESS
 const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }
 export const useCreateBusinessMutation = () => {
-    const { sendToLogin } = useAuth();
+    const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
+    let navigate = useNavigate();
 
     return useMutation({
         mutationFn: (business) => createBusiness(business),
@@ -41,7 +42,10 @@ export const useCreateBusinessMutation = () => {
         },
         onError: (error) => {
             // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
+            if (error?.response?.status === 401 || error?.response?.data?.error?.type === 'token') {
+                // remove expired or bad token and reset auth
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -50,9 +54,9 @@ export const useCreateBusinessMutation = () => {
                     }
                 })
 
-                sendToLogin()
+                navigate('/login')
             }
-            // 400 - type: *path, 'media_error', 'server' & 409 - type: 'business_name' handled on component
+            // remaining errors handled on component
         },
     })
 }
