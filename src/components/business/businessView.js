@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -131,20 +131,18 @@ const BusinessView = () => {
     let navigate = useNavigate();
     const { data: business, isPending, isError, error: business_error } = useBusinessQuery(business_id)
     
-    useEffect(() => {
-        // 400 - type: 'business_id'
-        if (isError) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: business_error?.response?.data?.error?.message
-                }
-            })
-            
-            navigate('/')
-        }
-    }, [dispatch, navigate, isError, business_error])
+    // 400 - type: 'business_id', 404 - type: 'server'
+    if (isError) {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: business_error?.response?.data?.error?.message
+            }
+        })
+        
+        navigate('/')
+    }
 
     if (isPending) { return <LoadingSpinner /> }
     
