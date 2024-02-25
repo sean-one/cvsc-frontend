@@ -7,7 +7,7 @@ import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 
 
-// event.create.form, event.edit.form, role.request
+// businesses.view, role.request
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
 export const useBusinessesQuery = () => useQuery({ queryKey: businessKeys.all, queryFn: () => getBusinesses() });
 
