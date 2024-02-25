@@ -108,7 +108,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
 
         } catch (error) {
             // incorrectly formated, missing or invalid data
-            if(error?.response?.status === 400 || error?.response?.status === 403 || error?.response?.status === 404) {
+            if(error?.response?.status === 400) {
                 if (error?.response?.data?.error?.type === 'server') {
                     dispatch({
                         type: "ADD_NOTIFICATION",

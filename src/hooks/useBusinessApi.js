@@ -169,7 +169,7 @@ export const useBusinessTransferMutation = () => {
 // business.edit.form - EDIT BUSINESS
 const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/businesses/${business_id}`, business_updates) }
 export const useUpdateBusinessMutation = () => {
-    const { sendToLogin } = useAuth()
+    const { user_reset } = useAuth()
     const { dispatch } = useNotification()
     const queryClient = useQueryClient()
     let navigate = useNavigate();
@@ -195,8 +195,11 @@ export const useUpdateBusinessMutation = () => {
             navigate(`/business/${data?.id}`)
         },
         onError: (error) => {
-            // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
+            // 401, 403 - type: 'token', 403 - type: 'server'
+            if (error?.response?.status === 401 || error?.response?.status === 403) {
+                // removed expired or bad token and reset user
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -205,9 +208,9 @@ export const useUpdateBusinessMutation = () => {
                     }
                 })
     
-                sendToLogin()
+                navigate('/login')
             }
-            // 400 - type: *path, 'media_error', 'server', 403, 404 - type: 'server' handled on component
+            // remaining errors handled on component
         },
     })
 }
