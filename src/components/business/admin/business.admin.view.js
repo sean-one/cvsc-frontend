@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
-import { useBusinessQuery, useBusinessTransferMutation } from '../../../hooks/useBusinessApi';
+import { useBusinessQuery } from '../../../hooks/useBusinessApi';
 import BusinessRoles from './business.roles';
 
 import BusinessToggle from '../buttons/business.toggle';
