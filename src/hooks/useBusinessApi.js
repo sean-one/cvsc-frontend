@@ -73,13 +73,14 @@ export const useBusinessManagement = (user_id) => useQuery({
 const getBusiness = async (business_id) => { return await AxiosInstance.get(`/businesses/${business_id}`) }
 export const useBusinessQuery = (business_id) => useQuery({ queryKey: businessKeys.detail(business_id), queryFn: () => getBusiness(business_id) });
 
-// business.admin.menu - toggle active & toggle request
-// ['business', business_id]
+// business.toggle - toggle active & toggle request
 const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/status/toggle`, toggle_type) }
 export const useBusinessToggle = () => {
-    const { sendToLogin } = useAuth();
+    const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
+    
+    let navigate = useNavigate();
 
     return useMutation({
         mutationFn: (toggleEvent) => toggleBusiness(toggleEvent),
@@ -112,8 +113,11 @@ export const useBusinessToggle = () => {
             }
         },
         onError: (error) => {
-            // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
+            // 401, 403 - type: 'token', 403 - type: 'server', 404 - type: 'server'
+            if (error?.response?.status === 401 || error?.response?.status === 403 || error?.response?.status === 404) {
+                // remove expired or bad token and reset user if they exists
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -122,9 +126,9 @@ export const useBusinessToggle = () => {
                     }
                 })
     
-                sendToLogin()
+                navigate('/login')
             } else {
-                // 400 - type: 'business_id', 'server', 403, 404 - type: 'server'
+                // 400 - type: 'business_id', 'server'
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
