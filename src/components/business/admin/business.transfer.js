@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import useNotification from '../../../hooks/useNotification';
 import { useBusinessTransferMutation } from '../../../hooks/useBusinessApi';
 import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import { ShowIcon, HideIcon } from '../../icons/siteIcons';
@@ -11,7 +12,6 @@ const BusinessTransfer = ({ business_id }) => {
 
     const { data: manager_list, isPending: managerListPening, isError: managerListError } = useBusinessRolesQuery(business_id)
     const { mutate: businessTransfer } = useBusinessTransferMutation()
-
 
     const handleManagerSelectChange = (e) => {
         setTransferManagerSelected(e.target.value)

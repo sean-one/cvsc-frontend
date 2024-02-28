@@ -82,6 +82,7 @@ const ManagementListItem = ({ business }) => {
                             {business.business_request_open ? 'Request Open' : 'Request Closed'}
                         </span>
                     </div>
+                    <div>{business?.role_type}</div>
 
                     <div className='managementListItemAdminButton'>
                         <BusinessButton business_id={business?.id} />

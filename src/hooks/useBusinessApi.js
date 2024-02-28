@@ -159,13 +159,27 @@ export const useBusinessTransferMutation = () => {
             navigate('/profile')
         },
         onError: (error) => {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
-                }
-            })
+            if (error?.response?.status === 401 || error?.response?.status === 403 || error?.response?.status === 404) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
+                navigate('/login')
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
+                navigate('/profile')
+            }
         }
     })
 }
@@ -222,7 +236,7 @@ export const useUpdateBusinessMutation = () => {
 // business.admin.view - REMOVES BUSINESS & INVALIDATES ANY UPCOMING EVENT
 const removeBusiness = async (business_id) => { return await AxiosInstance.delete(`/businesses/${business_id}`) }
 export const useRemoveBusinessMutation = (onDeleteSuccess) => {
-    const { sendToLogin } = useAuth();
+    const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
     let navigate = useNavigate();
@@ -230,12 +244,17 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
     return useMutation({
         mutationFn: (business_id) => removeBusiness(business_id),
         onSuccess: async ({ data }) => {
-            // events table updated
-            await queryClient.invalidateQueries({ queryKey: eventKeys.all })
-            // roles table updated
-            await queryClient.invalidateQueries({ queryKey: roleKeys.all })
-            // business table updated
-            await queryClient.invalidateQueries({ queryKey: businessKeys.all })
+            
+            console.log(data)
+            await Promise.all([
+                // events table updated
+                queryClient.invalidateQueries({ queryKey: eventKeys.all }),
+                // roles table updated
+                queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.business_admin) }),
+                // business table updated
+                queryClient.invalidateQueries({ queryKey: businessKeys.detail(data?.business_id), refetchType: 'none' }),
+
+            ]);
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -248,8 +267,10 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
             navigate('/profile')
         },
         onError: (error) => {
-            // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
+            // 401, 403 - type: 'token', 404 - 'server' business not found, 403 - 'server' invalid business roles
+            if (error?.response?.status === 401 || error?.response?.status === 403 || error?.response?.status === 404) {
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -258,9 +279,10 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
                     }
                 })
 
-                sendToLogin()
+                navigate('/login')
+
             } else {
-                // 403, 404 - type: 'server'
+                // 400 - type: 'server'
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {

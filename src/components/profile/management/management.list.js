@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -11,33 +12,45 @@ import ServerReturnError from '../../serverReturnError';
 const ManagementList = () => {
     const [sortCriteria, setSortCriteria] = useState('business_name'); // default sort criteria
     const [searchQuery, setSearchQuery] = useState('');
-    const { auth, user_logout } = useAuth();
+    const { auth, user_reset } = useAuth();
     const { dispatch } = useNotification();
     
+    let navigate = useNavigate()
+
     const { data: management_list, isPending, isError, error: management_list_error } = useBusinessManagement(auth?.user?.id);
 
     if (isError) {
-        // 400, 404 - type: 'server', 401, 403 - type: 'token'
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: management_list_error?.response?.data?.error?.message
-            }
-        })
-
+        // 401, 403 - type: 'token'
         if (management_list_error?.response?.data?.error?.type === 'token') {
-            user_logout()
+            user_reset()
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: management_list_error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/login')
+
         } else {
-            return <ServerReturnError return_type='business management list'/>
+            // 400 - type 'server'
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: management_list_error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/profile')
         }
     }
     
-    if (isPending) { return <LoadingSpinner /> }
-    
     const filteredBusinesses = management_list?.data.filter(business => 
         business?.business_name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    ) || [];
 
     const sortedBusinessList = [...filteredBusinesses].sort((a, b) => {
         switch (sortCriteria) {
@@ -68,9 +81,19 @@ const ManagementList = () => {
                 onSearchChange={setSearchQuery}
             />
             {
-                sortedBusinessList.map(business => (
-                    <ManagementListItem key={business.id} business={business} />
-                ))
+                isPending ? (
+                    <LoadingSpinner />
+                ) : isError ? (
+                    <ServerReturnError />
+                ) : (
+                    <div>
+                        {
+                            sortedBusinessList.map(business => (
+                                <ManagementListItem key={business.id} business={business} />
+                            ))
+                        }
+                    </div>
+                )
             }
         </div>
     )
