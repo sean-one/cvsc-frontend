@@ -26,8 +26,9 @@ const EventCreateForm = () => {
     const { dispatch } = useNotification();
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
+    let business_list = []
     
-    const { data: user_roles } = useUserRolesQuery(auth?.user?.id)
+    const { data: user_roles, isSuccess } = useUserRolesQuery(auth?.user?.id)
     
     let navigate = useNavigate();
     
@@ -95,7 +96,7 @@ const EventCreateForm = () => {
                 reset()
 
                 // navigate to the newly created event page
-                navigate(`/events/${new_event?.data?.event_id}`)
+                navigate(`/event/${new_event?.data?.event_id}`)
             }
 
 
@@ -108,7 +109,7 @@ const EventCreateForm = () => {
             }
 
             // handles events from event.response
-            else if (error?.response?.status === 400 || error?.response?.status === 404) {
+            else if (error?.response?.status === 400) {
                 if (error?.response?.data?.error?.type === 'server') {
                     dispatch({
                         type: "ADD_NOTIFICATION",
@@ -138,6 +139,10 @@ const EventCreateForm = () => {
         reset()
         
         navigate('/profile')
+    }
+
+    if(isSuccess) {
+        business_list = user_roles?.data.filter(role => role.active_role)
     }
 
 
@@ -231,8 +236,8 @@ const EventCreateForm = () => {
                                 <select {...field} onClick={() => clearErrors(['host_business'])}>
                                     <option value="" disabled>Select a business...</option>
                                     {
-                                        user_roles?.data.map(role => (
-                                            <option key={role.business_id} value={role.business_id}>{role.business_name}</option>
+                                        business_list.map(role => (
+                                            <option key={role.business_id} value={role.business_id} disabled={!role.active_role}>{role.business_name}</option>
                                         ))
                                     }
                                 </select>

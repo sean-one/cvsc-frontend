@@ -154,7 +154,7 @@ export const useEventsQuery = () => useQuery({ queryKey: eventKeys.all, queryFn:
 // event.create.form - CREATE A NEW EVENT
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
-    const { sendToLogin } = useAuth();
+    const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
     const { setEditImage } = useEventImagePreview()
@@ -182,6 +182,9 @@ export const useCreateEventMutation = () => {
         onError: (error) => {
             // 401, 403 - type: 'token'
             if (error?.response?.data?.error?.type === 'token') {
+                // remove expired or bad token and reset user
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -190,7 +193,7 @@ export const useCreateEventMutation = () => {
                     }
                 })
 
-                sendToLogin()
+                navigate('/login')
             }
             // 400 - type: *path, 'role_rights', 'media_error' handled on component
         },
