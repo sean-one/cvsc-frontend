@@ -8,10 +8,12 @@ import useNotification from "./useNotification";
 
 
 // businesses.view, role.request
+// [businessKeys.list('all_businesses')]
 const getBusinesses = async () => { return await AxiosInstance.get('/businesses') }
-export const useBusinessesQuery = () => useQuery({ queryKey: businessKeys.all, queryFn: () => getBusinesses() });
+export const useBusinessesQuery = () => useQuery({ queryKey: businessKeys.list('all_businesses'), queryFn: () => getBusinesses() });
 
 // business.create.form - CREATE BUSINESS
+// invalidateQueries - [ businessKeys.list('all_businesses'), roleKeys.relatedToUser(user_id) ]
 const createBusiness = async (business) => { return await AxiosInstance.post('/businesses', business) }
 export const useCreateBusinessMutation = () => {
     const { user_reset } = useAuth();
@@ -26,7 +28,7 @@ export const useCreateBusinessMutation = () => {
             localStorage.removeItem('createBusinessForm');
             
             // update business list to include newly created business
-            queryClient.invalidateQueries({ queryKey: businessKeys.all })
+            queryClient.invalidateQueries({ queryKey: businessKeys.list('all_businesses') })
             // update roles for the user
             queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.business_admin) })
 
@@ -62,6 +64,7 @@ export const useCreateBusinessMutation = () => {
 }
 
 // management.list
+// [businessKeys.userManagedBusinesses(user_id)]
 const getManagersBusinesses = async () => { return await AxiosInstance.get('/businesses/managed') }
 export const useBusinessManagement = (user_id) => useQuery({
     queryKey: businessKeys.userManagedBusinesses(user_id),
@@ -69,11 +72,13 @@ export const useBusinessManagement = (user_id) => useQuery({
     enabled: !!user_id,
 });
 
-// businessView & business.admin.view 
+// businessView & business.admin.view
+// [businessKeys.detail(business_id)]
 const getBusiness = async (business_id) => { return await AxiosInstance.get(`/businesses/${business_id}`) }
 export const useBusinessQuery = (business_id) => useQuery({ queryKey: businessKeys.detail(business_id), queryFn: () => getBusiness(business_id) });
 
 // business.toggle - toggle active & toggle request
+// invalidateQueries - [businessKeys.all] && if 'active' toggle [roleKeys.relatedToBusiness(business_id)]
 const toggleBusiness = async ({ business_id, toggle_type }) => { return await AxiosInstance.put(`/businesses/${business_id}/status/toggle`, toggle_type) }
 export const useBusinessToggle = () => {
     const { user_reset } = useAuth();
@@ -100,7 +105,7 @@ export const useBusinessToggle = () => {
             
             if (data.toggleType === 'active') {
                 // invalidate roles incase role table was touched ('active' toggle)
-                await queryClient.invalidateQueries({ queryKey: roleKeys.all })
+                await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToBusiness(data?.id) })
 
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -142,6 +147,7 @@ export const useBusinessToggle = () => {
 }
 
 // business transfer
+// invalidateQueries - [ businessKeys.all, roleKeys.relatedToUser(user_id), roleKeys.relatedToBusiness(business_id) ]
 const tranferBusiness = async ({ business_id, manager_id }) => { return await AxiosInstance.put(`/businesses/${business_id}/transfer/${manager_id}`) }
 export const useBusinessTransferMutation = () => {
     const { dispatch } = useNotification();
@@ -151,10 +157,14 @@ export const useBusinessTransferMutation = () => {
     return useMutation({
         mutationFn: (transfer_details) => tranferBusiness(transfer_details),
         onSuccess: async ({data}) => {
-            await queryClient.invalidateQueries({ queryKey: businessKeys.detail(data?.business_id) })
-
-            await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.admin_id) })
-            await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToBusiness(data?.business_id) })
+            await Promise.all([
+                // update all business keys so that 'business_admin' field is correct
+                queryClient.invalidateQueries({ queryKey: businessKeys.all }),
+    
+                // update all the user role keys since role was adjusted, also roles related to business
+                queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.admin_id) }),
+                queryClient.invalidateQueries({ queryKey: roleKeys.relatedToBusiness(data?.business_id) }),
+            ]);
             
             navigate('/profile')
         },
@@ -185,6 +195,7 @@ export const useBusinessTransferMutation = () => {
 }
 
 // business.edit.form - EDIT BUSINESS
+// invalidateQueries - [businessKeys.all]
 const updateBusiness = async ({ business_id, business_updates }) => { return await AxiosInstance.put(`/businesses/${business_id}`, business_updates) }
 export const useUpdateBusinessMutation = () => {
     const { user_reset } = useAuth()
@@ -197,10 +208,8 @@ export const useUpdateBusinessMutation = () => {
         onSuccess: async ({data}) => {
             // remove saved from local storage
             localStorage.removeItem('editBusinessForm')
-
+            // update so that all business list have updated business information
             await queryClient.invalidateQueries({ queryKey: businessKeys.all })
-            await queryClient.invalidateQueries({ queryKey: eventKeys.all })
-            await queryClient.invalidateQueries({ queryKey: roleKeys.all })
 
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -234,6 +243,7 @@ export const useUpdateBusinessMutation = () => {
 }
 
 // business.admin.view - REMOVES BUSINESS & INVALIDATES ANY UPCOMING EVENT
+// invalidateQueries - [eventKeys.all, roleKeys.relatedToUser(user_id), businessKeys.list('all_businesses'), businessKeys.userManagedBusiness(user_id), businessKeys.detail(business_id)]
 const removeBusiness = async (business_id) => { return await AxiosInstance.delete(`/businesses/${business_id}`) }
 export const useRemoveBusinessMutation = (onDeleteSuccess) => {
     const { user_reset } = useAuth();
@@ -245,13 +255,14 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
         mutationFn: (business_id) => removeBusiness(business_id),
         onSuccess: async ({ data }) => {
             
-            console.log(data)
             await Promise.all([
                 // events table updated
                 queryClient.invalidateQueries({ queryKey: eventKeys.all }),
                 // roles table updated
                 queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.business_admin) }),
                 // business table updated
+                queryClient.invalidateQueries({ queryKey: businessKeys.list('all_businesses'), exact: true }),
+                queryClient.invalidateQueries({ queryKey: businessKeys.userManagedBusinesses(data?.business_admin), exact: true }),
                 queryClient.invalidateQueries({ queryKey: businessKeys.detail(data?.business_id), refetchType: 'none' }),
 
             ]);
