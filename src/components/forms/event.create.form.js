@@ -1,33 +1,48 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
 
+import useAuth from '../../hooks/useAuth';
+import useNotification from '../../hooks/useNotification';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
-import useNotification from '../../hooks/useNotification';
+import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import { validateEventDate, validateEventTime } from './utils/form.validations';
 
-const CreateEventFormStyles = styled.div``;
+import AddressForm from './address.form';
+
+const CreateEventFormStyles = styled.div`
+    .business_name_field {
+        margin-top: 1rem;
+    }
+`;
 
 const EventCreateForm = () => {
-    const { editImage, imagePreview, canvas } = useEventImagePreview()
-    const { mutate: createEvent } = useCreateEventMutation()
+    const { auth } = useAuth();
     const { dispatch } = useNotification();
+    const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
+    const { mutateAsync: createEvent } = useCreateEventMutation()
+    
+    const { data: user_roles } = useUserRolesQuery(auth?.user?.id)
+    
     let navigate = useNavigate();
     
-    const { register, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             eventname: '',
+            place_id: null,
+            formatted_address: '',
             eventdate: '',
             eventstart: '',
             eventend: '',
             eventmedia: '',
             details: '',
+            host_business: ''
         }
     });
     
@@ -48,10 +63,12 @@ const EventCreateForm = () => {
     const createNewEvent = async (event_data) => {
         localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
+            // field is not needed, image comes from canvas
             delete event_data['eventmedia']
 
             const formData = new FormData()
 
+            // check for current canvas and set it to formData
             if(canvas.current === null) {
                 throw new Error('missing_image')
             } else {
@@ -70,18 +87,24 @@ const EventCreateForm = () => {
                 }
             })
 
-            await createEvent(formData)
+            const new_event = await createEvent(formData)
 
-            reset()
+            if (new_event.status === 201) {
+                // clear the setEditImage & reset the create event form
+                setEditImage(false)
+                reset()
+
+                // navigate to the newly created event page
+                navigate(`/events/${new_event?.data?.event_id}`)
+            }
+
 
         } catch (error) {
-            console.log('INSIADE THE CREATE FORM')
-            console.log(error)
             // handles error for no canvas object for image upload
             if (error?.message === 'missing_image' || (error?.response?.data?.error?.type === 'media_error')) {
                 setError('eventmedia', {
                     message: 'an event image is required'
-                })
+                }, { shouldFocus: true })
             }
 
             // handles events from event.response
@@ -151,6 +174,13 @@ const EventCreateForm = () => {
                     {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
                     {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div> : null}
 
+                    <AddressForm
+                        register={register}
+                        setValue={setValue}
+                        errors={errors}
+                        clearErrors={clearErrors}
+                    />
+
                     {/* EVENT IMAGE PREVIEW RENDER */}
                     {
                         editImage &&
@@ -188,6 +218,28 @@ const EventCreateForm = () => {
                         })} type='time' onClick={() => clearErrors('eventend')} />
                     </div>
                     {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
+
+                    {/* BUSINESS NAME */}
+                    <div className='inputWrapper business_name_field'>
+                        <label htmlFor='host_business' className='visuallyHidden'>Business Name:</label>
+                        <Controller
+                            name='host_business'
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: 'a business name is required' }}
+                            render={({ field }) => (
+                                <select {...field} onClick={() => clearErrors(['host_business'])}>
+                                    <option value="" disabled>Select a business...</option>
+                                    {
+                                        user_roles?.data.map(role => (
+                                            <option key={role.business_id} value={role.business_id}>{role.business_name}</option>
+                                        ))
+                                    }
+                                </select>
+                            )}
+                        />
+                        {errors.host_business && <div className='errormessage'>{errors.host_business.message}</div>}
+                    </div>
 
                     {/* EVENT DETAILS */}
                     <div className='inputWrapper'>
