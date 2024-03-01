@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -39,16 +39,30 @@ const sortEventsRelated = (array) => {
 };
 
 const UserEventsRelated = () => {
-    const { auth } = useAuth()
+    const { auth, user_reset } = useAuth()
     const { dispatch } = useNotification();
-    const { data: user_events, status: user_events_status, error: user_events_error } = useUserEventsQuery(auth?.user?.id)
+    const { data: user_events, isPending, isError, error: user_events_error } = useUserEventsQuery(auth?.user?.id)
     let user_events_list = []
     
     let navigate = useNavigate()
 
-    useEffect(() => {
-        if (user_events_status === 'error') {
-            // 401, 403 - type 'token', 400 - type: 'user_id'
+    if (isError) {
+        // 401, 403 - type 'token', 400 - type: 'user_id'
+        if (user_events_error?.resposne?.status === 401 || user_events_error?.response?.status === 403) {
+            // remove expired or bad token and reset user
+            user_reset()
+            
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: user_events_error?.response?.data?.error?.message
+                }
+            })
+
+            navigate('/login')
+
+        } else {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -57,9 +71,9 @@ const UserEventsRelated = () => {
                 }
             })
         }
-    }, [user_events_status, user_events_error, dispatch])
+    }
 
-    if (user_events_status === 'pending') {
+    if (isPending) {
         return <LoadingSpinner />
     }
 

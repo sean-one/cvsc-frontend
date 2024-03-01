@@ -43,6 +43,7 @@ import useEventImagePreview from "./useEventImagePreview";
 // export const useEventRelatedEventsQuery = (event_id) => useQuery({ queryKey: eventKeys.relatedToEvent(event_id), queryFn: () => getEventRelatedEvents(event_id) })
 
 // return an array of all events related to user id
+// [ eventKeys.relatedToUser(user_id) ]
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => useQuery({ queryKey: eventKeys.relatedToUser(user_id), queryFn: () => getAllUserEvents(user_id) });
 
