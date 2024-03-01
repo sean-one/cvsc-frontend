@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import styled from 'styled-components';
 
 import LoadingSpinner from '../../loadingSpinner';
-// import EventViewRelated from '../event.view.related';
+import EventViewRelated from '../event.view.related';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -153,10 +153,10 @@ const EventView = () => {
                     </div>
                 </div>
             </div>
-            {/* {
+            {
                 (event?.data?.active_event) &&
                     <EventViewRelated event={event?.data} event_id={event?.data?.event_id} />
-            } */}
+            }
         </EventViewStyles>
     )
 }

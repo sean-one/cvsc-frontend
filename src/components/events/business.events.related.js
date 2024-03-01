@@ -34,7 +34,6 @@ const BusinessEventsRelated = ({ business_id }) => {
                 message: events_list_error?.response?.data?.error?.message
             }
         })
-
     }
 
     business_events_list = events_list?.data || []

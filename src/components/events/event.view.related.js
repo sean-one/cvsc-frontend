@@ -23,8 +23,10 @@ const EventViewRelatedStyles = styled.div`
 const EventViewRelated = ({ event_id }) => {
     const { dispatch } = useNotification();
     const { data: event_related_events, isPending, isFetching, isError, error: event_related_events_error } = useEventRelatedEventsQuery(event_id)
+    let events_list = []
 
     if (isError) {
+        // 400 - type: 'event_id', 'server'
         dispatch({
             type: "ADD_NOTIFICATION",
             payload: {
@@ -34,6 +36,7 @@ const EventViewRelated = ({ event_id }) => {
         })
     }
 
+    events_list = event_related_events?.data || []
 
     return (
         <EventViewRelatedStyles>
@@ -44,11 +47,11 @@ const EventViewRelated = ({ event_id }) => {
                     ) : isError ? (
                         null
                     ) : 
-                        (!isFetching && event_related_events?.data?.length > 0)
+                        (!isFetching && events_list.length > 0)
                         ? <div className='eventViewRelatedWrapper'>
                             <div className='subheaderText eventViewRelatedHeader'>Upcoming Related Events</div>
                             {
-                                event_related_events?.data.map(event => {
+                                events_list.map(event => {
                                     return (
                                         <EventSmallPreview key={event.event_id} event={event} />
                                     )

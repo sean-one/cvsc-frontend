@@ -9,20 +9,22 @@ import useEventImagePreview from "./useEventImagePreview";
 
 
 // return an array of all events related to business id
+// [ eventKeys.relatedToBusiness(business_id) ]
 const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
 export const useBusinessEventsQuery = (business_id) => useQuery({ queryKey: eventKeys.relatedToBusiness(business_id), queryFn: () => getBusinessEvents(business_id) })
 
 // return an array of all events related to event id (all events including venue business or brand business)
-// const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.get(`/events/event-related/${event_id}`) }
-// export const useEventRelatedEventsQuery = (event_id) => useQuery({ queryKey: eventKeys.relatedToEvent(event_id), queryFn: () => getEventRelatedEvents(event_id) })
+// [ eventKeys.relatedToEvent(event_id) ]
+const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.get(`/events/event-related/${event_id}`) }
+export const useEventRelatedEventsQuery = (event_id) => useQuery({ queryKey: eventKeys.relatedToEvent(event_id), queryFn: () => getEventRelatedEvents(event_id) })
 
 // return an array of all events related to user id
 // [ eventKeys.relatedToUser(user_id) ]
 const getAllUserEvents = async (user_id) => { return await AxiosInstance.get(`/events/user/${user_id}`) }
 export const useUserEventsQuery = (user_id) => useQuery({ queryKey: eventKeys.relatedToUser(user_id), queryFn: () => getAllUserEvents(user_id) });
 
-// event.view - return a single event by event id
-// event.edit.view - uses endpoint directly without query
+// event.view.jsx & (event.edit.view.js directly) - return a single event by event id
+// [ eventKeys.detail(event_id) ]
 const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/${event_id}`) }
 export const useEventQuery = (event_id) => useQuery({ queryKey: eventKeys.detail(event_id), queryFn: () => getEvent(event_id) });
 
