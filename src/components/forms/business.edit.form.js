@@ -240,7 +240,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                                 setValue={setValue}
                                 clearErrors={clearErrors}
                                 errors={errors}
-                                businessValue={businessData?.formatted_address}
+                                currentValue={businessData?.formatted_address}
                             />
                     }
                     

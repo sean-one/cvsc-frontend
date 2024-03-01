@@ -12,10 +12,10 @@ const AddressFormStyles = styled.div`
     }
 `
 
-const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=''}) => {
-    const [inputValue, setInputValue] = useState(businessValue);
-    // const [isEditing, setIsEditing] = useState(!!businessValue);
-    const [isEditing, setIsEditing] = useState(businessValue === '');
+const AddressForm = ({ register, setValue, errors, clearErrors, currentValue=''}) => {
+    const [inputValue, setInputValue] = useState(currentValue);
+    // const [isEditing, setIsEditing] = useState(!!currentValue);
+    const [isEditing, setIsEditing] = useState(currentValue === '');
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -33,11 +33,11 @@ const AddressForm = ({ register, setValue, errors, clearErrors, businessValue=''
     }
 
     useEffect(() => {
-        if (businessValue) {
-            setInputValue(businessValue)
+        if (currentValue) {
+            setInputValue(currentValue)
             setIsEditing(false)
         }
-    }, [businessValue])
+    }, [currentValue])
 
     return (
         <AddressFormStyles>

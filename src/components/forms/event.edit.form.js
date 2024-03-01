@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
 import styled from 'styled-components';
 
+import useAuth from '../../hooks/useAuth';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { reformatTime } from '../../helpers/formatTime';
 import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
+import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import useNotification from '../../hooks/useNotification';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import AxiosInstance from '../../helpers/axios';
 import { validateEventDate, validateEventTime, validateNONEmptyString } from './utils/form.validations';
+import AddressForm from './address.form';
 
 
 const EditEventFormStyles = styled.div`
@@ -34,10 +37,14 @@ const EditEventFormStyles = styled.div`
 `;
 
 const EventEditForm = () => {
+    const { auth } = useAuth();
     const [ eventData, setEventData ] = useState(null) 
     let { event_id } = useParams()
+    let business_list = []
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()
+
+    const { data: user_roles, isSuccess } = useUserRolesQuery(auth?.user?.id);
 
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
     const { mutate: removeEventMutation } = useRemoveEventMutation()
@@ -45,7 +52,7 @@ const EventEditForm = () => {
     let navigate = useNavigate()
 
 
-    const { register, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
+    const { register, control, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
     })
 
@@ -132,10 +139,13 @@ const EventEditForm = () => {
         // function to format the event data
         const formatEventData = (data) => ({
             eventname: data.eventname,
+            place_id: data.place_id,
+            formatted_address: data.formatted_address,
             eventdate: format(new Date(data.eventdate), "yyyy-MM-dd"),
             eventstart: reformatTime(data.eventstart),
             eventend: reformatTime(data.eventend),
             eventmedia: null,
+            host_business: data.host_business,
             details: data.details,
         })
 
@@ -163,22 +173,24 @@ const EventEditForm = () => {
 
                 // set default values to either api call or local storage if available
             } catch (error) {
-                if (error?.response) {
-                    dispatch({
-                        type: "ADD_NOTIFICATION",
-                        payload: {
-                            notification_type: 'ERROR',
-                            message: error?.response?.data?.error?.message
-                        }
-                    })
-        
-                    navigate(-1)
-                }
-                console.log(error)
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: error?.response?.data?.error?.message
+                    }
+                })
+
+                navigate('/profile')
             }
         }
         getEventDetails()
     }, [event_id, reset, dispatch, navigate, setValue])
+
+    if(isSuccess) {
+        business_list = user_roles?.data.filter(role => role.active_role)
+    }
+
 
 
     return (
@@ -229,6 +241,14 @@ const EventEditForm = () => {
                             </div>
                     }
 
+                    <AddressForm
+                        register={register}
+                        setValue={setValue}
+                        errors={errors}
+                        clearErrors={clearErrors}
+                        currentValue={eventData?.formatted_address}
+                    />
+
                     {/* EVENT DATE */}
                     <div className='dateTimeInputWrapper'>
                         <label htmlFor='eventdate'><DateIcon /></label>
@@ -264,6 +284,28 @@ const EventEditForm = () => {
                         })} type='time' onClick={() => clearErrors('eventend')} />
                     </div>
                     {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
+
+                    {/* BUSINESS NAME */}
+                    <div className='inputWrapper'>
+                        <label htmlFor='host_business' className='visuallyHidden'>Business Name:</label>
+                        <Controller
+                            name='host_business'
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: 'a business name is required' }}
+                            render={({ field }) => (
+                                <select {...field} onClick={() => clearErrors(['host_business'])}>
+                                    <option value="" disabled>Select a business...</option>
+                                    {
+                                        business_list.map(role => (
+                                            <option key={role.business_id} value={role.business_id} disabled={!role.active_role}>{role.business_name}</option>
+                                        ))
+                                    }
+                                </select>
+                            )}
+                        />
+                        {errors.host_business && <div className='errormessage'>{errors.host_business.message}</div>}
+                    </div>
 
                     {/* EVENT DETAILS */}
                     <div className='inputWrapper'>

@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import useImagePreview from '../../hooks/useImagePreview';
 import useNotification from '../../hooks/useNotification';
-import { useEventsQuery } from '../../hooks/useEventsApi';
 import { AddImageIcon } from '../icons/siteIcons';
 import { validatePassword, emailformat, validateUsername } from './utils/form.validations';
 import { setImageForForm } from '../../helpers/setImageForForm';
@@ -13,7 +12,6 @@ import AxiosInstance from '../../helpers/axios';
 const UserEditForm =({ setEditView }) => {
     const { auth, setAuth } = useAuth()
     const { dispatch } = useNotification()
-    const { refetch } = useEventsQuery()
     const { editImage, canvas, imagePreview, setEditImage } = useImagePreview()
     const { register, handleSubmit, clearErrors, setError, reset, formState: { dirtyFields, errors } } = useForm({
         mode: 'onBlur',
@@ -174,11 +172,11 @@ const UserEditForm =({ setEditView }) => {
                 })
             }
 
-            // logout_user()
-            refetch()
-
+            //! logout_user() - useing refetch from useEventsQuery need to look at something different or uncomment
+            // refetch()
+            
             navigate('/')
-
+            
         } catch (error) {
             
             if(error?.response?.status === 401) {
@@ -189,10 +187,9 @@ const UserEditForm =({ setEditView }) => {
                         message: 'credentials not found - please login'
                     }
                 })
-
-                // logout_user()
                 
-                refetch()
+                //! logout_user() - useing refetch from useEventsQuery need to look at something different or uncomment
+                // refetch()
 
                 navigate('/login')
             } else {

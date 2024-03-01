@@ -134,7 +134,7 @@ const EventView = () => {
                     </div>
                     {
                         (event?.data?.active_event) &&
-                            <div className='eventViewAddress'>1234 lovely event address will go here</div>
+                            <div className='eventViewAddress'>{event?.data?.formatted_address}</div>
                     }
                     {
                         (event?.data?.active_event) &&

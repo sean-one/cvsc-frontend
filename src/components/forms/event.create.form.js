@@ -179,13 +179,6 @@ const EventCreateForm = () => {
                     {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
                     {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div> : null}
 
-                    <AddressForm
-                        register={register}
-                        setValue={setValue}
-                        errors={errors}
-                        clearErrors={clearErrors}
-                    />
-
                     {/* EVENT IMAGE PREVIEW RENDER */}
                     {
                         editImage &&
@@ -193,6 +186,13 @@ const EventCreateForm = () => {
                                     <canvas id={'eventImagePreview'} ref={canvas} />
                                 </div>
                     }
+
+                    <AddressForm
+                        register={register}
+                        setValue={setValue}
+                        errors={errors}
+                        clearErrors={clearErrors}
+                    />
 
                     {/* EVENT DATE */}
                     <div className='dateTimeInputWrapper'>

@@ -148,10 +148,12 @@ export const useRemoveEventMutation = () => {
 }
 
 // get an array of all upcoming events
+// [ eventKeys.all ]
 const getAllEvents = async () => { return await AxiosInstance.get('/events') }
 export const useEventsQuery = () => useQuery({ queryKey: eventKeys.all, queryFn: () => getAllEvents() })
 
 // event.create.form - CREATE A NEW EVENT
+// invalidateQueries - [ eventKeys.all ]
 const createEvent = async (event) => { return await AxiosInstance.post('/events', event) }
 export const useCreateEventMutation = () => {
     const { user_reset } = useAuth();

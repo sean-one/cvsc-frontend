@@ -96,6 +96,11 @@ const EventCardStyles = styled.div`
         text-align: justify;
     }
 
+    .subHeaderRow {
+        display: flex;
+        justify-content: space-between;
+    }
+
 `;
 
 const EventCard = ({ event }) => {
@@ -118,8 +123,14 @@ const EventCard = ({ event }) => {
                         </div>
                     </div>
                     <div className='eventCardRow eventCardBottomRow'>
-                        <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                         <div className='smallHeaderText'>{event?.eventname}</div>
+                        <div className='subHeaderRow'>
+                            <div onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/business/${event?.host_business}`);
+                            }}>{event?.business_name}</div>
+                            <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
+                        </div>
                         <div className='eventCardDetails'>{event?.details}</div>
                     </div>
                 </div>
