@@ -84,7 +84,7 @@ const UserEditForm =({ setEditView }) => {
             const userUpdateResponse = await AxiosInstance.post('/users/update', formData)
     
             if(userUpdateResponse.status === 201) {
-                setAuth({ user: userUpdateResponse.data.user })
+                setAuth({ user: userUpdateResponse?.data })
     
                 setEditView(false)
     
