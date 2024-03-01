@@ -52,11 +52,12 @@ const getEvent = async (event_id) => { return await AxiosInstance.get(`/events/$
 export const useEventQuery = (event_id) => useQuery({ queryKey: eventKeys.detail(event_id), queryFn: () => getEvent(event_id) });
 
 // event.edit.form - update_event - UPDATE EVENT
+// invalidateQueries - [ eventKeys.all ]
 const updateEvent = async ({ event_updates, event_id }) => { return await AxiosInstance.put(`/events/${event_id}`, event_updates) }
 export const useUpdateEventMutation = () => {
     const queryClient = useQueryClient();
     const { dispatch } = useNotification();
-    const { sendToLogin } = useAuth();
+    const { user_reset } = useAuth();
     let navigate = useNavigate();
 
     return useMutation({
@@ -78,7 +79,10 @@ export const useUpdateEventMutation = () => {
         },
         onError: (error) => {
             // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
+            if (error?.response?.status === 401 || error?.response?.status === 403) {
+                // remove expired or bad token and reset user
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -87,17 +91,19 @@ export const useUpdateEventMutation = () => {
                     }
                 })
 
-                sendToLogin()
+                navigate('/login')
             }
+            // 400 - type: 'server' & fieldnames
         },
     })
 }
 
 // event.edit.form - remove_event
+// invalidateQueries - [ eventKeys.all ]
 const removeEvent = async (event_id) => { return await AxiosInstance.delete(`/events/${event_id}`) }
 export const useRemoveEventMutation = () => {
     const queryClient = useQueryClient();
-    const { sendToLogin } = useAuth();
+    const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     let navigate = useNavigate();
 
@@ -120,7 +126,10 @@ export const useRemoveEventMutation = () => {
         },
         onError: (error) => {
             // 401, 403 - type: 'token'
-            if (error?.response?.data?.error?.type === 'token') {
+            if (error?.response?.status === 401 || error?.response?.status === 403) {
+                // remove expired or bad token and reset user
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -129,10 +138,11 @@ export const useRemoveEventMutation = () => {
                     }
                 })  
                 
-                sendToLogin()
+                navigate('/login')
             }
-            // 400 - type: 'event_id', 'server', 404 - type: 'server'
+            // 400, 404 - type: 'event_id', 'server'
             else {
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {

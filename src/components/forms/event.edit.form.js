@@ -90,7 +90,8 @@ const EventEditForm = () => {
             await updateEventMutation({ event_id: event_id, event_updates: formData })
 
         } catch (error) {
-            if (error?.response?.status === 400 || error?.response?.status === 404) {
+            if (error?.response?.status === 400) {
+
                 if (error?.response?.data?.error?.type === 'media_error') {
                     setError('eventmedia', { message: error?.response?.data?.error?.message })
                 }
@@ -103,6 +104,7 @@ const EventEditForm = () => {
                             message: error?.response?.data?.error?.message
                         }
                     })
+
                 } else {
                     setError(error?.response?.data?.error?.type, {
                         message: error?.response?.data?.error?.message
@@ -117,13 +119,7 @@ const EventEditForm = () => {
     }
 
     const sendEventDelete = async () => {
-        try {
-            removeEventMutation(event_id)
-            
-        } catch (error) {
-            console.log('error in the event edit form')
-            console.log(error)
-        }
+        removeEventMutation(event_id)
     }
 
     const handleClose = () => {
