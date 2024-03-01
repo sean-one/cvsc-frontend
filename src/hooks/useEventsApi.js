@@ -8,35 +8,9 @@ import useNotification from "./useNotification";
 import useEventImagePreview from "./useEventImagePreview";
 
 
-// business.label - remove_event_business
-// const removeBusiness = ({ event_id, business_id }) => { return AxiosInstance.put(`/events/${event_id}/remove/${business_id}`)}
-// export const useRemoveEventBusinessMutation = () => {
-//     const queryClient = useQueryClient();
-//     const { dispatch } = useNotification();
-//     let navigate = useNavigate();
-
-//     return useMutation({
-//         mutationFn: ({ event_id, business_id }) => removeBusiness({ event_id, business_id }),
-//         onSuccess: async ({ data }) => {
-            
-//             await queryClient.invalidateQueries({ queryKey: eventKeys.all })
-
-//             dispatch({
-//                 type: "ADD_NOTIFICATION",
-//                 payload: {
-//                     notification_type: 'SUCCESS',
-//                     message: 'business successfully removed from event'
-//                 }
-//             })
-
-//             navigate(`/business/${data?.business_id}`)
-//         }
-//     })
-// }
-
 // return an array of all events related to business id
-// const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
-// export const useBusinessEventsQuery = (business_id) => useQuery({ queryKey: eventKeys.relatedToBusiness(business_id), queryFn: () => getBusinessEvents(business_id) })
+const getBusinessEvents = async (business_id) => { return await AxiosInstance.get(`/events/business/${business_id}`) }
+export const useBusinessEventsQuery = (business_id) => useQuery({ queryKey: eventKeys.relatedToBusiness(business_id), queryFn: () => getBusinessEvents(business_id) })
 
 // return an array of all events related to event id (all events including venue business or brand business)
 // const getEventRelatedEvents = async (event_id) => { return await AxiosInstance.get(`/events/event-related/${event_id}`) }

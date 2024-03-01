@@ -8,7 +8,7 @@ import { useBusinessQuery } from '../../hooks/useBusinessApi';
 import { image_link } from '../../helpers/dataCleanUp';
 
 import LoadingSpinner from '../loadingSpinner';
-// import BusinessEventsRelated from '../events/business.events.related';
+import BusinessEventsRelated from '../events/business.events.related';
 import BusinessAdminControls from './admin/business.admin.controls';
 
 import {
@@ -196,7 +196,7 @@ const BusinessView = () => {
                     </div>
                 </div>
             </div>
-            {/* <BusinessEventsRelated business_id={business_id} /> */}
+            <BusinessEventsRelated business_id={business_id} />
         </BusinessViewStyles>
     )
 }

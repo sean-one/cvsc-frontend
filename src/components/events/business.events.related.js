@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -21,23 +21,23 @@ const BusinessEventsRelatedStyles = styled.div`
 
 const BusinessEventsRelated = ({ business_id }) => {
     const { dispatch } = useNotification();
-    const { data: business_events_list, isPending, isError, error: business_events_list_error } = useBusinessEventsQuery(business_id);
-    let location = useLocation()
+    const { data: events_list, isPending, isError, error: events_list_error } = useBusinessEventsQuery(business_id);
+    let location = useLocation();
+    let business_events_list = []
 
-    useEffect(() => {
-    
-        if (isError) {
-            // 400 - type 'business_id'
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: business_events_list_error?.response?.data?.error?.message
-                }
-            })
-        }
-    }, [isError, business_events_list_error, dispatch])
+    if (isError) {
+        // 400 - type 'business_id', 'server'
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: events_list_error?.response?.data?.error?.message
+            }
+        })
 
+    }
+
+    business_events_list = events_list?.data || []
 
     return (
         <BusinessEventsRelatedStyles>
@@ -48,11 +48,11 @@ const BusinessEventsRelated = ({ business_id }) => {
                     ) : isError ? (
                         null
                     ) :
-                        (business_events_list?.data.length > 0)
+                        (business_events_list.length > 0)
                             ? <div>
                                 <div className='businessEventsRelatedHeader subheaderText'>Upcoming Events</div>
                                 {
-                                    business_events_list?.data.map(event => {
+                                    business_events_list.map(event => {
                                         if (location.pathname.includes('admin')) {
                                             return (
                                                 <EventSmallPreview key={event.event_id} event={event} />
