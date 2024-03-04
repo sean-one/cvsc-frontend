@@ -14,7 +14,7 @@ import BusinessTransfer from './business.transfer';
 
 
 import CreateEventButton from '../../events/create.event.button';
-// import BusinessEventsRelated from '../../events/business.events.related';
+import BusinessEventsRelated from '../../events/business.events.related';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminDetailSection {
@@ -153,7 +153,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         </div>
                 }
                 <BusinessRoles />
-                {/* <BusinessEventsRelated business_id={business_id} /> */}
+                <BusinessEventsRelated business_id={business_id} />
             </div>
         </BusinessAdminViewStyles>
     )

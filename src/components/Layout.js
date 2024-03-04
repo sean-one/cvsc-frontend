@@ -310,6 +310,11 @@ const Styles = styled.div`
         display: none;
     }
 
+    .removeInputLabelPadding {
+        padding-top: 0;
+        padding: 0;
+    }
+
     .errormessage {
         width: 100%;
         font-size: 1.2rem;

@@ -4,6 +4,7 @@ import AxiosInstance from "../helpers/axios";
 import { eventKeys, roleKeys } from "../helpers/queryKeyFactories";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
+import { useNavigate } from "react-router-dom";
 
 
 // business.roles - returns all roles for selected business
@@ -24,13 +25,15 @@ export const useUserAccountRole = (user_id) => useQuery({ queryKey: roleKeys.use
 // role.request - creates a new role request
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/businesses/${business_id}/role-requests`) }
 export const useCreateRoleMutation = () => {
-    const { sendToLogin } = useAuth();
+    const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
+    let navigate = useNavigate()
 
     return useMutation({
         mutationFn: (business_id) => createRoleRequest(business_id),
         onSuccess: async ({ data }) => {
+            
             // invalidate all queries related to the user only
             await queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.user_id) })
 
@@ -43,8 +46,11 @@ export const useCreateRoleMutation = () => {
             })
         },
         onError: (error) => {
-            // console.log(error)
+            // 401, 403 token errors
             if (error?.response?.data?.error?.type === 'token') {
+                // remove expired or bad token and reset user
+                user_reset()
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
@@ -53,16 +59,9 @@ export const useCreateRoleMutation = () => {
                     }
                 })
 
-                sendToLogin()
-            } else {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
+                navigate('/login')
             }
+            // 400 - type 'server' or invalid fields handled on component
         },
     })
 }

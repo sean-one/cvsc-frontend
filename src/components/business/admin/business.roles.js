@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -24,16 +24,19 @@ const filterRoles = (roles, user_id) => {
 
 // inside business.admin.view
 const BusinessRoles = () => {
-    const { auth, user_logout } = useAuth();
+    const { auth, user_logout, user_reset } = useAuth();
     const { dispatch } = useNotification();
     let { business_id } = useParams();
-    const { data: business_roles, status: business_roles_status, error: business_roles_error } = useBusinessRolesQuery(business_id);
+    const { data: business_roles, isPending, isError, error: business_roles_error } = useBusinessRolesQuery(business_id);
 
-    // let navigate = useNavigate();
+    let navigate = useNavigate();
 
-    useEffect(() => {
-        // 400 - type: 'business_id', 400, 404 - type: 'server', 401, 403 - type: 'token'
-        if (business_roles_status === 'error') {
+    if (isError) {
+        // 401, 403 - type: 'token', 'server'
+        if (business_roles_error?.response?.status === 403 || business_roles_error?.response?.status === 401) {
+            // remove expired or bad token and reset user
+            user_reset()
+            
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -42,15 +45,22 @@ const BusinessRoles = () => {
                 }
             })
 
-            if (business_roles_error?.response?.data?.error?.type === 'token') {
-                user_logout()
-            }
-            // console.log(business_roles_error)
-            // navigate('/profile')
-        }
-    }, [dispatch, business_roles_status, business_roles_error, user_logout])
+            navigate('/login')
+        } else {
+            // 400 - type: 'business_id', 'server' 
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: business_roles_error?.response?.data?.error?.message
+                }
+            })
 
-    if (business_roles_status === 'pending') {
+            navigate('/profile')
+        }
+    }
+
+    if (isPending) {
         return <LoadingSpinner />
     }
 

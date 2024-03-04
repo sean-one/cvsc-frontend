@@ -67,6 +67,9 @@ const BusinessEditForm = ({ userBusinessRole }) => {
 
     const { register, handleSubmit, clearErrors, reset, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
+        defaultValues: {
+            business_avatar: null
+        }
     })
 
     const update_business = async (business_updates) => {
@@ -191,9 +194,9 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                             }
                             {/* BUSINESS AVATAR UPLOAD */}
                             <div className='editImageButton'>
-                                <AddImageIcon />
-                                <label htmlFor='business_avatar' className='inputLabelInput' onClick={() => clearErrors('business_avatar')}>
-                                    <input {...register('business_avatar')} id='business_avatar' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                                <label htmlFor='business_avatar' className='inputLabel removeInputLabelPadding' onClick={() => clearErrors('business_avatar')}>
+                                    <AddImageIcon />
+                                    <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                                 </label>
                             </div>
                         </div>

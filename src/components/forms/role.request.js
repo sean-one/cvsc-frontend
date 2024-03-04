@@ -57,16 +57,9 @@ const RoleRequest = ({ user_roles }) => {
     const business_filtered = request_open.filter(business => !businessIdList.includes(business.id))
     
     const roleCreate = async (data) => {
-        try {
-            if(!data.business_id) return
-            createRole(data.business_id)
-            reset()   
-        } catch (error) {
-            console.log('ERROR!')
-            // console.log(error)
-        } finally {
-            reset()
-        }
+        if(!data.business_id) return
+        reset() 
+        createRole(data.business_id)
     }
 
 
