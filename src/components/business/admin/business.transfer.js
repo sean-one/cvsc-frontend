@@ -8,7 +8,7 @@ import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 const BusinessTransfer = ({ business_id }) => {
     const [transferManagerSelected, setTransferManagerSelected] = useState('');
     const [transferAdminEditView, setTransferAdminEditView] = useState(false)
-
+    // get a list of managers for the business, return nothing in case of error
     const { data: manager_list } = useBusinessRolesQuery(business_id)
     const { mutate: businessTransfer } = useBusinessTransferMutation()
 

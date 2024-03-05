@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
@@ -24,7 +24,7 @@ const filterRoles = (roles, user_id) => {
 
 // inside business.admin.view
 const BusinessRoles = () => {
-    const { auth, user_logout, user_reset } = useAuth();
+    const { auth, user_reset } = useAuth();
     const { dispatch } = useNotification();
     let { business_id } = useParams();
     const { data: business_roles, isPending, isError, error: business_roles_error } = useBusinessRolesQuery(business_id);
