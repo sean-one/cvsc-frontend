@@ -21,21 +21,24 @@ const leftSlideOut = keyframes`
     }
 `;
 
-const Styles = styled.div`
-    .my-toast {
+const NotificationStyles = styled.div`
+    .notificationToast {
+        height: 5rem;
         position: fixed;
         top: var(--header-height);
         left: 0;
+        text-transform: capitalize;
         background-color: var(--form-input-background);
-        padding: 0.75rem;
+        padding: 0.75rem 2.5rem;
         border-radius: 0.75rem;
         box-shadow: 0 0.6rem 1.2rem rgba(0,0,0,0.1);
-        animation: ${rightSlideIn} 0.75s;
+        animation: ${rightSlideIn} 1s;
         animation-fill-mode: forwards;
     }
 
     .progressBar {
         height: 0.375rem;
+        margin-top: 0.5rem;
         background-color: currentColor;
     }
     
@@ -48,7 +51,7 @@ const Styles = styled.div`
     }
 
     .exit {
-        animation: ${leftSlideOut} 0.75s;
+        animation: ${leftSlideOut} 1s;
         animation-fill-mode: forwards;
     }
 `;
@@ -63,7 +66,7 @@ const Notification = (props) => {
         const id = setInterval(() => {
             setWidth((prev) => {
                 if(prev < 100) {
-                    return prev + 0.5
+                    return prev + 1
                 }
 
                 clearInterval(id);
@@ -101,12 +104,12 @@ const Notification = (props) => {
     }, [])
 
     return(
-        <Styles>
-            <div onMouseEnter={pauseTimer} onMouseLeave={startTimer} className={`my-toast ${exit ? 'exit' : ''}`}>
+        <NotificationStyles>
+            <div onMouseEnter={pauseTimer} onMouseLeave={startTimer} className={`notificationToast ${exit ? 'exit' : ''}`}>
                 {props.message}
                 <div className={`progressBar ${props.notification_type === 'SUCCESS' ? 'success' : 'error'}`} style={{ width: `${width}%` }} />
             </div>
-        </Styles>
+        </NotificationStyles>
     )
 }
 
