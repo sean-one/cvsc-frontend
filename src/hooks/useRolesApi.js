@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 
 // business.roles - returns all roles for selected business
+// [ roleKeys.businessRoles(business_id) ]
 const getBusinessRoles = async (business_id) => { return await AxiosInstance.get(`/roles/businesses/${business_id}`) }
 export const useBusinessRolesQuery = (business_id) => useQuery({ queryKey: roleKeys.businessRoles(business_id), queryFn: () => getBusinessRoles(business_id) });
 
@@ -15,14 +16,17 @@ const getBusinessManagers = async (business_id) => { return await AxiosInstance.
 export const useBusinessManagerQuery = (business_id) => useQuery({ queryKey: roleKeys.managerRoles(business_id), queryFn: () => getBusinessManagers(business_id) });
 
 // rolesTab -> passed to user.roles - return all roles for selected user (active/inactive)
+// [ roleKeys.userRoles(user_id) ]
 const getUserRoles = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}`) }
 export const useUserRolesQuery = (user_id) => useQuery({ queryKey: roleKeys.userRoles(user_id), queryFn: () => getUserRoles(user_id) });
 
 // user.account - returns the highest role type for a specific user
+// [ roleKeys.userAccountRole(user_id) ]
 const getUserAccountRole = async (user_id) => { return await AxiosInstance.get(`/roles/users/${user_id}/account-role`) }
 export const useUserAccountRole = (user_id) => useQuery({ queryKey: roleKeys.userAccountRole(user_id), queryFn: () => getUserAccountRole(user_id), enabled: !!user_id });
 
 // role.request - creates a new role request
+// invalidateQueries - [ roleKeys.relatedToUser(user_id) ]
 const createRoleRequest = async (business_id) => { return await AxiosInstance.post(`/roles/businesses/${business_id}/role-requests`) }
 export const useCreateRoleMutation = () => {
     const { user_reset } = useAuth();
