@@ -147,6 +147,23 @@ const Styles = styled.div`
         -moz-appearance: menulist;
     }
 
+    input[type="checkbox"] {
+        width: auto; // Revert to default width
+        font-size: medium; // Reset to default font size, though this doesn't usually affect checkboxes
+        padding: 0; // Remove padding
+        margin: 0; // Keep margin as 0 if you want, as this usually doesn't affect the checkbox appearance
+        border: initial; // Return to default border
+        border-radius: initial; // Remove border-radius
+        outline: revert; // Use the browser's default outline
+        appearance: auto; /* Reset appearance to default */
+        -webkit-appearance: checkbox; /* Specifically for Safari */
+        -moz-appearance: checkbox; /* Specifically for Firefox */
+        background: initial; // Reset background to default
+        font-family: inherit; // This doesn't affect checkboxes, but can be left as is
+        border-bottom: initial; // Reset any border modifications
+        color: initial; // Reset text color to default, though this doesn't usually affect checkboxes
+    }
+
     .roleWrapper {
         margin: 0.15rem 0;
         padding: 0.3rem 1.125rem;

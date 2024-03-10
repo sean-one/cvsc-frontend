@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import AxiosInstance from "../helpers/axios";
-import { eventKeys, roleKeys, userKeys } from "../helpers/queryKeyFactories";
+import { eventKeys, roleKeys } from "../helpers/queryKeyFactories";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
 import { useNavigate } from "react-router-dom";
@@ -125,7 +125,7 @@ export const useRoleAction = () => {
 // invalidateQueries - [ roleKeys.relatedToBusiness(business_id), eventKeys.all, roleKeys.relatedToUser(user_id) ]
 const deleteRole = async (role_id) => { return await AxiosInstance.delete(`/roles/${role_id}`) }
 export const useRoleDelete = () => {
-    const { sendToLogin, user_reset } = useAuth();
+    const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
     let navigate = useNavigate()

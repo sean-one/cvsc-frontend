@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
 import { Phone, ToggleRight, UserCheck, Map, User } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
-import { Mail } from "@styled-icons/fluentui-system-filled"
+import { Mail, LocationOff } from "@styled-icons/fluentui-system-filled"
 import { Edit, CameraAdd, Settings, CalendarAdd } from "@styled-icons/fluentui-system-regular";
 import { Cannabis, Xmark } from "@styled-icons/fa-solid"
 import {
@@ -32,6 +32,7 @@ export const FilterIcon = styled(Filter)`width: var(--site-icon-size);`
 export const CloseIcon = styled(Xmark)`width: var(--site-icon-size);`
 
 export const AddressIcon = styled(Map)`width: var(--site-icon-size);`
+export const RemoveAddressIcon = styled(LocationOff)`width: var(--site-icon-size);`
 export const DateIcon = styled(CalendarEvent)`width: var(--site-icon-size);`
 export const TimeIcon = styled(Time)`width: var(--site-icon-size);`
 
