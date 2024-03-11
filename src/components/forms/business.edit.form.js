@@ -76,70 +76,67 @@ const BusinessEditForm = ({ userBusinessRole }) => {
     const addressStrike = watch('remove_address');
 
     const update_business = async (business_updates) => {
-        console.log(business_updates)
-        console.log(business_updates.remove_address)
-        return
-        // localStorage.setItem('editBusinessForm', JSON.stringify(business_updates))
-        // try {
-        //     const formData = new FormData()
+        localStorage.setItem('editBusinessForm', JSON.stringify(business_updates))
+        try {
+            const formData = new FormData()
             
-        //     // remove entries that are unchanged
-        //     for (const [key] of Object.entries(business_updates)) {
-        //         if (!Object.keys(dirtyFields).includes(key)) {
-        //             delete business_updates[key]
-        //         }
-        //     }
+            // remove entries that are unchanged
+            for (const [key] of Object.entries(business_updates)) {
+                if (!Object.keys(dirtyFields).includes(key)) {
+                    delete business_updates[key]
+                }
+            }
 
-        //     // clean phone number to consist of 10 numbers only
-        //     if (business_updates.business_phone !== undefined) {
-        //         business_updates.business_phone = business_updates.business_phone.replace(/\D/g, '').slice(-10)
-        //     }
-        //     // if current cavas set image to business_avatar if not do nothing
-        //     if (canvas.current !== null) {
-        //         let business_avatar = setImageForForm(canvas)
-        //         formData.set('business_avatar', business_avatar)
-        //     }
+            // clean phone number to consist of 10 numbers only
+            if (business_updates.business_phone !== undefined) {
+                business_updates.business_phone = business_updates.business_phone.replace(/\D/g, '').slice(-10)
+            }
+            // if current cavas set image to business_avatar if not do nothing
+            if (canvas.current !== null) {
+                let business_avatar = setImageForForm(canvas)
+                formData.set('business_avatar', business_avatar)
+            }
 
-        //     // append eveything left changed to formData
-        //     Object.keys(business_updates).forEach(key => {
-        //         let value = business_updates[key]
+            // append eveything left changed to formData
+            Object.keys(business_updates).forEach(key => {
+                let value = business_updates[key]
 
-        //         if(value !== '') {
-        //             if(typeof value === 'string' && value.startsWith('@')) {
-        //                 value = value.slice(1)
-        //             }
+                if(value !== '') {
+                    if(typeof value === 'string' && value.startsWith('@')) {
+                        value = value.slice(1)
+                    }
 
-        //             formData.append(key, value)
-        //         }
-        //     })
+                    formData.append(key, value)
+                }
+            })
 
-        //     await updateBusiness({ business_updates: formData, business_id: business_id })
+            await updateBusiness({ business_updates: formData, business_id: business_id })
 
-        // } catch (error) {
-        //     // incorrectly formated, missing or invalid data
-        //     if(error?.response?.status === 400) {
-        //         if (error?.response?.data?.error?.type === 'server') {
-        //             dispatch({
-        //                 type: "ADD_NOTIFICATION",
-        //                 payload: {
-        //                     notification_type: 'ERROR',
-        //                     message: error?.response?.data?.error?.message
-        //                 }
-        //             })
-        //         } else if (error?.response?.data?.error?.type === 'media_error') {
-        //             setError(`business_avatar`, {
-        //                 message: error?.response?.data?.error?.message
-        //             }, { shouldFocus: true })
+        } catch (error) {
+            // incorrectly formated, missing or invalid data
+            if(error?.response?.status === 400) {
+                if (error?.response?.data?.error?.type === 'server') {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            notification_type: 'ERROR',
+                            message: error?.response?.data?.error?.message
+                        }
+                    })
+                } else if (error?.response?.data?.error?.type === 'media_error') {
+                    setError(`business_avatar`, {
+                        message: error?.response?.data?.error?.message
+                    }, { shouldFocus: true })
 
-        //         } else {
-        //             setError(`${error?.response?.data?.error?.type}`, {
-        //                 message: error?.response?.data?.error?.message
-        //             }, { shouldFocus: true })
-        //         }
-        //     }
+                } else {
+                    setError(`${error?.response?.data?.error?.type}`, {
+                        message: error?.response?.data?.error?.message
+                    }, { shouldFocus: true })
+                }
+            }
 
-        //     else { console.log(`uncaught error: ${error}`) }
-        // }
+            else { console.log(`uncaught error: ${error}`) }
+        }
 
     }
 

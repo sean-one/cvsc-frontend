@@ -85,9 +85,6 @@ const AddressForm = ({ register, setValue, errors, clearErrors, currentValue='',
     }, [currentValue])
 
 
-    console.log(inputValue)
-    console.log(pathname)
-    console.log(`currentValue: ${currentValue}`)
     return (
         <AddressFormStyles>
             <div className='addressInputWrapper'>
