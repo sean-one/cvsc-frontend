@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
+import Select from 'react-select';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -9,6 +10,7 @@ import useNotification from '../../hooks/useNotification';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
+import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import { validateEventDate, validateEventTime } from './utils/form.validations';
@@ -21,14 +23,69 @@ const CreateEventFormStyles = styled.div`
     }
 `;
 
+const customSelectStyles = {
+    control: (provided, state) => ({
+        ...provided,
+        backgroundColor: 'var(--main-color)',
+        color: 'var(--secondary-color)',
+        borderColor: state.isFocused ? 'var(--secondary-color)' : provided.borderColor,
+        boxShadow: state.isFocused ? '0 0 0 1px var(--secondary-color)' : provided.boxShadow,
+        '&:hover': {
+            borderColor: state.isFocused ? 'var(--secondary-color)' : provided.borderColor,
+        }
+    }),
+    input: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+    }),
+    singleValue: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+    }),
+    placeholder: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+    }),
+    valueContainer: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+    }),
+    dropdownIndicator: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+        '&:hover': {
+            color: 'var(--trim-color)',
+        }
+    }),
+    clearIndicator: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+        '&:hover': {
+            color: 'var(--error-color)',
+        }
+    }),
+    menu: (provided) => ({
+        ...provided,
+        backgroundColor: 'var(--main-color)',
+        border: '1px solid var(--secondary-color)'
+    }),
+    option: (provided) => ({
+        ...provided,
+        backgroundColor: 'var(--main-color)',
+        color: 'var(--secondary-color)',
+    })
+}
+
 const EventCreateForm = () => {
     const { auth } = useAuth();
     const { dispatch } = useNotification();
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
+    let user_host_business_list = []
     let business_list = []
     
-    const { data: user_roles, isSuccess } = useUserRolesQuery(auth?.user?.id)
+    const { data: user_roles, isSuccess: userRolesSuccess } = useUserRolesQuery(auth?.user?.id)
+    const { data: businesses_list, isSuccess: businessesListSuccess } = useBusinessesQuery();
     
     let navigate = useNavigate();
     
@@ -141,8 +198,15 @@ const EventCreateForm = () => {
         navigate('/profile')
     }
 
-    if(isSuccess) {
-        business_list = user_roles?.data.filter(role => role.active_role)
+    if(userRolesSuccess) {
+        user_host_business_list = user_roles?.data.filter(role => role.active_role)
+    }
+
+    if (businessesListSuccess) {
+        business_list = businesses_list?.data.map(business => ({
+            value: business.id,
+            label: business.business_name
+        }))
     }
 
 
@@ -236,7 +300,7 @@ const EventCreateForm = () => {
                                 <select {...field} onClick={() => clearErrors(['host_business'])}>
                                     <option value="" disabled>Select a business...</option>
                                     {
-                                        business_list.map(role => (
+                                        user_host_business_list.map(role => (
                                             <option key={role.business_id} value={role.business_id} disabled={!role.active_role}>{role.business_name}</option>
                                         ))
                                     }
@@ -252,6 +316,27 @@ const EventCreateForm = () => {
                             required: 'event details are required'
                         })} rows='8' onClick={() => clearErrors('details')} placeholder='Event details ...'/>
                         {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
+                    </div>
+
+                    {/* FEATURED BUSINESS */}
+                    <div className='inputWrapper'>
+                        <label htmlFor='business_tag' className='visuallyHidden'>Featuring:</label>
+                        <Controller
+                            name='business_tag'
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    options={business_list}
+                                    placeholder='Select a business...'
+                                    isClearable
+                                    isSearchable
+                                    styles={customSelectStyles}
+                                    onChange={(selectedOption) => field.onChange(selectedOption)}
+                                />
+                            )}
+                        />
                     </div>
 
                     <div className='formButtonWrapper'>
