@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
@@ -27,6 +27,7 @@ const customSelectStyles = {
     control: (provided, state) => ({
         ...provided,
         backgroundColor: 'var(--main-color)',
+        fontSize: '2.1rem',
         color: 'var(--secondary-color)',
         borderColor: state.isFocused ? 'var(--secondary-color)' : provided.borderColor,
         boxShadow: state.isFocused ? '0 0 0 1px var(--secondary-color)' : provided.boxShadow,
@@ -37,22 +38,27 @@ const customSelectStyles = {
     input: (provided) => ({
         ...provided,
         color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
     }),
     singleValue: (provided) => ({
         ...provided,
         color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
     }),
     placeholder: (provided) => ({
         ...provided,
-        color: 'var(--secondary-color)',
+        color: 'var(--input-placeholder)',
+        fontSize: '2.1rem',
     }),
     valueContainer: (provided) => ({
         ...provided,
         color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
     }),
     dropdownIndicator: (provided) => ({
         ...provided,
         color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
         '&:hover': {
             color: 'var(--trim-color)',
         }
@@ -67,12 +73,14 @@ const customSelectStyles = {
     menu: (provided) => ({
         ...provided,
         backgroundColor: 'var(--main-color)',
-        border: '1px solid var(--secondary-color)'
+        border: '1px solid var(--secondary-color)',
+        fontSize: '2.1rem'
     }),
     option: (provided) => ({
         ...provided,
         backgroundColor: 'var(--main-color)',
         color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
     })
 }
 
@@ -82,14 +90,13 @@ const EventCreateForm = () => {
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
     let user_host_business_list = []
-    let business_list = []
     
     const { data: user_roles, isSuccess: userRolesSuccess } = useUserRolesQuery(auth?.user?.id)
     const { data: businesses_list, isSuccess: businessesListSuccess } = useBusinessesQuery();
     
     let navigate = useNavigate();
     
-    const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, setError, setValue, clearErrors, reset, watch, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             eventname: '',
@@ -104,6 +111,10 @@ const EventCreateForm = () => {
         }
     });
     
+    const [ filteredBusinessList, setFilteredBusinessList ] = useState([])
+
+    const selectedHostBusiness = watch('host_business')
+
     useEffect(() => {
         // check for saved form in local storage
         const savedFormData = localStorage.getItem('createEventForm');
@@ -118,11 +129,35 @@ const EventCreateForm = () => {
 
     },[setValue])
 
+    useEffect(() => {
+        if (businessesListSuccess) {
+            const newBusinessList = businesses_list?.data
+                .filter(business => business.id !== selectedHostBusiness?.value)
+                .map(business => ({
+                    value: business.id,
+                    label: business.business_name
+                }))
+            setFilteredBusinessList(newBusinessList)
+        }
+    }, [businessesListSuccess, businesses_list, selectedHostBusiness])
+
     const createNewEvent = async (event_data) => {
         localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
             // field is not needed, image comes from canvas
             delete event_data['eventmedia']
+
+            if (event_data.hasOwnProperty('host_business')) {
+                if (event_data.host_business && event_data.host_business.hasOwnProperty('value')) {
+                    event_data.host_business = event_data.host_business.value
+                }
+            }
+
+            if (event_data.hasOwnProperty('business_tag')) {
+                if (event_data.business_tag && event_data.business_tag.hasOwnProperty('value')) {
+                    event_data.business_tag = event_data.business_tag.value
+                }
+            }
 
             const formData = new FormData()
 
@@ -198,14 +233,10 @@ const EventCreateForm = () => {
         navigate('/profile')
     }
 
-    if(userRolesSuccess) {
-        user_host_business_list = user_roles?.data.filter(role => role.active_role)
-    }
-
-    if (businessesListSuccess) {
-        business_list = businesses_list?.data.map(business => ({
-            value: business.id,
-            label: business.business_name
+    if (userRolesSuccess) {
+        user_host_business_list = user_roles?.data.filter(role => role.active_role).map(role => ({
+            value: role.business_id,
+            label: role.business_name,
         }))
     }
 
@@ -289,7 +320,7 @@ const EventCreateForm = () => {
                     {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
 
                     {/* BUSINESS NAME */}
-                    <div className='inputWrapper business_name_field'>
+                    <div className='inputWrapper business_name_field' onClick={() => clearErrors('host_business')}>
                         <label htmlFor='host_business' className='visuallyHidden'>Business Name:</label>
                         <Controller
                             name='host_business'
@@ -297,14 +328,15 @@ const EventCreateForm = () => {
                             defaultValue=""
                             rules={{ required: 'a business name is required' }}
                             render={({ field }) => (
-                                <select {...field} onClick={() => clearErrors(['host_business'])}>
-                                    <option value="" disabled>Select a business...</option>
-                                    {
-                                        user_host_business_list.map(role => (
-                                            <option key={role.business_id} value={role.business_id} disabled={!role.active_role}>{role.business_name}</option>
-                                        ))
-                                    }
-                                </select>
+                                <Select
+                                    {...field}
+                                    options={user_host_business_list}
+                                    placeholder='Select a business'
+                                    isClearable
+                                    isSearchable
+                                    styles={customSelectStyles}
+                                    onChange={(selectedOption) => field.onChange(selectedOption)}
+                                />
                             )}
                         />
                         {errors.host_business && <div className='errormessage'>{errors.host_business.message}</div>}
@@ -319,7 +351,7 @@ const EventCreateForm = () => {
                     </div>
 
                     {/* FEATURED BUSINESS */}
-                    <div className='inputWrapper'>
+                    <div className='inputWrapper' onClick={() => clearErrors('business_tag')}>
                         <label htmlFor='business_tag' className='visuallyHidden'>Featuring:</label>
                         <Controller
                             name='business_tag'
@@ -328,8 +360,8 @@ const EventCreateForm = () => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    options={business_list}
-                                    placeholder='Select a business...'
+                                    options={filteredBusinessList}
+                                    placeholder='Tag a business'
                                     isClearable
                                     isSearchable
                                     styles={customSelectStyles}
