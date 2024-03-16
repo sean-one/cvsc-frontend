@@ -19,7 +19,7 @@ export const businessKeys = {
     userManagedBusinesses: (user_id) => [...businessKeys.all, 'managedByUser', user_id],
 };
 
-export const roleKeys ={
+export const roleKeys = {
     all: ['roles'],
     relatedToUser: (user_id) => [...roleKeys.all, 'relatedToUser', user_id],
     userAccountRole: (user_id) => [...roleKeys.relatedToUser(user_id), 'accountRole'],
@@ -27,4 +27,10 @@ export const roleKeys ={
     relatedToBusiness: (business_id) => [...roleKeys.all, 'relatedToBusiness', business_id],
     businessRoles: (business_id) => [...roleKeys.relatedToBusiness(business_id), 'allRoles'],
     managerRoles: (business_id) => [...roleKeys.relatedToBusiness(business_id), 'managementRoles'],
+};
+
+export const businessTagKeys = {
+    all: ['business_tags'],
+    relatedToBusiness: (business_id) => [...businessTagKeys.all, 'relatedToBusiness', business_id],
+
 }
