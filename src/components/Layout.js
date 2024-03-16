@@ -67,7 +67,11 @@ const Styles = styled.div`
         font-size: var(--small-subheader-font);
         font-weight: bold;
     }
-    .smallText {}
+
+    .smallText {
+        font-size: var(--small-font);
+        font-weight: lighter;
+    }
     
     .innerContainer {
         padding: calc(var(--header-height) + 1.125rem) 0.75rem 0.75rem 0.75rem;

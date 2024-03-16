@@ -4,7 +4,7 @@ import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos
 import { Phone, ToggleRight, UserCheck, Map, User } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
 import { Mail, LocationOff } from "@styled-icons/fluentui-system-filled"
-import { Edit, CameraAdd, Settings, CalendarAdd } from "@styled-icons/fluentui-system-regular";
+import { Edit, CameraAdd, Settings, CalendarAdd, CheckmarkCircle } from "@styled-icons/fluentui-system-regular";
 import { Cannabis, Xmark } from "@styled-icons/fa-solid"
 import {
     ArrowToTop,
@@ -59,6 +59,8 @@ export const DeleteIcon = styled(Trash)`color: var(--error-color); width: var(--
 export const SmallUserIcon = styled(User)`width: 0.9rem;`
 export const ApproveUserIcon = styled(UserCheck)`width: var(--site-icon-size);`
 export const CreateEventIcon = styled(CalendarAdd)`color: var(--trim-color); width: var(--site-icon-size);`
+
+export const ApproveIcon = styled(CheckmarkCircle)`color: var(--trim-color); width: var(--site-icon-size);`
 
 export const UserEditIcon = styled(Edit)`width: var(--site-icon-size);`
 
