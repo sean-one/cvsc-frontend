@@ -122,7 +122,7 @@ const EventSmallPreview = ({ event }) => {
                             {
                                 (isCreator()) && <div onClick={(e) => {
                                     e.stopPropagation();
-                                    navigate(`/event/edit/${event.event_id}`)
+                                    navigate(`/event/edit/${event.event_id}`, { state: { event }})
                                 }}><SmallEditIcon /></div>
                             }
                         </div>

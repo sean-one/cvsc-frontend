@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
+import Select from 'react-select';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
@@ -13,7 +14,6 @@ import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import useNotification from '../../hooks/useNotification';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
-import AxiosInstance from '../../helpers/axios';
 import { validateEventDate, validateEventTime, validateNONEmptyString } from './utils/form.validations';
 import AddressForm from './address.form';
 
@@ -36,24 +36,96 @@ const EditEventFormStyles = styled.div`
     } 
 `;
 
+const customSelectStyles = {
+    control: (provided, state) => ({
+        ...provided,
+        backgroundColor: 'var(--main-color)',
+        fontSize: '2.1rem',
+        color: 'var(--secondary-color)',
+        borderColor: state.isFocused ? 'var(--secondary-color)' : provided.borderColor,
+        boxShadow: state.isFocused ? '0 0 0 1px var(--secondary-color)' : provided.boxShadow,
+        '&:hover': {
+            borderColor: state.isFocused ? 'var(--secondary-color)' : provided.borderColor,
+        }
+    }),
+    input: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
+    }),
+    singleValue: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
+    }),
+    placeholder: (provided) => ({
+        ...provided,
+        color: 'var(--input-placeholder)',
+        fontSize: '2.1rem',
+    }),
+    valueContainer: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
+    }),
+    dropdownIndicator: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
+        '&:hover': {
+            color: 'var(--trim-color)',
+        }
+    }),
+    clearIndicator: (provided) => ({
+        ...provided,
+        color: 'var(--secondary-color)',
+        '&:hover': {
+            color: 'var(--error-color)',
+        }
+    }),
+    menu: (provided) => ({
+        ...provided,
+        backgroundColor: 'var(--main-color)',
+        border: '1px solid var(--secondary-color)',
+        fontSize: '2.1rem'
+    }),
+    option: (provided) => ({
+        ...provided,
+        backgroundColor: 'var(--main-color)',
+        color: 'var(--secondary-color)',
+        fontSize: '2.1rem',
+    })
+}
+
 const EventEditForm = () => {
     const { auth } = useAuth();
-    const [ eventData, setEventData ] = useState(null) 
     let { event_id } = useParams()
-    let business_list = []
+    let user_host_business_list = []
     const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()
-
-    const { data: user_roles, isSuccess } = useUserRolesQuery(auth?.user?.id);
-
+    
+    const { data: user_roles, isSuccess: userRoleSuccess } = useUserRolesQuery(auth?.user?.id);
+    
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
     const { mutate: removeEventMutation } = useRemoveEventMutation()
-
+    
     let navigate = useNavigate()
-
+    let location = useLocation();
+    const event_data = location.state.event;
 
     const { register, control, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
+        defaultValues: {
+            eventname: event_data.eventname,
+            place_id: event_data.place_id,
+            formatted_address: event_data.formatted_address,
+            eventdate: format(new Date(event_data.eventdate), "yyyy-MM-dd"),
+            eventstart: reformatTime(event_data.eventstart),
+            eventend: reformatTime(event_data.eventend),
+            eventmedia: null,
+            // host_business: event_data.host_business,
+            details: event_data.details,
+        }
     })
 
     const update_event = async (event_data) => {
@@ -131,64 +203,29 @@ const EventEditForm = () => {
         navigate('/profile/events');
     }
 
-    useEffect(() => {
-        // function to format the event data
-        const formatEventData = (data) => ({
-            eventname: data.eventname,
-            place_id: data.place_id,
-            formatted_address: data.formatted_address,
-            eventdate: format(new Date(data.eventdate), "yyyy-MM-dd"),
-            eventstart: reformatTime(data.eventstart),
-            eventend: reformatTime(data.eventend),
-            eventmedia: null,
-            host_business: data.host_business,
-            details: data.details,
-        })
+    // useEffect(() => {
 
-        // function to get event details and check local storage for changes
-        const getEventDetails = async () => {
-            try {
-                const eventResponse = await AxiosInstance.get(`/events/${event_id}`)
-                
-                // save event details to state
-                setEventData(eventResponse?.data);
+    //     // check for saved data in local storage
+    //     const savedFormData = localStorage.getItem('editEventForm');
+    //     if (savedFormData) {
+    //         const parsedData = JSON.parse(savedFormData);
+    //         for (let key in parsedData) {
+    //             setValue(key, parsedData[key], { shouldDirty: true });
+    //         }
+    //     }
+    // }, [setValue])
 
-                // set default values to the event details from api
-                const defaultValues = formatEventData(eventResponse?.data);
-                // adding values to default for isDirty bases
-                reset(defaultValues)
-
-                // check for saved data in local storage
-                const savedFormData = localStorage.getItem('editEventForm');
-                if (savedFormData) {
-                    const parsedData = JSON.parse(savedFormData);
-                    for (let key in parsedData) {
-                        setValue(key, parsedData[key], { shouldDirty: true });
-                    }
-                }
-
-                // set default values to either api call or local storage if available
-            } catch (error) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: error?.response?.data?.error?.message
-                    }
-                })
-
-                navigate('/profile')
-            }
-        }
-        getEventDetails()
-    }, [event_id, reset, dispatch, navigate, setValue])
-
-    if(isSuccess) {
-        business_list = user_roles?.data.filter(role => role.active_role)
+    if (userRoleSuccess) {
+        user_host_business_list = user_roles?.data.filter(role => role.active_role).map(role => ({
+            value: role.business_id,
+            label: role.business_name,
+        }))
     }
 
+    const hostBusinessDefault = user_host_business_list.find(business => business.value === event_data.host_business)
 
 
+    console.log(hostBusinessDefault)
     return (
         <EditEventFormStyles>
             <div>
@@ -231,8 +268,8 @@ const EventEditForm = () => {
                             </div>
                             : <div className='formImage'>
                                 <img
-                                    src={image_link(eventData?.eventmedia)}
-                                    alt={eventData?.eventname}
+                                    src={image_link(event_data?.eventmedia)}
+                                    alt={event_data?.eventname}
                                 />
                             </div>
                     }
@@ -242,7 +279,7 @@ const EventEditForm = () => {
                         setValue={setValue}
                         errors={errors}
                         clearErrors={clearErrors}
-                        currentValue={eventData?.formatted_address}
+                        currentValue={event_data?.formatted_address}
                     />
 
                     {/* EVENT DATE */}
@@ -287,17 +324,19 @@ const EventEditForm = () => {
                         <Controller
                             name='host_business'
                             control={control}
-                            defaultValue=""
                             rules={{ required: 'a business name is required' }}
                             render={({ field }) => (
-                                <select {...field} onClick={() => clearErrors(['host_business'])}>
-                                    <option value="" disabled>Select a business...</option>
-                                    {
-                                        business_list.map(role => (
-                                            <option key={role.business_id} value={role.business_id} disabled={!role.active_role}>{role.business_name}</option>
-                                        ))
-                                    }
-                                </select>
+                                <Select
+                                    {...field}
+                                    // value={hostBusinessDefault}
+                                    options={user_host_business_list}
+                                    defaultInputValue={hostBusinessDefault.label}
+                                    placeholder='Select a business'
+                                    isClearable
+                                    isSearchable
+                                    styles={customSelectStyles}
+                                    onChange={(selectedOption) => field.onChange(selectedOption)}
+                                />
                             )}
                         />
                         {errors.host_business && <div className='errormessage'>{errors.host_business.message}</div>}

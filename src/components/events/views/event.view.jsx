@@ -127,7 +127,7 @@ const EventView = () => {
                         <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>
                         {
                             (isCreator()) &&
-                                <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: event?.data })}>
+                                <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: { event: event?.data } })}>
                                     <EditIcon />
                                 </div>
                         }
