@@ -9,8 +9,9 @@ const AddressFormStyles = styled.div`
     .addressInputWrapper {
         margin: 0.25rem 0 0.1rem;
         display: flex;
-        justify-content: space-between;
-        align-items: center; 
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .removeAddress {

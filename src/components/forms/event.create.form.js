@@ -211,6 +211,17 @@ const EventCreateForm = () => {
     }
 
     if (userRolesSuccess) {
+        if (user_roles?.data.length === 0) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: 'No business roles found'
+                }
+            })
+            
+            navigate('/profile')
+        }
         user_host_business_list = user_roles?.data.filter(role => role.active_role).map(role => ({
             value: role.business_id,
             label: role.business_name,

@@ -27,7 +27,6 @@ const NotificationStyles = styled.div`
         position: fixed;
         top: var(--header-height);
         left: 0;
-        text-transform: capitalize;
         background-color: var(--form-input-background);
         padding: 0.75rem 2.5rem;
         border-radius: 0.75rem;

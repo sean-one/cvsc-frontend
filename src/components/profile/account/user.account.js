@@ -87,13 +87,6 @@ const UserAccountStyles = styled.div`
         justify-content: space-between;
         align-content: center;
     }
-    
-    .notificationTester {
-        color: black;
-        background-color: green;
-        border: 1px solid black;
-        padding: 0.75rem;
-    }
 `
 
 const UserAccount = () => {
@@ -130,16 +123,6 @@ const UserAccount = () => {
             }
         }
     }, [dispatch, isError, navigate, user_account_role_error, user_reset])
-
-    const testNotification = () => {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: 'this is the tester for notifications'
-            }
-        })
-    }
 
 
     return (
@@ -180,9 +163,6 @@ const UserAccount = () => {
                                         </div>
                                 }
                             </div>
-
-                            <div className='notificationTester' onClick={testNotification}>test notification</div>
-                            
                         </div>
                     </div>
                     : <UserEditForm setEditView={setEditView} />

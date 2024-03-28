@@ -213,15 +213,15 @@ const UserEditForm =({ setEditView }) => {
                     <input {...register('username', {
                         minLength: {
                             value: 4,
-                            message: 'must be at least 4 characters'
+                            message: 'username must be at least 4 characters'
                         },
                         maxLength: {
                             value: 50,
-                            message: 'username too long'
+                            message: 'username is too long'
                         },
                         validate: validateUsername
-                    })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
-                    {errors.username ? <div className='errormessage'>{errors?.username?.message}</div> : null}
+                    })} type='text' onChange={() => clearErrors('username')} placeholder='Username' />
+                    {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                 </div>
 
                 {/* EVENT AND PROFILE IMAGE UPDATE */}
@@ -234,7 +234,7 @@ const UserEditForm =({ setEditView }) => {
                                 value: emailformat,
                                 message: 'invalid email format'
                             }
-                        })} type='text' onClick={() => clearErrors('email')} placeholder='Email' />
+                        })} type='text' onChange={() => clearErrors('email')} placeholder='Email' />
                     </div>
 
                     {/* AVATAR / PROFILE IMAGE UPDATE */}
@@ -249,7 +249,7 @@ const UserEditForm =({ setEditView }) => {
                 <div className='inputWrapper'>
                     <input {...register('password', {
                         validate: value => validatePassword(value, false)
-                    })} type='password' onClick={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
+                    })} type='password' onChange={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
                     {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                 </div>
 
@@ -257,7 +257,7 @@ const UserEditForm =({ setEditView }) => {
                 <div className='inputWrapper'>
                     <input {...register('confirmation', {
                         validate: value => validatePassword(value, false)
-                    })} type='password' onClick={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
+                    })} type='password' onChange={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
                     {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
                 </div>
                 {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}

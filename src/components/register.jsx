@@ -173,7 +173,7 @@ const Register = () => {
                                 message: 'username is too long'
                             },
                             validate: validateUsername
-                        })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                        })} type='text' onChange={() => clearErrors('username')} placeholder='Username' />
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
 
@@ -194,7 +194,7 @@ const Register = () => {
                                     value: emailformat,
                                     message: 'invalid email format'
                                 }
-                            })} type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
+                            })} type='text' onChange={() => clearErrors('email')} placeholder='Email' />
                         </div>
                         
                         {/* AVATAR IMAGE UPLOAD */}
@@ -209,7 +209,7 @@ const Register = () => {
                     <div className='inputWrapper'>
                         <input {...register('password', {
                             validate: validatePassword
-                        })} type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='Password' />
+                        })} type='password' onChange={() => clearErrors(['password', 'credentials'])} placeholder='Password' />
                         {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                         {/* <div className='passwordContraintText'>must be 8+ characters with a mix of upper, lower, numbers</div> */}
                     </div>
@@ -219,7 +219,7 @@ const Register = () => {
                         <input {...register('confirmation', {
                             required: 'password confirmation is required',
                             validate: validatePassword
-                        })} type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm Password' />
+                        })} type='password' onChange={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm Password' />
                         {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
                     </div>
                     

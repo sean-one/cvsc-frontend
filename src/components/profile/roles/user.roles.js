@@ -5,6 +5,9 @@ import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 import UserRole from '../../roles/user.role';
 
 const UserRolesStyles = styled.div`
+    .userRolesWrapper {
+        padding-top: 1rem;
+    }
     .userRolesCurrent {
     }
 `;
@@ -45,7 +48,7 @@ const UserRoles = ({ roles }) => {
 
     return (
         <UserRolesStyles>
-            <div>
+            <div className='userRolesWrapper'>
                 <div className='userRolesCurrent'>
                     {
                         (admin_roles.length > 0) &&

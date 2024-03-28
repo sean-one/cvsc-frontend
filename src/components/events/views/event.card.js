@@ -131,7 +131,7 @@ const EventCard = ({ event }) => {
                             }}>{event?.business_name}</div>
                             <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                         </div>
-                        <div className='eventCardDetails'>{event?.details}</div>
+                        {/* <div className='eventCardDetails'>{event?.details}</div> */}
                     </div>
                 </div>
             </div>

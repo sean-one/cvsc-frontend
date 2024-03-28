@@ -24,6 +24,11 @@ export const uuidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-
 export const validateUsername = (value) => {
     const alphanumeric = /^[a-zA-Z0-9*@_.\-!$]+$/;
     const repeatingspecial = /^(?!.*([*@_.\-!$])\1)[a-zA-Z0-9*@_.\-!$]+$/;
+    const noSpaces = /^[^\s]+$/;
+
+    if(!noSpaces.test(value)) {
+        return 'no spaces permitted in usernames'
+    }
 
     if(!alphanumeric.test(value)) {
         return 'can only contain alphanumeric, *, _, -, ., $, !, and @';

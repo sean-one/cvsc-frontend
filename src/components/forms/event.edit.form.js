@@ -250,7 +250,7 @@ const EventEditForm = () => {
                                         value: 49,
                                         message: 'an event name must have less then 50 characters'
                                     }
-                                })} type='text' onClick={() => clearErrors('eventname')} />
+                                })} type='text' onChange={() => clearErrors('eventname')} />
                             </div>
 
                             {/* EVENT MEDIA UPDATE */}
@@ -295,7 +295,7 @@ const EventEditForm = () => {
                                     checkEmptyString: validateNONEmptyString,
                                     validateDateFormat: (value) => validateEventDate(value, false)
                                 }
-                            })} type='date' onClick={() => clearErrors('eventdate')} />
+                            })} type='date' onChange={() => clearErrors('eventdate')} />
                         </div>
                         {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
 
@@ -307,7 +307,7 @@ const EventEditForm = () => {
                                     checkEmptyString: validateNONEmptyString,
                                     validateTimeFormat: (value) => validateEventTime(value, false)
                                 }
-                            })} type='time' onClick={() => clearErrors('eventstart')} />
+                            })} type='time' onChange={() => clearErrors('eventstart')} />
                         </div>
                         {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
 
@@ -319,7 +319,7 @@ const EventEditForm = () => {
                                     checkEmptyString: validateNONEmptyString,
                                     validateTimeFormat: (value) => validateEventTime(value, false)
                                 }
-                            })} type='time' onClick={() => clearErrors('eventend')} />
+                            })} type='time' onChange={() => clearErrors('eventend')} />
                         </div>
                         {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
 
@@ -347,7 +347,7 @@ const EventEditForm = () => {
 
                         {/* EVENT DETAILS */}
                         <div className='inputWrapper'>
-                            <textarea {...register('details')} rows='8' onClick={() => clearErrors('details')} />
+                            <textarea {...register('details')} rows='8' onChange={() => clearErrors('details')} />
                             {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
                         </div>
                         
