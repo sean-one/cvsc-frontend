@@ -5,6 +5,7 @@ export const ThemeContext = createContext({})
 const lightTheme = {
     '--main-text-color': '#37474F',
     '--main-color': '#70AF97',
+    '--input-placeholder': 'rgb(38, 50, 56, 0.4)',
     '--secondary-color': '#263238',
     '--secondary-text-color' : '#263238',
     '--black-and-white': '#F4F6F5',
@@ -14,6 +15,7 @@ const lightTheme = {
 const darkTheme = {
     '--main-text-color': '#5F9E7F',
     '--main-color': '#263238',
+    '--input-placeholder': 'rgb(112, 175, 151, 0.4)',
     '--secondary-color': '#70AF97',
     '--secondary-text-color': '#CFD8DC',
     '--black-and-white' : '#1A1E1B',

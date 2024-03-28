@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
         // added to label to make it look like an input for image upload
         --form-input-background: #F4F6F5;
         --input-text-color: #263238;
-        --input-placeholder: #286237;
+        --input-placeholder: ${(props) => props.theme['--input-placeholder']};
         
         --header-font-size: 2.4rem;
         --small-header-font: 1.8rem;

@@ -31,7 +31,7 @@ const BusinessAdminControls = ({ business }) => {
                     <div className='businessAdminControls'>
                         {
                             (business.active_business) &&
-                                <CreateEventButton />
+                                <CreateEventButton business_id={business.id}/>
                         }
                         {
                             (((business_user_role.role_type === 'manager') && business.active_business) || (business_user_role.role_type === 'admin')) &&

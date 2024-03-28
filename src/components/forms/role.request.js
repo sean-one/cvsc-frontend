@@ -11,6 +11,7 @@ import { uuidPattern } from './utils/form.validations';
 
 const RoleRequestStyles = styled.div`
     .noShowRoleRequest {
+        padding-top: 1rem;
         text-align: center;
 
         div {
@@ -90,8 +91,8 @@ const RoleRequest = ({ user_roles }) => {
                             </form>
                         </div>
                         : <div className='noShowRoleRequest'>
-                            <div>Role request will be shown when more businesses are available.</div>
-                            <div onClick={() => navigate('/business/create')}>click here to create a new business</div>
+                            <div>There are currently no businesses accepting Role request.  Will update when more become available</div>
+                            <button onClick={() => navigate('/business/create')}>Create Business</button>
                         </div>
                 }
             </div>
