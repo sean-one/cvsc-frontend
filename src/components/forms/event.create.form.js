@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
@@ -10,7 +10,6 @@ import useNotification from '../../hooks/useNotification';
 import useEventImagePreview from '../../hooks/useEventImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
-import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import { validateEventDate, validateEventTime } from './utils/form.validations';
@@ -92,11 +91,10 @@ const EventCreateForm = () => {
     let user_host_business_list = []
     
     const { data: user_roles, isSuccess: userRolesSuccess } = useUserRolesQuery(auth?.user?.id)
-    const { data: businesses_list, isSuccess: businessesListSuccess } = useBusinessesQuery();
     
     let navigate = useNavigate();
     
-    const { register, control, handleSubmit, setError, setValue, clearErrors, reset, watch, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             eventname: '',
@@ -111,10 +109,6 @@ const EventCreateForm = () => {
         }
     });
     
-    const [ filteredBusinessList, setFilteredBusinessList ] = useState([])
-
-    const selectedHostBusiness = watch('host_business')
-
     useEffect(() => {
         // check for saved form in local storage
         const savedFormData = localStorage.getItem('createEventForm');
@@ -129,18 +123,6 @@ const EventCreateForm = () => {
 
     },[setValue])
 
-    useEffect(() => {
-        if (businessesListSuccess) {
-            const newBusinessList = businesses_list?.data
-                .filter(business => business.id !== selectedHostBusiness?.value)
-                .map(business => ({
-                    value: business.id,
-                    label: business.business_name
-                }))
-            setFilteredBusinessList(newBusinessList)
-        }
-    }, [businessesListSuccess, businesses_list, selectedHostBusiness])
-
     const createNewEvent = async (event_data) => {
         localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
@@ -150,12 +132,6 @@ const EventCreateForm = () => {
             if (event_data.hasOwnProperty('host_business')) {
                 if (event_data.host_business && event_data.host_business.hasOwnProperty('value')) {
                     event_data.host_business = event_data.host_business.value
-                }
-            }
-
-            if (event_data.hasOwnProperty('business_tag')) {
-                if (event_data.business_tag && event_data.business_tag.hasOwnProperty('value')) {
-                    event_data.business_tag = event_data.business_tag.value
                 }
             }
 
@@ -348,27 +324,6 @@ const EventCreateForm = () => {
                             required: 'event details are required'
                         })} rows='8' onClick={() => clearErrors('details')} placeholder='Event details ...'/>
                         {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
-                    </div>
-
-                    {/* FEATURED BUSINESS */}
-                    <div className='inputWrapper' onClick={() => clearErrors('business_tag')}>
-                        <label htmlFor='business_tag' className='visuallyHidden'>Featuring:</label>
-                        <Controller
-                            name='business_tag'
-                            control={control}
-                            defaultValue=""
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    options={filteredBusinessList}
-                                    placeholder='Tag a business'
-                                    isClearable
-                                    isSearchable
-                                    styles={customSelectStyles}
-                                    onChange={(selectedOption) => field.onChange(selectedOption)}
-                                />
-                            )}
-                        />
                     </div>
 
                     <div className='formButtonWrapper'>

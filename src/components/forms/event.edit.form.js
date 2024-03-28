@@ -216,18 +216,6 @@ const EventEditForm = () => {
         navigate('/profile/events');
     }
 
-    // useEffect(() => {
-
-    //     // check for saved data in local storage
-    //     const savedFormData = localStorage.getItem('editEventForm');
-    //     if (savedFormData) {
-    //         const parsedData = JSON.parse(savedFormData);
-    //         for (let key in parsedData) {
-    //             setValue(key, parsedData[key], { shouldDirty: true });
-    //         }
-    //     }
-    // }, [setValue])
-
     if (userRoleSuccess) {
         user_host_business_list = user_roles?.data.filter(role => role.active_role).map(role => ({
             value: role.business_id,
