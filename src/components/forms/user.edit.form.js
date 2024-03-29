@@ -27,6 +27,8 @@ const UserEditForm =({ setEditView }) => {
     let navigate = useNavigate()
 
     const sendUpdate = async (data) => {
+        console.log(data)
+        console.log(dirtyFields)
         try {
             const formData = new FormData()
     
@@ -220,7 +222,7 @@ const UserEditForm =({ setEditView }) => {
                             message: 'username is too long'
                         },
                         validate: validateUsername
-                    })} type='text' onChange={() => clearErrors('username')} placeholder='Username' />
+                    })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
                     {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                 </div>
 
@@ -234,7 +236,7 @@ const UserEditForm =({ setEditView }) => {
                                 value: emailformat,
                                 message: 'invalid email format'
                             }
-                        })} type='text' onChange={() => clearErrors('email')} placeholder='Email' />
+                        })} type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
                     </div>
 
                     {/* AVATAR / PROFILE IMAGE UPDATE */}
@@ -249,7 +251,7 @@ const UserEditForm =({ setEditView }) => {
                 <div className='inputWrapper'>
                     <input {...register('password', {
                         validate: value => validatePassword(value, false)
-                    })} type='password' onChange={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
+                    })} type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
                     {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
                 </div>
 
@@ -257,7 +259,7 @@ const UserEditForm =({ setEditView }) => {
                 <div className='inputWrapper'>
                     <input {...register('confirmation', {
                         validate: value => validatePassword(value, false)
-                    })} type='password' onChange={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
+                    })} type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
                     {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
                 </div>
                 {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
