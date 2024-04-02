@@ -9,7 +9,7 @@ const EventCardStyles = styled.div`
     .eventCardWrapper {
         position: relative;
         width: 100%;
-        max-width: var(--max-page-width);
+        max-width: 50rem;
         margin-bottom: 1.5rem;
         overflow: hidden;
 

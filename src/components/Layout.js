@@ -62,6 +62,13 @@ const Styles = styled.div`
         background-color: var(--main-background-color);
     }
 
+    .innerContainer {
+        width: 100%;
+        margin-top: var(--header-height);
+        padding-top: 1.125rem;
+        max-width: var(--max-page-width);   
+    }
+
     .headerText {
         font-size: var(--header-font-size);
         font-weight: bold;
@@ -91,13 +98,6 @@ const Styles = styled.div`
         font-weight: lighter;
     }
     
-    .innerContainer {
-        width: 100%;
-        margin-top: var(--header-height);
-        padding-top: 1.125rem;
-        max-width: var(--max-page-width);   
-    }
-
     .sectionContainer {
         /* margin: 0.75rem; */
         /* padding: 0.75rem; */

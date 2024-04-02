@@ -10,7 +10,7 @@ import EventSmallPreview from './views/event.small.preview';
 
 const BusinessEventsRelatedStyles = styled.div`
     .businessEventsRelatedWrapper {
-        margin: 0.75rem;
+        border: 0.1rem solid pink;
     }
 
     .businessEventsRelatedHeader {
