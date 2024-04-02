@@ -11,17 +11,16 @@ import EventCard from '../events/views/event.card';
 const CalendarStyles = styled.div`
     .calendarWrapper {
         width: 100%;
-        padding: 0 0.375rem;
         max-width: var(--max-page-width);
         display: flex;
         flex-direction: column;
-    }   
+    }
 `
 
 const Calendar = () => {
     const { data: events_list, isPending, isError } = useEventsQuery()
     
-    
+    console.log(events_list?.data)
     return (
         <CalendarStyles>
             <div className='calendarWrapper'>
@@ -30,7 +29,7 @@ const Calendar = () => {
                         <LoadingSpinner />
                     ) : isError ? (
                         <ServerDown />
-                    ) : (events_list?.data?.length > 0) ? (
+                    ) : (events_list?.data?.length !== 0) ? (
                         events_list?.data.map(event => <EventCard key={event.event_id} event={event} />)
                     ) : (
                         <EmptyListReturn listtype='event'/>

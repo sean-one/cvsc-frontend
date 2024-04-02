@@ -8,31 +8,29 @@ import { ReactComponent as CVSCLogo } from '../assets/cvsc_sqr.svg';
 const EmptyListReturnStyles = styled.div`
     .emptyListReturnWrapper {
         width: 100%;
-        padding: 0 0.375rem;
         max-width: var(--max-page-width);
-        display: flex;
-        flex-direction: column;
+        height: calc(100vh - (var(--header-height) + 4rem));
     }
-
+    
     .emptyListReturn {
-        margin-top: 2.25rem;
-        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 0.75rem;
     }
 
     .emptyListBackgroundLogo {
+        width: 100%;
+
         svg {
-            width: 100%;
-            height: auto;
+            /* width: 100%; */
             fill: var(--black-and-white);
         }
     }
 
     .emptyListOptions {
+        color: var(--main-color);
         margin-top: 1.5rem;
     }
 `;

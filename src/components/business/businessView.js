@@ -27,40 +27,39 @@ const BusinessViewStyles = styled.div`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 1080px;
+        /* max-width: 1080px; */
         padding: 0 0.75rem;
+        border: 0.1rem solid red;
         
-        @media (min-width: 768px) {
+        @media (min-width: 76.8rem) {
             padding: 1.5rem 0.75rem;
         }}
 
     .businessViewHeader {
         width: 100%;
+        color: var(--main-highlight-color);
         display: flex;
-        flex-direction: column;}
+        flex-direction: column;
+    }
+
     .businessViewHeaderLeft {
         display: flex;
     }
-    .businessViewManagementControls {
-        display: flex;
-        color: var(--secondary-color);
-        gap: 0.75rem;}
     
-    .businessViewControl {
-        cursor: pointer;}
-    
-    .businessDetails {
+    .businessViewDetails {
         display: flex;
         flex-direction: column;
         align-items: center;
+        color: var(--main-color);
         padding: 1.125rem 0 1.875rem;
-        border-bottom: 1px solid var(--secondary-color);
+        border-bottom: 1px solid var(--main-highlight-color);
         
         @media (min-width: 768px) {
             flex-direction: row;
             justify-content: space-between;
             flex-wrap: wrap;
-        }}
+        }
+    }
 
     .firstBusinessSection {
         display: flex;
@@ -70,9 +69,10 @@ const BusinessViewStyles = styled.div`
 
         @media (min-width: 768px) {
             flex-basis: 50%;
-        }}
+        }
+    }
 
-    .businessImage {
+    .businessViewImage {
         max-width: 450px;
         display: flex;
         justify-content: center;
@@ -82,10 +82,11 @@ const BusinessViewStyles = styled.div`
         img {
             width: 100%;
             max-width: 350px;
-            border: 1px solid var(--trim-color);
+            border: 0.1rem solid var(--main-color);
             display: block;
             border-radius: 55%;
-        }}
+        }
+    }
 
     .secondBusinessSection {
         display: flex;
@@ -96,30 +97,35 @@ const BusinessViewStyles = styled.div`
             flex-direction: column;
             flex-basis: 50%;
             padding: 3rem 0;
-        }}
+        }
+    }
 
-    .businessContacts {
+    .businessViewContacts {
         width: 100%;
         display: flex;
         justify-content: space-around;
         padding: 0.75rem 0;
         margin: 0.75rem 0;
-        background-color: var(--black-and-white);
-        border-radius: 5px;
-        gap: 10px;
+        color: #006633;
+        background-color: var(--main-highlight-color);
+        border-radius: 0.5rem;
+        gap: 1rem;
         
         @media (min-width: 768px) {
             margin: 2.25rem 0;
             border: none;
             align-self: flex-start;
-        }}
+        }
+    }
 
-    .businessDescription {
+    .businessViewDescription {
+        padding: 1rem 0;
         text-align: justify;
 
         @media (min-width: 768px) {
             text-align: left;
-        }}
+        }
+    }
 
 `;
 
@@ -166,11 +172,11 @@ const BusinessView = () => {
                     }
                 </div>
 
-                <div className='businessDetails'>
+                <div className='businessViewDetails'>
 
                     <div className='firstBusinessSection'>
                         
-                        <div className='businessImage'>
+                        <div className='businessViewImage'>
                             <img
                                 src={image_link(business?.data?.business_avatar)}
                                 alt={business?.data.business_name}
@@ -180,10 +186,10 @@ const BusinessView = () => {
                     </div>
 
                     <div className='secondBusinessSection'>
-                        <div className='businessDescription'>
+                        <div className='businessViewDescription'>
                             {business?.data.business_description}
                         </div>
-                        <div className='businessContacts'>
+                        <div className='businessViewContacts'>
                             <a href={`mailto:${business?.data.business_email}`} target='_blank' rel='noreferrer'><MailIcon /></a>
 
                             {/* dynamically add optional contact information */}

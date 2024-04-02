@@ -37,12 +37,12 @@ export const DateIcon = styled(CalendarEvent)`width: var(--site-icon-size);`
 export const TimeIcon = styled(Time)`width: var(--site-icon-size);`
 
 // used in the contacts - both the input fields as well as on the business page
-export const MailIcon = styled(Mail)`color: var(--trim-color); width: var(--contact-icon-size);`
-export const InstagramIcon = styled(Instagram)`color: var(--trim-color); width: var(--contact-icon-size);`
-export const TwitterIcon = styled(Twitter)`color: var(--trim-color); width: var(--contact-icon-size);`
-export const FacebookIcon = styled(FacebookCircle)`color: var(--trim-color); width: var(--contact-icon-size);`
-export const PhoneIcon = styled(Phone)`color: var(--trim-color); width: var(--contact-icon-size);`
-export const WebSiteIcon = styled(Web)`color: var(--trim-color); width: var(--contact-icon-size);`
+export const MailIcon = styled(Mail)`width: var(--contact-icon-size);`
+export const InstagramIcon = styled(Instagram)`width: var(--contact-icon-size);`
+export const TwitterIcon = styled(Twitter)`width: var(--contact-icon-size);`
+export const FacebookIcon = styled(FacebookCircle)`width: var(--contact-icon-size);`
+export const PhoneIcon = styled(Phone)`width: var(--contact-icon-size);`
+export const WebSiteIcon = styled(Web)`width: var(--contact-icon-size);`
 
 // used in Busines admin menu for active status and business request open toggles
 export const ToggleOnIcon = styled(ToggleRight)`color: var(--secondary-color); width: 4.75rem;`

@@ -1,8 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
+import useTheme from '../hooks/useTheme';
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
 
@@ -13,7 +16,6 @@ const MenuStyles = styled.div`
         left: 0;
         width: 100%;
         height: 100vh;
-        /* background-color: rgba(0,0,0,0.6); */
         background-color: var(--opacity);
     }
     
@@ -27,9 +29,7 @@ const MenuStyles = styled.div`
         justify-content: center;
         align-items: center;
         background-color: var(--opacity);
-        /* background-color: var(--main-color); */
-        /* color: var(--trim-color); */
-        color: var(--secondary-color);
+        color: #006633;
         padding-bottom: 15rem;
         border-radius: 0 0 15px 15px;
     }
@@ -43,6 +43,10 @@ const MenuStyles = styled.div`
         border: none;
     }
 
+    #themeIcon {
+        margin-right: 1rem;
+    }
+
     .navMenuButtons:hover {
         border: none;
     }
@@ -51,12 +55,8 @@ const MenuStyles = styled.div`
 const Menu = ({ toggle }) => {
     const { isLoggedIn, setAuth } = useAuth();
     const { dispatch } = useNotification();
+    const { themeName, toggleTheme } = useTheme()
     let navigate = useNavigate();
-
-    const navMenuClick = (link) => {
-        toggle(false)
-        navigate(link)
-    }
 
     const logOutUser = async () => {
         try {
@@ -95,49 +95,31 @@ const Menu = ({ toggle }) => {
 
     }
 
-    const menuItems = [
-        { label: 'Calendar', link: '/' },
-        { label: 'Businesses', link: '/businesses' },
-        {
-            label: () => isLoggedIn ? 'Profile' : 'Register',
-            link: `${isLoggedIn ? '/profile' : '/register'}`
-        },
-        {
-            label: 'Create Business',
-            link: '/business/create',
-            condition: () => isLoggedIn
-        },
-        {
-            label: 'Create Event',
-            link: '/event/create',
-            condition: () => isLoggedIn
-        },
-        {
-            label: () => isLoggedIn ? 'Logout' : 'Login',
-            action: () => isLoggedIn ? logOutUser : () => navMenuClick('/login')
-        }
-    ];
-
 
     return (
         <MenuStyles>
             <div className='menuWrapper' onClick={() => toggle(false)}>
                 <div className='navMenu'>
-                    {menuItems.map((item, index) => {
-                        const shouldDisplay = item.condition ? item.condition() : true;
-                        if (shouldDisplay) {
-                            return (
-                                <div
-                                    key={index}
-                                    className='navMenuButtons'
-                                    onClick={item.action ? item.action() : () => navMenuClick(item.link)}
-                                >
-                                    {typeof item.label === 'function' ? item.label() : item.label}
-                                </div>
-                            );
-                        }
-                        return null;
-                    })}
+                    <div className='navMenuButtons' onClick={() => navigate('/')}>Calendar</div>
+                    <div className='navMenuButtons' onClick={() => navigate('/businesses')}>Businesses</div>
+                    {
+                        isLoggedIn
+                            ? <div className='navMenuButtons' onClick={() => navigate('/profile')}>Profile</div>
+                            : <div className='navMenuButtons' onClick={() => navigate('/register')}>Register</div>
+                    }
+                    {
+                        isLoggedIn &&
+                            <div className='navMenuButtons' onClick={() => navigate('/business/create')}>Create Business</div>
+                    }
+                    {   isLoggedIn &&
+                            <div className='navMenuButtons' onClick={() => navigate('/event/create')}>Create Event</div>
+                    }
+                    {
+                        isLoggedIn
+                            ? <div className='navMenuButtons' onClick={() => logOutUser()}>Logout</div>
+                            : <div className='navMenuButtons' onClick={() => navigate('/login')}>Login</div>
+                    }
+                    <div className='navMenuButtons' onClick={() => toggleTheme()}><FontAwesomeIcon icon={themeName === 'light' ? faMoon : faSun} id='themeIcon' />Theme</div>
                 </div>
             </div>
         </MenuStyles>

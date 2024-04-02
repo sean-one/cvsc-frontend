@@ -3,10 +3,26 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import useTheme from '../hooks/useTheme';
 
+// trim-color with opacity 'rgba(40,98,55,1)'
+// #F0F0F0
+// #006633 rgba(0,102,51,1)
+// #D9EAD3
+// #202020
+// #004D40
+// #39403A
+
+
 const GlobalStyle = createGlobalStyle`
     :root {
-        --header-height: 7.5rem;
-        --main-color: ${(props) => props.theme['--main-color']};
+        --main-background-color: ${(props) => props.theme['--main-background-color']};
+        --main-highlight-color: ${(props) => props.theme['--main-highlight-color']};
+        --header-highlight: ${(props) => props.theme['--header-highlight']};
+        --header-height: 9.5rem;
+        --main-color: #006633;
+        --max-page-width: 108rem;
+
+
+        /* --main-color: ${(props) => props.theme['--main-color']}; */
         --secondary-color: ${(props) => props.theme['--secondary-color']};
         --main-text-color: ${(props) => props.theme['--main-text-color']};
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
@@ -27,21 +43,23 @@ const GlobalStyle = createGlobalStyle`
         --small-subheader-font: 1.5rem;
         --main-font-size: 1.65rem;
         --small-font: 1.35rem;
-        --max-page-width: 52.5rem;
-        --main-break-width: 500px;
+        --main-break-width: 50rem;
 
     }
 `;
 
 const Styles = styled.div`
     .appContainer {
-        min-width: 250px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        min-width: 25rem;
         min-height: 100vh;
         max-width: 100vw;
         font-size: var(--main-font-size);
         line-height: 1.3;
         color: var(--main-text-color);
-        background-color: var(--main-color);
+        background-color: var(--main-background-color);
     }
 
     .headerText {
@@ -74,20 +92,18 @@ const Styles = styled.div`
     }
     
     .innerContainer {
-        padding: calc(var(--header-height) + 1.125rem) 0.75rem 0.75rem 0.75rem;
-        box-sizing: border-box;
-        
-        @media (min-width: 500px) {
-            max-width: var(--max-page-width);
-            margin: 0 auto;
-        }
+        width: 100%;
+        margin-top: var(--header-height);
+        padding-top: 1.125rem;
+        max-width: var(--max-page-width);   
     }
 
     .sectionContainer {
-        margin: 0.75rem;
-        padding: 0.75rem;
+        /* margin: 0.75rem; */
+        /* padding: 0.75rem; */
         border-radius: 5px;
-        border: 1px solid var(--trim-color);
+        /* border: 0.1rem solid var(--trim-color); */
+        border: 0.1rem solid red;
     }
 
     .sectionRowSplit {

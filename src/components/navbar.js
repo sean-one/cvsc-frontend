@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faAngleUp, faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
-
-import useTheme from '../hooks/useTheme';
 
 import { ReactComponent as CVSCLogo } from '../assets/cvsc_sqr.svg';
 import Menu from './menu'
@@ -12,11 +10,12 @@ import Menu from './menu'
 const NavbarStyles = styled.div`
     .navWrapper {
         position: fixed;
+        padding: 0 1.5rem;
         top: 0;
         left: 0;
         height: var(--header-height);
-        background-color: var(--trim-color);
-        border-bottom: 1px solid var(--black-and-white);
+        background-color: var(--main-background-color);
+        border-bottom: 0.1rem solid var(--main-color);
         width: 100%;
         display: flex;
         justify-content: center;
@@ -26,29 +25,28 @@ const NavbarStyles = styled.div`
     }
 
     .navContainer {
-        width: calc(100vw - 2.25rem);
-        min-width: 200px;
+        padding: 0.5rem 0;
+        min-height: 100%;
+        width: 100%;
         max-width: var(--max-page-width);
         display: flex;
         justify-content: space-between;
     }
 
     .navBarBranding {
-        max-width: 70px;
-
-        img {
-            max-width: 100%;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .navBarLogo {
-        width: 68px;
-        height: 70px;
-        fill: var(--black-and-white);
+        width: auto;
+        max-height: 100%;
+        fill: var(--header-highlight);
     }
 
     .navBarMenu {
-        color: var(--black-and-white);
+        color: #006633;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -64,7 +62,6 @@ const NavbarStyles = styled.div`
 
 const Navbar = () => {
     const [ toggle, setToggle ] = useState(false)
-    const { themeName, toggleTheme } = useTheme()
     
     let navigate = useNavigate()
 
@@ -77,9 +74,6 @@ const Navbar = () => {
                         <CVSCLogo className='navBarLogo' />
                     </div>
                     <div className='navBarMenu'>
-                        <div className='toggler'>
-                            <FontAwesomeIcon icon={themeName === 'light' ? faMoon : faSun } size='2x' onClick={() => toggleTheme()} />
-                        </div>
                         <div className='toggler' onClick={() => setToggle(!toggle)}>
                             {
                                 toggle
