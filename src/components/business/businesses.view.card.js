@@ -11,8 +11,9 @@ const BusinessesViewCardStyles = styled.div`
         padding: 0.75rem;
 
         border-radius: 0.5rem;
-        border: 1px solid var(--secondary-color);
+        border: 0.1rem solid var(--main-color);
         margin-bottom: 1.5rem;
+        max-width: 50rem;
     }
 
     .businessViewCardBranding {
@@ -25,7 +26,7 @@ const BusinessesViewCardStyles = styled.div`
 
         img {
             width: 100%;
-            border: 1px solid var(--trim-color);
+            border: 0.1rem solid var(--main-color);
             display: block;
             border-radius: 50%;
         }
@@ -58,20 +59,12 @@ const BusinessesViewCardStyles = styled.div`
         max-height: 7.2rem;
         cursor: pointer;
         text-align: justify;
+        color: var(--main-color);
     }
 `;
 
 const BusinessesViewCard = ({ business }) => {
     let navigate = useNavigate();
-
-    const trimAddress = (address) => {
-        if (address === null) {
-            return null
-        } else {
-            const cut_up_address = address.split(',').slice(0, -2).join(',')
-            return cut_up_address;
-        }
-    }
 
 
     return (
@@ -82,7 +75,7 @@ const BusinessesViewCard = ({ business }) => {
                 </div>
                 <div className='businessViewCardDetails'>
                     <div className='businessViewCardBusinessName'>{business.business_name}</div>
-                    <div className='businessViewCardAddress'>{trimAddress(business?.formatted_address)}</div>
+                    <div className='businessViewCardAddress'>{business?.formatted_address}</div>
                     <div className='businessViewCardBusinessDescription'>{business?.business_description}</div>
                 </div>
             </div>

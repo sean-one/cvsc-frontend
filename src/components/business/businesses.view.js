@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
+import styled from 'styled-components';
 
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
@@ -8,6 +9,11 @@ import BusinessSorter from './businessSorter';
 import BusinessesViewCard from './businesses.view.card';
 import EmptyListReturn from '../emptylist.return';
 
+const BusinessesViewStyles = styled.div`
+    .businessesViewSortWrapper {
+        color: var(--main-highlight-color);
+    }
+`;
 
 const BusinessesView = () => {
     const [sortCriteria, setSortCriteria] = useState('business_name'); // default sort by business name
@@ -51,37 +57,39 @@ const BusinessesView = () => {
     });
     
     return (
-        <div>
-            {
-                (businesses_list?.data?.length !== 0) &&
-                    <BusinessSorter
-                        sortCriteria={sortCriteria}
-                        onSortChange={setSortCriteria}
-                        searchQuery={searchQuery}
-                        onSearchChange={setSearchQuery}
-                    />
-            }
-            {
-                isPending ? (
-                    <LoadingSpinner />
-                ) : isError ? (
-                    null
-                ) : (
-                    (businesses_list?.data?.length === 0)
-                        ? <EmptyListReturn listtype='business' />
-                        
-                        : <div>
-                            {
-                                sortedBusinessList?.map(business => {
-                                    return (
-                                        <BusinessesViewCard key={business.id} business={business} />
-                                    )
-                                })
-                            }
-                        </div>
-                )
-            }
-        </div>
+        <BusinessesViewStyles>
+            <div className='businessesViewSortWrapper'>
+                {
+                    (businesses_list?.data?.length !== 0) &&
+                        <BusinessSorter
+                            sortCriteria={sortCriteria}
+                            onSortChange={setSortCriteria}
+                            searchQuery={searchQuery}
+                            onSearchChange={setSearchQuery}
+                        />
+                }
+                {
+                    isPending ? (
+                        <LoadingSpinner />
+                    ) : isError ? (
+                        null
+                    ) : (
+                        (businesses_list?.data?.length === 0)
+                            ? <EmptyListReturn listtype='business' />
+                            
+                            : <div>
+                                {
+                                    sortedBusinessList?.map(business => {
+                                        return (
+                                            <BusinessesViewCard key={business.id} business={business} />
+                                        )
+                                    })
+                                }
+                            </div>
+                    )
+                }
+            </div>
+        </BusinessesViewStyles>
     )
 }
 

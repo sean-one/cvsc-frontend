@@ -35,7 +35,8 @@ const GlobalStyle = createGlobalStyle`
         // added to label to make it look like an input for image upload
         --form-input-background: #F4F6F5;
         --input-text-color: #263238;
-        --input-placeholder: ${(props) => props.theme['--input-placeholder']};
+        --input-placeholder: #39403A;
+        /* --input-placeholder: ${(props) => props.theme['--input-placeholder']}; */
         
         --header-font-size: 2.4rem;
         --small-header-font: 1.8rem;
@@ -119,8 +120,8 @@ const Styles = styled.div`
     button {
         padding: 0.75rem 1.875rem;
         border: none;
-        border: 1px solid var(--secondary-color);
-        color: var(--trim-color);
+        border: 0.1rem solid var(--main-highlight-color);
+        color: var(--main-color);
         border-radius: 5px;
         background-color: transparent;
         outline: none;
@@ -131,7 +132,7 @@ const Styles = styled.div`
 
         :disabled {
             color: var(--error-color);
-            border: 1px solid var(--error-color);
+            border: 0.1rem solid var(--error-color);
             opacity: 0.6;
             cursor: not-allowed;
             background-color: transparent;
@@ -151,9 +152,9 @@ const Styles = styled.div`
         -moz-appearance: none; /* For Firefox */
         background: transparent;
         font-family: inherit; /* Inherit font from parent elements */
-        background: var(--main-color);
-        border-bottom: 1px solid var(--secondary-color);
-        color: var(--secondary-color);
+        background: var(--background-color);
+        border-bottom: 1px solid var(--main-color);
+        color: var(--main-color);
 
         ::placeholder {
             color: var(--input-placeholder);

@@ -25,6 +25,7 @@ const RegisterStyles = styled.div`
     }
 
     .registerHeader {
+        color: var(--main-highlight-color);
         padding-left: 0.75rem
         align-self: flex-start;
     }
@@ -40,7 +41,7 @@ const RegisterStyles = styled.div`
 
         canvas {
             max-width: 100%;
-            border: 1px solid #DCDBC4;
+            border: 0.1rem solid var(--main-color);
             border-radius: 50%;
             display: block;
             box-shadow: 5px 5px 5px #010A00;
@@ -52,9 +53,15 @@ const RegisterStyles = styled.div`
     }
 
     .loginLinkWrapper {
+        color: var(--main-color);
         display: flex;
         justify-content: center;
         margin-top: 3rem;
+    }
+
+    #loginLink {
+        cursor: pointer;
+        color: var(--main-highlight-color);
     }
 `;
 
@@ -233,7 +240,7 @@ const Register = () => {
                 </form>
 
                 <div className='loginLinkWrapper'>
-                    <p onClick={() => navigate('/login')}>Already have a login? Login here.</p>
+                    <p onClick={() => navigate('/login')}>Already have a login? <span id='loginLink'>Login here</span></p>
                 </div>
                 
             </div>

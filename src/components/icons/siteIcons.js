@@ -24,7 +24,7 @@ import {
 } from "@styled-icons/boxicons-regular";
 
 // used at all image upload and edit components
-export const AddImageIcon = styled(CameraAdd)`width: var(--site-icon-size);`
+export const AddImageIcon = styled(CameraAdd)`color: var(--main-color); width: var(--site-icon-size);`
 
 export const SearchIcon = styled(Search)`width: var(--site-icon-size);`
 export const FilterTopIcon = styled(ArrowToTop)`width: var(--site-icon-size);`
