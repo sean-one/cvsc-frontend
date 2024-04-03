@@ -13,7 +13,7 @@ import LoadingSpinner from '../../loadingSpinner';
 const UserAccountStyles = styled.div`
     .userAccountPage {
         display: flex;
-        border: 1px solid var(--trim-color);
+        border: 0.1rem solid var(--main-color);
         flex-direction: column;
         align-items: center;
         margin: 0 0.375rem;
@@ -23,33 +23,33 @@ const UserAccountStyles = styled.div`
 
     .profileImage {
         position: relative;
-        min-width: 225px;
-        max-width: 275px;
+        min-width: 22.5rem;
+        max-width: 27.5rem;
 
         canvas {
             max-width: 100%;
-            border: 1px solid var(--trim-color);
+            border: 0.1rem solid var(--main-color);
             display: block;
             border-radius: 50%;
         }
         
         img {
             width: 100%;
-            border: 1px solid var(--trim-color);
+            border: 0.1rem solid var(--main-color);
             display: block;
             border-radius: 50%;
         }
     }
     
     .userEditButton {
-        padding: 0.75rem;
+        padding: 1rem;
         position: absolute;
-        right: 15%;
+        right: 10%;
         bottom: 0;
-        border: 1px solid var(--secondary-color);
+        border: 0.1rem solid var(--main-color);
         border-radius: 50%;
-        color: var(--trim-color);
-        background-color: var(--main-color);
+        color: var(--main-highlight-color);
+        background-color: var(--main-background-color);
     }
 
     .accountDetails {
@@ -62,6 +62,7 @@ const UserAccountStyles = styled.div`
     }
     
     .profileHeader {
+        color: var(--main-highlight-color);
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
@@ -79,6 +80,7 @@ const UserAccountStyles = styled.div`
     }
 
     .userDetails {
+        color: var(--main-color);
         height: 100%;
     }
 

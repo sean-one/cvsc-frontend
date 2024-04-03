@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
         --header-highlight: ${(props) => props.theme['--header-highlight']};
         --header-height: 9.5rem;
         --main-color: #006633;
+        --max-section-width: 55rem;
         --max-page-width: 108rem;
 
 
@@ -29,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
         --trim-color: #286237;
         --opacity: ${(props) => props.theme['--opacity']};
         --black-and-white: ${(props) => props.theme['--black-and-white']};
-        --site-icon-size: 2.7rem;
+        --site-icon-size: 3rem;
         --contact-icon-size: 3.3rem;
         --error-color: #D32F2F;
         // added to label to make it look like an input for image upload
@@ -162,7 +163,6 @@ const Styles = styled.div`
     }
 
     select, textarea {
-        border: 1px solid var(--secondary-color);
         appearance: auto;
         -webkit-appearance: menulist;
         -moz-appearance: menulist;

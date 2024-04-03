@@ -5,19 +5,25 @@ import { FilterIcon, SearchIcon, CloseIcon } from '../icons/siteIcons';
 
 const BusinessSorterStyles = styled.div`
     .businessSorterWrapper {
-        margin-bottom: 1rem;
+        width: 100%;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
     }
-
+    
     .businessSorter {
         width: 100%;
+        height: 100%;
+        max-width: var(--max-section-width);
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        padding: 0.75rem 0;
     }
-
+    
     .sortView {
+        width: 100%;
+        height: 100%;
+        max-width: var(--max-section-width);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -30,7 +36,18 @@ const BusinessSorterStyles = styled.div`
 
     .searchSection, .filterSection {
         width: 100%;
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .iconContainer {
+        width: 3rem;
+        color: var(--error-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `
 
@@ -48,7 +65,9 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                             onChange={e => onSearchChange(e.target.value)}
                             placeholder="Search businesses..."
                         />
-                        <CloseIcon onClick={() => setSortType('')} />
+                        <div className='iconContainer'>
+                            <CloseIcon onClick={() => setSortType('')}/>
+                        </div>
                     </div>
                 ) : sortType === 'filterView' ? (
                     <div className='sortView'>
@@ -58,15 +77,17 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                             <option value="inactive_business">Inactive</option>
                             <option value="request_closed">Request Closed</option>
                         </select>
-                        <CloseIcon onClick={() => setSortType('')} />
+                        <div className='iconContainer'>
+                            <CloseIcon onClick={() => setSortType('')} />
+                        </div>
                     </div>
                 ) : (
                     <div className='businessSorter'>
                         <div className='searchSection' onClick={() => setSortType('searchView')}>
-                            <SearchIcon />
+                            <SearchIcon /><span>Search</span>
                         </div>
                         <div className='filterSection' onClick={() => setSortType('filterView')}>
-                            <FilterIcon />
+                            <FilterIcon /><span>Filter</span>
                         </div>
                     </div>
                 )}

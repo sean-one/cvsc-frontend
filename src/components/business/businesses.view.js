@@ -10,8 +10,16 @@ import BusinessesViewCard from './businesses.view.card';
 import EmptyListReturn from '../emptylist.return';
 
 const BusinessesViewStyles = styled.div`
-    .businessesViewSortWrapper {
+    .businessesViewWrapper {
         color: var(--main-highlight-color);
+        width: 100%;
+    }
+
+    .businessesViewList {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 `;
 
@@ -58,26 +66,23 @@ const BusinessesView = () => {
     
     return (
         <BusinessesViewStyles>
-            <div className='businessesViewSortWrapper'>
-                {
-                    (businesses_list?.data?.length !== 0) &&
-                        <BusinessSorter
-                            sortCriteria={sortCriteria}
-                            onSortChange={setSortCriteria}
-                            searchQuery={searchQuery}
-                            onSearchChange={setSearchQuery}
-                        />
-                }
-                {
-                    isPending ? (
-                        <LoadingSpinner />
-                    ) : isError ? (
-                        null
-                    ) : (
-                        (businesses_list?.data?.length === 0)
-                            ? <EmptyListReturn listtype='business' />
-                            
-                            : <div>
+            {
+                isPending ? (
+                    <LoadingSpinner />
+                ) : isError ? (
+                    null
+                ) : (
+                    (businesses_list?.data?.length === 0)
+                        ? <EmptyListReturn listtype='business' />
+                        
+                        : <div className='businessesViewWrapper'>
+                            <BusinessSorter
+                                sortCriteria={sortCriteria}
+                                onSortChange={setSortCriteria}
+                                searchQuery={searchQuery}
+                                onSearchChange={setSearchQuery}
+                            />
+                            <div className='businessesViewList'>
                                 {
                                     sortedBusinessList?.map(business => {
                                         return (
@@ -86,9 +91,9 @@ const BusinessesView = () => {
                                     })
                                 }
                             </div>
-                    )
-                }
-            </div>
+                        </div>
+                )
+            }
         </BusinessesViewStyles>
     )
 }

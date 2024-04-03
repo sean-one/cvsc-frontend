@@ -19,15 +19,16 @@ const RegisterStyles = styled.div`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: var(--max-page-width);
+        max-width: var(--max-section-width);
         margin: 0 auto;
         padding: 2.25rem 0.75rem;
     }
 
     .registerHeader {
+        width: 100%;
         color: var(--main-highlight-color);
-        padding-left: 0.75rem
-        align-self: flex-start;
+        padding-left: 0.75rem;
+        text-align: center;
     }
 
     .registerImagePreview {

@@ -14,20 +14,28 @@ const LoginStyles = styled.div`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: var(--max-page-width);
+        max-width: var(--max-section-width);
         margin: 0 auto;
         padding: 2.25rem 0.75rem;
     }
 
     .loginHeader {
+        width: 100%;
+        color: var(--main-highlight-color);
         padding-left: 0.75rem;
-        align-self: flex-start;
+        text-align: center;
     }
 
     .registerLinkWrapper {
+        color: var(--main-color);
         display: flex;
         justify-content: center;
         margin-top: 3rem;
+    }
+
+    #registerLink {
+        cursor: pointer;
+        color: var(--main-highlight-color);
     }
 
 
@@ -131,7 +139,7 @@ const Login = () => {
                 </form>
                 
                 <div className='registerLinkWrapper'>
-                    <p onClick={() => navigate('/register')}>New to the club? Register here</p>
+                    <p onClick={() => navigate('/register')}>New to the club? <span id='registerLink'>Register here</span></p>
                 </div>
             </div>
         </LoginStyles>

@@ -13,7 +13,7 @@ const BusinessesViewCardStyles = styled.div`
         border-radius: 0.5rem;
         border: 0.1rem solid var(--main-color);
         margin-bottom: 1.5rem;
-        max-width: 50rem;
+        max-width: var(--max-section-width);
     }
 
     .businessViewCardBranding {

@@ -16,19 +16,19 @@ const ProfileMenuStyles = styled.div`
 
     .profileTab {
         cursor: pointer;
-        color: var(--secondary-text-color);
-        border-right: 1px solid var(--secondary-text-color);
+        color: var(--main-color);
+        border-right: 0.1rem solid var(--main-color);
         width: 100%;
         text-align: center;
         padding: 0.75rem 0;
     }
 
     .profileTab:first-child {
-        border-left: 1px solid var(--secondary-text-color);
+        border-left: 0.1rem solid var(--main-color);
     }
 
     .activeTab {
-        color: var(--trim-color);
+        color: var(--main-highlight-color);
         font-weight: bold;
         letter-spacing: 0.015rem;
     }
@@ -70,11 +70,11 @@ const ProfileMenu = () => {
         }
     }, [dispatch, isError, navigate, user_account_role_error, user_reset])
 
-    let menuTab
-    if (pathname === '/profile/') {
+    let menuTab;
+    if (pathname === '/profile') {
         menuTab = '';
     } else {
-        menuTab = pathname.split('/')[2] || 'home';
+        menuTab = pathname.split('/')[2] || '';
     }
     
     const buttonLink = (e) => {

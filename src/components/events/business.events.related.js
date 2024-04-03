@@ -40,33 +40,31 @@ const BusinessEventsRelated = ({ business_id }) => {
 
     return (
         <BusinessEventsRelatedStyles>
-            <div className='businessEventsRelatedWrapper'>
-                {
-                    isPending ? (
-                        <LoadingSpinner />
-                    ) : isError ? (
-                        null
-                    ) :
-                        (business_events_list.length > 0)
-                            ? <div>
-                                <div className='businessEventsRelatedHeader subheaderText'>Upcoming Events</div>
-                                {
-                                    business_events_list.map(event => {
-                                        if (location.pathname.includes('admin')) {
-                                            return (
-                                                <EventSmallPreview key={event.event_id} event={event} />
-                                            )
-                                        } else {
-                                            return (
-                                                <EventCard key={event.event_id} event={event} />
-                                            )
-                                        }
-                                    })
-                                }
-                            </div>
-                            : null
-                }
-            </div>
+            {
+                isPending ? (
+                    <LoadingSpinner />
+                ) : isError ? (
+                    null
+                ) :
+                    (business_events_list.length !== 0)
+                        ? <div className='businessEventsRelatedWrapper'>
+                            <div className='businessEventsRelatedHeader subheaderText'>Upcoming Events</div>
+                            {
+                                business_events_list.map(event => {
+                                    if (location.pathname.includes('admin')) {
+                                        return (
+                                            <EventSmallPreview key={event.event_id} event={event} />
+                                        )
+                                    } else {
+                                        return (
+                                            <EventCard key={event.event_id} event={event} />
+                                        )
+                                    }
+                                })
+                            }
+                        </div>
+                        : null
+            }
         </BusinessEventsRelatedStyles>
     )
 }

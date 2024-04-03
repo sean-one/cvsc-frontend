@@ -29,7 +29,7 @@ const BusinessViewStyles = styled.div`
         width: 100%;
         /* max-width: 1080px; */
         padding: 0 0.75rem;
-        border: 0.1rem solid red;
+        /* border: 0.1rem solid red; */
         
         @media (min-width: 76.8rem) {
             padding: 1.5rem 0.75rem;
