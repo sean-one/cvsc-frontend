@@ -24,12 +24,12 @@ import {
 } from "@styled-icons/boxicons-regular";
 
 // used at all image upload and edit components
-export const AddImageIcon = styled(CameraAdd)`color: var(--main-color); width: var(--site-icon-size);`
+export const AddImageIcon = styled(CameraAdd)`width: var(--site-icon-size);`
 
-export const SearchIcon = styled(Search)`width: var(--site-icon-size);`
+export const SearchIcon = styled(Search)`width: var(--site-icon-size); height: var(--site-icon-size);`
 export const FilterTopIcon = styled(ArrowToTop)`width: var(--site-icon-size);`
-export const FilterIcon = styled(Filter)`width: var(--site-icon-size);`
-export const CloseIcon = styled(Xmark)`width: var(--site-icon-size);`
+export const FilterIcon = styled(Filter)`width: var(--site-icon-size); height: var(--site-icon-size);`
+export const CloseIcon = styled(Xmark)`width: 2rem;`
 
 export const AddressIcon = styled(Map)`width: var(--site-icon-size);`
 export const RemoveAddressIcon = styled(LocationOff)`width: var(--site-icon-size);`
@@ -58,16 +58,16 @@ export const DeleteIcon = styled(Trash)`color: var(--error-color); width: var(--
 // export const UserIcon = styled(User)`width: var(--site-icon-size);`
 export const SmallUserIcon = styled(User)`width: 0.9rem;`
 export const ApproveUserIcon = styled(UserCheck)`width: var(--site-icon-size);`
-export const CreateEventIcon = styled(CalendarAdd)`color: var(--trim-color); width: var(--site-icon-size);`
+export const CreateEventIcon = styled(CalendarAdd)`width: var(--site-icon-size);`
 
-export const ApproveIcon = styled(CheckmarkCircle)`color: var(--trim-color); width: var(--site-icon-size);`
+export const ApproveIcon = styled(CheckmarkCircle)`width: var(--site-icon-size);`
 
 export const UserEditIcon = styled(Edit)`width: var(--site-icon-size);`
 
-export const BusinessIcon = styled(Cannabis)`color: var(--trim-color); width: var(--site-icon-size);`
+export const BusinessIcon = styled(Cannabis)`width: var(--site-icon-size);`
 export const SettingsIcon = styled(Settings)`width: var(--site-icon-size);`
 export const InactiveBusiness = styled(ErrorCircle)`color: var(--error-color); width: var(--site-icon-size);`
 export const RemoveBusinessIcon = styled(MinusCircle)`color: var(--error-color); width: var(--site-icon-size);`
 
-export const EditIcon = styled(Edit)`color: #F4F6F5; width: var(--site-icon-size);`
-export const SmallEditIcon = styled(Edit)`color: #F4F6F5; width: 1.2rem;`
+export const EditIcon = styled(Edit)`width: var(--site-icon-size);`
+export const SmallEditIcon = styled(Edit)`width: 1.2rem;`

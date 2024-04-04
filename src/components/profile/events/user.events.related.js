@@ -11,7 +11,7 @@ import useNotification from '../../../hooks/useNotification';
 
 const UserEventsRelatedStyles = styled.div`
     .noUserEvents {
-        border-top: 0.015rem dotted var(--main-text-color);
+        border-top: 0.015rem dotted var(--main-color);
         padding-top: 0.75rem;
         display: flex;
         flex-direction: column;

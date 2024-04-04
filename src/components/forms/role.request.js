@@ -10,6 +10,26 @@ import { useBusinessesQuery } from '../../hooks/useBusinessApi';
 import { uuidPattern } from './utils/form.validations';
 
 const RoleRequestStyles = styled.div`
+    .roleRequestWrapper {
+        margin-top: 1rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .roleRequestHeader {
+        margin-top: 0.5rem;
+        color: var(--main-highlight-color);
+    }
+
+    .roleRequestSection {
+        width: 100%;
+        padding: 0.5rem 1.5rem;
+        max-width: var(--max-section-width);
+        border-radius: 0.5rem;
+        border: 0.1rem solid var(--main-color);
+    }
+
     .noShowRoleRequest {
         padding-top: 1rem;
         text-align: center;
@@ -66,11 +86,11 @@ const RoleRequest = ({ user_roles }) => {
 
     return (
         <RoleRequestStyles>
-            <div>
+            <div className='roleRequestWrapper'>
                 {
                     (business_filtered.length > 0)
-                        ? <div className='sectionContainer'>
-                            <div className='subheaderText'>Create Business Role Request</div>
+                        ? <div className='roleRequestSection'>
+                            <div className='subheaderText roleRequestHeader'>Create Business Role Request</div>
 
                             <form onSubmit={handleSubmit(roleCreate)} className='standardForm'>
                                 <select {...register('business_id', {

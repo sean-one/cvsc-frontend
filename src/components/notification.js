@@ -42,7 +42,7 @@ const NotificationStyles = styled.div`
     }
     
     .success {
-        background-color: var(--main-text-color);
+        background-color: var(--main-color);
     }
 
     .error {

@@ -25,7 +25,6 @@ const GlobalStyle = createGlobalStyle`
 
         /* --main-color: ${(props) => props.theme['--main-color']}; */
         --secondary-color: ${(props) => props.theme['--secondary-color']};
-        --main-text-color: ${(props) => props.theme['--main-text-color']};
         --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
         --trim-color: #286237;
         --opacity: ${(props) => props.theme['--opacity']};
@@ -60,7 +59,7 @@ const Styles = styled.div`
         max-width: 100vw;
         font-size: var(--main-font-size);
         line-height: 1.3;
-        color: var(--main-text-color);
+        color: var(--main-color);
         background-color: var(--main-background-color);
     }
 
@@ -185,17 +184,20 @@ const Styles = styled.div`
         color: initial; // Reset text color to default, though this doesn't usually affect checkboxes
     }
 
+    // business.role.js & user.role.js
     .roleWrapper {
+        width: 100%;
         margin: 0.15rem 0;
         padding: 0.3rem 1.125rem;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border-top: 1px dotted var(--main-text-color);
-        border-bottom: 1px dotted var(--main-text-color);
+        border-top: 1px dotted var(--main-color);
+        border-bottom: 1px dotted var(--main-color);
     }
 
+    // business.role.js & user.role.js
     .roleButtonWrapper {
         display: flex;
         flex-direction: row;

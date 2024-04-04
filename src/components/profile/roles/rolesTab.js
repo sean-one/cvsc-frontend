@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -7,6 +8,38 @@ import { useUserRolesQuery } from '../../../hooks/useRolesApi';
 import RoleRequest from '../../forms/role.request';
 import UserRoles from './user.roles';
 import LoadingSpinner from '../../loadingSpinner';
+
+const RolesTabStyles = styled.div`
+    .rolesTabWrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: 108rem) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+    }
+
+    .requestSection {
+        width: 100%;
+
+        @media (min-width: 108rem) {
+            flex-grow: 1;
+        }
+    }
+
+    .userRolesListSection {
+        width: 100%;
+
+        @media (min-width: 108rem) {
+            flex-grow: 1.7;
+        }
+    }
+`;
 
 
 const RolesTab = () => {
@@ -49,25 +82,29 @@ const RolesTab = () => {
     
 
     return (
-        <div>
+        <RolesTabStyles>
             {
                 isPending ? (
                     <LoadingSpinner />
                 ) : isError ? (
                     null
                 ) : (
-                    <div>
-                        <RoleRequest user_roles={user_roles?.data} />
+                    <div className='rolesTabWrapper'>
+                        <div className='requestSection'>
+                            <RoleRequest user_roles={user_roles?.data} />
+                        </div>
                         
                         {/* current user roles */}
                         {
                             (user_roles?.data?.length > 0) &&
-                                <UserRoles roles={user_roles?.data} />
+                                <div className='userRolesListSection'>
+                                    <UserRoles roles={user_roles?.data} />
+                                </div>
                         }
                     </div>
                 )
             }
-        </div>
+        </RolesTabStyles>
     )
 }
 

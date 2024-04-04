@@ -8,8 +8,8 @@ const lightTheme = {
     '--header-highlight': '#202020',
 
 
-    '--main-text-color': '#37474F',
-    '--main-color': '#70AF97',
+    // '--main-text-color': '#37474F',
+    // '--main-color': '#70AF97',
     '--input-placeholder': 'rgb(38,50,56,0.4)',
     '--secondary-color': '#263238',
     '--secondary-text-color' : '#263238',
@@ -22,8 +22,8 @@ const darkTheme = {
     '--main-highlight-color': '#F0F0F0',
     '--header-highlight': '#F0F0F0',
 
-    '--main-text-color': '#5F9E7F',
-    '--main-color': '#263238',
+    // '--main-text-color': '#5F9E7F',
+    // '--main-color': '#263238',
     '--input-placeholder': 'rgb(112,175,151,0.4)',
     '--secondary-color': '#70AF97',
     '--secondary-text-color': '#CFD8DC',
