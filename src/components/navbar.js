@@ -15,7 +15,7 @@ const NavbarStyles = styled.div`
         left: 0;
         height: var(--header-height);
         background-color: var(--main-background-color);
-        border-bottom: 0.1rem solid var(--main-color);
+        border-bottom: 0.1rem solid var(--main-highlight-color);
         width: 100%;
         display: flex;
         justify-content: center;
@@ -46,7 +46,7 @@ const NavbarStyles = styled.div`
     }
 
     .navBarMenu {
-        color: #006633;
+        color: var(--main-highlight-color);
         display: flex;
         align-items: center;
         justify-content: space-between;

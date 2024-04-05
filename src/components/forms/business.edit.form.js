@@ -23,34 +23,37 @@ const BusinessEditFormStyles = styled.div`
         padding: 2.25rem 0.75rem;
     }
 
+    .businessEditFormHeader {
+        color: var(--main-highlight-color);
+    }
+
     .businessImage {
         position: relative;
         min-width: 225px;
         max-width: 450px;
 
-        canvas {
+        canvas, img {
             max-width: 100%;
-            border: 1px solid var(--trim-color);
+            border: 0.1rem solid var(--main-color);
             display: block;
             border-radius: 50%;
         }
-        
-        img {
-            width: 100%;
-            border: 1px solid var(--trim-color);
-            display: block;
-            border-radius: 50%;
-        }}
+    }
     
     .editImageButton {
         position: absolute;
         right: 15%;
         bottom: 0;
-        border: 1px solid var(--secondary-color);
+        border: 0.1rem solid var(--main-color);
         border-radius: 50%;
-        color: var(--trim-color);
-        background-color: var(--main-color);
+        color: var(--main-highlight-color);
+        background-color: var(--main-background-color);
         padding: 0.75rem;
+    }
+
+    .businessEditFormContactHeader {
+        color: var(--main-highlight-color);
+        padding: 1rem 0;
     }
 `;
 
@@ -180,7 +183,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
         <BusinessEditFormStyles>
             <div>
                 <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
-                    <h1>{businessData?.business_name}</h1>
+                    <div className='headerText businessEditFormHeader'>{businessData?.business_name}</div>
                     
                     <div className='businessImageWrapper'>
                         <div className='businessImage'>
@@ -253,7 +256,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                             />
                     }
                     
-                    <div className='subheaderText'>Contacts & Social Media:</div>
+                    <div className='subheaderText businessEditFormContactHeader'>Contacts & Social Media:</div>
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>

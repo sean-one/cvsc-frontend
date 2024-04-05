@@ -17,6 +17,11 @@ const BusinessCreateFormStyles = styled.div`
         padding-bottom: 0.75rem;
         align-self: flex-end;
     }
+
+    .businessCreateFormContactHeader {
+        padding: 1rem 0;
+        color: var(--main-highlight-color);
+    }
 `;
 
 const BusinessCreateForm = () => {
@@ -212,7 +217,7 @@ const BusinessCreateForm = () => {
                         clearErrors={clearErrors}
                     />
 
-                    <div className='subheaderText'>Business Contacts & Social Media:</div>
+                    <div className='subheaderText businessCreateFormContactHeader'>Business Contacts & Social Media:</div>
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>

@@ -33,7 +33,7 @@ const UserRolesStyles = styled.div`
     
     .userRolesSectionHeader {
         width: 100%;
-        height: 6rem;
+        height: 4.5rem;
         border-radius: 0.5rem;
         color: var(--main-background-color);
         background-color: var(--main-highlight-color);

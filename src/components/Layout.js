@@ -142,7 +142,7 @@ const Styles = styled.div`
     input, textarea, select {
         width: 100%;
         font-size: 2.1rem;
-        padding: 0.75rem 1.5rem;
+        padding: 0.75rem 1.5rem 0.25rem;
         margin: 0; 
         border: none; 
         border-radius: 0;
@@ -153,7 +153,7 @@ const Styles = styled.div`
         background: transparent;
         font-family: inherit; /* Inherit font from parent elements */
         background: var(--background-color);
-        border-bottom: 1px solid var(--main-color);
+        border-bottom: 0.1rem solid var(--main-color);
         color: var(--main-color);
 
         ::placeholder {
@@ -165,6 +165,12 @@ const Styles = styled.div`
         appearance: auto;
         -webkit-appearance: menulist;
         -moz-appearance: menulist;
+    }
+
+    textarea {
+        margin-top: 1rem;
+        border-radius: 0.25rem;
+        border: 0.1rem solid var(--main-color);
     }
 
     input[type="checkbox"] {
@@ -187,8 +193,7 @@ const Styles = styled.div`
     // business.role.js & user.role.js
     .roleWrapper {
         width: 100%;
-        margin: 0.15rem 0;
-        padding: 0.3rem 1.125rem;
+        padding: 0.75rem;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -202,7 +207,7 @@ const Styles = styled.div`
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        gap: 0.75rem;
+        gap: 1rem;
     }
 
     .visuallyHidden {
@@ -244,6 +249,7 @@ const Styles = styled.div`
         background-color: transparent;
     }
     
+    // business.create.form.js
     .formImage {
         width: 100%;
         max-width: 450px;
@@ -269,6 +275,7 @@ const Styles = styled.div`
         }
     }
 
+    // business.create.form.js
     .formCirclePreview {
         canvas {
             border-radius: 50%;
@@ -279,6 +286,7 @@ const Styles = styled.div`
         }
     }
 
+    // register.js, login.js, business.create.form.js, business.edit.form.js
     .standardForm {
         width: 95%;
         max-width: 52.5rem;
@@ -289,6 +297,7 @@ const Styles = styled.div`
         gap: 5px;
     }
 
+    // register.js, login.js, business.create.form.js, business.edit.form.js
     .inputWrapper {
         /* display: flex; */
         flex-direction: column;
@@ -297,6 +306,7 @@ const Styles = styled.div`
         margin: 0.375rem 0 0.15rem;
     }
 
+    // business.create.form.js, business.edit.form.js
     .contactLabelWrapper {
         width: 100%;
         display: flex;
@@ -329,6 +339,7 @@ const Styles = styled.div`
         gap: 10px;
     }
 
+    // register.js, business.create.form.js, business.edit.form.js
     .formRowInputIcon {
         display: flex;
         justify-content: space-between;
@@ -339,6 +350,7 @@ const Styles = styled.div`
         }
     }
 
+    // register.js, business.create.form.js, business.edit.form.js
     .inputLabel {
         padding-top: 1.125rem;
         display: flex;
@@ -346,15 +358,18 @@ const Styles = styled.div`
         cursor: pointer;
     }
 
+    // register.js, business.create.form.js, business.edit.form.js
     .inputLabelInput {
         display: none;
     }
 
+    // business.edit.form.js - removes top padding from camera icon
     .removeInputLabelPadding {
         padding-top: 0;
         padding: 0;
     }
 
+    // register.js, login.js, business.create.form.js, address.form.js
     .errormessage {
         width: 100%;
         font-size: 1.2rem;
@@ -364,10 +379,12 @@ const Styles = styled.div`
         color: var(--error-color);
     }
 
+    // business.create.form.js
     .imageError {
         text-align: right;
     }
 
+    // register.js, login.js, business.create.form.js, business.edit.form.js
     .formButtonWrapper {
         display: flex;
         justify-content: space-around;

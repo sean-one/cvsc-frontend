@@ -7,11 +7,13 @@ import { AddressIcon, RemoveAddressIcon } from '../icons/siteIcons';
 
 const AddressFormStyles = styled.div`
     .addressInputWrapper {
-        margin: 0.25rem 0 0.1rem;
+        width: 100%;
+        /* margin: 0.25rem 0 0.1rem; */
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1rem;
+        border: 0.1rem solid yellow;
     }
 
     .removeAddress {
@@ -22,11 +24,11 @@ const AddressFormStyles = styled.div`
     .checkboxContainer {
         display: flex;
         align-items: center;
-    }
 
-    .checkboxContainer label {
-        cursor: pointer;
-        display: flex;
+        label {
+            cursor: pointer;
+            display: flex;
+        }
     }
 
     .checkboxContainer input[type='checkbox'] {
