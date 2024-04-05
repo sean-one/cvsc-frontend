@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import { image_link } from '../../helpers/dataCleanUp';
 import useImagePreview from '../../hooks/useImagePreview';
 import { setImageForForm } from '../../helpers/setImageForForm';
-import { useUpdateBusinessMutation } from '../../hooks/useBusinessApi';
+import { useUpdateBusinessMutation, useBusinessQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './utils/form.validations';
-import AxiosInstance from '../../helpers/axios';
 
+import LoadingSpinner from '../loadingSpinner';
 import AddressForm from './address.form';
 
 const BusinessEditFormStyles = styled.div`
@@ -58,11 +58,11 @@ const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = ({ userBusinessRole }) => {
-    const [ businessData, setBusinessData ] = useState(null)
     const { business_id } = useParams()
     const { dispatch } = useNotification()
 
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
+    const { data: business_data, isPending, isError } = useBusinessQuery(business_id)
     
     const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
 
@@ -151,39 +151,31 @@ const BusinessEditForm = ({ userBusinessRole }) => {
     }
 
     useEffect(() => {
-        const getBusinessDetails = async () => {
-            try {
-                const businessResponse = await AxiosInstance.get(`/businesses/${business_id}`)
-
-                setBusinessData(businessResponse.data)
-
-                reset({
-                    business_email: businessResponse.data?.business_email,
-                    business_description: businessResponse.data?.business_description,
-                    place_id: businessResponse.data?.place_id || '',
-                    formatted_address: businessResponse.data?.formatted_address,
-                    business_instagram: businessResponse.data?.business_instagram || '',
-                    business_website: businessResponse.data?.business_website || '',
-                    business_facebook: businessResponse.data?.business_facebook || '',
-                    business_phone: businessResponse.data?.business_phone || '',
-                    business_twitter: businessResponse.data?.business_twitter || '',
-                    remove_address: false
-                })
-            } catch (error) {
-                console.log(error)
-            }
+        if (business_data) {
+            reset({
+                business_email: business_data.data?.business_email,
+                business_description: business_data.data?.business_description,
+                place_id: business_data.data?.place_id || '',
+                formatted_address: business_data.data?.formatted_address || '',
+                business_instagram: business_data.data?.business_instagram || '',
+                business_website: business_data.data?.business_website || '',
+                business_facebook: business_data.data?.business_facebook || '',
+                business_phone: business_data.data?.business_phone || '',
+                business_twitter: business_data.data?.business_twitter || '',
+                remove_address: false
+            })
         }
+    }, [business_data, reset])
 
-        getBusinessDetails()
-    }, [business_id, reset])
+    if (isPending) {
+        return <LoadingSpinner />
+    }
 
-
-    console.log(businessData)
     return (
         <BusinessEditFormStyles>
             <div>
                 <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
-                    <div className='headerText businessEditFormHeader'>{businessData?.business_name}</div>
+                    <div className='headerText businessEditFormHeader'>{business_data?.data?.business_name}</div>
                     
                     <div className='businessImageWrapper'>
                         <div className='businessImage'>
@@ -196,8 +188,8 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                                     />
                                     : <img
                                         // className=''
-                                        src={image_link(businessData?.business_avatar)}
-                                        alt={businessData?.business_name}
+                                        src={image_link(business_data?.data?.business_avatar)}
+                                        alt={business_data?.data?.business_name}
                                     />
                             }
                             {/* BUSINESS AVATAR UPLOAD */}
@@ -252,7 +244,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                                 clearErrors={clearErrors}
                                 errors={errors}
                                 strikethrough={addressStrike}
-                                currentValue={businessData?.formatted_address}
+                                currentValue={business_data?.data?.formatted_address}
                             />
                     }
                     

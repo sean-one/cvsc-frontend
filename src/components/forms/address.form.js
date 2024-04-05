@@ -10,10 +10,17 @@ const AddressFormStyles = styled.div`
         width: 100%;
         /* margin: 0.25rem 0 0.1rem; */
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
         gap: 1rem;
-        border: 0.1rem solid yellow;
+        /* border: 0.1rem solid yellow; */
+    }
+
+    .addressInput {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .removeAddress {
@@ -91,26 +98,30 @@ const AddressForm = ({ register, setValue, errors, clearErrors, currentValue='',
     return (
         <AddressFormStyles>
             <div className='addressInputWrapper'>
-                <label htmlFor="formatted_address"><AddressIcon /></label>
-                {isEditing ? (
-                    <AutoComplete
-                        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                        {...register('formatted_address')}
-                        name='formatted_address'
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onClick={() => clearErrors('formatted_address')}
-                        onPlaceSelected={handleSelect}
-                        options={{
-                            bounds: locationBounds,
-                            types: ['address'],
-                        }}
-                    />
-                ) : (
-                    <div onClick={handleEditClick}>
-                        <div className={strikethrough ? 'removeAddress' : ''}>{inputValue ? inputValue : 'add address'}</div>
-                    </div>
-                )}
+                <div className='addressInput'>
+                    <label htmlFor="formatted_address"><AddressIcon /></label>
+                    {
+                        isEditing 
+                            ? (<AutoComplete
+                                apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+                                {...register('formatted_address')}
+                                name='formatted_address'
+                                value={inputValue || ''}
+                                onChange={handleInputChange}
+                                onClick={() => clearErrors('formatted_address')}
+                                onPlaceSelected={handleSelect}
+                                options={{
+                                    bounds: locationBounds,
+                                    types: ['address'],
+                                }}
+                            />
+                        ) : (
+                            <div onClick={handleEditClick}>
+                                <div className={strikethrough ? 'removeAddress' : ''}>{inputValue ? inputValue : 'Add business address'}</div>
+                            </div>
+                        )
+                    }
+                </div>
                 {
                     pathname.includes('/business/edit')
                         ? <div className='checkboxContainer'>
