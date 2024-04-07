@@ -5,7 +5,7 @@ import BusinessRole from '../../../roles/business.role';
 
 
 const InactiveRoles = ({ roles_list }) => {
-    const [viewInactive, setViewInactive] = useState(true)
+    const [viewInactive, setViewInactive] = useState(false)
 
     const toggleInactive = () => {
         setViewInactive(!viewInactive)

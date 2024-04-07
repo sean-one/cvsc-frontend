@@ -5,7 +5,7 @@ import BusinessRole from '../../../roles/business.role';
 
 
 const CreatorRoles = ({ roles_list }) => {
-    const [viewCreators, setViewCreators] = useState(true)
+    const [viewCreators, setViewCreators] = useState(false)
 
     const toggleCreators = () => {
         setViewCreators(!viewCreators)

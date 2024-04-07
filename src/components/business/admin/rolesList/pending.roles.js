@@ -5,7 +5,7 @@ import BusinessRole from '../../../roles/business.role';
 
 
 const PendingRoles = ({ roles_list }) => {
-    const [viewRequest, setViewRequest] = useState(true);
+    const [viewRequest, setViewRequest] = useState(false);
 
     const toggleRequest = () => {
         setViewRequest(!viewRequest)

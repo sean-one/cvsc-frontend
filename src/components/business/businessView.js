@@ -45,6 +45,10 @@ const BusinessViewStyles = styled.div`
     .businessViewHeaderLeft {
         display: flex;
     }
+
+    /* .businessViewAddress {
+        font-size: var(--small-header-font);
+    } */
     
     .businessViewDetails {
         display: flex;
@@ -168,7 +172,7 @@ const BusinessView = () => {
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&
-                            <div>{business?.data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
+                            <div className='businessViewAddress'>{business?.data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
                     }
                 </div>
 

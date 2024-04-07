@@ -15,7 +15,7 @@ const RolesTabStyles = styled.div`
         display: flex;
         flex-direction: column;
 
-        @media (min-width: 108rem) {
+        @media (min-width: 1080px) {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
@@ -27,7 +27,7 @@ const RolesTabStyles = styled.div`
     .requestSection {
         width: 100%;
 
-        @media (min-width: 108rem) {
+        @media (min-width: 1080px) {
             flex-grow: 1;
         }
     }
@@ -35,7 +35,7 @@ const RolesTabStyles = styled.div`
     .userRolesListSection {
         width: 100%;
 
-        @media (min-width: 108rem) {
+        @media (min-width: 1080px) {
             flex-grow: 1.7;
         }
     }

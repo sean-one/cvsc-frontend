@@ -5,7 +5,7 @@ import BusinessRole from '../../../roles/business.role';
 
 
 const ManagerRoles = ({ roles_list }) => {
-    const [viewManagers, setViewManagers] = useState(true)
+    const [viewManagers, setViewManagers] = useState(false)
 
     const toggleManagers = () => {
         setViewManagers(!viewManagers)

@@ -1,8 +1,43 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 import { useBusinessTransferMutation } from '../../../hooks/useBusinessApi';
 import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import { ShowIcon, HideIcon } from '../../icons/siteIcons';
+
+const BusinessTransferStyles = styled.div`
+    .businessTransferSection {
+        flex-direction: column;
+        height: auto;
+        margin-bottom: 2rem;
+        /* padding: 1.5rem 0; */
+        gap: 1rem;
+    }
+    
+    .businessTransferDescription {
+        width: 100%;
+        color: var(--main-highlight-color);
+        font-size: var(--small-font);
+    }
+    
+    .businessTransferSelector {
+        width: 100%;
+    }
+
+    .businessTransferActionSection {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .businessTransferWarning {
+        width: 100%;
+        font-size: var(--small-font);
+        color: var(--error-color);
+    }
+`;
 
 
 const BusinessTransfer = ({ business_id }) => {
@@ -29,41 +64,43 @@ const BusinessTransfer = ({ business_id }) => {
     const management_list = manager_list?.data?.filter(manager_role => manager_role.role_type === 'manager') || []
 
     return (
-        <div>
-            <div className='businessAdminDetailSection'>
-                <div className='businessAdminDetailText'>Transfer Business</div>
-                <div className='businessTransferEdit' onClick={() => setTransferAdminEditView(!transferAdminEditView)}>{transferAdminEditView ? <HideIcon /> : <ShowIcon />}</div>
+        <BusinessTransferStyles>
+            <div>
+                <div className='businessAdminDetailSection'>
+                    <div className='businessAdminDetailText'>Transfer Business</div>
+                    <div onClick={() => setTransferAdminEditView(!transferAdminEditView)}>{transferAdminEditView ? <HideIcon /> : <ShowIcon />}</div>
+                </div>
+                {
+                    transferAdminEditView
+                        ? <div className='businessAdminDetailSection businessTransferSection'>
+
+                            <div className='businessTransferDescription'>allows transfer of the business and business admin role to a manager</div>
+
+                            {
+                                (management_list?.length > 0) &&
+                                <div className='businessTransferActionSection'>
+                                    <div className='businessTransferSelector'>
+                                        <select value={transferManagerSelected} onChange={handleManagerSelectChange}>
+                                            <option value=''>Select Manager...</option>
+                                            {
+                                                management_list?.map(manager => (
+                                                    <option key={manager.user_id} value={manager.user_id}>{manager.username}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                    <div className='businessTransferSubmitButton'>
+                                        <button disabled={!isValidUUID(transferManagerSelected)} onClick={() => transferBusiness(transferManagerSelected)}>transfer</button>
+                                    </div>
+                                </div>
+                            }
+
+                            <div className='businessTransferWarning'>{management_list?.length > 0 ? '* this action cannot be undone' : '* business can only be transferred to a current manager'}</div>
+                        </div>
+                        : null
+                }
             </div>
-            {
-                transferAdminEditView
-                    ? <div className='businessAdminDetailSection businessTransferSection'>
-
-                        <div className='businessTransferDescription'>allows transfer of the business and business admin role to a manager</div>
-
-                        {
-                            (management_list?.length > 0) &&
-                            <div className='businessTransferActionSection'>
-                                <div className='businessTransferSelector'>
-                                    <select value={transferManagerSelected} onChange={handleManagerSelectChange}>
-                                        <option value=''>Select Manager...</option>
-                                        {
-                                            management_list?.map(manager => (
-                                                <option key={manager.user_id} value={manager.user_id}>{manager.username}</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
-                                <div className='businessTransferSubmitButton'>
-                                    <button disabled={!isValidUUID(transferManagerSelected)} onClick={() => transferBusiness(transferManagerSelected)}>transfer</button>
-                                </div>
-                            </div>
-                        }
-
-                        <div className='businessTransferWarning'>{management_list?.length > 0 ? '* this action cannot be undone' : '* business can only be transferred to a current manager'}</div>
-                    </div>
-                    : null
-            }
-        </div>
+        </BusinessTransferStyles>
     )
 }
 

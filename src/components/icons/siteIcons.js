@@ -49,8 +49,8 @@ export const ToggleOnIcon = styled(ToggleRight)`color: var(--main-color); width:
 export const ToggleOffIcon = styled(ToggleLeft)`color: var(--error-color); width: 4.75rem;`
 
 // used for various roles sections to show and hide
-export const ShowIcon = styled(ChevronDown)`color: var(--secondary-color); width: var(--site-icon-size);`
-export const HideIcon = styled(ChevronUp)`color: var(--secondary-color); width: var(--site-icon-size);`
+export const ShowIcon = styled(ChevronDown)`width: var(--site-icon-size);`
+export const HideIcon = styled(ChevronUp)`width: var(--site-icon-size);`
 
 // various delete buttons (roles, business)
 export const DeleteIcon = styled(Trash)`color: var(--error-color); width: var(--site-icon-size);`

@@ -21,9 +21,8 @@ const BusinessAdminViewStyles = styled.div`
     .businessAdminViewWrapper {
         display: flex;
         flex-direction: column;
-        border: 0.1rem solid red;
 
-        @media (min-width: 76.8rem) {
+        @media (min-width: 768px) {
             flex-direction: row;
         }
     }
@@ -35,7 +34,7 @@ const BusinessAdminViewStyles = styled.div`
         align-items: center;
         margin: 0.5rem 0;
 
-        @media (min-width: 76.8rem) {
+        @media (min-width: 768px) {
             /* margin: 4rem 0; */
         }
 
@@ -64,6 +63,10 @@ const BusinessAdminViewStyles = styled.div`
     .businessAdminViewHeader {
         color: var(--main-highlight-color);
         padding: 1rem 0;
+
+        @media (min-width: 768px) {
+            margin-top: 2rem;
+        }
     }
 
     .businessAdminViewControls {
@@ -89,44 +92,6 @@ const BusinessAdminViewStyles = styled.div`
         flex-direction: row;
         justify-content: space-around;
         gap: 10px;
-    }
-
-    .adminFallbackNull {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        gap: 10px;
-    }
-
-    .businessTransferSection {
-        flex-direction: column;
-        height: auto;
-        margin-bottom: 2rem;
-        /* padding: 1.5rem 0; */
-        gap: 1rem;
-    }
-
-    .businessTransferSelector {
-        width: 100%;
-    }
-
-    .businessTransferDescription {
-        width: 100%;
-        font-size: var(--small-font);
-    }
-
-    .businessTransferActionSection {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        gap: 1rem;
-    }
-
-    .businessTransferWarning {
-        width: 100%;
-        font-size: var(--small-font);
-        color: var(--error-color);
     }
 `;
 
