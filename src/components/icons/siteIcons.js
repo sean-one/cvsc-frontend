@@ -45,8 +45,8 @@ export const PhoneIcon = styled(Phone)`width: var(--contact-icon-size);`
 export const WebSiteIcon = styled(Web)`width: var(--contact-icon-size);`
 
 // used in Busines admin menu for active status and business request open toggles
-export const ToggleOnIcon = styled(ToggleRight)`color: var(--secondary-color); width: 4.75rem;`
-export const ToggleOffIcon = styled(ToggleLeft)`color: var(--secondary-color); width: 4.75rem;`
+export const ToggleOnIcon = styled(ToggleRight)`color: var(--main-color); width: 4.75rem;`
+export const ToggleOffIcon = styled(ToggleLeft)`color: var(--error-color); width: 4.75rem;`
 
 // used for various roles sections to show and hide
 export const ShowIcon = styled(ChevronDown)`color: var(--secondary-color); width: var(--site-icon-size);`

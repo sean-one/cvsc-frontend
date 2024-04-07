@@ -190,6 +190,31 @@ const Styles = styled.div`
         color: initial; // Reset text color to default, though this doesn't usually affect checkboxes
     }
 
+    // user.roles.js, inactive.roles.js, creator.roles.js, manager.roles.js, pending.roles.js
+    .rolesListSection {
+        width: 100%;
+        max-width: var(--max-section-width);
+        margin-bottom: 1rem;
+    }
+    
+    // user.roles.js, inactive.roles.js, creator.roles.js, manager.roles.js, pending.roles.js
+    .rolesListSectionHeader {
+        width: 100%;
+        height: 4.5rem;
+        border-radius: 0.5rem;
+        color: var(--main-background-color);
+        background-color: var(--main-highlight-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        margin: 0.25rem 0;
+
+        svg {
+            color: var(--main-background-color);
+        }
+    }
+
     // business.role.js & user.role.js
     .roleWrapper {
         width: 100%;

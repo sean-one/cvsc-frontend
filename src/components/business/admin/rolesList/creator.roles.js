@@ -13,8 +13,8 @@ const CreatorRoles = ({ roles_list }) => {
 
 
     return (
-        <div>
-            <div className='sectionRowSplit'>
+        <div className='rolesListSection'>
+            <div className='rolesListSectionHeader'>
                 <div className='subheaderText'>Creators</div>
                 <div onClick={() => toggleCreators()}>{viewCreators ? <HideIcon /> : <ShowIcon />}</div>
             </div>

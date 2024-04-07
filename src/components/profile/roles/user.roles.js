@@ -25,29 +25,6 @@ const UserRolesStyles = styled.div`
         align-items: flex-end;
         color: var(--main-color);
     }
-    
-    .userRolesSection {
-        width: 100%;
-        max-width: var(--max-section-width);
-        margin-bottom: 1rem;
-    }
-    
-    .userRolesSectionHeader {
-        width: 100%;
-        height: 4.5rem;
-        border-radius: 0.5rem;
-        color: var(--main-background-color);
-        background-color: var(--main-highlight-color);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 1rem;
-        margin: 0.25rem 0;
-
-        svg {
-            color: var(--main-background-color);
-        }
-    }
 `;
 
 
@@ -91,8 +68,8 @@ const UserRoles = ({ roles }) => {
                 <div className='userRolesList'>
                     {
                         (admin_roles.length > 0) &&
-                            <div className='userRolesSection'>
-                                <div className='userRolesSectionHeader'>
+                            <div className='rolesListSection'>
+                                <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Admin Roles</div>
                                     <div onClick={() => toggleAdminList()}>{adminView ? <HideIcon /> : <ShowIcon />}</div>
                                 </div>
@@ -106,8 +83,8 @@ const UserRoles = ({ roles }) => {
                     }
                     {
                         (manager_roles.length > 0) &&
-                        <div className='userRolesSection'>
-                                <div className='userRolesSectionHeader'>
+                        <div className='rolesListSection'>
+                                <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Manager Roles</div>
                                     <div onClick={() => toggleManagerList()}>{managerView ? <HideIcon /> : <ShowIcon />}</div>
                                 </div>
@@ -121,8 +98,8 @@ const UserRoles = ({ roles }) => {
                     }
                     {
                         (creator_roles.length > 0) &&
-                        <div className='userRolesSection'>
-                                <div className='userRolesSectionHeader'>
+                        <div className='rolesListSection'>
+                                <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Creator Roles</div>
                                     <div onClick={() => toggleCreatorList()}>{creatorView ? <HideIcon /> : <ShowIcon />}</div>
                                 </div>
@@ -138,8 +115,8 @@ const UserRoles = ({ roles }) => {
                 {
                     (inactive_roles.length > 0) &&
                         <div className='userRolesList'>
-                            <div className='userRolesSection'>
-                                <div className='userRolesSectionHeader'>
+                            <div className='rolesListSection'>
+                                <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Inactive Roles</div>
                                     <div onClick={() => toggleInactive()}>{viewInactive ? <HideIcon /> : <ShowIcon />}</div>
                                 </div>

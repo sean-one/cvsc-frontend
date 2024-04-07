@@ -36,7 +36,7 @@ const BusinessAdminViewStyles = styled.div`
         margin: 0.5rem 0;
 
         @media (min-width: 76.8rem) {
-            margin: 4rem 0;
+            /* margin: 4rem 0; */
         }
 
         img {
@@ -74,6 +74,14 @@ const BusinessAdminViewStyles = styled.div`
     
     .businessAdminDetailText {
         width: 100%;
+    }
+
+    .activeStatus, .requestOpen {
+        color: var(--main-highlight-color);
+    }
+
+    .inactiveStatus, .requestClosed {
+        color: var(--error-color);
     }
     
     .businessAdminViewBusinessButtons {
@@ -178,7 +186,9 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         (userBusinessRole?.role_type === 'admin') &&
                             <div className='businessAdminSection'>
                                 <div className='businessAdminDetailSection'>
-                                    <div className='businessAdminDetailText'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
+                                    <div className={`businessAdminDetailText`}>
+                                        Business Status: <span className={`${business_data?.active_business ? 'activeStatus' : 'inactiveStatus'}`}>{business_data?.active_business ? 'Active' : 'Inactive'}</span>
+                                    </div>
                                     <div className='businessAdminViewBusinessButtons'>
                                         <BusinessToggle
                                             business_id={business_id}
@@ -189,7 +199,9 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                                 </div>
 
                                 <div className='businessAdminDetailSection'>
-                                    <div className='businessAdminDetailText'>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
+                                    <div className='businessAdminDetailText'>
+                                        Business Role Request: <span className={`${business_data?.business_request_open ? 'requestOpen' : 'requestClosed'}`}>{business_data?.business_request_open ? 'OPEN' : 'CLOSED'}</span>
+                                    </div>
                                     <BusinessToggle
                                         business_id={business_id}
                                         toggleStatus={business_data?.business_request_open}
@@ -200,9 +212,9 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                                 <BusinessTransfer business_id={business_id} />
                             </div>
                     }
+                    <BusinessRoles />
                 </div>
             </div>
-            <BusinessRoles />
             <BusinessEventsRelated business_id={business_id} />
         </BusinessAdminViewStyles>
     )

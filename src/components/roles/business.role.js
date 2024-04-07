@@ -5,7 +5,11 @@ import RoleAction from './buttons/role.action';
 import DeleteRole from './buttons/delete.role';
 
 
-const BusinessRoleStyles = styled.div``;
+const BusinessRoleStyles = styled.div`
+    .businessRoleUsername {
+        color: var(--main-highlight-color);
+    }
+`;
 
 const BusinessRole = ({ role, list_type }) => {
     const businessList = {
@@ -18,7 +22,7 @@ const BusinessRole = ({ role, list_type }) => {
     return (
         <BusinessRoleStyles>
             <div className='roleWrapper'>
-                <div>{role?.username}</div>
+                <div className='businessRoleUsername'>{role?.username}</div>
                 <div className='roleButtonWrapper'>
                     <RoleAction role_id={role.id} actionType={businessList[list_type]} />
                     <DeleteRole role={role} />   

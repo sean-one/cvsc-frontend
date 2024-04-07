@@ -13,8 +13,8 @@ const ManagerRoles = ({ roles_list }) => {
 
 
     return (
-        <div className='sectionContainer'>
-            <div className='sectionRowSplit'>
+        <div className='rolesListSection'>
+            <div className='rolesListSectionHeader'>
                 <div className='subheaderText'>Managers</div>
                 <div onClick={() => toggleManagers()}>{viewManagers ? <HideIcon /> : <ShowIcon />}</div>
             </div>
