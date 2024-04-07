@@ -16,6 +16,7 @@ const BusinessSorterStyles = styled.div`
     .businessSorter {
         width: 100%;
         height: 100%;
+        color: var(--main-highlight-color);
         max-width: var(--max-section-width);
         display: flex;
     }

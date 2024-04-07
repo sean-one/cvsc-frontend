@@ -8,19 +8,19 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 const ManagementListItemStyles = styled.div`
     .managementListItemWrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
         width: 100%;
-        margin: 1.5rem 0;
+        max-width: var(--max-section-width);
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        margin: 0.5rem auto;
         padding: 0.75rem;
-        border: 1px solid var(--trim-color);
-        border-radius: 15px;
+        border: 0.1rem solid var(--main-color);
+        border-radius: 1.5rem;
     }
 
     .managementListItemLogo {
-        width: 100%;
-        max-width: 100px;
+        max-width: 10rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -28,37 +28,34 @@ const ManagementListItemStyles = styled.div`
 
         img {
             width: 100%;
-            border: 1px solid var(--trim-color);
+            border: 0.3rem solid var(--main-color);
             display: block;
             border-radius: 50%;
         }
     }
 
     .managementListItemDetails {
+        width: 100%;
         display: flex;
         flex-direction: column;
-        width: 100%;
-        height: 100%;
+        justify-content: center;
+        align-items: flex-start;
         margin: 0.75rem;
     }
-
+    
     .managementListItemBusinessname {
-        font-weight: bold;
-        font-size: 1.8rem;
+        width: 100%;
+        color: var(--main-highlight-color);
         letter-spacing: 1.5;
     }
 
-    .managementListItemStatus {
-        font-size: 1.2rem;
-    }
-
     .managementListItemAdminButton {
-        margin-top: 0.75rem;
+        color: var(--main-highlight-color);
         display: flex;
         gap: 1.5rem;
         align-self: flex-end;
     }
-`
+`;
 
 
 const ManagementListItem = ({ business }) => {
@@ -72,8 +69,8 @@ const ManagementListItem = ({ business }) => {
                     <img src={image_link(business?.business_avatar)} alt={business.business_name} />
                 </div>
                 <div className='managementListItemDetails'>
-                    <div className='managementListItemBusinessname'>{business.business_name}</div>
-                    <div className='managementListItemStatus'>
+                    <div className='subheaderText managementListItemBusinessname'>{business.business_name}</div>
+                    <div className='smallText'>
                         <span style={{ color: business.active_business ? 'inherit' : `var(--error-color)` }}>
                             {business.active_business ? 'Active' : 'Inactive'}
                         </span>

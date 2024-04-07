@@ -39,11 +39,13 @@ const BusinessesViewCardStyles = styled.div`
     }
 
     .businessViewCardBusinessName {
+        color: var(--main-highlight-color);
         font-size: var(--small-header-font);
         font-weight: bold;
     }
-
+    
     .businessViewCardAddress {
+        color: var(--main-highlight-color);
         font-size: var(--small-font);
         font-weight: bold;
         margin-bottom: 0.5rem;

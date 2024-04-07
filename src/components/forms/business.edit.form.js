@@ -167,6 +167,12 @@ const BusinessEditForm = ({ userBusinessRole }) => {
         }
     }, [business_data, reset])
 
+    useEffect(() => {
+        if (isError) {
+            navigate('/businesses')
+        }
+    }, [isError, navigate])
+
     if (isPending) {
         return <LoadingSpinner />
     }

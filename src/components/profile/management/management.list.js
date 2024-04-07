@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -8,6 +9,19 @@ import ManagementListItem from './management.list.item';
 import LoadingSpinner from '../../loadingSpinner';
 import { useBusinessManagement } from '../../../hooks/useBusinessApi';
 import ServerReturnError from '../../serverReturnError';
+
+const ManagementListStyles = styled.div`
+    .managementListWrapper {
+        width: 100%;
+    }
+    
+    .businessManagementList {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+`;
+
 
 const ManagementList = () => {
     const [sortCriteria, setSortCriteria] = useState('business_name'); // default sort criteria
@@ -73,29 +87,34 @@ const ManagementList = () => {
     });
 
     return (
-        <div>
-            <BusinessSorter 
-                sortCriteria={sortCriteria} 
-                onSortChange={setSortCriteria}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-            />
+        <ManagementListStyles>
             {
                 isPending ? (
                     <LoadingSpinner />
                 ) : isError ? (
                     <ServerReturnError />
                 ) : (
-                    <div>
-                        {
-                            sortedBusinessList.map(business => (
-                                <ManagementListItem key={business.id} business={business} />
-                            ))
-                        }
+                    <div className='managementListWrapper'>
+                        <BusinessSorter 
+                            sortCriteria={sortCriteria} 
+                            onSortChange={setSortCriteria}
+                            searchQuery={searchQuery}
+                            onSearchChange={setSearchQuery}
+                        />
+                        <div className='businessManagementList'>
+                            {
+                                sortedBusinessList.map(business => {
+                                    return (
+                                        <ManagementListItem key={business.id} business={business} />
+                                    )
+
+                                })
+                            }
+                        </div>
                     </div>
                 )
             }
-        </div>
+        </ManagementListStyles>
     )
 }
 

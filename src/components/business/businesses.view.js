@@ -11,7 +11,6 @@ import EmptyListReturn from '../emptylist.return';
 
 const BusinessesViewStyles = styled.div`
     .businessesViewWrapper {
-        color: var(--main-highlight-color);
         width: 100%;
     }
 

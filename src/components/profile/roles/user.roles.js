@@ -29,6 +29,7 @@ const UserRolesStyles = styled.div`
     .userRolesSection {
         width: 100%;
         max-width: var(--max-section-width);
+        margin-bottom: 1rem;
     }
     
     .userRolesSectionHeader {

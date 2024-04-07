@@ -15,18 +15,60 @@ import BusinessTransfer from './business.transfer';
 
 import CreateEventButton from '../../events/create.event.button';
 import BusinessEventsRelated from '../../events/business.events.related';
+import { image_link } from '../../../helpers/dataCleanUp';
 
 const BusinessAdminViewStyles = styled.div`
+    .businessAdminViewWrapper {
+        display: flex;
+        flex-direction: column;
+        border: 0.1rem solid red;
+
+        @media (min-width: 76.8rem) {
+            flex-direction: row;
+        }
+    }
+
+    .businessAdminViewLogo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0.5rem 0;
+
+        @media (min-width: 76.8rem) {
+            margin: 4rem 0;
+        }
+
+        img {
+            width: 100%;
+            max-width: 35rem;
+            border: 0.5rem solid var(--main-color);
+            display: block;
+            border-radius: 55%;
+        }
+    }
+
+    .businessAdminViewDetailWrapper {
+        width: 100%;
+    }
+
     .businessAdminDetailSection {
         display: flex;
         justify-content: space-around;
         align-items: center;
         height: 5rem;
-        border-top: 1px dotted var(--secondary-color);
-        border-bottom: 1px dotted var(--secondary-color);
+        border-top: 0.1rem dotted var(--main-color);
+        border-bottom: 0.1rem dotted var(--main-color);
     }
+
+    .businessAdminViewHeader {
+        color: var(--main-highlight-color);
+        padding: 1rem 0;
+    }
+
     .businessAdminViewControls {
-        margin-top: 0.75rem;
+        /* margin-top: 0.75rem; */
+        color: var(--main-highlight-color);
         padding: 1.5rem 0;
     }
     
@@ -109,49 +151,56 @@ const BusinessAdminView = ({ userBusinessRole }) => {
 
     return (
         <BusinessAdminViewStyles>
-            <div className='sectionContainer removeBorder'>
-                <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data?.business_name}</div>
-                {
-                    (business_data?.formatted_address !== null) &&
-                        <div className='subheaderText'>{business_data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
-                }
-                {
-                    (userBusinessRole?.role_type === 'manager' || userBusinessRole?.role_type === 'admin') &&
-                        <div className='businessAdminDetailSection businessAdminViewControls'>
-                            <CreateEventButton />
-                            <EditBusinessButton business={business_data} />
-                            {
-                                (userBusinessRole?.role_type === 'admin') &&
-                                    <DeleteBusiness business_id={business_data?.id} />
-                            }
-                        </div>
-                }
-                {
-                    (userBusinessRole?.role_type === 'admin') &&
-                        <div className='businessAdminSection'>
-                            <div className='businessAdminDetailSection'>
-                                <div className='businessAdminDetailText'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
-                                <div className='businessAdminViewBusinessButtons'>
+            <div className='businessAdminViewWrapper'>
+                <div className='businessAdminViewLogo'>
+                    <img src={image_link(business_data?.business_avatar)} alt={`${business_data?.business_name} branding`} />
+                </div>
+                <div className='businessAdminViewDetailWrapper'>
+                    <div className='businessAdminViewHeader'>
+                        <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data?.business_name}</div>
+                        {
+                            (business_data?.formatted_address !== null) &&
+                                <div className='subheaderText'>{business_data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
+                        }
+                    </div>
+                    {
+                        (userBusinessRole?.role_type === 'manager' || userBusinessRole?.role_type === 'admin') &&
+                            <div className='businessAdminDetailSection businessAdminViewControls'>
+                                <CreateEventButton />
+                                <EditBusinessButton business={business_data} />
+                                {
+                                    (userBusinessRole?.role_type === 'admin') &&
+                                        <DeleteBusiness business_id={business_data?.id} />
+                                }
+                            </div>
+                    }
+                    {
+                        (userBusinessRole?.role_type === 'admin') &&
+                            <div className='businessAdminSection'>
+                                <div className='businessAdminDetailSection'>
+                                    <div className='businessAdminDetailText'>{`Business Status: ${business_data?.active_business ? 'Active' : 'Inactive'}`}</div>
+                                    <div className='businessAdminViewBusinessButtons'>
+                                        <BusinessToggle
+                                            business_id={business_id}
+                                            toggleStatus={business_data?.active_business}
+                                            toggleType='active'
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='businessAdminDetailSection'>
+                                    <div className='businessAdminDetailText'>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
                                     <BusinessToggle
                                         business_id={business_id}
-                                        toggleStatus={business_data?.active_business}
-                                        toggleType='active'
+                                        toggleStatus={business_data?.business_request_open}
+                                        toggleType='request'
                                     />
                                 </div>
-                            </div>
 
-                            <div className='businessAdminDetailSection'>
-                                <div className='businessAdminDetailText'>{`Business Role Request: ${business_data?.business_request_open ? 'OPEN' : 'CLOSED'}`}</div>
-                                <BusinessToggle
-                                    business_id={business_id}
-                                    toggleStatus={business_data?.business_request_open}
-                                    toggleType='request'
-                                />
+                                <BusinessTransfer business_id={business_id} />
                             </div>
-
-                            <BusinessTransfer business_id={business_id} />
-                        </div>
-                }
+                    }
+                </div>
             </div>
             <BusinessRoles />
             <BusinessEventsRelated business_id={business_id} />
