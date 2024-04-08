@@ -10,8 +10,14 @@ import LoadingSpinner from '../../loadingSpinner';
 import useNotification from '../../../hooks/useNotification';
 
 const UserEventsRelatedStyles = styled.div`
+    .userEventsList {
+        border: 0.1rem solid yellow;
+    }
+
     .noUserEvents {
-        border-top: 0.015rem dotted var(--main-color);
+        width: 100%;
+        max-width: var(--max-section-width);
+        /* border-top: 0.015rem dotted var(--main-color); */
         padding-top: 0.75rem;
         display: flex;
         flex-direction: column;
@@ -83,18 +89,20 @@ const UserEventsRelated = () => {
     
     return (
         <UserEventsRelatedStyles>
-            {
-                (user_events_list.length > 0)
-                    ? user_events_list.map(event => {
-                        return (
-                            <EventSmallPreview key={event.event_id} event={event} />
-                        )
-                    })
-                    : <div className='noUserEvents'>
-                        <div>You have no upcoming created events</div>
-                        <div className='noUserEventsLink' onClick={() => navigate('/event/create')}>Create a new event!</div>
-                    </div>
-            }
+            <div className='userEventsList'>
+                {
+                    (user_events_list.length > 0)
+                        ? user_events_list.map(event => {
+                            return (
+                                <EventSmallPreview key={event.event_id} event={event} />
+                            )
+                        })
+                        : <div className='noUserEvents'>
+                            <div>You have no upcoming created events</div>
+                            <div className='noUserEventsLink' onClick={() => navigate('/event/create')}>Create a new event!</div>
+                        </div>
+                }
+            </div>
         </UserEventsRelatedStyles>
     )
 }

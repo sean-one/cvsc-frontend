@@ -235,6 +235,7 @@ const Styles = styled.div`
         gap: 1rem;
     }
 
+    // event.create.form.js
     .visuallyHidden {
         border: 0;
         clip: rect(0 0 0 0);
@@ -247,6 +248,7 @@ const Styles = styled.div`
         width: 1px;
     }
 
+    // event.create.form.js
     .dateTimeInputWrapper {
         display: flex;
         align-items: center;
@@ -274,7 +276,7 @@ const Styles = styled.div`
         background-color: transparent;
     }
     
-    // business.create.form.js
+    // business.create.form.js, event.create.form.js
     .formImage {
         width: 100%;
         max-width: 450px;
@@ -311,7 +313,7 @@ const Styles = styled.div`
         }
     }
 
-    // register.js, login.js, business.create.form.js, business.edit.form.js
+    // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .standardForm {
         width: 95%;
         max-width: 52.5rem;
@@ -322,7 +324,7 @@ const Styles = styled.div`
         gap: 5px;
     }
 
-    // register.js, login.js, business.create.form.js, business.edit.form.js
+    // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .inputWrapper {
         /* display: flex; */
         flex-direction: column;
@@ -364,7 +366,7 @@ const Styles = styled.div`
         gap: 10px;
     }
 
-    // register.js, business.create.form.js, business.edit.form.js
+    // register.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .formRowInputIcon {
         display: flex;
         justify-content: space-between;
@@ -375,7 +377,7 @@ const Styles = styled.div`
         }
     }
 
-    // register.js, business.create.form.js, business.edit.form.js
+    // register.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .inputLabel {
         padding-top: 1.125rem;
         display: flex;
@@ -383,7 +385,7 @@ const Styles = styled.div`
         cursor: pointer;
     }
 
-    // register.js, business.create.form.js, business.edit.form.js
+    // register.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .inputLabelInput {
         display: none;
     }
@@ -394,7 +396,7 @@ const Styles = styled.div`
         padding: 0;
     }
 
-    // register.js, login.js, business.create.form.js, address.form.js
+    // register.js, login.js, business.create.form.js, address.form.js, event.create.form.js
     .errormessage {
         width: 100%;
         font-size: 1.2rem;
@@ -404,12 +406,12 @@ const Styles = styled.div`
         color: var(--error-color);
     }
 
-    // business.create.form.js
+    // business.create.form.js, event.create.form.js
     .imageError {
         text-align: right;
     }
 
-    // register.js, login.js, business.create.form.js, business.edit.form.js
+    // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .formButtonWrapper {
         display: flex;
         justify-content: space-around;

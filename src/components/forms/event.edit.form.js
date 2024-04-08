@@ -40,23 +40,23 @@ const EditEventFormStyles = styled.div`
 const customSelectStyles = {
     control: (provided, state) => ({
         ...provided,
-        backgroundColor: 'var(--main-color)',
+        backgroundColor: 'var(--main-background-color)',
         fontSize: '2.1rem',
-        color: 'var(--secondary-color)',
-        borderColor: state.isFocused ? 'var(--secondary-color)' : provided.borderColor,
-        boxShadow: state.isFocused ? '0 0 0 1px var(--secondary-color)' : provided.boxShadow,
+        color: 'var(--main-color)',
+        borderColor: state.isFocused ? 'var(--main-color)' : provided.borderColor,
+        boxShadow: state.isFocused ? '0 0 0 1px var(--main-color)' : provided.boxShadow,
         '&:hover': {
-            borderColor: state.isFocused ? 'var(--secondary-color)' : provided.borderColor,
+            borderColor: state.isFocused ? 'var(--main-color)' : provided.borderColor,
         }
     }),
     input: (provided) => ({
         ...provided,
-        color: 'var(--secondary-color)',
+        color: 'var(--main-color)',
         fontSize: '2.1rem',
     }),
     singleValue: (provided) => ({
         ...provided,
-        color: 'var(--secondary-color)',
+        color: 'var(--main-color)',
         fontSize: '2.1rem',
     }),
     placeholder: (provided) => ({
@@ -66,12 +66,12 @@ const customSelectStyles = {
     }),
     valueContainer: (provided) => ({
         ...provided,
-        color: 'var(--secondary-color)',
+        color: 'var(--main-color)',
         fontSize: '2.1rem',
     }),
     dropdownIndicator: (provided) => ({
         ...provided,
-        color: 'var(--secondary-color)',
+        color: 'var(--main-color)',
         fontSize: '2.1rem',
         '&:hover': {
             color: 'var(--trim-color)',
@@ -79,21 +79,20 @@ const customSelectStyles = {
     }),
     clearIndicator: (provided) => ({
         ...provided,
-        color: 'var(--secondary-color)',
+        color: 'var(--main-color)',
         '&:hover': {
             color: 'var(--error-color)',
         }
     }),
     menu: (provided) => ({
         ...provided,
-        backgroundColor: 'var(--main-color)',
-        border: '1px solid var(--secondary-color)',
+        backgroundColor: 'var(--main-background-color)',
         fontSize: '2.1rem'
     }),
     option: (provided) => ({
         ...provided,
-        backgroundColor: 'var(--main-color)',
-        color: 'var(--secondary-color)',
+        backgroundColor: 'var(--main-background-color)',
+        color: 'var(--main-color)',
         fontSize: '2.1rem',
     })
 }
