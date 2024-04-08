@@ -11,6 +11,8 @@ import useNotification from '../../../hooks/useNotification';
 
 const UserEventsRelatedStyles = styled.div`
     .userEventsList {
+        display: flex;
+        justify-content: center;
         border: 0.1rem solid yellow;
     }
 
@@ -23,6 +25,7 @@ const UserEventsRelatedStyles = styled.div`
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
+        border: 0.1rem solid teal;
     }
 
     .noUserEventsLink {
