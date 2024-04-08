@@ -93,6 +93,14 @@ const BusinessAdminViewStyles = styled.div`
         justify-content: space-around;
         gap: 10px;
     }
+
+    .businessTransferSection {
+        flex-direction: column;
+        height: auto;
+        /* margin-bottom: 2rem; */
+        /* padding: 1.5rem 0; */
+        gap: 1rem;
+    }
 `;
 
 const BusinessAdminView = ({ userBusinessRole }) => {

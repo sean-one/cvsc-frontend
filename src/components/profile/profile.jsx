@@ -13,7 +13,7 @@ const Profile = () => {
 
     const renderProfileSection = () => {
         const path = location.pathname.split('/')[2];
-        console.log(path)
+        
         switch (path) {
             case 'roles':
                 return <RolesTab />;

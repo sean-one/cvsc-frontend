@@ -6,14 +6,6 @@ import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
 import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 
 const BusinessTransferStyles = styled.div`
-    .businessTransferSection {
-        flex-direction: column;
-        height: auto;
-        margin-bottom: 2rem;
-        /* padding: 1.5rem 0; */
-        gap: 1rem;
-    }
-    
     .businessTransferDescription {
         width: 100%;
         color: var(--main-highlight-color);
