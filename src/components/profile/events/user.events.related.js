@@ -12,27 +12,26 @@ import useNotification from '../../../hooks/useNotification';
 const UserEventsRelatedStyles = styled.div`
     .userEventsList {
         display: flex;
-        justify-content: center;
-        border: 0.1rem solid yellow;
+        flex-direction: column;
+        align-items: center;
     }
 
     .noUserEvents {
         width: 100%;
         max-width: var(--max-section-width);
-        /* border-top: 0.015rem dotted var(--main-color); */
+        margin: 1rem 0;
         padding-top: 0.75rem;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        border: 0.1rem solid teal;
     }
 
     .noUserEventsLink {
+        color: var(--main-highlight-color);
         padding: 0.75rem 0;
         font-weight: bold;
         cursor: pointer;
-        
     }
 `;
 

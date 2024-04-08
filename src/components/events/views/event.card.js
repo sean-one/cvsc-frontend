@@ -7,55 +7,34 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 const EventCardStyles = styled.div`
     .eventCardWrapper {
-        position: relative;
         width: 100%;
-        max-width: 50rem;
-        margin-bottom: 1.5rem;
-        overflow: hidden;
-
-        &:before {
-            content: "";
-            display: block;
-            padding-bottom: 100%;
-        }
-    }
-    
-    .eventCardBackground {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        max-width: var(--max-section-width);
+        background-size: cover;
+        background-position: center;
+        aspect-ratio: 1 / 1;
+        margin: 0 auto 1.5rem auto;
+        cursor: pointer;
     }
 
     .eventCardOverlay {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        box-sizing: border-box;
     }
     
-    .eventCardTopRow {
-        width: 100%;
-        padding: 1.5rem 1.5rem 0 0;
+    .eventCardTopRow, .eventCardBottomRow {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
+        padding: 1rem;
     }
-    
+
     .eventCardBottomRow {
         width: 100%;
-        padding: 1rem 0.5rem;
-        display: flex;
         justify-content: flex-start;
-        align-items: center;
-        color: #202020;
+        color: var(--main-highlight-color);
         background-color: var(--main-color);
     }
 
@@ -64,7 +43,7 @@ const EventCardStyles = styled.div`
         padding: 0.25rem;
         border-radius: 50%;
         margin-right: 1rem;
-        background-color: #F0F0F0;
+        background-color: var(--main-highlight-color);
 
         img {
             border-radius: 50%;
@@ -97,6 +76,8 @@ const EventCardStyles = styled.div`
 
     .eventCardDetails {
         width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .subHeaderRow {
@@ -114,11 +95,12 @@ const EventCard = ({ event }) => {
         return null;
     }
 
+    const backgroundImageUrl = image_link(event?.eventmedia);
     
     return (
-        <EventCardStyles>
-            <div className="eventCardWrapper" onClick={(e) => event?.active_event ? navigate(`/event/${event?.event_id}`) : null}>
-                <img className='eventCardBackground' src={image_link(event?.eventmedia)} alt={`${event?.eventname} event flyer`} />
+        <EventCardStyles bgImage={backgroundImageUrl}>
+            <div className="eventCardWrapper" style={{ backgroundImage: `url(${backgroundImageUrl})`}} onClick={(e) => event?.active_event ? navigate(`/event/${event?.event_id}`) : null}>
+                {/* <img className='eventCardBackground' src={image_link(event?.eventmedia)} alt={`${event?.eventname} event flyer`} /> */}
                 <div className="eventCardOverlay">
                     <div className='eventCardTopRow'>
                         <div className='eventCardDateContainer'>

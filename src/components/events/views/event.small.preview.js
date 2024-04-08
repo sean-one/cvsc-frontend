@@ -11,20 +11,23 @@ import useAuth from '../../../hooks/useAuth';
 
 const EventSmallPreviewStyles = styled.div`
     .eventSmallPreviewWrapper {
+        width: 100%;
+        max-width: var(--max-section-width);
         display: flex;
         align-items: center;
         justify-content: space-between;
         position: relative;
         gap: 10px;
+        border: 0.1rem solid pink;
     }
 
-    .eventSmallPreviewInactive {
+    /* .eventSmallPreviewInactive {
         margin: 0.75rem;
         padding: 0.75rem;
         border-radius: 5px;
         color: var(--error-color);
         border: 1px solid var(--error-color);
-    }
+    } */
 
     .eventSmallPreviewAdminControls {
         position: absolute;
@@ -115,7 +118,7 @@ const EventSmallPreview = ({ event }) => {
 
     return (
         <EventSmallPreviewStyles>
-            <div className={`${event?.active_event ? 'sectionContainer' : 'eventSmallPreviewInactive'} eventSmallPreviewWrapper`} onClick={() => navigate(`/event/${event.event_id}`)}>
+            <div className='eventSmallPreviewWrapper' onClick={() => navigate(`/event/${event.event_id}`)}>
                 {
                     (isLoggedIn) &&
                         <div className='eventSmallPreviewAdminControls'>

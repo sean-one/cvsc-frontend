@@ -20,7 +20,7 @@ const CalendarStyles = styled.div`
 const Calendar = () => {
     const { data: events_list, isPending, isError } = useEventsQuery()
     
-    console.log(events_list?.data)
+
     return (
         <CalendarStyles>
             <div className='calendarWrapper'>
@@ -30,7 +30,11 @@ const Calendar = () => {
                     ) : isError ? (
                         <ServerDown />
                     ) : (events_list?.data?.length !== 0) ? (
-                        events_list?.data.map(event => <EventCard key={event.event_id} event={event} />)
+                        events_list?.data.map(event => {
+                            return (
+                                <EventCard key={event.event_id} event={event} />
+                            )
+                        })
                     ) : (
                         <EmptyListReturn listtype='event'/>
                     )
