@@ -27,9 +27,7 @@ const BusinessViewStyles = styled.div`
         flex-direction: column;
         align-items: center;
         width: 100%;
-        /* max-width: 1080px; */
         padding: 0 0.75rem;
-        /* border: 0.1rem solid red; */
         
         @media (min-width: 76.8rem) {
             padding: 1.5rem 0.75rem;
@@ -45,10 +43,6 @@ const BusinessViewStyles = styled.div`
     .businessViewHeaderLeft {
         display: flex;
     }
-
-    /* .businessViewAddress {
-        font-size: var(--small-header-font);
-    } */
     
     .businessViewDetails {
         display: flex;
@@ -56,7 +50,6 @@ const BusinessViewStyles = styled.div`
         align-items: center;
         color: var(--main-color);
         padding: 1.125rem 0 1.875rem;
-        border-bottom: 1px solid var(--main-highlight-color);
         
         @media (min-width: 768px) {
             flex-direction: row;
