@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -7,10 +7,11 @@ import AxiosInstance from '../helpers/axios';
 import useNotification from '../hooks/useNotification.js';
 import useAuth from '../hooks/useAuth.js';
 import { emailformat, validatePassword, validateUsername } from './forms/utils/form.validations.js';
-import useImagePreview from '../hooks/useImagePreview';
+import ImageUploadAndCrop from '../helpers/imageUploadAndCrop.js';
+// import useImagePreview from '../hooks/useImagePreview';
 import { AddImageIcon } from './icons/siteIcons';
-import { setImageForForm } from '../helpers/setImageForForm';
-import LoadingSpinner from './loadingSpinner';
+// import { setImageForForm } from '../helpers/setImageForForm';
+// import LoadingSpinner from './loadingSpinner';
 
 
 const RegisterStyles = styled.div`
@@ -67,13 +68,21 @@ const RegisterStyles = styled.div`
 `;
 
 const Register = () => {
+    const [ croppedImage, setCroppedImage ] = useState(null);
+    const [ editImage, setEditImage ] = useState(false);
     const { setAuth } = useAuth();
-    const { editImage, imagePreview, canvas, setEditImage, imageIsLoading } = useImagePreview()
+    // const { editImage, imagePreview, canvas, setEditImage, imageIsLoading } = useImagePreview()
     const { dispatch } = useNotification();
 
-    const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
+    const { register, handleSubmit, setError, clearErrors, setValue, formState:{ errors } } = useForm({
         mode: "onBlur",
     })
+
+    const onImageCropped = useCallback((croppedBlob) => {
+        setCroppedImage(croppedBlob);
+        // React Hook Form for handling cropped image
+        setValue('croppedImage', croppedBlob); // This allows you to include the cropped image in the form data
+    }, [setValue]);
     
     let navigate = useNavigate();
 
@@ -81,18 +90,21 @@ const Register = () => {
         try {
             const formData = new FormData()
 
-            if(canvas.current !== null) {
-                try {
-                    let avatar = setImageForForm(canvas)
-                    formData.set('avatar', avatar)
-    
-                    canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
-                    setEditImage(false)
-
-                } catch (error) {
-                    setError('avatar', { message: 'image upload error, please try again' })
-                }
+            if (croppedImage) {
+                formData.append('avatar', croppedImage, 'profile-pic.jpg');
             }
+            // if(canvas.current !== null) {
+            //     try {
+            //         let avatar = setImageForForm(canvas)
+            //         formData.set('avatar', avatar)
+    
+            //         canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
+            //         setEditImage(false)
+
+            //     } catch (error) {
+            //         setError('avatar', { message: 'image upload error, please try again' })
+            //     }
+            // }
 
             // confirm password and delete extra confirmation field
             if(data.password !== data.confirmation) {
@@ -185,13 +197,12 @@ const Register = () => {
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
 
-                    { imageIsLoading && <LoadingSpinner /> }
-                    {
-                        editImage &&
-                            <div className='registerImagePreview'>
-                                <canvas id={'userAvatarPreview'} ref={canvas} />
-                            </div>
-                    }
+                    {/* { imageIsLoading && <LoadingSpinner /> } */}
+                    <ImageUploadAndCrop
+                        onImageCropped={onImageCropped}
+                        registerInput={register}
+                        disableImageUploadCropStyles
+                    />
 
                     <div className='formRowInputIcon'>
                         {/* EMAIL */}
@@ -208,7 +219,8 @@ const Register = () => {
                         {/* AVATAR IMAGE UPLOAD */}
                         <label htmlFor='avatar' className='inputLabel'>
                             <AddImageIcon />
-                            <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                            {/* <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' /> */}
+                            {/* <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} /> */}
                         </label>
                     </div>
                     {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
