@@ -85,7 +85,7 @@ const ImageUploadAndCrop = ({ aspect = 4 / 4, onImageCropped, registerInput }) =
                                 step={0.1}
                                 onChange={(e) => setZoom(e.target.valueAsNumber)}
                             />
-                            <button onClick={createCroppedImage}>Crop Image</button>
+                            <div onClick={createCroppedImage}>Crop Image</div>
                         </div>
                     </div>
                 )}

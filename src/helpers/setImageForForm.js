@@ -1,4 +1,5 @@
 export const setImageForForm = (imageCanvas) => {
+    console.log(imageCanvas)
     try {
         let canvas_image = imageCanvas.current.toDataURL("image/webp", 1.0)
     

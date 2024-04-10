@@ -10,7 +10,7 @@ import { emailformat, validatePassword, validateUsername } from './forms/utils/f
 import ImageUploadAndCrop from '../helpers/imageUploadAndCrop.js';
 // import useImagePreview from '../hooks/useImagePreview';
 import { AddImageIcon } from './icons/siteIcons';
-import { setImageForForm } from '../helpers/setImageForForm';
+// import { setImageForForm } from '../helpers/setImageForForm';
 // import LoadingSpinner from './loadingSpinner';
 
 
@@ -83,20 +83,21 @@ const Register = () => {
 
         const previewImageURL = URL.createObjectURL(croppedBlob)
         setPreviewImageUrl(previewImageURL)
+
+        let avatar = new File([croppedBlob], 'avatar.jpeg', { type: croppedBlob.type })
         // React Hook Form for handling cropped image
-        setValue('avatar', croppedBlob); // This allows you to include the cropped image in the form data
+        setValue('avatar', avatar); // This allows you to include the cropped image in the form data
     }, [setValue]);
     
     let navigate = useNavigate();
 
     const createUser = async (data) =>{
+        console.log(data.avatar)
         try {
             const formData = new FormData()
 
             if (croppedImage) {
-                let avatar = setImageForForm(croppedImage)
-
-                formData.set('avatar', avatar, 'profile-pic.jpg');
+                formData.set('avatar', data.avatar[0]);
             }
 
             // confirm password and delete extra confirmation field
