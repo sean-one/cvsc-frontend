@@ -10,7 +10,7 @@ import { emailformat, validatePassword, validateUsername } from './forms/utils/f
 import ImageUploadAndCrop from '../helpers/imageUploadAndCrop.js';
 // import useImagePreview from '../hooks/useImagePreview';
 import { AddImageIcon } from './icons/siteIcons';
-// import { setImageForForm } from '../helpers/setImageForForm';
+import { setImageForForm } from '../helpers/setImageForForm';
 // import LoadingSpinner from './loadingSpinner';
 
 
@@ -69,7 +69,7 @@ const RegisterStyles = styled.div`
 
 const Register = () => {
     const [ croppedImage, setCroppedImage ] = useState(null);
-    const [ editImage, setEditImage ] = useState(false);
+    const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { setAuth } = useAuth();
     // const { editImage, imagePreview, canvas, setEditImage, imageIsLoading } = useImagePreview()
     const { dispatch } = useNotification();
@@ -80,8 +80,11 @@ const Register = () => {
 
     const onImageCropped = useCallback((croppedBlob) => {
         setCroppedImage(croppedBlob);
+
+        const previewImageURL = URL.createObjectURL(croppedBlob)
+        setPreviewImageUrl(previewImageURL)
         // React Hook Form for handling cropped image
-        setValue('croppedImage', croppedBlob); // This allows you to include the cropped image in the form data
+        setValue('avatar', croppedBlob); // This allows you to include the cropped image in the form data
     }, [setValue]);
     
     let navigate = useNavigate();
@@ -91,20 +94,10 @@ const Register = () => {
             const formData = new FormData()
 
             if (croppedImage) {
-                formData.append('avatar', croppedImage, 'profile-pic.jpg');
-            }
-            // if(canvas.current !== null) {
-            //     try {
-            //         let avatar = setImageForForm(canvas)
-            //         formData.set('avatar', avatar)
-    
-            //         canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
-            //         setEditImage(false)
+                let avatar = setImageForForm(croppedImage)
 
-            //     } catch (error) {
-            //         setError('avatar', { message: 'image upload error, please try again' })
-            //     }
-            // }
+                formData.set('avatar', avatar, 'profile-pic.jpg');
+            }
 
             // confirm password and delete extra confirmation field
             if(data.password !== data.confirmation) {
@@ -163,7 +156,6 @@ const Register = () => {
                 })
             }
         }
-        
     }
 
     const googleAuthButton = (e) => {
@@ -197,11 +189,14 @@ const Register = () => {
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
 
-                    {/* { imageIsLoading && <LoadingSpinner /> } */}
+                    {
+                        previewImageUrl && (
+                            <img src={previewImageUrl} alt='please' />
+                        )
+                    }
                     <ImageUploadAndCrop
                         onImageCropped={onImageCropped}
                         registerInput={register}
-                        disableImageUploadCropStyles
                     />
 
                     <div className='formRowInputIcon'>
