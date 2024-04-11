@@ -5,19 +5,34 @@ import getCroppedImg from './getCroppedImg';
 
 const ImageUploadCropStyles = styled.div`
     .testWrapper {
-        position: relative;
+        /* width: 100%; */
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        /* border: 0.1rem solid yellow; */
     }
     
     .testSection {
-        height: 50rem;
+        width: 100%;
+        position: relative;
+        height: 35rem;
         border: 0.1rem solid blue;
     }
-
+    
     .testControls {
+        width: 100%;
         position: relative;
         z-index: 99;
-        border: 0.1rem solid yellow;
+        border: 0.1rem solid red;
     }
+
+    /* .cropImageButton {
+        border: 0.1rem solid var(--main-highlight-color);
+        border-radius: 0.15rem;
+        background-color: var(--main-color);
+    } */
 `;
 
 const ImageUploadAndCrop = ({ aspect = 4 / 4, onImageCropped, registerInput }) => {
@@ -27,10 +42,6 @@ const ImageUploadAndCrop = ({ aspect = 4 / 4, onImageCropped, registerInput }) =
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
     const handleFileChange = async (e) => {
-
-        // set edit state in old file
-        // set image loading in old file
-
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             const reader = new FileReader();

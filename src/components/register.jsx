@@ -8,10 +8,7 @@ import useNotification from '../hooks/useNotification.js';
 import useAuth from '../hooks/useAuth.js';
 import { emailformat, validatePassword, validateUsername } from './forms/utils/form.validations.js';
 import ImageUploadAndCrop from '../helpers/imageUploadAndCrop.js';
-// import useImagePreview from '../hooks/useImagePreview';
 import { AddImageIcon } from './icons/siteIcons';
-// import { setImageForForm } from '../helpers/setImageForForm';
-// import LoadingSpinner from './loadingSpinner';
 
 
 const RegisterStyles = styled.div`
@@ -32,23 +29,22 @@ const RegisterStyles = styled.div`
         text-align: center;
     }
 
-    .registerImagePreview {
+    /* .registerImagePreview {
         width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         max-width: 350px;
         margin: 1.5rem auto;
-
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-
-        canvas {
+        
+        img {
             max-width: 100%;
-            border: 0.1rem solid var(--main-color);
+            border: 0.3rem solid var(--main-color);
             border-radius: 50%;
             display: block;
             box-shadow: 5px 5px 5px #010A00;
         }
-    }
+    } */
 
     .passwordContraintText {
         font-size: var(--small-font);
@@ -71,7 +67,6 @@ const Register = () => {
     const [ croppedImage, setCroppedImage ] = useState(null);
     const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { setAuth } = useAuth();
-    // const { editImage, imagePreview, canvas, setEditImage, imageIsLoading } = useImagePreview()
     const { dispatch } = useNotification();
 
     const { register, handleSubmit, setError, clearErrors, setValue, formState:{ errors } } = useForm({
@@ -192,7 +187,9 @@ const Register = () => {
 
                     {
                         previewImageUrl && (
-                            <img src={previewImageUrl} alt='please' />
+                            <div className='registerImagePreview'>
+                                <img src={previewImageUrl} alt='user profile avatar' />
+                            </div>
                         )
                     }
                     <ImageUploadAndCrop
