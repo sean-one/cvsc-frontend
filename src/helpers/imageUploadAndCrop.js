@@ -185,6 +185,7 @@ const ImageUploadAndCrop = ({ onImageCropped, registerInput, imageShape = 'rect'
                                         <label htmlFor='aspect'>Aspect:</label>
                                         <select name='aspect' id='aspect' onChange={(e) => handleAspectChange(e)}>
                                             <option value={5/4}>5/4</option>
+                                            <option value={4/5}>4/5</option>
                                             <option value={16/9}>16/9</option>
                                             <option value={1/1}>1/1</option>
                                         </select>

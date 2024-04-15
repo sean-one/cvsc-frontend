@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
@@ -6,8 +6,6 @@ import Select from 'react-select';
 import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
-import useEventImagePreview from '../../hooks/useEventImagePreview';
-import { setImageForForm } from '../../helpers/setImageForForm';
 import { reformatTime } from '../../helpers/formatTime';
 import { useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
 import { useUserRolesQuery } from '../../hooks/useRolesApi';
@@ -15,6 +13,7 @@ import useNotification from '../../hooks/useNotification';
 import { image_link } from '../../helpers/dataCleanUp';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import { validateEventDate, validateEventTime, validateNONEmptyString } from './utils/form.validations';
+import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
 import AddressForm from './address.form';
 import LoadingSpinner from '../loadingSpinner';
 
@@ -98,10 +97,11 @@ const customSelectStyles = {
 }
 
 const EventEditForm = () => {
+    const [ croppedImage, setCroppedImage ] = useState(null);
+    const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { auth } = useAuth();
     let { event_id } = useParams()
     let user_host_business_list = []
-    const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { dispatch } = useNotification()
     
     const { data: user_roles, isError, isPending, isSuccess: userRoleSuccess } = useUserRolesQuery(auth?.user?.id);
@@ -128,7 +128,20 @@ const EventEditForm = () => {
         }
     })
 
+    const onImageCropped = useCallback((croppedBlob) => {
+        setCroppedImage(croppedBlob);
+
+        const previewImageURL = URL.createObjectURL(croppedBlob)
+        setPreviewImageUrl(previewImageURL)
+
+        let eventmedia = new File([croppedBlob], 'eventmedia.jpeg', { type: croppedBlob.type })
+        // React Hook Form for handling cropped image
+        setValue('eventmedia', eventmedia, { shouldDirty: true }); // This allows you to include the cropped image in the form data
+    }, [setValue]);
+
     const update_event = async (event_data) => {
+        console.log(event_data)
+        console.log(dirtyFields)
         localStorage.setItem('editEventForm', JSON.stringify(event_data))
         try {
             const formData = new FormData()
@@ -146,13 +159,12 @@ const EventEditForm = () => {
             }
 
             // if eventmedia has a file set in formData, for some reason it does not show in dirtyFields
-            if(canvas.current !== null) {
-                let eventmediaUpload = setImageForForm(canvas)
-
-                formData.set('eventmedia', eventmediaUpload)
+            if(croppedImage) {
+                formData.set('eventmedia', event_data.eventmedia[0])
+            } else {
+                delete event_data['eventmedia']
             }
 
-            delete event_data['eventmedia']
 
             // remove entries that are unchanged
             for (const [key] of Object.entries(event_data)) {
@@ -207,9 +219,8 @@ const EventEditForm = () => {
     }
 
     const handleClose = () => {
-        // remove editEventForm if it is there so not to leave it stuck on local storage
+        // remove editEventForm from local storage
         localStorage.removeItem('editEventForm')
-        setEditImage(false)
         reset()
 
         navigate('/profile/events');
@@ -255,7 +266,6 @@ const EventEditForm = () => {
                             {/* EVENT MEDIA UPDATE */}
                             <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
                                 <AddImageIcon />
-                                <input {...register('eventmedia')} id='eventmedia' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                             </label>
 
                         </div>
@@ -263,20 +273,19 @@ const EventEditForm = () => {
                         {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div>: null}
 
                         {
-                            editImage
-                                ? <div className='formImage'>
-                                    <canvas
-                                        id={'avatarImagePreview'}
-                                        ref={canvas}
-                                    />
+                            croppedImage
+                                ? <div className='imagePreview eventImage'>
+                                    <img src={previewImageUrl} alt='event media' />
                                 </div>
-                                : <div className='formImage'>
-                                    <img
-                                        src={image_link(event_data?.eventmedia)}
-                                        alt={event_data?.eventname}
-                                    />
+                                : <div className='imagePreview eventImage'>
+                                    <img src={image_link(event_data?.eventmedia)} alt={event_data?.eventname} />
                                 </div>
                         }
+                        <ImageUploadAndCrop
+                            onImageCropped={onImageCropped}
+                            registerInput={register}
+                            registerName='eventmedia'
+                        />
 
                         <AddressForm
                             register={register}
@@ -351,7 +360,7 @@ const EventEditForm = () => {
                         </div>
                         
                         <div className='formButtonWrapper'>
-                            <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
+                            <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0)}>Update</button>
                             <button type='button' onClick={sendEventDelete}>Delete</button>
                             <button type='button' onClick={handleClose}>Close</button>
                         </div>

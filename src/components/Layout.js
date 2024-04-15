@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
         --main-background-color: ${(props) => props.theme['--main-background-color']};
         --main-highlight-color: ${(props) => props.theme['--main-highlight-color']};
         --header-highlight: ${(props) => props.theme['--header-highlight']};
+        --max-image-size: 45rem;
         --max-circle-image: 35rem;
         --header-height: 9.5rem;
         --main-color: #006633;
@@ -300,6 +301,11 @@ const Styles = styled.div`
         img {
             border-radius: 50%
         }
+    }
+
+    // event.create.form.js, event.view.js
+    .eventImage {
+        max-width: var(--max-image-size);
     }
 
     

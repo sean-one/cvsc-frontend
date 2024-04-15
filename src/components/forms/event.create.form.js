@@ -273,7 +273,7 @@ const EventCreateForm = () => {
                         {/* EVENT IMAGE PREVIEW RENDER */}
                         {
                             previewImageUrl &&
-                                    <div className='imagePreview'>
+                                    <div className='imagePreview eventImage'>
                                         <img src={previewImageUrl} alt='event promotional media' />
                                     </div>
                         }

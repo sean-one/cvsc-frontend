@@ -5,7 +5,6 @@ import AxiosInstance from "../helpers/axios";
 import { eventKeys } from "../helpers/queryKeyFactories";
 import useAuth from "./useAuth";
 import useNotification from "./useNotification";
-import useEventImagePreview from "./useEventImagePreview";
 
 
 // return an array of all events related to business id
@@ -146,7 +145,6 @@ export const useCreateEventMutation = () => {
     const { user_reset } = useAuth();
     const { dispatch } = useNotification();
     const queryClient = useQueryClient();
-    const { setEditImage } = useEventImagePreview()
     let navigate = useNavigate();
 
     return useMutation({
@@ -163,8 +161,6 @@ export const useCreateEventMutation = () => {
                     message: `${data?.eventname} has been created`
                 }
             })
-
-            setEditImage(false)
 
             navigate(`/event/${data?.event_id}`)
         },

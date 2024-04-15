@@ -54,25 +54,6 @@ const EventViewStyles = styled.div`
             flex-direction: row;
         }
     }
-    
-    .eventViewImageContainer {
-        width: 100%;
-        max-width: 500px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 1.125rem auto;
-
-        @media (min-width: 768px) {
-            margin: 0.75rem;
-        }
-    }
-    
-    .eventViewImage {
-        width: 100%;
-        border: 1px solid var(--trim-color);
-        display: block;
-    }
 
     .eventViewDetails {
         text-align: justify;
@@ -145,8 +126,8 @@ const EventView = () => {
                     }
                 </div>
                 <div className='eventViewBody'>
-                    <div className='eventViewImageContainer'>
-                        <img className='eventViewImage' src={image_link(event?.data.eventmedia)} alt={event?.data.eventname} />
+                    <div className='imagePreview eventImage'>
+                        <img src={image_link(event?.data.eventmedia)} alt={event?.data.eventname} />
                     </div>
                     <div className='eventViewDetails'>
                         <div>{event?.data.details}</div>
