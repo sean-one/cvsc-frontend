@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
         --main-background-color: ${(props) => props.theme['--main-background-color']};
         --main-highlight-color: ${(props) => props.theme['--main-highlight-color']};
         --header-highlight: ${(props) => props.theme['--header-highlight']};
+        --max-circle-image: 35rem;
         --header-height: 9.5rem;
         --main-color: #006633;
         --max-section-width: 55rem;
@@ -275,6 +276,32 @@ const Styles = styled.div`
         color: var(--error-color);
         background-color: transparent;
     }
+
+    // register.jsx, user.edit.form.js, businessView.js, business.create.form.js, business.edit.form.js, business.admin.view.js
+    .imagePreview {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1.5rem auto;
+        
+        img {
+            max-width: 100%;
+            border: 0.3rem solid var(--main-color);
+            display: block;
+            /* box-shadow: 5px 5px 5px var(--main-highlight-color); */
+        }
+    }
+    
+    // register.jsx, user.edit.form.js, businessView.js, business.create.form.js, business.edit.form.js, business.admin.view.js
+    .profileImage, .businessImage {
+        max-width: var(--max-circle-image);
+
+        img {
+            border-radius: 50%
+        }
+    }
+
     
     // business.create.form.js, event.create.form.js
     .formImage {

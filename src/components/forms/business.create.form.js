@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components'
@@ -6,10 +6,9 @@ import styled from 'styled-components'
 import useNotification from '../../hooks/useNotification';
 import { emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
-import useImagePreview from '../../hooks/useImagePreview';
-import { setImageForForm } from '../../helpers/setImageForForm';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 
+import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
 import AddressForm from './address.form';
 
 const BusinessCreateFormStyles = styled.div`
@@ -25,8 +24,9 @@ const BusinessCreateFormStyles = styled.div`
 `;
 
 const BusinessCreateForm = () => {
+    const [ croppedImage, setCroppedImage ] = useState(null);
+    const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { dispatch } = useNotification();
-    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
 
     const { register, handleSubmit, reset, clearErrors, setError, setValue, formState: { errors } } = useForm({
@@ -46,6 +46,17 @@ const BusinessCreateForm = () => {
         }
     });
 
+    const onImageCropped = useCallback((croppedBlob) => {
+        setCroppedImage(croppedBlob);
+
+        const previewImageURL = URL.createObjectURL(croppedBlob)
+        setPreviewImageUrl(previewImageURL)
+
+        let business_avatar = new File([croppedBlob], 'business_avatar.jpeg', { type: croppedBlob.type })
+        // React Hook Form for handling cropped image
+        setValue('business_avatar', business_avatar); // This allows you to include the cropped image in the form data
+    }, [setValue]);
+
     let navigate = useNavigate();
 
     const create_business = async (business_data) => {
@@ -54,12 +65,10 @@ const BusinessCreateForm = () => {
             const formData = new FormData()
 
             // check for current canvas and set it to formData
-            if(canvas.current === null) {
-                throw new Error('missing_image')
+            if(croppedImage) {
+                formData.set('business_avatar', business_data.business_avatar[0])
             } else {
-                let business_avatar = setImageForForm(canvas)
-
-                formData.set('business_avatar', business_avatar)
+                throw new Error('missing_image')
             }
 
             // clean phone number to consist of 10 numbers only
@@ -85,7 +94,6 @@ const BusinessCreateForm = () => {
 
             if (new_business.status === 201) {
                 // clear the setEditImage & reset the create business form
-                setEditImage(false)
                 reset()
 
                 // navigate to the newly created business page
@@ -167,12 +175,17 @@ const BusinessCreateForm = () => {
 
                     {/* once image has been created it will show here */}
                     {
-                        editImage &&
-                            <div className='formImage formCirclePreview'>
-                                <canvas id={'businessImagePreview'} ref={canvas} />
+                        previewImageUrl &&
+                            <div className='imagePreview businessImage'>
+                                <img src={previewImageUrl} alt='business branding' />
                             </div>
                     }
-
+                    <ImageUploadAndCrop
+                        onImageCropped={onImageCropped}
+                        registerInput={register}
+                        imageShape='round'
+                        registerName='business_avatar'
+                    />
                     <div className='formRowInputIcon'>
                         {/* EMAIL */}
                         <div className='inputWrapper'>
@@ -188,7 +201,7 @@ const BusinessCreateForm = () => {
                         {/* BUSINESS AVATAR UPLOAD */}
                         <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
                             <AddImageIcon />
-                            <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
+                            {/* <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} /> */}
                         </label>
                     </div>
                     {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}

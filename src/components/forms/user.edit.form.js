@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
 import useAuth from '../../hooks/useAuth';
-import useImagePreview from '../../hooks/useImagePreview';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon } from '../icons/siteIcons';
 import { validatePassword, emailformat, validateUsername } from './utils/form.validations';
-import { setImageForForm } from '../../helpers/setImageForForm';
 import AxiosInstance from '../../helpers/axios';
+import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
+
+const UserEditFormStyles = styled.div`
+    .userEditFormWrapper {
+        width: 100%;
+        max-width: var(--max-section-width);
+        margin: 0 auto;
+    }
+`;
+
 
 const UserEditForm =({ setEditView }) => {
     const { auth, setAuth } = useAuth()
+    const [ croppedImage, setCroppedImage ] = useState(null);
+    const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { dispatch } = useNotification()
-    const { editImage, canvas, imagePreview, setEditImage } = useImagePreview()
-    const { register, handleSubmit, clearErrors, setError, reset, formState: { dirtyFields, errors } } = useForm({
+    const { register, handleSubmit, clearErrors, setError, setValue, reset, formState: { dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             username: auth?.user?.username,
@@ -24,16 +34,43 @@ const UserEditForm =({ setEditView }) => {
         }
     })
 
+    const onImageCropped = useCallback((croppedBlob) => {
+        setCroppedImage(croppedBlob);
+
+        const previewImageURL = URL.createObjectURL(croppedBlob)
+        setPreviewImageUrl(previewImageURL)
+
+        let avatar = new File([croppedBlob], 'avatar.jpeg', { type: croppedBlob.type })
+        // React Hook Form for handling cropped image
+        setValue('avatar', avatar, { shouldDirty: true }); // This allows you to include the cropped image in the form data
+    }, [setValue]);
+
     let navigate = useNavigate()
 
     const sendUpdate = async (data) => {
-        console.log(data)
-        console.log(dirtyFields)
         try {
+            // no changes registered - send notificate and do not hit api
+            if(Object.keys(data).length === 0) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: `error - no changes were found`
+                    }
+                })
+    
+                reset()
+    
+                return
+            }
             const formData = new FormData()
     
-            // remove avatar field, if image is attached it will be taken from canvas
-            delete data['avatar']
+            // if image is attached set as avatar or else remove 'avatar' from data
+            if (croppedImage) {
+                formData.set('avatar', data.avatar[0]);
+            } else {
+                delete data['avatar']
+            }
     
             // delete unchanged data
             for (const [key] of Object.entries(data)) {
@@ -49,33 +86,6 @@ const UserEditForm =({ setEditView }) => {
                 return
             } else {
                 delete data['confirmation']
-            }
-            
-            // no changes registered - send notificate and do not hit api
-            if((Object.keys(data).length === 0) && (canvas.current === null)) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: `error - no changes were found`
-                    }
-                })
-    
-                setEditImage(false)
-                reset()
-    
-                return
-            }
-
-            // check for the canvas element and set image to formData
-            if(canvas.current !== null) {
-                // get the image ready and set it to formData
-                let user_avatar = setImageForForm(canvas)
-                formData.set('avatar', user_avatar)
-    
-                // clear the canvas
-                // canvas.current.getContext('2d').clearRect(0, 0, canvas.current.width, canvas.current.height);
-                // setEditImage(false)
             }
 
             // append any remaining updated fields to formData
@@ -104,6 +114,7 @@ const UserEditForm =({ setEditView }) => {
             return
             
         } catch (error) {
+            console.log(error)
             if(error?.response?.status === 404) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -156,7 +167,6 @@ const UserEditForm =({ setEditView }) => {
 
     const cancelEdit = () => {
         setEditView(false)
-        setEditImage(false)
         reset()
     }
 
@@ -202,76 +212,83 @@ const UserEditForm =({ setEditView }) => {
 
 
     return (
-        <div>
-            {
-                editImage &&
-                    <div className='formImage formCirclePreview'>
-                        <canvas id={'avatarImagePreview'} ref={canvas} />
-                    </div>
-            }
-            <form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data' className='standardForm'>
-                {/* USERNAME */}
-                <div className='inputWrapper'>
-                    <input {...register('username', {
-                        minLength: {
-                            value: 4,
-                            message: 'username must be at least 4 characters'
-                        },
-                        maxLength: {
-                            value: 50,
-                            message: 'username is too long'
-                        },
-                        validate: validateUsername
-                    })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
-                    {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
-                </div>
-
-                {/* EVENT AND PROFILE IMAGE UPDATE */}
-                <div className='formRowInputIcon'>
-
-                    {/* EMAIL */}
+        <UserEditFormStyles>
+            <div className='userEditFormWrapper'>
+                {
+                    previewImageUrl &&
+                        <div className='imagePreview profileImage'>
+                            <img src={previewImageUrl} alt='user profile avatar' />
+                        </div>
+                }
+                <ImageUploadAndCrop
+                    onImageCropped={onImageCropped}
+                    registerInput={register}
+                    imageShape='round'
+                    registerName='avatar'
+                />
+                <form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data' className='standardForm'>
+                    {/* USERNAME */}
                     <div className='inputWrapper'>
-                        <input {...register('email', {
-                            pattern: {
-                                value: emailformat,
-                                message: 'invalid email format'
-                            }
-                        })} type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
+                        <input {...register('username', {
+                            minLength: {
+                                value: 4,
+                                message: 'username must be at least 4 characters'
+                            },
+                            maxLength: {
+                                value: 50,
+                                message: 'username is too long'
+                            },
+                            validate: validateUsername
+                        })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                        {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
 
-                    {/* AVATAR / PROFILE IMAGE UPDATE */}
-                    <label htmlFor='avatar' className='inputLabel' onClick={() => clearErrors('avatar')}>
-                        <AddImageIcon />
-                        <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
-                    </label>
-                </div>
-                {errors.email ? <div className='errormessage'>{errors?.email?.message}</div> : null}
+                    {/* EVENT AND PROFILE IMAGE UPDATE */}
+                    <div className='formRowInputIcon'>
 
-                {/* PASSWORD */}
-                <div className='inputWrapper'>
-                    <input {...register('password', {
-                        validate: value => validatePassword(value, false)
-                    })} type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
-                    {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
-                </div>
+                        {/* EMAIL */}
+                        <div className='inputWrapper'>
+                            <input {...register('email', {
+                                pattern: {
+                                    value: emailformat,
+                                    message: 'invalid email format'
+                                }
+                            })} type='text' onFocus={() => clearErrors('email')} placeholder='Email' />
+                        </div>
 
-                {/* CONFIRM PASSWORD */}
-                <div className='inputWrapper'>
-                    <input {...register('confirmation', {
-                        validate: value => validatePassword(value, false)
-                    })} type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
-                    {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
-                </div>
-                {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
-            
-                <div className='formButtonWrapper'>
-                    <button type='submit'>Update</button>
-                    <button onClick={cancelEdit}>Close</button>
-                    <button onClick={deleteUser}>Delete</button>
-                </div>
+                        {/* AVATAR / PROFILE IMAGE UPDATE */}
+                        <label htmlFor='avatar' className='inputLabel' onClick={() => clearErrors('avatar')}>
+                            <AddImageIcon />
+                        </label>
+                    </div>
+                    {errors.email ? <div className='errormessage'>{errors?.email?.message}</div> : null}
 
-            </form>
-        </div>
+                    {/* PASSWORD */}
+                    <div className='inputWrapper'>
+                        <input {...register('password', {
+                            validate: value => validatePassword(value, false)
+                        })} type='password' onFocus={() => clearErrors(['password', 'credentials'])} placeholder='New Password' />
+                        {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
+                    </div>
+
+                    {/* CONFIRM PASSWORD */}
+                    <div className='inputWrapper'>
+                        <input {...register('confirmation', {
+                            validate: value => validatePassword(value, false)
+                        })} type='password' onFocus={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm New Password' />
+                        {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
+                    </div>
+                    {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
+                
+                    <div className='formButtonWrapper'>
+                        <button type='submit'>Update</button>
+                        <button onClick={cancelEdit}>Close</button>
+                        <button onClick={deleteUser}>Delete</button>
+                    </div>
+
+                </form>
+            </div>
+        </UserEditFormStyles>
     )
 }
 

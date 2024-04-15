@@ -27,26 +27,6 @@ const BusinessAdminViewStyles = styled.div`
         }
     }
 
-    .businessAdminViewLogo {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0.5rem 0;
-
-        @media (min-width: 768px) {
-            /* margin: 4rem 0; */
-        }
-
-        img {
-            width: 100%;
-            max-width: 35rem;
-            border: 0.5rem solid var(--main-color);
-            display: block;
-            border-radius: 55%;
-        }
-    }
-
     .businessAdminViewDetailWrapper {
         width: 100%;
     }
@@ -133,7 +113,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
     return (
         <BusinessAdminViewStyles>
             <div className='businessAdminViewWrapper'>
-                <div className='businessAdminViewLogo'>
+                <div className='imagePreview businessImage'>
                     <img src={image_link(business_data?.business_avatar)} alt={`${business_data?.business_name} branding`} />
                 </div>
                 <div className='businessAdminViewDetailWrapper'>

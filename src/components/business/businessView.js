@@ -69,22 +69,6 @@ const BusinessViewStyles = styled.div`
         }
     }
 
-    .businessViewImage {
-        max-width: 450px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 1.125rem 0;
-
-        img {
-            width: 100%;
-            max-width: 350px;
-            border: 0.1rem solid var(--main-color);
-            display: block;
-            border-radius: 55%;
-        }
-    }
-
     .secondBusinessSection {
         display: flex;
         flex-direction: column-reverse;
@@ -173,7 +157,7 @@ const BusinessView = () => {
 
                     <div className='firstBusinessSection'>
                         
-                        <div className='businessViewImage'>
+                        <div className='imagePreview businessImage'>
                             <img
                                 src={image_link(business?.data?.business_avatar)}
                                 alt={business?.data.business_name}

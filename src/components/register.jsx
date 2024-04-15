@@ -29,23 +29,6 @@ const RegisterStyles = styled.div`
         text-align: center;
     }
 
-    /* .registerImagePreview {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        max-width: 350px;
-        margin: 1.5rem auto;
-        
-        img {
-            max-width: 100%;
-            border: 0.3rem solid var(--main-color);
-            border-radius: 50%;
-            display: block;
-            box-shadow: 5px 5px 5px #010A00;
-        }
-    } */
-
     .passwordContraintText {
         font-size: var(--small-font);
     }
@@ -87,7 +70,6 @@ const Register = () => {
     let navigate = useNavigate();
 
     const createUser = async (data) =>{
-        console.log(data.avatar)
         try {
             const formData = new FormData()
 
@@ -187,7 +169,7 @@ const Register = () => {
 
                     {
                         previewImageUrl && (
-                            <div className='registerImagePreview'>
+                            <div className='imagePreview profileImage'>
                                 <img src={previewImageUrl} alt='user profile avatar' />
                             </div>
                         )
@@ -195,6 +177,8 @@ const Register = () => {
                     <ImageUploadAndCrop
                         onImageCropped={onImageCropped}
                         registerInput={register}
+                        imageShape='round'
+                        registerName='avatar'
                     />
 
                     <div className='formRowInputIcon'>

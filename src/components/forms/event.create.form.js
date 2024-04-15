@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
@@ -7,14 +7,13 @@ import styled from 'styled-components';
 
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
-import useEventImagePreview from '../../hooks/useEventImagePreview';
-import { setImageForForm } from '../../helpers/setImageForForm';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
 import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import { validateEventDate, validateEventTime } from './utils/form.validations';
 
 import AddressForm from './address.form';
+import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
 import LoadingSpinner from '../loadingSpinner';
 
 const CreateEventFormStyles = styled.div`
@@ -84,9 +83,10 @@ const customSelectStyles = {
 }
 
 const EventCreateForm = () => {
+    const [ croppedImage, setCroppedImage ] = useState(null);
+    const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { auth } = useAuth();
     const { dispatch } = useNotification();
-    const { editImage, imagePreview, canvas, setEditImage } = useEventImagePreview()
     const { mutateAsync: createEvent } = useCreateEventMutation()
     let user_host_business_list = []
     
@@ -108,6 +108,17 @@ const EventCreateForm = () => {
             // host_business: ''
         }
     });
+
+    const onImageCropped = useCallback((croppedBlob) => {
+        setCroppedImage(croppedBlob);
+
+        const previewImageURL = URL.createObjectURL(croppedBlob)
+        setPreviewImageUrl(previewImageURL)
+
+        let eventmedia = new File([croppedBlob], 'eventmedia.jpeg', { type: croppedBlob.type })
+        // React Hook Form for handling cropped image
+        setValue('eventmedia', eventmedia); // This allows you to include the cropped image in the form data
+    }, [setValue]);
     
     useEffect(() => {
         // check for saved form in local storage
@@ -126,24 +137,19 @@ const EventCreateForm = () => {
     const createNewEvent = async (event_data) => {
         localStorage.setItem('createEventForm', JSON.stringify(event_data));
         try {
-            // field is not needed, image comes from canvas
-            delete event_data['eventmedia']
-
+            
             if (event_data.hasOwnProperty('host_business')) {
                 if (event_data.host_business && event_data.host_business.hasOwnProperty('value')) {
                     event_data.host_business = event_data.host_business.value
                 }
             }
-
+            
             const formData = new FormData()
-
-            // check for current canvas and set it to formData
-            if(canvas.current === null) {
-                throw new Error('missing_image')
+            
+            if(croppedImage) {
+                formData.set('eventmedia', event_data.eventmedia[0])
             } else {
-                let event_image = setImageForForm(canvas)
-
-                formData.set('eventmedia', event_image)
+                throw new Error('missing_image')
             }
 
             Object.keys(event_data).forEach(key => {
@@ -159,8 +165,7 @@ const EventCreateForm = () => {
             const new_event = await createEvent(formData)
 
             if (new_event.status === 201) {
-                // clear the setEditImage & reset the create event form
-                setEditImage(false)
+                // reset the create event form
                 reset()
 
                 // navigate to the newly created event page
@@ -259,7 +264,6 @@ const EventCreateForm = () => {
                             {/* EVENT MEDIA UPLOAD */}
                             <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
                                 <AddImageIcon color={errors.eventmedia ? 'var(--error-color)' : 'var(--main-color'} />
-                                <input {...register('eventmedia')} id='eventmedia' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
                             </label>
 
                         </div>
@@ -268,11 +272,16 @@ const EventCreateForm = () => {
 
                         {/* EVENT IMAGE PREVIEW RENDER */}
                         {
-                            editImage &&
-                                    <div className='formImage'>
-                                        <canvas id={'eventImagePreview'} ref={canvas} />
+                            previewImageUrl &&
+                                    <div className='imagePreview'>
+                                        <img src={previewImageUrl} alt='event promotional media' />
                                     </div>
                         }
+                        <ImageUploadAndCrop
+                            onImageCropped={onImageCropped}
+                            registerInput={register}
+                            registerName='eventmedia'
+                        />
 
                         <AddressForm
                             register={register}

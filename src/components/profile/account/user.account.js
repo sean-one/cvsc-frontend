@@ -24,7 +24,7 @@ const UserAccountStyles = styled.div`
     .profileImage {
         position: relative;
         min-width: 22.5rem;
-        max-width: 27.5rem;
+        max-width: var(--max-circle-image);
 
         canvas {
             max-width: 100%;

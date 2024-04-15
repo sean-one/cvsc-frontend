@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
 import { image_link } from '../../helpers/dataCleanUp';
-import useImagePreview from '../../hooks/useImagePreview';
-import { setImageForForm } from '../../helpers/setImageForForm';
 import { useUpdateBusinessMutation, useBusinessQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
@@ -13,6 +11,7 @@ import { emailformat, instagramFormat, websiteFormat, facebookFormat, phoneForma
 
 import LoadingSpinner from '../loadingSpinner';
 import AddressForm from './address.form';
+import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
 
 const BusinessEditFormStyles = styled.div`
     .businessImageWrapper {
@@ -58,14 +57,14 @@ const BusinessEditFormStyles = styled.div`
 `;
 
 const BusinessEditForm = ({ userBusinessRole }) => {
+    const [ croppedImage, setCroppedImage ] = useState(null);
+    const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { business_id } = useParams()
     const { dispatch } = useNotification()
 
     const { mutateAsync: updateBusiness } = useUpdateBusinessMutation()
     const { data: business_data, isPending, isError } = useBusinessQuery(business_id)
     
-    const { editImage, imagePreview, canvas, setEditImage } = useImagePreview()
-
     let navigate = useNavigate()
 
     const { register, handleSubmit, clearErrors, reset, watch, setValue, setError, formState: { isDirty, dirtyFields, errors } } = useForm({
@@ -76,6 +75,17 @@ const BusinessEditForm = ({ userBusinessRole }) => {
         }
     })
 
+    const onImageCropped = useCallback((croppedBlob) => {
+        setCroppedImage(croppedBlob);
+
+        const previewImageURL = URL.createObjectURL(croppedBlob)
+        setPreviewImageUrl(previewImageURL)
+
+        let business_avatar = new File([croppedBlob], 'business_avatar.jpeg', { type: croppedBlob.type })
+        // React Hook Form for handling cropped image
+        setValue('business_avatar', business_avatar, { shouldDirty: true }); // This allows you to include the cropped image in the form data
+    }, [setValue]);
+
     const addressStrike = watch('remove_address');
 
     const update_business = async (business_updates) => {
@@ -83,6 +93,12 @@ const BusinessEditForm = ({ userBusinessRole }) => {
         try {
             const formData = new FormData()
             
+            if (croppedImage) {
+                formData.set('business_avatar', business_updates.business_avatar[0])
+            } else {
+                delete business_updates.business_avatar;
+            }
+
             // remove entries that are unchanged
             for (const [key] of Object.entries(business_updates)) {
                 if (!Object.keys(dirtyFields).includes(key)) {
@@ -93,11 +109,6 @@ const BusinessEditForm = ({ userBusinessRole }) => {
             // clean phone number to consist of 10 numbers only
             if (business_updates.business_phone !== undefined) {
                 business_updates.business_phone = business_updates.business_phone.replace(/\D/g, '').slice(-10)
-            }
-            // if current cavas set image to business_avatar if not do nothing
-            if (canvas.current !== null) {
-                let business_avatar = setImageForForm(canvas)
-                formData.set('business_avatar', business_avatar)
             }
 
             // append eveything left changed to formData
@@ -144,7 +155,6 @@ const BusinessEditForm = ({ userBusinessRole }) => {
     }
 
     const handleClose = () => {
-        setEditImage(false)
         reset()
 
         navigate(`/business/${business_id}`)
@@ -177,37 +187,44 @@ const BusinessEditForm = ({ userBusinessRole }) => {
         return <LoadingSpinner />
     }
 
+
     return (
         <BusinessEditFormStyles>
             <div>
                 <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
                     <div className='headerText businessEditFormHeader'>{business_data?.data?.business_name}</div>
-                    
-                    <div className='businessImageWrapper'>
-                        <div className='businessImage'>
-                            {
-                                editImage
-                                    ? <canvas
-                                        // className=''
-                                        id={'avatarImagePreview'}
-                                        ref={canvas}
-                                    />
-                                    : <img
-                                        // className=''
-                                        src={image_link(business_data?.data?.business_avatar)}
-                                        alt={business_data?.data?.business_name}
-                                    />
-                            }
-                            {/* BUSINESS AVATAR UPLOAD */}
-                            <div className='editImageButton'>
-                                <label htmlFor='business_avatar' className='inputLabel removeInputLabelPadding' onClick={() => clearErrors('business_avatar')}>
-                                    <AddImageIcon />
-                                    <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} />
-                                </label>
+                    {
+                        previewImageUrl &&
+                            <div className='imagePreview businessImage'>
+                                <img src={previewImageUrl} alt='business branding logo' />
                             </div>
-                        </div>
+                    }
+                    <ImageUploadAndCrop
+                        onImageCropped={onImageCropped}
+                        registerInput={register}
+                        imageShape='round'
+                        registerName='business_avatar'
+                    />
+                    {
+                        !previewImageUrl &&
+                            <div className='businessImageWrapper'>
+                                <div className='businessImage'>
+                                    <div className='imagePreview imagePreiveCircle'>
+                                        <img
+                                            src={image_link(business_data?.data?.business_avatar)}
+                                            alt={business_data?.data?.business_name}
+                                        />
+                                    </div>
 
-                    </div>
+                                    {/* BUSINESS AVATAR UPLOAD */}
+                                    <div className='editImageButton'>
+                                        <label htmlFor='business_avatar' className='inputLabel removeInputLabelPadding' onClick={() => clearErrors('business_avatar')}>
+                                            <AddImageIcon />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                    }
 
                     <div className='formRowInputIcon'>
                         {/* EMAIL - ADMIN ONLY allowed to update */}
@@ -328,7 +345,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     {errors.server ? <div className='errormessage'>{errors.server?.message}</div> : null}
 
                     <div className='formButtonWrapper'>
-                        <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0) && (canvas.current === null)}>Update</button>
+                        <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0)}>Update</button>
                         <button type='button' onClick={handleClose}>Close</button>
                     </div>
 
