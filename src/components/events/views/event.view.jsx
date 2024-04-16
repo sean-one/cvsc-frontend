@@ -14,24 +14,61 @@ import { useEventQuery } from '../../../hooks/useEventsApi';
 import { EditIcon } from '../../icons/siteIcons';
 
 const EventViewStyles = styled.div`
-
     .eventViewWrapper {
-        display: flex;
-        flex-direction: column;
-        /* align-items: center; */
         width: 100%;
+        height: 100%;
+        display: grid; /* grid container */
+        grid-gap: 1rem;
+        grid-template-areas:
+        'eventheader'
+        'eventmedia'
+        'eventdetails'
+        ;
         
         @media (min-width: 768px) {
-            padding: 1.125rem;
+            grid-template-areas:
+            'eventmedia eventheader'
+            'eventmedia eventdetails'
+            ;
         }
     }
 
-    .eventViewTopInfo {
+    .eventViewHeader {
+        grid-area: eventheader;
+        align-self: end;
         width: 100%;
         display: flex;
         flex-direction: column;
-        padding: 0rem 0.75rem;
+        padding: 0rem 0.75rem 1rem;
+        border-bottom: 0.05rem solid var(--main-color);
     }
+
+    .titleAndEditIcon {
+        display: flex;
+        justify-content: space-between;
+        color: var(--main-highlight-color);
+    }
+    
+    .eventViewAddress {
+        align-self: flex-start;
+    }
+
+    .dateAndTime {
+        color: var(--main-highlight-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .eventViewImage {
+        grid-area: eventmedia;
+    }
+    
+    .eventViewDetails {
+        grid-area: eventdetails;
+        padding: 0 0.75rem;
+    }
+
 
     .eventViewEventInactive {
         color: var(--error-color);
@@ -41,33 +78,8 @@ const EventViewStyles = styled.div`
         flex-shrink: 0;
     }
     
-    .eventViewAddress {
-        align-self: flex-start;
-    }
     
-    .eventViewBody {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
 
-        @media (min-width: 768px) {
-            flex-direction: row;
-        }
-    }
-
-    .eventViewDetails {
-        text-align: justify;
-        align-self: center;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        padding: 0 0.75rem;
-    
-        @media (min-width: 768px) {
-            padding: 0 0 0 0.75rem;
-        }
-    }
 `;
 
 
@@ -103,35 +115,35 @@ const EventView = () => {
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
-                <div className='eventViewTopInfo'>
-                    <div className='sectionRowSplit'>
-                        <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>
+                <div className='eventViewHeader'>
+                        <div className='titleAndEditIcon'>
+                            <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>
+                            {
+                                (isCreator()) &&
+                                    <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`)}>
+                                        <EditIcon />
+                                    </div>
+                            }
+                        </div>
                         {
-                            (isCreator()) &&
-                                <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`, { state: { event: event?.data } })}>
-                                    <EditIcon />
+                            (event?.data?.active_event) &&
+                                <div className='eventViewAddress'>{event?.data?.formatted_address}</div>
+                        }
+                        {
+                            (event?.data?.active_event) &&
+                                <div className='dateAndTime'>
+                                    <div className='subheaderText'>{format(new Date(event?.data.eventdate), "E, MMMM d")}</div>
+                                    <div className='subheaderText'>{`${formatTime(event?.data.eventstart)} - ${formatTime(event?.data.eventend)}`}</div>
                                 </div>
                         }
-                    </div>
-                    {
-                        (event?.data?.active_event) &&
-                            <div className='eventViewAddress'>{event?.data?.formatted_address}</div>
-                    }
-                    {
-                        (event?.data?.active_event) &&
-                            <div className='sectionRowSplit'>
-                                <div className='subheaderText'>{format(new Date(event?.data.eventdate), "E, MMMM d")}</div>
-                                <div className='subheaderText'>{`${formatTime(event?.data.eventstart)} - ${formatTime(event?.data.eventend)}`}</div>
-                            </div>
-                    }
                 </div>
-                <div className='eventViewBody'>
+                <div className='eventViewImage'>
                     <div className='imagePreview eventImage'>
                         <img src={image_link(event?.data.eventmedia)} alt={event?.data.eventname} />
                     </div>
-                    <div className='eventViewDetails'>
-                        <div>{event?.data.details}</div>
-                    </div>
+                </div>
+                <div className='eventViewDetails'>
+                    <div>{event?.data.details}</div>
                 </div>
             </div>
             {
