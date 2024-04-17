@@ -17,8 +17,9 @@ const EventSmallPreviewStyles = styled.div`
         align-items: center;
         justify-content: space-between;
         position: relative;
-        gap: 10px;
-        border: 0.1rem solid pink;
+        gap: 1rem;
+        border-radius: 0.5rem;
+        border: 0.1rem solid var(--main-color);
     }
 
     /* .eventSmallPreviewInactive {
@@ -31,6 +32,7 @@ const EventSmallPreviewStyles = styled.div`
 
     .eventSmallPreviewAdminControls {
         position: absolute;
+        color: var(--main-highlight-color);
         right: 0.75rem;
         top: 0.75rem;
         cursor: pointer;
@@ -74,11 +76,14 @@ const EventSmallPreviewStyles = styled.div`
         justify-content: center;
     }
 
+    .eventSmallPreviewEventname {
+        color: var(--main-highlight-color);
+    }
+
     .eventSmallPreviewDate {
         font-size: var(--small-font);
         line-height: calc(var(--small-font) + 0.15rem);
         font-weight: thin;
-        color: #F4F6F5;
     }
 
     .eventSmallPreviewDetails {
@@ -125,7 +130,7 @@ const EventSmallPreview = ({ event }) => {
                             {
                                 (isCreator()) && <div onClick={(e) => {
                                     e.stopPropagation();
-                                    navigate(`/event/edit/${event.event_id}`, { state: { event }})
+                                    navigate(`/event/edit/${event.event_id}`)
                                 }}><SmallEditIcon /></div>
                             }
                         </div>
@@ -138,7 +143,7 @@ const EventSmallPreview = ({ event }) => {
                 
                 <div className='eventSmallPreviewInfo'>
                     <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), "MMM. dd")} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
-                    <div className='smallHeaderText'>{event.eventname}</div>
+                    <div className='smallHeaderText eventSmallPreviewEventname'>{event.eventname}</div>
                     <div className='eventSmallPreviewDetails'>{event.details}</div>
                     {
                         isBusinessAdminView && <div className='eventCreator'><SmallUserIcon />{event.event_creator}</div>

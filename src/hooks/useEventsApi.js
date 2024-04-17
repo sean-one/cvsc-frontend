@@ -88,7 +88,7 @@ export const useRemoveEventMutation = () => {
         onSuccess: async ({ data }) => {
             localStorage.removeItem('editEventForm')
 
-            await queryClient.invalidateQueries({ queryKey: eventKeys.all })
+            await queryClient.resetQueries({ queryKey: eventKeys.all })
 
             dispatch({
                 type: "ADD_NOTIFICATION",

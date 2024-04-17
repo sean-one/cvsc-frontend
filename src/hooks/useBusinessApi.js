@@ -275,7 +275,7 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
                 }
             })
 
-            navigate('/profile')
+            // navigate('/profile')
         },
         onError: (error) => {
             // 401, 403 - type: 'token', 404 - 'server' business not found, 403 - 'server' invalid business roles

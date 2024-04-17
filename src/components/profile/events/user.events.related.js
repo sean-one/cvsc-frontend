@@ -11,14 +11,21 @@ import useNotification from '../../../hooks/useNotification';
 
 const UserEventsRelatedStyles = styled.div`
     .userEventsList {
-        display: flex;
-        flex-direction: column;
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(1fr, var(--max-section-width));
+        justify-content: center;
         align-items: center;
+        gap: 1rem;
+
+        @media (min-width: 768px) {
+            grid-template-columns: 1fr 1fr;
+        }
     }
 
     .noUserEvents {
         width: 100%;
-        max-width: var(--max-section-width);
+        grid-column: 1/3;
         margin: 1rem 0;
         padding-top: 0.75rem;
         display: flex;

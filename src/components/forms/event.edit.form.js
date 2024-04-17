@@ -194,6 +194,7 @@ const EventEditForm = () => {
 
     const sendEventDelete = async () => {
         removeEventMutation(event_id)
+        navigate('/profile/events')
     }
 
     const handleClose = () => {
