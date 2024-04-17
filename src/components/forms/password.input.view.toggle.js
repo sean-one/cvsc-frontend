@@ -10,13 +10,13 @@ const PasswordInputToggle = ({ control, inputName, errors, clearErrors }) => {
       <Controller
         name={inputName}
         control={control}
-        rules={{ validate: value => validatePassword(value, true)}}
+        rules={{ required: `${inputName === 'confirmation' ? 'password confirmation required' : 'password is required'}`, validate: value => validatePassword }}
         render={({ field }) => (
           <input
             {...field}
             type={isVisible ? 'text' : 'password'}
-            placeholder="Password"
-            onFocus={() => clearErrors(inputName)}
+            placeholder={inputName === 'confirmation' ? 'Confirm password' : 'Password'}
+            onFocus={() => clearErrors([inputName, 'credentials'])}
             style={{ paddingRight: '30px' }} // Make space for the icon
           />
         )}
@@ -36,7 +36,7 @@ const PasswordInputToggle = ({ control, inputName, errors, clearErrors }) => {
         {/* Use an icon here. For demonstration, I'll use text */}
         {isVisible ? 'Hide' : 'Show'}
       </button>
-      {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
+      {errors[inputName] ? <div className='errormessage'>{errors[inputName]?.message}</div> : null}
     </div>
   );
 };

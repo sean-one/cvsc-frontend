@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import AxiosInstance from '../helpers/axios';
 import useNotification from '../hooks/useNotification.js';
 import useAuth from '../hooks/useAuth.js';
-import { emailformat, validatePassword, validateUsername } from './forms/utils/form.validations.js';
+import { emailformat, validateUsername } from './forms/utils/form.validations.js';
 import ImageUploadAndCrop from '../helpers/imageUploadAndCrop.js';
 import { AddImageIcon } from './icons/siteIcons';
+import PasswordInputToggle from './forms/password.input.view.toggle.js';
 
 
 const RegisterStyles = styled.div`
@@ -27,10 +28,6 @@ const RegisterStyles = styled.div`
         color: var(--main-highlight-color);
         padding-left: 0.75rem;
         text-align: center;
-    }
-
-    .passwordContraintText {
-        font-size: var(--small-font);
     }
 
     .loginLinkWrapper {
@@ -52,7 +49,7 @@ const Register = () => {
     const { setAuth } = useAuth();
     const { dispatch } = useNotification();
 
-    const { register, handleSubmit, setError, clearErrors, setValue, formState:{ errors } } = useForm({
+    const { register, handleSubmit, setError, clearErrors, setValue, control, formState:{ errors } } = useForm({
         mode: "onBlur",
     })
 
@@ -196,30 +193,25 @@ const Register = () => {
                         {/* AVATAR IMAGE UPLOAD */}
                         <label htmlFor='avatar' className='inputLabel'>
                             <AddImageIcon />
-                            {/* <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' /> */}
-                            {/* <input {...register('avatar')} id='avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} /> */}
                         </label>
                     </div>
                     {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}
 
                     {/* PASSWORD */}
-                    <div className='inputWrapper'>
-                        <input {...register('password', {
-                            validate: validatePassword
-                        })} type='password' onChange={() => clearErrors(['password', 'credentials'])} placeholder='Password' />
-                        {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
-                        {/* <div className='passwordContraintText'>must be 8+ characters with a mix of upper, lower, numbers</div> */}
-                    </div>
+                    <PasswordInputToggle
+                        control={control}
+                        inputName='password'
+                        errors={errors}
+                        clearErrors={clearErrors}
+                    />
                     
                     {/* CONFIRMATION */}
-                    <div className='inputWrapper'>
-                        <input {...register('confirmation', {
-                            required: 'password confirmation is required',
-                            validate: validatePassword
-                        })} type='password' onChange={() => clearErrors(['confirmation', 'credentials'])} placeholder='Confirm Password' />
-                        {errors.confirmation ? <div className='errormessage'>{errors.confirmation?.message}</div> : null}
-                    </div>
-                    
+                    <PasswordInputToggle
+                        control={control}
+                        inputName='confirmation'
+                        errors={errors}
+                        clearErrors={clearErrors}
+                    />                    
                     {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
                     
                     <div className='formButtonWrapper'>

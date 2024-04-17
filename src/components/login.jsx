@@ -124,7 +124,12 @@ const Login = () => {
                     </div>
                     
                     {/* PASSWORD */}
-                    <PasswordInputToggle control={control} inputName='password' errors={errors} clearErrors={clearErrors} />
+                    <PasswordInputToggle
+                        control={control}
+                        inputName='password'
+                        errors={errors}
+                        clearErrors={clearErrors}
+                    />
                     
                     {errors.server ? <div className='errormessage'>{errors?.server?.message}</div> : null}
 
