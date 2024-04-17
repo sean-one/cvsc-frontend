@@ -20,8 +20,13 @@ import {
     Time,
     // Cog,
     MinusCircle,
+    Hide,
+    Show,
     Search,
 } from "@styled-icons/boxicons-regular";
+
+export const PasswordViewIcon = styled(Show)`width: var(--site-icon-size);`
+export const PasswordHideIcon = styled(Hide)`width: var(--site-icon-size);`
 
 // used at all image upload and edit components
 export const AddImageIcon = styled(CameraAdd)`width: var(--site-icon-size);`
