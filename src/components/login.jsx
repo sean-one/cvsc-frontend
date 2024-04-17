@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
 import AxiosInstance from '../helpers/axios';
-import { validatePassword, validateUsername } from './forms/utils/form.validations';
+import { validateUsername } from './forms/utils/form.validations';
+import PasswordInputToggle from './forms/password.input.view.toggle';
 
 const LoginStyles = styled.div`
     .loginWrap {
@@ -45,7 +46,7 @@ const Login = () => {
     const { setAuth } = useAuth()
     const { dispatch } = useNotification()
 
-    const { register, handleSubmit, setError, clearErrors, formState:{ errors } } = useForm({
+    const { register, handleSubmit, setError, clearErrors, control, formState:{ errors } } = useForm({
         mode: "onBlur",
     });
 
@@ -123,12 +124,7 @@ const Login = () => {
                     </div>
                     
                     {/* PASSWORD */}
-                    <div className='inputWrapper passwordInput'>
-                        <input {...register('password', {
-                            validate: value => validatePassword(value, true)
-                        })} type='password' onFocus={() => clearErrors('password')} placeholder='Password' />
-                        {errors.password ? <div className='errormessage'>{errors.password?.message}</div> : null}
-                    </div>
+                    <PasswordInputToggle control={control} inputName='password' errors={errors} clearErrors={clearErrors} />
                     
                     {errors.server ? <div className='errormessage'>{errors?.server?.message}</div> : null}
 

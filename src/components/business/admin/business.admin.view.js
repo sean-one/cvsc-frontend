@@ -161,7 +161,6 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                                         />
                                     </div>
                                 </div>
-                                <div>descriptive text in regards to what the active business status is</div>
 
                                 <div className='businessAdminDetailSection'>
                                     <div className='businessAdminDetailText'>

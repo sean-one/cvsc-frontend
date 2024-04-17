@@ -260,6 +260,7 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
                 queryClient.invalidateQueries({ queryKey: eventKeys.all }),
                 // roles table updated
                 queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.business_admin) }),
+                queryClient.invalidateQueries({ queryKey: roleKeys.userAccountRole(data?.business_admin) }),
                 // business table updated
                 queryClient.invalidateQueries({ queryKey: businessKeys.list('all_businesses'), exact: true }),
                 queryClient.invalidateQueries({ queryKey: businessKeys.userManagedBusinesses(data?.business_admin), exact: true }),
