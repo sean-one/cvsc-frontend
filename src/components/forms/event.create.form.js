@@ -59,7 +59,7 @@ const customSelectStyles = {
         color: 'var(--main-color)',
         fontSize: '2.1rem',
         '&:hover': {
-            color: 'var(--trim-color)',
+            color: 'var(--main-color)',
         }
     }),
     clearIndicator: (provided) => ({

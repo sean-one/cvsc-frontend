@@ -19,15 +19,23 @@ import { image_link } from '../../../helpers/dataCleanUp';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminViewWrapper {
-        display: flex;
-        flex-direction: column;
+        display: grid; /* grid container */
+        grid-template-areas:
+        'businessadminheader'
+        'businessadmindetails'
+        ;
+        grid-gap: 1rem;
+        /* flex-direction: column; */
 
         @media (min-width: 768px) {
-            flex-direction: row;
+            grid-template-areas:
+            'businessadminheader businessadmindetails'
+            ;
         }
     }
 
     .businessAdminViewDetailWrapper {
+        grid-area: businessadmindetails;
         width: 100%;
     }
 
@@ -41,6 +49,8 @@ const BusinessAdminViewStyles = styled.div`
     }
 
     .businessAdminViewHeader {
+        width: 100%;
+        grid-area: businessadminheader;
         color: var(--main-highlight-color);
         padding: 1rem 0;
 
@@ -116,6 +126,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                 <div className='imagePreview businessImage'>
                     <img src={image_link(business_data?.business_avatar)} alt={`${business_data?.business_name} branding`} />
                 </div>
+
                 <div className='businessAdminViewDetailWrapper'>
                     <div className='businessAdminViewHeader'>
                         <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data?.business_name}</div>
@@ -150,6 +161,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                                         />
                                     </div>
                                 </div>
+                                <div>descriptive text in regards to what the active business status is</div>
 
                                 <div className='businessAdminDetailSection'>
                                     <div className='businessAdminDetailText'>

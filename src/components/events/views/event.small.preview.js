@@ -61,7 +61,7 @@ const EventSmallPreviewStyles = styled.div`
         height: 100%;
         object-fit: cover;
         border-radius: 5px;
-        border: 1px solid var(--trim-color);
+        border: 1px solid var(--main-color);
         display: block;
         position: absolute;
         top: 50%;

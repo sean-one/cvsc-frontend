@@ -23,22 +23,14 @@ const GlobalStyle = createGlobalStyle`
         --main-color: #006633;
         --max-section-width: 55rem;
         --max-page-width: 108rem;
-
-
-        /* --main-color: ${(props) => props.theme['--main-color']}; */
-        --secondary-color: ${(props) => props.theme['--secondary-color']};
-        --secondary-text-color: ${(props) => props.theme['--secondary-text-color']};
-        --trim-color: #286237;
-        --opacity: ${(props) => props.theme['--opacity']};
-        --black-and-white: ${(props) => props.theme['--black-and-white']};
+        --input-placeholder: #39403A;
         --site-icon-size: 3rem;
         --contact-icon-size: 3.3rem;
         --error-color: #D32F2F;
-        // added to label to make it look like an input for image upload
-        --form-input-background: #F4F6F5;
-        --input-text-color: #263238;
-        --input-placeholder: #39403A;
-        /* --input-placeholder: ${(props) => props.theme['--input-placeholder']}; */
+        --notification-background: #D9EAD3;
+
+        --opacity: ${(props) => props.theme['--opacity']};
+        --black-and-white: ${(props) => props.theme['--black-and-white']};
         
         --header-font-size: 2.4rem;
         --small-header-font: 1.8rem;
@@ -102,10 +94,7 @@ const Styles = styled.div`
     }
     
     .sectionContainer {
-        /* margin: 0.75rem; */
-        /* padding: 0.75rem; */
         border-radius: 5px;
-        /* border: 0.1rem solid var(--trim-color); */
         border: 0.1rem solid red;
     }
 
@@ -195,7 +184,7 @@ const Styles = styled.div`
     // user.roles.js, inactive.roles.js, creator.roles.js, manager.roles.js, pending.roles.js
     .rolesListSection {
         width: 100%;
-        max-width: var(--max-section-width);
+        /* max-width: var(--max-section-width); */
         margin-bottom: 1rem;
     }
     
@@ -308,44 +297,6 @@ const Styles = styled.div`
         max-width: var(--max-image-size);
     }
 
-    
-    // business.create.form.js, event.create.form.js
-    .formImage {
-        width: 100%;
-        max-width: 450px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 1.5rem auto;
-        
-        @media (min-width: 500px) {
-            width: 100%;
-        }
-
-        canvas {
-            max-width: 100%;
-            border: 1px solid var(--trim-color);
-            display: block;
-        }
-
-        img {
-            width: 100%;
-            border: 1px solid var(--trim-color);
-            display: block;
-        }
-    }
-
-    // business.create.form.js
-    .formCirclePreview {
-        canvas {
-            border-radius: 50%;
-        }
-
-        img {
-            border-radius: 50%;
-        }
-    }
-
     // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .standardForm {
         width: 95%;
@@ -371,32 +322,6 @@ const Styles = styled.div`
         width: 100%;
         display: flex;
         gap: 0.75rem;
-    }
-
-    .formInput {
-        width: 100%;
-        font-size: 1.4rem;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        color: var(--input-text-color);
-        border-radius: 5px;
-        border-bottom: 1px solid black;
-        background-color: var(--form-input-background);
-        outline: none;
-
-        ::placeholder {
-            color: var(--input-placeholder);
-        }
-
-        ::autofill {
-            background-color: blue;
-        } 
-    }
-
-    .formRowSplit {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
     }
 
     // register.js, business.create.form.js, business.edit.form.js, event.create.form.js

@@ -10,12 +10,26 @@ import EventSmallPreview from './views/event.small.preview';
 
 const BusinessEventsRelatedStyles = styled.div`
     .businessEventsRelatedWrapper {
-        border: 0.1rem solid pink;
+        width: 100%;
+        display: grid; /* grid container */
+        grid-template-columns: minmax(1fr, var(--max-section-width));
+        grid-gap: 1rem;
+        justify-content: center;
+
+        @media (min-width: 768px) {
+            grid-template-columns: 1fr 1fr;
+        }
     }
 
     .businessEventsRelatedHeader {
         padding-left: 1.125rem;
-        margin: 0.75rem 0;
+        margin: 1.5rem 0 0.75rem;
+        color: var(--main-highlight-color);
+        
+        @media (min-width: 768px) {
+            grid-column: 1/3;
+
+        }
     }
 `;
 
@@ -63,7 +77,7 @@ const BusinessEventsRelated = ({ business_id }) => {
                                 })
                             }
                         </div>
-                        : null
+                        : <div>NO BUSINESS EVENTS UPCOMING</div>
             }
         </BusinessEventsRelatedStyles>
     )
