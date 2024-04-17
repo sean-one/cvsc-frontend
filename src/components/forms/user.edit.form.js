@@ -2,12 +2,15 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { useQueryClient } from '@tanstack/react-query';
+
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
 import { AddImageIcon } from '../icons/siteIcons';
 import { validatePassword, emailformat, validateUsername } from './utils/form.validations';
 import AxiosInstance from '../../helpers/axios';
 import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
+import { eventKeys, businessKeys, roleKeys } from '../../helpers/queryKeyFactories';
 
 const UserEditFormStyles = styled.div`
     .userEditFormWrapper {
@@ -23,6 +26,8 @@ const UserEditForm =({ setEditView }) => {
     const [ croppedImage, setCroppedImage ] = useState(null);
     const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { dispatch } = useNotification()
+    const queryClient = useQueryClient();
+
     const { register, handleSubmit, clearErrors, setError, setValue, reset, formState: { dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
@@ -175,6 +180,13 @@ const UserEditForm =({ setEditView }) => {
             const deleteUserResponse = await AxiosInstance.delete('/users/delete')
 
             if(deleteUserResponse.status === 204) {
+                await Promise.all([
+                    queryClient.invalidateQueries({ queryKey: eventKeys.all }),
+                    queryClient.invalidateQueries({ queryKey: roleKeys.all }),
+                    queryClient.invalidateQueries({ queryKey: businessKeys.all }),
+
+                ])
+
                 dispatch({
                     type: "ADD_NOTIFICATION",
                     payload: {
