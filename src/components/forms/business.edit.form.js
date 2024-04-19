@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { image_link } from '../../helpers/dataCleanUp';
 import { useUpdateBusinessMutation, useBusinessQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
-import { FaInstagram, } from 'react-icons/fa6';
-import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
+import { FaXTwitter, FaFacebook, FaInstagram, FaPhone } from 'react-icons/fa6';
+import { TbWorldWww, TbCameraPlus } from 'react-icons/tb';
 import { emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './utils/form.validations';
 
 import LoadingSpinner from '../loadingSpinner';
@@ -29,26 +29,17 @@ const BusinessEditFormStyles = styled.div`
 
     .businessImage {
         position: relative;
-        min-width: 225px;
-        max-width: 450px;
-
-        canvas, img {
-            max-width: 100%;
-            border: 0.1rem solid var(--main-color);
-            display: block;
-            border-radius: 50%;
-        }
     }
     
     .editImageButton {
         position: absolute;
-        right: 15%;
+        right: 20%;
         bottom: 0;
         border: 0.1rem solid var(--main-color);
         border-radius: 50%;
         color: var(--main-highlight-color);
         background-color: var(--main-background-color);
-        padding: 0.75rem;
+        padding: 1rem;
     }
 
     .businessEditFormContactHeader {
@@ -220,7 +211,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                                     {/* BUSINESS AVATAR UPLOAD */}
                                     <div className='editImageButton'>
                                         <label htmlFor='business_avatar' className='inputLabel removeInputLabelPadding' onClick={() => clearErrors('business_avatar')}>
-                                            <AddImageIcon />
+                                            <TbCameraPlus className='siteIcons' />
                                         </label>
                                     </div>
                                 </div>
@@ -276,7 +267,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>
-                            <InstagramIcon />
+                            <FaInstagram className='siteIcons' />
                             <input {...register('business_instagram', {
                                 pattern: {
                                     value: instagramFormat,
@@ -290,7 +281,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     {/* WEBSITE */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_website' className='contactLabelWrapper'>
-                            <WebSiteIcon />
+                            <TbWorldWww className='siteIcons' />
                             <input {...register('business_website', {
                                 pattern: {
                                     value: websiteFormat,
@@ -304,7 +295,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     {/* FACEBOOK */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_facebook' className='contactLabelWrapper'>
-                            <FacebookIcon />
+                            <FaFacebook className='siteIcons' />
                             <input {...register('business_facebook', {
                                 pattern: {
                                     value: facebookFormat,
@@ -318,7 +309,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     {/* PHONE NUMBER */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_phone' className='contactLabelWrapper'>
-                            <PhoneIcon />
+                            <FaPhone className='siteIcons' />
                             <input {...register('business_phone', {
                                 pattern: {
                                     value: phoneFormat,
@@ -332,7 +323,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     {/* TWITTER */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_twitter' className='contactLabelWrapper'>
-                            <TwitterIcon />
+                            <FaXTwitter className='siteIcons' />
                             <input {...register('business_twitter', {
                                 pattern: {
                                     value: twitterFormat,

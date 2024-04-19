@@ -22,12 +22,12 @@ const BusinessViewStyles = styled.div`
         'businessviewcontacts'
         'businessviewdetails'
         ;
-        /* flex-direction: column;
-        align-items: center; */
+        justify-items: center;
+        grid-gap: 1rem;
         width: 100%;
         padding: 1.5rem 1rem;
         
-        @media (min-width: 76.8rem) {
+        @media (min-width: 768px) {
             grid-template-areas:
             'businessviewheader businessviewheader'
             'businessviewlogo businessviewdetails'
@@ -37,7 +37,7 @@ const BusinessViewStyles = styled.div`
 
     .businessViewHeader {
         grid-area: businessviewheader;
-        /* width: 100%; */
+        width: 100%;
         color: var(--main-highlight-color);
         display: flex;
         flex-direction: column;
@@ -50,7 +50,7 @@ const BusinessViewStyles = styled.div`
     }
 
     .businessViewTitle {
-        padding: 0 1rem;
+        padding-left: 1rem;
         width: 100%;
     }
 
@@ -71,10 +71,6 @@ const BusinessViewStyles = styled.div`
         background-color: var(--main-highlight-color);
         border-radius: 0.5rem;
         gap: 1rem;
-    }
-
-    .contactIcons {
-        font-size: var(--icon-size);
     }
 
     .businessViewDescription {

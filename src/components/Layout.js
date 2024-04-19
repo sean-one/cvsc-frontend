@@ -25,6 +25,7 @@ const GlobalStyle = createGlobalStyle`
         --max-page-width: 108rem;
         --input-placeholder: #39403A;
         --icon-size: 2.5rem;
+        --navbar-icon-size: 3rem;
         --site-icon-size: 3rem;
         --contact-icon-size: 3.3rem;
         --error-color: #D32F2F;
@@ -309,9 +310,10 @@ const Styles = styled.div`
 
     // business.create.form.js, business.edit.form.js
     .contactLabelWrapper {
-        /* width: 100%;
+        width: 100%;
         display: flex;
-        gap: 0.75rem; */
+        align-items: center;
+        gap: 1rem;
     }
 
     // register.js, business.create.form.js, business.edit.form.js, event.create.form.js

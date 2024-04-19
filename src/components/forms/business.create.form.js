@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components'
 
 import useNotification from '../../hooks/useNotification';
+import { FaXTwitter, FaFacebook, FaInstagram, FaPhone } from 'react-icons/fa6';
+import { TbWorldWww, TbCameraPlus } from 'react-icons/tb';
 import { emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
-import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 
 import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
 import AddressForm from './address.form';
@@ -200,8 +201,7 @@ const BusinessCreateForm = () => {
 
                         {/* BUSINESS AVATAR UPLOAD */}
                         <label htmlFor='business_avatar' className='inputLabel' onClick={() => clearErrors('business_avatar')}>
-                            <AddImageIcon />
-                            {/* <input {...register('business_avatar')} id='business_avatar' className='inputLabelInput' type='file' accept='image/*' onChange={(e) => imagePreview(e)} /> */}
+                            <TbCameraPlus className='siteIcons' />
                         </label>
                     </div>
                     {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
@@ -234,7 +234,7 @@ const BusinessCreateForm = () => {
                     {/* INSTAGRAM */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_instagram' className='contactLabelWrapper'>
-                            <InstagramIcon />
+                            <FaInstagram className='siteIcons' />
                             <input {...register('business_instagram', {
                                 pattern: {
                                     value: instagramFormat,
@@ -248,7 +248,7 @@ const BusinessCreateForm = () => {
                     {/* WEBSITE */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_website' className='contactLabelWrapper'>
-                            <WebSiteIcon />
+                            <TbWorldWww className='siteIcons' />
                             <input {...register('business_website', {
                                 pattern: {
                                     value: websiteFormat,
@@ -262,7 +262,7 @@ const BusinessCreateForm = () => {
                     {/* FACEBOOK */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_facebook' className='contactLabelWrapper'>
-                            <FacebookIcon />
+                            <FaFacebook className='siteIcons' />
                             <input {...register('business_facebook', {
                                 pattern: {
                                     value: facebookFormat,
@@ -276,7 +276,7 @@ const BusinessCreateForm = () => {
                     {/* PHONE NUMBER */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_phone' className='contactLabelWrapper'>
-                            <PhoneIcon />
+                            <FaPhone className='siteIcons' />
                             <input {...register('business_phone', {
                                 pattern: {
                                     value: phoneFormat,
@@ -290,7 +290,7 @@ const BusinessCreateForm = () => {
                     {/* TWITTER */}
                     <div className='inputWrapper'>
                         <label htmlFor='business_twitter' className='contactLabelWrapper'>
-                            <TwitterIcon />
+                            <FaXTwitter className='siteIcons' />
                             <input {...register('business_twitter', {
                                 pattern: {
                                     value: twitterFormat,

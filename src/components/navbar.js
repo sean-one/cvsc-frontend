@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FaBars, FaX } from 'react-icons/fa6';
 import { faBars, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
 
@@ -52,6 +53,10 @@ const NavbarStyles = styled.div`
         justify-content: space-between;
     }
 
+    .navBarIcons {
+        font-size: var(--navbar-icon-size);
+    }
+
     .toggler {
         display: flex;
         justify-content: center;
@@ -77,8 +82,8 @@ const Navbar = () => {
                         <div className='toggler' onClick={() => setToggle(!toggle)}>
                             {
                                 toggle
-                                    ? <FontAwesomeIcon icon={faAngleUp} size='2x' />
-                                    : <FontAwesomeIcon icon={faBars} size='2x' />
+                                    ? <FaX className='navBarIcons' />
+                                    : <FaBars className='navBarIcons' />
                             }
                         </div>
                     </div>
