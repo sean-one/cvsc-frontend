@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { FaBars, FaX } from 'react-icons/fa6';
-import { faBars, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
 
 import { ReactComponent as CVSCLogo } from '../assets/cvsc_sqr.svg';
