@@ -29,7 +29,7 @@ const MenuStyles = styled.div`
         justify-content: center;
         align-items: center;
         background-color: var(--opacity);
-        color: #006633;
+        color: var(--main-color);
         padding-bottom: 15rem;
         border-radius: 0 0 15px 15px;
     }

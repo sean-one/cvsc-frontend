@@ -20,16 +20,6 @@ const EmptyListReturnStyles = styled.div`
         align-items: center;
     }
 
-    .emptyListBackgroundLogo {
-        width: 100%;
-
-        svg {
-            /* width: 100%; */
-            fill: var(--main-color);
-            /* fill: var(--black-and-white); */
-        }
-    }
-
     .emptyListOptions {
         color: var(--main-color);
         margin-top: 1.5rem;
@@ -45,7 +35,7 @@ const EmptyListReturn = ({ listtype }) => {
         <EmptyListReturnStyles>
             <div className='emptyListReturnWrapper'>
                 <div className='emptyListReturn'>
-                    <CVSCLogo className='emptyListBackgroundLogo' />
+                    <CVSCLogo />
                     <div className='emptyListOptions'>
                         {
                             isLoggedIn

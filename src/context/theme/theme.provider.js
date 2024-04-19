@@ -8,7 +8,6 @@ const lightTheme = {
     '--header-highlight': '#202020',
 
 
-    '--black-and-white': '#F4F6F5',
     '--opacity': 'rgba(255,255,255,0.7)'
 }
 
@@ -17,7 +16,6 @@ const darkTheme = {
     '--main-highlight-color': '#F0F0F0',
     '--header-highlight': '#F0F0F0',
 
-    '--black-and-white' : '#1A1E1B',
     '--opacity': 'rgba(0,0,0,0.7)'
 }
 

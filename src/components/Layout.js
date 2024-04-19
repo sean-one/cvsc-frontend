@@ -28,9 +28,8 @@ const GlobalStyle = createGlobalStyle`
         --contact-icon-size: 3.3rem;
         --error-color: #D32F2F;
         --notification-background: #D9EAD3;
-
         --opacity: ${(props) => props.theme['--opacity']};
-        --black-and-white: ${(props) => props.theme['--black-and-white']};
+
         
         --header-font-size: 2.4rem;
         --small-header-font: 1.8rem;
