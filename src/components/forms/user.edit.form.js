@@ -179,7 +179,11 @@ const UserEditForm =({ setEditView }) => {
         try {
             const deleteUserResponse = await AxiosInstance.delete('/users/delete')
 
+            console.log(deleteUserResponse)
             if(deleteUserResponse.status === 204) {
+                localStorage.removeItem('jwt')
+                setAuth(null)
+                
                 await Promise.all([
                     queryClient.invalidateQueries({ queryKey: eventKeys.all }),
                     queryClient.invalidateQueries({ queryKey: roleKeys.all }),
@@ -202,6 +206,8 @@ const UserEditForm =({ setEditView }) => {
             navigate('/')
             
         } catch (error) {
+            console.log('return error')
+            console.log(error)
             
             if(error?.response?.status === 401) {
                 dispatch({
@@ -294,8 +300,8 @@ const UserEditForm =({ setEditView }) => {
                 
                     <div className='formButtonWrapper'>
                         <button type='submit'>Update</button>
-                        <button onClick={cancelEdit}>Close</button>
-                        <button onClick={deleteUser}>Delete</button>
+                        <div onClick={cancelEdit}>Close</div>
+                        <div onClick={deleteUser}>Delete</div>
                     </div>
 
                 </form>

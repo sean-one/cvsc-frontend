@@ -25,7 +25,8 @@ const EmptyListReturnStyles = styled.div`
 
         svg {
             /* width: 100%; */
-            fill: var(--black-and-white);
+            fill: var(--main-color);
+            /* fill: var(--black-and-white); */
         }
     }
 
