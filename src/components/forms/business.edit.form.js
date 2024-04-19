@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { image_link } from '../../helpers/dataCleanUp';
 import { useUpdateBusinessMutation, useBusinessQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
+import { FaInstagram, } from 'react-icons/fa6';
 import { AddImageIcon, InstagramIcon, WebSiteIcon, FacebookIcon, PhoneIcon, TwitterIcon } from '../icons/siteIcons';
 import { emailformat, instagramFormat, websiteFormat, facebookFormat, phoneFormat, twitterFormat } from './utils/form.validations';
 

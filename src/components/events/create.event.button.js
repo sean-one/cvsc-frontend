@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { CreateEventIcon } from '../icons/siteIcons';
+import { FaCalendarPlus } from 'react-icons/fa6';
 
 const CreateEventButton = () => {
     let navigate = useNavigate()
@@ -9,7 +8,7 @@ const CreateEventButton = () => {
 
     return (
         <div onClick={() => navigate(`/event/create`)}>
-            <CreateEventIcon />
+            <FaCalendarPlus className='siteIcons' style={{ color: 'var(--main-color)' }}/>
         </div>
     )
 }

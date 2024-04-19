@@ -1,6 +1,5 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCannabis } from "@fortawesome/free-solid-svg-icons";
+import { FaCannabis } from 'react-icons/fa6';
 import styled, { keyframes } from 'styled-components';
 
 const spin = keyframes`
@@ -22,7 +21,7 @@ const LoadingSpinnerStyles = styled.div`
 
     .loadingIcon {
         font-size: 4.5rem;
-        color: green;
+        color: var(--main-color);
         animation: ${spin} 2s linear infinite;
     }
 `;
@@ -32,7 +31,7 @@ const LoadingSpinner = () => {
     return (
         <LoadingSpinnerStyles>
             <div className='loadingContainer'>
-                <FontAwesomeIcon icon={faCannabis} className='loadingIcon' spin />
+                <FaCannabis className='loadingIcon' spin />
             </div>
         </LoadingSpinnerStyles>
     )

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
-import { Instagram, Twitter, FacebookCircle } from "@styled-icons/boxicons-logos"
-import { Phone, ToggleRight, UserCheck, Map, User } from "@styled-icons/boxicons-solid"
+import { FaInstagram, FaXTwitter, FaFacebook, FaPhone } from "react-icons/fa6";
+
+import { ToggleRight, UserCheck, Map, User } from "@styled-icons/boxicons-solid"
 import { Web } from "@styled-icons/foundation"
 import { Mail, LocationOff } from "@styled-icons/fluentui-system-filled"
 import { Edit, CameraAdd, Settings, CalendarAdd, CheckmarkCircle } from "@styled-icons/fluentui-system-regular";
@@ -43,10 +44,11 @@ export const TimeIcon = styled(Time)`width: var(--site-icon-size);`
 
 // used in the contacts - both the input fields as well as on the business page
 export const MailIcon = styled(Mail)`width: var(--contact-icon-size);`
-export const InstagramIcon = styled(Instagram)`width: var(--contact-icon-size);`
-export const TwitterIcon = styled(Twitter)`width: var(--contact-icon-size);`
-export const FacebookIcon = styled(FacebookCircle)`width: var(--contact-icon-size);`
-export const PhoneIcon = styled(Phone)`width: var(--contact-icon-size);`
+export const InstagramIcon = styled(FaInstagram)`width: var(--contact-icon-size);`
+export const TwitterIcon = styled(FaXTwitter)`size: 3rem;`
+// export const TwitterIcon = styled(FaXTwitter)`width: var(--contact-icon-size);`
+export const FacebookIcon = styled(FaFacebook)`width: var(--contact-icon-size);`
+export const PhoneIcon = styled(FaPhone)`width: var(--contact-icon-size);`
 export const WebSiteIcon = styled(Web)`width: var(--contact-icon-size);`
 
 // used in Busines admin menu for active status and business request open toggles

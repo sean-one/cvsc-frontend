@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
         --max-section-width: 55rem;
         --max-page-width: 108rem;
         --input-placeholder: #39403A;
+        --icon-size: 2.5rem;
         --site-icon-size: 3rem;
         --contact-icon-size: 3.3rem;
         --error-color: #D32F2F;
@@ -91,20 +92,9 @@ const Styles = styled.div`
         font-size: var(--small-font);
         font-weight: lighter;
     }
-    
-    .sectionContainer {
-        border-radius: 5px;
-        border: 0.1rem solid red;
-    }
 
-    .sectionRowSplit {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .removeBorder {
-        border: none;
+    .siteIcons {
+        font-size: var(--icon-size);
     }
 
     button {
@@ -163,6 +153,7 @@ const Styles = styled.div`
         border: 0.1rem solid var(--main-color);
     }
 
+    // address.form.js
     input[type="checkbox"] {
         width: auto; // Revert to default width
         font-size: medium; // Reset to default font size, though this doesn't usually affect checkboxes
@@ -318,9 +309,9 @@ const Styles = styled.div`
 
     // business.create.form.js, business.edit.form.js
     .contactLabelWrapper {
-        width: 100%;
+        /* width: 100%;
         display: flex;
-        gap: 0.75rem;
+        gap: 0.75rem; */
     }
 
     // register.js, business.create.form.js, business.edit.form.js, event.create.form.js

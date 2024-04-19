@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FaRegEnvelope, FaXTwitter, FaFacebook, FaInstagram, FaPhone, FaBan } from 'react-icons/fa6'
+import { TbWorldWww } from 'react-icons/tb'
 import styled from 'styled-components';
 
 import useNotification from '../../hooks/useNotification';
@@ -11,95 +13,75 @@ import LoadingSpinner from '../loadingSpinner';
 import BusinessEventsRelated from '../events/business.events.related';
 import BusinessAdminControls from './admin/business.admin.controls';
 
-import {
-    FacebookIcon,
-    InstagramIcon,
-    InactiveBusiness,
-    MailIcon,
-    PhoneIcon,
-    TwitterIcon,
-    WebSiteIcon,
-} from '../icons/siteIcons';
-
 const BusinessViewStyles = styled.div`
     .businessViewWrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        display: grid;
+        grid-template-areas:
+        'businessviewheader'
+        'businessviewlogo'
+        'businessviewcontacts'
+        'businessviewdetails'
+        ;
+        /* flex-direction: column;
+        align-items: center; */
         width: 100%;
-        padding: 0 0.75rem;
+        padding: 1.5rem 1rem;
         
         @media (min-width: 76.8rem) {
-            padding: 1.5rem 0.75rem;
+            grid-template-areas:
+            'businessviewheader businessviewheader'
+            'businessviewlogo businessviewdetails'
+            'businessviewlogo businessviewcontacts'
+            ;
         }}
 
     .businessViewHeader {
-        width: 100%;
+        grid-area: businessviewheader;
+        /* width: 100%; */
         color: var(--main-highlight-color);
         display: flex;
         flex-direction: column;
     }
 
-    .businessViewHeaderLeft {
+    .businessViewBusinessName {
         display: flex;
-    }
-    
-    .businessViewDetails {
-        display: flex;
-        flex-direction: column;
+        justify-content: flex-start;
         align-items: center;
-        color: var(--main-color);
-        padding: 1.125rem 0 1.875rem;
-        
-        @media (min-width: 768px) {
-            flex-direction: row;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
     }
 
-    .firstBusinessSection {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 0 0.75rem;
-
-        @media (min-width: 768px) {
-            flex-basis: 50%;
-        }
+    .businessViewTitle {
+        padding: 0 1rem;
+        width: 100%;
     }
 
-    .secondBusinessSection {
-        display: flex;
-        flex-direction: column-reverse;
-        justify-content: space-between;
-
-        @media (min-width: 768px) {
-            flex-direction: column;
-            flex-basis: 50%;
-            padding: 3rem 0;
-        }
+    .businessViewLogo {
+        grid-area: businessviewlogo;
     }
 
     .businessViewContacts {
+        grid-area: businessviewcontacts;
+        align-self: start;
         width: 100%;
+        max-width: var(--max-section-width);
         display: flex;
         justify-content: space-around;
-        padding: 0.75rem 0;
-        margin: 0.75rem 0;
-        color: #006633;
+        padding: 1rem 0;
+        margin: 1rem 0;
+        color: var(--main-color);
         background-color: var(--main-highlight-color);
         border-radius: 0.5rem;
         gap: 1rem;
-        
-        @media (min-width: 768px) {
-            margin: 2.25rem 0;
-            border: none;
-            align-self: flex-start;
-        }
+    }
+
+    .contactIcons {
+        font-size: var(--icon-size);
     }
 
     .businessViewDescription {
+        grid-area: businessviewdetails;
+        align-self: end;
+        width: 100%;
+        max-width: var(--max-section-width);
         padding: 1rem 0;
         text-align: justify;
 
@@ -107,7 +89,6 @@ const BusinessViewStyles = styled.div`
             text-align: left;
         }
     }
-
 `;
 
 const BusinessView = () => {
@@ -137,12 +118,11 @@ const BusinessView = () => {
     return (
         <BusinessViewStyles>
             <div className='businessViewWrapper'>
+                
                 <div className='businessViewHeader'>
-                    <div className='sectionRowSplit'>
-                        <div className='businessViewHeaderLeft'>
-                            { (!business?.data?.active_business) && <InactiveBusiness /> }
-                            <div className='headerText'>{business?.data?.business_name?.toUpperCase()}</div>
-                        </div>
+                    <div className='businessViewBusinessName'>
+                        { (!business?.data?.active_business) && <FaBan className='siteIcons' style={{ color: 'var(--error-color)' }}/> }
+                        <div className='headerText businessViewTitle'>{business?.data?.business_name?.toUpperCase()}</div>
                         {
                             isLoggedIn ? <BusinessAdminControls business={business?.data} /> : null
                         }
@@ -153,34 +133,26 @@ const BusinessView = () => {
                     }
                 </div>
 
-                <div className='businessViewDetails'>
+                <div className='imagePreview businessImage businessViewLogo'>
+                    <img
+                        src={image_link(business?.data?.business_avatar)}
+                        alt={business?.data.business_name}
+                    />
+                </div>
 
-                    <div className='firstBusinessSection'>
-                        
-                        <div className='imagePreview businessImage'>
-                            <img
-                                src={image_link(business?.data?.business_avatar)}
-                                alt={business?.data.business_name}
-                            />
-                        </div>
+                <div className='businessViewDescription'>
+                    {business?.data.business_description}
+                </div>
 
-                    </div>
+                <div className='businessViewContacts'>
+                    <a href={`mailto:${business?.data.business_email}`} target='_blank' rel='noreferrer'><FaRegEnvelope className='siteIcons' /></a>
 
-                    <div className='secondBusinessSection'>
-                        <div className='businessViewDescription'>
-                            {business?.data.business_description}
-                        </div>
-                        <div className='businessViewContacts'>
-                            <a href={`mailto:${business?.data.business_email}`} target='_blank' rel='noreferrer'><MailIcon /></a>
-
-                            {/* dynamically add optional contact information */}
-                            {business?.data.business_phone && <a href={`tel:${business.data.business_phone}`}><PhoneIcon /></a> }
-                            {business?.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank' rel='noreferrer'><InstagramIcon /></a> }
-                            {business?.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank' rel='noreferrer'><FacebookIcon /></a> }
-                            {business?.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><WebSiteIcon /></a> }
-                            {business?.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><TwitterIcon /></a> }
-                        </div>
-                    </div>
+                    {/* dynamically add optional contact information */}
+                    {business?.data.business_phone && <a href={`tel:${business.data.business_phone}`}><FaPhone className='siteIcons' /></a> }
+                    {business?.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank' rel='noreferrer'><FaInstagram className='siteIcons' /></a> }
+                    {business?.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank' rel='noreferrer'><FaFacebook className='siteIcons' /></a> }
+                    {business?.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><TbWorldWww className='siteIcons'/></a> }
+                    {business?.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><FaXTwitter className='siteIcons' /></a> }
                 </div>
             </div>
             <BusinessEventsRelated business_id={business_id} />

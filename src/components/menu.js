@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { FaSun, FaMoon } from 'react-icons/fa6';
 import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
@@ -41,10 +40,6 @@ const MenuStyles = styled.div`
         text-transform: uppercase;
         letter-spacing: 0.2rem;
         border: none;
-    }
-
-    #themeIcon {
-        margin-right: 1rem;
     }
 
     .navMenuButtons:hover {
@@ -119,7 +114,7 @@ const Menu = ({ toggle }) => {
                             ? <div className='navMenuButtons' onClick={() => logOutUser()}>Logout</div>
                             : <div className='navMenuButtons' onClick={() => navigate('/login')}>Login</div>
                     }
-                    <div className='navMenuButtons' onClick={() => toggleTheme()}><FontAwesomeIcon icon={themeName === 'light' ? faMoon : faSun} id='themeIcon' />Theme</div>
+                    <div className='navMenuButtons' onClick={() => toggleTheme()}>{themeName === 'light' ? <FaMoon className='siteIcons' /> : <FaSun className='siteIcons' />} Theme</div>
                 </div>
             </div>
         </MenuStyles>
