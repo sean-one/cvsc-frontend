@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa6';
 
-import { ShowIcon, HideIcon } from '../../../icons/siteIcons';
 import BusinessRole from '../../../roles/business.role';
 
 
@@ -16,7 +16,7 @@ const InactiveRoles = ({ roles_list }) => {
         <div className='rolesListSection'>
             <div className='rolesListSectionHeader'>
                 <div className='subheaderText'>Inactive</div>
-                <div onClick={() => toggleInactive()}>{viewInactive ? <HideIcon /> : <ShowIcon />}</div>
+                <div onClick={() => toggleInactive()}>{viewInactive ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
             </div>
             <div>
                 {

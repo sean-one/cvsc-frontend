@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
-import { formatTime } from '../../../helpers/formatTime';
 import styled from 'styled-components';
+import { FaUser } from 'react-icons/fa6';
+import { GoPencil } from 'react-icons/go';
 
 import { image_link } from '../../../helpers/dataCleanUp';
-import { SmallEditIcon, SmallUserIcon } from '../../icons/siteIcons';
+import { formatTime } from '../../../helpers/formatTime';
 
 import useAuth from '../../../hooks/useAuth';
 
@@ -131,7 +132,7 @@ const EventSmallPreview = ({ event }) => {
                                 (isCreator()) && <div onClick={(e) => {
                                     e.stopPropagation();
                                     navigate(`/event/edit/${event.event_id}`)
-                                }}><SmallEditIcon /></div>
+                                }}><GoPencil className='smallSiteIcons' /></div>
                             }
                         </div>
                 }
@@ -146,7 +147,7 @@ const EventSmallPreview = ({ event }) => {
                     <div className='smallHeaderText eventSmallPreviewEventname'>{event.eventname}</div>
                     <div className='eventSmallPreviewDetails'>{event.details}</div>
                     {
-                        isBusinessAdminView && <div className='eventCreator'><SmallUserIcon />{event.event_creator}</div>
+                        isBusinessAdminView && <div className='eventCreator'><FaUser className='smallSiteIcons' />{event.event_creator}</div>
                     }
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
+import { FaTrashCan } from 'react-icons/fa6';
 
 import { useRoleDelete } from '../../../hooks/useRolesApi';
-import { DeleteIcon } from '../../icons/siteIcons';
 
 
 const DeleteRole = ({ role }) => {
@@ -13,7 +13,7 @@ const DeleteRole = ({ role }) => {
 
     return (
         <div className='deleteButton' onClick={() => sendRoleDelete(role.id)}>
-            <DeleteIcon />
+            <FaTrashCan className='siteIcons' style={{ color: 'var(--error-color)' }} />
         </div>
     )
 }

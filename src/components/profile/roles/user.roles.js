@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FaCaretUp, FaCaretDown } from 'react-icons/fa6';
 
-import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 import UserRole from '../../roles/user.role';
 
 const UserRolesStyles = styled.div`
@@ -71,7 +71,7 @@ const UserRoles = ({ roles }) => {
                             <div className='rolesListSection'>
                                 <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Admin Roles</div>
-                                    <div onClick={() => toggleAdminList()}>{adminView ? <HideIcon /> : <ShowIcon />}</div>
+                                    <div onClick={() => toggleAdminList()}>{adminView ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
                                 </div>
                                 {
                                     (adminView) &&
@@ -86,7 +86,7 @@ const UserRoles = ({ roles }) => {
                         <div className='rolesListSection'>
                                 <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Manager Roles</div>
-                                    <div onClick={() => toggleManagerList()}>{managerView ? <HideIcon /> : <ShowIcon />}</div>
+                                    <div onClick={() => toggleManagerList()}>{managerView ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
                                 </div>
                                 {
                                     (managerView) &&
@@ -101,7 +101,7 @@ const UserRoles = ({ roles }) => {
                         <div className='rolesListSection'>
                                 <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Creator Roles</div>
-                                    <div onClick={() => toggleCreatorList()}>{creatorView ? <HideIcon /> : <ShowIcon />}</div>
+                                    <div onClick={() => toggleCreatorList()}>{creatorView ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
                                 </div>
                                 {
                                     (creatorView) &&
@@ -118,7 +118,7 @@ const UserRoles = ({ roles }) => {
                             <div className='rolesListSection'>
                                 <div className='rolesListSectionHeader'>
                                     <div className='subheaderText'>Inactive Roles</div>
-                                    <div onClick={() => toggleInactive()}>{viewInactive ? <HideIcon /> : <ShowIcon />}</div>
+                                    <div onClick={() => toggleInactive()}>{viewInactive ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
                                 </div>
                                 {
                                     viewInactive &&

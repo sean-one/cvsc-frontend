@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getImageSrc } from '../../../helpers/getImageSrc';
+import { FaUserPen } from 'react-icons/fa6';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
-import { UserEditIcon } from '../../icons/siteIcons';
 import { useUserAccountRole } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
 
@@ -140,7 +140,7 @@ const UserAccount = () => {
                             />
                             {
                                 (!editView) &&
-                                    <div className='userEditButton' onClick={() => setEditView(true)}><UserEditIcon /></div>
+                                    <div className='userEditButton' onClick={() => setEditView(true)}><FaUserPen className='siteIcons' /></div>
                             }
                         </div>
                         

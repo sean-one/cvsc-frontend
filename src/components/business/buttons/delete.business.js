@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaTrashCan } from 'react-icons/fa6';
 
 import { useRemoveBusinessMutation } from '../../../hooks/useBusinessApi';
-import { DeleteIcon } from '../../icons/siteIcons';
 
 
 const DeleteBusiness = ({ business_id }) => {
@@ -17,7 +17,7 @@ const DeleteBusiness = ({ business_id }) => {
 
 
     return (
-        <div onClick={delete_business}><DeleteIcon /></div>
+        <div onClick={delete_business}><FaTrashCan className='siteIcons' style={{ color: 'var(--error-color)' }} /></div>
     )
 }
 

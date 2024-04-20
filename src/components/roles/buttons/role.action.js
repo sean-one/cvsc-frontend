@@ -1,7 +1,8 @@
 import React from 'react';
+import { FaUserCheck, FaUserTie, FaUserMinus } from 'react-icons/fa6';
 
 import { useRoleAction } from '../../../hooks/useRolesApi';
-import { ApproveUserIcon } from '../../icons/siteIcons';
+
 
 const RoleAction = ({ role_id, actionType }) => {
     const { mutate: roleAction } = useRoleAction();
@@ -12,15 +13,20 @@ const RoleAction = ({ role_id, actionType }) => {
 
     const renderButtonContent = () => {
         if (actionType === 'approve') {
-            return <ApproveUserIcon />;
+            return <FaUserCheck className='siteIcons' />;
+        }
+
+        if (actionType === 'upgrade') {
+            return <FaUserTie className='siteIcons' />;
+        }
+
+        if (actionType === 'downgrade') {
+            return <FaUserMinus className='siteIcons' />;
         }
 
         if (actionType === 'inactive') {
             return null;
         }
-
-        // just returning upgrade or downgrade until icons are found
-        return actionType.charAt(0).toUpperCase() + actionType.slice(1);
     };
 
     return (

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import AutoComplete from 'react-google-autocomplete';
+import { FaLocationDot } from 'react-icons/fa6';
+import { MdLocationOff } from 'react-icons/md';
 
-import { AddressIcon, RemoveAddressIcon } from '../icons/siteIcons';
 
 const AddressFormStyles = styled.div`
     .addressInputWrapper {
@@ -99,7 +100,7 @@ const AddressForm = ({ register, setValue, errors, clearErrors, currentValue='',
         <AddressFormStyles>
             <div className='addressInputWrapper'>
                 <div className='addressInput'>
-                    <label htmlFor="formatted_address"><AddressIcon /></label>
+                    <label htmlFor="formatted_address"><FaLocationDot className='siteIcons' /></label>
                     {
                         isEditing 
                             ? (<AutoComplete
@@ -126,7 +127,7 @@ const AddressForm = ({ register, setValue, errors, clearErrors, currentValue='',
                     pathname.includes('/business/edit')
                         ? <div className='checkboxContainer'>
                             <input {...register('remove_address')} type='checkbox' id='remove_address' name='remove_address' disabled={currentValue === null} />
-                            <label htmlFor='remove_address'><RemoveAddressIcon /></label>
+                            <label htmlFor='remove_address'><MdLocationOff className='siteIcons' /></label>
                         </div>
                         : null
                 }

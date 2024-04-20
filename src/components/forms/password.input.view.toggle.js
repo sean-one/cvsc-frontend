@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import { PasswordViewIcon, PasswordHideIcon } from '../icons/siteIcons';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 import { validatePassword } from './utils/form.validations';
 
 const PasswordInputToggle = ({ control, inputName, errors, clearErrors }) => {
@@ -35,7 +35,7 @@ const PasswordInputToggle = ({ control, inputName, errors, clearErrors }) => {
         }}
       >
         {/* Use an icon here. For demonstration, I'll use text */}
-        {isVisible ? <PasswordHideIcon /> : <PasswordViewIcon />}
+        {isVisible ? <FaRegEyeSlash className='siteIcons' /> : <FaRegEye className='siteIcons' />}
       </button>
       {errors[inputName] ? <div className='errormessage'>{errors[inputName]?.message}</div> : null}
     </div>

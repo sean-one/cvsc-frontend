@@ -25,6 +25,7 @@ const GlobalStyle = createGlobalStyle`
         --max-page-width: 108rem;
         --input-placeholder: #39403A;
         --icon-size: 2.5rem;
+        --small-icon-size: 1rem;
         --navbar-icon-size: 3rem;
         --site-icon-size: 3rem;
         --contact-icon-size: 3.3rem;
@@ -96,6 +97,10 @@ const Styles = styled.div`
 
     .siteIcons {
         font-size: var(--icon-size);
+    }
+
+    .smallSiteIcons {
+        font-size: var(--small-icon-size);
     }
 
     button {

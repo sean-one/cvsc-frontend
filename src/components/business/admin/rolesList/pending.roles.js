@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa6';
 
-import { ShowIcon, HideIcon } from '../../../icons/siteIcons';
 import BusinessRole from '../../../roles/business.role';
 
 
@@ -16,7 +16,7 @@ const PendingRoles = ({ roles_list }) => {
         <div className='rolesListSection'>
             <div className='rolesListSectionHeader'>
                 <div className='subheaderText'>Request</div>
-                <div onClick={() => toggleRequest()}>{viewRequest ? <HideIcon /> : <ShowIcon />}</div>
+                <div onClick={() => toggleRequest()}>{viewRequest ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
             </div>
             {
                 viewRequest &&

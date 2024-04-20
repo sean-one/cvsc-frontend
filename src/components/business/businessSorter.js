@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
+import { FaMagnifyingGlass, FaFilter, FaX } from 'react-icons/fa6';
 
-import { FilterIcon, SearchIcon, CloseIcon } from '../icons/siteIcons';
 
 const BusinessSorterStyles = styled.div`
     .businessSorterWrapper {
@@ -67,7 +67,7 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                             placeholder="Search businesses..."
                         />
                         <div className='iconContainer'>
-                            <CloseIcon onClick={() => setSortType('')}/>
+                            <FaX className='siteIcons' onClick={() => setSortType('')}/>
                         </div>
                     </div>
                 ) : sortType === 'filterView' ? (
@@ -79,16 +79,16 @@ const BusinessSorter = ({ sortCriteria, onSortChange, searchQuery, onSearchChang
                             <option value="request_closed">Request Closed</option>
                         </select>
                         <div className='iconContainer'>
-                            <CloseIcon onClick={() => setSortType('')} />
+                            <FaX className='siteIcons' onClick={() => setSortType('')} />
                         </div>
                     </div>
                 ) : (
                     <div className='businessSorter'>
                         <div className='searchSection' onClick={() => setSortType('searchView')}>
-                            <SearchIcon /><span>Search</span>
+                            <FaMagnifyingGlass className='siteIcons' /><span>Search</span>
                         </div>
                         <div className='filterSection' onClick={() => setSortType('filterView')}>
-                            <FilterIcon /><span>Filter</span>
+                            <FaFilter className='siteIcons' /><span>Filter</span>
                         </div>
                     </div>
                 )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { FaCaretUp, FaCaretDown } from 'react-icons/fa6'
 
-import { ShowIcon, HideIcon } from '../../../icons/siteIcons';
 import BusinessRole from '../../../roles/business.role';
 
 
@@ -16,7 +16,7 @@ const CreatorRoles = ({ roles_list }) => {
         <div className='rolesListSection'>
             <div className='rolesListSectionHeader'>
                 <div className='subheaderText'>Creators</div>
-                <div onClick={() => toggleCreators()}>{viewCreators ? <HideIcon /> : <ShowIcon />}</div>
+                <div onClick={() => toggleCreators()}>{viewCreators ? <FaCaretUp className='siteIcons'  /> : <FaCaretDown className='siteIcons' />}</div>
             </div>
             {
                 viewCreators &&

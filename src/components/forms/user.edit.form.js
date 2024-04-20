@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
+import { TbCameraPlus } from 'react-icons/tb';
 
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
-import { AddImageIcon } from '../icons/siteIcons';
 import { validatePassword, emailformat, validateUsername } from './utils/form.validations';
 import AxiosInstance from '../../helpers/axios';
 import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
@@ -276,7 +276,7 @@ const UserEditForm =({ setEditView }) => {
 
                         {/* AVATAR / PROFILE IMAGE UPDATE */}
                         <label htmlFor='avatar' className='inputLabel' onClick={() => clearErrors('avatar')}>
-                            <AddImageIcon />
+                            <TbCameraPlus className='siteIcons' />
                         </label>
                     </div>
                     {errors.email ? <div className='errormessage'>{errors?.email?.message}</div> : null}

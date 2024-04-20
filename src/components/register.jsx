@@ -8,7 +8,7 @@ import useNotification from '../hooks/useNotification.js';
 import useAuth from '../hooks/useAuth.js';
 import { emailformat, validateUsername } from './forms/utils/form.validations.js';
 import ImageUploadAndCrop from '../helpers/imageUploadAndCrop.js';
-import { AddImageIcon } from './icons/siteIcons';
+import { TbCameraPlus } from 'react-icons/tb';
 import PasswordInputToggle from './forms/password.input.view.toggle.js';
 
 
@@ -192,7 +192,7 @@ const Register = () => {
                         
                         {/* AVATAR IMAGE UPLOAD */}
                         <label htmlFor='avatar' className='inputLabel'>
-                            <AddImageIcon />
+                            <TbCameraPlus className='siteIcons' />
                         </label>
                     </div>
                     {errors.email ? <div className='errormessage'>{errors.email?.message}</div> : null}

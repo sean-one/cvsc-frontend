@@ -1,8 +1,7 @@
 import React from 'react';
+import { FaToggleOn, FaToggleOff } from 'react-icons/fa6';
 
 import { useBusinessToggle } from '../../../hooks/useBusinessApi';
-
-import { ToggleOnIcon, ToggleOffIcon } from '../../icons/siteIcons';
 
 
 const BusinessToggle = ({ business_id, toggleStatus=false, toggleType }) => {
@@ -13,7 +12,7 @@ const BusinessToggle = ({ business_id, toggleStatus=false, toggleType }) => {
     }
     
     return (
-        <div onClick={toggleButtonAction}>{(toggleStatus ? <ToggleOnIcon /> : <ToggleOffIcon />)}</div>
+        <div onClick={toggleButtonAction}>{(toggleStatus ? <FaToggleOn className='siteIcons' /> : <FaToggleOff className='siteIcons' style={{ color: 'var(--error-color)' }} />)}</div>
     )
 }
 

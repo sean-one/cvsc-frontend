@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns'
 import styled from 'styled-components';
+import { GoPencil } from 'react-icons/go';
 
 import LoadingSpinner from '../../loadingSpinner';
 import EventViewRelated from '../event.view.related';
@@ -11,7 +12,7 @@ import useNotification from '../../../hooks/useNotification';
 import { formatTime } from '../../../helpers/formatTime';
 import { image_link } from '../../../helpers/dataCleanUp';
 import { useEventQuery } from '../../../hooks/useEventsApi';
-import { EditIcon } from '../../icons/siteIcons';
+
 
 const EventViewStyles = styled.div`
     .eventViewWrapper {
@@ -121,7 +122,7 @@ const EventView = () => {
                             {
                                 (isCreator()) &&
                                     <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`)}>
-                                        <EditIcon />
+                                        <GoPencil className='siteIcons' />
                                     </div>
                             }
                         </div>

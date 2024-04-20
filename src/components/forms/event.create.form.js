@@ -4,12 +4,13 @@ import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 import styled from 'styled-components';
+import { TbCameraPlus } from 'react-icons/tb'
+import { FaRegCalendarDays, FaRegClock } from 'react-icons/fa6';
 
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
 import { useCreateEventMutation } from '../../hooks/useEventsApi';
 import { useUserRolesQuery } from '../../hooks/useRolesApi';
-import { AddImageIcon, DateIcon, TimeIcon } from '../icons/siteIcons';
 import { validateEventDate, validateEventTime } from './utils/form.validations';
 
 import AddressForm from './address.form';
@@ -263,7 +264,7 @@ const EventCreateForm = () => {
 
                             {/* EVENT MEDIA UPLOAD */}
                             <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
-                                <AddImageIcon color={errors.eventmedia ? 'var(--error-color)' : 'var(--main-color'} />
+                                <TbCameraPlus className='siteIcons' color={errors.eventmedia ? 'var(--error-color)' : 'var(--main-color'} />
                             </label>
 
                         </div>
@@ -292,7 +293,7 @@ const EventCreateForm = () => {
 
                         {/* EVENT DATE */}
                         <div className='dateTimeInputWrapper'>
-                            <label htmlFor='eventdate'><DateIcon /></label>
+                            <label htmlFor='eventdate'><FaRegCalendarDays className='siteIcons' /></label>
                             <input {...register('eventdate', {
                                 required: 'an event date is required',
                                 validate: validateEventDate,
@@ -302,7 +303,7 @@ const EventCreateForm = () => {
 
                         {/* EVENT START */}
                         <div className='dateTimeInputWrapper'>
-                            <label htmlFor='eventstart'><TimeIcon /></label>
+                            <label htmlFor='eventstart'><FaRegClock className='siteIcons' /></label>
                             <input {...register('eventstart', {
                                 required: 'an event starting time is required',
                                 validate: validateEventTime,
@@ -312,7 +313,7 @@ const EventCreateForm = () => {
                         
                         {/* EVENT END */}
                         <div className='dateTimeInputWrapper'>
-                            <label htmlFor='eventend'><TimeIcon /></label>
+                            <label htmlFor='eventend'><FaRegClock className='siteIcons' /></label>
                             <input {...register('eventend', {
                                 required: 'an event ending time is required',
                                 validate: validateEventTime,

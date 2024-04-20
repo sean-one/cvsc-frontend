@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FaCaretUp, FaCaretDown } from 'react-icons/fa6';
 
 import { useBusinessTransferMutation } from '../../../hooks/useBusinessApi';
 import { useBusinessRolesQuery } from '../../../hooks/useRolesApi';
-import { ShowIcon, HideIcon } from '../../icons/siteIcons';
 
 const BusinessTransferStyles = styled.div`
     .businessTransferDescription {
@@ -60,7 +60,7 @@ const BusinessTransfer = ({ business_id }) => {
             <div>
                 <div className='businessAdminDetailSection'>
                     <div className='businessAdminDetailText'>Transfer Business</div>
-                    <div onClick={() => setTransferAdminEditView(!transferAdminEditView)}>{transferAdminEditView ? <HideIcon /> : <ShowIcon />}</div>
+                    <div onClick={() => setTransferAdminEditView(!transferAdminEditView)}>{transferAdminEditView ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
                 </div>
                 {
                     transferAdminEditView
