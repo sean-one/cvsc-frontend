@@ -125,6 +125,15 @@ const Styles = styled.div`
         }
     }
 
+    .buttonLike {
+        padding: 0.75rem 1.875rem;
+        border: 0.1rem solid var(--main-highlight-color);
+        color: var(--main-color);
+        border-radius: 0.5rem;
+        background-color: transparent;
+        outline: none;
+    }
+
     input, textarea, select {
         width: 100%;
         font-size: 2.1rem;

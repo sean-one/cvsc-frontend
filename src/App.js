@@ -93,7 +93,7 @@ const App = () => {
             </Route>
           </Routes>
         </Layout>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </React.Fragment>
   );

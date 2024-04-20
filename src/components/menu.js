@@ -48,13 +48,14 @@ const MenuStyles = styled.div`
 `;
 
 const Menu = ({ toggle }) => {
-    const { isLoggedIn, setAuth } = useAuth();
+    const { isLoggedIn, auth, setAuth } = useAuth();
     const { dispatch } = useNotification();
     const { themeName, toggleTheme } = useTheme()
     let navigate = useNavigate();
 
     const logOutUser = async () => {
         try {
+            const username = auth?.user?.username || 'user';
             const logoutResponse = await AxiosInstance.get('/auth/logout')
             
             if(logoutResponse.status === 204) {
@@ -67,7 +68,7 @@ const Menu = ({ toggle }) => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: 'logged out super like'
+                        message: `${username} successfully logged out`
                     }
                 })
 

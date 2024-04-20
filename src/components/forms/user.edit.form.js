@@ -300,8 +300,8 @@ const UserEditForm =({ setEditView }) => {
                 
                     <div className='formButtonWrapper'>
                         <button type='submit'>Update</button>
-                        <div onClick={cancelEdit}>Close</div>
-                        <div onClick={deleteUser}>Delete</div>
+                        <div className='buttonLike' onClick={cancelEdit}>Close</div>
+                        <div className='buttonLike' onClick={deleteUser}>Delete</div>
                     </div>
 
                 </form>
