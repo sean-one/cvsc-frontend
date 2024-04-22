@@ -14,6 +14,8 @@ const PersistLogin = () => {
     useEffect(() => {
         let isMounted = true
 
+        console.log(auth)
+        console.log(isLoggedIn)
         const verifyRefreshToken = async () => {
             try {
                 await refresh()

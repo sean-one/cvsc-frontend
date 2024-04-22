@@ -30,7 +30,7 @@ const RoleAction = ({ role_id, actionType }) => {
     };
 
     return (
-        <div onClick={handleRoleAction}>
+        <div className='roleActionButton' onClick={handleRoleAction}>
             {renderButtonContent()}
         </div>
     );

@@ -13,7 +13,7 @@ const DeleteRole = ({ role }) => {
 
     return (
         <div className='deleteButton' onClick={() => sendRoleDelete(role.id)}>
-            <FaTrashCan className='siteIcons' style={{ color: 'var(--error-color)' }} />
+            <FaTrashCan className='siteIcons' style={{ color: 'var(--error-color)', fontSize: '2.2rem' }} />
         </div>
     )
 }

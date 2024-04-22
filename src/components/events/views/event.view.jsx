@@ -19,7 +19,6 @@ const EventViewStyles = styled.div`
         width: 100%;
         height: 100%;
         display: grid; /* grid container */
-        grid-gap: 1rem;
         grid-template-areas:
         'eventheader'
         'eventmedia'
@@ -27,6 +26,7 @@ const EventViewStyles = styled.div`
         ;
         
         @media (min-width: 768px) {
+            grid-gap: 1rem;
             grid-template-areas:
             'eventmedia eventheader'
             'eventmedia eventdetails'
@@ -46,8 +46,26 @@ const EventViewStyles = styled.div`
 
     .titleAndEditIcon {
         display: flex;
+        align-items: center;
         justify-content: space-between;
         color: var(--main-highlight-color);
+    }
+
+    .eventViewBusinessAvatarAndEventTitle {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .eventBusinessAvatar {
+        max-width: 5rem;
+        margin: 0.5rem 0;
+
+        img {
+            width: 100%;
+            display: block;
+            border-radius: 50%;
+        }
     }
     
     .eventViewAddress {
@@ -112,13 +130,19 @@ const EventView = () => {
 
     const isCreator = () => auth?.user?.id === event?.data.created_by
     
-    
+    console.log(event.data)
+    console.log(image_link(event.data.business_avatar))
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
                 <div className='eventViewHeader'>
                         <div className='titleAndEditIcon'>
-                            <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>
+                            <div className='eventViewBusinessAvatarAndEventTitle'>
+                                <div className='eventBusinessAvatar'>
+                                    <img src={image_link(event?.data.business_avatar)} alt='featured business branding' />
+                                </div>
+                                <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>
+                            </div>
                             {
                                 (isCreator()) &&
                                     <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`)}>

@@ -31,7 +31,7 @@ const LoadingSpinner = () => {
     return (
         <LoadingSpinnerStyles>
             <div className='loadingContainer'>
-                <FaCannabis className='loadingIcon' spin />
+                <FaCannabis className='loadingIcon' />
             </div>
         </LoadingSpinnerStyles>
     )

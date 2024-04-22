@@ -9,6 +9,10 @@ const BusinessRoleStyles = styled.div`
     .businessRoleUsername {
         color: var(--main-highlight-color);
     }
+
+    .roleButtonWrapper {
+        gap: 1.5rem;
+    }
 `;
 
 const BusinessRole = ({ role, list_type }) => {

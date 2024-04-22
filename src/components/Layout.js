@@ -267,7 +267,19 @@ const Styles = styled.div`
         }  
     }
 
+    // role.action.js
+    .roleActionButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+    }
+
+    // delete.role.js
     .deleteButton {
+        display: flex;
+        justify-content:center;
+        align-items: center;
         color: var(--error-color);
         background-color: transparent;
     }
