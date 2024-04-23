@@ -138,7 +138,7 @@ const EventView = () => {
                 <div className='eventViewHeader'>
                         <div className='titleAndEditIcon'>
                             <div className='eventViewBusinessAvatarAndEventTitle'>
-                                <div className='eventBusinessAvatar'>
+                                <div className='eventBusinessAvatar' onClick={() => navigate(`/business/${event?.data.host_business}`)} >
                                     <img src={image_link(event?.data.business_avatar)} alt='featured business branding' />
                                 </div>
                                 <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>

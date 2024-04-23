@@ -39,7 +39,7 @@ const NavbarStyles = styled.div`
     }
 
     .navBarLogo {
-        width: auto;
+        width: 10rem;
         max-height: 100%;
         fill: var(--header-highlight);
     }

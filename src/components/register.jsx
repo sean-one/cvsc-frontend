@@ -37,6 +37,10 @@ const RegisterStyles = styled.div`
         margin-top: 3rem;
     }
 
+    .userwebsite {
+        display: none;
+    }
+
     #loginLink {
         cursor: pointer;
         color: var(--main-highlight-color);
@@ -51,6 +55,10 @@ const Register = () => {
 
     const { register, handleSubmit, setError, clearErrors, setValue, control, formState:{ errors } } = useForm({
         mode: "onBlur",
+        defaultValues: {
+            password: '',
+            confirmation: '',
+        }
     })
 
     const onImageCropped = useCallback((croppedBlob) => {
@@ -67,6 +75,7 @@ const Register = () => {
     let navigate = useNavigate();
 
     const createUser = async (data) =>{
+        console.log(data)
         try {
             const formData = new FormData()
 
@@ -83,7 +92,9 @@ const Register = () => {
             
             // add data fields to formData object for post request
             Object.keys(data).forEach(key => {
-                formData.append(key, data[key])
+                if (key !== 'userwebsite') {
+                    formData.append(key, data[key])
+                }
             })
             
             const response = await AxiosInstance.post('/auth/register', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
@@ -160,8 +171,12 @@ const Register = () => {
                                 message: 'username is too long'
                             },
                             validate: validateUsername
-                        })} type='text' onChange={() => clearErrors('username')} placeholder='Username' />
+                        })} type='text' onChange={() => clearErrors('username')} placeholder='Username' autoComplete='off'/>
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
+                    </div>
+
+                    <div className='inputWrapper userwebsite'>
+                        <input {...register('userwebsite')} type='text' placeholder='Website' autoComplete='off' />
                     </div>
 
                     {
@@ -187,7 +202,7 @@ const Register = () => {
                                     value: emailformat,
                                     message: 'invalid email format'
                                 }
-                            })} type='text' onChange={() => clearErrors('email')} placeholder='Email' />
+                            })} type='text' onChange={() => clearErrors('email')} placeholder='Email' autoComplete='off'/>
                         </div>
                         
                         {/* AVATAR IMAGE UPLOAD */}

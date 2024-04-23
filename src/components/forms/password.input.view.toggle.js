@@ -15,6 +15,7 @@ const PasswordInputToggle = ({ control, inputName, errors, clearErrors }) => {
         render={({ field }) => (
           <input
             {...field}
+            name={inputName}
             type={isVisible ? 'text' : 'password'}
             placeholder={inputName === 'confirmation' ? 'Confirm password' : 'Password'}
             onFocus={() => clearErrors([inputName, 'credentials'])}

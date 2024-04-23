@@ -103,6 +103,11 @@ const Styles = styled.div`
         font-size: var(--small-icon-size);
     }
 
+    .inactiveBusinessIcon {
+        color: var(--error-color);
+        margin-right: 1rem;
+    }
+
     button {
         padding: 0.75rem 1.875rem;
         border: none;

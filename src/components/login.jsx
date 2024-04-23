@@ -48,6 +48,9 @@ const Login = () => {
 
     const { register, handleSubmit, setError, clearErrors, control, formState:{ errors } } = useForm({
         mode: "onBlur",
+        defaultValues: {
+            password: '',
+        }
     });
 
     const location = useLocation()

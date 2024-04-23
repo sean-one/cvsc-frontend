@@ -50,7 +50,6 @@ const BusinessViewStyles = styled.div`
     }
 
     .businessViewTitle {
-        padding-left: 1rem;
         width: 100%;
     }
 
@@ -117,7 +116,7 @@ const BusinessView = () => {
                 
                 <div className='businessViewHeader'>
                     <div className='businessViewBusinessName'>
-                        { (!business?.data?.active_business) && <FaBan className='siteIcons' style={{ color: 'var(--error-color)' }}/> }
+                        { (!business?.data?.active_business) && <FaBan className='siteIcons inactiveBusinessIcon' /> }
                         <div className='headerText businessViewTitle'>{business?.data?.business_name?.toUpperCase()}</div>
                         {
                             isLoggedIn ? <BusinessAdminControls business={business?.data} /> : null
