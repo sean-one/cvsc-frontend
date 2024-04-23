@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import useTheme from '../hooks/useTheme';
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
+import { useUserAccountRole } from '../hooks/useRolesApi';
 
 const MenuStyles = styled.div`
     .menuWrapper {
@@ -50,6 +51,7 @@ const MenuStyles = styled.div`
 const Menu = ({ toggle }) => {
     const { isLoggedIn, auth, setAuth } = useAuth();
     const { dispatch } = useNotification();
+    const { data: user_account_role } = useUserAccountRole(auth?.user?.id)
     const { themeName, toggleTheme } = useTheme()
     let navigate = useNavigate();
 
@@ -107,7 +109,7 @@ const Menu = ({ toggle }) => {
                         isLoggedIn &&
                             <div className='navMenuButtons' onClick={() => navigate('/business/create')}>Create Business</div>
                     }
-                    {   isLoggedIn &&
+                    {   (isLoggedIn && (user_account_role?.data?.role_type !== 'basic')) &&
                             <div className='navMenuButtons' onClick={() => navigate('/event/create')}>Create Event</div>
                     }
                     {
