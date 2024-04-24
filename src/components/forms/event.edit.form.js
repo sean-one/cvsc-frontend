@@ -359,7 +359,16 @@ const EventEditForm = () => {
 
                     {/* EVENT DETAILS */}
                     <div className='inputWrapper'>
-                        <textarea {...register('details')} rows='8' onClick={() => clearErrors('details')} />
+                        <textarea {...register('details', {
+                            minLength: {
+                                value: 30,
+                                message: 'event details must have at least 30 characters'
+                            },
+                            maxLength: {
+                                value: 1000,
+                                message: 'event details are too long'
+                            }
+                        })} rows='8' onClick={() => clearErrors('details')} />
                         {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
                     </div>
                     

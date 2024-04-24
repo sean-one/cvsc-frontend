@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import styled from 'styled-components';
+import { decode } from 'he';
 import { FaUser } from 'react-icons/fa6';
 import { GoPencil } from 'react-icons/go';
 
@@ -144,8 +145,8 @@ const EventSmallPreview = ({ event }) => {
                 
                 <div className='eventSmallPreviewInfo'>
                     <div className='eventSmallPreviewDate'>{`${format(new Date(event.eventdate), "MMM. dd")} | ${formatTime(event.eventstart)} - ${formatTime(event.eventend)}`}</div>
-                    <div className='smallHeaderText eventSmallPreviewEventname'>{event.eventname}</div>
-                    <div className='eventSmallPreviewDetails'>{event.details}</div>
+                    <div className='smallHeaderText eventSmallPreviewEventname'>{decode(event.eventname)}</div>
+                    <div className='eventSmallPreviewDetails'>{decode(event.details)}</div>
                     {
                         isBusinessAdminView && <div className='eventCreator'><FaUser className='smallSiteIcons' />{event.event_creator}</div>
                     }

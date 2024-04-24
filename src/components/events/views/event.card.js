@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { format } from 'date-fns';
+import { decode } from 'he';
 import { formatTime } from '../../../helpers/formatTime';
 import { image_link } from '../../../helpers/dataCleanUp';
 
@@ -117,7 +118,7 @@ const EventCard = ({ event }) => {
                                 <div onClick={(e) => { e.stopPropagation(); navigate(`/business/${event?.host_business}`);}}>{event?.business_name}</div>
                                 <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                             </div>
-                            <div className='smallHeaderText'>{event?.eventname}</div>
+                            <div className='smallHeaderText'>{decode(event?.eventname)}</div>
                         </div>
                     </div>
                 </div>

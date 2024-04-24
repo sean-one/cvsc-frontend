@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns'
+import { decode } from 'he';
 import styled from 'styled-components';
 import { GoPencil } from 'react-icons/go';
 
@@ -130,8 +131,7 @@ const EventView = () => {
 
     const isCreator = () => auth?.user?.id === event?.data.created_by
     
-    console.log(event.data)
-    console.log(image_link(event.data.business_avatar))
+
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
@@ -141,7 +141,7 @@ const EventView = () => {
                                 <div className='eventBusinessAvatar' onClick={() => navigate(`/business/${event?.data.host_business}`)} >
                                     <img src={image_link(event?.data.business_avatar)} alt='featured business branding' />
                                 </div>
-                                <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{event?.data.eventname}</div>
+                                <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{decode(event?.data.eventname)}</div>
                             </div>
                             {
                                 (isCreator()) &&
@@ -168,7 +168,7 @@ const EventView = () => {
                     </div>
                 </div>
                 <div className='eventViewDetails'>
-                    <div>{event?.data.details}</div>
+                    <div>{decode(event?.data.details)}</div>
                 </div>
             </div>
             {

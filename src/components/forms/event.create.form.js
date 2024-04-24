@@ -346,7 +346,15 @@ const EventCreateForm = () => {
                         {/* EVENT DETAILS */}
                         <div className='inputWrapper'>
                             <textarea {...register('details', {
-                                required: 'event details are required'
+                                required: 'event details are required',
+                                minLength: {
+                                    value: 30,
+                                    message: 'event details must be at least 30 characters'
+                                },
+                                maxLength: {
+                                    value: 1000,
+                                    message: 'event details are too long'
+                                }
                             })} rows='8' onClick={() => clearErrors('details')} placeholder='Event details ...'/>
                             {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
                         </div>
