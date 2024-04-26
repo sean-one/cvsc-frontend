@@ -22,9 +22,9 @@ const EventViewStyles = styled.div`
         padding-bottom: 2rem;
         display: grid; /* grid container */
         grid-template-areas:
-        'eventheader'
-        'eventmedia'
         'eventdetails'
+        'eventmedia'
+        'eventdescription'
         ;
         background-color: var(--opacity);
         border-radius: 0.5rem;
@@ -32,44 +32,47 @@ const EventViewStyles = styled.div`
         @media (min-width: 768px) {
             padding: 2.5rem 2rem;
             grid-gap: 2rem;
+            grid-template-columns: 1fr 1fr;
             grid-template-areas:
-            'eventmedia eventheader'
             'eventmedia eventdetails'
+            'eventmedia eventdescription'
             ;
+            box-shadow: inset -0.3rem -0.3rem 1rem rgba(255,255,255,0.2), 0.3rem 0.3rem 1rem rgba(0,0,0,0.3);
         }
     }
 
-    .eventViewHeader {
-        grid-area: eventheader;
-        align-self: end;
+    .eventViewDetails {
+        grid-area: eventdetails;
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        padding: 0rem 0.75rem 1rem;
+        padding: 0rem 0.75rem;
         
         @media (min-width: 768px) {
+            align-self: end;
+            padding-bottom: 0.75rem;
             border-bottom: 0.05rem solid var(--main-color);
         }
     }
 
-    .titleAndEditIcon {
-        display: flex;
+    .eventViewDetailsTop {
+        display: grid;
+        grid-template-areas: 'eventhost eventname editevent';
+        grid-template-columns: 8rem 1fr 3.5rem;
         align-items: center;
-        justify-content: space-between;
         color: var(--main-highlight-color);
     }
 
-    .eventViewBusinessAvatarAndEventTitle {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+    .eventViewDetailsTop.notCreator {
+        grid-template-areas: 'eventhost eventname';
+        grid-template-columns: 8rem 1fr;
     }
 
     .eventBusinessAvatar {
-        max-width: 5rem;
+        grid-area: eventhost;
+        max-width: 7rem;
+        padding: 0.25rem;
         margin: 0.5rem 0;
         border-radius: 50%;
-        box-shadow: inset 3px 3px 5px var(--main-background-color), 3px 3px 5px var(--main-highlight-color);
+        box-shadow: inset -4px -4px 5px rgba(255,255,255,0.3), 4px 4px 5px rgba(0,0,0,0.3);
         
         img {
             width: 100%;
@@ -79,22 +82,26 @@ const EventViewStyles = styled.div`
     }
     
     .eventViewAddress {
+        margin: 0.2rem 0;
         align-self: flex-start;
     }
 
     .dateAndTime {
+        margin: 0.5rem 0 0.25rem;
         color: var(--main-highlight-color);
         display: flex;
         align-items: center;
         justify-content: space-between;
+        /* border: 0.1rem solid red; */
     }
 
     .eventViewImage {
         grid-area: eventmedia;
+        width: 100%;
     }
     
-    .eventViewDetails {
-        grid-area: eventdetails;
+    .eventViewDescription {
+        grid-area: eventdescription;
         padding: 0 0.75rem;
     }
 
@@ -141,39 +148,33 @@ const EventView = () => {
     return (
         <EventViewStyles>
             <div className='eventViewWrapper'>
-                <div className='eventViewHeader'>
-                        <div className='titleAndEditIcon'>
-                            <div className='eventViewBusinessAvatarAndEventTitle'>
-                                <div className='eventBusinessAvatar' onClick={() => navigate(`/business/${event?.data.host_business}`)} >
-                                    <img src={image_link(event?.data.business_avatar)} alt='featured business branding' />
-                                </div>
-                                <div className={`headerText ${event?.data?.active_event ? '' : 'eventViewEventInactive'}`}>{decode(event?.data.eventname)}</div>
+                <div className='eventViewDetails'>
+                        <div className={`eventViewDetailsTop ${!isCreator() ? 'notCreator' : ''}`}>
+                            <div className='eventBusinessAvatar' onClick={() => navigate(`/business/${event?.data.host_business}`)} >
+                                <img src={image_link(event?.data.business_avatar)} alt='featured business branding' />
                             </div>
+                            <div className='headerText' style={{ gridArea: 'eventname' }}>{decode(event?.data.eventname)}</div>
                             {
                                 (isCreator()) &&
-                                    <div onClick={() => navigate(`/event/edit/${event?.data.event_id}`)}>
+                                    <div style={{ gridArea: 'editevent', justifySelf: 'flex-end' }} onClick={() => navigate(`/event/edit/${event?.data.event_id}`)}>
                                         <GoPencil className='siteIcons' />
                                     </div>
                             }
                         </div>
-                        {
-                            (event?.data?.active_event) &&
-                                <div className='eventViewAddress'>{event?.data?.formatted_address.replace(/, [A-Z]{2} \d{5}/, '')}</div>
-                        }
-                        {
-                            (event?.data?.active_event) &&
-                                <div className='dateAndTime'>
-                                    <div className='subheaderText'>{format(new Date(event?.data.eventdate), "E, MMMM d")}</div>
-                                    <div className='subheaderText'>{`${formatTime(event?.data.eventstart)} - ${formatTime(event?.data.eventend)}`}</div>
-                                </div>
-                        }
+                        <div className='eventViewAddress'>{event?.data?.formatted_address.replace(/, [A-Z]{2} \d{5}/, '')}</div>
+                        <div className='dateAndTime'>
+                            <div className='subheaderText'>{format(new Date(event?.data.eventdate), "E, MMMM d")}</div>
+                            <div className='subheaderText'>{`${formatTime(event?.data.eventstart)} - ${formatTime(event?.data.eventend)}`}</div>
+                        </div>
                 </div>
+                
                 <div className='eventViewImage'>
                     <div className='imagePreview eventImage'>
                         <img src={image_link(event?.data.eventmedia)} alt={event?.data.eventname} />
                     </div>
                 </div>
-                <div className='eventViewDetails'>
+                
+                <div className='eventViewDescription'>
                     <div>{decode(event?.data.details)}</div>
                 </div>
             </div>

@@ -301,7 +301,9 @@ const Styles = styled.div`
         background-color: transparent;
     }
 
-    // register.jsx, user.edit.form.js, businessView.js, business.create.form.js, business.edit.form.js, business.admin.view.js
+    // register.jsx, user.edit.form.js
+    // businessView.js, business.create.form.js, business.edit.form.js, business.admin.view.js
+    // event.view.jsx
     .imagePreview {
         width: 100%;
         display: flex;
@@ -311,9 +313,7 @@ const Styles = styled.div`
         
         img {
             max-width: 100%;
-            /* border: 0.3rem solid var(--main-color); */
             display: block;
-            /* box-shadow: 5px 5px 5px var(--main-highlight-color); */
         }
     }
     
@@ -325,13 +325,13 @@ const Styles = styled.div`
             width: 100%;
             display: block;
             border-radius: 50%;
-            box-shadow: 0.3rem 0.3rem 1rem var(--text-color);
+            box-shadow: 0.3rem 0.3rem 1rem rgba(0,0,0,0.6);
         }
     }
     
-    // event.create.form.js, event.view.js
+    // event.create.form.js, event.view.jsx
     .eventImage {
-        box-shadow: 0.3rem 0.3rem 1rem var(--text-color);
+        box-shadow: 0.3rem 0.3rem 1rem rgba(0,0,0,0.6);
         max-width: var(--max-image-size);
     }
 
