@@ -35,7 +35,7 @@ const BusinessEditFormStyles = styled.div`
         position: absolute;
         right: 20%;
         bottom: 0;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
         border-radius: 50%;
         color: var(--main-highlight-color);
         background-color: var(--main-background-color);

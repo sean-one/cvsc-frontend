@@ -15,7 +15,7 @@ const ManagementListItemStyles = styled.div`
         flex-direction: row;
         margin: 0.5rem auto;
         padding: 0.75rem;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
         border-radius: 1.5rem;
     }
 
@@ -28,7 +28,7 @@ const ManagementListItemStyles = styled.div`
 
         img {
             width: 100%;
-            border: 0.3rem solid var(--main-color);
+            border: 0.3rem solid var(--text-color);
             display: block;
             border-radius: 50%;
         }

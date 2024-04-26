@@ -23,7 +23,6 @@ const UserRolesStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        color: var(--main-color);
     }
 `;
 

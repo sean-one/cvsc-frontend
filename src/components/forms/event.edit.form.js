@@ -42,21 +42,21 @@ const customSelectStyles = {
         ...provided,
         backgroundColor: 'var(--main-background-color)',
         fontSize: '2.1rem',
-        color: 'var(--main-color)',
-        borderColor: state.isFocused ? 'var(--main-color)' : provided.borderColor,
-        boxShadow: state.isFocused ? '0 0 0 1px var(--main-color)' : provided.boxShadow,
+        color: 'var(--text-color)',
+        borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
+        boxShadow: state.isFocused ? '0 0 0 1px var(--text-color)' : provided.boxShadow,
         '&:hover': {
-            borderColor: state.isFocused ? 'var(--main-color)' : provided.borderColor,
+            borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
         }
     }),
     input: (provided) => ({
         ...provided,
-        color: 'var(--main-color)',
+        color: 'var(--text-color)',
         fontSize: '2.1rem',
     }),
     singleValue: (provided) => ({
         ...provided,
-        color: 'var(--main-color)',
+        color: 'var(--text-color)',
         fontSize: '2.1rem',
     }),
     placeholder: (provided) => ({
@@ -66,20 +66,20 @@ const customSelectStyles = {
     }),
     valueContainer: (provided) => ({
         ...provided,
-        color: 'var(--main-color)',
+        color: 'var(--text-color)',
         fontSize: '2.1rem',
     }),
     dropdownIndicator: (provided) => ({
         ...provided,
-        color: 'var(--main-color)',
+        color: 'var(--text-color)',
         fontSize: '2.1rem',
         '&:hover': {
-            color: 'var(--main-color)',
+            color: 'var(--text-color)',
         }
     }),
     clearIndicator: (provided) => ({
         ...provided,
-        color: 'var(--main-color)',
+        color: 'var(--text-color)',
         '&:hover': {
             color: 'var(--error-color)',
         }
@@ -92,7 +92,7 @@ const customSelectStyles = {
     option: (provided) => ({
         ...provided,
         backgroundColor: 'var(--main-background-color)',
-        color: 'var(--main-color)',
+        color: 'var(--text-color)',
         fontSize: '2.1rem',
     })
 }

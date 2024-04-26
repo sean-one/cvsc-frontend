@@ -44,8 +44,8 @@ const BusinessAdminViewStyles = styled.div`
         justify-content: space-around;
         align-items: center;
         height: 5rem;
-        border-top: 0.1rem dotted var(--main-color);
-        border-bottom: 0.1rem dotted var(--main-color);
+        border-top: 0.1rem dotted var(--text-color);
+        border-bottom: 0.1rem dotted var(--text-color);
     }
 
     .businessAdminViewHeader {

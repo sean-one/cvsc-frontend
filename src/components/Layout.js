@@ -16,11 +16,12 @@ const GlobalStyle = createGlobalStyle`
     :root {
         --main-background-color: ${(props) => props.theme['--main-background-color']};
         --main-highlight-color: ${(props) => props.theme['--main-highlight-color']};
+        --text-color: ${(props) => props.theme['--text-color']};
+        --main-color: #006633;
         --header-highlight: ${(props) => props.theme['--header-highlight']};
         --max-image-size: 45rem;
         --max-circle-image: 35rem;
         --header-height: 9.5rem;
-        --main-color: #006633;
         --max-section-width: 55rem;
         --max-page-width: 108rem;
         --input-placeholder: #39403A;
@@ -33,7 +34,8 @@ const GlobalStyle = createGlobalStyle`
         --notification-background: #D9EAD3;
         --opacity: ${(props) => props.theme['--opacity']};
 
-        
+        --header-font: 'Poppins';
+        --menu-font-size: 3.6rem;
         --header-font-size: 2.4rem;
         --small-header-font: 1.8rem;
         --subheader-font-size: 1.8rem;
@@ -55,8 +57,8 @@ const Styles = styled.div`
         max-width: 100vw;
         font-size: var(--main-font-size);
         line-height: 1.3;
-        color: var(--main-color);
-        background-color: var(--main-background-color);
+        color: var(--text-color);
+        background: linear-gradient(to bottom, var(--main-background-color) 20%, var(--main-color) 100%);
     }
 
     .innerContainer {
@@ -66,15 +68,23 @@ const Styles = styled.div`
         max-width: var(--max-page-width);   
     }
 
+    .menuText {
+        font-size: clamp(3rem, 9vw, var(--menu-font-size));
+        font-weight: bolder;
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+    }
+
     .headerText {
         font-size: var(--header-font-size);
+        font-family: var(--header-font);
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.05rem;
     }
 
     .smallHeaderText {
-        font-size: var(--small-header-font);
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
         font-weight: bold;
         letter-spacing: 0.01rem;
         text-transform: uppercase;
@@ -112,9 +122,9 @@ const Styles = styled.div`
         padding: 0.75rem 1.875rem;
         border: none;
         border: 0.1rem solid var(--main-highlight-color);
-        color: var(--main-color);
+        color: var(--text-color);
         border-radius: 5px;
-        background-color: transparent;
+        background-color: var(--main-background-color);
         outline: none;
 
         :active {
@@ -133,9 +143,9 @@ const Styles = styled.div`
     .buttonLike {
         padding: 0.75rem 1.875rem;
         border: 0.1rem solid var(--main-highlight-color);
-        color: var(--main-color);
+        color: var(--text-color);
         border-radius: 0.5rem;
-        background-color: transparent;
+        background-color: var(--main-background-color);
         outline: none;
     }
 
@@ -153,8 +163,8 @@ const Styles = styled.div`
         background: transparent;
         font-family: inherit; /* Inherit font from parent elements */
         background: var(--background-color);
-        border-bottom: 0.1rem solid var(--main-color);
-        color: var(--main-color);
+        border-bottom: 0.1rem solid var(--text-color);
+        color: var(--text-color);
 
         ::placeholder {
             color: var(--input-placeholder);
@@ -170,7 +180,7 @@ const Styles = styled.div`
     textarea {
         margin-top: 1rem;
         border-radius: 0.25rem;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
     }
 
     // address.form.js
@@ -224,8 +234,8 @@ const Styles = styled.div`
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border-top: 1px dotted var(--main-color);
-        border-bottom: 1px dotted var(--main-color);
+        border-top: 1px dotted var(--text-color);
+        border-bottom: 1px dotted var(--text-color);
     }
 
     // business.role.js & user.role.js
@@ -308,9 +318,13 @@ const Styles = styled.div`
     // register.jsx, user.edit.form.js, businessView.js, business.create.form.js, business.edit.form.js, business.admin.view.js
     .profileImage, .businessImage {
         max-width: var(--max-circle-image);
-
+        
         img {
-            border-radius: 50%
+            width: 100%;
+            border: 0.3rem solid var(--main-color);
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0.3rem 0.3rem 0.3rem var(--text-color);
         }
     }
 

@@ -11,9 +11,10 @@ const BusinessesViewCardStyles = styled.div`
         padding: 0.75rem;
 
         border-radius: 0.5rem;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
         margin-bottom: 1.5rem;
         max-width: var(--max-section-width);
+        background-color: var(--opacity);
     }
 
     .businessViewCardBranding {
@@ -26,7 +27,7 @@ const BusinessesViewCardStyles = styled.div`
 
         img {
             width: 100%;
-            border: 0.1rem solid var(--main-color);
+            border: 0.1rem solid var(--text-color);
             display: block;
             border-radius: 50%;
         }
@@ -61,7 +62,7 @@ const BusinessesViewCardStyles = styled.div`
         max-height: 7.2rem;
         cursor: pointer;
         text-align: justify;
-        color: var(--main-color);
+        color: var(--text-color);
     }
 `;
 

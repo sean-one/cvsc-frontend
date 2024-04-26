@@ -14,7 +14,7 @@ const NavbarStyles = styled.div`
         left: 0;
         height: var(--header-height);
         background-color: var(--main-background-color);
-        border-bottom: 0.1rem solid var(--main-highlight-color);
+        box-shadow: 0 0.5rem 0 rgba(0, 0, 0, 0.3);
         width: 100%;
         display: flex;
         justify-content: center;

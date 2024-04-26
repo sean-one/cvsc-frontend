@@ -21,7 +21,7 @@ const LoadingSpinnerStyles = styled.div`
 
     .loadingIcon {
         font-size: 4.5rem;
-        color: var(--main-color);
+        color: var(--text-color);
         animation: ${spin} 2s linear infinite;
     }
 `;

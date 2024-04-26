@@ -27,7 +27,7 @@ const RoleRequestStyles = styled.div`
         padding: 0.5rem 1.5rem;
         max-width: var(--max-section-width);
         border-radius: 0.5rem;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
     }
 
     .noShowRoleRequest {

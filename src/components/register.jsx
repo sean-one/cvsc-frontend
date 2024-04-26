@@ -31,7 +31,7 @@ const RegisterStyles = styled.div`
     }
 
     .loginLinkWrapper {
-        color: var(--main-color);
+        color: var(--text-color);
         display: flex;
         justify-content: center;
         margin-top: 3rem;

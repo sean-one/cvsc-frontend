@@ -12,6 +12,8 @@ const ProfileMenuStyles = styled.div`
         justify-content: center;
         align-items: center;
         margin-bottom: 0.75rem;
+        font-family: var(--header-font);
+        /* font-size: clamp(1.2rem, 5vw, 1.8rem); */
     }
 
     .profileTab {
@@ -28,7 +30,7 @@ const ProfileMenuStyles = styled.div`
     }
 
     .activeTab {
-        color: var(--main-highlight-color);
+        color: var(--text-color);
         font-weight: bold;
         letter-spacing: 0.015rem;
     }
@@ -116,7 +118,7 @@ const ProfileMenu = () => {
                             <div
                                 key={tab.route}
                                 data-route={tab.route}
-                                className={`profileTab ${isActive ? 'activeTab' : ''}`}
+                                className={`profileTab smallHeaderText ${isActive ? 'activeTab' : ''}`}
                                 onClick={buttonLink}
                             >{tab.label}</div>
                         );

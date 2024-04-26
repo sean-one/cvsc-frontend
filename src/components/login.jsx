@@ -28,7 +28,7 @@ const LoginStyles = styled.div`
     }
 
     .registerLinkWrapper {
-        color: var(--main-color);
+        color: var(--text-color);
         display: flex;
         justify-content: center;
         margin-top: 3rem;

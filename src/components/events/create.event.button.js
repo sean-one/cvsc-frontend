@@ -8,7 +8,7 @@ const CreateEventButton = () => {
 
     return (
         <div onClick={() => navigate(`/event/create`)}>
-            <FaCalendarPlus className='siteIcons' style={{ color: 'var(--main-color)' }}/>
+            <FaCalendarPlus className='siteIcons' style={{ color: 'var(--text-color)' }}/>
         </div>
     )
 }

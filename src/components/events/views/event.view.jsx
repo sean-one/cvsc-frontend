@@ -25,8 +25,11 @@ const EventViewStyles = styled.div`
         'eventmedia'
         'eventdetails'
         ;
+        background-color: var(--opacity);
+        border-radius: 0.5rem;
         
         @media (min-width: 768px) {
+            padding: 2.5rem 2rem;
             grid-gap: 1rem;
             grid-template-areas:
             'eventmedia eventheader'
@@ -42,7 +45,10 @@ const EventViewStyles = styled.div`
         display: flex;
         flex-direction: column;
         padding: 0rem 0.75rem 1rem;
-        border-bottom: 0.05rem solid var(--main-color);
+        
+        @media (min-width: 768px) {
+            border-bottom: 0.05rem solid var(--main-color);
+        }
     }
 
     .titleAndEditIcon {

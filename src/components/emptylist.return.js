@@ -21,7 +21,7 @@ const EmptyListReturnStyles = styled.div`
     }
 
     .emptyListOptions {
-        color: var(--main-color);
+        color: var(--text-color);
         margin-top: 1.5rem;
     }
 `;

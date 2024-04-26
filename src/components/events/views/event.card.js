@@ -15,6 +15,11 @@ const EventCardStyles = styled.div`
         aspect-ratio: 1 / 1;
         margin: 0 auto 1.5rem auto;
         cursor: pointer;
+
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--text-color);
+        border-radius: 8px;
+        overflow: hidden;
     }
 
     .eventCardOverlay {
@@ -23,6 +28,8 @@ const EventCardStyles = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(0,0,0,0.7) 100%);
     }
     
     .eventCardTopRow, .eventCardBottomRow {
@@ -44,7 +51,7 @@ const EventCardStyles = styled.div`
         padding: 0.25rem;
         border-radius: 50%;
         margin-right: 1rem;
-        background-color: var(--main-highlight-color);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(255, 255, 255, 0.7);
 
         img {
             border-radius: 50%;
@@ -56,10 +63,10 @@ const EventCardStyles = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
         padding: 0.5rem;
         border-radius: 1.5rem;
-        color: var(--main-color);
+        color: var(--text-color);
         background-color: var(--main-background-color);
         line-height: 1;
         font-weight: bold;
@@ -75,7 +82,14 @@ const EventCardStyles = styled.div`
         letter-spacing: 0.2rem;
     }
 
+    .eventCardDate, .eventCardMonth {
+        font-size: 1.8rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
     .eventCardDetails {
+        font-weight: bold;
+        font-family: var(--header-font);
         width: 100%;
         display: flex;
         flex-direction: column;

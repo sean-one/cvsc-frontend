@@ -13,7 +13,7 @@ import LoadingSpinner from '../../loadingSpinner';
 const UserAccountStyles = styled.div`
     .userAccountPage {
         display: flex;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
         flex-direction: column;
         align-items: center;
         margin: 0 0.375rem;
@@ -23,22 +23,7 @@ const UserAccountStyles = styled.div`
 
     .profileImage {
         position: relative;
-        min-width: 22.5rem;
-        max-width: var(--max-circle-image);
-
-        canvas {
-            max-width: 100%;
-            border: 0.1rem solid var(--main-color);
-            display: block;
-            border-radius: 50%;
-        }
-        
-        img {
-            width: 100%;
-            border: 0.1rem solid var(--main-color);
-            display: block;
-            border-radius: 50%;
-        }
+        width: 100%;
     }
     
     .userEditButton {
@@ -46,7 +31,7 @@ const UserAccountStyles = styled.div`
         position: absolute;
         right: 10%;
         bottom: 0;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
         border-radius: 50%;
         color: var(--main-highlight-color);
         background-color: var(--main-background-color);
@@ -80,7 +65,7 @@ const UserAccountStyles = styled.div`
     }
 
     .userDetails {
-        color: var(--main-color);
+        color: var(--text-color);
         height: 100%;
     }
 

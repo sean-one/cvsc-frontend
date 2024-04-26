@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSun, FaMoon } from 'react-icons/fa6';
+import { FaSun, FaMoon, FaPlus } from 'react-icons/fa6';
 import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
@@ -22,6 +22,7 @@ const MenuStyles = styled.div`
     .navMenu {
         position: absolute;
         left: 0;
+        font-family: var(--header-font);
         width: 100%;
         height: 100vh;
         display: flex;
@@ -29,18 +30,13 @@ const MenuStyles = styled.div`
         justify-content: center;
         align-items: center;
         background-color: var(--opacity);
-        color: var(--main-color);
+        color: var(--text-color);
         padding-bottom: 15rem;
         border-radius: 0 0 15px 15px;
     }
 
     .navMenuButtons {
         padding: 1.5rem;
-        font-size: var(--header-font-size);
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.2rem;
-        border: none;
     }
 
     .navMenuButtons:hover {
@@ -98,26 +94,26 @@ const Menu = ({ toggle }) => {
         <MenuStyles>
             <div className='menuWrapper' onClick={() => toggle(false)}>
                 <div className='navMenu'>
-                    <div className='navMenuButtons' onClick={() => navigate('/')}>Calendar</div>
-                    <div className='navMenuButtons' onClick={() => navigate('/businesses')}>Businesses</div>
-                    {
-                        isLoggedIn
-                            ? <div className='navMenuButtons' onClick={() => navigate('/profile')}>Profile</div>
-                            : <div className='navMenuButtons' onClick={() => navigate('/register')}>Register</div>
+                    <div className='navMenuButtons menuText' onClick={() => navigate('/')}>Calendar</div>
+                    {   (isLoggedIn && (user_account_role?.data?.role_type !== 'basic')) &&
+                            <div className='navMenuButtons menuText' onClick={() => navigate('/event/create')}><FaPlus className='siteIcons'/> Event</div>
                     }
+                    <div className='navMenuButtons menuText' onClick={() => navigate('/businesses')}>Businesses</div>
                     {
                         isLoggedIn &&
-                            <div className='navMenuButtons' onClick={() => navigate('/business/create')}>Create Business</div>
-                    }
-                    {   (isLoggedIn && (user_account_role?.data?.role_type !== 'basic')) &&
-                            <div className='navMenuButtons' onClick={() => navigate('/event/create')}>Create Event</div>
+                            <div className='navMenuButtons menuText' onClick={() => navigate('/business/create')}><FaPlus className='siteIcons'/> Business</div>
                     }
                     {
                         isLoggedIn
-                            ? <div className='navMenuButtons' onClick={() => logOutUser()}>Logout</div>
-                            : <div className='navMenuButtons' onClick={() => navigate('/login')}>Login</div>
+                            ? <div className='navMenuButtons menuText' onClick={() => navigate('/profile')}>Profile</div>
+                            : <div className='navMenuButtons menuText' onClick={() => navigate('/register')}>Register</div>
                     }
-                    <div className='navMenuButtons' onClick={() => toggleTheme()}>{themeName === 'light' ? <FaMoon className='siteIcons' /> : <FaSun className='siteIcons' />} Theme</div>
+                    {
+                        isLoggedIn
+                            ? <div className='navMenuButtons menuText' onClick={() => logOutUser()}>Logout</div>
+                            : <div className='navMenuButtons menuText' onClick={() => navigate('/login')}>Login</div>
+                    }
+                    <div className='navMenuButtons menuText' onClick={() => toggleTheme()}>{themeName === 'light' ? <FaMoon className='siteIcons' /> : <FaSun className='siteIcons' />} Theme</div>
                 </div>
             </div>
         </MenuStyles>

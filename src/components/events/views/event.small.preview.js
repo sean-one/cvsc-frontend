@@ -21,7 +21,7 @@ const EventSmallPreviewStyles = styled.div`
         position: relative;
         gap: 1rem;
         border-radius: 0.5rem;
-        border: 0.1rem solid var(--main-color);
+        border: 0.1rem solid var(--text-color);
     }
 
     /* .eventSmallPreviewInactive {
@@ -62,8 +62,7 @@ const EventSmallPreviewStyles = styled.div`
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 5px;
-        border: 1px solid var(--main-color);
+        border-radius: 0.5rem;
         display: block;
         position: absolute;
         top: 50%;
