@@ -11,11 +11,13 @@ const EventViewRelatedStyles = styled.div`
         display: flex;
         flex-direction: column;
         width: 100%;
+        max-width: var(--max-section-width);
         margin: 0 auto;
     }
 
     .eventViewRelatedHeader {
-        padding-left: 1.125rem;
+        color: var(--main-highlight-color);
+        padding: 0.75rem 0 0.5rem 0.5rem;
         margin: 0.75rem 0;
     }
 `;

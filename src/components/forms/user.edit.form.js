@@ -231,7 +231,7 @@ const UserEditForm =({ setEditView }) => {
 
     return (
         <UserEditFormStyles>
-            <div className='userEditFormWrapper'>
+            <div className='userEditFormWrapper standardFormBackground'>
                 {
                     previewImageUrl &&
                         <div className='imagePreview profileImage'>

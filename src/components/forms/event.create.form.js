@@ -27,7 +27,7 @@ const customSelectStyles = {
     control: (provided, state) => ({
         ...provided,
         backgroundColor: 'var(--main-background-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
         color: 'var(--text-color)',
         borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
         boxShadow: state.isFocused ? '0 0 0 1px var(--text-color)' : provided.boxShadow,
@@ -38,27 +38,27 @@ const customSelectStyles = {
     input: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     singleValue: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     placeholder: (provided) => ({
         ...provided,
         color: 'var(--input-placeholder)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     valueContainer: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     dropdownIndicator: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
         '&:hover': {
             color: 'var(--text-color)',
         }
@@ -73,13 +73,13 @@ const customSelectStyles = {
     menu: (provided) => ({
         ...provided,
         backgroundColor: 'var(--main-background-color)',
-        fontSize: '2.1rem'
+        fontSize: 'var(--input-font-size)'
     }),
     option: (provided) => ({
         ...provided,
         backgroundColor: 'var(--main-background-color)',
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     })
 }
 
@@ -241,7 +241,7 @@ const EventCreateForm = () => {
                     <LoadingSpinner />
                 ) : isError ? (
                     null
-                ) : <div>
+                ) : <div className='standardFormBackground'>
                     <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data' className='standardForm'>
                         
                         {/* EVENT NAME AND MEDIA IMAGE */}
@@ -264,7 +264,7 @@ const EventCreateForm = () => {
 
                             {/* EVENT MEDIA UPLOAD */}
                             <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
-                                <TbCameraPlus className='siteIcons' color={errors.eventmedia ? 'var(--error-color)' : 'var(--main-color'} />
+                                <TbCameraPlus className='siteIcons' color={errors.eventmedia ? 'var(--error-color)' : 'var(--text-color'} />
                             </label>
 
                         </div>

@@ -20,6 +20,7 @@ const UserRolesStyles = styled.div`
     
     .userRolesList {
         width: 100%;
+        max-width: var(--max-section-width);
         display: flex;
         flex-direction: column;
         align-items: flex-end;

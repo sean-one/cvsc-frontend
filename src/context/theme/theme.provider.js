@@ -6,6 +6,7 @@ const lightTheme = {
     '--main-background-color': '#F0F0F0',
     '--main-highlight-color': '#202020',
     '--text-color': '#00331a',
+    '--error-color': '#D32F2F',
     '--header-highlight': '#202020',
     '--opacity': 'rgba(240,240,240,0.7)'
 }
@@ -14,6 +15,7 @@ const darkTheme = {
     '--main-background-color': '#202020',
     '--main-highlight-color': '#F0F0F0',
     '--text-color': '#00cc66',
+    '--error-color': '#992121',
     '--header-highlight': '#F0F0F0',
     '--opacity': 'rgba(32,32,32,0.7)'
 }

@@ -19,6 +19,7 @@ const EventViewStyles = styled.div`
     .eventViewWrapper {
         width: 100%;
         height: 100%;
+        padding-bottom: 2rem;
         display: grid; /* grid container */
         grid-template-areas:
         'eventheader'
@@ -30,7 +31,7 @@ const EventViewStyles = styled.div`
         
         @media (min-width: 768px) {
             padding: 2.5rem 2rem;
-            grid-gap: 1rem;
+            grid-gap: 2rem;
             grid-template-areas:
             'eventmedia eventheader'
             'eventmedia eventdetails'
@@ -67,7 +68,9 @@ const EventViewStyles = styled.div`
     .eventBusinessAvatar {
         max-width: 5rem;
         margin: 0.5rem 0;
-
+        border-radius: 50%;
+        box-shadow: inset 3px 3px 5px var(--main-background-color), 3px 3px 5px var(--main-highlight-color);
+        
         img {
             width: 100%;
             display: block;
@@ -103,9 +106,6 @@ const EventViewStyles = styled.div`
     .eventViewEditButton {
         flex-shrink: 0;
     }
-    
-    
-
 `;
 
 
@@ -158,7 +158,7 @@ const EventView = () => {
                         </div>
                         {
                             (event?.data?.active_event) &&
-                                <div className='eventViewAddress'>{event?.data?.formatted_address}</div>
+                                <div className='eventViewAddress'>{event?.data?.formatted_address.replace(/, [A-Z]{2} \d{5}/, '')}</div>
                         }
                         {
                             (event?.data?.active_event) &&

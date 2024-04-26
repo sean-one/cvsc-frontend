@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components'
 
 import useNotification from '../../hooks/useNotification';
-import { FaXTwitter, FaFacebook, FaInstagram, FaPhone } from 'react-icons/fa6';
+import { FaXTwitter, FaInstagram, FaPhone } from 'react-icons/fa6';
 import { TbWorldWww, TbCameraPlus } from 'react-icons/tb';
-import { emailformat, facebookFormat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
+import { emailformat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 
 import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
@@ -155,7 +155,7 @@ const BusinessCreateForm = () => {
 
     return (
         <BusinessCreateFormStyles>
-            <div>
+            <div className='standardFormBackground'>
                 <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data' className='standardForm'>
                     
                     {/* BUSINESS NAME */}
@@ -257,20 +257,6 @@ const BusinessCreateForm = () => {
                             })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                         </label>
                         {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
-                    </div>
-                    
-                    {/* FACEBOOK */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='business_facebook' className='contactLabelWrapper'>
-                            <FaFacebook className='siteIcons' />
-                            <input {...register('business_facebook', {
-                                pattern: {
-                                    value: facebookFormat,
-                                    message: 'only need username portion (exp. https://www.facebook.com/{USERNAME}'
-                                }
-                            })} type='text' onClick={() => clearErrors('business_facebook')} placeholder='Facebook username' />
-                        </label>
-                        {errors.business_facebook ? <div className='errormessage'>{errors.business_facebook?.message}</div> : null}
                     </div>
                     
                     {/* PHONE NUMBER */}

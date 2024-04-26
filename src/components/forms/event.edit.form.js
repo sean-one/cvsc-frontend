@@ -41,7 +41,7 @@ const customSelectStyles = {
     control: (provided, state) => ({
         ...provided,
         backgroundColor: 'var(--main-background-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
         color: 'var(--text-color)',
         borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
         boxShadow: state.isFocused ? '0 0 0 1px var(--text-color)' : provided.boxShadow,
@@ -52,27 +52,27 @@ const customSelectStyles = {
     input: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     singleValue: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     placeholder: (provided) => ({
         ...provided,
         color: 'var(--input-placeholder)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     valueContainer: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     }),
     dropdownIndicator: (provided) => ({
         ...provided,
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
         '&:hover': {
             color: 'var(--text-color)',
         }
@@ -87,13 +87,13 @@ const customSelectStyles = {
     menu: (provided) => ({
         ...provided,
         backgroundColor: 'var(--main-background-color)',
-        fontSize: '2.1rem'
+        fontSize: 'var(--input-font-size)'
     }),
     option: (provided) => ({
         ...provided,
         backgroundColor: 'var(--main-background-color)',
         color: 'var(--text-color)',
-        fontSize: '2.1rem',
+        fontSize: 'var(--input-font-size)',
     })
 }
 
@@ -243,7 +243,7 @@ const EventEditForm = () => {
 
     return (
         <EditEventFormStyles>
-            <div>
+            <div className='standardFormBackground'>
                 <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data' className='standardForm'>
 
                     {/* EVENT NAME AND MEDIA IMAGE */}
@@ -265,7 +265,7 @@ const EventEditForm = () => {
 
                         {/* EVENT MEDIA UPDATE */}
                         <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
-                            <TbCameraPlus className='siteIcons' />
+                            <TbCameraPlus className='siteIcons' style={{ color: 'var(--text-color)' }}/>
                         </label>
 
                     </div>

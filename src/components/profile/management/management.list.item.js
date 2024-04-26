@@ -17,6 +17,7 @@ const ManagementListItemStyles = styled.div`
         padding: 0.75rem;
         border: 0.1rem solid var(--text-color);
         border-radius: 1.5rem;
+        background: var(--opacity);
     }
 
     .managementListItemLogo {

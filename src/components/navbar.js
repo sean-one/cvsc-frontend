@@ -41,7 +41,7 @@ const NavbarStyles = styled.div`
     .navBarLogo {
         width: 10rem;
         max-height: 100%;
-        fill: var(--header-highlight);
+        fill: var(--text-color);
     }
 
     .navBarMenu {
@@ -80,7 +80,7 @@ const Navbar = () => {
                         <div className='toggler' onClick={() => setToggle(!toggle)}>
                             {
                                 toggle
-                                    ? <FaX className='navBarIcons' />
+                                    ? <FaX className='navBarIcons' style={{ color: 'var(--error-color)' }} />
                                     : <FaBars className='navBarIcons' />
                             }
                         </div>

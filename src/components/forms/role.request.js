@@ -16,18 +16,25 @@ const RoleRequestStyles = styled.div`
         display: flex;
         justify-content: center;
     }
-
+    
     .roleRequestHeader {
         margin-top: 0.5rem;
         color: var(--main-highlight-color);
     }
 
+    
     .roleRequestSection {
         width: 100%;
+        margin: 1.25rem 0;
         padding: 0.5rem 1.5rem;
         max-width: var(--max-section-width);
         border-radius: 0.5rem;
         border: 0.1rem solid var(--text-color);
+        background: var(--opacity);
+    }
+
+    .roleRequestButton {
+        margin-top: 1rem;
     }
 
     .noShowRoleRequest {
@@ -107,7 +114,7 @@ const RoleRequest = ({ user_roles }) => {
                                     }
                                 </select>
                                 {errors.business_id ? <div className='errormessage'>{errors.business_id?.message}</div> : null}
-                                <button disabled={!selectedBusinessId} type='submit'>Submit Role Request</button>
+                                <button className='roleRequestButton' disabled={!selectedBusinessId} type='submit'>Submit Role Request</button>
                             </form>
                         </div>
                         : <div className='noShowRoleRequest'>

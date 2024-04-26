@@ -26,14 +26,17 @@ const BusinessViewStyles = styled.div`
         grid-gap: 1rem;
         width: 100%;
         padding: 1.5rem 1rem;
+        background: var(--opacity);
         
         @media (min-width: 768px) {
+            border-radius: 1.5rem;
             grid-template-areas:
             'businessviewheader businessviewheader'
             'businessviewlogo businessviewdetails'
             'businessviewlogo businessviewcontacts'
             ;
-        }}
+        }
+    }
 
     .businessViewHeader {
         grid-area: businessviewheader;

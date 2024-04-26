@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
         --main-background-color: ${(props) => props.theme['--main-background-color']};
         --main-highlight-color: ${(props) => props.theme['--main-highlight-color']};
         --text-color: ${(props) => props.theme['--text-color']};
+        --error-color: ${(props) => props.theme['--error-color']};
         --main-color: #006633;
         --header-highlight: ${(props) => props.theme['--header-highlight']};
         --max-image-size: 45rem;
@@ -26,17 +27,18 @@ const GlobalStyle = createGlobalStyle`
         --max-page-width: 108rem;
         --input-placeholder: #39403A;
         --icon-size: 2.5rem;
-        --small-icon-size: 1rem;
+        --small-icon-size: 1.6rem;
         --navbar-icon-size: 3rem;
         --site-icon-size: 3rem;
         --contact-icon-size: 3.3rem;
-        --error-color: #D32F2F;
+        /* --error-color: #D32F2F; */
         --notification-background: #D9EAD3;
         --opacity: ${(props) => props.theme['--opacity']};
 
         --header-font: 'Poppins';
         --menu-font-size: 3.6rem;
         --header-font-size: 2.4rem;
+        --input-font-size: 2.2rem;
         --small-header-font: 1.8rem;
         --subheader-font-size: 1.8rem;
         --small-subheader-font: 1.5rem;
@@ -151,8 +153,8 @@ const Styles = styled.div`
 
     input, textarea, select {
         width: 100%;
-        font-size: 2.1rem;
-        padding: 0.75rem 1.5rem 0.25rem;
+        font-size: var(--input-font-size);
+        padding: 1.25rem 1.5rem 1rem;
         margin: 0; 
         border: none; 
         border-radius: 0;
@@ -309,7 +311,7 @@ const Styles = styled.div`
         
         img {
             max-width: 100%;
-            border: 0.3rem solid var(--main-color);
+            /* border: 0.3rem solid var(--main-color); */
             display: block;
             /* box-shadow: 5px 5px 5px var(--main-highlight-color); */
         }
@@ -321,15 +323,15 @@ const Styles = styled.div`
         
         img {
             width: 100%;
-            border: 0.3rem solid var(--main-color);
             display: block;
             border-radius: 50%;
-            box-shadow: 0.3rem 0.3rem 0.3rem var(--text-color);
+            box-shadow: 0.3rem 0.3rem 1rem var(--text-color);
         }
     }
-
+    
     // event.create.form.js, event.view.js
     .eventImage {
+        box-shadow: 0.3rem 0.3rem 1rem var(--text-color);
         max-width: var(--max-image-size);
     }
 
@@ -342,6 +344,12 @@ const Styles = styled.div`
         flex-direction: column;
         justify-content: space-between;
         gap: 5px;
+    }
+
+    .standardFormBackground {
+        background: var(--opacity);
+        padding-bottom: 2rem;
+        border-radius: 0.5rem;
     }
 
     // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js

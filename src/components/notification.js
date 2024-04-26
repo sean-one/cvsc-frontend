@@ -25,7 +25,7 @@ const NotificationStyles = styled.div`
     .notificationToast {
         height: 5rem;
         position: fixed;
-        top: var(--header-height);
+        top: calc(var(--header-height) + 0.5rem);
         left: 0;
         background-color: var(--notification-background);
         padding: 0.75rem 2.5rem;

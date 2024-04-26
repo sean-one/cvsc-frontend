@@ -21,6 +21,7 @@ const EventSmallPreviewStyles = styled.div`
         position: relative;
         gap: 1rem;
         border-radius: 0.5rem;
+        background: var(--opacity);
         border: 0.1rem solid var(--text-color);
     }
 
@@ -75,6 +76,7 @@ const EventSmallPreviewStyles = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 0.5rem 0.75rem 0.75rem 0;
     }
 
     .eventSmallPreviewEventname {

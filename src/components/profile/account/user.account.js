@@ -13,12 +13,13 @@ import LoadingSpinner from '../../loadingSpinner';
 const UserAccountStyles = styled.div`
     .userAccountPage {
         display: flex;
-        border: 0.1rem solid var(--text-color);
         flex-direction: column;
         align-items: center;
         margin: 0 0.375rem;
         padding: 2.25rem 0.75rem 0.75rem;
+        border: 0.1rem solid var(--text-color);
         border-radius: 5px;
+        background: var(--opacity);
     }
 
     .profileImage {
