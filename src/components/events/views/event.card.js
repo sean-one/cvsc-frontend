@@ -41,9 +41,11 @@ const EventCardStyles = styled.div`
 
     .eventCardBottomRow {
         width: 100%;
+        height: 9rem;
         justify-content: flex-start;
         color: var(--main-highlight-color);
         background-color: var(--main-color);
+        
     }
 
     .eventCardHostLogo {

@@ -14,6 +14,8 @@ import useAuth from '../../../hooks/useAuth';
 const EventSmallPreviewStyles = styled.div`
     .eventSmallPreviewWrapper {
         width: 100%;
+        margin: 0 auto;
+        height: 15rem;
         max-width: var(--max-section-width);
         display: flex;
         align-items: center;
@@ -22,16 +24,10 @@ const EventSmallPreviewStyles = styled.div`
         gap: 1rem;
         border-radius: 0.5rem;
         background: var(--opacity);
+        box-shadow: 0.3rem 0.3rem 0.5rem rgba(0,0,0,0.3);
         border: 0.1rem solid var(--text-color);
-    }
 
-    /* .eventSmallPreviewInactive {
-        margin: 0.75rem;
-        padding: 0.75rem;
-        border-radius: 5px;
-        color: var(--error-color);
-        border: 1px solid var(--error-color);
-    } */
+    }
 
     .eventSmallPreviewAdminControls {
         position: absolute;
@@ -50,8 +46,9 @@ const EventSmallPreviewStyles = styled.div`
     }
 
     .eventSmallPreviewImageContainer {
-        width: 10.5rem;
-        height: 10.5rem;
+        margin-left: 0.5rem;
+        width: 14rem;
+        height: 14rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -73,9 +70,8 @@ const EventSmallPreviewStyles = styled.div`
 
     .eventSmallPreviewInfo {
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        display: grid;
+        grid-gap: 0.5rem;
         padding: 0.5rem 0.75rem 0.75rem 0;
     }
 

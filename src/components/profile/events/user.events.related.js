@@ -13,6 +13,7 @@ const UserEventsRelatedStyles = styled.div`
     .userEventsList {
         width: 100%;
         display: grid;
+        padding: 0 0.25rem;
         grid-template-columns: minmax(1fr, var(--max-section-width));
         justify-content: center;
         align-items: center;

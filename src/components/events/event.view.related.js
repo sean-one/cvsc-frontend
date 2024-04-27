@@ -8,17 +8,18 @@ import EventSmallPreview from './views/event.small.preview';
 
 const EventViewRelatedStyles = styled.div`
     .eventViewRelatedWrapper {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        padding: 0 0.25rem;
+        gap: 1rem;
         width: 100%;
         max-width: var(--max-section-width);
-        margin: 0 auto;
+        margin: 0 auto 1.5rem;
     }
 
     .eventViewRelatedHeader {
         color: var(--main-highlight-color);
-        padding: 0.75rem 0 0.5rem 0.5rem;
-        margin: 0.75rem 0;
+        padding: 0.5rem 0 0.5rem 0.5rem;
+        margin: 0.5rem 0;
     }
 `;
 

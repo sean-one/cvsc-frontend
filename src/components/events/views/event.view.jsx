@@ -101,6 +101,7 @@ const EventViewStyles = styled.div`
     }
     
     .eventViewDescription {
+        text-align: justify;
         grid-area: eventdescription;
         padding: 0 0.75rem;
     }
@@ -178,10 +179,7 @@ const EventView = () => {
                     <div>{decode(event?.data.details)}</div>
                 </div>
             </div>
-            {
-                (event?.data?.active_event) &&
-                    <EventViewRelated event={event?.data} event_id={event?.data?.event_id} />
-            }
+            <EventViewRelated event={event?.data} event_id={event?.data?.event_id} />
         </EventViewStyles>
     )
 }

@@ -127,7 +127,7 @@ const BusinessView = () => {
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&
-                            <div className='businessViewAddress'>{business?.data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
+                            <div className='businessViewAddress'>{business?.data?.formatted_address.replace(/, [A-Z]{2} \d{5}/, '')}</div>
                     }
                 </div>
 
@@ -148,7 +148,6 @@ const BusinessView = () => {
                     {/* dynamically add optional contact information */}
                     {business?.data.business_phone && <a href={`tel:${business.data.business_phone}`}><FaPhone className='siteIcons' /></a> }
                     {business?.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank' rel='noreferrer'><FaInstagram className='siteIcons' /></a> }
-                    {business?.data.business_facebook && <a href={`https://www.facebook.com/${business.data.business_facebook}`} target='_blank' rel='noreferrer'><FaFacebook className='siteIcons' /></a> }
                     {business?.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><TbWorldWww className='siteIcons'/></a> }
                     {business?.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><FaXTwitter className='siteIcons' /></a> }
                 </div>
