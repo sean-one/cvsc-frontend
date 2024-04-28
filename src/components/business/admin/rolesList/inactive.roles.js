@@ -5,10 +5,10 @@ import BusinessRole from '../../../roles/business.role';
 
 
 const InactiveRoles = ({ roles_list }) => {
-    const [viewInactive, setViewInactive] = useState(false)
+    const [viewInactiveBusinessRole, setViewInactiveBusinessRole] = useState(false)
 
-    const toggleInactive = () => {
-        setViewInactive(!viewInactive)
+    const toggleInactiveBusinessRole = () => {
+        setViewInactiveBusinessRole(!viewInactiveBusinessRole)
     }
 
 
@@ -16,7 +16,9 @@ const InactiveRoles = ({ roles_list }) => {
         <div className='rolesListSection'>
             <div className='rolesListSectionHeader'>
                 <div className='subheaderText'>Inactive</div>
-                <div onClick={() => toggleInactive()}>{viewInactive ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}</div>
+                <div onClick={() => toggleInactiveBusinessRole()}>
+                    {viewInactiveBusinessRole ? <FaCaretUp className='siteIcons' /> : <FaCaretDown className='siteIcons' />}
+                </div>
             </div>
             <div>
                 {

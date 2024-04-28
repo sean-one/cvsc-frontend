@@ -25,18 +25,18 @@ const MenuStyles = styled.div`
         font-family: var(--header-font);
         width: 100%;
         height: 100vh;
-        display: flex;
-        flex-direction: column;
+        display: grid;
         justify-content: center;
-        align-items: center;
+        align-content: space-around;
         background-color: var(--opacity);
         color: var(--text-color);
-        padding-bottom: 15rem;
-        border-radius: 0 0 15px 15px;
+        padding-bottom: 10rem;
+        border-radius: 0 0 1.5rem 1.5rem;
     }
 
     .navMenuButtons {
-        padding: 1.5rem;
+        text-align: center;
+        padding: 1.8rem;
     }
 
     .navMenuButtons:hover {

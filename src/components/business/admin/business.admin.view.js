@@ -25,7 +25,7 @@ const BusinessAdminViewStyles = styled.div`
         'businessadmindetails'
         ;
         grid-gap: 1rem;
-        /* flex-direction: column; */
+        margin-bottom: 5rem;
 
         @media (min-width: 768px) {
             grid-template-areas:
@@ -44,6 +44,8 @@ const BusinessAdminViewStyles = styled.div`
         justify-content: space-around;
         align-items: center;
         height: 5rem;
+        padding: 0 0.5rem;
+        background: var(--opacity);
         border-top: 0.1rem dotted var(--text-color);
         border-bottom: 0.1rem dotted var(--text-color);
     }
@@ -52,7 +54,7 @@ const BusinessAdminViewStyles = styled.div`
         width: 100%;
         grid-area: businessadminheader;
         color: var(--main-highlight-color);
-        padding: 1rem 0;
+        padding: 1rem 0.5rem;
 
         @media (min-width: 768px) {
             margin-top: 2rem;
@@ -132,7 +134,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data?.business_name}</div>
                         {
                             (business_data?.formatted_address !== null) &&
-                                <div className='subheaderText'>{business_data?.formatted_address?.split(/\s\d{5},\sUSA/)[0]}</div>
+                                <div className='subheaderText'>{business_data?.formatted_address?.replace(/, [A-Z]{2} \d{5}/, '')}</div>
                         }
                     </div>
                     {

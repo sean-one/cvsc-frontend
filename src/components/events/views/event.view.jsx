@@ -105,11 +105,6 @@ const EventViewStyles = styled.div`
         grid-area: eventdescription;
         padding: 0 0.75rem;
     }
-
-
-    .eventViewEventInactive {
-        color: var(--error-color);
-    }
     
     .eventViewEditButton {
         flex-shrink: 0;

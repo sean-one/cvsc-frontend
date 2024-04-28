@@ -78,7 +78,7 @@ const BusinessesViewCard = ({ business }) => {
                 </div>
                 <div className='businessViewCardDetails'>
                     <div className='businessViewCardBusinessName'>{business.business_name}</div>
-                    <div className='businessViewCardAddress'>{business?.formatted_address}</div>
+                    <div className='businessViewCardAddress'>{business?.formatted_address?.replace(/, [A-Z]{2} \d{5}/, '')}</div>
                     <div className='businessViewCardBusinessDescription'>{business?.business_description}</div>
                 </div>
             </div>

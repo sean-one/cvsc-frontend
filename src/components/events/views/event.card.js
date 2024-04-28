@@ -117,7 +117,6 @@ const EventCard = ({ event }) => {
     return (
         <EventCardStyles bgImage={backgroundImageUrl}>
             <div className="eventCardWrapper" style={{ backgroundImage: `url(${backgroundImageUrl})`}} onClick={(e) => event?.active_event ? navigate(`/event/${event?.event_id}`) : null}>
-                {/* <img className='eventCardBackground' src={image_link(event?.eventmedia)} alt={`${event?.eventname} event flyer`} /> */}
                 <div className="eventCardOverlay">
                     <div className='eventCardTopRow'>
                         <div className='eventCardDateContainer'>
