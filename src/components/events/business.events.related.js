@@ -10,12 +10,9 @@ import EventSmallPreview from './views/event.small.preview';
 
 const BusinessEventsRelatedStyles = styled.div`
     .businessEventsRelatedWrapper {
-        /* width: 100%; */
         display: grid; // grid container
         grid-template-columns: 1fr;
-        /* grid-template-columns: minmax(1fr, var(--max-section-width)); */
         grid-gap: 1rem;
-        border: 0.1rem solid red;
 
         @media (min-width: 768px) {
             grid-template-columns: 1fr 1fr;

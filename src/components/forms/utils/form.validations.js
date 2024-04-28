@@ -6,10 +6,6 @@ export const instagramFormat = /^@?[a-zA-Z0-9._]{1,30}$/
 // allowing for optional "http" and "www" prefixes while accounting for valid TLDs
 export const websiteFormat = /^(?:(?:https?:\/\/)?(?:www\.)?)?[\w-]+(\.[\w-]+)+[\w.,@?^=%&:/~+#-]*$/
 
-// allows for alphanumeric characters, dots, underscores, and hyphens
-// min of 5 characters for the username.
-export const facebookFormat = /^[a-zA-Z0-9._-]{5,}$/
-
 // allows phone numbers, including variations with or without parentheses, dashes, dots, or spaces
 // validates 10-digit U.S. phone numbers.
 export const phoneFormat = /^(?:\(\d{3}\)|\d{3})[-.]?\d{3}[-.]?\d{4}$/

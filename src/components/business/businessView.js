@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaRegEnvelope, FaXTwitter, FaFacebook, FaInstagram, FaPhone, FaBan } from 'react-icons/fa6'
+import { FaRegEnvelope, FaXTwitter, FaInstagram, FaPhone, FaBan } from 'react-icons/fa6'
 import { TbWorldWww } from 'react-icons/tb'
 import styled from 'styled-components';
 

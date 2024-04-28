@@ -161,7 +161,6 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                 formatted_address: business_data.data?.formatted_address || '',
                 business_instagram: business_data.data?.business_instagram || '',
                 business_website: business_data.data?.business_website || '',
-                business_facebook: business_data.data?.business_facebook || '',
                 business_phone: business_data.data?.business_phone || '',
                 business_twitter: business_data.data?.business_twitter || '',
                 remove_address: false

@@ -27,6 +27,7 @@ const BusinessCreateFormStyles = styled.div`
 const BusinessCreateForm = () => {
     const [ croppedImage, setCroppedImage ] = useState(null);
     const [ previewImageUrl, setPreviewImageUrl ] = useState('');
+    const [ formattedAddress, setFormattedAddress ] = useState('')
     const { dispatch } = useNotification();
     const { mutateAsync: createBusiness } = useCreateBusinessMutation()
 
@@ -38,11 +39,10 @@ const BusinessCreateForm = () => {
             business_avatar: '',
             business_description: null,
             business_instagram: '',
-            business_facebook: '',
             business_website: '',
             business_twitter: '',
             place_id: null,
-            formatted_address: '',
+            formatted_address: formattedAddress,
 
         }
     });
@@ -149,8 +149,11 @@ const BusinessCreateForm = () => {
             for (let key in parsedData) {
                 setValue(key, parsedData[key]);
             }
+            if (parsedData.formatted_address) {
+                setFormattedAddress(parsedData.formatted_address)
+            }
         }
-    }, [setValue])
+    }, [setValue, setFormattedAddress])
 
 
     return (
@@ -228,6 +231,7 @@ const BusinessCreateForm = () => {
                         setValue={setValue}
                         errors={errors}
                         clearErrors={clearErrors}
+                        currentValue={formattedAddress}
                     />
 
                     <div className='subheaderText businessCreateFormContactHeader'>Business Contacts & Social Media:</div>

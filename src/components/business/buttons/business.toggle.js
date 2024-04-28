@@ -12,7 +12,12 @@ const BusinessToggle = ({ business_id, toggleStatus=false, toggleType }) => {
     }
     
     return (
-        <div onClick={toggleButtonAction}>{(toggleStatus ? <FaToggleOn className='siteIcons' style={{ fontSize: '3.5rem' }} /> : <FaToggleOff className='siteIcons' style={{ color: 'var(--error-color)', fontSize: '3.5rem' }} />)}</div>
+        <div onClick={toggleButtonAction} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {(toggleStatus
+                ? <FaToggleOn className='siteIcons' style={{ fontSize: '3.5rem' }} />
+                : <FaToggleOff className='siteIcons' style={{ color: 'var(--error-color)', fontSize: '3.5rem' }} />
+            )}
+        </div>
     )
 }
 
