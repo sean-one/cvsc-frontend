@@ -100,7 +100,7 @@ const AddressForm = ({ register, setValue, errors, clearErrors, currentValue='',
         <AddressFormStyles>
             <div className='addressInputWrapper'>
                 <div className='addressInput'>
-                    <label htmlFor="formatted_address"><FaLocationDot className='siteIcons' /></label>
+                    <label htmlFor="formatted_address"><FaLocationDot className='siteIcons' style={{ marginRight: '1rem' }}/></label>
                     {
                         isEditing 
                             ? (<AutoComplete

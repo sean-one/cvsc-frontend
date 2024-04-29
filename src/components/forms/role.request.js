@@ -34,16 +34,23 @@ const RoleRequestStyles = styled.div`
     }
 
     .roleRequestButton {
-        margin-top: 1rem;
+        max-width: 22rem;
+        margin: 1rem auto;
     }
 
     .noShowRoleRequest {
+        max-width: var(--max-section-width);
         padding-top: 1rem;
         text-align: center;
 
         div {
             margin-bottom: 1.5rem;
         }
+    }
+
+    .roleRequestCreateButton {
+        max-width: 18rem;
+        margin: 0 auto;
     }
 `;
 
@@ -118,8 +125,8 @@ const RoleRequest = ({ user_roles }) => {
                             </form>
                         </div>
                         : <div className='noShowRoleRequest'>
-                            <div>There are currently no businesses accepting Role request.  Will update when more become available</div>
-                            <button onClick={() => navigate('/business/create')}>Create Business</button>
+                            <div>Currently no new businesses accepting Role request.  Check back when more become available</div>
+                            <div className='buttonLike roleRequestCreateButton' onClick={() => navigate('/business/create')}>Create Business</div>
                         </div>
                 }
             </div>

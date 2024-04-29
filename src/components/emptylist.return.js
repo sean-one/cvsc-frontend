@@ -23,6 +23,7 @@ const EmptyListReturnStyles = styled.div`
     .emptyListOptions {
         color: var(--text-color);
         margin-top: 1.5rem;
+        cursor: pointer;
     }
 `;
 
@@ -39,8 +40,8 @@ const EmptyListReturn = ({ listtype }) => {
                     <div className='emptyListOptions'>
                         {
                             isLoggedIn
-                                ? <div onClick={() => navigate(`/${listtype}/create`)}>{`Create a new ${listtype}`}</div>
-                                : <div onClick={() => navigate('/login')}>{`Login and create a new ${listtype}`}</div>
+                                ? <p onClick={() => navigate(`/${listtype}/create`)}>{`Create a new ${listtype}`}</p>
+                                : <p onClick={() => navigate('/login')}>{`Login and create a new ${listtype}`}</p>
 
                         }
                     </div>

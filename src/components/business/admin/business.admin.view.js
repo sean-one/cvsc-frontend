@@ -62,7 +62,6 @@ const BusinessAdminViewStyles = styled.div`
     }
 
     .businessAdminViewControls {
-        /* margin-top: 0.75rem; */
         color: var(--main-highlight-color);
         padding: 1.5rem 0;
     }
@@ -77,13 +76,6 @@ const BusinessAdminViewStyles = styled.div`
 
     .inactiveStatus, .requestClosed {
         color: var(--error-color);
-    }
-    
-    .businessAdminViewBusinessButtons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        gap: 10px;
     }
 
     .businessTransferSection {
@@ -152,16 +144,19 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                         (userBusinessRole?.role_type === 'admin') &&
                             <div className='businessAdminSection'>
                                 <div className='businessAdminDetailSection'>
-                                    <div className={`businessAdminDetailText`}>
-                                        Business Status: <span className={`${business_data?.active_business ? 'activeStatus' : 'inactiveStatus'}`}>{business_data?.active_business ? 'Active' : 'Inactive'}</span>
+                                    <div className='businessAdminDetailText'>
+                                        <div>
+                                            Business Status: <span className={`${business_data?.active_business ? 'activeStatus' : 'inactiveStatus'}`}>{business_data?.active_business ? 'Active' : 'Inactive'}</span>
+                                        </div>
+                                        <div className={`${business_data?.active_business ? 'activeStatus' : 'inactiveStatus'}`} style={{ fontSize: '1.1rem'}}>
+                                            {`* ${business_data?.active_business ? 'when set to inactive ' : ''}no future events / no new role request`}
+                                        </div>
                                     </div>
-                                    <div className='businessAdminViewBusinessButtons'>
-                                        <BusinessToggle
-                                            business_id={business_id}
-                                            toggleStatus={business_data?.active_business}
-                                            toggleType='active'
-                                        />
-                                    </div>
+                                    <BusinessToggle
+                                        business_id={business_id}
+                                        toggleStatus={business_data?.active_business}
+                                        toggleType='active'
+                                    />
                                 </div>
 
                                 <div className='businessAdminDetailSection'>

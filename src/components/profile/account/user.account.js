@@ -126,7 +126,11 @@ const UserAccount = () => {
                             />
                             {
                                 (!editView) &&
-                                    <div className='userEditButton' onClick={() => setEditView(true)}><FaUserPen className='siteIcons' /></div>
+                                    <div className='userEditButton' onClick={() => setEditView(true)}>
+                                        <label className='inputLabel removeInputLabelPadding'>
+                                            <FaUserPen className='siteIcons' />
+                                        </label>
+                                    </div>
                             }
                         </div>
                         
