@@ -23,16 +23,17 @@ export const useCreateBusinessMutation = () => {
 
     return useMutation({
         mutationFn: (business) => createBusiness(business),
-        onSuccess: ({data}) => {
+        onSuccess: async ({data}) => {
             // remove saved form from local storage
             localStorage.removeItem('createBusinessForm');
+
+            await Promise.all([
+                // update business list to include newly created business
+                queryClient.invalidateQueries({ queryKey: businessKeys.all }),
+                // update roles for the user
+                queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.business_admin) })
+            ]);
             
-            // update business list to include newly created business
-            queryClient.invalidateQueries({ queryKey: businessKeys.list('all_businesses') })
-            // update roles for the user
-            queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.business_admin) })
-
-
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -165,6 +166,14 @@ export const useBusinessTransferMutation = () => {
                 queryClient.invalidateQueries({ queryKey: roleKeys.relatedToUser(data?.admin_id) }),
                 queryClient.invalidateQueries({ queryKey: roleKeys.relatedToBusiness(data?.business_id) }),
             ]);
+
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'SUCCESS',
+                    message: 'business transfer successful'
+                }
+            })
             
             navigate('/profile')
         },

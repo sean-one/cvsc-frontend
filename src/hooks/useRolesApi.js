@@ -50,7 +50,7 @@ export const useCreateRoleMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `a role request for ${data?.business_name} has been sent`
+                    message: `request to ${data?.business_name} sent`
                 }
             })
         },
@@ -94,7 +94,7 @@ export const useRoleAction = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `the business role for ${data?.username} has been updated`
+                    message: `${data?.username} has been updated`
                 }
             })
         },

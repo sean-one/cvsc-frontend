@@ -27,20 +27,16 @@ const MenuStyles = styled.div`
         height: 100vh;
         display: grid;
         justify-content: center;
-        align-content: space-around;
+        align-content: center;
         background-color: var(--opacity);
         color: var(--text-color);
         padding-bottom: 10rem;
-        border-radius: 0 0 1.5rem 1.5rem;
     }
 
     .navMenuButtons {
         text-align: center;
-        padding: 1.8rem;
-    }
-
-    .navMenuButtons:hover {
-        border: none;
+        cursor: pointer;
+        padding: 2rem;
     }
 `;
 
