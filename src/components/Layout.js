@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
         --main-color: #006633;
         --header-highlight: ${(props) => props.theme['--header-highlight']};
         --max-image-size: 45rem;
-        --max-circle-image: 35rem;
+        --max-circle-image: 25rem;
         --header-height: 9.5rem;
         --max-section-width: 55rem;
         --max-page-width: 108rem;
