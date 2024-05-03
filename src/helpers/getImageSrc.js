@@ -1,4 +1,4 @@
-import default_profile from '../assets/default_user.png';
+import default_profile from '../assets/default_user_icon.webp';
 
 export const getImageSrc = (imageValue) => {
     const s3Base = 'https://coachellavalleysmokers-images.s3.amazonaws.com/'
