@@ -75,7 +75,6 @@ const Register = () => {
     let navigate = useNavigate();
 
     const createUser = async (data) =>{
-        console.log(data)
         try {
             const formData = new FormData()
 
@@ -92,9 +91,7 @@ const Register = () => {
             
             // add data fields to formData object for post request
             Object.keys(data).forEach(key => {
-                if (key !== 'userwebsite') {
-                    formData.append(key, data[key])
-                }
+                formData.append(key, data[key])
             })
             
             const response = await AxiosInstance.post('/auth/register', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
