@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUserPen } from 'react-icons/fa6';
 
-import default_user from '../../../assets/default_user_icon.webp';
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
