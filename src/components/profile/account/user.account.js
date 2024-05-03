@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { getImageSrc } from '../../../helpers/getImageSrc';
 import { FaUserPen } from 'react-icons/fa6';
 
+import default_user from '../../../assets/default_user_icon.webp';
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
@@ -121,7 +121,7 @@ const UserAccount = () => {
                         
                         <div className='profileImage'>
                             <img
-                                src={getImageSrc(auth?.user?.avatar)}
+                                src={auth?.user?.avatar || default_user}
                                 alt={`user avatar`}
                             />
                             {

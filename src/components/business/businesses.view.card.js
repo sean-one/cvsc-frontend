@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { getImageSrc } from '../../helpers/getImageSrc';
+
+import { image_link } from './../../helpers/dataCleanUp';
 
 const BusinessesViewCardStyles = styled.div`
     .businessesViewCardWrapper {
@@ -69,12 +70,12 @@ const BusinessesViewCardStyles = styled.div`
 const BusinessesViewCard = ({ business }) => {
     let navigate = useNavigate();
 
-
+    
     return (
         <BusinessesViewCardStyles>
             <div className='businessesViewCardWrapper' onClick={() => navigate(`/business/${business?.id}`)}>
                 <div className='businessViewCardBranding'>
-                    <img src={getImageSrc(business.business_avatar)} alt={business.business_name} />
+                    <img src={image_link(business?.business_avatar)} alt={business.business_name} />
                 </div>
                 <div className='businessViewCardDetails'>
                     <div className='businessViewCardBusinessName'>{business.business_name}</div>
