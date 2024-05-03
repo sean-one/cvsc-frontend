@@ -34,6 +34,10 @@ const LoginStyles = styled.div`
         margin-top: 3rem;
     }
 
+    .logintimestamp {
+        display: none;
+    }
+
     #registerLink {
         cursor: pointer;
         color: var(--main-highlight-color);
@@ -133,6 +137,10 @@ const Login = () => {
                         errors={errors}
                         clearErrors={clearErrors}
                     />
+
+                    <div className='inputWrapper logintimestamp'>
+                        <input {...register('logintimestamp')} type='text' autoComplete='off' />
+                    </div>
                     
                     {errors.server ? <div className='errormessage'>{errors?.server?.message}</div> : null}
 
