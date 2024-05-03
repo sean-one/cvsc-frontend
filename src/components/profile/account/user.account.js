@@ -9,6 +9,7 @@ import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
 import { useUserAccountRole } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
+import { image_link } from '../../../helpers/dataCleanUp';
 
 const UserAccountStyles = styled.div`
     .userAccountPage {
@@ -121,7 +122,7 @@ const UserAccount = () => {
                         
                         <div className='profileImage'>
                             <img
-                                src={auth?.user?.avatar || default_user}
+                                src={image_link(auth?.user?.avatar)}
                                 alt={`user avatar`}
                             />
                             {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -6,6 +6,7 @@ import useAuth from '../../../hooks/useAuth';
 import { useUserEventsQuery } from '../../../hooks/useEventsApi';
 import EventSmallPreview from '../../events/views/event.small.preview';
 import LoadingSpinner from '../../loadingSpinner';
+import EventSorter from '../../events/eventSorter';
 
 import useNotification from '../../../hooks/useNotification';
 
@@ -44,21 +45,23 @@ const UserEventsRelatedStyles = styled.div`
 `;
 
 // sort events with inactive on top, sorted by date
-const sortEventsRelated = (array) => {
-    array.sort((a,b) => {
-        if (a.active_event !== b.active_event) {
-            return a.active_event ? 1 : -1;
-        }
+// const sortEventsRelated = (array) => {
+//     array.sort((a,b) => {
+//         if (a.active_event !== b.active_event) {
+//             return a.active_event ? 1 : -1;
+//         }
 
-        return new Date(a.eventdate) - new Date(b.eventdate)
-    });
-};
+//         return new Date(a.eventdate) - new Date(b.eventdate)
+//     });
+// };
 
 const UserEventsRelated = () => {
+    const [sortCriteria, setSortCriteria] = useState('eventdate') // default sort by
+    const [searchQuery, setSearchQuery] = useState('');
+
     const { auth, user_reset } = useAuth()
     const { dispatch } = useNotification();
     const { data: user_events, isPending, isError, error: user_events_error } = useUserEventsQuery(auth?.user?.id)
-    let user_events_list = []
     
     let navigate = useNavigate()
 
@@ -89,30 +92,66 @@ const UserEventsRelated = () => {
         }
     }
 
-    if (isPending) {
-        return <LoadingSpinner />
-    }
+    const filteredEvents = user_events?.data.filter(event =>
+        event?.business_name.toLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
+        event?.eventname.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+    ) || []
 
-    user_events_list = user_events?.data || []
-    sortEventsRelated(user_events_list)
+    const sortedEventList = [...filteredEvents].sort((a, b) => {
+        switch (sortCriteria) {
+            case 'eventdate':
+            default:
+                if (a.eventdate < b.eventdate) return -1;
+                if (a.eventdate > b.eventdate) return 1;
 
-    
+                if (a.eventstart < b.eventstart) return -1;
+                if (a.eventstart > b.eventstart) return 1;
+
+                return 0;
+            case 'active_event':
+                if (a.active_event && !b.active_event) return -1;
+                if (!a.active_event && b.active_event) return 1;
+                return 0;
+            case 'inactive_event':
+                if (!a.active_event && b.active_event) return -1;
+                if (a.active_event && !b.active_event) return 1;
+                return 0;
+        }
+    })
+
+    // user_events_list = user_events?.data || []
+    // sortEventsRelated(user_events_list)
+
     return (
         <UserEventsRelatedStyles>
-            <div className='userEventsList'>
-                {
-                    (user_events_list.length > 0)
-                        ? user_events_list.map(event => {
-                            return (
-                                <EventSmallPreview key={event.event_id} event={event} />
-                            )
-                        })
-                        : <div className='noUserEvents'>
-                            <div>You have no upcoming created events</div>
-                            <div className='noUserEventsLink' onClick={() => navigate('/event/create')}>Create a new event!</div>
-                        </div>
-                }
-            </div>
+            {
+                isPending ? (
+                    <LoadingSpinner />
+                ) : isError ? (
+                    null
+                ) : (
+                    <div className='userEventsList'>
+                        <EventSorter
+                            sortCriteria={sortCriteria}
+                            onSortChange={setSortCriteria}
+                            searchQuery={searchQuery}
+                            onSearchChange={setSearchQuery}
+                        />
+                        {
+                            (user_events?.data.length > 0)
+                                ? sortedEventList.map(event => {
+                                    return (
+                                        <EventSmallPreview key={event.event_id} event={event} />
+                                    )
+                                })
+                                : <div className='noUserEvents'>
+                                    <div>You have no upcoming created events</div>
+                                    <div className='noUserEventsLink' onClick={() => navigate('/event/create')}>Create a new event!</div>
+                                </div>
+                        }
+                    </div>
+                )
+            }
         </UserEventsRelatedStyles>
     )
 }
