@@ -6,7 +6,7 @@ import useAuth from '../../../hooks/useAuth';
 import { useUserEventsQuery } from '../../../hooks/useEventsApi';
 import EventSmallPreview from '../../events/views/event.small.preview';
 import LoadingSpinner from '../../loadingSpinner';
-import EventSorter from '../../events/eventSorter';
+import EventSearch from '../../events/eventSearch';
 
 import useNotification from '../../../hooks/useNotification';
 
@@ -44,19 +44,7 @@ const UserEventsRelatedStyles = styled.div`
     }
 `;
 
-// sort events with inactive on top, sorted by date
-// const sortEventsRelated = (array) => {
-//     array.sort((a,b) => {
-//         if (a.active_event !== b.active_event) {
-//             return a.active_event ? 1 : -1;
-//         }
-
-//         return new Date(a.eventdate) - new Date(b.eventdate)
-//     });
-// };
-
 const UserEventsRelated = () => {
-    const [sortCriteria, setSortCriteria] = useState('eventdate') // default sort by
     const [searchQuery, setSearchQuery] = useState('');
 
     const { auth, user_reset } = useAuth()
@@ -97,30 +85,6 @@ const UserEventsRelated = () => {
         event?.eventname.toLowerCase().includes(searchQuery.toLocaleLowerCase())
     ) || []
 
-    const sortedEventList = [...filteredEvents].sort((a, b) => {
-        switch (sortCriteria) {
-            case 'eventdate':
-            default:
-                if (a.eventdate < b.eventdate) return -1;
-                if (a.eventdate > b.eventdate) return 1;
-
-                if (a.eventstart < b.eventstart) return -1;
-                if (a.eventstart > b.eventstart) return 1;
-
-                return 0;
-            case 'active_event':
-                if (a.active_event && !b.active_event) return -1;
-                if (!a.active_event && b.active_event) return 1;
-                return 0;
-            case 'inactive_event':
-                if (!a.active_event && b.active_event) return -1;
-                if (a.active_event && !b.active_event) return 1;
-                return 0;
-        }
-    })
-
-    // user_events_list = user_events?.data || []
-    // sortEventsRelated(user_events_list)
 
     return (
         <UserEventsRelatedStyles>
@@ -131,15 +95,13 @@ const UserEventsRelated = () => {
                     null
                 ) : (
                     <div className='userEventsList'>
-                        <EventSorter
-                            sortCriteria={sortCriteria}
-                            onSortChange={setSortCriteria}
+                        <EventSearch
                             searchQuery={searchQuery}
                             onSearchChange={setSearchQuery}
                         />
                         {
-                            (user_events?.data.length > 0)
-                                ? sortedEventList.map(event => {
+                            (filteredEvents.length > 0)
+                                ? filteredEvents.map(event => {
                                     return (
                                         <EventSmallPreview key={event.event_id} event={event} />
                                     )
