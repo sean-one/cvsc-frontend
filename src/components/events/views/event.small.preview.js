@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { decode } from 'he';
-import { FaUser } from 'react-icons/fa6';
+import { FaUser, FaCannabis } from 'react-icons/fa6';
 import { GoPencil } from 'react-icons/go';
 
 import { image_link } from '../../../helpers/dataCleanUp';
@@ -71,7 +71,7 @@ const EventSmallPreviewStyles = styled.div`
     .eventSmallPreviewInfo {
         width: 100%;
         display: grid;
-        grid-gap: 0.5rem;
+        grid-gap: 0.25rem;
         padding: 0.5rem 0.75rem 0.75rem 0;
     }
 
@@ -98,11 +98,13 @@ const EventSmallPreviewStyles = styled.div`
     }
 
     .eventCreator {
+        align-self: end;
         display: flex;
         justify-content: flex-end;
         align-items: center;
         gap: 0.3rem;
-        margin-top: 1.5rem;
+        padding-top: 1rem;
+        margin-top: 0.5rem;
         font-size: var(--small-font);
     }
 `;
@@ -114,6 +116,7 @@ const EventSmallPreview = ({ event }) => {
 
     // event creator will show on preview inside of business admin view
     const isBusinessAdminView = pathname.includes('/business/admin/');
+    const isProfileEventsView = pathname.includes('/profile/events');
 
     if (!event) { return null; }
 
@@ -145,7 +148,10 @@ const EventSmallPreview = ({ event }) => {
                     <div className='smallHeaderText eventSmallPreviewEventname'>{decode(event.eventname)}</div>
                     <div className='eventSmallPreviewDetails'>{decode(event.details)}</div>
                     {
-                        isBusinessAdminView && <div className='eventCreator'><FaUser className='smallSiteIcons' />{event.event_creator}</div>
+                        isBusinessAdminView && <div className='eventCreator'><FaUser className='smallSiteIcons' /><span style={{ color: 'var(--main-highlight-color)' }}>{event.event_creator}</span></div>
+                    }
+                    {
+                        isProfileEventsView && <div className='eventCreator'><FaCannabis className='smallSiteIcons' /><span style={{ color: 'var(--main-highlight-color)' }}>{event.business_name}</span></div>
                     }
                 </div>
             </div>

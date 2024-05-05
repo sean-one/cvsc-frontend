@@ -25,7 +25,6 @@ const BusinessAdminViewStyles = styled.div`
         'businessadmindetails'
         ;
         grid-gap: 1rem;
-        margin-bottom: 5rem;
 
         @media (min-width: 768px) {
             grid-template-areas:
@@ -132,7 +131,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
                     {
                         (userBusinessRole?.role_type === 'manager' || userBusinessRole?.role_type === 'admin') &&
                             <div className='businessAdminDetailSection businessAdminViewControls'>
-                                <CreateEventButton />
+                                <CreateEventButton business_id={business_id} />
                                 <EditBusinessButton business={business_data} />
                                 {
                                     (userBusinessRole?.role_type === 'admin') &&

@@ -25,6 +25,14 @@ const UserEventsRelatedStyles = styled.div`
         }
     }
 
+    .eventSearchBox {
+        padding: 0 2rem;
+
+        @media (min-width: 768px) {
+            grid-column: 1/3;
+        }
+    }
+
     .noUserEvents {
         width: 100%;
         grid-column: 1/3;
@@ -95,10 +103,12 @@ const UserEventsRelated = () => {
                     null
                 ) : (
                     <div className='userEventsList'>
-                        <EventSearch
-                            searchQuery={searchQuery}
-                            onSearchChange={setSearchQuery}
-                        />
+                        <div className='eventSearchBox'>
+                            <EventSearch
+                                searchQuery={searchQuery}
+                                onSearchChange={setSearchQuery}
+                            />
+                        </div>
                         {
                             (filteredEvents.length > 0)
                                 ? filteredEvents.map(event => {

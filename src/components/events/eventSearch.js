@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaX } from 'react-icons/fa6';
+import { FaX, FaMagnifyingGlass } from 'react-icons/fa6';
 
 const EventSearchStyles = styled.div`
     .searchWrapper {
         width: 100%;
-        padding: 0 2rem;
-        height: 5rem;
+        padding: 1rem 0.5rem;
+        border-radius: 0.5rem;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         margin-bottom: 0.5rem;
+        background: var(--opacity);
     }
 
-    .sortView {
+    .searchView {
         width: 100%;
         height: 100%;
         max-width: var(--max-section-width);
@@ -23,35 +24,40 @@ const EventSearchStyles = styled.div`
 
         input {
             width: 100%;
+            font-size: var(--small-header-font);
+            padding: 0.5rem 1.5rem 0.25rem;
         }
-    }
-
-    .searchIconContainer {
-        width: 3rem;
-        height: 100%;
-        color: var(--error-color);
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding-bottom: 0.25rem;
     }
 `;
 
 const EventSearch = ({ searchQuery, onSearchChange }) => {
+    const [viewSearch, setViewSearch] = useState(false)
+
+    const closeSearchBar = () => {
+        onSearchChange('')
+        setViewSearch(false)
+    }
+
     return (
         <EventSearchStyles>
             <div className='searchWrapper'>
-                <div className='sortView'>
-                    <input
-                        type='text'
-                        value={searchQuery}
-                        onChange={e => onSearchChange(e.target.value)}
-                        placeholder="Search events..."
-                    />
-                    <div className='searchIconContainer'>
-                        <FaX className='siteIcons' onClick={() => onSearchChange('')} />
-                    </div>
-                </div>
+                {
+                    viewSearch
+                        ? <div className='searchView'>
+                            <input
+                                type='text'
+                                value={searchQuery}
+                                onChange={e => onSearchChange(e.target.value)}
+                                placeholder="Search events..."
+                            />
+                            <div>
+                                <FaX className='siteIcons' style={{ color: 'var(--error-color)' }} onClick={closeSearchBar} />
+                            </div>
+                        </div>
+                        : <div>
+                            <FaMagnifyingGlass className='siteIcons' onClick={() => setViewSearch(true)} />
+                        </div>
+                }
             </div>
         </EventSearchStyles>
     );

@@ -43,10 +43,10 @@ const customSelectStyles = {
         backgroundColor: 'var(--main-background-color)',
         fontSize: 'var(--input-font-size)',
         color: 'var(--text-color)',
-        borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
+        borderColor: 'var(--text-color)',
         boxShadow: state.isFocused ? '0 0 0 1px var(--text-color)' : provided.boxShadow,
         '&:hover': {
-            borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
+            borderColor: 'var(--text-color)',
         }
     }),
     input: (provided) => ({

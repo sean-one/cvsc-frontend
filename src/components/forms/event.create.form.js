@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
@@ -29,10 +29,10 @@ const customSelectStyles = {
         backgroundColor: 'var(--main-background-color)',
         fontSize: 'var(--input-font-size)',
         color: 'var(--text-color)',
-        borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
+        borderColor: 'var(--text-color)',
         boxShadow: state.isFocused ? '0 0 0 1px var(--text-color)' : provided.boxShadow,
         '&:hover': {
-            borderColor: state.isFocused ? 'var(--text-color)' : provided.borderColor,
+            borderColor: 'var(--text-color)',
         }
     }),
     input: (provided) => ({
@@ -86,13 +86,14 @@ const customSelectStyles = {
 const EventCreateForm = () => {
     const [ croppedImage, setCroppedImage ] = useState(null);
     const [ previewImageUrl, setPreviewImageUrl ] = useState('');
+    const [ userHostBusinessList, setUserHostBusinessList ] = useState([])
     const { auth } = useAuth();
     const { dispatch } = useNotification();
     const { mutateAsync: createEvent } = useCreateEventMutation()
-    let user_host_business_list = []
     
     const { data: user_roles, isError, isPending, isSuccess: userRolesSuccess } = useUserRolesQuery(auth?.user?.id)
     
+    let location = useLocation()
     let navigate = useNavigate();
     
     const { register, control, handleSubmit, setError, setValue, clearErrors, reset, formState: { errors } } = useForm({
@@ -106,9 +107,40 @@ const EventCreateForm = () => {
             eventend: '',
             eventmedia: '',
             details: '',
-            // host_business: ''
+            host_business: null
         }
     });
+
+    useEffect(() => {
+        if (userRolesSuccess) {
+            const rolesData = user_roles?.data || []
+            if (rolesData.length === 0) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'No business roles found'
+                    }
+                });
+
+                navigate('/profile');
+                return;
+            }
+
+            const list = user_roles.data
+                .filter(role => role.active_role)
+                .map(role => ({ value: role.business_id, label: role.business_name }));
+            
+            setUserHostBusinessList(list);
+            const passedBusinessId = location.state?.businessId;
+            const defaultBusiness = list.find(b => b.value === passedBusinessId)
+    
+            if (defaultBusiness) {
+                setValue('host_business', defaultBusiness);
+            }
+        }
+
+    }, [dispatch, navigate, setValue, user_roles, userRolesSuccess, location.state])
 
     const onImageCropped = useCallback((croppedBlob) => {
         setCroppedImage(croppedBlob);
@@ -215,25 +247,7 @@ const EventCreateForm = () => {
         navigate('/profile')
     }
 
-    if (userRolesSuccess) {
-        if (user_roles?.data.length === 0) {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: 'No business roles found'
-                }
-            })
-            
-            navigate('/profile')
-        }
-        user_host_business_list = user_roles?.data.filter(role => role.active_role).map(role => ({
-            value: role.business_id,
-            label: role.business_name,
-        }))
-    }
-
-
+    console.log(location.state)
     return (
         <CreateEventFormStyles>
             {
@@ -331,7 +345,7 @@ const EventCreateForm = () => {
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={user_host_business_list}
+                                        options={userHostBusinessList}
                                         placeholder='Select a business'
                                         isClearable
                                         isSearchable

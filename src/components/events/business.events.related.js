@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,6 +7,7 @@ import { useBusinessEventsQuery } from '../../hooks/useEventsApi';
 import LoadingSpinner from '../loadingSpinner';
 import EventCard from './views/event.card';
 import EventSmallPreview from './views/event.small.preview';
+import EventSearch from './eventSearch';
 
 const BusinessEventsRelatedStyles = styled.div`
     .businessEventsRelatedWrapper {
@@ -20,9 +21,12 @@ const BusinessEventsRelatedStyles = styled.div`
     }
 
     .businessEventsRelatedHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
-        padding-left: 1.125rem;
-        margin: 1.5rem 0 0.75rem;
+        padding: 0 1.125rem;
+        margin: 1.5rem 0 0;
         color: var(--main-highlight-color);
         
         @media (min-width: 768px) {
@@ -34,9 +38,9 @@ const BusinessEventsRelatedStyles = styled.div`
 
 const BusinessEventsRelated = ({ business_id }) => {
     const { dispatch } = useNotification();
+    const [searchQuery, setSearchQuery] = useState('');
     const { data: events_list, isPending, isError, error: events_list_error } = useBusinessEventsQuery(business_id);
     let location = useLocation();
-    let business_events_list = []
 
     if (isError) {
         // 400 - type 'business_id', 'server'
@@ -49,8 +53,12 @@ const BusinessEventsRelated = ({ business_id }) => {
         })
     }
 
-    business_events_list = events_list?.data || []
+    const business_events_list = events_list?.data.filter(event =>
+        event?.eventname.toLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
+        event?.event_creator.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+    ) || []
 
+    
     return (
         <BusinessEventsRelatedStyles>
             {
@@ -61,7 +69,10 @@ const BusinessEventsRelated = ({ business_id }) => {
                 ) :
                     (business_events_list.length !== 0)
                         ? <div className='businessEventsRelatedWrapper'>
-                            <div className='businessEventsRelatedHeader subheaderText'>Upcoming Events</div>
+                            <div className='businessEventsRelatedHeader'>
+                                <div className='subheaderText'>Upcoming Events</div>
+                                <EventSearch searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+                            </div>
                             {
                                 business_events_list.map(event => {
                                     if (location.pathname.includes('admin')) {
