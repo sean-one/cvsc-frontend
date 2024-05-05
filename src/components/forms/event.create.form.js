@@ -232,8 +232,7 @@ const EventCreateForm = () => {
             }
             
             else {
-                console.log(error)
-                console.log(`uncaught error: ${Object.keys(error)}`)
+                console.error(`uncaught error: ${Object.keys(error)}`)
             }
         }
     }
@@ -247,7 +246,7 @@ const EventCreateForm = () => {
         navigate('/profile')
     }
 
-    console.log(location.state)
+
     return (
         <CreateEventFormStyles>
             {

@@ -188,7 +188,7 @@ const EventEditForm = () => {
             }
             
             else {
-                console.log(`uncaught error ${Object.keys(error)}`);
+                console.error(`uncaught error ${Object.keys(error)}`);
             }
         }
     }

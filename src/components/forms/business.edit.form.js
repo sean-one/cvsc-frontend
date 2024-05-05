@@ -141,7 +141,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                 }
             }
 
-            else { console.log(`uncaught error: ${error}`) }
+            else { console.error(`uncaught error: ${error}`) }
         }
 
     }

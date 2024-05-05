@@ -119,7 +119,6 @@ const UserEditForm =({ setEditView }) => {
             return
             
         } catch (error) {
-            console.log(error)
             if(error?.response?.status === 404) {
                 dispatch({
                     type: "ADD_NOTIFICATION",
@@ -179,7 +178,6 @@ const UserEditForm =({ setEditView }) => {
         try {
             const deleteUserResponse = await AxiosInstance.delete('/users/delete')
 
-            console.log(deleteUserResponse)
             if(deleteUserResponse.status === 204) {
                 localStorage.removeItem('jwt')
                 setAuth(null)
@@ -206,8 +204,6 @@ const UserEditForm =({ setEditView }) => {
             navigate('/')
             
         } catch (error) {
-            console.log('return error')
-            console.log(error)
             
             if(error?.response?.status === 401) {
                 dispatch({
@@ -223,7 +219,7 @@ const UserEditForm =({ setEditView }) => {
 
                 navigate('/login')
             } else {
-                console.log(error)
+                console.error(error)
             }
         }
     }
