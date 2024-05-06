@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import useNotification from '../../hooks/useNotification';
 import useAuth from '../../hooks/useAuth';
 import { useBusinessQuery } from '../../hooks/useBusinessApi';
-import { image_link } from '../../helpers/dataCleanUp';
 
 import LoadingSpinner from '../loadingSpinner';
 import BusinessEventsRelated from '../events/business.events.related';
@@ -136,7 +135,7 @@ const BusinessView = () => {
 
                 <div className='imagePreview businessImage businessViewLogo'>
                     <img
-                        src={image_link(business?.data?.business_avatar)}
+                        src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business?.data?.business_avatar}`}
                         alt={business?.data.business_name}
                     />
                 </div>

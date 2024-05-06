@@ -15,7 +15,6 @@ import BusinessTransfer from './business.transfer';
 
 import CreateEventButton from '../../events/create.event.button';
 import BusinessEventsRelated from '../../events/business.events.related';
-import { image_link } from '../../../helpers/dataCleanUp';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminViewWrapper {
@@ -119,7 +118,7 @@ const BusinessAdminView = ({ userBusinessRole }) => {
         <BusinessAdminViewStyles>
             <div className='businessAdminViewWrapper'>
                 <div className='imagePreview businessImage'>
-                    <img src={image_link(business_data?.business_avatar)} alt={`${business_data?.business_name} branding`} />
+                    <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.business_avatar}`} alt={`${business_data?.business_name} branding`} />
                 </div>
 
                 <div className='businessAdminViewDetailWrapper'>

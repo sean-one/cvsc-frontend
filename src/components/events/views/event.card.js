@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { format } from 'date-fns';
 import { decode } from 'he';
 import { formatTime } from '../../../helpers/formatTime';
-import { image_link } from '../../../helpers/dataCleanUp';
 
 const EventCardStyles = styled.div`
     .eventCardWrapper {
@@ -112,7 +111,7 @@ const EventCard = ({ event }) => {
         return null;
     }
 
-    const backgroundImageUrl = image_link(event?.eventmedia);
+    const backgroundImageUrl = `${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.eventmedia}`;
     
     return (
         <EventCardStyles bgImage={backgroundImageUrl}>
@@ -126,7 +125,7 @@ const EventCard = ({ event }) => {
                     </div>
                     <div className='eventCardBottomRow'>
                         <div className='eventCardHostLogo' onClick={(e) => { e.stopPropagation(); navigate(`/business/${event?.host_business}`);}}>
-                            <img src={image_link(event?.business_avatar)} alt={`${event?.business_name} branding`} />
+                            <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.business_avatar}`} alt={`${event?.business_name} branding`} />
                         </div>
                         <div className='eventCardDetails'>
                             <div className='subHeaderRow'>

@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import { image_link } from '../../helpers/dataCleanUp';
 import { useUpdateBusinessMutation, useBusinessQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
 import { FaXTwitter, FaInstagram, FaPhone } from 'react-icons/fa6';
@@ -202,7 +201,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                                 <div className='businessImage'>
                                     <div className='imagePreview imagePreiveCircle'>
                                         <img
-                                            src={image_link(business_data?.data?.business_avatar)}
+                                            src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.data?.business_avatar}`}
                                             alt={business_data?.data?.business_name}
                                         />
                                     </div>

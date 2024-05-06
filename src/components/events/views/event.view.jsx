@@ -11,7 +11,6 @@ import EventViewRelated from '../event.view.related';
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import { formatTime } from '../../../helpers/formatTime';
-import { image_link } from '../../../helpers/dataCleanUp';
 import { useEventQuery } from '../../../hooks/useEventsApi';
 
 
@@ -153,7 +152,7 @@ const EventView = () => {
                 <div className='eventViewDetails'>
                         <div className={`eventViewDetailsTop ${!isCreator() ? 'notCreator' : ''}`}>
                             <div className='eventBusinessAvatar' onClick={() => navigate(`/business/${event?.data.host_business}`)} >
-                                <img src={image_link(event?.data.business_avatar)} alt='featured business branding' />
+                                <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.data.business_avatar}`} alt='featured business branding' />
                             </div>
                             <div className='headerText' style={{ gridArea: 'eventname' }}>{decode(event?.data.eventname)}</div>
                             {
@@ -172,7 +171,7 @@ const EventView = () => {
                 
                 <div className='eventViewImage'>
                     <div className='imagePreview eventImage'>
-                        <img src={image_link(event?.data.eventmedia)} alt={event?.data.eventname} />
+                        <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.data.eventmedia}`} alt={event?.data.eventname} />
                     </div>
                 </div>
                 

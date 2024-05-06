@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { image_link } from './../../helpers/dataCleanUp';
 
 const BusinessesViewCardStyles = styled.div`
     .businessesViewCardWrapper {
@@ -75,7 +74,7 @@ const BusinessesViewCard = ({ business }) => {
         <BusinessesViewCardStyles>
             <div className='businessesViewCardWrapper' onClick={() => navigate(`/business/${business?.id}`)}>
                 <div className='businessViewCardBranding'>
-                    <img src={image_link(business?.business_avatar)} alt={business.business_name} />
+                    <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business?.business_avatar}`} alt={business.business_name} />
                 </div>
                 <div className='businessViewCardDetails'>
                     <div className='businessViewCardBusinessName'>{business.business_name}</div>

@@ -12,7 +12,6 @@ import { reformatTime } from '../../helpers/formatTime';
 import { useEventQuery, useUpdateEventMutation, useRemoveEventMutation } from '../../hooks/useEventsApi';
 import { useUserRolesQuery } from '../../hooks/useRolesApi';
 import useNotification from '../../hooks/useNotification';
-import { image_link } from '../../helpers/dataCleanUp';
 import { validateEventDate, validateEventTime, validateNONEmptyString } from './utils/form.validations';
 import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
 import AddressForm from './address.form';
@@ -284,7 +283,7 @@ const EventEditForm = () => {
                                 <img src={previewImageUrl} alt='event media' />
                             </div>
                             : <div className='imagePreview eventImage'>
-                                <img src={image_link(event_data?.data?.eventmedia)} alt={event_data?.data?.eventname} />
+                                <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`} alt={event_data?.data?.eventname} />
                             </div>
                     }
 

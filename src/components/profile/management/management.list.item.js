@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import BusinessButton from '../../business/buttons/business.button';
 import SettingsBusinessButton from '../../business/buttons/settings.business.button';
-import { image_link } from '../../../helpers/dataCleanUp';
 
 const ManagementListItemStyles = styled.div`
     .managementListItemWrapper {
@@ -67,7 +66,7 @@ const ManagementListItem = ({ business }) => {
         <ManagementListItemStyles>
             <div className='managementListItemWrapper'>
                 <div className='managementListItemLogo' onClick={() => navigate(`/business/${business.id}`)}>
-                    <img src={image_link(business?.business_avatar)} alt={business.business_name} />
+                    <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business?.business_avatar}`} alt={business.business_name} />
                 </div>
                 <div className='managementListItemDetails'>
                     <div className='subheaderText managementListItemBusinessname'>{business.business_name}</div>

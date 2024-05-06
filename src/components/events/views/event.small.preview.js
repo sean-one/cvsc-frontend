@@ -6,7 +6,6 @@ import { decode } from 'he';
 import { FaUser, FaCannabis } from 'react-icons/fa6';
 import { GoPencil } from 'react-icons/go';
 
-import { image_link } from '../../../helpers/dataCleanUp';
 import { formatTime } from '../../../helpers/formatTime';
 
 import useAuth from '../../../hooks/useAuth';
@@ -139,7 +138,7 @@ const EventSmallPreview = ({ event }) => {
                 }
                 <div className='eventSmallPreviewLeftSection'>
                     <div className='eventSmallPreviewImageContainer'>
-                        <img className='eventSmallPreviewImage' src={image_link(event.eventmedia)} alt={`${event.eventname} flyer`} />
+                        <img className='eventSmallPreviewImage' src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event.eventmedia}`} alt={`${event.eventname} flyer`} />
                     </div>
                 </div>
                 
