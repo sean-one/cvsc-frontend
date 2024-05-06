@@ -38,6 +38,14 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000,
+      retry: (failureCount, error) => {
+        // statuses for which no retry is needed
+        const noRetryStatuses = [400, 403, 404];
+        // access the error status is exists
+        const status = error?.response?.status;
+        // do not retry if status is in noRetry
+        return !noRetryStatuses.includes(status) && failureCount < 3;
+      }
     }
   }
 })
