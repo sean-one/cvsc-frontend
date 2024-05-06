@@ -19,7 +19,7 @@ const PasswordInputToggle = ({ control, inputName, errors, clearErrors }) => {
                 name={inputName}
                 type={isVisible ? 'text' : 'password'}
                 placeholder={inputName === 'confirmation' ? 'Confirm password' : 'Password'}
-                onFocus={() => clearErrors(['password', 'confirmation', 'credentials'])}
+                onFocus={() => clearErrors(['password', 'confirmation', 'credentials', 'server'])}
                 style={{ paddingRight: '3rem' }} // Make space for the icon
               />
             )}

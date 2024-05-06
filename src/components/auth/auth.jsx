@@ -24,7 +24,7 @@ const AuthRoute = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'ERROR',
-                    message: 'must be logged in yo!'
+                    message: 'must be logged in for that'
                 }
             })
         }

@@ -101,7 +101,7 @@ const Login = () => {
 
     const googleAuthButton = (e) => {
         e.preventDefault()
-        window.open(`http://localhost:3333/auth/google`, "_self")
+        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
     }
 
     
@@ -111,7 +111,7 @@ const Login = () => {
                 
                 <div className='headerText loginHeader'>Login</div>
 
-                <form onSubmit={handleSubmit(sendLogin)} className='standardForm' onClick={() => clearErrors('credentials')}>
+                <form onSubmit={handleSubmit(sendLogin)} className='standardForm' onClick={() => clearErrors(['credentials', 'server'])}>
                     
                     {/* USERNAME */}
                     <div className='inputWrapper'>
@@ -126,7 +126,7 @@ const Login = () => {
                                 message: 'too long, must be 20 characters or less'
                             },
                             validate: validateUsername,
-                        })} type='text' onFocus={() => clearErrors('username')} placeholder='Username' />
+                        })} type='text' onFocus={() => clearErrors(['username', 'server'])} placeholder='Username' />
                         {errors.username ? <div className='errormessage'>{errors.username?.message}</div> : null}
                     </div>
                     
