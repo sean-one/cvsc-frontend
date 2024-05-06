@@ -179,8 +179,6 @@ const UserEditForm =({ setEditView }) => {
             const deleteUserResponse = await AxiosInstance.delete('/users/delete')
 
             if(deleteUserResponse.status === 204) {
-                localStorage.removeItem('jwt')
-                setAuth(null)
                 
                 await Promise.all([
                     queryClient.invalidateQueries({ queryKey: eventKeys.all }),
@@ -196,12 +194,13 @@ const UserEditForm =({ setEditView }) => {
                         message: 'user account has been delete'
                     }
                 })
+
+                localStorage.removeItem('jwt')
+                setAuth(null)
+                
+                navigate('/')
             }
 
-            //! logout_user() - useing refetch from useEventsQuery need to look at something different or uncomment
-            // refetch()
-            
-            navigate('/')
             
         } catch (error) {
             
@@ -213,9 +212,6 @@ const UserEditForm =({ setEditView }) => {
                         message: 'credentials not found - please login'
                     }
                 })
-                
-                //! logout_user() - useing refetch from useEventsQuery need to look at something different or uncomment
-                // refetch()
 
                 navigate('/login')
             } else {

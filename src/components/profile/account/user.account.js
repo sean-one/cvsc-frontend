@@ -8,6 +8,7 @@ import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
 import { useUserAccountRole } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
+import default_user from '../../../assets/default_user_icon.webp';
 
 const UserAccountStyles = styled.div`
     .userAccountPage {
@@ -111,6 +112,7 @@ const UserAccount = () => {
         }
     }, [dispatch, isError, navigate, user_account_role_error, user_reset])
 
+    const user_profile_image = auth?.user?.avatar === null ? default_user : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`;
 
     return (
         <UserAccountStyles>
@@ -120,7 +122,7 @@ const UserAccount = () => {
                         
                         <div className='profileImage'>
                             <img
-                                src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`}
+                                src={user_profile_image}
                                 alt={`user avatar`}
                             />
                             {
