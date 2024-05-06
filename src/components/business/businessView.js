@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaRegEnvelope, FaXTwitter, FaInstagram, FaPhone, FaBan } from 'react-icons/fa6'
 import { TbWorldWww } from 'react-icons/tb'
@@ -97,20 +97,23 @@ const BusinessView = () => {
     let navigate = useNavigate();
     const { data: business, isPending, isError, error: business_error } = useBusinessQuery(business_id)
     
-    // 400 - type: 'business_id', 404 - type: 'server'
-    if (isError) {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: business_error?.response?.data?.error?.message
-            }
-        })
-        
-        navigate('/')
-    }
+    useEffect(() => {
+        // 400 - type: 'business_id', 404 - type: 'server'
+        if (isError) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: business_error?.response?.data?.error?.message
+                }
+            })
+            
+            navigate('/404', { state: { notFound: 'business' }, replace: true })
+        }
+    }, [isError, business_error, dispatch, navigate])
 
     if (isPending) { return <LoadingSpinner /> }
+    if (!business) { return null; }
     
     
     return (

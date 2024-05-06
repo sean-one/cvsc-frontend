@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -94,17 +94,19 @@ const BusinessAdminView = ({ userBusinessRole }) => {
     
     const { data: business, isPending, isError, error: business_error } = useBusinessQuery(business_id);
     
-    if (isError) {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: business_error?.response?.data?.error?.message
-            }
-        })
-
-        navigate('/profile/admin')
-    }
+    useEffect(() => {
+        if (isError) {
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: business_error?.response?.data?.error?.message
+                }
+            })
+    
+            navigate('/profile')
+        }
+    }, [isError, business_error, dispatch, navigate])
 
     if (isPending) {
         return <LoadingSpinner />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -33,34 +33,36 @@ const ManagementList = () => {
 
     const { data: management_list, isPending, isError, error: management_list_error } = useBusinessManagement(auth?.user?.id);
 
-    if (isError) {
-        // 401, 403 - type: 'token'
-        if (management_list_error?.response?.data?.error?.type === 'token') {
-            user_reset()
-
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: management_list_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/login')
-
-        } else {
-            // 400 - type 'server'
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: management_list_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/profile')
+    useEffect(() => {
+        if (isError) {
+            // 401, 403 - type: 'token'
+            if (management_list_error?.response?.data?.error?.type === 'token') {
+                user_reset()
+    
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: management_list_error?.response?.data?.error?.message
+                    }
+                })
+    
+                navigate('/login')
+    
+            } else {
+                // 400 - type 'server'
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: management_list_error?.response?.data?.error?.message
+                    }
+                })
+    
+                navigate('/profile')
+            }
         }
-    }
+    }, [isError, management_list_error, user_reset, dispatch, navigate])
     
     const filteredBusinesses = management_list?.data.filter(business => 
         business?.business_name.toLowerCase().includes(searchQuery.toLowerCase())

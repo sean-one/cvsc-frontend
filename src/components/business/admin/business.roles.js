@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import useAuth from '../../../hooks/useAuth';
@@ -31,34 +31,36 @@ const BusinessRoles = () => {
 
     let navigate = useNavigate();
 
-    if (isError) {
-        // 401, 403 - type: 'token', 'server'
-        if (business_roles_error?.response?.status === 403 || business_roles_error?.response?.status === 401) {
-            // remove expired or bad token and reset user
-            user_reset()
-            
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: business_roles_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/login')
-        } else {
-            // 400 - type: 'business_id', 'server' 
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: business_roles_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/profile')
+    useEffect(() => {
+        if (isError) {
+            // 401, 403 - type: 'token', 'server'
+            if (business_roles_error?.response?.status === 403 || business_roles_error?.response?.status === 401) {
+                // remove expired or bad token and reset user
+                user_reset()
+                
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: business_roles_error?.response?.data?.error?.message
+                    }
+                })
+    
+                navigate('/login')
+            } else {
+                // 400 - type: 'business_id', 'server' 
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: business_roles_error?.response?.data?.error?.message
+                    }
+                })
+    
+                navigate('/profile')
+            }
         }
-    }
+    }, [isError, business_roles_error, user_reset, dispatch, navigate])
 
     if (isPending) {
         return <LoadingSpinner />

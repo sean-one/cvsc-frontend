@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -61,37 +61,41 @@ const UserEventsRelated = () => {
     
     let navigate = useNavigate()
 
-    if (isError) {
-        // 401, 403 - type 'token', 400 - type: 'user_id'
-        if (user_events_error?.resposne?.status === 401 || user_events_error?.response?.status === 403) {
-            // remove expired or bad token and reset user
-            user_reset()
-            
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: user_events_error?.response?.data?.error?.message
-                }
-            })
-
-            navigate('/login')
-
-        } else {
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'ERROR',
-                    message: user_events_error?.response?.data?.error?.message
-                }
-            })
+    useEffect(() => {
+        if (isError) {
+            // 401, 403 - type 'token', 400 - type: 'user_id'
+            if (user_events_error?.resposne?.status === 401 || user_events_error?.response?.status === 403) {
+                // remove expired or bad token and reset user
+                user_reset()
+                
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_events_error?.response?.data?.error?.message
+                    }
+                })
+    
+                navigate('/login')
+    
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: user_events_error?.response?.data?.error?.message
+                    }
+                })
+            }
         }
-    }
+    }, [isError, user_events_error, user_reset, dispatch, navigate])
 
     const filteredEvents = user_events?.data.filter(event =>
         event?.business_name.toLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
         event?.eventname.toLowerCase().includes(searchQuery.toLocaleLowerCase())
     ) || []
+
+    if (!user_events) { return null; }
 
 
     return (
@@ -103,12 +107,15 @@ const UserEventsRelated = () => {
                     null
                 ) : (
                     <div className='userEventsList'>
-                        <div className='eventSearchBox'>
-                            <EventSearch
-                                searchQuery={searchQuery}
-                                onSearchChange={setSearchQuery}
-                            />
-                        </div>
+                        {
+                            (filteredEvents.length !== 0) &&
+                                <div className='eventSearchBox'>
+                                    <EventSearch
+                                        searchQuery={searchQuery}
+                                        onSearchChange={setSearchQuery}
+                                    />
+                                </div>
+                        }
                         {
                             (filteredEvents.length > 0)
                                 ? filteredEvents.map(event => {

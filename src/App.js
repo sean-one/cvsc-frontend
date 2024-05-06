@@ -86,8 +86,8 @@ const App = () => {
                 } />
               </Route>
 
-
               {/* catch all for unknown pages */}
+              <Route path='/404' element={<ErrorPage />} />
               <Route path='/*' element={<ErrorPage />} />
             
             </Route>
