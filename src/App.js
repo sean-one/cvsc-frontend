@@ -33,6 +33,7 @@ import BusinessManagementAuth from './components/auth/businessManagementAuth';
 import PersistLogin from './components/persistLogin';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
+import SquirrelMaster from './components/auth/superadmin/squirrel_master.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +79,7 @@ const App = () => {
                     <Route path='/profile/roles' element={<RolesTab />} />
                     <Route path='/profile/events' element={<UserEventsRelated />} />
                     <Route path='/profile/admin' element={<ManagementList />} />
+                    <Route path='/profile/squirrelmaster' element={<SquirrelMaster />} />
                 </Route>
                 <Route path='/event/create' element={<EventCreateForm />} />
                 <Route path='/event/edit/:event_id' element={<EventEditForm />} />
