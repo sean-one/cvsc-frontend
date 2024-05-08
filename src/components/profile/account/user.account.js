@@ -9,6 +9,7 @@ import UserEditForm from '../../forms/user.edit.form';
 import { useUserAccountRole } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
 import default_user from '../../../assets/default_user_icon.webp';
+import squirrel_master from '../../../assets/squirrel-master.webp'
 
 const UserAccountStyles = styled.div`
     .userAccountPage {
@@ -46,7 +47,7 @@ const UserAccountStyles = styled.div`
         padding: 1.5rem 0 0.75rem;
         gap: 0.5rem;
     }
-    
+
     .profileHeader {
         color: var(--main-highlight-color);
         display: flex;
@@ -68,7 +69,15 @@ const UserAccountStyles = styled.div`
     .userDetails {
         color: var(--text-color);
         height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
+
+    .sm_button {
+        width: 5rem;
+    }
+    
 
     .updateWrapper {
         display: flex;
@@ -136,7 +145,6 @@ const UserAccount = () => {
                         </div>
                         
                         <div className='accountDetails'>
-
                             <div className='profileHeader'>
                                 <div className='usernameHeader'>{auth?.user.username}</div>
                                 {
@@ -155,6 +163,9 @@ const UserAccount = () => {
                                             {auth?.user.email}
                                         </div>
                                 }
+                                <div className='sm_button' onClick={() => navigate('/profile/squirrelmaster')}>
+                                    <img src={squirrel_master} alt='squirrel'/>
+                                </div>
                             </div>
                         </div>
                     </div>

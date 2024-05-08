@@ -109,10 +109,6 @@ const Menu = ({ toggle }) => {
                             ? <div className='navMenuButtons menuText' onClick={() => logOutUser()}>Logout</div>
                             : <div className='navMenuButtons menuText' onClick={() => navigate('/login')}>Login</div>
                     }
-                    {
-                        isLoggedIn &&
-                            <div className='navMenuButtons menuText' onClick={() => navigate('/profile/squirrelmaster')}>SquirrelMaster</div>
-                    }
                     <div className='navMenuButtons menuText' onClick={() => toggleTheme()}>{themeName === 'light' ? <FaMoon className='siteIcons' /> : <FaSun className='siteIcons' />} Theme</div>
                 </div>
             </div>
