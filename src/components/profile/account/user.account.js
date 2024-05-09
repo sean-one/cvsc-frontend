@@ -123,6 +123,7 @@ const UserAccount = () => {
 
     const user_profile_image = auth?.user?.avatar === null ? default_user : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`;
 
+    
     return (
         <UserAccountStyles>
             {
@@ -163,9 +164,12 @@ const UserAccount = () => {
                                             {auth?.user.email}
                                         </div>
                                 }
-                                <div className='sm_button' onClick={() => navigate('/profile/squirrelmaster')}>
+                                <div className='sm_button' onClick={() => navigate('/squirrelmaster')}>
                                     <img src={squirrel_master} alt='squirrel'/>
                                 </div>
+                                {/* {
+                                    (auth?.user?.is_superadmin) &&
+                                } */}
                             </div>
                         </div>
                     </div>

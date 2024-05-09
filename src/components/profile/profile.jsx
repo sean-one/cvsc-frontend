@@ -6,7 +6,7 @@ import UserAccount from './account/user.account';
 import RolesTab from './roles/rolesTab';
 import UserEventsRelated from './events/user.events.related';
 import ManagementList from './management/management.list';
-import SquirrelMaster from '../auth/superadmin/squirrel_master';
+import SquirrelMaster from '../auth/mod/squirrel_master';
 
 
 const Profile = () => {
