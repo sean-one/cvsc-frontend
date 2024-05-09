@@ -15,6 +15,7 @@ import UserAccount from './components/profile/account/user.account';
 import RolesTab from './components/profile/roles/rolesTab';
 import UserEventsRelated from './components/profile/events/user.events.related';
 import ManagementList from './components/profile/management/management.list';
+import EmailVerificationPage from './components/profile/account/emailVerificationPage.js';
 
 import EventView from './components/events/views/event.view';
 import EventCreateForm from './components/forms/event.create.form';
@@ -71,6 +72,7 @@ const App = () => {
               <Route path='/register' element={<Register />} />
               <Route path='/event/:event_id' element={<EventView />} />
               <Route exact path='/business/:business_id' element={<BusinessView />} />
+              <Route path='/email-verified' element={<EmailVerificationPage />} />
               
               {/* private routes */}
               <Route element={<AuthRoute />}>
