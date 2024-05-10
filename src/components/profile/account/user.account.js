@@ -83,6 +83,18 @@ const UserAccountStyles = styled.div`
         gap: 0.5rem;
     }
 
+    .nonVerified {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.3rem;
+        cursor: pointer;
+    }
+
+    .nonVerifiedText {
+        font-size: var(--small-font);
+    }
+
     .sm_button {
         width: 5rem;
     }
@@ -138,10 +150,18 @@ const UserAccount = () => {
             console.log(response)
         } catch (error) {
             console.log(error)
+            
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    notification_type: 'ERROR',
+                    message: error?.response?.data?.error?.message
+                }
+            })
         }
     }
 
-
+    console.log(auth?.user)
     return (
         <UserAccountStyles>
             {
@@ -179,14 +199,16 @@ const UserAccount = () => {
                                 {
                                     (!editView) &&
                                         <div className='userEmail'>
-                                            {auth?.user.email}
+                                            <div>
+                                                {auth?.user.email}
+                                            </div>
                                             {
                                                 auth?.user?.email_verified
-                                                    ? <MdVerified />
-                                                    : <MdOutlineVerified
-                                                        onClick={verifyEmailButton}
-                                                        style={{ color: 'var(--main-highlight-color)' }}
-                                                    />
+                                                    ? <div><MdVerified /></div>
+                                                    : <div className='nonVerified' onClick={verifyEmailButton}>
+                                                        <MdOutlineVerified style={{ color: 'var(--main-highlight-color)' }} />
+                                                        <div className='nonVerifiedText'>{auth?.user?.email_validation_pending ? 'pending' : 'validate'}</div>
+                                                    </div>
                                             }
                                         </div>
                                 }

@@ -45,6 +45,7 @@ const EmailVerificationPage = () => {
     return (
         <div>
             Email SUCCESSFULLY VALIDATED page!
+            If you already have window open, close this page and refresh main window
         </div>
     )
 }
