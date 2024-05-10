@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUserPen } from 'react-icons/fa6';
+import { MdVerified, MdOutlineVerified } from 'react-icons/md';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -10,6 +11,7 @@ import { useUserAccountRole } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
 import default_user from '../../../assets/default_user_icon.webp';
 import squirrel_master from '../../../assets/squirrel-master.webp'
+import AxiosInstance from '../../../helpers/axios';
 
 const UserAccountStyles = styled.div`
     .userAccountPage {
@@ -74,11 +76,17 @@ const UserAccountStyles = styled.div`
         align-items: center;
     }
 
+    .userEmail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
     .sm_button {
         width: 5rem;
     }
     
-
     .updateWrapper {
         display: flex;
         justify-content: space-between;
@@ -89,7 +97,7 @@ const UserAccountStyles = styled.div`
 const UserAccount = () => {
     const { auth, user_reset } = useAuth();
     const { dispatch } = useNotification();
-    const [ editView, setEditView ] = useState(false)
+    const [ editView, setEditView ] = useState(false);
     const { data: user_account_role, isPending, isError, error: user_account_role_error } = useUserAccountRole(auth?.user?.id)
 
     let navigate = useNavigate();
@@ -123,7 +131,17 @@ const UserAccount = () => {
 
     const user_profile_image = auth?.user?.avatar === null ? default_user : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`;
 
-    
+    const verifyEmailButton = async () => {
+        try {
+            const response = await AxiosInstance.post('/users/send-verification-email')
+
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     return (
         <UserAccountStyles>
             {
@@ -160,16 +178,24 @@ const UserAccount = () => {
                             <div className='userDetails'>
                                 {
                                     (!editView) &&
-                                        <div className={`m-0 ${(auth?.user?.email === null) ? 'd-none' : ''}`}>
+                                        <div className='userEmail'>
                                             {auth?.user.email}
+                                            {
+                                                auth?.user?.email_verified
+                                                    ? <MdVerified />
+                                                    : <MdOutlineVerified
+                                                        onClick={verifyEmailButton}
+                                                        style={{ color: 'var(--main-highlight-color)' }}
+                                                    />
+                                            }
                                         </div>
                                 }
-                                <div className='sm_button' onClick={() => navigate('/squirrelmaster')}>
-                                    <img src={squirrel_master} alt='squirrel'/>
-                                </div>
-                                {/* {
+                                {
                                     (auth?.user?.is_superadmin) &&
-                                } */}
+                                        <div className='sm_button' onClick={() => navigate('/squirrelmaster')}>
+                                            <img src={squirrel_master} alt='squirrel'/>
+                                        </div>
+                                }
                             </div>
                         </div>
                     </div>

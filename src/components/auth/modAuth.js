@@ -1,34 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
+import LoadingSpinner from '../loadingSpinner';
 
 const ModAuth = ({ children }) => {
-    const { auth } = useAuth();
+    const [ loading, setLoading ] = useState(true);
+    const { auth, isLoggedIn } = useAuth();
     const { dispatch } = useNotification();
 
     let navigate = useNavigate();
 
     useEffect(() => {
-
         if (!auth?.user?.is_superadmin) {
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'ERROR',
-                    message: 'not superadmin'
+                    message: 'invalid user'
                 }
             })
 
-            navigate('/')
+            navigate('/profile')
+        } else {
+            setLoading(false)
         }
+    }, [auth.user, isLoggedIn, dispatch, navigate]);
 
-    }, [auth.user, dispatch, navigate]);
+    if (loading) {
+        return <LoadingSpinner />
+    }
 
     return (
         <div>
-            <h1>ModAuth Component</h1>
             {children}
         </div>
     )
