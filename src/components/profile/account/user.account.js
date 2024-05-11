@@ -155,7 +155,7 @@ const UserAccount = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'ERROR',
-                    message: error?.response?.data?.error?.message
+                    message: error?.response?.data?.message
                 }
             })
         }
@@ -207,7 +207,7 @@ const UserAccount = () => {
                                                     ? <div><MdVerified /></div>
                                                     : <div className='nonVerified' onClick={verifyEmailButton}>
                                                         <MdOutlineVerified style={{ color: 'var(--main-highlight-color)' }} />
-                                                        <div className='nonVerifiedText'>{auth?.user?.email_validation_pending ? 'pending' : 'validate'}</div>
+                                                        <div className='nonVerifiedText'>validate</div>
                                                     </div>
                                             }
                                         </div>
