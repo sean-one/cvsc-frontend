@@ -96,7 +96,7 @@ const Menu = ({ toggle }) => {
                     }
                     <div className='navMenuButtons menuText' onClick={() => navigate('/businesses')}>Businesses</div>
                     {
-                        isLoggedIn &&
+                        (isLoggedIn && auth?.user?.email_verified) &&
                             <div className='navMenuButtons menuText' onClick={() => navigate('/business/create')}><FaPlus className='siteIcons'/> Business</div>
                     }
                     {

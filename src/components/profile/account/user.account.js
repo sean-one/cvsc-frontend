@@ -77,6 +77,7 @@ const UserAccountStyles = styled.div`
     }
 
     .userEmail {
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -147,10 +148,17 @@ const UserAccount = () => {
         try {
             const response = await AxiosInstance.post('/users/send-verification-email')
 
-            console.log(response)
+            if (response?.status === 200) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: response?.data?.message
+                    }
+                })
+            }
+
         } catch (error) {
-            console.log(error)
-            
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
@@ -161,7 +169,7 @@ const UserAccount = () => {
         }
     }
 
-    console.log(auth?.user)
+
     return (
         <UserAccountStyles>
             {
@@ -205,7 +213,7 @@ const UserAccount = () => {
                                             {
                                                 auth?.user?.email_verified
                                                     ? <div><MdVerified /></div>
-                                                    : <div className='nonVerified' onClick={verifyEmailButton}>
+                                                    : <div className='buttonLike nonVerified' onClick={verifyEmailButton}>
                                                         <MdOutlineVerified style={{ color: 'var(--main-highlight-color)' }} />
                                                         <div className='nonVerifiedText'>validate</div>
                                                     </div>

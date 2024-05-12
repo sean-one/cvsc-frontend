@@ -39,6 +39,15 @@ const RolesTabStyles = styled.div`
             flex-grow: 1.7;
         }
     }
+
+    .rolesTabNonValidated {
+        padding: 2rem 1rem;
+        height: 13rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
 `;
 
 
@@ -89,17 +98,27 @@ const RolesTab = () => {
                 ) : isError ? (
                     null
                 ) : (
-                    <div className='rolesTabWrapper'>
-                        <div className='requestSection'>
-                            <RoleRequest user_roles={user_roles?.data} />
-                        </div>
-                        
-                        {/* current user roles */}
+                    <div>
                         {
-                            (user_roles?.data?.length > 0) &&
-                                <div className='userRolesListSection'>
-                                    <UserRoles roles={user_roles?.data} />
+                            auth?.user?.email_verified
+                                ? <div className='rolesTabWrapper'>
+                                    <div className='requestSection'>
+                                        <RoleRequest user_roles={user_roles?.data} />
+                                    </div>
+                                    
+                                    {/* current user roles */}
+                                    {
+                                        (user_roles?.data?.length > 0) &&
+                                            <div className='userRolesListSection'>
+                                                <UserRoles roles={user_roles?.data} />
+                                            </div>
+                                    }
                                 </div>
+                                : <div className='rolesTabNonValidated'>
+                                    <div>Email must be validated</div>
+                                        <div>Please validate your email on <span style={{ color: 'var(--main-highlight-color)', cursor: 'pointer' }} onClick={() => navigate('/profile')}>account</span> page</div>
+                                </div>
+
                         }
                     </div>
                 )
