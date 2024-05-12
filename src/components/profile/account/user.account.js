@@ -159,6 +159,7 @@ const UserAccount = () => {
             }
 
         } catch (error) {
+            console.log(error)
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
