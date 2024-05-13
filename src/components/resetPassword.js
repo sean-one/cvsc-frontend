@@ -56,17 +56,20 @@ const ResetPassword = () => {
 
         try {
             const response = await AxiosInstance.post(`/users/reset-password?token=${token}`, { password: data.password })
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: response?.data?.message,
-                }
-            });
 
-            navigate('/login', { state: { username: response?.data?.username }})
+            if (response?.status === 201) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: response?.data?.message,
+                    }
+                });
+    
+                navigate('/login', { state: { username: response?.data?.username }})
+            }
+            
         } catch (error) {
-            console.log(error)
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
