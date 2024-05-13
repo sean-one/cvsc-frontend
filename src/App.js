@@ -36,6 +36,8 @@ import PersistLogin from './components/persistLogin';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 import SquirrelMaster from './components/auth/mod/squirrel_master.js';
+import ForgotPassword from './components/forgotPassword.js';
+import ResetPassword from './components/resetPassword.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +72,8 @@ const App = () => {
               <Route exact path='/' element={<Calendar />} />
               <Route path='/businesses' element={<BusinessesView />} />
               <Route path='/login' element={<Login />} />
+              <Route path='/forgot-password' element={<ForgotPassword />} />
+              <Route path='/reset-password' element={<ResetPassword />} />
               <Route path='/register' element={<Register />} />
               <Route path='/event/:event_id' element={<EventView />} />
               <Route exact path='/business/:business_id' element={<BusinessView />} />

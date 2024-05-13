@@ -30,7 +30,10 @@ const LoginStyles = styled.div`
     .registerLinkWrapper {
         color: var(--text-color);
         display: flex;
+        flex-direction: column;
         justify-content: center;
+        gap: 1rem;
+        text-align: center;
         margin-top: 3rem;
     }
 
@@ -43,6 +46,11 @@ const LoginStyles = styled.div`
         color: var(--main-highlight-color);
     }
 
+    .forgotPasswordLink {
+        font-size: var(--small-font);
+        color: var(--main-color);
+    }
+
 
 `;
 
@@ -50,15 +58,16 @@ const Login = () => {
     const { setAuth } = useAuth()
     const { dispatch } = useNotification()
 
+    const location = useLocation()
+    let navigate = useNavigate();
+
     const { register, handleSubmit, setError, clearErrors, control, formState:{ errors } } = useForm({
         mode: "onBlur",
         defaultValues: {
+            username: location?.state?.username || '',
             password: '',
         }
     });
-
-    const location = useLocation()
-    let navigate = useNavigate();
     
     const navigateTo = location.state?.from || '/profile'
     
@@ -104,7 +113,7 @@ const Login = () => {
         window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
     }
 
-    
+    console.log(location)
     return (
         <LoginStyles>
             <div className='loginWrap'>
@@ -151,7 +160,10 @@ const Login = () => {
                 </form>
                 
                 <div className='registerLinkWrapper'>
-                    <p onClick={() => navigate('/register')}>New to the club? <span id='registerLink'>Register here</span></p>
+                    <div onClick={() => navigate('/register')}>
+                        New to the club? <span id='registerLink'>Register here</span>
+                    </div>
+                    <div className='forgotPasswordLink' onClick={() => navigate('/forgot-password')}>Forgot password?</div>
                 </div>
             </div>
         </LoginStyles>

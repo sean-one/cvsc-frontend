@@ -23,7 +23,7 @@ const leftSlideOut = keyframes`
 
 const NotificationStyles = styled.div`
     .notificationToast {
-        height: 5rem;
+        min-height: 5rem;
         position: fixed;
         top: calc(var(--header-height) + 0.5rem);
         left: 0;
