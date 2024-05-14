@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -59,7 +59,37 @@ const Login = () => {
     const { dispatch } = useNotification()
 
     const location = useLocation()
+    
     let navigate = useNavigate();
+    
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const errorMessage = params.get('error')
+        if (errorMessage) {
+            if (errorMessage === 'google_email_duplicate') {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'that google email is already verified'
+                    }
+                })
+            } else {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'an error sent you to the login'
+                    }
+                })
+            }
+        }
+
+        // Remove the search parameters from the URL
+        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+
+    }, [location, dispatch])
 
     const { register, handleSubmit, setError, clearErrors, control, formState:{ errors } } = useForm({
         mode: "onBlur",

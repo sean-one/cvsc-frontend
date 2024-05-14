@@ -37,15 +37,17 @@ const ForgotPassword = () => {
         try {
             const response = await AxiosInstance.post(`/users/forgot-password`, { useremail: data.useremail });
 
-            dispatch({
-                type: "ADD_NOTIFICATION",
-                payload: {
-                    notification_type: 'SUCCESS',
-                    message: response?.data?.message
-                }
-            })
-
-            reset()
+            if (response.status === 200) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'SUCCESS',
+                        message: response?.data?.message
+                    }
+                })
+    
+                reset()
+            }
         } catch (error) {
             console.log(error)
             dispatch({

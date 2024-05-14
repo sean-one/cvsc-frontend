@@ -11,7 +11,6 @@ const ResetPasswordStyles = styled.div`
     .resetPasswordWrapper {
         max-width: var(--max-section-width);
         margin: 0 auto;
-        /* background: red; */
     }
 
     .passwordDetails {
@@ -68,7 +67,7 @@ const ResetPassword = () => {
     
                 navigate('/login', { state: { username: response?.data?.username }})
             }
-            
+
         } catch (error) {
             dispatch({
                 type: "ADD_NOTIFICATION",
