@@ -13,6 +13,9 @@ const ModAuth = ({ children }) => {
     let navigate = useNavigate();
 
     useEffect(() => {
+        const mfaVerified = JSON.parse(localStorage.getItem('isMfaVerified'));
+        const currentTime = new Date().getTime();
+
         if (!auth?.user?.is_superadmin) {
             dispatch({
                 type: "ADD_NOTIFICATION",
@@ -23,6 +26,10 @@ const ModAuth = ({ children }) => {
             })
 
             navigate('/profile')
+        } else if (!mfaVerified || currentTime > mfaVerified.expiration) {
+            localStorage.removeItem('isMfaVerified');
+            navigate('/mfa')
+
         } else {
             setLoading(false)
         }

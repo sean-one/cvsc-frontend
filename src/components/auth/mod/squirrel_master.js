@@ -1,17 +1,15 @@
-import React from 'react'
-
-import MFASetUp from './mfa_setup';
-
-import useAuth from '../../../hooks/useAuth';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SquirrelMaster = () => {
-    const { auth } = useAuth();
+    let navigate = useNavigate()
 
-    console.log(auth?.user)
     return (
         <div>
-            Welcome Squirrel Master!
-            <MFASetUp />
+            <h1>Squirrel Master!</h1>
+            <div className='buttonLike' onClick={() => navigate('/squirrelmaster/users')}>USERS</div>
+            <div className='buttonLike' onClick={() => navigate('/squirrelmaster/businesses')}>BUSINESSES</div>
+            <div className='buttonLike' onClick={() => navigate('/squirrelmaster/events')}>EVENTS</div>
         </div>
     )
 }

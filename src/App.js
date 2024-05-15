@@ -36,8 +36,12 @@ import PersistLogin from './components/persistLogin';
 import ScrollToTop from './components/ScrollToTop';
 import { Layout } from './components/Layout';
 import SquirrelMaster from './components/auth/mod/squirrel_master.js';
+import ModUsers from './components/auth/mod/mod_users';
+import ModBusinesses from './components/auth/mod/mod_businesses';
+import ModEvents from './components/auth/mod/mod_events';
 import ForgotPassword from './components/forgotPassword.js';
 import ResetPassword from './components/resetPassword.js';
+import MFASetUp from './components/auth/mod/mfa_setup.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -87,9 +91,15 @@ const App = () => {
                     <Route path='/profile/events' element={<UserEventsRelated />} />
                     <Route path='/profile/admin' element={<ManagementList />} />
                 </Route>
-                <Route path='/squirrelmaster' element={
+                <Route path='/mfa' element={<MFASetUp />} />
+                <Route path='/squirrelmaster/*' element={
                   <ModAuth>
-                    <SquirrelMaster />
+                    <Routes>
+                      <Route path='/' element={<SquirrelMaster />} />
+                      <Route path='users' element={<ModUsers />} />
+                      <Route path='businesses' element={<ModBusinesses />} />
+                      <Route path='events' element={<ModEvents />} />
+                    </Routes>
                   </ModAuth>
                 }/>
                 <Route path='/event/create' element={<EventCreateForm />} />

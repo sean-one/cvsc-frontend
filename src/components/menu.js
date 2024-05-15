@@ -53,7 +53,8 @@ const Menu = ({ toggle }) => {
             const logoutResponse = await AxiosInstance.get('/auth/logout')
             
             if(logoutResponse.status === 204) {
-                localStorage.removeItem('jwt')
+                localStorage.removeItem('jwt');
+                localStorage.removeItem('isMfaVerified');
                 setAuth(null)
 
                 toggle(false)

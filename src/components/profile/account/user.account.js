@@ -220,13 +220,13 @@ const UserAccount = () => {
                                             }
                                         </div>
                                 }
-                                {
-                                    (auth?.user?.is_superadmin) &&
-                                        <div className='sm_button' onClick={() => navigate('/squirrelmaster')}>
-                                            <img src={squirrel_master} alt='squirrel'/>
-                                        </div>
-                                }
                             </div>
+                            {
+                                (auth?.user?.is_superadmin) &&
+                                    <div className='sm_button' onClick={() => navigate('/squirrelmaster')}>
+                                        <img src={squirrel_master} alt='squirrel'/>
+                                    </div>
+                            }
                         </div>
                     </div>
                     : <UserEditForm setEditView={setEditView} />
