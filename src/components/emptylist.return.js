@@ -14,6 +14,9 @@ const EmptyListReturnStyles = styled.div`
     
     .emptyListReturn {
         height: 100%;
+        padding: 0 2.5rem;
+        margin: 0 auto;
+        max-width: var(--max-section-width);
         display: flex;
         flex-direction: column;
         justify-content: center;
