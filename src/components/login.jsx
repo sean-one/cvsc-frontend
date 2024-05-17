@@ -120,6 +120,7 @@ const Login = () => {
             }
             
         } catch (error) {
+            console.error('Error sending login: ',error)
             if (error?.response?.status === 400 ) {
                 setError(`${error.response.data.error.type}`, {
                     type: 'server',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -49,7 +49,7 @@ const MFASetUp = () => {
         }
     }
 
-    const handleVerifyToken = async () => {
+    const handleVerifyToken = useCallback(async () => {
         try {
             const response = await AxiosInstance.post('/auth/verify-mfa', { tempToken: token });
 
@@ -77,7 +77,7 @@ const MFASetUp = () => {
                 }
             })
         }
-    }
+    }, [token, dispatch, navigate])
 
     const resetMFAToken = async () => {
         setResetView(true)
@@ -96,6 +96,21 @@ const MFASetUp = () => {
             navigate('/profile')
         }
     }, [auth.user, dispatch, navigate])
+
+    // event listener for enter key
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter') {
+                handleVerifyToken();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [token, handleVerifyToken])
 
 
     return (
