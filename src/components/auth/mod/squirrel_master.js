@@ -10,6 +10,7 @@ const SquirrelMaster = () => {
             <div className='buttonLike' onClick={() => navigate('/squirrelmaster/users')}>USERS</div>
             <div className='buttonLike' onClick={() => navigate('/squirrelmaster/businesses')}>BUSINESSES</div>
             <div className='buttonLike' onClick={() => navigate('/squirrelmaster/events')}>EVENTS</div>
+            <div className='buttonLike' onClick={() => navigate('/squirrelmaster/logs')}>LOGS</div>
         </div>
     )
 }

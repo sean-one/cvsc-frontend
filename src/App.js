@@ -39,6 +39,7 @@ import SquirrelMaster from './components/auth/mod/squirrel_master.js';
 import ModUsers from './components/auth/mod/mod_users';
 import ModBusinesses from './components/auth/mod/mod_businesses';
 import ModEvents from './components/auth/mod/mod_events';
+import ModLogs from './components/auth/mod/mod_logs.js';
 import ForgotPassword from './components/forgotPassword.js';
 import ResetPassword from './components/resetPassword.js';
 import MFASetUp from './components/auth/mod/mfa_setup.js';
@@ -99,6 +100,7 @@ const App = () => {
                       <Route path='users' element={<ModUsers />} />
                       <Route path='businesses' element={<ModBusinesses />} />
                       <Route path='events' element={<ModEvents />} />
+                      <Route path='logs' element={<ModLogs />} />
                     </Routes>
                   </ModAuth>
                 }/>
