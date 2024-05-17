@@ -49,7 +49,7 @@ const ForgotPassword = () => {
                 reset()
             }
         } catch (error) {
-            console.log(error)
+            console.error(`Error sending reset link:`, error)
             dispatch({
                 type: "ADD_NOTIFICATION",
                 payload: {
