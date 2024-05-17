@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import squirrel_master from '../../../assets/squirrel-master.webp';
+import { useEventsQuery } from '../../../hooks/useEventsApi';
+import EventSmallPreview from '../../events/views/event.small.preview';
+import LoadingSpinner from '../../loadingSpinner';
 
 const ModEventsStyles = styled.div`
     .modEventsWrapper {
@@ -30,7 +33,9 @@ const ModEventsStyles = styled.div`
 `;
 
 const ModEvents = () => {
+    const { data: events_list, isPending, isError } = useEventsQuery();
     let navigate = useNavigate();
+
 
     return (
         <ModEventsStyles>
@@ -39,6 +44,21 @@ const ModEvents = () => {
                     <div className='subheaderText'>Events Mod Section</div>
                     <img onClick={() => navigate('/squirrelmaster')} src={squirrel_master} alt='squirrel' />
                 </div>
+                {
+                    isPending ? (
+                        <LoadingSpinner />
+                    ) : isError ? (
+                        null
+                    ) : (events_list?.data?.length !== 0) ? (
+                        events_list?.data.map(event => {
+                            return (
+                                <EventSmallPreview key={event.id} event={event} />
+                            )
+                        })
+                    ) : (
+                        <div>nothing to show</div>
+                    )
+                }
             </div>
         </ModEventsStyles>
     )
