@@ -106,6 +106,7 @@ const Login = () => {
             const login_response = await AxiosInstance.post('/auth/login', data)
 
             if (login_response?.status === 200) {
+                console.log(login_response?.data)
                 setAuth({ user: login_response?.data })
         
                 dispatch({
@@ -139,10 +140,10 @@ const Login = () => {
         }
     }
 
-    const googleAuthButton = (e) => {
-        e.preventDefault()
-        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
-    }
+    // const googleAuthButton = (e) => {
+    //     e.preventDefault()
+    //     window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
+    // }
 
     
     return (

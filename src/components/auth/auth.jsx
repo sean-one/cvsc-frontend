@@ -4,19 +4,22 @@ import { useLocation, Navigate, Outlet } from "react-router";
 import useNotification from "../../hooks/useNotification";
 import useAuth from "../../hooks/useAuth";
 
+// check for token, return token or null if no token is present
+const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        const result = parts.pop().split(';').shift()
+        return result
+    };
+    return null;
+}
+
 
 const AuthRoute = () => {
     const { isLoggedIn } = useAuth();
     const { dispatch } = useNotification();
     const { pathname } = useLocation();
-
-    // check for token, return token or null if no token is present
-    const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
-    }
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -29,7 +32,8 @@ const AuthRoute = () => {
             })
         }
     }, [dispatch, isLoggedIn])
-    
+
+
     return (
         (isLoggedIn && getCookie('jwt'))
             ? <Outlet />

@@ -163,7 +163,7 @@ const UserAccount = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'ERROR',
-                    message: error?.response?.data?.message
+                    message: error?.response?.data?.error?.message
                 }
             })
         }

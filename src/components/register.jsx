@@ -141,10 +141,10 @@ const Register = () => {
         }
     }
 
-    const googleAuthButton = (e) => {
-        e.preventDefault()
-        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, '_self')
-    }
+    // const googleAuthButton = (e) => {
+    //     e.preventDefault()
+    //     window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, '_self')
+    // }
     
 
     return (
