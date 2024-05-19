@@ -107,7 +107,7 @@ const PrivacyPolicy = () => {
 
                 <div className='privacyPolicySection'>
                     <div className='privacyPolicySectionHeader'>Contact Us:</div>
-                    <div>If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us at <span className='privacyEmail'><a href='mailto:coachellavalleysmokersclub.com' target="_blank">coachellavalleysmokersclub@gmail.com</a></span></div>
+                    <div>If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us at <span className='privacyEmail'><a href='mailto:coachellavalleysmokersclub.com' target="_blank" rel='noreferrer'>coachellavalleysmokersclub@gmail.com</a></span></div>
                 </div>
             </div>
         </PrivacyPolicyStyles>

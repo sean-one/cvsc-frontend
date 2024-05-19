@@ -115,7 +115,7 @@ const TOS = () => {
 
                 <div className='tosSection'>
                     <div className='tosSectionHeader'>Contact Us:</div>
-                    <div>For any questions or concerns regarding your use of the site, please contact us at <span className='tosEmail'><a href='mailto:coachellavalleysmokersclub@gmail.com'>coachellavalleysmokersclub@gmail.com</a></span>.</div>
+                    <div>For any questions or concerns regarding your use of the site, please contact us at <span className='tosEmail'><a href='mailto:coachellavalleysmokersclub@gmail.com' target='_blank' rel='noreferrer'>coachellavalleysmokersclub@gmail.com</a></span>.</div>
                 </div>
             </div>
         </TOSStyles>

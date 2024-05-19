@@ -228,7 +228,7 @@ const Register = () => {
                     
                     <div className='formButtonWrapper'>
                         <button type='submit'>submit</button>
-                        <button onClick={googleAuthButton}>google</button>
+                        {/* <button onClick={googleAuthButton}>google</button> */}
                     </div>
                 
                 </form>

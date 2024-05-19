@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSun, FaMoon, FaPlus, FaRegEnvelope, FaDiscord } from 'react-icons/fa6';
+import { FaSun, FaMoon, FaPlus } from 'react-icons/fa6';
 import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
@@ -122,7 +122,7 @@ const Menu = ({ toggle }) => {
                     <div className='navMenuButtons menuText' onClick={() => toggleTheme()}>{themeName === 'light' ? <FaMoon className='siteIcons' /> : <FaSun className='siteIcons' />} Theme</div>
                     <div className='navMenuButtons menuText'>
                         <div className='contactIcons'>
-                            <a href="mailto:coachellavalleysmokersclub@gmail.com" target='_blank'>Contact</a>
+                            <a href="mailto:coachellavalleysmokersclub@gmail.com" target='_blank' rel='noreferrer'>Contact</a>
                         </div>
                     </div>
                     <Footer />
