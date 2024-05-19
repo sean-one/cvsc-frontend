@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSun, FaMoon, FaPlus } from 'react-icons/fa6';
+import { FaSun, FaMoon, FaPlus, FaRegEnvelope, FaDiscord } from 'react-icons/fa6';
 import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
@@ -8,6 +8,7 @@ import useTheme from '../hooks/useTheme';
 import useAuth from '../hooks/useAuth';
 import useNotification from '../hooks/useNotification';
 import { useUserAccountRole } from '../hooks/useRolesApi';
+import Footer from './footer';
 
 const MenuStyles = styled.div`
     .menuWrapper {
@@ -15,28 +16,36 @@ const MenuStyles = styled.div`
         top: var(--header-height);
         left: 0;
         width: 100%;
-        height: 100vh;
+        height: calc(100vh - var(--header-height));
         background-color: var(--opacity);
     }
     
     .navMenu {
-        position: absolute;
-        left: 0;
         font-family: var(--header-font);
         width: 100%;
-        height: 100vh;
+        height: 100%;
         display: grid;
-        justify-content: center;
-        align-content: center;
+        align-content: space-between;
         background-color: var(--opacity);
         color: var(--text-color);
-        padding-bottom: 10rem;
     }
 
     .navMenuButtons {
         text-align: center;
         cursor: pointer;
         padding: 2rem;
+    }
+
+    .contactIcons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+
+        a {
+            padding: 0;
+            margin: 0;
+        }
     }
 `;
 
@@ -111,6 +120,12 @@ const Menu = ({ toggle }) => {
                             : <div className='navMenuButtons menuText' onClick={() => navigate('/login')}>Login</div>
                     }
                     <div className='navMenuButtons menuText' onClick={() => toggleTheme()}>{themeName === 'light' ? <FaMoon className='siteIcons' /> : <FaSun className='siteIcons' />} Theme</div>
+                    <div className='navMenuButtons menuText'>
+                        <div className='contactIcons'>
+                            <a href="mailto:coachellavalleysmokersclub@gmail.com" target='_blank'>Contact</a>
+                        </div>
+                    </div>
+                    <Footer />
                 </div>
             </div>
         </MenuStyles>

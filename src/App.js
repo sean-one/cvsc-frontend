@@ -43,6 +43,8 @@ import ModLogs from './components/auth/mod/mod_logs.js';
 import ForgotPassword from './components/forgotPassword.js';
 import ResetPassword from './components/resetPassword.js';
 import MFASetUp from './components/auth/mod/mfa_setup.js';
+import PrivacyPolicy from './components/legal/privacyPolicy.js';
+import TOS from './components/legal/tos.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,6 +85,8 @@ const App = () => {
               <Route path='/event/:event_id' element={<EventView />} />
               <Route exact path='/business/:business_id' element={<BusinessView />} />
               <Route path='/email-verified' element={<EmailVerificationPage />} />
+              <Route path='/cvsc-privacypolicy' element={<PrivacyPolicy />} />
+              <Route path='/cvsc-tos' element={<TOS />} />
               
               {/* private routes */}
               <Route element={<AuthRoute />}>

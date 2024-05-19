@@ -54,7 +54,7 @@ const Styles = styled.div`
         width: 100%;
         display: flex;
         justify-content: center;
-        min-width: 25rem;
+        min-width: 35rem;
         min-height: 100vh;
         max-width: 100vw;
         font-size: var(--main-font-size);
