@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { useEffect, createContext, useState } from 'react';
 
 export const ThemeContext = createContext({})
 
@@ -21,18 +21,24 @@ const darkTheme = {
 }
 
 export const ThemeProvider = ({ children }) => {
-    const [currentTheme, setCurrentTheme] = useState(darkTheme);
-    const [themeName, setThemeName] = useState('dark');
+    
+    const getInitialTheme = () => {
+        const savedTheme = localStorage.getItem('cvsc-theme');
+        return savedTheme === 'light' ? lightTheme : darkTheme;
+    }
+
+    const [currentTheme, setCurrentTheme] = useState(getInitialTheme());
+    const [themeName, setThemeName] = useState(localStorage.getItem('cvsc-theme') || 'dark');
+
+    useEffect(() => {
+        localStorage.setItem('cvsc-theme', themeName);
+    }, [themeName])
 
     const toggleTheme = () => {
         setCurrentTheme(prevTheme => {
-            if(prevTheme === darkTheme) {
-                setThemeName('light');
-                return lightTheme
-            } else {
-                setThemeName('dark');
-                return darkTheme;
-            }
+            const newTheme = prevTheme === darkTheme ? 'light' : 'dark';
+            setThemeName(newTheme)
+            return newTheme === 'light' ? lightTheme : darkTheme;
         });
     };
 
