@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import squirrel_master from '../../../assets/squirrel-master.webp';
 import AxiosInstance from '../../../helpers/axios';
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
@@ -60,7 +59,7 @@ const ModLogs = () => {
         }
 
         getModLogs()
-    }, [])
+    }, [dispatch])
 
     if (loading) {
         return <LoadingSpinner />
@@ -72,7 +71,7 @@ const ModLogs = () => {
             <div className='modLogsWrapper'>
                 <div className='modLogsHeader'>
                     <div className='subheaderText'>Mod Logs</div>
-                    <img onClick={() => navigate('/squirrelmaster')} src={squirrel_master} alt='squirrel' />
+                    <img onClick={() => navigate('/squirrelmaster')} src={`${process.env.PUBLIC_URL}/assets/squirrel-master.webp`} alt='squirrel' />
                 </div>
                 {
                     (modLogs.length !== 0)

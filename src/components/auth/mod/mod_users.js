@@ -7,7 +7,6 @@ import { FaTrashCan } from 'react-icons/fa6';
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
 import AxiosInstance from '../../../helpers/axios';
-import squirrel_master from '../../../assets/squirrel-master.webp';
 import LoadingSpinner from '../../loadingSpinner';
 
 const ModUsersStyles = styled.div`
@@ -151,7 +150,7 @@ const ModUsers = () => {
             <div className='modUsersWrapper'>
                 <div className='modUsersHeader'>
                     <div className='subheaderText'>Users Mod Section</div>
-                    <img onClick={() => navigate('/squirrelmaster')} src={squirrel_master} alt='squirrel' />
+                    <img onClick={() => navigate('/squirrelmaster')} src={`${process.env.PUBLIC_URL}/assets/squirrel-master.webp`} alt='squirrel' />
                 </div>
                 <div>
                     <input

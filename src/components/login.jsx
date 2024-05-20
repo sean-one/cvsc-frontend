@@ -186,7 +186,7 @@ const Login = () => {
 
                     <div className='formButtonWrapper'>
                         <button type='submit'>submit</button>
-                        {/* <button onClick={googleAuthButton}>google</button> */}
+                        {/* <img onClick={googleAuthButton} src={`${process.env.PUBLIC_URL}/assets/web_neutral_sq_SI@1x.png`} alt='Google sign in button'/> */}
                     </div>
                 </form>
                 

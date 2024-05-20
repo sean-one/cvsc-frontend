@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import ServerDownImage from '../assets/server_down.webp'
+
 
 const ServerDownStyles = styled.div`
     .serverDownWrapper {
@@ -29,7 +29,7 @@ const ServerDown = () => {
         <ServerDownStyles>
             <div className='serverDownWrapper'>
                 <div className='serverDownHeader'>Server is down, please try again later</div>
-                <img src={ServerDownImage} alt='server down' />
+                <img src={`${process.env.PUBLIC_URL}/assets/server_down.webp`} alt='server down' />
             </div>
         </ServerDownStyles>
     )

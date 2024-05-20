@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import squirrel_master from '../../../assets/squirrel-master.webp';
 import { useEventsQuery } from '../../../hooks/useEventsApi';
 import EventSmallPreview from '../../events/views/event.small.preview';
 import LoadingSpinner from '../../loadingSpinner';
@@ -42,7 +41,7 @@ const ModEvents = () => {
             <div className='modEventsWrapper'>
                 <div className='modEventsHeader'>
                     <div className='subheaderText'>Events Mod Section</div>
-                    <img onClick={() => navigate('/squirrelmaster')} src={squirrel_master} alt='squirrel' />
+                    <img onClick={() => navigate('/squirrelmaster')} src={`${process.env.PUBLIC_URL}/assets/squirrel-master.webp`} alt='squirrel' />
                 </div>
                 {
                     isPending ? (

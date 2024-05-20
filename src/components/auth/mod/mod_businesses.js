@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useNotification from '../../../hooks/useNotification';
 import { useBusinessesQuery } from '../../../hooks/useBusinessApi';
-import squirrel_master from '../../../assets/squirrel-master.webp';
 import LoadingSpinner from '../../loadingSpinner';
 import BusinessesViewCard from '../../business/businesses.view.card';
 
@@ -55,7 +54,7 @@ const ModBusinesses = () => {
             <div className='modBusinessesWrapper'>
                 <div className='modBusinessesHeader'>
                     <div className='subheaderText'>Businesses Mod Section</div>
-                    <img onClick={() => navigate('/squirrelmaster')} src={squirrel_master} alt='squirrel' />
+                    <img onClick={() => navigate('/squirrelmaster')} src={`${process.env.PUBLIC_URL}/assets/squirrel-master.webp`} alt='squirrel' />
                 </div>
                 {
                     isPending ? (

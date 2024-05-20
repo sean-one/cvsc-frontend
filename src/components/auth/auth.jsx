@@ -21,8 +21,6 @@ const AuthRoute = () => {
     const { dispatch } = useNotification();
     const { pathname } = useLocation();
 
-    console.log(`isLoggedIn: ${isLoggedIn}`)
-    console.log(getCookie('jwt'))
     useEffect(() => {
         if (!isLoggedIn) {
             dispatch({

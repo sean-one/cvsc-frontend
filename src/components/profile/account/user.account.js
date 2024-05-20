@@ -9,8 +9,6 @@ import useNotification from '../../../hooks/useNotification';
 import UserEditForm from '../../forms/user.edit.form';
 import { useUserAccountRole } from '../../../hooks/useRolesApi';
 import LoadingSpinner from '../../loadingSpinner';
-import default_user from '../../../assets/default_user_icon.webp';
-import squirrel_master from '../../../assets/squirrel-master.webp'
 import AxiosInstance from '../../../helpers/axios';
 
 const UserAccountStyles = styled.div`
@@ -142,7 +140,7 @@ const UserAccount = () => {
         }
     }, [dispatch, isError, navigate, user_account_role_error, user_reset])
 
-    const user_profile_image = auth?.user?.avatar === null ? default_user : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`;
+    const user_profile_image = auth?.user?.avatar === null ? `${process.env.PUBLIC_URL}/assets/default_user_icon.webp` : `${process.env.REACT_APP_BACKEND_IMAGE_URL}${auth?.user?.avatar}`;
 
     const verifyEmailButton = async () => {
         try {
@@ -224,7 +222,7 @@ const UserAccount = () => {
                             {
                                 (auth?.user?.is_superadmin) &&
                                     <div className='sm_button' onClick={() => navigate('/squirrelmaster')}>
-                                        <img src={squirrel_master} alt='squirrel'/>
+                                        <img src={`${process.env.PUBLIC_URL}/assets/squirrel-master.webp`} alt='squirrel'/>
                                     </div>
                             }
                         </div>
