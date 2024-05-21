@@ -139,10 +139,10 @@ const Login = () => {
         }
     }
 
-    // const googleAuthButton = (e) => {
-    //     e.preventDefault()
-    //     window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
-    // }
+    const googleAuthButton = (e) => {
+        e.preventDefault()
+        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, "_self")
+    }
 
     
     return (
@@ -186,7 +186,7 @@ const Login = () => {
 
                     <div className='formButtonWrapper'>
                         <button type='submit'>submit</button>
-                        {/* <img onClick={googleAuthButton} src={`${process.env.PUBLIC_URL}/assets/web_neutral_sq_SI@1x.png`} alt='Google sign in button'/> */}
+                        <img onClick={googleAuthButton} src={`${process.env.PUBLIC_URL}/assets/web_neutral_sq_ctn@1x.png`} alt='Google sign in button'/>
                     </div>
                 </form>
                 

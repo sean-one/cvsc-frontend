@@ -141,10 +141,10 @@ const Register = () => {
         }
     }
 
-    // const googleAuthButton = (e) => {
-    //     e.preventDefault()
-    //     window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, '_self')
-    // }
+    const googleAuthButton = (e) => {
+        e.preventDefault()
+        window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, '_self')
+    }
     
 
     return (
@@ -227,8 +227,8 @@ const Register = () => {
                     {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
                     
                     <div className='formButtonWrapper'>
-                        <button type='submit'>submit</button>
-                        {/* <button onClick={googleAuthButton}>google</button> */}
+                        <button type='submit' className='regSubmitButton'>submit</button>
+                        <img onClick={googleAuthButton} src={`${process.env.PUBLIC_URL}/assets/web_neutral_sq_SU@1x.png`} alt='Google sign in button' />
                     </div>
                 
                 </form>
