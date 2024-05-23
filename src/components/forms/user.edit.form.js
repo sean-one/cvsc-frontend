@@ -52,6 +52,10 @@ const UserEditForm =({ setEditView }) => {
 
     let navigate = useNavigate()
 
+    const handleCameraClick = () => {
+        setPreviewImageUrl('')
+    }
+
     const sendUpdate = async (data) => {
         try {
             // no changes registered - send notificate and do not hit api
@@ -223,19 +227,23 @@ const UserEditForm =({ setEditView }) => {
 
     return (
         <UserEditFormStyles>
-            <div className='userEditFormWrapper standardFormBackground'>
-                {
-                    previewImageUrl &&
-                        <div className='imagePreview profileImage'>
-                            <img src={previewImageUrl} alt='user profile avatar' />
-                        </div>
-                }
-                <ImageUploadAndCrop
-                    onImageCropped={onImageCropped}
-                    registerInput={register}
-                    imageShape='round'
-                    registerName='avatar'
-                />
+            <div className='userEditFormWrapper'>
+                <div className='formImagePreviewWrapper'>
+                    {
+                        previewImageUrl
+                            ? ( <div className='imagePreview profileImage'>
+                                <img src={previewImageUrl} alt='user profile avatar' />
+                            </div>
+                            ) : (
+                                <ImageUploadAndCrop
+                                    onImageCropped={onImageCropped}
+                                    registerInput={register}
+                                    imageShape='round'
+                                    registerName='avatar'
+                                />
+                            )
+                    }
+                </div>
                 <form onSubmit={handleSubmit(sendUpdate)} encType='multipart/form-data' className='standardForm'>
                     {/* USERNAME */}
                     <div className='inputWrapper'>
@@ -268,7 +276,7 @@ const UserEditForm =({ setEditView }) => {
 
                         {/* AVATAR / PROFILE IMAGE UPDATE */}
                         <label htmlFor='avatar' className='inputLabel' onClick={() => clearErrors('avatar')}>
-                            <TbCameraPlus className='siteIcons' />
+                            <TbCameraPlus onClick={handleCameraClick} className='siteIcons' />
                         </label>
                     </div>
                     {errors.email ? <div className='errormessage'>{errors?.email?.message}</div> : null}
@@ -291,9 +299,9 @@ const UserEditForm =({ setEditView }) => {
                     {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
                 
                     <div className='formButtonWrapper'>
-                        <button type='submit'>Update</button>
-                        <div className='buttonLike' onClick={cancelEdit}>Close</div>
-                        <div className='buttonLike' onClick={deleteUser}>Delete</div>
+                        <button className='formButton' type='submit'>Update</button>
+                        <div className='buttonLike formButton' onClick={cancelEdit}>Close</div>
+                        <div className='buttonLike formButton' onClick={deleteUser}>Delete</div>
                     </div>
 
                 </form>

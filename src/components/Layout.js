@@ -143,6 +143,7 @@ const Styles = styled.div`
     }
 
     .buttonLike {
+        text-align: center;
         padding: 0.75rem 1.875rem;
         border: 0.1rem solid var(--main-highlight-color);
         color: var(--text-color);
@@ -337,19 +338,21 @@ const Styles = styled.div`
 
     // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .standardForm {
-        width: 95%;
+        flex-grow: 1;
+        width: 100%;
         max-width: 52.5rem;
-        margin: 0.75rem auto;
+        margin: 0.75rem auto 1.5rem;
+        padding: 2.5rem 1.5rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: 5px;
+        border-radius: 1rem;
+        background: var(--opacity);
+        gap: 0.5rem;
     }
 
-    .standardFormBackground {
-        background: var(--opacity);
-        padding-bottom: 2rem;
-        border-radius: 0.5rem;
+    .formImagePreviewWrapper {
+        width: 100%;
     }
 
     // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js
@@ -416,9 +419,22 @@ const Styles = styled.div`
 
     // register.js, login.js, business.create.form.js, business.edit.form.js, event.create.form.js
     .formButtonWrapper {
+        width: 100%;
+        margin-top: 2rem;
         display: flex;
-        justify-content: space-around;
-        padding-top: 1.125rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+
+        @media (min-width: 440px) {
+            flex-direction: row;
+        }
+    }
+
+    .formButton {
+        height: 4rem;
+        width: 19rem;
     }
 
 `;

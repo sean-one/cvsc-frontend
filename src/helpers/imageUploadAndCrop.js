@@ -5,6 +5,8 @@ import getCroppedImg from './getCroppedImg';
 
 const ImageUploadCropStyles = styled.div`
     .imageUploadWrapper {
+        width: 100%;
+        max-width: var(--max-section-width);
         display: flex;
         flex-direction: column;
         position: relative;
@@ -12,7 +14,7 @@ const ImageUploadCropStyles = styled.div`
     
     .imageEditWrapper {
         width: auto;
-        height: 55rem;
+        height: 45rem;
     }
     
     .cropperWrapper {

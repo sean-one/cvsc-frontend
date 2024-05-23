@@ -185,7 +185,7 @@ const Login = () => {
                     {errors.server ? <div className='errormessage'>{errors?.server?.message}</div> : null}
 
                     <div className='formButtonWrapper'>
-                        <button type='submit'>submit</button>
+                        <button className='formButton' type='submit'>submit</button>
                         <img onClick={googleAuthButton} src={`${process.env.PUBLIC_URL}/assets/web_neutral_sq_ctn@1x.png`} alt='Google sign in button'/>
                     </div>
                 </form>

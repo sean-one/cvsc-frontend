@@ -26,21 +26,6 @@ const BusinessEditFormStyles = styled.div`
         color: var(--main-highlight-color);
     }
 
-    .businessImage {
-        position: relative;
-    }
-    
-    .editImageButton {
-        position: absolute;
-        right: 20%;
-        bottom: 0;
-        border: 0.1rem solid var(--text-color);
-        border-radius: 50%;
-        color: var(--main-highlight-color);
-        background-color: var(--main-background-color);
-        padding: 1rem;
-    }
-
     .businessEditFormContactHeader {
         color: var(--main-highlight-color);
         padding: 1rem 0;
@@ -76,6 +61,10 @@ const BusinessEditForm = ({ userBusinessRole }) => {
         // React Hook Form for handling cropped image
         setValue('business_avatar', business_avatar, { shouldDirty: true }); // This allows you to include the cropped image in the form data
     }, [setValue]);
+
+    const handleCameraClick = () => {
+        setPreviewImageUrl('')
+    }
 
     const addressStrike = watch('remove_address');
 
@@ -163,7 +152,8 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                 business_phone: business_data.data?.business_phone || '',
                 business_twitter: business_data.data?.business_twitter || '',
                 remove_address: false
-            })
+            });
+            setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.data?.business_avatar}`);
         }
     }, [business_data, reset])
 
@@ -180,153 +170,147 @@ const BusinessEditForm = ({ userBusinessRole }) => {
 
     return (
         <BusinessEditFormStyles>
-            <div className='standardFormBackground'>
-                <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
+            <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
+                <div className='formRowInputIcon'>
                     <div className='headerText businessEditFormHeader'>{business_data?.data?.business_name}</div>
+                    {/* BUSINESS AVATAR UPLOAD */}
+                    <label htmlFor='business_avatar' className='inputLabel removeInputLabelPadding' onClick={() => clearErrors('business_avatar')}>
+                        <TbCameraPlus onClick={handleCameraClick} className='siteIcons' />
+                    </label>
+                </div>
+
+                <div className='formImagePreviewWrapper'>
                     {
-                        previewImageUrl &&
-                            <div className='imagePreview businessImage'>
-                                <img src={previewImageUrl} alt='business branding logo' />
-                            </div>
-                    }
-                    <ImageUploadAndCrop
-                        onImageCropped={onImageCropped}
-                        registerInput={register}
-                        imageShape='round'
-                        registerName='business_avatar'
-                    />
-                    {
-                        !previewImageUrl &&
-                            <div className='businessImageWrapper'>
-                                <div className='businessImage'>
-                                    <div className='imagePreview imagePreiveCircle'>
-                                        <img
-                                            src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.data?.business_avatar}`}
-                                            alt={business_data?.data?.business_name}
-                                        />
-                                    </div>
-
-                                    {/* BUSINESS AVATAR UPLOAD */}
-                                    <div className='editImageButton'>
-                                        <label htmlFor='business_avatar' className='inputLabel removeInputLabelPadding' onClick={() => clearErrors('business_avatar')}>
-                                            <TbCameraPlus className='siteIcons' />
-                                        </label>
-                                    </div>
+                        previewImageUrl
+                            ? (
+                                <div className='imagePreview businessImage'>
+                                    <img
+                                        src={previewImageUrl || `${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.data?.business_avatar}`}
+                                        alt={business_data?.data?.business_name}
+                                    />
                                 </div>
-                            </div>
+                            ) : (
+                                <ImageUploadAndCrop
+                                    onImageCropped={onImageCropped}
+                                    registerInput={register}
+                                    imageShape='round'
+                                    registerName='business_avatar'
+                                />
+                            )
                     }
+                </div>
+                
 
-                    <div className='formRowInputIcon'>
-                        {/* EMAIL - ADMIN ONLY allowed to update */}
-                        {
-                            (userBusinessRole?.role_type === 'admin') &&
-                                <div className='inputWrapper'>
-                                    <input {...register('business_email', {
-                                        pattern: {
-                                            value: emailformat,
-                                            message: 'invalid email format'
-                                        }
-                                    })} type='text' onClick={() => clearErrors('business_email')} />
-                                    {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
-                                </div>
-                        }
-
-                    </div>
-
-                    {/* BUSINESS DESCRIPTION */}
-                    <div className='inputWrapper'>
-                        <textarea {...register('business_description', {
-                            minLength: {
-                                value: 100,
-                                message: 'business description is too short'
-                            },
-                            maxLength: {
-                                value: 1000,
-                                message: 'business description is too long'
-                            }
-                        })} rows='8' onClick={() => clearErrors('business_description')} />
-                        {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
-                    </div>
-
-                    {/* ADDRESS INPUT */}
+                <div className='formRowInputIcon'>
+                    {/* EMAIL - ADMIN ONLY allowed to update */}
                     {
                         (userBusinessRole?.role_type === 'admin') &&
-                            <AddressForm
-                                register={register}
-                                setValue={setValue}
-                                clearErrors={clearErrors}
-                                errors={errors}
-                                strikethrough={addressStrike}
-                                currentValue={business_data?.data?.formatted_address}
-                            />
+                            <div className='inputWrapper'>
+                                <input {...register('business_email', {
+                                    pattern: {
+                                        value: emailformat,
+                                        message: 'invalid email format'
+                                    }
+                                })} type='text' onClick={() => clearErrors('business_email')} />
+                                {errors.business_email ? <div className='errormessage'>{errors.business_email?.message}</div> : null}
+                            </div>
                     }
-                    
-                    <div className='subheaderText businessEditFormContactHeader'>Contacts & Social Media:</div>
-                    {/* INSTAGRAM */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='business_instagram' className='contactLabelWrapper'>
-                            <FaInstagram className='siteIcons' />
-                            <input {...register('business_instagram', {
-                                pattern: {
-                                    value: instagramFormat,
-                                    message: 'invalid Instagram format'
-                                }
-                            })} type='text' onClick={() => clearErrors('business_instagram')} placeholder='@Instagram' />
-                        </label>
-                        {errors.business_instagram ? <div className='errormessage'>{errors.business_instagram?.message}</div> : null}
-                    </div>
 
-                    {/* WEBSITE */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='business_website' className='contactLabelWrapper'>
-                            <TbWorldWww className='siteIcons' />
-                            <input {...register('business_website', {
-                                pattern: {
-                                    value: websiteFormat,
-                                    message: 'invalid website format'
-                                }
-                            })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
-                        </label>
-                        {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
-                    </div>
+                </div>
 
-                    {/* PHONE NUMBER */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='business_phone' className='contactLabelWrapper'>
-                            <FaPhone className='siteIcons' />
-                            <input {...register('business_phone', {
-                                pattern: {
-                                    value: phoneFormat,
-                                    message: 'invalid phone number format'
-                                }
-                            })} type='text' onClick={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
-                        </label>
-                        {errors.business_phone ? <div className='errormessage'>{errors.business_phone?.message}</div> : null}
-                    </div>
+                {/* BUSINESS DESCRIPTION */}
+                <div className='inputWrapper'>
+                    <textarea {...register('business_description', {
+                        minLength: {
+                            value: 100,
+                            message: 'business description is too short'
+                        },
+                        maxLength: {
+                            value: 1000,
+                            message: 'business description is too long'
+                        }
+                    })} rows='8' onClick={() => clearErrors('business_description')} />
+                    {errors.business_description ? <div className='errormessage'>{errors.business_description?.message}</div> : null}
+                </div>
 
-                    {/* TWITTER */}
-                    <div className='inputWrapper'>
-                        <label htmlFor='business_twitter' className='contactLabelWrapper'>
-                            <FaXTwitter className='siteIcons' />
-                            <input {...register('business_twitter', {
-                                pattern: {
-                                    value: twitterFormat,
-                                    message: 'invalid Twitter format'
-                                }
-                            })} type='text' onClick={() => clearErrors('business_twitter')} placeholder='@Twitter' />
-                        </label>
-                        {errors.business_twitter ? <div className='errormessage'>{errors.business_twitter?.message}</div> : null}
-                    </div>
+                {/* ADDRESS INPUT */}
+                {
+                    (userBusinessRole?.role_type === 'admin') &&
+                        <AddressForm
+                            register={register}
+                            setValue={setValue}
+                            clearErrors={clearErrors}
+                            errors={errors}
+                            strikethrough={addressStrike}
+                            currentValue={business_data?.data?.formatted_address}
+                        />
+                }
+                
+                <div className='subheaderText businessEditFormContactHeader'>Contacts & Social Media:</div>
+                {/* INSTAGRAM */}
+                <div className='inputWrapper'>
+                    <label htmlFor='business_instagram' className='contactLabelWrapper'>
+                        <FaInstagram className='siteIcons' />
+                        <input {...register('business_instagram', {
+                            pattern: {
+                                value: instagramFormat,
+                                message: 'invalid Instagram format'
+                            }
+                        })} type='text' onClick={() => clearErrors('business_instagram')} placeholder='@Instagram' />
+                    </label>
+                    {errors.business_instagram ? <div className='errormessage'>{errors.business_instagram?.message}</div> : null}
+                </div>
 
-                    {errors.server ? <div className='errormessage'>{errors.server?.message}</div> : null}
+                {/* WEBSITE */}
+                <div className='inputWrapper'>
+                    <label htmlFor='business_website' className='contactLabelWrapper'>
+                        <TbWorldWww className='siteIcons' />
+                        <input {...register('business_website', {
+                            pattern: {
+                                value: websiteFormat,
+                                message: 'invalid website format'
+                            }
+                        })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
+                    </label>
+                    {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
+                </div>
 
-                    <div className='formButtonWrapper'>
-                        <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0)}>Update</button>
-                        <button type='button' onClick={handleClose}>Close</button>
-                    </div>
+                {/* PHONE NUMBER */}
+                <div className='inputWrapper'>
+                    <label htmlFor='business_phone' className='contactLabelWrapper'>
+                        <FaPhone className='siteIcons' />
+                        <input {...register('business_phone', {
+                            pattern: {
+                                value: phoneFormat,
+                                message: 'invalid phone number format'
+                            }
+                        })} type='text' onClick={() => clearErrors('business_phone')} placeholder='(760)555-0420' />
+                    </label>
+                    {errors.business_phone ? <div className='errormessage'>{errors.business_phone?.message}</div> : null}
+                </div>
 
-                </form>
-            </div>
+                {/* TWITTER */}
+                <div className='inputWrapper'>
+                    <label htmlFor='business_twitter' className='contactLabelWrapper'>
+                        <FaXTwitter className='siteIcons' />
+                        <input {...register('business_twitter', {
+                            pattern: {
+                                value: twitterFormat,
+                                message: 'invalid Twitter format'
+                            }
+                        })} type='text' onClick={() => clearErrors('business_twitter')} placeholder='@Twitter' />
+                    </label>
+                    {errors.business_twitter ? <div className='errormessage'>{errors.business_twitter?.message}</div> : null}
+                </div>
+
+                {errors.server ? <div className='errormessage'>{errors.server?.message}</div> : null}
+
+                <div className='formButtonWrapper'>
+                    <button className='formButton' type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0)}>Update</button>
+                    <button className='formButton' type='button' onClick={handleClose}>Close</button>
+                </div>
+
+            </form>
         </BusinessEditFormStyles>
     )
 }

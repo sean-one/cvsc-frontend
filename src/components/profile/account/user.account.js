@@ -20,7 +20,7 @@ const UserAccountStyles = styled.div`
         padding: 2.25rem 0.75rem 0.75rem;
         border: 0.1rem solid var(--text-color);
         border-radius: 5px;
-        background: var(--opacity);
+        /* background: var(--opacity); */
     }
 
     .profileImage {

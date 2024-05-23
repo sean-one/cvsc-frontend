@@ -237,6 +237,10 @@ const EventCreateForm = () => {
         }
     }
 
+    const handleCameraClick = () => {
+        setPreviewImageUrl('')
+    }
+
     const handleClose = () => {
         // remove create event form save from localhost & go back
         localStorage.removeItem('createEventForm')
@@ -254,9 +258,7 @@ const EventCreateForm = () => {
                     <LoadingSpinner />
                 ) : isError ? (
                     null
-                ) : <div className='standardFormBackground'>
-                    <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data' className='standardForm'>
-                        
+                ) : <form onSubmit={handleSubmit(createNewEvent)} encType='multipart/form-data' className='standardForm'>
                         {/* EVENT NAME AND MEDIA IMAGE */}
                         <div className='formRowInputIcon'>
                             
@@ -277,7 +279,7 @@ const EventCreateForm = () => {
 
                             {/* EVENT MEDIA UPLOAD */}
                             <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
-                                <TbCameraPlus className='siteIcons' color={errors.eventmedia ? 'var(--error-color)' : 'var(--text-color'} />
+                                <TbCameraPlus onClick={handleCameraClick} className='siteIcons' color={errors.eventmedia ? 'var(--error-color)' : 'var(--text-color'} />
                             </label>
 
                         </div>
@@ -285,17 +287,22 @@ const EventCreateForm = () => {
                         {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div> : null}
 
                         {/* EVENT IMAGE PREVIEW RENDER */}
-                        {
-                            previewImageUrl &&
-                                    <div className='imagePreview eventImage'>
-                                        <img src={previewImageUrl} alt='event promotional media' />
-                                    </div>
-                        }
-                        <ImageUploadAndCrop
-                            onImageCropped={onImageCropped}
-                            registerInput={register}
-                            registerName='eventmedia'
-                        />
+                        <div>
+                            {
+                                previewImageUrl
+                                        ? (
+                                            <div className='imagePreview eventImage'>
+                                                <img src={previewImageUrl} alt='event promotional media' />
+                                            </div>
+                                        ) : (
+                                            <ImageUploadAndCrop
+                                                onImageCropped={onImageCropped}
+                                                registerInput={register}
+                                                registerName='eventmedia'
+                                            />
+                                        )
+                            }
+                        </div>
 
                         <AddressForm
                             register={register}
@@ -373,12 +380,11 @@ const EventCreateForm = () => {
                         </div>
 
                         <div className='formButtonWrapper'>
-                            <button type='submit'>Create</button>
-                            <button onClick={handleClose}>Close</button>
+                            <button className='formButton' type='submit'>Create</button>
+                            <button className='formButton' onClick={handleClose}>Close</button>
                         </div>
 
                     </form>
-                </div>
             }
         </CreateEventFormStyles>
     )

@@ -19,17 +19,19 @@ const RegisterStyles = styled.div`
         align-items: center;
         width: 100%;
         max-width: var(--max-section-width);
+        min-height: calc(100vh * 0.7);
         margin: 0 auto;
         padding: 2.25rem 0.75rem;
     }
-
+    
     .registerHeader {
         width: 100%;
         color: var(--main-highlight-color);
         padding-left: 0.75rem;
+        margin-bottom: 3rem;
         text-align: center;
     }
-
+    
     .loginLinkWrapper {
         color: var(--text-color);
         display: flex;
@@ -38,6 +40,7 @@ const RegisterStyles = styled.div`
     }
 
     .userwebsite {
+        margin: 0;
         display: none;
     }
 
@@ -141,6 +144,10 @@ const Register = () => {
         }
     }
 
+    const handleCameraClick = () => {
+        setPreviewImageUrl('')
+    }
+
     const googleAuthButton = (e) => {
         e.preventDefault()
         window.open(`${process.env.REACT_APP_BACKEND_URL}/auth/google`, '_self')
@@ -152,6 +159,24 @@ const Register = () => {
             <div className='registerWrap'>
                 
                 <div className='headerText registerHeader'>Register new Account</div>
+
+                <div className='formImagePreviewWrapper'>
+                    {
+                        previewImageUrl
+                            ? (
+                                <div className='imagePreview profileImage'>
+                                    <img src={previewImageUrl} alt='user profile avatar' />
+                                </div>
+                            ) : (
+                                <ImageUploadAndCrop
+                                    onImageCropped={onImageCropped}
+                                    registerInput={register}
+                                    imageShape='round'
+                                    registerName='avatar'
+                                />
+                            )
+                    }
+                </div>
                 
                 <form onSubmit={handleSubmit(createUser)} className='standardForm'>
 
@@ -176,20 +201,6 @@ const Register = () => {
                         <input {...register('userwebsite')} type='text' placeholder='Website' autoComplete='off' />
                     </div>
 
-                    {
-                        previewImageUrl && (
-                            <div className='imagePreview profileImage'>
-                                <img src={previewImageUrl} alt='user profile avatar' />
-                            </div>
-                        )
-                    }
-                    <ImageUploadAndCrop
-                        onImageCropped={onImageCropped}
-                        registerInput={register}
-                        imageShape='round'
-                        registerName='avatar'
-                    />
-
                     <div className='formRowInputIcon'>
                         {/* EMAIL */}
                         <div className='inputWrapper'>
@@ -203,7 +214,7 @@ const Register = () => {
                         </div>
                         
                         {/* AVATAR IMAGE UPLOAD */}
-                        <label htmlFor='avatar' className='inputLabel'>
+                        <label htmlFor='avatar' className='inputLabel' onClick={handleCameraClick}>
                             <TbCameraPlus className='siteIcons' />
                         </label>
                     </div>
@@ -226,8 +237,8 @@ const Register = () => {
                     />                    
                     {errors.credentials ? <div className='errormessage'>{errors.credentials?.message}</div> : null}
                     
-                    <div className='formButtonWrapper'>
-                        <button type='submit' className='regSubmitButton'>submit</button>
+                    <div className='formButtonWrapper registerButtons'>
+                        <button type='submit' className='formButton'>submit</button>
                         <img onClick={googleAuthButton} src={`${process.env.PUBLIC_URL}/assets/web_neutral_sq_SU@1x.png`} alt='Google sign in button' />
                     </div>
                 

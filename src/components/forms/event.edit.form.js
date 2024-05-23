@@ -197,6 +197,10 @@ const EventEditForm = () => {
         navigate('/profile/events')
     }
 
+    const handleCameraClick = () => {
+        setPreviewImageUrl('')
+    }
+
     const handleClose = () => {
         // remove editEventForm from local storage
         localStorage.removeItem('editEventForm')
@@ -214,9 +218,10 @@ const EventEditForm = () => {
                 eventdate: format(new Date(event_data?.data?.eventdate), "yyyy-MM-dd") || '',
                 eventstart: reformatTime(event_data?.data?.eventstart) || '',
                 eventend: reformatTime(event_data?.data?.eventend) || '',
-                eventmedia: event_data?.data?.eventmedia || '',
+                // eventmedia: event_data?.data?.eventmedia || '',
                 details: event_data?.data?.details || '',
-            })
+            });
+            setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`)
         }
     }, [event_data, reset])
 
@@ -242,143 +247,143 @@ const EventEditForm = () => {
 
     return (
         <EditEventFormStyles>
-            <div className='standardFormBackground'>
-                <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data' className='standardForm'>
+            <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data' className='standardForm'>
 
-                    {/* EVENT NAME AND MEDIA IMAGE */}
-                    <div className='formRowInputIcon'>
+                {/* EVENT NAME AND MEDIA IMAGE */}
+                <div className='formRowInputIcon'>
 
-                        {/* EVENT NAME */}
-                        <div className='inputWrapper'>
-                            <input {...register('eventname', {
-                                minLength: {
-                                    value: 4,
-                                    message: 'an event name must have at least 4 characters'
-                                },
-                                maxLength: {
-                                    value: 49,
-                                    message: 'an event name must have less then 50 characters'
-                                }
-                            })} type='text' onClick={() => clearErrors('eventname')} />
-                        </div>
-
-                        {/* EVENT MEDIA UPDATE */}
-                        <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
-                            <TbCameraPlus className='siteIcons' style={{ color: 'var(--text-color)' }}/>
-                        </label>
-
-                    </div>
-                    {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
-                    {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div>: null}
-
-                    <ImageUploadAndCrop
-                        onImageCropped={onImageCropped}
-                        registerInput={register}
-                        registerName='eventmedia'
-                    />
-
-                    {
-                        previewImageUrl
-                            ? <div className='imagePreview eventImage'>
-                                <img src={previewImageUrl} alt='event media' />
-                            </div>
-                            : <div className='imagePreview eventImage'>
-                                <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`} alt={event_data?.data?.eventname} />
-                            </div>
-                    }
-
-                    <AddressForm
-                        register={register}
-                        setValue={setValue}
-                        errors={errors}
-                        clearErrors={clearErrors}
-                        currentValue={event_data?.data?.formatted_address}
-                    />
-
-                    {/* EVENT DATE */}
-                    <div className='dateTimeInputWrapper'>
-                        <label htmlFor='eventdate'><FaRegCalendarDays className='siteIcons' /></label>
-                        <input {...register('eventdate', {
-                            validate: {
-                                checkEmptyString: validateNONEmptyString,
-                                validateDateFormat: (value) => validateEventDate(value, false)
-                            }
-                        })} type='date' onClick={() => clearErrors('eventdate')} />
-                    </div>
-                    {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
-
-                    {/* EVENT START TIME */}
-                    <div className='dateTimeInputWrapper'>
-                        <label htmlFor='eventstart'><FaRegClock className='siteIcons' /></label>
-                        <input {...register('eventstart', {
-                            validate: {
-                                checkEmptyString: validateNONEmptyString,
-                                validateTimeFormat: (value) => validateEventTime(value, false)
-                            }
-                        })} type='time' onClick={() => clearErrors('eventstart')} />
-                    </div>
-                    {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
-
-                    {/* EVENT END TIME */}
-                    <div className='dateTimeInputWrapper'>
-                        <label htmlFor='eventend'><FaRegClock className='siteIcons' /></label>
-                        <input {...register('eventend', {
-                            validate: {
-                                checkEmptyString: validateNONEmptyString,
-                                validateTimeFormat: (value) => validateEventTime(value, false)
-                            }
-                        })} type='time' onClick={() => clearErrors('eventend')} />
-                    </div>
-                    {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
-
-                    {/* BUSINESS NAME */}
+                    {/* EVENT NAME */}
                     <div className='inputWrapper'>
-                        <label htmlFor='host_business' className='visuallyHidden'>Business Name:</label>
-                        <Controller
-                            name='host_business'
-                            control={control}
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    options={user_host_business_list}
-                                    defaultValue={hostBusinessDefault}
-                                    placeholder='Select a business'
-                                    isClearable
-                                    isSearchable
-                                    styles={customSelectStyles}
-                                    onChange={(selectedOption) => {
-                                        field.onChange(selectedOption);
-                                        setValue('host_business', selectedOption, { shouldDirty: true });
-                                    }}
-                                />
-                            )}
-                        />
-                        {errors.host_business && <div className='errormessage'>{errors.host_business.message}</div>}
-                    </div>
-
-                    {/* EVENT DETAILS */}
-                    <div className='inputWrapper'>
-                        <textarea {...register('details', {
+                        <input {...register('eventname', {
                             minLength: {
-                                value: 30,
-                                message: 'event details must have at least 30 characters'
+                                value: 4,
+                                message: 'an event name must have at least 4 characters'
                             },
                             maxLength: {
-                                value: 1000,
-                                message: 'event details are too long'
+                                value: 49,
+                                message: 'an event name must have less then 50 characters'
                             }
-                        })} rows='8' onClick={() => clearErrors('details')} />
-                        {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
-                    </div>
-                    
-                    <div className='formButtonWrapper'>
-                        <button type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0)}>Update</button>
-                        <button type='button' onClick={sendEventDelete}>Delete</button>
-                        <button type='button' onClick={handleClose}>Close</button>
+                        })} type='text' onClick={() => clearErrors('eventname')} />
                     </div>
 
-                </form>
-            </div>
+                    {/* EVENT MEDIA UPDATE */}
+                    <label htmlFor='eventmedia' className='inputLabel' onClick={() => clearErrors('eventmedia')}>
+                        <TbCameraPlus onClick={handleCameraClick} className='siteIcons' style={{ color: 'var(--text-color)' }}/>
+                    </label>
+
+                </div>
+                {errors.eventname ? <div className='errormessage'>{errors.eventname?.message}</div> : null}
+                {errors.eventmedia ? <div className='errormessage imageError'>{errors.eventmedia?.message}</div>: null}
+                    
+                <div className='formImagePreviewWrapper'>
+                    {
+                        previewImageUrl
+                            ? (
+                                <div className='imagePreview eventImage'>
+                                    <img src={previewImageUrl || `${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`} alt={event_data?.data?.eventname} />
+                                </div>
+                            ) : (
+                                <ImageUploadAndCrop
+                                    onImageCropped={onImageCropped}
+                                    registerInput={register}
+                                    registerName='eventmedia'
+                                />
+                            )
+                    }
+                </div>
+
+
+                <AddressForm
+                    register={register}
+                    setValue={setValue}
+                    errors={errors}
+                    clearErrors={clearErrors}
+                    currentValue={event_data?.data?.formatted_address}
+                />
+
+                {/* EVENT DATE */}
+                <div className='dateTimeInputWrapper'>
+                    <label htmlFor='eventdate'><FaRegCalendarDays className='siteIcons' /></label>
+                    <input {...register('eventdate', {
+                        validate: {
+                            checkEmptyString: validateNONEmptyString,
+                            validateDateFormat: (value) => validateEventDate(value, false)
+                        }
+                    })} type='date' onClick={() => clearErrors('eventdate')} />
+                </div>
+                {errors.eventdate ? <div className='errormessage'>{errors.eventdate?.message}</div> : null}
+
+                {/* EVENT START TIME */}
+                <div className='dateTimeInputWrapper'>
+                    <label htmlFor='eventstart'><FaRegClock className='siteIcons' /></label>
+                    <input {...register('eventstart', {
+                        validate: {
+                            checkEmptyString: validateNONEmptyString,
+                            validateTimeFormat: (value) => validateEventTime(value, false)
+                        }
+                    })} type='time' onClick={() => clearErrors('eventstart')} />
+                </div>
+                {errors.eventstart ? <div className='errormessage'>{errors.eventstart?.message}</div> : null}
+
+                {/* EVENT END TIME */}
+                <div className='dateTimeInputWrapper'>
+                    <label htmlFor='eventend'><FaRegClock className='siteIcons' /></label>
+                    <input {...register('eventend', {
+                        validate: {
+                            checkEmptyString: validateNONEmptyString,
+                            validateTimeFormat: (value) => validateEventTime(value, false)
+                        }
+                    })} type='time' onClick={() => clearErrors('eventend')} />
+                </div>
+                {errors.eventend ? <div className='errormessage'>{errors.eventend?.message}</div> : null}
+
+                {/* BUSINESS NAME */}
+                <div className='inputWrapper'>
+                    <label htmlFor='host_business' className='visuallyHidden'>Business Name:</label>
+                    <Controller
+                        name='host_business'
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                options={user_host_business_list}
+                                defaultValue={hostBusinessDefault}
+                                placeholder='Select a business'
+                                isClearable
+                                isSearchable
+                                styles={customSelectStyles}
+                                onChange={(selectedOption) => {
+                                    field.onChange(selectedOption);
+                                    setValue('host_business', selectedOption, { shouldDirty: true });
+                                }}
+                            />
+                        )}
+                    />
+                    {errors.host_business && <div className='errormessage'>{errors.host_business.message}</div>}
+                </div>
+
+                {/* EVENT DETAILS */}
+                <div className='inputWrapper'>
+                    <textarea {...register('details', {
+                        minLength: {
+                            value: 30,
+                            message: 'event details must have at least 30 characters'
+                        },
+                        maxLength: {
+                            value: 1000,
+                            message: 'event details are too long'
+                        }
+                    })} rows='8' onClick={() => clearErrors('details')} />
+                    {errors.details ? <div className='errormessage'>{errors.details?.message}</div> : null}
+                </div>
+                
+                <div className='formButtonWrapper'>
+                    <button className='formButton' type='submit' disabled={(!isDirty || Object.keys(dirtyFields).length === 0)}>Update</button>
+                    <button className='formButton' type='button' onClick={sendEventDelete}>Delete</button>
+                    <button className='formButton' type='button' onClick={handleClose}>Close</button>
+                </div>
+
+            </form>
         </EditEventFormStyles>
     )
 }
