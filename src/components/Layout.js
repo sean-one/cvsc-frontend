@@ -66,7 +66,7 @@ const Styles = styled.div`
     .innerContainer {
         width: 100%;
         margin-top: var(--header-height);
-        padding-top: 1.125rem;
+        padding: 1.125rem 1rem;
         max-width: var(--max-page-width);   
     }
 

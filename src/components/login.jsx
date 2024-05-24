@@ -16,7 +16,7 @@ const LoginStyles = styled.div`
         align-items: center;
         width: 100%;
         max-width: var(--max-section-width);
-        margin: 0 auto;
+        margin: 8rem auto 0;
         padding: 2.25rem 0.75rem;
     }
 
@@ -47,8 +47,11 @@ const LoginStyles = styled.div`
     }
 
     .forgotPasswordLink {
+        padding: 0.25rem;
         font-size: var(--small-font);
         color: var(--main-color);
+        background: var(--opacity);
+        border-radius: 1.5rem; 
     }
 
 

@@ -20,7 +20,7 @@ const RegisterStyles = styled.div`
         width: 100%;
         max-width: var(--max-section-width);
         min-height: calc(100vh * 0.7);
-        margin: 0 auto;
+        margin: 6rem auto 0;
         padding: 2.25rem 0.75rem;
     }
     
@@ -28,7 +28,6 @@ const RegisterStyles = styled.div`
         width: 100%;
         color: var(--main-highlight-color);
         padding-left: 0.75rem;
-        margin-bottom: 3rem;
         text-align: center;
     }
     

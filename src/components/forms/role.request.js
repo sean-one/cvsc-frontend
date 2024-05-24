@@ -11,31 +11,28 @@ import { uuidPattern } from './utils/form.validations';
 
 const RoleRequestStyles = styled.div`
     .roleRequestWrapper {
-        margin-top: 1rem;
+        /* margin-top: 1rem;
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: center; */
+        border: 0.1rem solid red;
     }
     
     .roleRequestHeader {
-        margin-top: 0.5rem;
+        padding-left: 1rem;
+        margin: 1rem 0;
         color: var(--main-highlight-color);
     }
 
     
     .roleRequestSection {
         width: 100%;
-        margin: 1.25rem 0;
-        padding: 0.5rem 1.5rem;
+        /* margin: 1.25rem 0; */
+        /* padding: 0.5rem 1.5rem; */
         max-width: var(--max-section-width);
         border-radius: 0.5rem;
-        border: 0.1rem solid var(--text-color);
-        background: var(--opacity);
-    }
-
-    .roleRequestButton {
-        max-width: 22rem;
-        margin: 1rem auto;
+        /* border: 0.1rem solid var(--text-color); */
+        /* background: var(--opacity); */
     }
 
     .noShowRoleRequest {
@@ -46,11 +43,6 @@ const RoleRequestStyles = styled.div`
         div {
             margin-bottom: 1.5rem;
         }
-    }
-
-    .roleRequestCreateButton {
-        max-width: 18rem;
-        margin: 0 auto;
     }
 `;
 
@@ -121,12 +113,16 @@ const RoleRequest = ({ user_roles }) => {
                                     }
                                 </select>
                                 {errors.business_id ? <div className='errormessage'>{errors.business_id?.message}</div> : null}
-                                <button className='roleRequestButton' disabled={!selectedBusinessId} type='submit'>Submit Role Request</button>
+                                <div className='formButtonWrapper'>
+                                    <button className='formButton' disabled={!selectedBusinessId} type='submit'>Submit Request</button>
+                                </div>
                             </form>
                         </div>
                         : <div className='noShowRoleRequest'>
                             <div>Currently no new businesses accepting Role request.  Check back when more become available</div>
-                            <div className='buttonLike roleRequestCreateButton' onClick={() => navigate('/business/create')}>Create Business</div>
+                            <div className='formButtonWrapper'>
+                                <div className='buttonLike formButton' onClick={() => navigate('/business/create')}>Create Business</div>
+                            </div>
                         </div>
                 }
             </div>

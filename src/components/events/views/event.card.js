@@ -33,25 +33,28 @@ const EventCardStyles = styled.div`
     
     .eventCardTopRow, .eventCardBottomRow {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
         padding: 1rem;
     }
 
     .eventCardBottomRow {
         width: 100%;
-        height: 9rem;
+        padding: 2rem 1.25rem 1.5rem;
+        /* height: 9rem; */
         justify-content: flex-start;
         color: var(--main-highlight-color);
-        background-color: var(--main-color);
+        background-color: var(--opacity);
+        /* background-color: var(--main-color); */
         
     }
 
     .eventCardHostLogo {
-        width: 5rem;
-        padding: 0.25rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 6rem;
         border-radius: 50%;
-        margin-right: 1rem;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(255, 255, 255, 0.7);
 
         img {
@@ -89,19 +92,46 @@ const EventCardStyles = styled.div`
     }
 
     .eventCardDetails {
+        line-height: 1.1;
+        padding: 0.5rem 1rem;
+        /* font-weight: bold; */
+        /* font-family: var(--header-font); */
+        width: 100%;
+        /* display: grid; */
+        /* flex-direction: column; */
+    }
+
+    .eventCardDetailsEventname {
+        font-size: clamp(1.8rem, 5vw, var(--header-font-size));
         font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        white-space: normal;
         font-family: var(--header-font);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
+        color: var(--main-highlight-color);
     }
 
-    .subHeaderRow {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+    .eventCardDetailsBusinessName {
+        font-size: var(--small-font);
+        color: var(--main-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: normal;
     }
 
+    .eventCardDetailsTime {
+        text-align: right;
+        font-weight: bold;
+        color: var(--main-highlight-color);
+    }
 `;
 
 const EventCard = ({ event }) => {
@@ -128,11 +158,9 @@ const EventCard = ({ event }) => {
                             <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.business_avatar}`} alt={`${event?.business_name} branding`} />
                         </div>
                         <div className='eventCardDetails'>
-                            <div className='subHeaderRow'>
-                                <div onClick={(e) => { e.stopPropagation(); navigate(`/business/${event?.host_business}`);}}>{event?.business_name}</div>
-                                <div>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
-                            </div>
-                            <div className='smallHeaderText'>{decode(event?.eventname)}</div>
+                            <div className='eventCardDetailsEventname'>{decode(event?.eventname)}</div>
+                            <div className='eventCardDetailsBusinessName' onClick={(e) => { e.stopPropagation(); navigate(`/business/${event?.host_business}`);}}>{event?.business_name}</div>
+                            <div className='eventCardDetailsTime'>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                         </div>
                     </div>
                 </div>
