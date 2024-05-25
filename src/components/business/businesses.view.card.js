@@ -43,13 +43,24 @@ const BusinessesViewCardStyles = styled.div`
         color: var(--main-highlight-color);
         font-size: var(--small-header-font);
         font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        white-space: normal;
     }
     
     .businessViewCardAddress {
         color: var(--main-highlight-color);
         font-size: var(--small-font);
-        font-weight: bold;
         margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: normal;
     }
 
     .businessViewCardBusinessDescription {
@@ -59,7 +70,6 @@ const BusinessesViewCardStyles = styled.div`
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-height: 7.2rem;
         cursor: pointer;
         text-align: justify;
         color: var(--text-color);

@@ -54,12 +54,16 @@ const UserAccountStyles = styled.div`
         justify-content: space-between;
         align-items: flex-start;
         margin: 0.5rem 0;
+        gap: 1rem;
     }
     
     .usernameHeader {
         font-weight: bold;
         font-size: 2.25rem;
         align-self: flex-end;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
     }
     
     .accountTypeHeader {
@@ -80,6 +84,16 @@ const UserAccountStyles = styled.div`
         justify-content: space-between;
         align-items: center;
         gap: 0.5rem;
+    }
+
+    .accountEmail {
+        font-size: clamp(1.2rem, 5vw, 1.4rem);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: normal;
     }
 
     .nonVerified {
@@ -205,7 +219,7 @@ const UserAccount = () => {
                                 {
                                     (!editView) &&
                                         <div className='userEmail'>
-                                            <div>
+                                            <div className='accountEmail'>
                                                 {auth?.user.email}
                                             </div>
                                             {
