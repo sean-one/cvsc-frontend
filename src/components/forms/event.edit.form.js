@@ -220,6 +220,7 @@ const EventEditForm = () => {
                 eventend: reformatTime(event_data?.data?.eventend) || '',
                 // eventmedia: event_data?.data?.eventmedia || '',
                 details: event_data?.data?.details || '',
+                host_business: hostBusinessDefault || null,
             });
             setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`)
         }

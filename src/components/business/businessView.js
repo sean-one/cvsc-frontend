@@ -120,12 +120,12 @@ const BusinessView = () => {
             <div className='businessViewWrapper'>
                 
                 <div className='businessViewHeader'>
+                    {
+                        isLoggedIn ? <BusinessAdminControls business={business?.data} /> : null
+                    }
                     <div className='businessViewBusinessName'>
                         { (!business?.data?.active_business) && <FaBan className='siteIcons inactiveBusinessIcon' /> }
                         <div className='headerText businessViewTitle'>{business?.data?.business_name?.toUpperCase()}</div>
-                        {
-                            isLoggedIn ? <BusinessAdminControls business={business?.data} /> : null
-                        }
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&

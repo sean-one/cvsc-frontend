@@ -11,16 +11,16 @@ const EventSearchStyles = styled.div`
         justify-content: center;
         align-items: center;
         margin-bottom: 0.5rem;
-        background: var(--opacity);
     }
-
+    
     .searchView {
         width: 100%;
-        height: 100%;
+        padding: 1rem 1.5rem;
         max-width: var(--max-section-width);
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        gap: 1rem;
+        background: var(--opacity);
+        border-radius: 0.5rem;
 
         input {
             width: 100%;

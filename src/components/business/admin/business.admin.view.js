@@ -18,6 +18,7 @@ import BusinessEventsRelated from '../../events/business.events.related';
 
 const BusinessAdminViewStyles = styled.div`
     .businessAdminViewWrapper {
+        width: 100%;
         display: grid; /* grid container */
         grid-template-areas:
         'businessadminheader'
@@ -35,6 +36,8 @@ const BusinessAdminViewStyles = styled.div`
     .businessAdminViewDetailWrapper {
         grid-area: businessadmindetails;
         width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .businessAdminDetailSection {
@@ -57,6 +60,19 @@ const BusinessAdminViewStyles = styled.div`
         @media (min-width: 768px) {
             margin-top: 2rem;
         }
+    }
+
+    .businessAdminViewHeaderText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        white-space: normal;
+    }
+
+    .businessAdminViewAddress {
+        font-weight: normal;
     }
 
     .businessAdminViewControls {
@@ -123,10 +139,10 @@ const BusinessAdminView = ({ userBusinessRole }) => {
 
                 <div className='businessAdminViewDetailWrapper'>
                     <div className='businessAdminViewHeader'>
-                        <div onClick={() => navigate(`/business/${business_id}`)} className='headerText'>{business_data?.business_name}</div>
+                        <div onClick={() => navigate(`/business/${business_id}`)} className='businessAdminViewHeaderText headerText'>{business_data?.business_name}</div>
                         {
                             (business_data?.formatted_address !== null) &&
-                                <div className='subheaderText'>{business_data?.formatted_address?.replace(/, [A-Z]{2} \d{5}/, '')}</div>
+                                <div className='subheaderText businessAdminViewAddress'>{business_data?.formatted_address?.replace(/, [A-Z]{2} \d{5}/, '')}</div>
                         }
                     </div>
                     {

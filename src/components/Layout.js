@@ -239,6 +239,7 @@ const Styles = styled.div`
         align-items: center;
         border-top: 1px dotted var(--text-color);
         border-bottom: 1px dotted var(--text-color);
+        gap: 1rem;
     }
 
     // business.role.js & user.role.js

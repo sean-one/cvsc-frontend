@@ -6,12 +6,30 @@ import DeleteRole from './buttons/delete.role';
 
 
 const BusinessRoleStyles = styled.div`
+    .roleWrapper {
+        width: 100%;
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px dotted var(--text-color);
+        border-bottom: 1px dotted var(--text-color);
+        gap: 1rem;
+    }
+
     .businessRoleUsername {
         color: var(--main-highlight-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        white-space: nowrap;
+        max-width: 60%;
     }
 
     .roleButtonWrapper {
-        gap: 1.5rem;
+        display: flex;
+        gap: 0.75rem;
     }
 `;
 

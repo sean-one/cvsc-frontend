@@ -76,6 +76,11 @@ const EventSmallPreviewStyles = styled.div`
 
     .eventSmallPreviewEventname {
         color: var(--main-highlight-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
     .eventSmallPreviewDate {
@@ -98,13 +103,18 @@ const EventSmallPreviewStyles = styled.div`
 
     .eventCreator {
         align-self: end;
-        display: flex;
+        display: -webkit-box;
         justify-content: flex-end;
         align-items: center;
         gap: 0.3rem;
         padding-top: 1rem;
         margin-top: 0.5rem;
         font-size: var(--small-font);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: nowrap;
     }
 `;
 

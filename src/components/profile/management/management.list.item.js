@@ -20,6 +20,7 @@ const ManagementListItemStyles = styled.div`
     }
 
     .managementListItemLogo {
+        width: clamp(8rem, 25vw, 10rem);
         max-width: 10rem;
         display: flex;
         justify-content: center;
@@ -46,6 +47,12 @@ const ManagementListItemStyles = styled.div`
     .managementListItemBusinessname {
         width: 100%;
         color: var(--main-highlight-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        white-space: normal;
         letter-spacing: 1.5;
     }
 

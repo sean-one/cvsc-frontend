@@ -24,8 +24,9 @@ const BusinessEventsRelatedStyles = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
         width: 100%;
-        padding: 0 1.125rem;
+        /* padding: 0 1.125rem; */
         margin: 1.5rem 0 0;
         color: var(--main-highlight-color);
         
@@ -62,6 +63,13 @@ const BusinessEventsRelated = ({ business_id }) => {
     return (
         <BusinessEventsRelatedStyles>
             {
+                (events_list?.data.length !== 0) &&
+                    <div className='businessEventsRelatedHeader'>
+                        <div className='subheaderText'>Upcoming Events</div>
+                        <EventSearch searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+                    </div>
+            }
+            {
                 isPending ? (
                     <LoadingSpinner />
                 ) : isError ? (
@@ -69,10 +77,6 @@ const BusinessEventsRelated = ({ business_id }) => {
                 ) :
                     (business_events_list.length !== 0)
                         ? <div className='businessEventsRelatedWrapper'>
-                            <div className='businessEventsRelatedHeader'>
-                                <div className='subheaderText'>Upcoming Events</div>
-                                <EventSearch searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-                            </div>
                             {
                                 business_events_list.map(event => {
                                     if (location.pathname.includes('admin')) {
@@ -87,7 +91,13 @@ const BusinessEventsRelated = ({ business_id }) => {
                                 })
                             }
                         </div>
-                        : null
+                        : <div>
+                            {
+                                (events_list?.data.length === 0)
+                                    ? null
+                                    : <div>No matching results</div>
+                            }
+                        </div>
             }
         </BusinessEventsRelatedStyles>
     )

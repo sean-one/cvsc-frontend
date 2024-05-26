@@ -108,7 +108,7 @@ const UserEventsRelated = () => {
                 ) : (
                     <div className='userEventsList'>
                         {
-                            (filteredEvents.length !== 0) &&
+                            (user_events?.data.length !== 0) &&
                                 <div className='eventSearchBox'>
                                     <EventSearch
                                         searchQuery={searchQuery}
@@ -123,9 +123,15 @@ const UserEventsRelated = () => {
                                         <EventSmallPreview key={event.event_id} event={event} />
                                     )
                                 })
-                                : <div className='noUserEvents'>
-                                    <div>You have no upcoming created events</div>
-                                    <div className='noUserEventsLink' onClick={() => navigate('/event/create')}>Create a new event!</div>
+                                : <div>
+                                    {
+                                        (user_events?.data.length === 0)
+                                            ? <div className='noUserEvents'>
+                                                <div>You have no upcoming created events</div>
+                                                <div className='noUserEventsLink' onClick={() => navigate('/event/create')}>Create a new event!</div>
+                                            </div>
+                                            : <div>No matching results</div>
+                                    }
                                 </div>
                         }
                     </div>

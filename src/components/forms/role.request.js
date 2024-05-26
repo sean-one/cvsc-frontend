@@ -1,7 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import Select from 'react-select';
+import { useForm, Controller } from 'react-hook-form';
+import styled from 'styled-components';
 
 import useNotification from '../../hooks/useNotification';
 import LoadingSpinner from '../loadingSpinner';
@@ -11,11 +12,10 @@ import { uuidPattern } from './utils/form.validations';
 
 const RoleRequestStyles = styled.div`
     .roleRequestWrapper {
-        /* margin-top: 1rem;
+        margin-top: 1rem;
         width: 100%;
         display: flex;
-        justify-content: center; */
-        border: 0.1rem solid red;
+        justify-content: center;
     }
     
     .roleRequestHeader {
@@ -24,15 +24,10 @@ const RoleRequestStyles = styled.div`
         color: var(--main-highlight-color);
     }
 
-    
     .roleRequestSection {
         width: 100%;
-        /* margin: 1.25rem 0; */
-        /* padding: 0.5rem 1.5rem; */
         max-width: var(--max-section-width);
         border-radius: 0.5rem;
-        /* border: 0.1rem solid var(--text-color); */
-        /* background: var(--opacity); */
     }
 
     .noShowRoleRequest {
@@ -46,86 +41,176 @@ const RoleRequestStyles = styled.div`
     }
 `;
 
+const customSelectStyles = {
+    control: (provided, state) => ({
+        ...provided,
+        backgroundColor: 'var(--main-background-color)',
+        fontSize: 'var(--input-font-size)',
+        color: 'var(--text-color)',
+        borderColor: 'var(--text-color)',
+        boxShadow: state.isFocused ? '0 0 0 1px var(--text-color)' : provided.boxShadow,
+        '&:hover': {
+            borderColor: 'var(--text-color)',
+        }
+    }),
+    input: (provided) => ({
+        ...provided,
+        color: 'var(--text-color)',
+        fontSize: 'var(--input-font-size)',
+    }),
+    singleValue: (provided) => ({
+        ...provided,
+        color: 'var(--text-color)',
+        fontSize: 'var(--input-font-size)',
+    }),
+    placeholder: (provided) => ({
+        ...provided,
+        color: 'var(--input-placeholder)',
+        fontSize: 'var(--input-font-size)',
+    }),
+    valueContainer: (provided) => ({
+        ...provided,
+        color: 'var(--text-color)',
+        fontSize: 'var(--input-font-size)',
+    }),
+    dropdownIndicator: (provided) => ({
+        ...provided,
+        color: 'var(--text-color)',
+        fontSize: 'var(--input-font-size)',
+        '&:hover': {
+            color: 'var(--text-color)',
+        }
+    }),
+    clearIndicator: (provided) => ({
+        ...provided,
+        color: 'var(--text-color)',
+        '&:hover': {
+            color: 'var(--error-color)',
+        }
+    }),
+    menu: (provided) => ({
+        ...provided,
+        backgroundColor: 'var(--main-background-color)',
+        fontSize: 'var(--input-font-size)'
+    }),
+    option: (provided) => ({
+        ...provided,
+        backgroundColor: 'var(--main-background-color)',
+        color: 'var(--text-color)',
+        fontSize: 'var(--input-font-size)',
+    })
+}
+
 
 const RoleRequest = ({ user_roles }) => {
-    const businessIdList = user_roles.map(role => role?.business_id) || []
+    const businessIdList = useMemo(() => user_roles.map(role => role?.business_id) || [], [user_roles]);
+    const [ filteredBusinessList, setFilteredBusinessList] = useState([])
     const { dispatch } = useNotification();
-
-    const { data: businesses_list, isPending, isError, error: businesses_list_error } = useBusinessesQuery()
+    
+    const { data: businesses_list, isPending, isSuccess: businessListSuccess, isError } = useBusinessesQuery()
     const { mutate: createRole } = useCreateRoleMutation()
-
+    
     let navigate = useNavigate();
-
-    const { register, handleSubmit, reset, clearErrors, watch, formState:{ errors } } = useForm({
+    
+    const { control, handleSubmit, reset, clearErrors, watch, setValue, formState:{ errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
             business_id: ''
         }
     });
+    
+    useEffect(() => {
+        if (businessListSuccess) {
+            const businessListData = businesses_list?.data || []
+            if (businessListData.length === 0) {
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'No businesses found'
+                    }
+                })
+
+                return
+            }
+
+            const list = businessListData.filter(business => 
+                business.business_request_open &&
+                business.active_business &&
+                !businessIdList.includes(business.id)
+            ).map(businessMap => ({ value: businessMap.id, label: businessMap.business_name }))
+
+            setFilteredBusinessList(list)
+        }
+    }, [businesses_list, businessListSuccess, businessIdList, dispatch])
 
     // make sure business id is selected or submit button is disabled
     const selectedBusinessId = watch('business_id');
-
-    if (isError) {
-        dispatch({
-            type: "ADD_NOTIFICATION",
-            payload: {
-                notification_type: 'ERROR',
-                message: businesses_list_error?.response?.data?.error?.message
-            }
-        })
-    }
-
-    if (isPending) { return <LoadingSpinner /> }
-
-    // filter out businesses that are not currently excepting request
-    const request_open = businesses_list.data.filter(business => business.business_request_open && business.active_business)
-    // filter out the businesses that the user already has role rights to
-    const business_filtered = request_open.filter(business => !businessIdList.includes(business.id))
     
     const roleCreate = async (data) => {
-        if(!data.business_id) return
+        if(!data.business_id.value) return
         reset() 
-        createRole(data.business_id)
+        createRole(data.business_id.value)
     }
 
 
     return (
         <RoleRequestStyles>
-            <div className='roleRequestWrapper'>
-                {
-                    (business_filtered.length > 0)
-                        ? <div className='roleRequestSection'>
-                            <div className='subheaderText roleRequestHeader'>Create Business Role Request</div>
+            {
+                isPending ? (
+                    <LoadingSpinner />
+                ) : isError ? (
+                    null
+                ) : (
+                    <div className='roleRequestWrapper'>
+                        {
+                            (filteredBusinessList.length > 0)
+                                ? <div className='roleRequestSection'>
+                                    <div className='subheaderText roleRequestHeader'>Create Business Role Request</div>
 
-                            <form onSubmit={handleSubmit(roleCreate)} className='standardForm'>
-                                <select {...register('business_id', {
-                                    required: 'valid business is required',
-                                    pattern: uuidPattern
-                                })} type='text' onClick={() => clearErrors('business_id')}>
-                                    <option value=''>Select a business...</option>
-                                    {
-                                        business_filtered.map(business => (
-                                            <option key={business.id} value={business.id}>
-                                                {business.business_name.toUpperCase()}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
-                                {errors.business_id ? <div className='errormessage'>{errors.business_id?.message}</div> : null}
-                                <div className='formButtonWrapper'>
-                                    <button className='formButton' disabled={!selectedBusinessId} type='submit'>Submit Request</button>
+                                    <form onSubmit={handleSubmit(roleCreate)} className='standardForm'>
+                                        <div className='inputWrapper' onClick={() => clearErrors('business_id')}>
+                                            <label htmlFor='business_id' className='visuallyHidden'>Businesses</label>
+                                            <Controller
+                                                name='business_id'
+                                                control={control}
+                                                rules={{
+                                                    required: 'valid business is required',
+                                                    pattern: uuidPattern
+                                                }}
+                                                render={({ field }) => (
+                                                    <Select
+                                                        {...field}
+                                                        options={filteredBusinessList}
+
+                                                        placeholder='Select a business'
+                                                        isClearable
+                                                        isSearchable
+                                                        styles={customSelectStyles}
+                                                        onChange={(selectedOption) => {
+                                                            field.onChange(selectedOption);
+                                                            setValue('business_id', selectedOption, { shouldDirty: true });
+                                                        }}
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                        {errors.business_id ? <div className='errormessage'>{errors.business_id?.message}</div> : null}
+                                        <div className='formButtonWrapper'>
+                                            <button className='formButton' disabled={!selectedBusinessId} type='submit'>Submit Request</button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
-                        : <div className='noShowRoleRequest'>
-                            <div>Currently no new businesses accepting Role request.  Check back when more become available</div>
-                            <div className='formButtonWrapper'>
-                                <div className='buttonLike formButton' onClick={() => navigate('/business/create')}>Create Business</div>
-                            </div>
-                        </div>
-                }
-            </div>
+                                : <div className='noShowRoleRequest'>
+                                    <div>Currently no new businesses accepting Role request.  Check back when more become available</div>
+                                    <div className='formButtonWrapper'>
+                                        <div className='buttonLike formButton' onClick={() => navigate('/business/create')}>Create Business</div>
+                                    </div>
+                                </div>
+                        }
+                    </div>
+                )
+            }
         </RoleRequestStyles>
     )
 }
