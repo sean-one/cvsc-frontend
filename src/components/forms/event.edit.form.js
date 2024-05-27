@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
@@ -101,11 +101,10 @@ const EventEditForm = () => {
     const [ previewImageUrl, setPreviewImageUrl ] = useState('');
     const { auth } = useAuth();
     let { event_id } = useParams()
-    let user_host_business_list = []
     const { dispatch } = useNotification()
     
     const { data: user_roles, isError, isPending, isSuccess: userRoleSuccess } = useUserRolesQuery(auth?.user?.id);
-    const { data: event_data, isError: isEventError, isPending: isEventPending, isSuccess: isEventSuccess } = useEventQuery(event_id)
+    const { data: event_data, isError: isEventError, isPending: isEventPending } = useEventQuery(event_id)
 
     const { mutateAsync: updateEventMutation } = useUpdateEventMutation()
     const { mutate: removeEventMutation } = useRemoveEventMutation()
@@ -115,6 +114,20 @@ const EventEditForm = () => {
     const { register, control, handleSubmit, setError, clearErrors, reset, setValue, formState: { isDirty, dirtyFields, errors } } = useForm({
         mode: 'onBlur',
     })
+
+    const user_host_business_list = useMemo(() => {
+        if (userRoleSuccess) {
+            return user_roles?.data.filter(role => role.active_role).map(role => ({
+                value: role.business_id,
+                label: role.business_name
+            }));
+        }
+        return [];
+    }, [user_roles, userRoleSuccess])
+
+    const hostBusinessDefault = useMemo(() => {
+        return user_host_business_list.find(business => business.value === event_data?.data.host_business);
+    }, [user_host_business_list, event_data])
 
     const onImageCropped = useCallback((croppedBlob) => {
         setCroppedImage(croppedBlob);
@@ -164,6 +177,7 @@ const EventEditForm = () => {
             await updateEventMutation({ event_id: event_id, event_updates: formData })
 
         } catch (error) {
+            console.log(error)
             if (error?.response?.status === 400) {
 
                 if (error?.response?.data?.error?.type === 'media_error') {
@@ -188,6 +202,13 @@ const EventEditForm = () => {
             
             else {
                 console.error(`uncaught error ${Object.keys(error)}`);
+                dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                        notification_type: 'ERROR',
+                        message: 'unable to complete request'
+                    }
+                })
             }
         }
     }
@@ -224,7 +245,7 @@ const EventEditForm = () => {
             });
             setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`)
         }
-    }, [event_data, reset])
+    }, [event_data, reset, hostBusinessDefault])
 
     useEffect(() => {
         if(isError || isEventError) {
@@ -232,18 +253,9 @@ const EventEditForm = () => {
         }
     }, [isError, isEventError, navigate])
 
-    if (userRoleSuccess && isEventSuccess) {
-        user_host_business_list = user_roles?.data.filter(role => role.active_role).map(role => ({
-            value: role.business_id,
-            label: role.business_name,
-        }))
-    }
-
     if (isPending && isEventPending) {
         return <LoadingSpinner />
     }
-
-    const hostBusinessDefault = user_host_business_list.find(business => business.value === event_data?.data.host_business)
 
 
     return (
