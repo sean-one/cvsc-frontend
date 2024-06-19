@@ -33,19 +33,7 @@ const MenuStyles = styled.div`
     .navMenuButtons {
         text-align: center;
         cursor: pointer;
-        padding: 2rem;
-    }
-
-    .contactIcons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1.5rem;
-
-        a {
-            padding: 0;
-            margin: 0;
-        }
+        padding: 1.5rem;
     }
 `;
 
@@ -107,24 +95,20 @@ const Menu = ({ toggle }) => {
                     <div className='navMenuButtons menuText' onClick={() => navigate('/businesses')}>Businesses</div>
                     {
                         (isLoggedIn && auth?.user?.email_verified) &&
-                            <div className='navMenuButtons menuText' onClick={() => navigate('/business/create')}><FaPlus className='siteIcons'/> Business</div>
+                        <div className='navMenuButtons menuText' onClick={() => navigate('/business/create')}><FaPlus className='siteIcons'/> Business</div>
                     }
                     {
                         isLoggedIn
-                            ? <div className='navMenuButtons menuText' onClick={() => navigate('/profile')}>Profile</div>
-                            : <div className='navMenuButtons menuText' onClick={() => navigate('/register')}>Register</div>
+                        ? <div className='navMenuButtons menuText' onClick={() => navigate('/profile')}>Profile</div>
+                        : <div className='navMenuButtons menuText' onClick={() => navigate('/register')}>Register</div>
                     }
                     {
                         isLoggedIn
-                            ? <div className='navMenuButtons menuText' onClick={() => logOutUser()}>Logout</div>
-                            : <div className='navMenuButtons menuText' onClick={() => navigate('/login')}>Login</div>
+                        ? <div className='navMenuButtons menuText' onClick={() => logOutUser()}>Logout</div>
+                        : <div className='navMenuButtons menuText' onClick={() => navigate('/login')}>Login</div>
                     }
                     <div className='navMenuButtons menuText' onClick={() => toggleTheme()}>{themeName === 'light' ? <FaMoon className='siteIcons' /> : <FaSun className='siteIcons' />} Theme</div>
-                    <div className='navMenuButtons menuText'>
-                        <div className='contactIcons'>
-                            <a href="mailto:coachellavalleysmokersclub@gmail.com" target='_blank' rel='noreferrer'>Contact</a>
-                        </div>
-                    </div>
+                    <div className='navMenuButtons menuText' onClick={() => navigate('/contact-us')}>Contact</div>
                     <Footer />
                 </div>
             </div>

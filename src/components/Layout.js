@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
         --opacity: ${(props) => props.theme['--opacity']};
 
         --header-font: 'Poppins';
-        --menu-font-size: 3.6rem;
+        --menu-font-size: 3.2rem;
         --header-font-size: 2.4rem;
         --input-font-size: 2.2rem;
         --small-header-font: 1.8rem;
@@ -71,10 +71,14 @@ const Styles = styled.div`
     }
 
     .menuText {
-        font-size: clamp(3rem, 9vw, var(--menu-font-size));
+        font-size: clamp(2.8rem, 9vw, var(--menu-font-size));
         font-weight: bolder;
         text-transform: uppercase;
         letter-spacing: 0.2rem;
+    }
+
+    .boldText {
+        font-weight: bold;
     }
 
     .headerText {

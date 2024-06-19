@@ -45,6 +45,7 @@ import ResetPassword from './components/resetPassword.js';
 import MFASetUp from './components/auth/mod/mfa_setup.js';
 import PrivacyPolicy from './components/legal/privacyPolicy.js';
 import TOS from './components/legal/tos.js';
+import ContactUs from './components/contactUs.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -87,6 +88,7 @@ const App = () => {
               <Route path='/email-verified' element={<EmailVerificationPage />} />
               <Route path='/cvsc-privacypolicy' element={<PrivacyPolicy />} />
               <Route path='/cvsc-tos' element={<TOS />} />
+              <Route path='/contact-us' element={<ContactUs />} />
               
               {/* private routes */}
               <Route element={<AuthRoute />}>
