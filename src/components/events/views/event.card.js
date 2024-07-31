@@ -40,12 +40,9 @@ const EventCardStyles = styled.div`
 
     .eventCardBottomRow {
         width: 100%;
-        padding: 2rem 1.25rem 1.5rem;
-        /* height: 9rem; */
-        justify-content: flex-start;
+        justify-content: space-around;
         color: var(--main-highlight-color);
         background-color: var(--opacity);
-        /* background-color: var(--main-color); */
         
     }
 
@@ -53,9 +50,9 @@ const EventCardStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 6rem;
+        width: 7rem;
         border-radius: 50%;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(255, 255, 255, 0.7);
+        /* box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(255, 255, 255, 0.7); */
 
         img {
             border-radius: 50%;
@@ -94,11 +91,7 @@ const EventCardStyles = styled.div`
     .eventCardDetails {
         line-height: 1.1;
         padding: 0.5rem 1rem;
-        /* font-weight: bold; */
-        /* font-family: var(--header-font); */
         width: 100%;
-        /* display: grid; */
-        /* flex-direction: column; */
     }
 
     .eventCardDetailsEventname {
@@ -118,7 +111,7 @@ const EventCardStyles = styled.div`
 
     .eventCardDetailsBusinessName {
         font-size: var(--small-font);
-        color: var(--main-color);
+        color: var(--text-color);
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
