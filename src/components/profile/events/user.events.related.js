@@ -23,6 +23,13 @@ const UserEventsRelatedStyles = styled.div`
         @media (min-width: 768px) {
             grid-template-columns: 1fr 1fr;
         }
+
+        &.singleUserEvent {
+            @media (min-width: 768px) {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+        }
     }
 
     .eventSearchBox {
@@ -101,21 +108,21 @@ const UserEventsRelated = () => {
     return (
         <UserEventsRelatedStyles>
             {
+                (user_events?.data.length !== 0) &&
+                    <div className='eventSearchBox'>
+                        <EventSearch
+                            searchQuery={searchQuery}
+                            onSearchChange={setSearchQuery}
+                        />
+                    </div>
+            }
+            {
                 isPending ? (
                     <LoadingSpinner />
                 ) : isError ? (
                     null
                 ) : (
-                    <div className='userEventsList'>
-                        {
-                            (user_events?.data.length !== 0) &&
-                                <div className='eventSearchBox'>
-                                    <EventSearch
-                                        searchQuery={searchQuery}
-                                        onSearchChange={setSearchQuery}
-                                    />
-                                </div>
-                        }
+                    <div className={`userEventsList ${user_events.data.length === 1 ? 'singleUserEvent' : ''}`}>
                         {
                             (filteredEvents.length > 0)
                                 ? filteredEvents.map(event => {

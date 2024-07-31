@@ -10,7 +10,7 @@ const EventSearchStyles = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 0.5rem;
+        margin: 0 auto 0.5rem;
     }
     
     .searchView {
@@ -27,6 +27,14 @@ const EventSearchStyles = styled.div`
             font-size: var(--small-header-font);
             padding: 0.5rem 1.5rem 0.25rem;
         }
+    }
+
+    .searchHeader {
+        width: 100%;
+        max-width: var(--max-section-width);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 `;
 
@@ -48,13 +56,14 @@ const EventSearch = ({ searchQuery, onSearchChange }) => {
                                 type='text'
                                 value={searchQuery}
                                 onChange={e => onSearchChange(e.target.value)}
-                                placeholder="Search events..."
+                                placeholder="Search Upcoming events..."
                             />
                             <div>
                                 <FaX className='siteIcons' style={{ color: 'var(--error-color)' }} onClick={closeSearchBar} />
                             </div>
                         </div>
-                        : <div>
+                        : <div className='searchHeader'>
+                            <div className="subheaderText">Upcoming Events</div>
                             <FaMagnifyingGlass className='siteIcons' onClick={() => setViewSearch(true)} />
                         </div>
                 }
