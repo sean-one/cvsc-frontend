@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaRegEnvelope, FaXTwitter, FaInstagram, FaPhone, FaBan } from 'react-icons/fa6'
 import { TbWorldWww } from 'react-icons/tb'
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import useNotification from '../../hooks/useNotification';
 import useAuth from '../../hooks/useAuth';
@@ -117,6 +118,10 @@ const BusinessView = () => {
     
     return (
         <BusinessViewStyles>
+            <Helmet>
+                <title>{business?.data?.business_name}</title>
+                <meta name='description' content={business?.data?.business_description} />
+            </Helmet>
             <div className='businessViewWrapper'>
                 
                 <div className='businessViewHeader'>

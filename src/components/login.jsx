@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 import useAuth from '../hooks/useAuth';
@@ -150,6 +151,9 @@ const Login = () => {
     
     return (
         <LoginStyles>
+            <Helmet>
+                <title>CVSC - Login</title>
+            </Helmet>
             <div className='loginWrap'>
                 
                 <div className='headerText loginHeader'>Login</div>

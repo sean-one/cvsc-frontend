@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 
 const PrivacyPolicyStyles = styled.div`
@@ -50,6 +51,9 @@ const PrivacyPolicyStyles = styled.div`
 const PrivacyPolicy = () => {
     return (
         <PrivacyPolicyStyles>
+            <Helmet>
+                <title>CVSC - Privacy Policy</title>
+            </Helmet>
             <div className='privacyPolicyWrapper'>
                 <div className='privacyPolicyDate'>Effective Date: 05/17/2024</div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 
 const TOSStyles = styled.div`
@@ -54,6 +55,9 @@ const TOSStyles = styled.div`
 const TOS = () => {
     return (
         <TOSStyles>
+            <Helmet>
+                <title>CVSC - Terms Of Service</title>
+            </Helmet>
             <div className='tosWrapper'>
                 <div className='tosDate'>Effective Date: 05/17/2024</div>
                 

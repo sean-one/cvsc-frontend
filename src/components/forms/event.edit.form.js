@@ -5,6 +5,7 @@ import { format, parseISO } from 'date-fns';
 import Select from 'react-select';
 import styled from 'styled-components';
 import { TbCameraPlus } from 'react-icons/tb';
+import { Helmet } from 'react-helmet';
 import { FaRegCalendarDays, FaRegClock } from 'react-icons/fa6';
 
 import useAuth from '../../hooks/useAuth';
@@ -260,6 +261,9 @@ const EventEditForm = () => {
 
     return (
         <EditEventFormStyles>
+            <Helmet>
+                <title>CVSC - Edit Event</title>
+            </Helmet>
             <form onSubmit={handleSubmit(update_event)} encType='multipart/form-data' className='standardForm'>
 
                 {/* EVENT NAME AND MEDIA IMAGE */}

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -92,6 +93,9 @@ const RolesTab = () => {
 
     return (
         <RolesTabStyles>
+            <Helmet>
+                <title>CVSC - Account Roles</title>
+            </Helmet>
             {
                 isPending ? (
                     <LoadingSpinner />

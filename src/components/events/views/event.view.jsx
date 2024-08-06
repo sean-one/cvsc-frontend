@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { decode } from 'he';
 import styled from 'styled-components';
 import { GoPencil } from 'react-icons/go';
+import { Helmet } from 'react-helmet';
 
 import LoadingSpinner from '../../loadingSpinner';
 import EventViewRelated from '../event.view.related';
@@ -148,6 +149,9 @@ const EventView = () => {
 
     return (
         <EventViewStyles>
+            <Helmet>
+                <title>{event?.data?.eventname}</title>
+            </Helmet>
             <div className='eventViewWrapper'>
                 <div className='eventViewDetails'>
                         <div className={`eventViewDetailsTop ${!isCreator() ? 'notCreator' : ''}`}>

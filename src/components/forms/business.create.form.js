@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import useNotification from '../../hooks/useNotification';
 import { FaXTwitter, FaInstagram, FaPhone } from 'react-icons/fa6';
@@ -162,6 +163,9 @@ const BusinessCreateForm = () => {
 
     return (
         <BusinessCreateFormStyles>
+            <Helmet>
+                <title>CVSC - Create Business</title>
+            </Helmet>
             <form onSubmit={handleSubmit(create_business)} encType='multipart/form-data' className='standardForm'>
                 {/* once image has been created it will show here */}
                 <div className='formImagePreviewWrapper'>

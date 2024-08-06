@@ -6,6 +6,7 @@ import Select from 'react-select';
 import styled from 'styled-components';
 import { TbCameraPlus } from 'react-icons/tb'
 import { FaRegCalendarDays, FaRegClock } from 'react-icons/fa6';
+import { Helmet } from 'react-helmet';
 
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
@@ -253,6 +254,9 @@ const EventCreateForm = () => {
 
     return (
         <CreateEventFormStyles>
+            <Helmet>
+                <title>CVSC - Create Event</title>
+            </Helmet>
             {
                 isPending ? (
                     <LoadingSpinner />

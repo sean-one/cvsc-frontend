@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import useAuth from '../../../hooks/useAuth';
 import { useUserEventsQuery } from '../../../hooks/useEventsApi';
@@ -107,6 +108,9 @@ const UserEventsRelated = () => {
 
     return (
         <UserEventsRelatedStyles>
+            <Helmet>
+                <title>CVSC - User Events</title>
+            </Helmet>
             {
                 (user_events?.data.length !== 0) &&
                     <div className='eventSearchBox'>

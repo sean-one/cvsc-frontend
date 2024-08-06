@@ -9,6 +9,7 @@ import useAuth from '../hooks/useAuth.js';
 import { emailformat, validateUsername } from './forms/utils/form.validations.js';
 import ImageUploadAndCrop from '../helpers/imageUploadAndCrop.js';
 import { TbCameraPlus } from 'react-icons/tb';
+import { Helmet } from 'react-helmet';
 import PasswordInputToggle from './forms/password.input.view.toggle.js';
 
 
@@ -155,6 +156,9 @@ const Register = () => {
 
     return (
         <RegisterStyles>
+            <Helmet>
+                <title>CVSC - Register</title>
+            </Helmet>
             <div className='registerWrap'>
                 
                 <div className='headerText registerHeader'>Register new Account</div>

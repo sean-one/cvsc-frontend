@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Helmet } from 'react-helmet';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // components
@@ -69,6 +70,20 @@ const App = () => {
 
   return (
     <React.Fragment>
+      <Helmet>
+        <title>Coachella Valley Smokers Club</title>
+        <meta name="description" content="Explore and connect with the cannabis community in Coachella Valley. Join events, share experiences, and stay updated with local cannabis related news." />
+        <meta name="keywords" content="coachella valley, cannabis, community, cannabis events" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Open Graph tags */}
+        <meta property="og:title" content="Coachella Valley Smokers Club" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://coachellavalleysmokersclub.com" />
+        <meta property="og:image" content="%PUBLIC_URL%/assets/logo512.png" />
+        <meta property="og:description" content="Explore and connect with the cannabis community in Coachella Valley. Join events, share experiences, and stay updated with local cannabis related news." />
+
+      </Helmet>
       <ScrollToTop/>
       <QueryClientProvider client={queryClient}>
         <Layout>

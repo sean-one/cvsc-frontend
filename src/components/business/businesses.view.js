@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useBusinessesQuery } from '../../hooks/useBusinessApi';
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 import useNotification from '../../hooks/useNotification';
@@ -65,6 +66,9 @@ const BusinessesView = () => {
     
     return (
         <BusinessesViewStyles>
+            <Helmet>
+                <title>CVSC - Business List</title>
+            </Helmet>
             {
                 isPending ? (
                     <LoadingSpinner />

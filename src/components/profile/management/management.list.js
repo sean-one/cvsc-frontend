@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
@@ -90,6 +91,9 @@ const ManagementList = () => {
 
     return (
         <ManagementListStyles>
+            <Helmet>
+                <title>CVSC - User Business Management</title>
+            </Helmet>
             {
                 isPending ? (
                     <LoadingSpinner />

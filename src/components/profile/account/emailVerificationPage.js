@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaCannabis } from 'react-icons/fa6';
+import { Helmet } from 'react-helmet';
 
 import useNotification from '../../../hooks/useNotification';
 import LoadingSpinner from '../../loadingSpinner';
@@ -76,6 +77,9 @@ const EmailVerificationPage = () => {
 
     return (
         <EmailVerificationPageStyles>
+            <Helmet>
+                <title>CVSC - Email Verification Results</title>
+            </Helmet>
             {
                 verificationError
                     ? <div className='emailVerificationWrapper'>

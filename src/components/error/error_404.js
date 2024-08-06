@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 const ErrorPageStyles = styled.div`
     .errorPageWrapper {
@@ -54,6 +55,9 @@ export const ErrorPage = () => {
 
     return (
         <ErrorPageStyles>
+            <Helmet>
+                <title>CVSC - Error Page</title>
+            </Helmet>
             <div className='errorPageWrapper'>
                 <div className='headerText'>{notFoundText.header}</div>
                 <div className='notFoundMessage'>{notFoundText.message}</div>

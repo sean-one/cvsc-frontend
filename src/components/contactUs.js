@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaInstagram, FaEnvelope, FaDiscord } from 'react-icons/fa6';
+import { Helmet } from 'react-helmet';
 
 const ContactUsStyles = styled.div`
     .contactUsWrapper {
@@ -73,6 +74,9 @@ const openApp = (appUrl, fallbackUrl) => {
 const ContactUs = () => {
     return (
         <ContactUsStyles>
+            <Helmet>
+                <title>CVSC - Contact</title>
+            </Helmet>
             <div className='contactUsWrapper'>
                 <div className='contactUsHeader headerText'>Get in Touch</div>
                 <div>Have questions, need assistance, or want to discuss a potential collaboration or business opportunity?  We're here to help and would love to connect with you!</div>

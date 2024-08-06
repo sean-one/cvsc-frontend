@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import { useUpdateBusinessMutation, useBusinessQuery } from '../../hooks/useBusinessApi';
 import useNotification from '../../hooks/useNotification';
@@ -170,6 +171,9 @@ const BusinessEditForm = ({ userBusinessRole }) => {
 
     return (
         <BusinessEditFormStyles>
+            <Helmet>
+                <title>CVSC - Edit Business</title>
+            </Helmet>
             <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
                 <div className='formRowInputIcon'>
                     <div className='headerText businessEditFormHeader'>{business_data?.data?.business_name}</div>

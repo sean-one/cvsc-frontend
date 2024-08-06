@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import PasswordInputToggle from './forms/password.input.view.toggle';
 
 import AxiosInstance from '../helpers/axios';
@@ -81,6 +82,9 @@ const ResetPassword = () => {
 
     return (
         <ResetPasswordStyles>
+            <Helmet>
+                <title>CVSC - Password Reset</title>
+            </Helmet>
             <div className='resetPasswordWrapper'>
                 <div className='passwordDetails subheaderText'>Reset Password</div>
                 <div className='passwordDetails'>Please enter your <span style={{ color: 'var(--main-highlight-color)' }}>new password</span> below.  Make sure your password is <span style={{ color: 'var(--main-highlight-color)' }}>strong and secure</span></div>

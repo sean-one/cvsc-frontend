@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import ProfileMenu from './profile.menu';
 import UserAccount from './account/user.account';
@@ -32,6 +33,9 @@ const Profile = () => {
     
     return (
         <div>
+            <Helmet>
+                <title>CVSC - Account Profile</title>
+            </Helmet>
             <ProfileMenu />
             {renderProfileSection()}
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 import AxiosInstance from '../helpers/axios';
@@ -62,6 +63,9 @@ const ForgotPassword = () => {
 
     return (
         <ForgotPasswordStyles>
+            <Helmet>
+                <title>CVSC - Forgot Password</title>
+            </Helmet>
             <div className='forgotPasswordWrapper'>
                 <div className='forgotPasswordInfo subheaderText'>Provide your registered email to receive a password reset link.</div>
                 <form className='standardForm' onSubmit={handleSubmit(sendResetLink)}>
