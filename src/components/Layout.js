@@ -438,6 +438,7 @@ const Styles = styled.div`
     }
 
     .formButton {
+        cursor: pointer;
         height: 4rem;
         width: 19rem;
     }

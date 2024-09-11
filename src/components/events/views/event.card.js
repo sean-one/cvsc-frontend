@@ -135,7 +135,7 @@ const EventCard = ({ event }) => {
     }
 
     const backgroundImageUrl = `${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.eventmedia}`;
-    
+
     return (
         <EventCardStyles bgImage={backgroundImageUrl}>
             <div className="eventCardWrapper" style={{ backgroundImage: `url(${backgroundImageUrl})`}} onClick={(e) => event?.active_event ? navigate(`/event/${event?.event_id}`) : null}>
