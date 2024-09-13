@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { decode } from "he";
 import AxiosInstance from "../helpers/axios";
 
 const useSampleEvent = () => {
@@ -32,7 +33,7 @@ const useSampleEvent = () => {
                     eventend: 1900,
                     host_business: cvsc_business?.data?.id,
                     business_avatar: cvsc_business?.data?.business_avatar,
-                    business_name: cvsc_business?.data?.business_name,
+                    business_name: decode(cvsc_business?.data?.business_name),
                     eventname: 'Upload You Event Now!',
                 }
 

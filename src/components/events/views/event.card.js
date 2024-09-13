@@ -148,11 +148,11 @@ const EventCard = ({ event }) => {
                     </div>
                     <div className='eventCardBottomRow'>
                         <div className='eventCardHostLogo' onClick={(e) => { e.stopPropagation(); navigate(`/business/${event?.host_business}`);}}>
-                            <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.business_avatar}`} alt={`${event?.business_name} branding`} />
+                            <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.business_avatar}`} alt={`${decode(event?.business_name)} branding`} />
                         </div>
                         <div className='eventCardDetails'>
                             <div className='eventCardDetailsEventname'>{decode(event?.eventname)}</div>
-                            <div className='eventCardDetailsBusinessName' onClick={(e) => { e.stopPropagation(); navigate(`/business/${event?.host_business}`);}}>{event?.business_name}</div>
+                            <div className='eventCardDetailsBusinessName' onClick={(e) => { e.stopPropagation(); navigate(`/business/${event?.host_business}`);}}>{decode(event?.business_name)}</div>
                             <div className='eventCardDetailsTime'>{`${formatTime(event?.eventstart)} - ${formatTime(event?.eventend)}`}</div>
                         </div>
                     </div>

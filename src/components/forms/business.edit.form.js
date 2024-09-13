@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { decode } from 'he';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 
@@ -145,7 +146,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
         if (business_data) {
             reset({
                 business_email: business_data.data?.business_email,
-                business_description: business_data.data?.business_description,
+                business_description: decode(business_data.data?.business_description),
                 place_id: business_data.data?.place_id || '',
                 formatted_address: business_data.data?.formatted_address || '',
                 business_instagram: business_data.data?.business_instagram || '',
@@ -156,7 +157,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
             });
             setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.data?.business_avatar}`);
         }
-    }, [business_data, reset])
+    }, [business_data, decode, reset])
 
     useEffect(() => {
         if (isError) {
@@ -176,7 +177,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
             </Helmet>
             <form onSubmit={handleSubmit(update_business)} encType='multipart/form-data' className='standardForm'>
                 <div className='formRowInputIcon'>
-                    <div className='headerText businessEditFormHeader'>{business_data?.data?.business_name}</div>
+                    <div className='headerText businessEditFormHeader'>{decode(business_data?.data?.business_name)}</div>
                     {/* BUSINESS AVATAR UPLOAD */}
                     <label htmlFor='business_avatar' className='inputLabel removeInputLabelPadding' onClick={() => clearErrors('business_avatar')}>
                         <TbCameraPlus onClick={handleCameraClick} className='siteIcons' />
@@ -190,7 +191,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                                 <div className='imagePreview businessImage'>
                                     <img
                                         src={previewImageUrl || `${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.data?.business_avatar}`}
-                                        alt={business_data?.data?.business_name}
+                                        alt={decode(business_data?.data?.business_name)}
                                     />
                                 </div>
                             ) : (
@@ -272,7 +273,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                         <input {...register('business_website', {
                             pattern: {
                                 value: websiteFormat,
-                                message: 'invalid website format'
+                                message:  "must be in 'https://www.yourwebsite.com' format"
                             }
                         })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                     </label>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSun, FaMoon, FaPlus } from 'react-icons/fa6';
+import { decode } from 'he';
 import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
 
@@ -60,7 +61,7 @@ const Menu = ({ toggle }) => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `${username} successfully logged out`
+                        message: `${decode(username)} successfully logged out`
                     }
                 })
 

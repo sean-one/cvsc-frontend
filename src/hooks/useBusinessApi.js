@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { decode } from "he";
 
 import AxiosInstance from "../helpers/axios";
 import { businessKeys, roleKeys, eventKeys } from "../helpers/queryKeyFactories";
@@ -38,7 +39,7 @@ export const useCreateBusinessMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.business_name} has been created`
+                    message: `${decode(data?.business_name)} has been created`
                 }
             })
 
@@ -99,7 +100,7 @@ export const useBusinessToggle = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `${data?.business_name} ${data?.business_request_open ? 'is now' : 'is no longer'} accepting creator request`
+                        message: `${decode(data?.business_name)} ${data?.business_request_open ? 'is now' : 'is no longer'} accepting creator request`
                     }
                 })    
             }
@@ -112,7 +113,7 @@ export const useBusinessToggle = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `${data?.business_name} has been updated to ${data?.active_business ? 'active' : 'inactive'}`
+                        message: `${decode(data?.business_name)} has been updated to ${data?.active_business ? 'active' : 'inactive'}`
                     }
                 })
 
@@ -224,7 +225,7 @@ export const useUpdateBusinessMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.business_name} has successfully been updated`
+                    message: `${decode(data?.business_name)} has successfully been updated`
                 }
             })
 
@@ -281,7 +282,7 @@ export const useRemoveBusinessMutation = (onDeleteSuccess) => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.business_name} has been deleted successfully`
+                    message: `${decode(data?.business_name)} has been deleted successfully`
                 }
             })
 

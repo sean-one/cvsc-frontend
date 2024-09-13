@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { decode } from 'he';
 import styled from 'styled-components';
 
 import AxiosInstance from '../helpers/axios';
@@ -107,7 +108,7 @@ const Register = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `${data.username} has been created and logged in`
+                        message: `${decode(data.username)} has been created and logged in`
                     }
                 })
 

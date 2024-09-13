@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { decode } from "he";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import AxiosInstance from "../helpers/axios";
@@ -47,7 +48,7 @@ export const useUpdateEventMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.eventname} has been successfully updated`
+                    message: `${decode(data?.eventname)} has been successfully updated`
                 }
             })
 
@@ -94,7 +95,7 @@ export const useRemoveEventMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.eventname} has successfully been deleted`
+                    message: `${decode(data?.eventname)} has successfully been deleted`
                 }
             })
 
@@ -158,7 +159,7 @@ export const useCreateEventMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.eventname} has been created`
+                    message: `${decode(data?.eventname)} has been created`
                 }
             })
 

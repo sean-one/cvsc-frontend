@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { decode } from 'he';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
@@ -116,7 +117,7 @@ const Login = () => {
                     type: "ADD_NOTIFICATION",
                     payload: {
                         notification_type: 'SUCCESS',
-                        message: `logged in as: ${data.username}`
+                        message: `logged in as: ${decode(data.username)}`
                     }
                 })
         

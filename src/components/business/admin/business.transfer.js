@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
+import { decode } from 'he';
 import { FaCaretUp, FaCaretDown } from 'react-icons/fa6';
 
 import { useBusinessTransferMutation } from '../../../hooks/useBusinessApi';
@@ -118,7 +119,7 @@ const BusinessTransfer = ({ business_id }) => {
     const management_list = manager_list?.data?.filter(manager_role => manager_role.role_type === 'manager') || []
     const managerSelectOptions = management_list.map(manager => ({
         value: manager.user_id,
-        label: manager.username
+        label: decode(manager.username)
     }))
 
     return (

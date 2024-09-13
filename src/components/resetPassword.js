@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { decode } from 'he';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
@@ -66,7 +67,7 @@ const ResetPassword = () => {
                     }
                 });
     
-                navigate('/login', { state: { username: response?.data?.username }})
+                navigate('/login', { state: { username: decode(response?.data?.username) }})
             }
 
         } catch (error) {

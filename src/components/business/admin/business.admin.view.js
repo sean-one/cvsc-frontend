@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { decode } from 'he';
 import { Helmet } from 'react-helmet';
 
 import useNotification from '../../../hooks/useNotification';
@@ -134,16 +135,16 @@ const BusinessAdminView = ({ userBusinessRole }) => {
     return (
         <BusinessAdminViewStyles>
             <Helmet>
-                <title>{`${business_data?.business_name} - Management`}</title>
+                <title>{`${decode(business_data?.business_name)} - Management`}</title>
             </Helmet>
             <div className='businessAdminViewWrapper'>
                 <div className='imagePreview businessImage'>
-                    <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.business_avatar}`} alt={`${business_data?.business_name} branding`} />
+                    <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.business_avatar}`} alt={`${decode(business_data?.business_name)} branding`} />
                 </div>
 
                 <div className='businessAdminViewDetailWrapper'>
                     <div className='businessAdminViewHeader'>
-                        <div onClick={() => navigate(`/business/${business_id}`)} className='businessAdminViewHeaderText headerText'>{business_data?.business_name}</div>
+                        <div onClick={() => navigate(`/business/${business_id}`)} className='businessAdminViewHeaderText headerText'>{decode(business_data?.business_name)}</div>
                         {
                             (business_data?.formatted_address !== null) &&
                                 <div className='subheaderText businessAdminViewAddress'>{business_data?.formatted_address?.replace(/, [A-Z]{2} \d{5}/, '')}</div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { useForm, Controller } from 'react-hook-form';
+import { decode } from 'he';
 import styled from 'styled-components';
 
 import useNotification from '../../hooks/useNotification';
@@ -138,11 +139,11 @@ const RoleRequest = ({ user_roles }) => {
                 business.business_request_open &&
                 business.active_business &&
                 !businessIdList.includes(business.id)
-            ).map(businessMap => ({ value: businessMap.id, label: businessMap.business_name }))
+            ).map(businessMap => ({ value: businessMap.id, label: decode(businessMap.business_name) }))
 
             setFilteredBusinessList(list)
         }
-    }, [businesses_list, businessListSuccess, businessIdList, dispatch])
+    }, [businesses_list, businessListSuccess, businessIdList, decode, dispatch])
 
     // make sure business id is selected or submit button is disabled
     const selectedBusinessId = watch('business_id');

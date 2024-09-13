@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { decode } from 'he';
 import { FaUserPen } from 'react-icons/fa6';
 import { MdVerified, MdOutlineVerified } from 'react-icons/md';
 
@@ -207,7 +208,7 @@ const UserAccount = () => {
                         
                         <div className='accountDetails'>
                             <div className='profileHeader'>
-                                <div className='usernameHeader'>{auth?.user.username}</div>
+                                <div className='usernameHeader'>{decode(auth?.user.username)}</div>
                                 {
                                     isPending ? (
                                         <LoadingSpinner />

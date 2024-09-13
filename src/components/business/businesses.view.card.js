@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { decode } from 'he';
 import styled from 'styled-components';
 
 
@@ -84,12 +85,12 @@ const BusinessesViewCard = ({ business }) => {
         <BusinessesViewCardStyles>
             <div className='businessesViewCardWrapper' onClick={() => navigate(`/business/${business?.id}`)}>
                 <div className='businessViewCardBranding'>
-                    <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business?.business_avatar}`} alt={business.business_name} />
+                    <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business?.business_avatar}`} alt={decode(business.business_name)} />
                 </div>
                 <div className='businessViewCardDetails'>
-                    <div className='businessViewCardBusinessName'>{business.business_name}</div>
+                    <div className='businessViewCardBusinessName'>{decode(business.business_name)}</div>
                     <div className='businessViewCardAddress'>{business?.formatted_address?.replace(/, [A-Z]{2} \d{5}/, '')}</div>
-                    <div className='businessViewCardBusinessDescription'>{business?.business_description}</div>
+                    <div className='businessViewCardBusinessDescription'>{decode(business?.business_description)}</div>
                 </div>
             </div>
         </BusinessesViewCardStyles>

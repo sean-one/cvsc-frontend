@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { decode } from 'he';
 
 import CreateEventButton from '../events/create.event.button';
 import DeleteRole from './buttons/delete.role';
@@ -18,7 +19,7 @@ const UserRole = ({ role }) => {
     return (
         <UserRoleStyles>
             <div className='roleWrapper'>
-                <div className='userRoleBusinessName' onClick={() => navigate(`/business/${role?.business_id}`)}>{role?.business_name}</div>
+                <div className='userRoleBusinessName' onClick={() => navigate(`/business/${role?.business_id}`)}>{decode(role?.business_name)}</div>
                 <div className='roleButtonWrapper'>
                     {
                         (role?.active_role) &&

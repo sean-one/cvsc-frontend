@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaRegEnvelope, FaXTwitter, FaInstagram, FaPhone, FaBan } from 'react-icons/fa6'
 import { TbWorldWww } from 'react-icons/tb'
 import styled from 'styled-components';
+import { decode } from 'he';
 import { Helmet } from 'react-helmet';
 
 import useNotification from '../../hooks/useNotification';
@@ -119,8 +120,8 @@ const BusinessView = () => {
     return (
         <BusinessViewStyles>
             <Helmet>
-                <title>{business?.data?.business_name}</title>
-                <meta name='description' content={business?.data?.business_description} />
+                <title>{decode(business?.data?.business_name)}</title>
+                <meta name='description' content={decode(business?.data?.business_description)} />
             </Helmet>
             <div className='businessViewWrapper'>
                 
@@ -130,7 +131,7 @@ const BusinessView = () => {
                     }
                     <div className='businessViewBusinessName'>
                         { (!business?.data?.active_business) && <FaBan className='siteIcons inactiveBusinessIcon' /> }
-                        <div className='headerText businessViewTitle'>{business?.data?.business_name?.toUpperCase()}</div>
+                        <div className='headerText businessViewTitle'>{decode(business?.data?.business_name?.toUpperCase())}</div>
                     </div>
                     {
                         (business?.data?.formatted_address !== null) &&
@@ -141,12 +142,12 @@ const BusinessView = () => {
                 <div className='imagePreview businessImage businessViewLogo'>
                     <img
                         src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business?.data?.business_avatar}`}
-                        alt={business?.data.business_name}
+                        alt={decode(business?.data.business_name)}
                     />
                 </div>
 
                 <div className='businessViewDescription'>
-                    {business?.data.business_description}
+                    {decode(business?.data.business_description)}
                 </div>
 
                 <div className='businessViewContacts'>
@@ -155,7 +156,7 @@ const BusinessView = () => {
                     {/* dynamically add optional contact information */}
                     {business?.data.business_phone && <a href={`tel:${business.data.business_phone}`}><FaPhone className='siteIcons' /></a> }
                     {business?.data.business_instagram && <a href={`https://www.instagram.com/${business.data.business_instagram}`} target='_blank' rel='noreferrer'><FaInstagram className='siteIcons' /></a> }
-                    {business?.data.business_website && <a href={`https://${business.data.business_website}`} target='_blank' rel='noreferrer'><TbWorldWww className='siteIcons'/></a> }
+                    {business?.data.business_website && <a href={business?.data?.business_website} target='_blank' rel='noreferrer'><TbWorldWww className='siteIcons'/></a> }
                     {business?.data.business_twitter && <a href={`https://twitter.com/${business.data.business_twitter}`} target='_blank' rel='noreferrer'><FaXTwitter className='siteIcons' /></a> }
                 </div>
             </div>

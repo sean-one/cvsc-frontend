@@ -5,6 +5,7 @@ import { format, parseISO } from 'date-fns';
 import Select from 'react-select';
 import styled from 'styled-components';
 import { TbCameraPlus } from 'react-icons/tb';
+import { decode } from 'he';
 import { Helmet } from 'react-helmet';
 import { FaRegCalendarDays, FaRegClock } from 'react-icons/fa6';
 
@@ -120,7 +121,7 @@ const EventEditForm = () => {
         if (userRoleSuccess) {
             return user_roles?.data.filter(role => role.active_role).map(role => ({
                 value: role.business_id,
-                label: role.business_name
+                label: decode(role.business_name)
             }));
         }
         return [];
@@ -234,19 +235,19 @@ const EventEditForm = () => {
     useEffect(() => {
         if (event_data) {
             reset({
-                eventname: event_data?.data?.eventname || '',
+                eventname: decode(event_data?.data?.eventname) || '',
                 place_id: event_data?.data?.place_id || '',
                 formatted_address: event_data?.data?.formatted_address || '',
                 eventdate: format(new Date(event_data?.data?.eventdate), "yyyy-MM-dd") || '',
                 eventstart: reformatTime(event_data?.data?.eventstart) || '',
                 eventend: reformatTime(event_data?.data?.eventend) || '',
                 // eventmedia: event_data?.data?.eventmedia || '',
-                details: event_data?.data?.details || '',
+                details: decode(event_data?.data?.details) || '',
                 host_business: hostBusinessDefault || null,
             });
             setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`)
         }
-    }, [event_data, reset, hostBusinessDefault])
+    }, [decode, event_data, reset, hostBusinessDefault])
 
     useEffect(() => {
         if(isError || isEventError) {
@@ -297,7 +298,7 @@ const EventEditForm = () => {
                         previewImageUrl
                             ? (
                                 <div className='imagePreview eventImage'>
-                                    <img src={previewImageUrl || `${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`} alt={event_data?.data?.eventname} />
+                                    <img src={previewImageUrl || `${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`} alt={decode(event_data?.data?.eventname)} />
                                 </div>
                             ) : (
                                 <ImageUploadAndCrop

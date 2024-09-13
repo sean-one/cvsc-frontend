@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { decode } from 'he';
 
 import RoleAction from './buttons/role.action';
 import DeleteRole from './buttons/delete.role';
@@ -44,7 +45,7 @@ const BusinessRole = ({ role, list_type }) => {
     return (
         <BusinessRoleStyles>
             <div className='roleWrapper'>
-                <div className='businessRoleUsername'>{role?.username}</div>
+                <div className='businessRoleUsername'>{decode(role?.username)}</div>
                 <div className='roleButtonWrapper'>
                     <RoleAction role_id={role.id} actionType={businessList[list_type]} />
                     <DeleteRole role={role} />   

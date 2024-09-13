@@ -4,6 +4,7 @@ import { format, parseISO } from 'date-fns';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 import styled from 'styled-components';
+import { decode } from 'he';
 import { TbCameraPlus } from 'react-icons/tb'
 import { FaRegCalendarDays, FaRegClock } from 'react-icons/fa6';
 import { Helmet } from 'react-helmet';
@@ -130,7 +131,7 @@ const EventCreateForm = () => {
 
             const list = user_roles.data
                 .filter(role => role.active_role)
-                .map(role => ({ value: role.business_id, label: role.business_name }));
+                .map(role => ({ value: role.business_id, label: decode(role.business_name) }));
             
             setUserHostBusinessList(list);
             const passedBusinessId = location.state?.businessId;
@@ -141,7 +142,7 @@ const EventCreateForm = () => {
             }
         }
 
-    }, [dispatch, navigate, setValue, user_roles, userRolesSuccess, location.state])
+    }, [decode, dispatch, navigate, setValue, user_roles, userRolesSuccess, location.state])
 
     const onImageCropped = useCallback((croppedBlob) => {
         setCroppedImage(croppedBlob);

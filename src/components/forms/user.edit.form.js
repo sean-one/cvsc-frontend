@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { decode } from 'he';
 import { useQueryClient } from '@tanstack/react-query';
 import { TbCameraPlus } from 'react-icons/tb';
 
@@ -31,7 +32,7 @@ const UserEditForm =({ setEditView }) => {
     const { register, handleSubmit, clearErrors, setError, setValue, reset, formState: { dirtyFields, errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
-            username: auth?.user?.username,
+            username: decode(auth?.user?.username),
             email: auth?.user?.email,
             avatar: null,
             password: '',

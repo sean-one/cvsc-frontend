@@ -148,7 +148,7 @@ const EventSmallPreview = ({ event }) => {
                 }
                 <div className='eventSmallPreviewLeftSection'>
                     <div className='eventSmallPreviewImageContainer'>
-                        <img className='eventSmallPreviewImage' src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event.eventmedia}`} alt={`${event.eventname} flyer`} />
+                        <img className='eventSmallPreviewImage' src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event.eventmedia}`} alt={`${decode(event.eventname)} flyer`} />
                     </div>
                 </div>
                 
@@ -157,10 +157,10 @@ const EventSmallPreview = ({ event }) => {
                     <div className='smallHeaderText eventSmallPreviewEventname'>{decode(event.eventname)}</div>
                     <div className='eventSmallPreviewDetails'>{decode(event.details)}</div>
                     {
-                        isBusinessAdminView && <div className='eventCreator'><FaUser className='smallSiteIcons' /><span style={{ color: 'var(--main-highlight-color)' }}>{event.event_creator}</span></div>
+                        isBusinessAdminView && <div className='eventCreator'><FaUser className='smallSiteIcons' /><span style={{ color: 'var(--main-highlight-color)' }}>{decode(event.event_creator)}</span></div>
                     }
                     {
-                        isProfileEventsView && <div className='eventCreator'><FaCannabis className='smallSiteIcons' /><span style={{ color: 'var(--main-highlight-color)' }}>{event.business_name}</span></div>
+                        isProfileEventsView && <div className='eventCreator'><FaCannabis className='smallSiteIcons' /><span style={{ color: 'var(--main-highlight-color)' }}>{decode(event.business_name)}</span></div>
                     }
                 </div>
             </div>

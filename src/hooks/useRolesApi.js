@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { decode } from "he";
 
 import AxiosInstance from "../helpers/axios";
 import { eventKeys, roleKeys } from "../helpers/queryKeyFactories";
@@ -50,7 +51,7 @@ export const useCreateRoleMutation = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `request to ${data?.business_name} sent`
+                    message: `request to ${decode(data?.business_name)} sent`
                 }
             })
         },
@@ -94,7 +95,7 @@ export const useRoleAction = () => {
                 type: "ADD_NOTIFICATION",
                 payload: {
                     notification_type: 'SUCCESS',
-                    message: `${data?.username} has been updated`
+                    message: `${decode(data?.username)} has been updated`
                 }
             })
         },

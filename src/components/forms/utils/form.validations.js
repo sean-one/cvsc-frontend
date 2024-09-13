@@ -4,7 +4,9 @@ export const emailformat = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const instagramFormat = /^@?[a-zA-Z0-9._]{1,30}$/
 
 // allowing for optional "http" and "www" prefixes while accounting for valid TLDs
-export const websiteFormat = /^(?:(?:https?:\/\/)?(?:www\.)?)?[\w-]+(\.[\w-]+)+[\w.,@?^=%&:/~+#-]*$/
+// export const websiteFormat = /^(?:(?:https?:\/\/)?(?:www\.)?)?[\w-]+(\.[\w-]+)+[\w.,@?^=%&:/~+#-]*$/
+export const websiteFormat = /^(https?:\/\/)(www\.)?[\w-]+(\.[a-zA-Z]{2,})+$/;
+
 
 // allows phone numbers, including variations with or without parentheses, dashes, dots, or spaces
 // validates 10-digit U.S. phone numbers.

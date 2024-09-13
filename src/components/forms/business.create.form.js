@@ -267,7 +267,7 @@ const BusinessCreateForm = () => {
                         <input {...register('business_website', {
                             pattern: {
                                 value: websiteFormat,
-                                message: 'invalid website format'
+                                message: "must be in 'https://www.yourwebsite.com' format"
                             }
                         })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                     </label>

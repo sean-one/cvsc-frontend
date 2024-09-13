@@ -150,7 +150,7 @@ const EventView = () => {
     return (
         <EventViewStyles>
             <Helmet>
-                <title>{event?.data?.eventname}</title>
+                <title>{decode(event?.data?.eventname)}</title>
             </Helmet>
             <div className='eventViewWrapper'>
                 <div className='eventViewDetails'>
