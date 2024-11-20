@@ -80,7 +80,7 @@ const App = () => {
         <meta property="og:title" content="Coachella Valley Smokers Club" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://coachellavalleysmokersclub.com" />
-        <meta property="og:image" content="%PUBLIC_URL%/assets/logo512.png" />
+        <meta property="og:image" content="https://coachellavalleysmokersclub.com/assets/meta_og_image.webp" />
         <meta property="og:description" content="Explore and connect with the cannabis community in Coachella Valley. Join events, share experiences, and stay updated with local cannabis related news." />
 
       </Helmet>
