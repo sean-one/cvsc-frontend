@@ -6,6 +6,7 @@ import LoadingSpinner from '../loadingSpinner';
 import ServerDown from '../serverDown';
 import EmptyListReturn from '../emptylist.return';
 import EventCard from '../events/views/event.card';
+import JoinTheClub from '../banners/joinTheClub';
 
 
 const CalendarStyles = styled.div`
@@ -24,6 +25,7 @@ const Calendar = () => {
     return (
         <CalendarStyles>
             <div className='calendarWrapper'>
+                <JoinTheClub />
                 {
                     isPending ? (
                         <LoadingSpinner />
