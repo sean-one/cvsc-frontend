@@ -60,7 +60,8 @@ const Styles = styled.div`
         font-size: var(--main-font-size);
         line-height: 1.3;
         color: var(--text-color);
-        background: linear-gradient(to bottom, var(--main-background-color) 20%, var(--main-color) 100%);
+        background-color: var(--main-background-color);
+        /* background: linear-gradient(to bottom, var(--main-background-color) 20%, var(--main-color) 100%); */
     }
 
     .innerContainer {

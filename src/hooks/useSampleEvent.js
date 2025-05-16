@@ -34,7 +34,7 @@ const useSampleEvent = () => {
                     host_business: cvsc_business?.data?.id,
                     business_avatar: cvsc_business?.data?.business_avatar,
                     business_name: decode(cvsc_business?.data?.business_name),
-                    eventname: 'Upload You Event Now!',
+                    eventname: 'Add Your Next Event!',
                 }
 
                 setSampleEvent(newSampleEvent);

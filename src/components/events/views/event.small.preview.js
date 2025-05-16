@@ -106,7 +106,7 @@ const EventSmallPreviewStyles = styled.div`
         display: -webkit-box;
         justify-content: flex-end;
         align-items: center;
-        gap: 0.3rem;
+        gap: 0.5rem;
         padding-top: 1rem;
         margin-top: 0.5rem;
         font-size: var(--small-font);
@@ -115,6 +115,10 @@ const EventSmallPreviewStyles = styled.div`
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         white-space: nowrap;
+    }
+    
+    .eventCreator span {
+        padding-left: 0.5rem;
     }
 `;
 

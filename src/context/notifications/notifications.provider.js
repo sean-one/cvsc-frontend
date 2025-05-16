@@ -12,7 +12,7 @@ const Styles = styled.div`
         position: fixed;
         top: 5.75rem;
         left: 0;
-        z-index: 5;
+        z-index: 10;
     }
 `;
 

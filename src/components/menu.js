@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSun, FaMoon, FaPlus } from 'react-icons/fa6';
+import { FaSun, FaMoon } from 'react-icons/fa6';
 import { decode } from 'he';
 import AxiosInstance from '../helpers/axios';
 import styled from 'styled-components';
@@ -91,12 +91,12 @@ const Menu = ({ toggle }) => {
                 <div className='navMenu'>
                     <div className='navMenuButtons menuText' onClick={() => navigate('/')}>Calendar</div>
                     {   (isLoggedIn && (user_account_role?.data?.role_type !== 'basic')) &&
-                            <div className='navMenuButtons menuText' onClick={() => navigate('/event/create')}><FaPlus className='siteIcons'/> Event</div>
+                            <div className='navMenuButtons menuText' onClick={() => navigate('/event/create')}>Add Event</div>
                     }
                     <div className='navMenuButtons menuText' onClick={() => navigate('/businesses')}>Businesses</div>
                     {
                         (isLoggedIn && auth?.user?.email_verified) &&
-                        <div className='navMenuButtons menuText' onClick={() => navigate('/business/create')}><FaPlus className='siteIcons'/> Business</div>
+                        <div className='navMenuButtons menuText' onClick={() => navigate('/business/create')}>Add Business</div>
                     }
                     {
                         isLoggedIn

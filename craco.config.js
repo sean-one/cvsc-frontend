@@ -33,6 +33,10 @@ module.exports = {
     },
     // Configuration for the development server
     devServer: {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        allowedHosts: 'all',
         port: 3000, // Customize the port if needed
     },
     // Other CRACO configurations

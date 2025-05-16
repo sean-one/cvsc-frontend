@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { FaBars, FaX } from 'react-icons/fa6';
 import styled from 'styled-components';
 
-import { ReactComponent as CVSCLogo } from '../assets/cvsc_sqr.svg';
+// import { ReactComponent as CVSCLogo } from '../assets/cvsc_sqr.svg';
+import CVSCLogoWhite from '../assets/smokers_club.webp';
+import CVSCLogoBlack from '../assets/smokers_club-black.webp';
 import Menu from './menu'
+import useTheme from '../hooks/useTheme';
 
 const NavbarStyles = styled.div`
     .navWrapper {
@@ -20,7 +23,7 @@ const NavbarStyles = styled.div`
         justify-content: center;
         flex-direction: column;
         align-items: center;
-        z-index: 999;
+        z-index: 90;
     }
 
     .navContainer {
@@ -65,6 +68,7 @@ const NavbarStyles = styled.div`
 
 const Navbar = () => {
     const [ toggle, setToggle ] = useState(false)
+    const { themeName } = useTheme()
     
     let navigate = useNavigate()
 
@@ -74,7 +78,11 @@ const Navbar = () => {
             <div className='navWrapper'>
                 <div className='navContainer'>
                     <div className='navBarBranding' onClick={() => navigate('/')}>
-                        <CVSCLogo className='navBarLogo' />
+                        {
+                            themeName === 'dark'
+                                ? <img className='navBarLogo' src={CVSCLogoWhite} alt='smokers club branding' />
+                                : <img className='navBarLogo' src={CVSCLogoBlack} alt='smokers club branding' />
+                        }
                     </div>
                     <div className='navBarMenu'>
                         <div className='toggler' onClick={() => setToggle(!toggle)}>

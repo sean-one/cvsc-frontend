@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 
 import { useEventsQuery } from '../../hooks/useEventsApi';
@@ -6,7 +6,8 @@ import LoadingSpinner from '../loadingSpinner';
 import ServerDown from '../serverDown';
 import EmptyListReturn from '../emptylist.return';
 import EventCard from '../events/views/event.card';
-import JoinTheClub from '../banners/joinTheClub';
+import AdCVSCDiscord from '../banners/ad.cvsc.discord';
+import AboutCVSC from '../aboutCVSC';
 
 
 const CalendarStyles = styled.div`
@@ -20,12 +21,25 @@ const CalendarStyles = styled.div`
 
 const Calendar = () => {
     const { data: events_list, isPending, isError } = useEventsQuery()
-    
+    const [ showMission, setShowMission ] = useState(true)
+
+    const handleMissionClose = () => {
+        localStorage.setItem('missionShown', 'true')
+        setShowMission(false)
+    }
+
+    useEffect(() => {
+        const missionShown = localStorage.getItem('missionShown');
+        if (missionShown === 'true') {
+          setShowMission(false);
+        }
+      }, []);
 
     return (
         <CalendarStyles>
             <div className='calendarWrapper'>
-                <JoinTheClub />
+                {showMission && <AboutCVSC onClose={handleMissionClose} /> }
+                <AdCVSCDiscord />
                 {
                     isPending ? (
                         <LoadingSpinner />
@@ -40,7 +54,7 @@ const Calendar = () => {
                     ) : (
                         <EmptyListReturn listtype='event'/>
                     )
-                }
+                }       
             </div>
         </CalendarStyles>
     )

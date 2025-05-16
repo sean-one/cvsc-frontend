@@ -7,6 +7,7 @@ import { GoPencil } from 'react-icons/go';
 import { Helmet } from 'react-helmet';
 
 import LoadingSpinner from '../../loadingSpinner';
+import ShareBar from '../../shareBar';
 import EventViewRelated from '../event.view.related';
 
 import useAuth from '../../../hooks/useAuth';
@@ -24,17 +25,19 @@ const EventViewStyles = styled.div`
         grid-template-areas:
         'eventdetails'
         'eventmedia'
+        'eventShare'
         'eventdescription'
         ;
-        background-color: var(--opacity);
+        /* background-color: var(--opacity); */
         border-radius: 0.5rem;
         
         @media (min-width: 768px) {
             padding: 2.5rem 2rem;
-            grid-gap: 2rem;
+            grid-gap: 0 2rem;
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
             'eventmedia eventdetails'
+            'eventmedia eventShare'
             'eventmedia eventdescription'
             ;
             box-shadow: inset -0.3rem -0.3rem 1rem rgba(255,255,255,0.2), 0.3rem 0.3rem 1rem rgba(0,0,0,0.3);
@@ -44,10 +47,10 @@ const EventViewStyles = styled.div`
     .eventViewDetails {
         grid-area: eventdetails;
         width: 100%;
-        padding: 0rem 0.75rem;
+        /* padding: 0rem 0.75rem; */
         
         @media (min-width: 768px) {
-            align-self: end;
+            align-self: flex-end;
             padding-bottom: 0.75rem;
             border-bottom: 0.05rem solid var(--main-color);
         }
@@ -118,7 +121,7 @@ const EventView = () => {
     let { event_id } = useParams()
 
     let navigate = useNavigate()
-    
+
     const { data: event, isPending, isError, error: event_error } = useEventQuery(event_id)
 
     useEffect(() => {
@@ -144,6 +147,7 @@ const EventView = () => {
         return null;
     }
 
+    console.log(event)
     const isCreator = () => auth?.user?.id === event?.data.created_by
     
 
@@ -151,6 +155,20 @@ const EventView = () => {
         <EventViewStyles>
             <Helmet>
                 <title>{decode(event?.data?.eventname)}</title>
+                <meta name="description" content={event?.data?.details} />
+
+                {/* Open Graph Meta Tags */}
+                <meta property="og:title" content={decode(event?.data?.eventname)} />
+                <meta property="og:description" content={event?.data?.details} />
+                <meta property="og:image" content={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.data.eventmedia}`} />
+                <meta property="og:url" content={encodeURI(window.location.href)} />
+                <meta property="og:type" content="website" />
+
+                {/* Twitter Card Meta Tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={decode(event?.data?.eventname)} />
+                <meta name="twitter:description" content={event?.data?.details} />
+                <meta name="twitter:image" content={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.data.eventmedia}`} />
             </Helmet>
             <div className='eventViewWrapper'>
                 <div className='eventViewDetails'>
@@ -172,12 +190,16 @@ const EventView = () => {
                             <div className='subheaderText'>{`${formatTime(event?.data.eventstart)} - ${formatTime(event?.data.eventend)}`}</div>
                         </div>
                 </div>
+                <div className='eventShare'>
+                    <ShareBar shareUrl={window.location.href} title={decode(event?.data?.eventname)}/>
+                </div>
                 
                 <div className='eventViewImage'>
                     <div className='imagePreview eventImage'>
                         <img src={`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event?.data.eventmedia}`} alt={event?.data.eventname} />
                     </div>
                 </div>
+
                 
                 <div className='eventViewDescription'>
                     <div>{decode(event?.data.details)}</div>

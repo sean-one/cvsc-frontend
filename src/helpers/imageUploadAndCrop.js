@@ -31,7 +31,7 @@ const ImageUploadCropStyles = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        z-index: 99;
+        z-index: 20;
         gap: 1rem;
     }
 

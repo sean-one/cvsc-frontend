@@ -71,6 +71,7 @@ const App = () => {
   return (
     <React.Fragment>
       <Helmet>
+        <meta charSet="utf-8" />
         <title>Coachella Valley Smokers Club</title>
         <meta name="description" content="Explore and connect with the cannabis community in Coachella Valley. Join events, share experiences, and stay updated with local cannabis related news." />
         <meta name="keywords" content="coachella valley, cannabis, community, cannabis events" />

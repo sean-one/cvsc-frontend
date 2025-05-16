@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import DiscordBanner from '../../assets/cvsc_discord.webp';
 import { FaInstagram, FaDiscord } from 'react-icons/fa6';
 
 const JoinTheClubStyles = styled.div`
     .joinTheClubWrapper {
-        height: 11rem;
+        /* height: 11rem; */
         max-width: var(--max-section-width);
         margin: 1rem auto 1.5rem;
-        padding: 1.5rem 0.75rem;
+        /* padding: 1.5rem 0.75rem; */
         border-radius: 0.7rem;
         border: 0.01rem solid var(--text-color);
+    }
+
+    .joinTheClubWrapper img {
+        border-radius: 0.7rem;
     }
 
     .joinClubHeader {
@@ -48,8 +53,9 @@ const JoinTheClub = () => {
     return (
         <JoinTheClubStyles>
             <div className='joinTheClubWrapper'>
-                <div className='joinClubHeader'>Join our Coachella Valley Smokers Club community!</div>
-                <div className='clubIconsWrapper'>
+                <img src={DiscordBanner} alt='join our discord community' />
+                {/* <div className='joinClubHeader'>Join our Coachella Valley Smokers Club community!</div> */}
+                {/* <div className='clubIconsWrapper'>
                     <div className='clubIcon' onClick={() => clubIconClick('https://instagram.com/coachellavalleysmokersclub')}>
                         <FaInstagram className='siteIcons' />
                         <div className='clubIconText'>Instagram</div>
@@ -58,7 +64,7 @@ const JoinTheClub = () => {
                         <FaDiscord className='siteIcons' />
                         <div className='clubIconText'>Discord</div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </JoinTheClubStyles>
     );
