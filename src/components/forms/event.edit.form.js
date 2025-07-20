@@ -265,7 +265,7 @@ const EventEditForm = () => {
             });
             setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${event_data?.data?.eventmedia}`)
         }
-    }, [decode, event_data, reset, hostBusinessDefault])
+    }, [event_data, reset, hostBusinessDefault])
 
     useEffect(() => {
         if(isError || isEventError) {
