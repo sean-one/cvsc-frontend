@@ -107,6 +107,7 @@ const EventViewStyles = styled.div`
         text-align: justify;
         grid-area: eventdescription;
         padding: 0 0.75rem;
+        white-space: pre-line;
     }
     
     .eventViewEditButton {
@@ -147,7 +148,6 @@ const EventView = () => {
         return null;
     }
 
-    console.log(event)
     const isCreator = () => auth?.user?.id === event?.data.created_by
     
 

@@ -216,8 +216,26 @@ const EventEditForm = () => {
     }
 
     const sendEventDelete = async () => {
-        removeEventMutation(event_id)
-        navigate('/profile/events')
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                notification_type: 'ERROR',
+                message: `Please click 'Delete' to confirm`,
+                actions: [
+                    {
+                        label: 'Delete',
+                        onClick: () => {
+                            removeEventMutation(event_id)
+                            navigate('/profile/events')
+                        }
+                    },
+                    {
+                        label: 'Cancel',
+                        onClick: () => {}
+                    }
+                ]
+            }
+        })
     }
 
     const handleCameraClick = () => {

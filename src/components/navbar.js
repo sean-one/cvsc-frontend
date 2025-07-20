@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FaBars, FaX } from 'react-icons/fa6';
 import styled from 'styled-components';
 
-// import { ReactComponent as CVSCLogo } from '../assets/cvsc_sqr.svg';
 import CVSCLogoWhite from '../assets/smokers_club.webp';
 import CVSCLogoBlack from '../assets/smokers_club-black.webp';
 import Menu from './menu'
@@ -72,7 +71,7 @@ const Navbar = () => {
     
     let navigate = useNavigate()
 
-
+    
     return (
         <NavbarStyles>
             <div className='navWrapper'>

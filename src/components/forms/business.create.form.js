@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 import useNotification from '../../hooks/useNotification';
 import { FaXTwitter, FaInstagram, FaPhone } from 'react-icons/fa6';
 import { TbWorldWww, TbCameraPlus } from 'react-icons/tb';
-import { emailformat, instagramFormat, phoneFormat, twitterFormat, websiteFormat } from '../forms/utils/form.validations';
+import { emailformat, instagramFormat, phoneFormat, twitterFormat, validateWebsiteUrl, normalizeWebsiteUrl } from '../forms/utils/form.validations';
 import { useCreateBusinessMutation } from '../../hooks/useBusinessApi';
 
 import ImageUploadAndCrop from '../../helpers/imageUploadAndCrop';
@@ -80,6 +80,11 @@ const BusinessCreateForm = () => {
             // clean phone number to consist of 10 numbers only
             if(business_data.business_phone !== undefined) {
                 business_data.business_phone = business_data.business_phone.replace(/\D/g, '').slice(-10)
+            }
+
+            // Normalize website url
+            if(business_data.business_website !== undefined) {
+                business_data.business_website = normalizeWebsiteUrl(business_data.business_website)
             }
 
             // remove any empty strings and append to formData
@@ -265,10 +270,11 @@ const BusinessCreateForm = () => {
                     <label htmlFor='business_website' className='contactLabelWrapper'>
                         <TbWorldWww className='siteIcons' />
                         <input {...register('business_website', {
-                            pattern: {
-                                value: websiteFormat,
-                                message: "must be in 'https://www.yourwebsite.com' format"
-                            }
+                            validate: validateWebsiteUrl,
+                            // pattern: {
+                            //     value: websiteFormat,
+                            //     message: "must be in 'https://www.yourwebsite.com' format"
+                            // }
                         })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                     </label>
                     {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}

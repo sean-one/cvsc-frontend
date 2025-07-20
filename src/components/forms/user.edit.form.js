@@ -179,50 +179,69 @@ const UserEditForm =({ setEditView }) => {
         reset()
     }
 
-    const deleteUser = async () => {
-        try {
-            const deleteUserResponse = await AxiosInstance.delete('/users/delete')
+    const confirmUserDelete = () => {
+        dispatch({
+            type: 'ADD_NOTIFICATION',
+            payload: {
+                notification_type: 'ERROR',
+                message: `Please click 'Delete' to confirm (this can not be undone)`,
+                actions: [
+                    {
+                        label:'Delete',
+                        onClick: async () => {
+                            try {
+                                const deleteUserResponse = await AxiosInstance.delete('/users/delete')
 
-            if(deleteUserResponse.status === 204) {
-                
-                await Promise.all([
-                    queryClient.invalidateQueries({ queryKey: eventKeys.all }),
-                    queryClient.invalidateQueries({ queryKey: roleKeys.all }),
-                    queryClient.invalidateQueries({ queryKey: businessKeys.all }),
+                                if(deleteUserResponse.status === 204) {
+                                    
+                                    await Promise.all([
+                                        queryClient.invalidateQueries({ queryKey: eventKeys.all }),
+                                        queryClient.invalidateQueries({ queryKey: roleKeys.all }),
+                                        queryClient.invalidateQueries({ queryKey: businessKeys.all }),
 
-                ])
+                                    ])
 
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'SUCCESS',
-                        message: 'user account has been delete'
+                                    dispatch({
+                                        type: "ADD_NOTIFICATION",
+                                        payload: {
+                                            notification_type: 'SUCCESS',
+                                            message: 'user account has been delete'
+                                        }
+                                    })
+
+                                    localStorage.removeItem('jwt')
+                                    setAuth(null)
+                                    
+                                    navigate('/')
+                                }
+
+                                
+                            } catch (error) {
+                                
+                                if(error?.response?.status === 401) {
+                                    dispatch({
+                                        type: "ADD_NOTIFICATION",
+                                        payload: {
+                                            notification_type: 'ERROR',
+                                            message: 'credentials not found - please login'
+                                        }
+                                    })
+
+                                    navigate('/login')
+                                } else {
+                                    console.error(error)
+                                }
+                            }
+                        }
+                    },
+                    {
+                        label: 'Cancel',
+                        onClick: () => {}
                     }
-                })
-
-                localStorage.removeItem('jwt')
-                setAuth(null)
-                
-                navigate('/')
+                ]
             }
-
-            
-        } catch (error) {
-            
-            if(error?.response?.status === 401) {
-                dispatch({
-                    type: "ADD_NOTIFICATION",
-                    payload: {
-                        notification_type: 'ERROR',
-                        message: 'credentials not found - please login'
-                    }
-                })
-
-                navigate('/login')
-            } else {
-                console.error(error)
-            }
-        }
+        })
+        
     }
 
 
@@ -302,7 +321,7 @@ const UserEditForm =({ setEditView }) => {
                     <div className='formButtonWrapper'>
                         <button className='formButton' type='submit'>Update</button>
                         <div className='buttonLike formButton' onClick={cancelEdit}>Close</div>
-                        <div className='buttonLike formButton' onClick={deleteUser}>Delete</div>
+                        <div className='buttonLike formButton' onClick={confirmUserDelete}>Delete</div>
                     </div>
 
                 </form>

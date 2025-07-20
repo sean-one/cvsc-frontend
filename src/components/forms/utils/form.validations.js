@@ -18,6 +18,19 @@ export const twitterFormat = /^@?[a-zA-Z0-9_]{1,15}$/
 
 export const uuidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
+export const normalizeWebsiteUrl = (value) => {
+    if (!value) return "";
+    
+    value = value.trim();
+    
+    // If user already typed https:// or http://, keep it
+    if (/^https?:\/\//i.test(value)) {
+        return value;
+    }
+    
+    // Otherwise default to https://
+    return `https://${value}`;
+}
 
 export const validateUsername = (value) => {
     const alphanumeric = /^[a-zA-Z0-9*@_.\-!$]+$/;
@@ -125,5 +138,34 @@ export const validateNONEmptyString = (value) => {
         return 'empty string is not allowed'
     } else {
         return
+    }
+}
+
+export const validateWebsiteUrl = (value) => {
+    // false value returns true since input is not required
+    if (!value) return true;
+
+    // Disallow unsupported protocols (e.g., ftp://) only allow http & https
+    if (/^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(value) && !/^https?:\/\//i.test(value)) {
+        return 'website must contain http or https';
+    }
+    
+    try {
+        const normalized = normalizeWebsiteUrl(value);
+        const url = new URL(normalized);
+        
+        // Accept only http or https
+        if (!["http:", "https:"].includes(url.protocol)) {
+            return `must include http or https to be valid`;
+        }
+
+        // Require at least domain.tld
+        if (!url.hostname.includes(".")) {
+            return `required .com or at least one domain.tld`
+        }
+
+        return true;
+    } catch (e) {
+        return false;
     }
 }

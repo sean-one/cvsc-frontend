@@ -53,10 +53,32 @@ const NotificationStyles = styled.div`
         animation: ${leftSlideOut} 1s;
         animation-fill-mode: forwards;
     }
+
+    .notification-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 0.75rem;
+        gap: 1.5rem;
+    }
+
+    .notification-actions button {
+        background-color: white;
+        color: black;
+        border: none;
+        border-radius: 0.375rem;
+        padding: 0.25rem 0.75rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .notification-actions button:hover {
+        background-color: #eee;
+    }
+
 `;
 
 
-const Notification = (props) => {
+const Notification = ({ dispatch, id: notification_id, message, notification_type, actions}) => {
     const [ exit, setExit ] = useState(false)
     const [ width, setWidth ] = useState(0)
     const [ intervalID, setIntervalID ] = useState(null)
@@ -84,9 +106,9 @@ const Notification = (props) => {
         pauseTimer()
         setExit(true)
         setTimeout(() => {
-            props.dispatch({
+            dispatch({
                 type: "REMOVE_NOTIFICATION",
-                id: props.id
+                id: notification_id
             })
         }, 750)
     }
@@ -99,14 +121,30 @@ const Notification = (props) => {
     }, [width])
 
     useEffect(() => {
-        startTimer()
-    }, [])
+        if (!actions || actions.length === 0) {
+            startTimer()
+        }
+    }, [actions])
 
     return(
         <NotificationStyles>
-            <div onMouseEnter={pauseTimer} onMouseLeave={startTimer} className={`notificationToast ${exit ? 'exit' : ''}`}>
-                {props.message}
-                <div className={`progressBar ${props.notification_type === 'SUCCESS' ? 'success' : 'error'}`} style={{ width: `${width}%` }} />
+            <div onMouseEnter={pauseTimer} onMouseLeave={() => !actions?.length && startTimer()} className={`notificationToast ${exit ? 'exit' : ''}`}>
+                {message}
+                {actions && actions.length > 0 && (
+                    <div className="notification-actions">
+                        {actions.map(({ label, onClick }) => (
+                            <button key={label} onClick={() => {
+                                onClick(); // user-defined logic
+                                closeNotification(); // remove toast
+                            }}>
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                )}
+                {!actions?.length && (
+                    <div className={`progressBar ${notification_type === 'SUCCESS' ? 'success' : 'error'}`} style={{ width: `${width}%` }} />
+                )}
             </div>
         </NotificationStyles>
     )

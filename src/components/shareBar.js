@@ -37,7 +37,7 @@ const ShareBarStyles = styled.div`
 
 const ShareBar = (props) => {
     const { shareUrl, title } = props
-    console.log(shareUrl)
+    // console.log(shareUrl)
 
     return(
         <ShareBarStyles>

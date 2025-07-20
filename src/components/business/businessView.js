@@ -83,6 +83,7 @@ const BusinessViewStyles = styled.div`
         max-width: var(--max-section-width);
         padding: 1rem 0;
         text-align: justify;
+        white-space: pre-line;
 
         @media (min-width: 768px) {
             text-align: left;
@@ -151,7 +152,9 @@ const BusinessView = () => {
                 </div>
 
                 <div className='businessViewContacts'>
-                    <a href={`mailto:${business?.data.business_email}`} target='_blank' rel='noreferrer'><FaRegEnvelope className='siteIcons' /></a>
+                    {business?.data.business_email !== 'example@cvsc.me' &&
+                        <a href={`mailto:${business?.data.business_email}`} target='_blank' rel='noreferrer'><FaRegEnvelope className='siteIcons' /></a>
+                    }
 
                     {/* dynamically add optional contact information */}
                     {business?.data.business_phone && <a href={`tel:${business.data.business_phone}`}><FaPhone className='siteIcons' /></a> }

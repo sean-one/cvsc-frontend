@@ -9,7 +9,7 @@ import { useUpdateBusinessMutation, useBusinessQuery } from '../../hooks/useBusi
 import useNotification from '../../hooks/useNotification';
 import { FaXTwitter, FaInstagram, FaPhone } from 'react-icons/fa6';
 import { TbWorldWww, TbCameraPlus } from 'react-icons/tb';
-import { emailformat, instagramFormat, websiteFormat, phoneFormat, twitterFormat } from './utils/form.validations';
+import { emailformat, instagramFormat, normalizeWebsiteUrl, phoneFormat, twitterFormat, validateWebsiteUrl } from './utils/form.validations';
 
 import LoadingSpinner from '../loadingSpinner';
 import AddressForm from './address.form';
@@ -88,24 +88,54 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                 }
             }
 
+            // clean instagram format to check for and remove @ symbol
+            // mark to be removed if input chnaged from data to empty string
+            if (business_updates.business_instagram !== undefined) {
+                if (business_updates.business_instagram === '') {
+                    delete business_updates.business_instagram
+                    business_updates.remove_instagram = true
+                } else if (typeof business_updates.business_instagram === 'string' && business_updates.business_instagram.startsWith('@')) {
+                    business_updates.business_instagram = business_updates.business_instagram.slice(1)
+                }
+            }
+
             // clean phone number to consist of 10 numbers only
+            // mark to be removed if input changed from data to empty string
             if (business_updates.business_phone !== undefined) {
-                business_updates.business_phone = business_updates.business_phone.replace(/\D/g, '').slice(-10)
+                if (business_updates.business_phone === '') {
+                    delete business_updates.business_phone
+                    business_updates.remove_phone = true
+                } else {
+                    business_updates.business_phone = business_updates.business_phone.replace(/\D/g, '').slice(-10)
+                }
+            }
+
+            // normalize website url if present
+            // mark to be removed if input changed form data to empty string
+            if (business_updates.business_website !== undefined) {
+                if (business_updates.business_website === '') {
+                    delete business_updates.business_website
+                    business_updates.remove_website = true;
+                } else {
+                    business_updates.business_website = normalizeWebsiteUrl(business_updates.business_website)
+                }
+            }
+
+            if (business_updates.business_twitter !== undefined) {
+                if (business_updates.business_twitter === '') {
+                    delete business_updates.business_twitter
+                    business_updates.remove_twitter = true
+                } else if (typeof business_updates.business_twitter === 'string' && business_updates.business_twitter.startsWith('@')) {
+                    business_updates.business_twitter = business_updates.business_twitter.slice(1)
+                }
             }
 
             // append eveything left changed to formData
             Object.keys(business_updates).forEach(key => {
                 let value = business_updates[key]
 
-                if(value !== '') {
-                    if(typeof value === 'string' && value.startsWith('@')) {
-                        value = value.slice(1)
-                    }
-
-                    formData.append(key, value)
-                }
+                formData.append(key, value)
             })
-
             await updateBusiness({ business_updates: formData, business_id: business_id })
 
         } catch (error) {
@@ -157,7 +187,7 @@ const BusinessEditForm = ({ userBusinessRole }) => {
             });
             setPreviewImageUrl(`${process.env.REACT_APP_BACKEND_IMAGE_URL}${business_data?.data?.business_avatar}`);
         }
-    }, [business_data, decode, reset])
+    }, [business_data, reset])
 
     useEffect(() => {
         if (isError) {
@@ -271,10 +301,11 @@ const BusinessEditForm = ({ userBusinessRole }) => {
                     <label htmlFor='business_website' className='contactLabelWrapper'>
                         <TbWorldWww className='siteIcons' />
                         <input {...register('business_website', {
-                            pattern: {
-                                value: websiteFormat,
-                                message:  "must be in 'https://www.yourwebsite.com' format"
-                            }
+                            validate: validateWebsiteUrl,
+                            // pattern: {
+                            //     value: websiteFormat,
+                            //     message:  "must be in 'https://www.yourwebsite.com' format"
+                            // }
                         })} type='text' onClick={() => clearErrors('business_website')} placeholder='https://www.website.com' />
                     </label>
                     {errors.business_website ? <div className='errormessage'>{errors.business_website?.message}</div> : null}
