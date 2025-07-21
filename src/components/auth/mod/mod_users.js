@@ -57,11 +57,11 @@ const ModUsersStyles = styled.div`
     }
     
     .singleUserLeft {
-        justify-self: flex-start
+        justify-self: flex-start;
         font-size: 1.7rem;
     }
     .singleUserRight {
-        justify-self: flex-end
+        justify-self: flex-end;
         font-size: 1.4rem;
     }
     .modUsersIcon {
