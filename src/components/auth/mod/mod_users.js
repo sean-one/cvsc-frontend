@@ -113,7 +113,7 @@ const ModUsers = () => {
         user.email.toLowerCase().includes(searchTerm.toLocaleLowerCase())
     ) || [];
 
-    const banUser = async (user_id) => {
+    const executeUserBan = async (user_id) => {
         try {
             const response = await AxiosInstance.delete(`/users/squirrel-user-ban/${user_id}`)
             if (response.status === 204) {
@@ -139,6 +139,27 @@ const ModUsers = () => {
             })
         }
     }
+
+    const banUser = (user_id, username) => {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+            notification_type: 'ERROR',
+            message: `Are you sure you want to delete the user "${username}"?`,
+            actions: [
+                {
+                    label: 'Confirm Delete',
+                    onClick: () => executeUserBan(user_id)
+                },
+                {
+                    label: 'Cancel',
+                    onClick: () => {}, // no-op, just closes notification
+                }
+            ]
+            }
+        });
+    };
+
 
     if (loading) {
         return <LoadingSpinner />
@@ -168,7 +189,7 @@ const ModUsers = () => {
                                     return (
                                         <div key={user.id} className='singleUser'>
                                             <div className='singleUserSection singleUserLeft'>
-                                                <div onClick={() => banUser(user.id)} className='smallSiteIcons modUsersIcon' style={{ color: 'var(--error-color)' }}><FaTrashCan /></div>
+                                                <div onClick={() => banUser(user.id, user.username)} className='smallSiteIcons modUsersIcon' style={{ color: 'var(--error-color)' }}><FaTrashCan /></div>
                                                 <div>{user.username}</div>
                                             </div>
                                             <div className='singleUserSection singleUserRight'>
